@@ -1,42 +1,43 @@
-# Fallakte – digitaler Verhütungsberatungs-Chat
+# Fallakte · Verhütungsberatung
 
-**Entwicklungsstand: Prototyp v0.1 vom 20.11.2026. Nicht für den Unterricht freigegeben.**
+Unterrichtsanwendung für Biologie in Klasse 8. In drei fiktiven Beratungsgesprächen prüfen Lernende ihre Empfehlungen anhand von Infokarten, persönlichen Grenzen und neuen Fallinformationen. Laura ist der gemeinsame Hauptfall. Celina und Tom ergänzen ihn. Alle drei Gespräche stehen auf Förder-, ESA-, MSA- und AHR-Niveau zur Verfügung.
 
-Interaktive Unterrichtsfallakte für Biologie, Klasse 8, mit drei fiktiven Beratungsfällen (Laura, Celina, Tom), vier Unterstützungsstufen (Förder, ESA, MSA, AHR) und vorprogrammierten Chatreaktionen.
+## Für den Unterricht öffnen
 
-## Vorschau starten
+Im erfolgreichen GitHub-Actions-Lauf **Unterrichtspakete** das Artefakt **Fallakte-Unterricht** herunterladen und die äußere Download-ZIP entpacken.
 
-Die Datei `index.html` im Browser öffnen. Der Prototyp ist eine einzige HTML-Datei ohne Build-Schritt, externe Bibliotheken oder Netzwerkzugriff. Der Browser hält den Gesprächsverlauf nur bis zum Neuladen vor.
+| Datei | Verwendung |
+| --- | --- |
+| **Fallakte-SCORM12.zip** | Als SCORM-1.2-Paket in itslearning importieren. Diese innere ZIP geschlossen lassen. |
+| **Fallakte.html** | Auf dem Mac per Doppelklick im Browser öffnen. Alle Bilder, Schriften, Dialoge und Infokarten sind eingebettet. |
+| **Fallakte-Sichtpruefung.zip** | Enthält dieselbe HTML-Vorschau, echte Bildschirmfotos, einen Prüfbericht und maschinenlesbare Testprotokolle. |
 
-## Dateien
+Auch im ausgecheckten Projekt lässt sich **index.html** direkt öffnen. Hierbei gehören die benachbarten Ordner zur Vorschau. Das einzelne weiterzugebende Offline-Dokument entsteht im Build.
 
-- `index.html`: direkt ausführbare Vorschau inklusive Styles, Anwendungslogik und eingebetteter Falldaten
-- `data/dialogdaten_prototyp.json`: dieselben Falldaten separat und lesbar strukturiert, als Grundlage für eine spätere Trennung von Daten und UI
-- `docs/QA_Bericht_v01.md`: getestete Funktionen, Einschränkungen und offene Punkte
+## Im Klassenraum
 
-**Wichtig:** Der JSON-Datensatz ist aktuell eine Kopie der in der HTML-Datei eingebetteten Daten. Änderungen an nur einer der Dateien aktualisieren die andere nicht automatisch. Codex soll eine einzige kanonische Datenquelle schaffen.
+Laura öffnen, die erste Empfehlung auf Papier begründen und gemeinsam abstimmen. Der Verlauf führt in sieben Abschnitten zur zweiten Empfehlung. Frühere Antworten, Änderungen und Rückfragen bleiben im Chat lesbar. **Sicherung** unterbricht jeden Fall sofort. Über **Zurück** oder die Fallübersicht lässt sich die Arbeit derselben Stufe fortsetzen.
 
-## Didaktische Anforderungen für die weitere Entwicklung
+Die Anwendung hält die Gespräche ausschließlich im Arbeitsspeicher der geöffneten Seite. Neuladen beginnt eine neue Sitzung. Sie verlangt keine Namen oder persönlichen Erfahrungen. Der SCORM-Adapter öffnet und schließt lediglich die technische Sitzung. itslearning kann unabhängig davon Zugriffe protokollieren.
 
-1. Laura beginnt mit einem STI-Schutz-Anliegen, für das unter den vier behandelten Methoden das Kondom zunächst die naheliegende Antwort ist. Neue Informationen eröffnen später mehrere vertretbare Gesamtstrategien. Keine erzwungene eindeutige Endmethode.
-2. Lauras ausführlicher Chat und die schrittweise Informationsfreigabe sollen erhalten bleiben. Feedback durch die fiktive Figur muss zu der vorherigen Entscheidung passen und darf nicht die nächste Antwort verraten.
-3. Entscheidungen der beratenen Person respektieren. Eine Sorge ist nicht automatisch eine Ablehnung.
-4. Vier tatsächliche Anspruchs- und Unterstützungsniveaus; insbesondere kurze, **konkrete** Hilfen für Förder und ESA, etwa „Lies die Kupferspiralen-Karte: Was steht dort zu Regelschmerzen?“
-5. Antworten in vollständigen, natürlich formulierten Sätzen. Kein Antwortwortlaut, der bereits die „richtige“ Auswahl verrät.
-6. Jede Person muss erkennen, welche Aktion als Nächstes erwartet wird. Einfache Touch-Bedienung, klarer Senden-Button, keine überflüssigen Klicks.
-7. Der gesamte Messenger-Verlauf muss lesbar und frei scrollbar bleiben; frühere Entscheidungen bleiben nachvollziehbar.
-8. Kein automatisches Bewerten offener Begründungen. Der individuelle Lernzuwachs wird im Unterricht anhand des Laufzettels und der doppelten Laura-Abstimmung sichtbar gemacht.
-9. Celina ist der eigenständige zweite Beratungsfall; Tom behandelt als Vertiefung die Forschung an Verhütungsmitteln für Männer.
-10. Zielumgebung: Safari auf Schul-iPads, Bereitstellung über itslearning als SCORM-1.2-ZIP; **keine dauerhafte Speicherung** von Lernantworten, Punkten oder Spielständen in der Anwendung oder über SCORM.
+[Unterrichtsablauf und Laufzettelvorlage](docs/Unterricht.md) · [Fachquellen](docs/Fachpruefung.md) · [Abnahme und offene Punkte](docs/Abnahme.md)
 
-## Wichtige Grenzen dieser Version
+## Entwicklung und Prüfung
 
-- Der Prototyp wurde per Chromium getestet, **nicht** auf echten Schul-iPads oder in itslearning.
-- Die analogen Laufzettel und Einstiegsmaterialien enthalten teilweise noch den früheren Laura-Einstieg und müssen vor einem Einsatz angepasst werden.
-- Die komplette medizinische, pädagogische und sprachliche Endabnahme aller Dialogverzweigungen steht noch aus.
-- Ein SCORM-Testpaket existiert separat, ist jedoch **nicht** Bestandteil dieses Repository-Imports und keine Unterrichtsfreigabe.
-- Keine sensiblen Schülerdaten und keine schulinternen Lehrkraftdokumente in das öffentliche Repository aufnehmen.
+**data/dialogdaten.js** ist die einzige redaktionelle Quelle für Fälle, Methodenwissen, Rückfragen, Antworten und Hilfen. Sie enthält ein Datenobjekt, das auch direkt über das lokale Dateisystem geladen werden kann. **app/app.js** verwaltet die Sitzungen und rendert die Ansichten. **index.html** und **app/style.css** bilden die Oberfläche.
 
-## Nächster Schritt für Codex
+Der Build verwendet nur Python 3. Die folgenden Befehle im Repository-Stamm bauen und prüfen die Unterrichtsausgabe. Playwright und lxml werden nur in der Entwicklungs- und Testumgebung benötigt.
 
-Die vorhandene Fassung zuerst lokal starten, die drei Fälle in allen vier Niveaus prüfen, die Dialogdaten von der HTML-Oberfläche entkoppeln und eine bedienungsarme iPad-Fassung entwickeln. Anschließend alle Fehlentscheidungen, Rückfragen, Hilfen, mögliche Kombinationen und Revisionswege automatisiert und manuell testen. Ein SCORM-1.2-Paket und eine kleine lokale Sichtprüfungsversion sollen aus derselben getesteten Quelle erzeugt werden.
+```sh
+python scripts/build.py
+python -m pip install -r tests/requirements.txt
+python -m playwright install --with-deps chromium webkit
+python tests/acceptance.py
+python scripts/review.py
+```
+
+Die drei Ausgabedateien liegen in **dist/**. Die Sichtprüfung lässt sich erst nach erfolgreichen Tests des identischen HTML-Stands packen. Die CI führt diese Schritte auch für Pull Requests aus.
+
+## Herkunft der Assets
+
+Die drei Illustrationen zeigen künstlich erzeugte fiktive Figuren. DM Sans und DM Serif Text stammen aus Google Fonts und sind lokal als Zeichensatz für die Unterrichtstexte eingebunden. Die OFL-Lizenzen liegen in **assets/** und sind in der Einzeldatei enthalten. Die IMS-Schemas stammen aus dem [IMS-Schemaarchiv](https://www.imsglobal.org/xsd/), das ADL-Schema aus der [SCORM-1.2-Schemasammlung](https://github.com/cybercussion/SCOBot/blob/e7ddc823a39943ad48dfdfebcedb31d985409a1f/schemas/scorm12_schemas/adlcp_rootv1p2.xsd).
