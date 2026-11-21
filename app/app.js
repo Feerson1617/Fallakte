@@ -34,6 +34,7 @@ function show(id) {
   screen = id;
   document.documentElement.classList.toggle('consulting',id==='room');
   $('room-identity').hidden=id!=='room';
+  $('open-recovery').hidden=id!=='home';
   $('home-label').textContent=id==='room'?'Übersicht':'Fallakten';
   $('home-nav').setAttribute('aria-label','Fallübersicht');
   for (const section of ['home','recovery','room','resources']) $(section).hidden = section !== id;
@@ -54,22 +55,22 @@ function home() {
     b.setAttribute('aria-pressed',key === level);
     levels.append(b);
   }
-  const extrasAvailable = sessions.get(sessionKey('Laura',level))?.mode==='finished';
-  $('case-order').textContent=extrasAvailable ? 'Weitere Fälle sind freigeschaltet.' : 'Beginne mit Laura. Danach kannst du Celina oder Tom wählen.';
-  if (!extrasAvailable && Object.keys(cases).some(name=>name!=='Laura' && sessions.has(sessionKey(name,level))))
-    $('case-order').textContent='Begonnene Fälle kannst du wieder öffnen.';
+  const primary = $('primary-case');
+  primary.replaceChildren();
   const list = $('case-list');
   list.replaceChildren();
   for (const [person,[role,summary]] of Object.entries(cases)) {
+    const mainCase = person==='Laura';
     const card = el('article','case-card '+person.toLowerCase());
     const body = el('div','case-info');
     const resume = sessions.has(sessionKey(person,level));
-    const start = button(person+(resume?' öffnen':' starten'), () => openCase(person,level),person==='Laura'?'primary':'outline','next');
-    start.disabled=person!=='Laura' && !extrasAvailable && !resume;
+    const start = button(person+(resume?' öffnen':' starten'), () => openCase(person,level),mainCase?'primary':'outline','next');
     start.dataset.person=person;
-    body.append(el('span','role',role),el('h3','',person),el('p','',summary),start);
+    body.append(el('span','role',role));
+    if (mainCase) body.append(el('h2','',person),el('p','',summary),start);
+    else body.append(start,el('p','',summary));
     card.append(el('div','cover'),body);
-    list.append(card);
+    (mainCase ? primary : list).append(card);
   }
 }
 function openCase(person,tier,startIndex) {

@@ -93,8 +93,8 @@ def help_path(browser, level, size, photos=False):
     ui('#resources .return').click()
     assert history.text_content() == after_reply
     ui('#home-nav').click()
-    expect(ui('[data-person=Tom]')).to_be_disabled()
-    expect(ui('[data-person=Celina]')).to_be_disabled()
+    expect(ui('[data-person=Tom]')).to_be_enabled()
+    expect(ui('[data-person=Celina]')).to_be_enabled()
     ui('[data-person=Laura]').click()
     assert history.text_content() == after_reply
     expect(panel.locator('.hint')).to_have_count(5)
@@ -193,8 +193,8 @@ def carried_advice(browser, level, photos):
     def start():
         page.goto(LOCAL.as_uri())
         ui('#level-'+level).click()
-        expect(ui('[data-person=Celina]')).to_be_disabled()
-        expect(ui('[data-person=Tom]')).to_be_disabled()
+        expect(ui('[data-person=Celina]')).to_be_enabled()
+        expect(ui('[data-person=Tom]')).to_be_enabled()
         ui('[data-person=Laura]').click()
     def send(method):
         ui('#method-'+method).click()
@@ -243,7 +243,7 @@ def carried_advice(browser, level, photos):
     expect(ui('[data-person=Celina]')).to_be_enabled()
     expect(ui('[data-person=Tom]')).to_be_enabled()
     ui('#level-AHR').click()
-    expect(ui('[data-person=Tom]')).to_be_disabled()
+    expect(ui('[data-person=Tom]')).to_be_enabled()
 
     # Withdrawing leaves no advice to carry, even after the two new goals are introduced.
     start()

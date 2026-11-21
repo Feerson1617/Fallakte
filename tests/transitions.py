@@ -65,7 +65,7 @@ def mixed_paths(browser,local):
                     expect(ui('#draft-preview p')).to_have_text(draft)
                     # A different level starts separately. This draft is still here on return.
                     ui('#home-nav').click()
-                    expect(ui('[data-person=Tom]')).to_be_disabled()
+                    expect(ui('[data-person=Tom]')).to_be_enabled()
                     other=LEVELS[(LEVELS.index(tier)+1)%len(LEVELS)]
                     ui('#level-'+other).click()
                     ui('[data-person=Laura]').click()

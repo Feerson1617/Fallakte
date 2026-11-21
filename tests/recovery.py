@@ -68,7 +68,7 @@ def exercise(browser,engine,size,host,photos):
         expect(view.locator('#open-recovery')).to_be_visible()
 
     # Changing the person after the level replaces the section choices. Visiting cards
-    # or cancelling the picker must not start a case or unlock the other home cards.
+    # or cancelling the picker must leave the direct case entrances available.
     view.locator('#open-recovery').tap()
     picker=view.locator('#recovery')
     expect(picker.locator('fieldset').last).to_be_hidden()
@@ -78,7 +78,7 @@ def exercise(browser,engine,size,host,photos):
     view.locator('#resources .return').tap()
     expect(picker.locator('fieldset').last.get_by_role('button')).to_have_count(3)
     view.locator('#leave-recovery').tap()
-    expect(view.locator('[data-person=Tom]')).to_be_disabled()
+    expect(view.locator('[data-person=Tom]')).to_be_enabled()
 
     records=[]
     chains=[]
@@ -86,7 +86,7 @@ def exercise(browser,engine,size,host,photos):
         for tier,label in DATA['meta']['levels'].items():
             for index,stage in enumerate(stages):
                 reload_app()
-                expect(view.locator('[data-person=Tom]')).to_be_disabled()
+                expect(view.locator('[data-person=Tom]')).to_be_enabled()
                 if person=='Laura' and index in (2,4):
                     view.locator('#level-'+tier).tap()
                     view.evaluate(WORK_TO,index+1)

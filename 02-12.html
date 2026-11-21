@@ -19,16 +19,25 @@
       <button id="home-nav"><i data-icon="folder"></i><span id="home-label">Fallakten</span></button>
       <button id="cards-nav"><i data-icon="book"></i>Infokarten</button>
     </nav>
-    <span class="subject">Biologie <b>·</b> Klasse 8</span>
+    <button id="open-recovery">Nach Neustart weitermachen</button>
   </div>
 </header>
 <main>
-  <section id="home" class="shell">
-    <div class="intro"><span class="eyebrow"><i data-icon="chat"></i> Verhütungsberatung</span><h1>Dein Beratungsraum<span>.</span></h1><p>Lies die Nachrichten. Vergleiche die Möglichkeiten. Welchen Rat gibst du?</p><button class="outline" id="open-recovery">Nach Neustart weitermachen</button></div>
-    <div class="level-box"><div class="level-caption"><span class="square-icon"><i data-icon="layers"></i></span><div><h2>Wähle dein Niveau</h2><p>Markiere auf deinem Laufzettel immer den Abschnitt, den du beginnst.</p></div></div><div id="levels" aria-label="Niveau" role="group"></div></div>
-    <div class="section-heading"><h2>Fallübersicht</h2><span id="case-order"></span></div>
-    <div class="cases" id="case-list"></div>
-    <p class="material"><i data-icon="pencil"></i> Lege deinen Laufzettel und die Infokarten bereit.</p>
+  <section id="home" class="shell" aria-label="Fallübersicht">
+    <div class="level-box">
+      <h1 id="level-title">Wähle dein Niveau</h1>
+      <div id="levels" aria-labelledby="level-title" role="group"></div>
+    </div>
+    <div class="main-case">
+      <div id="primary-case"></div>
+      <section class="assignment" aria-labelledby="assignment-title">
+        <h2 id="assignment-title">Dein Arbeitsauftrag</h2>
+        <p>Lies Lauras Nachrichten. Nutze deine Infokarten. Prüfe deinen Rat. Die Hilfe unterstützt dich.</p>
+        <p>Markiere auf deinem Laufzettel immer den Abschnitt, den du beginnst.</p>
+      </section>
+    </div>
+    <p id="case-order">Beginne mit Laura. Celina und Tom sind Zusatzfälle.</p>
+    <div id="case-list"></div>
   </section>
   <section id="recovery" class="shell secondary" aria-labelledby="recovery-title" hidden>
     <h1 id="recovery-title" tabindex="-1">Nach Neustart weitermachen</h1>
@@ -52,7 +61,6 @@
   </section>
   <section class="shell secondary" id="resources" hidden><span class="eyebrow"><i data-icon="book"></i> Nachschlagen</span><div class="card-nav"><h1 tabindex="-1">Infokarten</h1><button class="primary return">Zurück</button></div><p>Nutzt zuerst eure eigenen Infokarten. Hier könnt ihr nachlesen. Beim Schwangerschaftsschutz vergleichen alle vier Karten ein Jahr Anwendung im Alltag.</p><div id="method-cards"></div></section>
 </main>
-<footer><span class="footer-brand"><i data-icon="folder"></i> Fallakte</span><span>Fiktive Beratungsfälle für den Biologieunterricht</span></footer>
 <script src="data/dialogdaten.js"></script>
 <script src="data/lernhilfen.js"></script>
 <script src="app/ui.js"></script>

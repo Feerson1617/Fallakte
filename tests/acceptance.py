@@ -12,7 +12,6 @@ from zipfile import ZipFile
 
 from playwright.sync_api import sync_playwright, expect
 from lxml import etree
-from paths import complete_laura
 from feedback import run_scenarios
 from transitions import mixed_paths
 from disclosure import first_message_only, check_navigation
@@ -44,8 +43,6 @@ def test_matrix(browser, engine):
         for person in DATA['cases']:
             for code in ('K', 'P', 'Cu', 'H', 'K+P', 'K+Cu', 'K+H'):
                 page.goto(LOCAL.as_uri())
-                if person!='Laura':
-                    complete_laura(page,level)
                 records.append(page.evaluate(MATRIX, dict(person=person, tier=level, strategy=code, data=DATA, testScaffold=True)))
     assert not errors, errors
     page.close()

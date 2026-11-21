@@ -1,14 +1,10 @@
 """Check the actual deliveries against the frozen build and navigate both in real browsers."""
 import base64
 from contextlib import contextmanager
-import hashlib
-import io
 import json
 import os
 import re
 from pathlib import Path
-import subprocess
-import sys
 from tempfile import TemporaryDirectory
 from threading import Thread
 from functools import partial
@@ -19,12 +15,13 @@ from lxml import etree, html
 from playwright.sync_api import expect, sync_playwright
 
 from acceptance import QuietHandler
+from bestandsschutz import FACHSTAND, TAGESSTAND, build_references, digest
+from falluebersicht import compare_overviews
 from paths import complete_laura
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / 'dist'
 QA = ROOT / 'build/tagesauswahl'
-REFERENCE = 'ca77bf793ef1d2577d2f474895de15c503eb6df2'
 TITLES = ['Mittwoch, 02.12.2026', 'Dienstag, 08.12.2026']
 HOST = """<!doctype html><html lang="de"><meta name="viewport" content="width=device-width,initial-scale=1">
 <style>body{margin:0}iframe{display:block;border:0;width:100vw;height:100vh}</style>
@@ -32,25 +29,7 @@ HOST = """<!doctype html><html lang="de"><meta name="viewport" content="width=de
 <iframe name="sco" src="index.html"></iframe></html>"""
 
 
-def digest(data):
-    return hashlib.sha256(data).hexdigest()
-
-
-def reference_build(folder):
-    inputs = ('app', 'assets', 'data', 'index.html', 'scorm', 'scripts/build.py')
-    archive = subprocess.check_output(['git', 'archive', '--format=zip', REFERENCE, *inputs], cwd=ROOT)
-    with ZipFile(io.BytesIO(archive)) as files:
-        files.extractall(folder)
-        for name in files.namelist():
-            if name.endswith('/') or name == 'scripts/build.py':
-                continue
-            current = ROOT / ('02-12.html' if name == 'index.html' else name)
-            assert current.read_bytes() == files.read(name), name
-    subprocess.run([sys.executable, 'scripts/build.py'], cwd=folder, check=True)
-    return (folder / 'dist/Fallakte.html').read_bytes()
-
-
-def check_release(version, frozen, site):
+def check_release(version, updated, frozen, previous, site):
     folder = DIST / f'Version-{version}'
     standalone = (folder / 'Fallakte.html').read_bytes()
     with ZipFile(folder / 'Fallakte-SCORM12.zip') as package:
@@ -71,7 +50,16 @@ def check_release(version, frozen, site):
     blobs = {node.get('id'):base64.b64decode(node.text, validate=True)
              for node in doc.xpath('//script[@type="application/octet-stream"]')}
     assert list(blobs) == (['modul-02'] if version == 'A' else ['modul-02', 'modul-08'])
-    assert blobs['modul-02'] == frozen
+    assert blobs['modul-02'] == updated
+    # The entire common application, including the second day in B, must still
+    # match c1e5ce6 after substituting only the first day's approved document.
+    payload = base64.b64encode(updated)
+    assert standalone.count(payload) == 1
+    assert standalone.replace(payload,base64.b64encode(frozen)) == (previous/'Fallakte.html').read_bytes()
+    with ZipFile(previous/'Fallakte-SCORM12.zip') as original:
+        for name in original.namelist():
+            if name != 'index.html':
+                assert (site/name).read_bytes() == original.read(name), name
     if version == 'B':
         assert blobs['modul-08'] == (ROOT / 'module/08-12/index.html').read_bytes()
     else:
@@ -137,7 +125,8 @@ def exercise(browser, engine, version, kind, size, base, photos):
         expect(cards.last).to_be_enabled()
     prefix = f'{engine}-{version}-{kind}-{size[0]}'
     shell.evaluate('document.fonts.ready')
-    screenshot(page, 'Start-'+prefix, photos)
+    if kind == 'HTML' and size[0] == 820:
+        screenshot(page, 'Start-'+prefix, photos)
     back = shell.locator('#zurueck')
     if scorm:
         assert page.evaluate('calls') == [['LMSInitialize','']]
@@ -153,7 +142,8 @@ def exercise(browser, engine, version, kind, size, base, photos):
     if version == 'B':
         open_second()
         expect(shell.locator('iframe')).to_have_count(1)
-        screenshot(page, 'Einstieg-08-'+prefix, photos)
+        if kind == 'SCORM' and size[0] == 1180:
+            screenshot(page, 'Einstieg-08-'+prefix, photos)
         back.tap()
         expect(cards.last).to_be_focused()
 
@@ -197,6 +187,13 @@ def exercise(browser, engine, version, kind, size, base, photos):
     launched = shell.locator('iframe[title="Mittwoch, 02.12.2026"]')
     expect(launched.content_frame.locator('#open-recovery')).to_be_visible()
     frame = launched.element_handle().content_frame()
+    # A fresh launch must offer both additional cases even if Laura was interrupted.
+    for person, total in [('Celina',5),('Tom',3)]:
+        frame.locator('[data-person='+person+']').tap()
+        expect(frame.locator('#step')).to_have_text(f'{person} 1 von {total}')
+        if version=='A' and engine=='webkit' and size[0]==1180 and scorm:
+            screenshot(page,'Direktstart-'+person,photos)
+        frame.locator('#home-nav').tap()
     frame.locator('#open-recovery').tap()
     expect(shell.locator('#zurueck')).to_be_hidden()
     frame.locator('#recovery').get_by_role('button', name='ESA', exact=True).tap()
@@ -217,7 +214,7 @@ def exercise(browser, engine, version, kind, size, base, photos):
     assert not errors and not blocked, (errors, blocked)
     context.close()
     return dict(browser=engine, browserversion=browser.version, version=version, format=kind,
-                viewport=size, vollstaendige_korrekturwege=results, wiederaufnahme='Laura 3, ESA',
+                viewport=size, zusatzfaelle_nach_neustart=['Celina','Tom'], vollstaendige_korrekturwege=results, wiederaufnahme='Laura 3, ESA',
                 hilfen_vor_und_nach_tageswechsel=5, scorm_sitzung=calls, fehler=errors, externe_zugriffe=blocked)
 
 
@@ -226,9 +223,14 @@ def main():
     results, photos, bundles = [], {}, {}
     with TemporaryDirectory() as directory:
         root = Path(directory)
-        frozen = reference_build(root / 'original')
+        frozen, updated, previous = build_references(root)
+        comparisons = []
+        # Serve yesterday's actual A build in the same LMS frame as today's.
+        old = previous/'Version-A'
+        (old/'index.html').write_bytes((old/'Fallakte.html').read_bytes())
+        (old/'host.html').write_text(HOST)
         for version in 'AB':
-            bundles[version] = check_release(version, frozen, root / version)
+            bundles[version] = check_release(version, updated, frozen, previous/f'Version-{version}', root/version)
         # Both launches differ only in the allowed card and its optional document.
         common = (root/'B/index.html').read_bytes().replace(
             b'aria-labelledby="datum-08" data-entry="modul-08"', b'aria-labelledby="datum-08" disabled')
@@ -238,13 +240,16 @@ def main():
             for engine in ('chromium','webkit'):
                 exe = os.environ.get(engine.upper()+'_EXECUTABLE')
                 browser = getattr(playwright,engine).launch(executable_path=exe)
+                comparisons.extend(compare_overviews(browser,engine,address,
+                                   lambda page,name: screenshot(page,name,photos)))
                 for version in 'AB':
                     for kind in ('HTML','SCORM'):
                         for size in ((820,1180),(1180,820)):
                             results.append(exercise(browser,engine,version,kind,size,address+'/'+version,photos))
                             print(engine,version,kind,size,'bestanden',flush=True)
                 browser.close()
-    report = dict(referenz=REFERENCE, modul_02_sha256=digest(frozen), pakete=bundles, durchlaeufe=results, bilder=photos)
+    report = dict(referenz=FACHSTAND, tagesreferenz=TAGESSTAND, original_sha256=digest(frozen),
+                  modul_02_sha256=digest(updated), uebersichten=comparisons, pakete=bundles, durchlaeufe=results, bilder=photos)
     (QA/'Tagesauswahl.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
 
 

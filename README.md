@@ -1,6 +1,6 @@
 # Fallakte. Zwei Unterrichtstage
 
-Die Anwendung startet mit „Wähle deinen Unterrichtstag.“ Beide Datumsfelder zeigen dieselbe 19-jährige Laura. Am 02.12. öffnet sich ihre bisherige Fallübersicht. Am 08.12. ist ein eigener Einstieg für das noch in Prüfung befindliche Modul vorbereitet.
+Die Anwendung startet mit „Wähle deinen Unterrichtstag.“ Beide Datumsfelder zeigen dieselbe 19-jährige Laura. Am 02.12. öffnet sich die kompakte Fallübersicht. Am 08.12. ist ein eigener Einstieg für das noch in Prüfung befindliche Modul vorbereitet.
 
 | Auslieferung in GitHub Actions | Verwendung |
 | --- | --- |
@@ -14,7 +14,7 @@ Im gewählten Versionsordner **Fallakte.html** direkt im Browser öffnen oder **
 
 Im Gespräch führt **Übersicht** zurück zur Fallübersicht. Dort ist **Zur Tagesauswahl** erreichbar. Der Tageswechsel blendet die offene Modulinstanz aus. Beim erneuten Öffnen stehen Niveau, Fallverlauf und bereits geöffnete Hilfen weiter zur Verfügung. Ein Neuladen beginnt eine neue Sitzung.
 
-Die Quelldatei **index.html** ist die Tagesauswahl und öffnet in der Entwicklung die A-Fassung. **02-12.html** ist das unveränderte ursprüngliche Einstiegsdokument des ersten Moduls. Es bezieht dieselben Dateien aus **app/**, **data/** und **assets/** wie am Stand `ca77bf793ef1d2577d2f474895de15c503eb6df2`. Der Build bettet das vollständige, einzeln ausführbare Dokument ein. Die Prüfungen bauen den genannten Commit aus einem unabhängigen Git-Archiv und vergleichen die eingebetteten Bytes in beiden Auslieferungsformaten.
+Die Quelldatei **index.html** ist die Tagesauswahl und öffnet in der Entwicklung die A-Fassung. **02-12.html** enthält die Fallübersicht des ersten Moduls. Der unabhängige Vergleich mit `ca77bf7` schützt Falldaten, Hilfe, Entscheidung, Rückmeldung, Wiedereinstieg und Abschluss. Nur die drei geprüften UI-Eingaben für Übersicht, Kopfzeile und Fallzugang werden beim Referenzbau ausgetauscht. Beide Auslieferungen müssen genau das daraus entstandene Dokument einbetten. Der Vergleich mit `c1e5ce6` schützt die Tagesauswahl und den vorbereiteten zweiten Tag in den gebauten Paketen.
 
 Der eigenständige Einstieg **module/08-12/index.html** wird ausschließlich beim Bau von Version B gelesen. Dieses Verzeichnis nimmt die geprüfte zweite Konzeption auf. Die Schnittstelle zum Tagesmenü ist ein eigenständig offline lauffähiges HTML-Dokument, in das spätere Modulskripte und Medien beim Modulbau eingebettet werden können. Jedes Modul hat ein eigenes Fenster mit eigenem DOM und eigenem Arbeitsspeicher. Das Menü verantwortet die gemeinsame SCORM-Sitzung.
 
@@ -34,17 +34,19 @@ python tests/tagesauswahl.py
 python scripts/tagesbericht.py
 ```
 
-Unter **dist/Version-A/** und **dist/Version-B/** liegen die jeweiligen HTML- und SCORM-Dateien, unter **dist/** der gemeinsame Bericht und das Sichtprüfungspaket. Mit `python scripts/build.py --version A` lässt sich die erste Auslieferung auch eigenständig bauen. Die Prüfungen benötigen die Git-Historie mit den beiden Referenzständen `940138e` und `ca77bf7`.
+Unter **dist/Version-A/** und **dist/Version-B/** liegen die jeweiligen HTML- und SCORM-Dateien, unter **dist/** der gemeinsame Bericht und das Sichtprüfungspaket. Mit `python scripts/build.py --version A` lässt sich die erste Auslieferung auch eigenständig bauen. Die Prüfungen benötigen die Git-Historie mit den Referenzständen `940138e`, `ca77bf7` und `c1e5ce6`.
 
 ## Unterrichtstag am 02.12.
 
-Alle Teams beraten zuerst die 19-jährige Laura in fünf gemeinsamen Abschnitten. Sie greifen ihren notierten ersten Einzelrat auf und prüfen ihn bei drei neuen Gesprächsanlässen. Ab dem zweiten Schutzziel können sie ein Kondom mit einer weiteren Methode kombinieren. Beim letzten Rat nennen Förder- und ESA-Teams mündlich einen Grund und einen Nachteil. MSA und AHR wägen zwei Strategien ab. Auf allen Niveaus steht die Aufforderung zur eigenen Papierkarte direkt bei der Entscheidung. Die digitalen Karten und fünf freiwilligen Hilfen unterstützen bei Bedarf. Ohne Auswahl passen Kartenstelle und Beispielmethode zusammen. Bei einem Methodenvergleich erklärt das Beispiel, wie die Kartenangabe den Rat begründet. Jede Person arbeitet auf ihrem eigenen iPad im eigenen Niveau. Einen vorbereiteten Entwurf versendet das Team selbst. Nach Laura stehen im selben Niveau Celina und Tom zur Wahl.
+Alle Teams beraten zuerst die 19-jährige Laura in fünf gemeinsamen Abschnitten. Sie greifen ihren notierten ersten Einzelrat auf und prüfen ihn bei drei neuen Gesprächsanlässen. Ab dem zweiten Schutzziel können sie ein Kondom mit einer weiteren Methode kombinieren. Beim letzten Rat nennen Förder- und ESA-Teams mündlich einen Grund und einen Nachteil. MSA und AHR wägen zwei Strategien ab. Auf allen Niveaus steht die Aufforderung zur eigenen Papierkarte direkt bei der Entscheidung. Die digitalen Karten und fünf freiwilligen Hilfen unterstützen bei Bedarf. Ohne Auswahl passen Kartenstelle und Beispielmethode zusammen. Bei einem Methodenvergleich erklärt das Beispiel, wie die Kartenangabe den Rat begründet. Jede Person arbeitet auf ihrem eigenen iPad im eigenen Niveau. Einen vorbereiteten Entwurf versendet das Team selbst. Celina und Tom sind freiwillige Zusatzfälle für die Zeit nach Laura. Beide sind auf jedem Niveau direkt erreichbar, auch nach einem Neustart.
 
 Bei einer Unterbrechung kann die Seite in jedem Gesprächsschritt geöffnet bleiben. Infokarten und Fallübersicht erlauben die Rückkehr zum Gespräch desselben Niveaus. Der Verlauf liegt nur im Arbeitsspeicher der geöffneten Seite. Nach dem Neuladen führt **Nach Neustart weitermachen** direkt zur Auswahl von Fall, Niveau und markierter Abschnittsnummer. Wer zum Beispiel **Laura 3 – Lauras Entscheidung** wählt, liest eine kurze Zusammenfassung und gibt einen eigenen Rat. In der Kopfzeile steht **Laura 3 von 5**. Auch Celina und Tom sind über diesen Zugang direkt erreichbar. Der SCORM-Adapter öffnet und schließt die technische Sitzung. Das LMS kann unabhängig davon Zugriffe protokollieren.
 
 [Technische Abnahme und offene Punkte](docs/Abnahme.md) · [Fachquellen](docs/Fachpruefung.md)
 
 ## Vorbereitung für die zweite Fallakte am 08.12.
+
+Für beide Unterrichtstage gilt „So wenig Bedienaufwand wie möglich, so viel individuelle Lernunterstützung wie nötig.“ Jedes sichtbare Element dient der Orientierung, der Arbeit am Fall, der Hilfe oder der Rückmeldung. Arbeitsaufträge bleiben kurz. Niveauwahl, gut lesbare Texte, ausreichend große Touchflächen, gestufte Hilfe und der Wiedereinstieg nach einem Neustart haben Vorrang. Freiwillige Fälle bleiben direkt erreichbar. Platz für Fallarbeit entsteht durch Verzicht auf dekorative Arbeitsbereichstitel, Fußzeilen, wiederholte Erklärungen, große Bilder, Animationen und zusätzliche Bestätigungsschritte. Die fachliche Ausarbeitung beginnt mit der Freigabe der Unterrichtskonzeption.
 
 Eine eigene Einstiegsseite kann **app/ui.js** und **app/lernhilfen.js** direkt laden. Der Unterrichtsfall vom 02.12. verwendet dieselben Dateien. `levelText(wert, niveau)` liest gemeinsame oder stufenspezifische Texte und wird auch für situative Rückmeldungen verwendet. `renderHelp` erhält die geordneten Hilfetexte, die bereits geöffnete Stufe, den Rückruf zum Stufenwechsel und eine Quelle mit Beschriftung und Öffnungsaktion sowie optional die Handlung der letzten Stufe. Den Stand hält die aufrufende Fallakte je Gespräch und Niveau im Arbeitsspeicher. Die beiden gemeinsamen Dateien lassen sich unabhängig von den Fall- und Methodendaten laden. Das prüft ein eigener Browsertest.
 
