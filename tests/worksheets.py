@@ -6,7 +6,7 @@ from pathlib import Path
 from pypdf import PdfReader
 
 OUT = Path(__file__).resolve().parents[1] / 'dist'
-LEVELS = {'Foerder': ('Förder','Zeige, wo'), 'ESA': ('ESA','Unterstreiche'),
+LEVELS = {'Foerder': ('Förder','Jetzt passt mein Rat besser'), 'ESA': ('ESA','Jetzt kann ich besser erklären'),
           'MSA': ('MSA','Kriterium'), 'AHR': ('AHR','Annahme')}
 
 

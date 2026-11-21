@@ -61,6 +61,11 @@ function show(id) {
     current.scroll=$('history').scrollTop;
     current.workScroll=$('work').scrollTop;
   }
+  if (screen==='pause') {
+    $('pause-facts').hidden=true;
+    $('pause-facts').querySelector('ul').replaceChildren();
+    $('stop-task').textContent='';
+  }
   screen = id;
   document.documentElement.classList.toggle('consulting',id==='room');
   $('room-identity').hidden=id!=='room';
@@ -135,7 +140,7 @@ function focusInWork(target) {
   revealInWork(target);
 }
 function enterStage(index) {
-  Object.assign(current,{index,mode:'choose',selected:'',additional:'',combined:false,help:0,asked:[],questionsOpen:false,revised:false});
+  Object.assign(current,{index,mode:'choose',selected:'',additional:'',combined:false,tentative:false,help:0,asked:[],questionsOpen:false,revised:false});
   current.log.push({type:'step',title:stage().title});
   current.log.push({type:'person',lines:stage().message[current.level]});
   if (stage().type==='article') current.log.push({type:'article'});
@@ -204,15 +209,22 @@ function focusTask() {
   $('work').scrollTop=0;
   $('task-title')?.focus({preventScroll:true});
 }
+function proposalText() {
+  const s=stage();
+  const proposal=s.options[code()];
+  return current.tentative ? proposal+' '+s.tentative : proposal;
+}
 function sendChoice() {
   const s=stage();
   const selected=code();
   if (!selected || current.mode!=='choose') return;
   changeHistory(()=>{
-    say('team',s.options[selected]);
+    say('team',proposalText());
     say('person',forLevel(s.replies[selected]));
   });
   current.mode='reply';
+  current.replyQuestion=false;
+  current.questionsOpen=false;
   current.help=0;
   drawWork();
   focusTask();
@@ -221,7 +233,10 @@ function decideProposal(keep) {
   const s=stage();
   const choice=code();
   const declined=s.declined?.[choice.split('+').pop()];
-  if (current.index===stages().length-1) current.finalRefusal=keep ? declined : null;
+  if (s.tentative) {
+    current.finalRefusal=keep ? declined : null;
+    current.withdrawn=!keep;
+  }
   const clarifyTom=s.id==='T0' && (!keep || choice!=='K');
   changeHistory(()=>{
     say('team',keep ? 'Wir bleiben bei unserem Vorschlag.' : 'Wir ziehen unseren Vorschlag zurück.');
@@ -236,7 +251,7 @@ function decideProposal(keep) {
   } else nextStage();
 }
 function reviseProposal() {
-  Object.assign(current,{mode:'choose',revised:true,selected:'',additional:'',combined:false,help:0});
+  Object.assign(current,{mode:'choose',revised:true,selected:'',additional:'',combined:false,tentative:false,help:0});
   drawWork();
   focusTask();
 }
@@ -252,6 +267,7 @@ function ask(index) {
   const [question,answer]=stage().questions[index];
   changeHistory(()=>{say('team',question);say('person',answer);});
   current.asked.push(index);
+  current.replyQuestion=current.mode==='reply';
   current.questionsOpen=false;
   drawWork();
   // If a partner is rereading, the answer is also available beside the controls.
@@ -268,7 +284,7 @@ function addTools(area) {
     help.id='help';
     actions.append(help);
   }
-  if (current.mode==='choose' && stage().questions.length>current.asked.length) {
+  if (stage().questions.length>current.asked.length) {
     const q=button(current.questionsOpen?'Fragen schließen':'Rückfrage stellen',()=>{
       current.questionsOpen=!current.questionsOpen;
       drawWork();
@@ -279,21 +295,25 @@ function addTools(area) {
     actions.append(q);
   }
   area.append(actions);
-  if (current.questionsOpen && current.mode==='choose') {
+  if (current.questionsOpen) {
     stage().questions.forEach(([question],i)=>{
       if (!current.asked.includes(i)) area.append(button(question,()=>ask(i),'question'));
     });
   }
   if (current.help) {
     const hints=stage().hints[code() || 'DONE'];
-    const pair=hints ? forLevel(hints) : stage().helpBefore;
+    const method=code().split('+').pop() || (stage().id==='L2' ? 'P' : '');
+    let pair;
+    if (hints && stage().hintQuestions) {
+      const question=stage().hintQuestions[current.level] || hints.find;
+      pair=['Karte „'+FALLAKTE.methods[method][0]+'“, Abschnitt „'+hints.section+'“. '+question,hints.fact];
+    } else pair=forLevel(hints || stage().helpBefore);
     for (let i=0;i<current.help;i++) {
       const hint=el('div','hint');
       hint.append(el('small','','Hilfe '+(i+1)),el('p','',pair[i]));
       if (i===current.help-1) {hint.id='hint-current';hint.tabIndex=-1;}
       area.append(hint);
     }
-    const method=code().split('+').pop() || (stage().id==='L2' ? 'P' : '');
     if (method) {
       const card=FALLAKTE.methods[method][0];
       area.append(button('Karte „'+card+'“ lesen',()=>{
@@ -317,10 +337,14 @@ function addTools(area) {
         $('history').focus({preventScroll:true});
       },'text-button','chat'));
     }
-    const nextAction=current.mode==='reply' ? 'Besprecht euren Grund. Entscheidet euch dann.' :
-      stage().options.DONE ? (stage().id==='T2' ? 'Schreibe jetzt deine Idee bei Tom auf.' : 'Besprecht die Frage zu zweit.') :
-      current.selected ? 'Passt dein Vorschlag? Wähle neu oder sende ihn.' : 'Wähle jetzt eine Methode.';
-    area.append(el('p','pick',nextAction));
+  }
+}
+function showQuestionAnswer(area) {
+  if (current.asked.length) {
+    const index=current.asked[current.asked.length-1];
+    const answer=el('div','preview');
+    answer.append(el('small','',current.person+' auf eure Rückfrage'),el('p','',stage().questions[index][1]));
+    area.append(answer);
   }
 }
 function taskTitle(area,title) {
@@ -335,6 +359,8 @@ function drawWork() {
   $('step').textContent='Schritt '+(current.index+1)+' von '+stages().length;
   if (current.mode==='finished') {
     taskTitle(area,current.finalRefusal?'Die Empfehlung bleibt offen':'Gespräch abgeschlossen');
+    if (current.withdrawn) area.append(el('p','response','Ihr habt den letzten Vorschlag zurückgezogen. Was bleibt zu klären?'));
+    else if (current.tentative && !current.finalRefusal) area.append(el('p','response','Euer Rat ist vorläufig. '+current.person+' entscheidet nach der Beratung selbst.'));
     if (current.finalRefusal) {
       area.append(el('p','unresolved',current.person+' hat eurem letzten Vorschlag nicht zugestimmt.'),
                   el('p','response',current.finalRefusal));
@@ -367,6 +393,7 @@ function drawWork() {
   if (current.mode==='reply') {
     taskTitle(area,current.person+' antwortet');
     area.append(el('p','response',forLevel(s.replies[code()])));
+    if (current.replyQuestion) showQuestionAnswer(area);
     const prompt=current.revised ? 'Bleibt ihr dabei oder zieht ihr den Vorschlag zurück?' : 'Bleibt ihr bei eurem Vorschlag oder ändert ihr ihn?';
     area.append(el('p','',prompt+' Sagt euch kurz, warum.'));
     if (s.id==='L0') area.append(el('p','paper-note','Stimmt in der Klasse über euren ersten Rat ab.'));
@@ -381,12 +408,7 @@ function drawWork() {
   }
   taskTitle(area,s.options.DONE?s.title:'Dein Vorschlag');
   area.append(el('p',s.id==='L0' || s.id==='T2'?'paper-note':'',s.task[current.level]));
-  if (current.asked.length) {
-    const index=current.asked[current.asked.length-1];
-    const answer=el('div','preview');
-    answer.append(el('small','',current.person+' auf eure Rückfrage'),el('p','',s.questions[index][1]));
-    area.append(answer);
-  }
+  showQuestionAnswer(area);
   if (s.options.DONE) {
     area.append(button(s.id==='T2'?'Fall abschließen':s.id==='T1'?'Weiter nach dem Lesen':'Weiter nach dem Gespräch',completeDiscussion,'primary','next'));
     addTools(area);
@@ -432,8 +454,19 @@ function drawWork() {
     area.append(label);
   }
   if (current.selected) {
+    if (s.tentative) {
+      const label=el('label','combine');
+      const check=el('input');
+      check.type='checkbox';check.id='tentative';check.checked=current.tentative;
+      check.onchange=()=>{
+        current.tentative=check.checked;
+        drawWork();$('tentative').focus({preventScroll:true});revealInWork($('draft-preview'));
+      };
+      label.append(check,'Als vorläufigen Rat bis zur Beratung senden');
+      area.append(label);
+    }
     const preview=el('div','preview');
-    preview.append(el('small','','Eure Nachricht'),el('p','',s.options[code()]));
+    preview.append(el('small','','Eure Nachricht'),el('p','',proposalText()));
     const send=button('Nachricht senden',sendChoice,'primary','send');
     preview.id='draft-preview';
     send.id='send'; send.setAttribute('aria-describedby','draft-preview');
@@ -448,13 +481,17 @@ function auxiliary(id) {
   if (id==='pause') {
     const laura=sessions.get(sessionKey('Laura',level));
     const facts=$('pause-facts');
-    facts.open=false;
-    facts.hidden=laura?.mode==='finished';
-    const remaining=facts.hidden ? [] : FALLAKTE.cases.Laura.slice(laura?.index ?? 0);
-    facts.querySelector('ul').replaceChildren(...remaining.map(s=>el('li','',s.pauseFact)));
+    facts.hidden=true;
+    facts.querySelector('ul').replaceChildren();
+    $('stop-task').textContent='';
+    $('class-stop').hidden=!laura || laura.mode==='finished';
     $('review-laura').hidden=!laura;
-    $('pause-conflict').hidden=!laura?.finalRefusal;
-    $('pause-conflict').textContent=laura?.finalRefusal ? 'Laura hat eurem letzten Vorschlag nicht zugestimmt. Sie sagt: „'+laura.finalRefusal+'“' : '';
+    let outcome='';
+    if (laura?.finalRefusal) outcome='Laura hat eurem letzten Vorschlag nicht zugestimmt. Sie sagt: „'+laura.finalRefusal+'“';
+    else if (laura?.withdrawn) outcome='Ihr habt euren letzten Vorschlag zurückgezogen.';
+    else if (laura?.mode==='finished' && laura.tentative) outcome='Euer Rat ist vorläufig. Laura entscheidet nach der Beratung selbst.';
+    $('pause-conflict').hidden=!outcome;
+    $('pause-conflict').textContent=outcome;
   }
   $(id).querySelector('h1').focus({preventScroll:true});
 }
@@ -484,6 +521,16 @@ $('home-nav').onclick=home;
 $('brand').onclick=e=>{e.preventDefault();home();};
 $('cards-nav').onclick=()=>auxiliary('resources');
 $('pause-nav').onclick=()=>auxiliary('pause');
+$('class-stop').onclick=()=>{
+  const laura=sessions.get(sessionKey('Laura',level));
+  if (screen!=='pause' || !laura || laura.mode==='finished') return;
+  const facts=$('pause-facts');
+  facts.querySelector('ul').replaceChildren(...FALLAKTE.cases.Laura.slice(laura.index).map(s=>el('li','',s.pauseFact)));
+  $('stop-task').textContent=FALLAKTE.meta.stopTask[level];
+  facts.hidden=false;
+  $('class-stop').hidden=true;
+  facts.focus();
+};
 $('review-laura').onclick=()=>openCase('Laura',level);
 document.querySelectorAll('.return').forEach(b=>b.onclick=resume);
 home();

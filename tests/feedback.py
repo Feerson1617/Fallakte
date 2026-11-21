@@ -12,10 +12,12 @@ def run_scenarios(browser, local, screenshots=None):
         page.goto(local.as_uri())
         page.locator('[data-person=' + person + ']').click()
 
-    def suggest(method, combine=False):
+    def suggest(method, combine=False, tentative=False):
         page.locator('#method-' + method).click()
         if combine:
             page.locator('#combine').check()
+        if tentative:
+            page.locator('#tentative').check()
         button('Nachricht senden').click()
 
     def keep():
@@ -63,7 +65,7 @@ def run_scenarios(browser, local, screenshots=None):
         keep()
     suggest('P')
     button('Vorschlag ändern').click()
-    suggest('P', combine=True)
+    suggest('P', combine=True, tentative=True)
     keep()
     expect(page.locator('#task-title')).to_have_text('Die Empfehlung bleibt offen')
     expect(page.locator('.unresolved')).to_contain_text('nicht zugestimmt')
@@ -82,12 +84,11 @@ def run_scenarios(browser, local, screenshots=None):
     page.locator('#level-Foerder').click()
     button('Sicherung').click()
     facts = page.locator('#pause-facts')
-    summary = facts.locator('summary')
+    stop = page.locator('#class-stop')
     expect(page.locator('#review-laura')).to_be_hidden()
     expect(facts.locator('ul')).to_be_hidden()
-    summary.click()
-    expect(facts.locator('li')).to_have_count(7)
-    expect(facts).to_contain_text('vor Krankheiten schützen')
+    expect(stop).to_be_hidden()
+    expect(facts.locator('li')).to_have_count(0)
     expect(page.locator('#pause-conflict')).to_be_hidden()
     page.locator('#pause .return').click()
     page.locator('[data-person=Laura]').click()
@@ -106,8 +107,9 @@ def run_scenarios(browser, local, screenshots=None):
     step = page.locator('#step').inner_text()
     button('Sicherung').click()
     expect(facts.locator('ul')).to_be_hidden()
-    summary.focus()
-    summary.press('Enter')
+    expect(facts.locator('li')).to_have_count(0)
+    stop.focus()
+    stop.press('Enter')
     expect(facts.locator('li')).to_have_count(4)
     expect(facts.locator('li').first).to_contain_text('will keine Pille')
     expect(facts).to_contain_text('Andere Mittel mit Hormonen')

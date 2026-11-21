@@ -13,6 +13,7 @@ from zipfile import ZipFile
 from playwright.sync_api import sync_playwright, expect
 from lxml import etree
 from feedback import run_scenarios
+from transitions import mixed_paths
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'dist'
@@ -43,7 +44,7 @@ def test_matrix(browser, engine):
                 records.append(page.evaluate(MATRIX, dict(person=person, tier=level, strategy=code, data=DATA)))
     assert not errors, errors
     page.close()
-    return dict(engine=engine,version=browser.version,paths=records,errors=errors,scenarios=run_scenarios(browser,LOCAL,QA if engine=='chromium' else None))
+    return dict(engine=engine,version=browser.version,paths=records,errors=errors,transitions=mixed_paths(browser,LOCAL),scenarios=run_scenarios(browser,LOCAL,QA if engine=='chromium' else None))
 
 
 def measure(page):
@@ -231,9 +232,21 @@ def test_scorm(browser):
             page=browser.new_page()
             page.goto(f'http://127.0.0.1:{server.server_port}/host.html')
             frame=page.frame_locator('iframe')
+            frame.locator('#pause-nav').click()
+            expect(frame.locator('#class-stop')).to_be_hidden()
+            expect(frame.locator('#pause-facts li')).to_have_count(0)
+            frame.locator('#pause .return').click()
             frame.locator('[data-person=Laura]').click()
             frame.locator('#method-Cu').click()
             frame.locator('#send').click()
+            history = frame.locator('#history').text_content()
+            frame.locator('#pause-nav').click()
+            expect(frame.locator('#pause-facts li')).to_have_count(0)
+            frame.locator('#class-stop').click()
+            expect(frame.locator('#stop-task')).to_be_visible()
+            expect(frame.locator('#pause-facts li')).to_have_count(7)
+            frame.locator('#pause .return').click()
+            assert frame.locator('#history').text_content()==history
             assert page.evaluate('calls')==[['LMSInitialize','']]
             page.evaluate("document.querySelector('iframe').src='about:blank'")
             page.wait_for_function('calls.length===2')

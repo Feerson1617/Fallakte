@@ -1,6 +1,16 @@
 # Fachprüfung der Unterrichtstexte
 
-Stand 20. November 2026. Die Figuren und ihre Wünsche sind fiktiv. Aussagen zu Wirkungen, Anwendungsfehlern und möglichen Beschwerden wurden für Klasse 8 sprachlich gekürzt. Die Karten arbeiten mit qualitativen Vergleichen. Dadurch müssen Lernende keine Raten aus unterschiedlichen Untersuchungen miteinander verrechnen.
+Quellenstand der erneuten Durchsicht am 21. November 2026. Die Figuren und ihre Wünsche sind fiktiv. Aussagen zu Wirkungen, Anwendungsfehlern und möglichen Beschwerden wurden für Klasse 8 sprachlich gekürzt. Die Karten arbeiten mit qualitativen Vergleichen. Dadurch müssen Lernende keine Raten aus unterschiedlichen Untersuchungen miteinander verrechnen.
+
+## Schleswig-Holstein und die achte Klasse an der ETS
+
+Die Fachanforderungen Biologie SH 2026 treten ab 2026/27 aufwachsend in dem Jahrgang in Kraft, in dem das Fach beginnt. Die Fassung 2023 gilt jahrgangsweise auslaufend weiter. An der Eider-Treene-Schule beginnt Biologie laut schulinternem Fachcurriculum 2025/26 in Jahrgang 7. Die achte Klasse im November 2026 hat im Schuljahr 2025/26 mit Biologie begonnen. Für diese Lerngruppe ist deshalb die Fassung 2023 der verbindliche Ausgangspunkt. [Amtliches Fachportal mit Übergangsregel und beiden Fassungen](https://fachportal.lernnetz.de/sh/fachanforderungen/biologie.html) · [ETS-Fachcurriculum 2025/26, S. 1 und 12](https://ets-toenning.de/wp-content/uploads/2025/07/Schulinternes-Fachcurriculum-Biologie-SJ-2025-26.pdf)
+
+In der Fassung 2023, S. 17, heißt Sek. I – Bw2 „Handlungsoptionen formulieren“. Lernende leiten Optionen aus Kriterien sachlich begründet ab und vergleichen die Optionen und ihre Motive. Auf S. 30 werden für die Jahrgänge 7–9 (10) Schwangerschaftskontrolle, partnerschaftlicher Umgang und die Prävention sexuell übertragbarer Krankheiten aufgeführt. Das ETS-Curriculum verortet „Sexualkunde II“ ausdrücklich in Jahrgang 8. Im Unterrichtsprodukt werden die vier bekannten Methoden anhand von Kartenwissen, zwei Schutzzielen und den Wünschen der Person verglichen. Ein begründetes eigenes Urteil auf Papier liefert den individuellen Beitrag zu Bw2. [Fachanforderungen Schleswig-Holstein](https://fachportal.lernnetz.de/sh/fachanforderungen/biologie.html) · [ETS-Fachcurricula](https://ets-toenning.de/fachcurricula/)
+
+Die Fassung 2026, S. 26, nennt Bw2 „Kriteriengeleitet Entscheidungen treffen“. Sachinformationen, Werte und Normen fließen in das Benennen, Diskutieren und Begründen von Handlungsoptionen ein. Dazu passen Zustimmung, Schutzinteressen und das Abwägen zweier Strategien. Diese Übereinstimmung beschreibt die fachliche Anschlussfähigkeit. Die Jahrgangszuordnung für die aktuelle Klasse stammt aus dem ETS-Curriculum 2025/26. [Fachanforderungen Schleswig-Holstein](https://fachportal.lernnetz.de/sh/fachanforderungen/biologie.html)
+
+## Methoden und Fallentscheidungen
 
 | Methode | Geprüfter Kern und Grenze | Grundlage |
 | --- | --- | --- |
@@ -9,7 +19,7 @@ Stand 20. November 2026. Die Figuren und ihre Wünsche sind fiktiv. Aussagen zu 
 | Kupferspirale | Kupfer beeinträchtigt Spermien. Langzeitschutz ohne Hormone und ohne tägliche Anwendung. Einlage, Lagekontrolle und Zustimmung beachten. Blutung und Regelschmerzen können zunehmen. Kein STI-Schutz. | [BIÖG, Kupferspirale](https://www.familienplanung.de/verhuetung/verhuetungsmethoden/kupferspirale/) |
 | Hormonspirale | Ein Gestagen macht den Schleim am Gebärmutterhals für Spermien schwer durchlässig. Sehr zuverlässiger Langzeitschutz. Blutungen können unregelmäßig sein oder später schwächer und weniger schmerzhaft werden. Eine Eignung für Laura bleibt offen. Kein STI-Schutz. | [BIÖG, Hormonspirale](https://www.familienplanung.de/verhuetung/verhuetungsmethoden/die-hormonspirale/) |
 
-Bei starken ungeklärten Regelschmerzen kann das Beratungsteam einen Arztbesuch ansprechen. Die Fallgeschichte ermöglicht weder eine Diagnose noch ein Heilversprechen. Ein Nein zur Pille bleibt verbindlich, auch wenn ein Mittel bei manchen Menschen Beschwerden lindert. Vor einer Spirale braucht es Beratung und die Zustimmung der betreffenden Person.
+Bei starken ungeklärten Regelschmerzen kann das Beratungsteam einen Arztbesuch ansprechen. Die Fallgeschichte ermöglicht weder eine Diagnose noch ein Heilversprechen. Ein Nein zur Pille bleibt verbindlich, auch wenn ein Mittel bei manchen Menschen Beschwerden lindert. Vor einer Spirale braucht es Beratung, medizinische Abklärung und die Zustimmung der betreffenden Person. Bei Laura bleibt die Pille auch als Bestandteil einer Kombination ausdrücklich abgelehnt. Celina lehnt zusätzliche Hormone ab und hat offene Fragen zur Einlage. Der vorläufige Schlussrat benennt eine zu besprechende Möglichkeit. Ob etwa eine Spirale eingesetzt wird, können weder das Beratungsteam noch eine Abstimmung entscheiden. Toms Forschungsbeispiele bleiben Anschauungsmaterial im Zusatzfall. Sie stehen in keinem Methodenauswahlfeld. [Bundesgesundheitsportal zu Regelschmerzen](https://gesund.bund.de/regelschmerzen)
 
 ## Quellenabgleich für Toms Forschungsartikel
 

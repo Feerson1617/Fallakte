@@ -21,6 +21,11 @@ views = reports['bedienung']['runs']
 assert len(views) == 8
 assert {r['engine'] for r in matrices} == {'chromium','webkit'}
 assert all(len(r['paths']) == 84 and len(r['scenarios']) == 6 and not r['errors'] for r in matrices)
+for matrix in matrices:
+    mixed=matrix['transitions']
+    assert len(mixed)==12
+    assert all(len({tuple(r['choices']) for r in mixed if r['level']==tier})==3
+               for tier in ('Foerder','ESA','MSA','AHR'))
 assert reports['scorm']['schema_valid']
 assert {view['engine'] for view in views} == {'chromium','webkit'}
 assert all(not row['errors'] and not row['external_requests'] for row in views)
@@ -36,11 +41,15 @@ for sheet in reports['laufzettel']['pdfs']:
 with ZipFile(OUT/'Fallakte-SCORM12.zip') as scorm:
     assert hashlib.sha256(scorm.read('index.html')).hexdigest() == digest
 
+report = OUT/'Fallakte-Pruefbericht.md'
+chapters = [(ROOT/'docs'/name).read_text().rstrip() for name in ('Abnahme.md','Fachpruefung.md','Unterricht.md')]
+report.write_text('\n\n'.join(chapters)+'\n\nGeprüfte HTML-Fassung (SHA-256) `'+digest+'`.\n', encoding='utf-8')
 package = OUT / 'Fallakte-Sichtpruefung.zip'
 with ZipFile(package, 'w', ZIP_DEFLATED) as z:
     z.write(local, 'Fallakte.html')
-    z.write(ROOT/'docs/Abnahme.md', 'Pruefbericht.md')
+    z.write(report, 'Pruefbericht.md')
     z.write(ROOT/'docs/Fachpruefung.md', 'Fachquellen.md')
+    z.write(ROOT/'docs/Unterricht.md', 'Unterrichtsablauf.md')
     for name in names:
         z.write(QA/(name+'.json'), 'Protokolle/'+name+'.json')
     for shot in ('Falluebersicht', 'iPad-hoch', 'iPad-quer', 'Mobil', 'Laura-Entscheidung', 'Tom-Eigener-Beitrag', 'Frueher-Stopp'):

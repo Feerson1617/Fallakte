@@ -22,6 +22,7 @@
     assert([...document.querySelectorAll('.chat-step')].at(-1).textContent===stage.title,'Wrong step');
     const history=document.querySelector('#history');
     for(const line of stage.message[tier]) assert(history.textContent.includes(line),'Missing case information');
+    if (stage.hintQuestions && !stage.options.DONE) {checkHints(stage.helpBefore[tier]); helps+=2;}
     const index=data.cases[person].indexOf(stage);
     for (const future of data.cases[person].slice(index+1)) assert(![...history.querySelectorAll('.chat-step')].some(x=>x.textContent===future.title),'Premature disclosure');
     for (const [question,answer] of stage.questions) {
@@ -44,7 +45,13 @@
       }
       assert([...document.querySelectorAll('#work .preview p')].at(-1).textContent===stage.options[key],'Preview');
     }
-    checkHints(pair(stage.hints[key]));helps+=2;
+    const hint = stage.hints[key];
+    if (stage.hintQuestions) {
+      const method = key==='DONE' ? 'P' : key.split('+').pop();
+      const question = stage.hintQuestions[tier] || hint.find;
+      checkHints(['Karte „'+data.methods[method][0]+'“, Abschnitt „'+hint.section+'“. '+question,hint.fact]);
+    } else checkHints(pair(hint));
+    helps+=2;
     for (const element of document.querySelectorAll('#work, #work button, #work p, #history .bubble, .article')) {
       assert(element.scrollWidth<=element.clientWidth+2,'Text overflow: '+stage.id+' '+element.className);
     }

@@ -12,13 +12,15 @@ Im erfolgreichen GitHub-Actions-Lauf **Unterrichtspakete** das Artefakt **Fallak
 | **Fallakte.html** | Auf dem Mac per Doppelklick im Browser öffnen. Alle Bilder, Schriften, Dialoge und Infokarten sind eingebettet. |
 | **Fallakte-Sichtpruefung.zip** | Enthält dieselbe HTML-Vorschau, echte Bildschirmfotos, einen Prüfbericht und maschinenlesbare Testprotokolle. |
 
+**Fallakte-Pruefbericht.md** bündelt die Abnahme, Fachquellen, curriculare Zuordnung und Unterrichtsplanung für denselben Programmstand.
+
 Das zweite Artefakt **Fallakte-Laufzettel** enthält vier Schüler-PDFs (Förder, ESA, MSA, AHR). Jede Fassung hat zwei A4-Seiten. Hinweise zur Moderation der Abstimmungen und zur Auswertung stehen separat im Unterrichtsablauf.
 
 Auch im ausgecheckten Projekt lässt sich **index.html** direkt öffnen. Hierbei gehören die benachbarten Ordner zur Vorschau. Das einzelne weiterzugebende Offline-Dokument entsteht im Build.
 
 ## Im Klassenraum
 
-Laura öffnen, die erste Empfehlung auf Papier begründen und gemeinsam abstimmen. Der Verlauf führt in sieben Abschnitten zur zweiten Empfehlung. Chat und Antworten haben eigene Scrollbereiche. Auf schmalen Displays wechselt das Team mit **Chat lesen** und **Antwort geben** zwischen beiden. Frühere Antworten, Änderungen und Rückfragen bleiben im Chat lesbar. **Sicherung** unterbricht jeden Fall sofort. Bei einem frühen Stopp lassen sich dort Lauras Wünsche ab dem aktuellen Schritt nachlesen. Über **Zurück** oder die Fallübersicht lässt sich die Arbeit derselben Stufe fortsetzen.
+Laura öffnen, die erste Empfehlung auf Papier begründen und gemeinsam abstimmen. Der Verlauf führt in sieben Abschnitten zur zweiten Empfehlung. Chat und Antworten haben eigene Scrollbereiche. Auf schmalen Displays wechselt das Team mit **Chat lesen** und **Antwort geben** zwischen beiden. Frühere Antworten, Änderungen und Rückfragen bleiben im Chat lesbar. **Sicherung** unterbricht jeden Fall sofort. Bei einem begonnenen Laura-Fall kann das Team auf Zeichen der Lehrkraft dort den Unterrichtsstopp starten und zwei Vorschläge auf dem Laufzettel vergleichen. Über **Zurück** oder die Fallübersicht lässt sich die Arbeit derselben Stufe fortsetzen.
 
 Die Anwendung hält die Gespräche ausschließlich im Arbeitsspeicher der geöffneten Seite. Neuladen beginnt eine neue Sitzung. Sie verlangt keine Namen oder persönlichen Erfahrungen. Der SCORM-Adapter öffnet und schließt lediglich die technische Sitzung. itslearning kann unabhängig davon Zugriffe protokollieren.
 
@@ -41,7 +43,7 @@ python tests/worksheets.py
 python scripts/review.py
 ```
 
-Die drei technischen Ausgaben liegen in **dist/**, die vier PDFs in **dist/Laufzettel/**. Die Sichtprüfung lässt sich erst nach erfolgreichen Tests des identischen HTML-Stands packen. Der Layoutvergleich verwendet den vorherigen PR-Stand `3071562` aus der Git-Historie. Die CI führt diese Schritte auch für Pull Requests aus.
+Die Unterrichtsdateien liegen in **dist/**, die vier PDFs in **dist/Laufzettel/**. Die Sichtprüfung lässt sich erst nach erfolgreichen Tests des identischen HTML-Stands packen. Der Layoutvergleich verwendet den vorherigen PR-Stand `3071562` aus der Git-Historie. Die CI führt diese Schritte auch für Pull Requests aus.
 
 ## Herkunft der Assets
 
