@@ -52,17 +52,17 @@ body = f"""# Fallakte. Abnahme der gemeinsamen Tagesauswahl
 | Stand | 02.12.2026 | 08.12.2026 |
 | --- | --- | --- |
 | Version A | Freigegebene Fallübersicht und Beratung | Gesperrte Karte mit Schloss. Das zweite Moduldokument fehlt im Paket. |
-| Version B | Freigegebene Fallübersicht und Beratung | Eigener, erreichbarer Einstieg mit neutralem Vorbereitungshinweis. Die fachliche Freigabe steht aus. |
+| Version B | Freigegebene Fallübersicht und Beratung | Vier Nachrichten mit Argumenten-Check, Fachkarten und begründetem Urteil. |
 
 Jede Version enthält eine lokale Einzeldatei und ein SCORM-1.2-ZIP mit derselben Startdatei. Beide Startseiten zeigen das ursprüngliche Laura-Porträt und das daraus abgeleitete Gruppenbild. Die Bilder sind in beiden Versionen bytegleich. Die Gruppe zeigt Laura im Zentrum mit vier Personen in Kopf- und Schulteransicht.
 
 ## Bestandsschutz und Sitzungswechsel
 
-Der Fachstand ist `{report['referenz']}`. Fall- und Hilfedaten, gemeinsame Skripte, Bilder, Schriftdateien, Lizenzen und SCORM-Ressourcen wurden mit dem Git-Archiv verglichen. Die Implementierung für Gespräch, Entscheidung, Rückmeldung, Wiederaufnahme und Abschluss ist bytegleich. Die Schutzprüfung baut das erste Modul mit den genehmigten Anpassungen der Fallübersicht und dem neuen Navigationsadapter nach. Beide Veröffentlichungen enthalten exakt dieses Modul mit dem SHA-256-Wert `{report['modul_02_sha256']}`. Der Vergleich mit `{report['tagesreferenz']}` prüft auch die Inhalte der Tagesauswahl und den vorbereiteten zweiten Tag.
+Der Fachstand ist `{report['referenz']}`. Fall- und Hilfedaten, gemeinsame Skripte, Bilder, Schriftdateien, Lizenzen und SCORM-Ressourcen wurden mit dem Git-Archiv verglichen. Die Implementierung für Gespräch, Entscheidung, Rückmeldung, Wiederaufnahme und Abschluss ist bytegleich. Die Schutzprüfung baut das erste Modul mit den genehmigten Anpassungen der Fallübersicht und dem neuen Navigationsadapter nach. Beide Veröffentlichungen enthalten exakt dieses Modul mit dem SHA-256-Wert `{report['modul_02_sha256']}`. Der Vergleich mit `{report['tagesreferenz']}` prüft auch die Inhalte der Tagesauswahl außerhalb des separat geprüften zweiten Moduldokuments.
 
 ## Eine Leiste für beide Unterrichtstage
 
-Am 02.12. sind Tagesauswahl, Fallakten, Infokarten und Nach Neustart in allen Ansichten erreichbar. Im Gespräch stehen Abschnitt und Niveau in derselben Leiste. Beim 08.12. führt die Leiste zur Tagesauswahl zurück. Separat geöffnet behält das erste Modul die bisherige Kopfzeile mit ihren Funktionen.
+Am 02.12. sind Tagesauswahl, Fallakten, Infokarten und Nach Neustart in allen Ansichten erreichbar. Im Gespräch stehen Abschnitt und Niveau in derselben Leiste. Am 08.12. öffnet die Leiste Nachrichten, Fachkarten und Wiederaufnahme. Separat geöffnet behält das erste Modul die bisherige Kopfzeile mit ihren Funktionen.
 
 Der Wechsel zu den Infokarten oder zur Tagesauswahl erhält den begonnenen Rat und alle geöffneten Hilfen. In der Fallübersicht lässt sich ein begonnenes Gespräch wieder öffnen. Die Wiederaufnahme zeigt zunächst nur die Auswahl. Erst eine ausdrücklich gewählte Abschnittsnummer startet den Wiedereinstieg. Der Bericht erfasst den Abbruch der Auswahl und die Wiederaufnahme bei Laura 3 nach einem vollständigen Neuladen.
 
@@ -93,7 +93,7 @@ body += """
 
 Beide Versionen auf einem Schul-iPad in Safari öffnen und getrennt als SCORM-Aktivitäten in den schulischen itslearning-Testkurs importieren. In A die Sperre prüfen. In B beide Tageskarten öffnen. Bei Laura einen Rat senden und die Hilfe öffnen. Direkt „Tagesauswahl“ antippen, denselben Tag öffnen und den Verlauf prüfen. „Nach Neustart“ während der Beratung öffnen und mit „Zurück“ abbrechen. Nach einem Neuladen über „Nach Neustart“ den markierten Abschnitt öffnen.
 
-Die Unterrichtsinhalte und die pädagogische Abnahme für den 08.12. stehen aus. Die Bedienung mit realen Förder- und ESA-Lernenden sowie die Bearbeitungszeit unter Unterrichtsbedingungen wurden nicht erprobt.
+Die fachliche und technische Prüfung des zweiten Moduls steht im gesonderten Nachrichten-Prüfbericht. Die Bedienung mit realen Förder- und ESA-Lernenden sowie die Bearbeitungszeit unter Unterrichtsbedingungen wurden nicht erprobt.
 """
 bericht = DIST / 'Fallakte-Pruefbericht.md'
 bericht.write_text(body)

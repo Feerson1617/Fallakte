@@ -53,9 +53,15 @@ def check_release(version, updated, frozen, previous, site):
     assert list(blobs) == (['modul-02'] if version == 'A' else ['modul-02', 'modul-08'])
     assert blobs['modul-02'] == updated
     # Compare the whole common release after undoing only the approved navigation
-    # regions and the verified first-day payload. This also covers the complete day 08.
+    # regions and the verified first-day payload. The newly implemented second module has a separate source and browser check.
     baseline = (previous/'Fallakte.html').read_bytes()
     restored = standalone.replace(base64.b64encode(updated),base64.b64encode(frozen))
+    if version == 'B':
+        old_second = re.search(rb'<script id="modul-08" type="application/octet-stream">([^<]+)</script>',baseline)[1]
+        second = (ROOT/'build/08-12/Fallakte.html').read_bytes()
+        assert blobs['modul-08'] == second
+        assert restored.count(base64.b64encode(second)) == 1
+        restored = restored.replace(base64.b64encode(second), old_second)
     marker = b'id="erster-tag" data-modulnavigation'
     assert restored.count(marker)==1
     restored = restored.replace(marker,b'id="erster-tag"')
@@ -70,9 +76,7 @@ def check_release(version, updated, frozen, previous, site):
         for name in original.namelist():
             if name != 'index.html':
                 assert (site/name).read_bytes() == original.read(name), name
-    if version == 'B':
-        assert blobs['modul-08'] == (ROOT / 'module/08-12/index.html').read_bytes()
-    else:
+    if version == 'A':
         assert b'modul-08' not in standalone and b'Dieser Unterrichtstag wird vorbereitet.' not in standalone
     image_paths = ['assets/laura.webp', 'tagesauswahl/assets/laura-umfeld.webp']
     assert [base64.b64decode(src.split(',')[1]) for src in doc.xpath('//img/@src')] == [
@@ -151,7 +155,7 @@ def exercise(browser, engine, version, kind, size, base, photos):
         expect(second.get_by_role('heading', name=TITLES[1])).to_be_visible()
         assert second.locator('body').evaluate("() => typeof FALLAKTE === 'undefined' && typeof LERNHILFEN === 'undefined'")
         assert second.locator('#history,#help').count() == 0
-        expect(shell.locator('#tagesnavigation button')).to_have_text(['← Tagesauswahl'])
+        expect(shell.locator('#tagesnavigation button')).to_have_text(['← Tagesauswahl','Nachrichten','Fachkarten','Nach Neustart'])
         expect(shell.locator('#gespraechsstand')).to_be_hidden()
         return second
 

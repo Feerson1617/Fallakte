@@ -2,14 +2,14 @@ name: Gemeinsame Unterrichtstage
 on:
   pull_request:
   push:
-    branches: [main, entwicklung/gemeinsame-tagesauswahl]
+    branches: [main, entwicklung/gemeinsame-tagesauswahl, entwicklung/laura-nachrichten-08-12]
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
   unterricht:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,6 +30,8 @@ jobs:
       - run: python scripts/review.py
       - run: python tests/tagesauswahl.py
       - run: python scripts/tagesbericht.py
+      - run: python tests/nachrichten.py
+      - run: python scripts/nachrichtenbericht.py
       - uses: actions/upload-artifact@v4
         with:
           name: Fallakte-Version-A-02-12
@@ -48,5 +50,14 @@ jobs:
           path: |
             dist/Fallakte-Pruefbericht.md
             dist/Fallakte-Sichtpruefung.zip
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Fallakte-Nachrichten-08-12
+          path: |
+            dist/Nachrichten-Pruefbericht.md
+            dist/Nachrichten-Sichtpruefung.zip
+            dist/Materialuebergabe-Work.zip
           if-no-files-found: error
           retention-days: 30

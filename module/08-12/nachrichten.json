@@ -1,0 +1,44 @@
+{
+  "laura": [
+    "Ich bin ungeplant schwanger geworden, obwohl ich verhütet habe.",
+    "Meine Ausbildung möchte ich unbedingt abschließen.",
+    "Ich weiß noch nicht, ob ich die Schwangerschaft fortsetzen möchte.",
+    "Ich brauche richtige Informationen. Zuerst möchte ich wissen, welche Möglichkeiten ich habe.",
+    "Danach möchte ich selbst entscheiden.",
+    "Das habe ich meiner Familie und meiner Freundin gesagt.",
+    "Alle möchten mir helfen.",
+    "Trotzdem fühle ich mich durch manche Nachrichten nicht richtig verstanden.",
+    "Könnt ihr die Nachrichten mit mir prüfen?"
+  ],
+  "nachrichten": {
+    "Mutter": [
+      "Laura, bei einem Abbruch mit Medikamenten kommt es zu Blutungen. Schmerzen sind möglich.",
+      "Das macht mir Sorgen. Deine Gesundheit und unsere Familie sind mir wichtig.",
+      "In unserer Familie sollen wir einander in schwierigen Zeiten helfen.",
+      "Wenn du ein Kind bekommst, möchte ich dich unterstützen.",
+      "Deshalb rate ich dir, die Schwangerschaft fortzusetzen.",
+      "Ich möchte wissen, wie du darüber denkst."
+    ],
+    "Freundin": [
+      "Du möchtest deine Ausbildung abschließen. Das ist mir für dich wichtig.",
+      "Ein Abbruch mit Medikamenten ist grundsätzlich ohne Operation möglich.",
+      "In einem Video hieß es: „Dabei gibt es weder Blutungen noch Schmerzen.“ Ich glaube, dass das stimmt.",
+      "Deshalb erscheint mir das einfach.",
+      "Ich rate dir deshalb zu einem Abbruch mit Medikamenten."
+    ],
+    "Großmutter": [
+      "Liebe Laura, ungeborenes Leben ist mir sehr wichtig.",
+      "Zu meinem persönlichen Glauben gehört die Regel: Ungeborenes Leben soll geschützt werden.",
+      "Deshalb wünsche ich mir, dass du die Schwangerschaft fortsetzt.",
+      "Du musst meinen Glauben nicht teilen. Die Entscheidung triffst du.",
+      "Ich bleibe an deiner Seite."
+    ],
+    "Vater": [
+      "Du möchtest zuerst verlässliche Informationen. Das ist mir auch wichtig.",
+      "Für einen Abbruch nach der Beratungsregelung ist unter anderem vorgeschrieben: Die Beratung muss bei einer staatlich anerkannten Schwangerschaftskonfliktberatungsstelle stattfinden und mindestens drei Tage vor dem Abbruch liegen.",
+      "Deshalb rate ich dir, dort einen Beratungstermin zu vereinbaren.",
+      "Dort kannst du auch über Unterstützung für deine Ausbildung sprechen.",
+      "Wie du dich entscheidest, bleibt dir überlassen."
+    ]
+  }
+}

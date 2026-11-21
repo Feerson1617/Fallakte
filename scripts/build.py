@@ -36,7 +36,8 @@ def launcher(version, first_day):
     entries = {'modul-02': first_day}
     html = single_replace(html, 'data-entry="02-12.html"', 'data-entry="modul-02"')
     if version == 'B':
-        entries['modul-08'] = ROOT / 'module/08-12/index.html'
+        from modul_0812 import build as build_second_day
+        entries['modul-08'] = build_second_day()
         html = single_replace(html, 'aria-labelledby="datum-08" disabled', 'aria-labelledby="datum-08" data-entry="modul-08"')
     # Inert data. Only the selected document is decoded and mounted.
     payloads = [f'<script id="{key}" type="application/octet-stream">{encoded(path)}</script>' for key, path in entries.items()]

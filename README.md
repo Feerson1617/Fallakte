@@ -1,11 +1,12 @@
 # Fallakte. Zwei Unterrichtstage
 
-Die Anwendung startet mit „Wähle deinen Unterrichtstag.“ Beide Datumsfelder zeigen dieselbe 19-jährige Laura. Am 02.12. öffnet sich die kompakte Fallübersicht. Am 08.12. ist ein eigener Einstieg für das noch in Prüfung befindliche Modul vorbereitet.
+Die Anwendung startet mit „Wähle deinen Unterrichtstag.“ Beide Datumsfelder zeigen dieselbe 19-jährige Laura. Am 02.12. öffnet sich die kompakte Fallübersicht. Am 08.12. prüfen die Lernenden vier Nachrichten an Laura.
 
 | Auslieferung in GitHub Actions | Verwendung |
 | --- | --- |
 | **Fallakte-Version-A-02-12** | Für den 02.12. ist die erste Karte aktiv und die zweite mit einem Schloss gekennzeichnet. Das Paket enthält ausschließlich das erste Unterrichtsmodul. |
-| **Fallakte-Version-B-08-12** | Beide Karten lassen sich öffnen. Der Einstieg für den 08.12. zeigt derzeit einen neutralen Vorbereitungshinweis. |
+| **Fallakte-Version-B-08-12** | Beide Karten lassen sich öffnen. Am 08.12. sind Mutter und Freundin die Pflichtstrecke. Großmutter und Vater sind direkt zugängliche Reserven. |
+| **Fallakte-Nachrichten-08-12** | Sichtprüfung, Prüfbericht und vollständige Materialübergabe für Work zum zweiten Tag. |
 | **Fallakte-Abnahme** | Gemeinsamer Prüfbericht und Sichtprüfungs-ZIP mit Bildschirmfotos, JSON-Protokollen und der Abnahme des eingebetteten Moduls vom 02.12. |
 
 Im gewählten Versionsordner **Fallakte.html** direkt im Browser öffnen oder **Fallakte-SCORM12.zip** als geschlossenes Paket in das LMS importieren. Alle benötigten Bilder, Schriften und Moduldokumente sind eingebettet. Beide Pakete haben eigene SCORM-Kennungen.
@@ -16,13 +17,13 @@ Die gemeinsame Leiste öffnet **Tagesauswahl**, **Fallakten**, **Infokarten** un
 
 Das einzeln geöffnete Dokument **02-12.html** und seine Offline-Datei **build/02-12/Fallakte.html** verwenden ihre bisherige Kopfzeile. Die gemeinsame Leiste übernimmt die Navigation, sobald das Modul eine Verbindung zum Tagesmenü hat.
 
-Die Quelldatei **index.html** ist die Tagesauswahl und öffnet in der Entwicklung die A-Fassung. **02-12.html** enthält die Fallübersicht des ersten Moduls. Der unabhängige Vergleich mit `ca77bf7` schützt Falldaten, Hilfe, Entscheidung, Rückmeldung, Wiedereinstieg und Abschluss. Der Referenzbau berücksichtigt die geprüften Änderungen an der Fallübersicht und die Anbindung an die gemeinsame Leiste. Beide Auslieferungen müssen genau das daraus entstandene Dokument einbetten. Die Prüfungen schützen die beiden Tageskarten und das Dokument des 08.12. gegenüber `c1e5ce6`. Bildschirmfotos und Höhenmessungen vergleichen die Navigation mit dem Stand `41504cc`.
+Die Quelldatei **index.html** ist die Tagesauswahl und öffnet in der Entwicklung die A-Fassung. **02-12.html** enthält die Fallübersicht des ersten Moduls. Der unabhängige Vergleich mit `ca77bf7` schützt Falldaten, Hilfe, Entscheidung, Rückmeldung, Wiedereinstieg und Abschluss. Der Referenzbau berücksichtigt die geprüften Änderungen an der Fallübersicht und die Anbindung an die gemeinsame Leiste. Beide Auslieferungen müssen genau das daraus entstandene Dokument einbetten. Die Prüfungen schützen die beiden Tageskarten gegenüber `c1e5ce6`. Ein weiterer Referenzbau schützt die gesamte A-Fassung und die B-Fassung außerhalb des neuen Moduldokuments gegenüber `ec94147`. Bildschirmfotos und Höhenmessungen vergleichen die Navigation mit dem Stand `41504cc`.
 
-Der eigenständige Einstieg **module/08-12/index.html** wird ausschließlich beim Bau von Version B gelesen. Dieses Verzeichnis nimmt die geprüfte zweite Konzeption auf. Die Schnittstelle zum Tagesmenü ist ein eigenständig offline lauffähiges HTML-Dokument, in das spätere Modulskripte und Medien beim Modulbau eingebettet werden können. Jedes Modul hat ein eigenes Fenster mit eigenem DOM und eigenem Arbeitsspeicher. Das Menü verantwortet die gemeinsame SCORM-Sitzung.
+Der Compiler für Version B verbindet die Vorlage in **module/08-12/** mit dem gemeinsamen UI-Code, lokalen Schriften, Lauras Porträt und der aufgelösten Aufgabenbank. **build/08-12/Fallakte.html** lässt sich auch direkt öffnen. Die beiden Module haben getrennte Dokumente und Arbeitsspeicher. Das Tagesmenü verwaltet die SCORM-Sitzung.
 
 ### Schnittstelle für die Modulnavigation
 
-Module mit eigener Rückfallleiste sind an ihrer Tageskarte mit `data-modulnavigation` gekennzeichnet. Das Menü zeigt ihren Inhalt nach der Übernahme der Navigation. Es sendet dem geladenen Modul die Nachricht `fallakte:navigation` mit einem eigenen `MessagePort`. Das Modul nimmt sie vom direkten Elternfenster an. Über den Port meldet es einmal `{type: "ready", actions: [{id, label, icon}]}` und bei einem Ansichtswechsel `{type: "view", active, status}`. Bei Aktivierung einer Schaltfläche erhält es deren ID und führt die Navigation mit seinem eigenen Sitzungsstand aus. Die Tagesauswahl gehört zum Rahmen. Der vorbereitete 08.12. benötigt derzeit nur diesen Rückweg. Spätere Modulaktionen können eigene Beschriftungen und Ziele anmelden.
+Module mit eigener Rückfallleiste sind an ihrer Tageskarte mit `data-modulnavigation` gekennzeichnet. Das Menü zeigt ihren Inhalt nach der Übernahme der Navigation. Es sendet dem geladenen Modul die Nachricht `fallakte:navigation` mit einem eigenen `MessagePort`. Das Modul nimmt sie vom direkten Elternfenster an. Über den Port meldet es einmal `{type: "ready", actions: [{id, label, icon}]}` und bei einem Ansichtswechsel `{type: "view", active, status}`. Bei Aktivierung einer Schaltfläche erhält es deren ID und führt die Navigation mit seinem eigenen Sitzungsstand aus. Die Tagesauswahl gehört zum Rahmen. Das Nachrichtenmodul meldet „Nachrichten“, „Fachkarten“ und „Nach Neustart“ an.
 
 ## Bauen und prüfen
 
@@ -50,17 +51,11 @@ Bei einer Unterbrechung kann die Seite in jedem Gesprächsschritt geöffnet blei
 
 [Technische Abnahme und offene Punkte](docs/Abnahme.md) · [Fachquellen](docs/Fachpruefung.md)
 
-## Vorbereitung für die zweite Fallakte am 08.12.
+## Nachrichten am 08.12.
 
-Für beide Unterrichtstage gilt „So wenig Bedienaufwand wie möglich, so viel individuelle Lernunterstützung wie nötig.“ Jedes sichtbare Element dient der Orientierung, der Arbeit am Fall, der Hilfe oder der Rückmeldung. Arbeitsaufträge bleiben kurz. Niveauwahl, gut lesbare Texte, ausreichend große Touchflächen, gestufte Hilfe und der Wiedereinstieg nach einem Neustart haben Vorrang. Freiwillige Fälle bleiben direkt erreichbar. Platz für Fallarbeit entsteht durch Verzicht auf dekorative Arbeitsbereichstitel, Fußzeilen, wiederholte Erklärungen, große Bilder, Animationen und zusätzliche Bestätigungsschritte. Die fachliche Ausarbeitung beginnt mit der Freigabe der Unterrichtskonzeption.
+Alle acht Abschnitte stehen auf jedem Niveau offen. Der Argumenten-Check umfasst pro Nachricht eine Zuordnung. Danach folgen der Quellenvergleich, Lauras Wünsche und das eigene Urteil mit Beleg. Hilfe 1 bis 5 ist bei jeder Aufgabe direkt erreichbar. Die Übersicht ermöglicht den Niveauwechsel. Antworten, offene Hilfen und Entwürfe bleiben innerhalb derselben Sitzung je Niveau und Abschnitt erhalten. Nach einem vollständigen Neuladen wählt man Person und Abschnitt erneut.
 
-Eine eigene Einstiegsseite kann **app/ui.js** und **app/lernhilfen.js** direkt laden. Der Unterrichtsfall vom 02.12. verwendet dieselben Dateien. `levelText(wert, niveau)` liest gemeinsame oder stufenspezifische Texte und wird auch für situative Rückmeldungen verwendet. `renderHelp` erhält die geordneten Hilfetexte, die bereits geöffnete Stufe, den Rückruf zum Stufenwechsel und eine Quelle mit Beschriftung und Öffnungsaktion sowie optional die Handlung der letzten Stufe. Den Stand hält die aufrufende Fallakte je Gespräch und Niveau im Arbeitsspeicher. Die beiden gemeinsamen Dateien lassen sich unabhängig von den Fall- und Methodendaten laden. Das prüft ein eigener Browsertest.
-
-Die Abschnittsauswahl in **app/wiederaufnahme.js** erhält die geordneten Fälle und Niveaus sowie eine Funktion zum Einstieg in den gewählten Abschnitt. Jede Stufe liefert ihren Titel, bei Bedarf eine kürzere Beschriftung für den Laufzettel und einen kurzen Rückblick für spätere Einstiege. Über den fachlichen Kontext und eingeführte Quellen entscheidet das jeweilige Modul.
-
-Für die getrennte Planung am 08.12. gilt dieselbe Fallperson Laura, 19 Jahre. Der zeitliche Abstand bleibt offen. Aus der späteren ungeplanten Schwangerschaft trotz Verhütung lässt sich weder ein Anwendungsfehler noch die Unwirksamkeit einer bestimmten Methode ableiten. Dieser Planungshinweis gehört ausschließlich in die Entwicklungsdokumentation.
-
-Für den Argumenten-Check zum Thema Schwangerschaftsabbruch kann ein separat geprüfter Gesprächsschritt eine Textpassage als Quelle und eigene Rückmeldungen für die Unterscheidung von Fakt, Wert, Norm und Schlussfolgerung liefern. Die inhaltliche Redaktion und Prüfung dieses Moduls stehen aus. Die Unterrichtsfassung für den 02.12. lädt ausschließlich den Verhütungsfall.
+`python scripts/build.py` baut beide Auslieferungen. Nach der Installation der Abhängigkeiten aus **tests/requirements.txt** und der beiden Playwright-Browser prüft `python tests/nachrichten.py` die zweite Fallakte. Anschließend erzeugt `python scripts/nachrichtenbericht.py` Bericht, Sichtprüfung und Work-Paket in **dist/**. Die fachlichen Belege, die Zeitplanung und der ausstehende Praxistest stehen im [Prüfvermerk](docs/Nachrichten-08-12.md).
 
 ## Herkunft der Assets
 
