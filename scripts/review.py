@@ -9,7 +9,7 @@ OUT = ROOT / 'dist'
 QA = OUT / 'qa'
 local = OUT / 'Fallakte.html'
 digest = hashlib.sha256(local.read_bytes()).hexdigest()
-names = ('dialogwege', 'scorm', 'bedienung', 'laufzettel', 'layout', 'inhaltsvergleich')
+names = ('dialogwege', 'scorm', 'bedienung', 'laufzettel', 'layout', 'inhaltsvergleich', 'lernhilfen')
 reports = {}
 for name in names:
     reports[name] = json.loads((QA / (name + '.json')).read_text())
@@ -35,6 +35,9 @@ assert content['built_data_equal'] and content['rendered_paths'] == 84
 assert set(content['pdf_page_text_sha256']) == {'Foerder', 'ESA', 'MSA', 'AHR'}
 assert {view['engine'] for view in views} == {'chromium','webkit'}
 assert all(not row['errors'] and not row['external_requests'] for row in views)
+help_runs=reports['lernhilfen']['runs']
+assert {run['engine'] for run in help_runs} == {'chromium','webkit'}
+assert all({r['niveau'] for r in run['wege']} == {'Foerder','ESA','MSA','AHR'} for run in help_runs)
 layout = reports['layout']
 assert {run['engine'] for run in layout['runs']} == {'chromium','webkit'}
 for run in layout['runs']:
@@ -73,6 +76,9 @@ with ZipFile(package, 'w', ZIP_DEFLATED) as z:
         expected=reports['bedienung']['screenshots'][filename]
         assert hashlib.sha256((QA/filename).read_bytes()).hexdigest() == expected
         z.write(QA/filename, 'Bildschirmfotos/'+filename)
+    shot=QA/'Auffanghilfe.jpg'
+    assert hashlib.sha256(shot.read_bytes()).hexdigest()==reports['lernhilfen']['screenshot_sha256']
+    z.write(shot,'Bildschirmfotos/'+shot.name)
     for run in layout['runs']:
         for row in run['phone_labels']:
             path=QA/'methoden'/row['screenshot']

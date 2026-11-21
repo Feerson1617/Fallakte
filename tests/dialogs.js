@@ -1,5 +1,5 @@
 // Browser-run path matrix. Drive rendered controls only, compare actual messages with the content file.
-({person, tier, strategy, data}) => {
+({person, tier, strategy, data, testScaffold}) => {
   function click(selector) {
     const node = document.querySelector(selector);
     if (!node || !node.getClientRects().length) throw Error('Missing control ' + selector);
@@ -13,6 +13,7 @@
       assert(document.querySelector('#hint-current p').textContent===text,'Hint '+index);
     });
   }
+  const layered=!!document.querySelector('#support-panel');
   click('#level-'+tier);
   click('[data-person="'+person+'"]');
   let methods=0, questions=0, helps=0, reviews=0;
@@ -24,7 +25,15 @@
     for(const line of stage.message[tier]) assert(history.textContent.includes(line),'Missing case information');
     const review=!!document.querySelector('#change-prior');
     assert(review===Boolean(stage.reviewPrevious),'Unexpected previous-proposal review');
-    if (stage.hintQuestions && !stage.options.DONE && !review) {checkHints(stage.helpBefore[tier]); helps+=2;}
+    if (stage.hintQuestions && !stage.options.DONE && !review) {
+      if (layered) {
+        click('#help');
+        assert(document.querySelector('#hint-current p').textContent.includes('Abschnitt „'),'No card section before selection');
+        click('#help');
+        assert(document.querySelector('#hint-current p').textContent.length>10,'No fact before selection');
+      } else checkHints(stage.helpBefore[tier]);
+      helps+=2;
+    }
     const index=data.cases[person].indexOf(stage);
     for (const future of data.cases[person].slice(index+1)) assert(![...history.querySelectorAll('.chat-step')].some(x=>x.textContent===future.title),'Premature disclosure');
     for (const [question,answer] of stage.questions) {
@@ -50,10 +59,16 @@
     const hint = stage.hints[key];
     if (stage.hintQuestions) {
       const method = key==='DONE' ? 'P' : key.split('+').pop();
-      const question = stage.hintQuestions[tier] || hint.find;
+      const question = layered && (key==='DONE' || tier==='ESA') ? hint.find : stage.hintQuestions[tier] || hint.find;
       checkHints(['Karte „'+data.methods[method][0]+'“, Abschnitt „'+hint.section+'“. '+question,hint.fact]);
     } else checkHints(pair(hint));
     helps+=2;
+    if (testScaffold) {
+      assert(document.querySelector('#help').textContent==='Satzanfang zeigen','Premature or absent scaffold');
+      click('#help');
+      assert(document.querySelector('#hint-current p').textContent.includes('…'),'Missing sentence frame');
+      assert(document.querySelectorAll('.hint').length===3 && !document.querySelector('#help'),'Unbounded hints');
+    }
     for (const element of document.querySelectorAll('#work, #work button, #work p, #history .bubble, .article')) {
       assert(element.scrollWidth<=element.clientWidth+2,'Text overflow: '+stage.id+' '+element.className);
     }

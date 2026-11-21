@@ -26,7 +26,7 @@
   return {
     viewport:[innerWidth,innerHeight], document:[root.scrollWidth,root.scrollHeight], global:[scrollX,scrollY],
     chat:box(history), answer:box(work.parentElement), work:box(work),
-    message:box(latestMessage,history.getBoundingClientRect()), hint:box(document.querySelector('#hint-current'),work.getBoundingClientRect()),
+    message:box(latestMessage,history.getBoundingClientRect()), hint:box(document.querySelector('#hint-current'),(document.querySelector('.help-notes') || work).getBoundingClientRect()),
     send:box(send), sendReachable:!!rect && send.contains(document.elementFromPoint(rect.x+rect.width/2,rect.y+rect.height/2)),
     scrollHistory:history.scrollTop, scrollWork:work.scrollTop, focus:document.activeElement.id, touchOrTextIssues
   };

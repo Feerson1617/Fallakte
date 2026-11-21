@@ -43,7 +43,7 @@ def test_matrix(browser, engine):
         for person in DATA['cases']:
             for code in ('K', 'P', 'Cu', 'H', 'K+P', 'K+Cu', 'K+H'):
                 page.goto(LOCAL.as_uri())
-                records.append(page.evaluate(MATRIX, dict(person=person, tier=level, strategy=code, data=DATA)))
+                records.append(page.evaluate(MATRIX, dict(person=person, tier=level, strategy=code, data=DATA, testScaffold=True)))
     assert not errors, errors
     page.close()
     return dict(engine=engine,version=browser.version,paths=records,errors=errors,disclosure=first_message_only(browser,LOCAL,QA/'Sicherung-nach-Nachricht-1.jpg' if engine=='chromium' else None),transitions=mixed_paths(browser,LOCAL),scenarios=run_scenarios(browser,LOCAL,QA if engine=='chromium' else None))
@@ -291,5 +291,5 @@ if __name__=='__main__':
     first=scorm_runs[0]
     save('scorm',dict(schema_valid=True,launch=first['launch'],members=first['members'],
                      observed_calls=first['observed_calls'],runs=scorm_runs))
-    images={p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in QA.glob('*.jpg')}
+    images={p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in QA.glob('*.jpg') if p.name!='Auffanghilfe.jpg'}
     save('bedienung',dict(runs=results,screenshots=images,real_ipad=False,itslearning=False,student_trial=False))

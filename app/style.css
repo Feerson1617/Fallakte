@@ -151,3 +151,11 @@ html.consulting,html.consulting body{height:100vh;height:100dvh;min-height:0;ove
 
 @media(max-width:24.5em){.methods{grid-template-columns:1fr}}
 @container (max-width:22rem){.methods{grid-template-columns:1fr}}
+#support-panel{display:flex;flex-direction:column;flex:0 1 auto;max-height:46%;min-height:0;background:#faf6e8;border-block:1px solid #d8cdad}
+.help-notes{overflow:auto;overscroll-behavior:contain;min-height:0;padding:4px clamp(12px,1.25vw,22px);scroll-padding:4px}
+.help-notes .hint{margin:0 0 4px}.help-notes .hint:focus{outline-offset:-3px}
+.help-controls{display:flex;align-items:center;justify-content:space-between;gap:4px;flex:none;padding:0 8px}
+.help-controls button{line-height:1.15}.tools:empty{display:none}
+#answer-panel:has(#support-panel:not([hidden])) #work{flex:1}
+.task-reminder summary{display:flex;align-items:center;font-size:.9375rem;padding:0;color:var(--muted)}
+.task-reminder summary::before{content:'▸';margin-right:.4em}.task-reminder[open] summary::before{content:'▾'}

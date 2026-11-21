@@ -2,13 +2,33 @@
 
 **Einsatzurteil.** Die Fassung ist technisch und fachlich-didaktisch für eine begleitete Erprobung vorbereitet. Der Transfer auf das Schul-iPad, der Import im konkreten itslearning-Kurs und ein Probelauf mit Lernenden stehen aus. Erprobungstermin ist der 2. Dezember 2026.
 
+## Gestufte Hilfen für die selbstständige Arbeit
+
+**Bereits vorhanden** waren zwei freiwillige Hilfen, die Rückfragen und die Rückkehr von den digitalen Karten ins Gespräch. Nach einer Methodenwahl bezogen sich Suchauftrag und Fachinformation auf die gewählte Methode. Vor der Auswahl verwies Hilfe 1 häufig nur auf den Chat. Die selbst erarbeiteten Karten bleiben die erste Arbeitsgrundlage.
+
+**Ergänzt** wurden die folgenden Hilfen innerhalb aller vier Niveaus.
+
+| Situation | Was Lernende sehen und tun können |
+| --- | --- |
+| Vor der Auswahl | Die Überschrift zeigt den Arbeitsschritt. Bei Lauras erstem und letztem Rat beginnt die Arbeit auf dem Laufzettel. „Hilfe“ nennt eine konkrete Einstiegskarte und deren Abschnitt. Das Öffnen wählt keine Methode aus. |
+| Nach der Auswahl | Die Nachricht lässt sich prüfen und senden. Der ursprüngliche Arbeitsauftrag kann wieder aufgeklappt werden. Hilfe 1 führt zur gewählten Karte, Hilfe 2 nennt den Fachhinweis. Bei einer Kombination bezieht sich die Karte auf die mit dem Kondom kombinierte Methode. Ein Methodenwechsel setzt die Hilfen zurück. |
+| Nach einer Rückmeldung | Die Figur reagiert auf den gesendeten Rat. Bei Laura folgt auf die erste Abstimmung die Entscheidung zum Beibehalten oder Ändern. Nach einer Revision kann das Team beim neuen Rat bleiben oder ihn zurückziehen. |
+| Nach zwei Hilfen | „Satzanfang zeigen“ öffnet eine freiwillige Formulierung für den aktuellen Abschnitt und das gewählte Niveau. Förder erhält kurze Lücken zu Wunsch, Kartenfakt und Rat. ESA verbindet einen Kartenfakt mit dem Fall. MSA und AHR erhalten je nach Aufgabe Hilfen zum Abwägen, zur Bedingung eines Urteils oder zur Reichweite eines Studienbefunds. |
+| Beim Nachschlagen | Die digitale Karte öffnet sich an der genannten Überschrift. Bei Toms Forschungsaufgabe führt „Artikel nachlesen“ zur passenden Passage oder zu den Studienkästen. Beim Unterbrechen bleiben Vorschlag, Rückmeldung und Hilfestufe der Sitzung erhalten. |
+
+Die Hilfe nutzt einen eigenen, in der Höhe begrenzten Bereich im Antwortfeld. Bei Bildschirmbreiten mit zwei Spalten bleibt der Chat sichtbar. Am Smartphone gilt weiterhin die Umschaltung „Chat lesen“ und „Antwort geben“.
+
+**Nachweis.** In Chromium und WebKit durchlaufen alle vier Niveaus den Weg von der Hilfe vor der Auswahl bis zur Revision einer unpassenden Empfehlung. Geprüft werden die Reihenfolge der drei Hilfen, das Nachschlagen, der Methodenwechsel, die sichtbaren Entscheidungsknöpfe, die Rückkehr aus Sicherung und Fallwechsel sowie das Senden einer Kombination. **Protokolle/lernhilfen.json** dokumentiert die acht Wege. **Bildschirmfotos/Auffanghilfe.jpg** zeigt die Förder-Fassung nach einer Rückmeldung. Der Referenzvergleich prüft weiterhin die Fachinhalte und alle acht Laufzettelseiten. Die erlaubten Änderungen an Bedienhinweisen und freiwilligen Hilfen werden separat getestet.
+
+**Praxistest vor dem 02.12.** Mit je einem Förder- und ESA-Team auf dem Schul-iPad eine Methode auswählen, nach einer Rückmeldung selbst eine Hilfe finden, die Kartenstelle nachlesen und zum eigenen Rat zurückkehren lassen. Beobachten, ob die Teams den Satzanfang bei Bedarf selbst erreichen und eine eigene Begründung formulieren. Diese Erprobung mit realen Lernenden und der Test im schulischen itslearning stehen aus.
+
 ## Technische Abnahme zum freigegebenen Inhaltsstand 859a01d
 
 In Toms AHR-Artikel schlossen sich geöffnete Worterklärungen beim Zurückkehren aus der Sicherung. Im Fenster mit 820 × 650 Pixeln sprang der Chat dabei in beiden Browsern um 244 CSS-Pixel. Der Fall merkt sich jetzt während der Sitzung, ob das Glossar offen war. Beim Wiederöffnen wird es vor dem Wiederherstellen der Leseposition aufgebaut. Der Sprung „Zur aktuellen Nachricht“ blendet sich aus, sobald der Anfang eines bildschirmhohen Artikels erreicht ist. Der Test prüft den Rückweg aus der Sicherung, von den Infokarten über die Sicherung und über einen anderen Fall. Er prüft auch das bewusst geschlossene Glossar.
 
-Der Inhaltsvergleich baut den freigegebenen Git-Commit separat. Dialogquelle, Laufzettelaufgaben und Druckvorlage werden byteweise geprüft. Chromium vergleicht die tatsächlich eingebetteten Falldaten sowie auf 84 vollständigen Wegen den Wortlaut im Antwortbereich und im gesamten Chat mit der gebauten Referenz. Bei den vier PDFs wird der extrahierte Text jeder einzelnen Seite mit der entsprechenden Referenzseite verglichen. Das Ergebnis steht in **Protokolle/inhaltsvergleich.json**.
+Der Inhaltsvergleich baut den freigegebenen Git-Commit separat. Dialogquelle, Laufzettelaufgaben und Druckvorlage werden byteweise geprüft. Chromium vergleicht die tatsächlich eingebetteten Falldaten sowie auf 84 vollständigen Wegen Aufgaben, Methodenoptionen, Vorschautexte, fachliche Rückmeldungen und den gesamten Chat mit der gebauten Referenz. Bei den vier PDFs wird der extrahierte Text jeder einzelnen Seite mit der entsprechenden Referenzseite verglichen. Das Ergebnis steht in **Protokolle/inhaltsvergleich.json**.
 
-Der lokale LMS-Testrahmen öffnet das entpackte SCORM-Paket in Chromium und WebKit. Beide Browser prüfen das Öffnen und Schließen der Sitzung sowie die Rückkehr aus der frühen Sicherung. Die Offline-Ersatzfassung ist die einzelne **Fallakte.html** aus dem Unterrichtspaket. Diese Datei vor der Stunde auf dem Unterrichtsgerät speichern. Alle sechs JSON-Protokolle tragen die Prüfsumme derselben HTML-Datei.
+Der lokale LMS-Testrahmen öffnet das entpackte SCORM-Paket in Chromium und WebKit. Beide Browser prüfen das Öffnen und Schließen der Sitzung sowie die Rückkehr aus der frühen Sicherung. Die Offline-Ersatzfassung ist die einzelne **Fallakte.html** aus dem Unterrichtspaket. Diese Datei vor der Stunde auf dem Unterrichtsgerät speichern. Alle sieben JSON-Protokolle tragen die Prüfsumme derselben HTML-Datei.
 
 ## Arbeitsfläche im eingebetteten Beratungsraum
 

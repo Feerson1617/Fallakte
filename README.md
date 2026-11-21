@@ -29,7 +29,7 @@ Die Anwendung hält die Gespräche ausschließlich im Arbeitsspeicher der geöff
 
 ## Entwicklung und Prüfung
 
-**data/dialogdaten.js** ist die einzige redaktionelle Quelle für Fälle, Methodenwissen, Rückfragen, Antworten und Hilfen. Sie enthält ein Datenobjekt, das auch direkt über das lokale Dateisystem geladen werden kann. **app/app.js** verwaltet die Sitzungen und rendert die Ansichten. **index.html** und **app/style.css** bilden die Oberfläche.
+**data/dialogdaten.js** enthält die freigegebenen Fälle, Methodeninformationen, Rückfragen, Antworten und fachlichen Hinweise. **data/lernhilfen.js** ordnet jeder Gesprächsstufe eine Einstiegskarte oder den bereits geteilten Artikel und je einen Satzanfang pro Niveau zu. Sie enthält ein Datenobjekt, das auch direkt über das lokale Dateisystem geladen werden kann. **app/app.js** verwaltet die Sitzungen und rendert die Ansichten. **index.html** und **app/style.css** bilden die Oberfläche.
 
 Der Build verwendet nur Python 3. Die folgenden Befehle im Repository-Stamm bauen und prüfen die Unterrichtsausgabe. Druckausgabe und Prüfungen nutzen Playwright, lxml und pypdf in der Entwicklungsumgebung.
 
@@ -38,6 +38,7 @@ python scripts/build.py
 python -m pip install -r tests/requirements.txt
 python -m playwright install --with-deps chromium webkit
 python tests/acceptance.py
+python tests/lernhilfen.py
 python tests/layout.py
 python scripts/worksheets.py
 python tests/worksheets.py
@@ -46,6 +47,12 @@ python scripts/review.py
 ```
 
 Die Unterrichtsdateien liegen in **dist/**, die vier PDFs in **dist/Laufzettel/**. Die Sichtprüfung lässt sich erst nach erfolgreichen Tests des identischen HTML-Stands packen. Der Layoutvergleich verwendet den vorherigen PR-Stand `3071562` aus der Git-Historie. Die CI führt diese Schritte auch für Pull Requests aus.
+
+## Vorbereitung für die zweite Fallakte am 08.12.
+
+Eine eigene Einstiegsseite kann **app/ui.js** und **app/lernhilfen.js** direkt laden. Der Unterrichtsfall vom 02.12. verwendet dieselben Dateien. `levelText(wert, niveau)` liest gemeinsame oder stufenspezifische Texte und wird auch für situative Rückmeldungen verwendet. `renderHelp` erhält die geordneten Hilfetexte, die bereits geöffnete Stufe, den Rückruf zum Stufenwechsel und eine Quelle mit Beschriftung und Öffnungsaktion. Den Stand hält die aufrufende Fallakte je Gespräch und Niveau im Arbeitsspeicher. Die beiden gemeinsamen Dateien lassen sich unabhängig von den Fall- und Methodendaten laden. Das prüft ein eigener Browsertest.
+
+Für den Argumenten-Check zum Thema Schwangerschaftsabbruch kann ein separat geprüfter Gesprächsschritt eine Textpassage als Quelle und eigene Rückmeldungen für die Unterscheidung von Fakt, Wert, Norm und Schlussfolgerung liefern. Die inhaltliche Redaktion und Prüfung dieses Moduls stehen aus. Die Unterrichtsfassung für den 02.12. lädt ausschließlich den Verhütungsfall.
 
 ## Herkunft der Assets
 

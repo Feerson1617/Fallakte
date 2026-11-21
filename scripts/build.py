@@ -21,7 +21,7 @@ def build():
     html = (ROOT / 'index.html').read_text()
     css = re.sub(r'url\("\.\./assets/([^"]+)"\)', asset, (ROOT / 'app/style.css').read_text())
     html = html.replace('<link rel="stylesheet" href="app/style.css">', '<style>' + css + '</style>')
-    for script in ('data/dialogdaten.js', 'app/app.js'):
+    for script in ('data/dialogdaten.js', 'data/lernhilfen.js', 'app/ui.js', 'app/lernhilfen.js', 'app/app.js'):
         code = (ROOT / script).read_text().replace('</script', r'<\/script')
         html = html.replace(f'<script src="{script}"></script>', '<script>' + code + '</script>')
     licenses = '\n'.join(path.read_text() for path in sorted((ROOT / 'assets').glob('*-OFL.txt')))

@@ -14,12 +14,26 @@ from acceptance import LOCAL, MATRIX, OUT, QA, ROOT, save
 
 APPROVED = '859a01d27989ed93d57759346aa2c6420d51b273'
 STRATEGIES = ('K', 'P', 'Cu', 'H', 'K+P', 'K+Cu', 'K+H')
-# Capture the rendered choices, prompts, hints and feedback before each learner action.
+# Compare the approved tasks, decisions and feedback independently of the new help UI.
 # The history keeps the order of all sent messages, replies and shared articles.
 TRACE = """args => {
   const work = document.getElementById('work');
   const steps = [];
-  const capture = () => steps.push([work.textContent, document.getElementById('send')?.textContent]);
+  const capture = () => {
+    const copy = work.cloneNode(true);
+    copy.querySelectorAll('.tools,.hint,.pick,.task-reminder summary').forEach(e => e.remove());
+    for (const button of copy.querySelectorAll('button.text-button')) {
+      if (/^Karte „.+“ lesen$|^Chatstelle lesen$|^Artikel nachlesen$/.test(button.textContent)) button.remove();
+    }
+    copy.querySelector('.decision-guide')?.remove();
+    const oldGuides = ['Stimmt in der Klasse über euren ersten Rat ab.',
+      'Bleibt ihr bei eurem Vorschlag oder ändert ihr ihn? Sagt euch kurz, warum.',
+      'Bleibt ihr dabei oder zieht ihr den Vorschlag zurück? Sagt euch kurz, warum.'];
+    copy.querySelectorAll('p').forEach(e => { if (oldGuides.includes(e.textContent)) e.remove(); });
+    const title = copy.querySelector('#task-title');
+    if (title && ['Dein Vorschlag','Prüfe deine Nachricht','Zuerst auf dem Laufzettel','Wähle eine Methode'].includes(title.textContent)) title.remove();
+    steps.push([copy.textContent, document.getElementById('send')?.textContent]);
+  };
   document.addEventListener('click', capture, true);
   document.addEventListener('change', capture, true);
   try {

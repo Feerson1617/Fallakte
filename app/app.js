@@ -1,41 +1,7 @@
 'use strict';
 
 const $ = id => document.getElementById(id);
-const paths = {
-  chat:'M4 4h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H9l-5 4v-4H3a1 1 0 0 1-1-1V6a2 2 0 0 1 2-2z M20 9h1v11l-4-3h-3',
-  folder:'M3 7V5a1 1 0 0 1 1-1h6l2 3h8a1 1 0 0 1 1 1v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z M3 9h18',
-  book:'M12 6C8 4 5 4 2 5v14c3-1 6-1 10 1 4-2 7-2 10-1V5c-3-1-6-1-10 1z M12 6v14',
-  group:'M15 20v-2a5 5 0 0 0-5-5H8a5 5 0 0 0-5 5v2 M9 10a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z M16 4a3 3 0 0 1 0 6 M18 14a5 5 0 0 1 3 5',
-  layers:'m12 3 9 5-9 5-9-5 9-5z M3 12l9 5 9-5 M3 16l9 5 9-5',
-  pencil:'m4 16 11-11 4 4L8 20l-5 1 1-5z M13 7l4 4 M16 4l1-1a2 2 0 0 1 3 0l1 1a2 2 0 0 1 0 3l-1 1',
-  next:'M4 12h15m-6-6 6 6-6 6', back:'M20 12H5m6 6-6-6 6-6', down:'M12 4v16m-6-6 6 6 6-6',
-  help:'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M9.5 9a2.5 2.5 0 1 1 4 2c-1 .7-1.5 1.1-1.5 2.5 M12 17h.01',
-  send:'m3 3 19 9-19 9 3-9-3-9z M6 12h13'
-};
-function icon(name) {
-  const ns = 'http://www.w3.org/2000/svg';
-  const svg = document.createElementNS(ns,'svg');
-  svg.setAttribute('viewBox','0 0 24 24');
-  svg.setAttribute('aria-hidden','true');
-  const path = document.createElementNS(ns,'path');
-  path.setAttribute('d',paths[name]);
-  svg.append(path);
-  return svg;
-}
 document.querySelectorAll('[data-icon]').forEach(el => el.append(icon(el.dataset.icon)));
-function el(tag, cls, text) {
-  const element = document.createElement(tag);
-  if (cls) element.className = cls;
-  if (text !== undefined) element.textContent = text;
-  return element;
-}
-function button(label, action, cls, symbol) {
-  const b = el('button', cls, label);
-  b.type = 'button';
-  if (symbol) b.append(icon(symbol));
-  b.onclick = action;
-  return b;
-}
 
 const cases = {
   Laura:['Gemeinsamer Hauptfall','Laura fragt nach Schutz vor Infektionen. Was rätst du ihr?'],
@@ -50,7 +16,7 @@ let returnTo = 'home';
 const sessionKey = (person, tier) => person + '-' + tier;
 const stages = () => FALLAKTE.cases[current.person];
 const stage = () => stages()[current.index];
-const forLevel = value => typeof value === 'string' || Array.isArray(value) ? value : value[current.level];
+const forLevel = value => levelText(value,current.level);
 function code() {
   if (current.mode==='review') return current.lastKept;
   if (current.selected==='K' && current.additional) return 'K+'+current.additional;
@@ -122,6 +88,7 @@ function openCase(person,tier) {
   updateJump();
   drawWork();
   $('work').scrollTop=current.workScroll;
+  positionHelp();
   $('chat-name').focus({preventScroll:true});
 }
 function showPane(pane) {
@@ -135,7 +102,7 @@ function revealInWork(target) {
   const box=work.getBoundingClientRect();
   const item=target.getBoundingClientRect();
   if (item.top<box.top || item.height>box.height) work.scrollTop+=item.top-box.top;
-  else if (item.bottom>box.bottom) work.scrollTop+=item.bottom-box.bottom;
+  else if (item.bottom>box.bottom-2) work.scrollTop+=Math.ceil(item.bottom-box.bottom+2);
 }
 function focusInWork(target) {
   target.focus({preventScroll:true});
@@ -286,17 +253,71 @@ function ask(index) {
   // If a partner is rereading, the answer is also available beside the controls.
   focusTask();
 }
+function stageSupport() {
+  const s=stage();
+  const support=LERNHILFEN[s.id];
+  const choice=code();
+  const method=choice.split('+').pop() || support.karte;
+  const raw=s.hints[choice || (s.options.DONE?'DONE':method)];
+  let pair;
+  let source;
+  if (method) {
+    const name=FALLAKTE.methods[method][0];
+    if (Array.isArray(raw)) pair=raw;
+    else {
+      const question=choice && ['MSA','AHR'].includes(current.level) ? s.hintQuestions[current.level] : raw.find;
+      pair=['Karte „'+name+'“, Abschnitt „'+raw.section+'“. '+question,raw.fact];
+    }
+    const section=raw.section || sections.find(title=>pair[0].includes('„'+title+'“'));
+    source={label:'Karte „'+name+'“ lesen',open:()=>{
+      auxiliary('resources');
+      const card=$('card-'+method);
+      card.open=true;
+      const heading=[...card.querySelectorAll('dt')].find(dt=>dt.textContent===section);
+      heading.tabIndex=-1;
+      heading.focus({preventScroll:true});
+      heading.scrollIntoView({block:'center'});
+    }};
+  } else {
+    pair=forLevel(raw);
+    source={label:'Artikel nachlesen',open:()=>{
+      showPane('chat');
+      const article=$('history').querySelector('.article');
+      const paragraphs=article.querySelectorAll(':scope > p');
+      const passage=current.level==='AHR' ? article.querySelector('h4') :
+        current.level==='Foerder' ? paragraphs[paragraphs.length-1] : paragraphs[2];
+      const history=$('history');
+      history.scrollTop+=passage.getBoundingClientRect().top-history.getBoundingClientRect().top-10;
+      updateJump();
+      article.tabIndex=-1;
+      article.focus({preventScroll:true});
+    }};
+  }
+  return {steps:[...pair,support[current.level]],source};
+}
+
+function positionHelp() {
+  const hint=$('hint-current');
+  if (!hint) return;
+  const notes=hint.parentElement;
+  notes.scrollTop+=hint.getBoundingClientRect().top-notes.getBoundingClientRect().top;
+}
+
+function changeHelp(depth) {
+  current.help=depth;
+  drawWork();
+  if (!depth) {focusInWork($('help'));return;}
+  const control=document.querySelector('#work .row, #work .methods, #work .primary');
+  if (control && !$('send')) revealInWork(control);
+  $('hint-current').focus({preventScroll:true});
+}
+
 function addTools(area) {
   const actions=el('div','tools');
-  if (current.help<2) {
-    const help=button(current.help?'Zweite Hilfe':'Hilfe',()=>{
-      current.help++;
-      drawWork();
-      focusInWork($('hint-current'));
-    },'text-button','help');
-    help.id='help';
-    actions.append(help);
-  }
+  const access=current.help ? el('div','help-controls') : actions;
+  const {steps,source}=stageSupport();
+  renderHelp($('support-panel'),access,steps,current.help,changeHelp,source);
+  positionHelp();
   if (stage().questions.length>current.asked.length) {
     const q=button(current.questionsOpen?'Fragen schließen':'Rückfrage stellen',()=>{
       current.questionsOpen=!current.questionsOpen;
@@ -313,44 +334,7 @@ function addTools(area) {
       if (!current.asked.includes(i)) area.append(button(question,()=>ask(i),'question'));
     });
   }
-  if (current.help) {
-    const hints=stage().hints[code() || 'DONE'];
-    const method=code().split('+').pop() || (stage().id==='L2' ? 'P' : '');
-    let pair;
-    if (hints && stage().hintQuestions) {
-      const question=stage().hintQuestions[current.level] || hints.find;
-      pair=['Karte „'+FALLAKTE.methods[method][0]+'“, Abschnitt „'+hints.section+'“. '+question,hints.fact];
-    } else pair=forLevel(hints || stage().helpBefore);
-    for (let i=0;i<current.help;i++) {
-      const hint=el('div','hint');
-      hint.append(el('small','','Hilfe '+(i+1)),el('p','',pair[i]));
-      if (i===current.help-1) {hint.id='hint-current';hint.tabIndex=-1;}
-      area.append(hint);
-    }
-    if (method) {
-      const card=FALLAKTE.methods[method][0];
-      area.append(button('Karte „'+card+'“ lesen',()=>{
-        auxiliary('resources');
-        const target=$('card-'+method);
-        target.open=true;
-        target.querySelector('summary').focus();
-      },'text-button','book'));
-    } else if (['T1','T2'].includes(stage().id)) {
-      area.append(button('Artikel nachlesen',()=>{
-        showPane('chat');
-        const article=$('history').querySelector('.article');
-        toEntry([...$('history').children].indexOf(article));
-        article.tabIndex=-1;
-        article.focus({preventScroll:true});
-      },'text-button','book'));
-    } else {
-      area.append(button('Chatstelle lesen',()=>{
-        showPane('chat');
-        toEntry(current.log.findIndex(entry=>entry.type==='step' && entry.title===stage().title));
-        $('history').focus({preventScroll:true});
-      },'text-button','chat'));
-    }
-  }
+
 }
 function showQuestionAnswer(area) {
   if (current.asked.length) {
@@ -369,6 +353,8 @@ function drawWork() {
   const area=$('work');
   $('send')?.remove();
   area.replaceChildren();
+  $('support-panel').hidden=true;
+  $('support-panel').replaceChildren();
   $('step').textContent='Schritt '+(current.index+1)+' von '+stages().length;
   if (current.mode==='finished') {
     taskTitle(area,current.finalRefusal?'Die Empfehlung bleibt offen':'Gespräch abgeschlossen');
@@ -422,9 +408,10 @@ function drawWork() {
     taskTitle(area,current.person+' antwortet');
     area.append(el('p','response',forLevel(s.replies[code()])));
     if (current.replyQuestion) showQuestionAnswer(area);
-    const prompt=current.revised ? 'Bleibt ihr dabei oder zieht ihr den Vorschlag zurück?' : 'Bleibt ihr bei eurem Vorschlag oder ändert ihr ihn?';
-    area.append(el('p','',prompt+' Sagt euch kurz, warum.'));
-    if (s.id==='L0') area.append(el('p','paper-note','Stimmt in der Klasse über euren ersten Rat ab.'));
+    let guide='Besprecht kurz euren Grund. Behaltet den Vorschlag bei oder ändert ihn.';
+    if (current.revised) guide='Besprecht euren neuen Rat. Behaltet ihn bei oder zieht ihn zurück.';
+    else if (s.id==='L0') guide='Stimmt zuerst in der Klasse ab. Entscheidet danach mit einem Grund: beibehalten oder ändern?';
+    area.append(el('p',s.id==='L0' && !current.revised?'decision-guide paper-note':'decision-guide',guide));
     const row=el('div','row');
     row.append(button('Vorschlag beibehalten',()=>decideProposal(true),'outline'));
     if (current.revised) {
@@ -434,8 +421,14 @@ function drawWork() {
     addTools(area);
     return;
   }
-  taskTitle(area,s.options.DONE?s.title:'Dein Vorschlag');
-  area.append(el('p',s.id==='L0' || s.id==='T2'?'paper-note':'',s.task[current.level]));
+  taskTitle(area,s.options.DONE ? s.title : current.selected ? 'Prüfe deine Nachricht' :
+    s.id==='L0' || s.id==='L6' ? 'Zuerst auf dem Laufzettel' : 'Wähle eine Methode');
+  const task=el('p',s.id==='L0' || s.id==='T2'?'paper-note':'',s.task[current.level]);
+  if (current.selected) {
+    const reminder=el('details','task-reminder');
+    reminder.append(el('summary','','Arbeitsauftrag nachlesen'),task);
+    area.append(reminder);
+  } else area.append(task);
   showQuestionAnswer(area);
   if (s.options.DONE) {
     area.append(button(s.id==='T2'?'Fall abschließen':s.id==='T1'?'Weiter nach dem Lesen':'Weiter nach dem Gespräch',completeDiscussion,'primary','next'));
@@ -500,7 +493,7 @@ function drawWork() {
     send.id='send'; send.setAttribute('aria-describedby','draft-preview');
     area.append(preview);
     $('answer-panel').append(send);
-  } else area.append(el('p','pick','Wähle eine Methode aus.'));
+  }
   addTools(area);
 }
 function auxiliary(id) {

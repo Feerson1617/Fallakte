@@ -23,6 +23,7 @@ jobs:
       - run: python -m playwright install --with-deps chromium webkit
       - run: python scripts/build.py
       - run: python tests/acceptance.py
+      - run: python tests/lernhilfen.py
       - run: python tests/layout.py
       - run: python scripts/worksheets.py
       - run: python tests/worksheets.py
