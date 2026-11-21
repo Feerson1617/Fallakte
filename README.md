@@ -12,6 +12,8 @@ Im erfolgreichen GitHub-Actions-Lauf **Unterrichtspakete** das Artefakt **Fallak
 | **Fallakte.html** | Auf dem Mac per Doppelklick im Browser öffnen. Alle Bilder, Schriften, Dialoge und Infokarten sind eingebettet. |
 | **Fallakte-Sichtpruefung.zip** | Enthält dieselbe HTML-Vorschau, echte Bildschirmfotos, einen Prüfbericht und maschinenlesbare Testprotokolle. |
 
+Das zweite Artefakt **Fallakte-Laufzettel** enthält vier Schüler-PDFs (Förder, ESA, MSA, AHR). Jede Fassung hat zwei A4-Seiten. Hinweise zur Moderation der Abstimmungen und zur Auswertung stehen separat im Unterrichtsablauf.
+
 Auch im ausgecheckten Projekt lässt sich **index.html** direkt öffnen. Hierbei gehören die benachbarten Ordner zur Vorschau. Das einzelne weiterzugebende Offline-Dokument entsteht im Build.
 
 ## Im Klassenraum
@@ -20,23 +22,25 @@ Laura öffnen, die erste Empfehlung auf Papier begründen und gemeinsam abstimme
 
 Die Anwendung hält die Gespräche ausschließlich im Arbeitsspeicher der geöffneten Seite. Neuladen beginnt eine neue Sitzung. Sie verlangt keine Namen oder persönlichen Erfahrungen. Der SCORM-Adapter öffnet und schließt lediglich die technische Sitzung. itslearning kann unabhängig davon Zugriffe protokollieren.
 
-[Unterrichtsablauf und Laufzettelvorlage](docs/Unterricht.md) · [Fachquellen](docs/Fachpruefung.md) · [Abnahme und offene Punkte](docs/Abnahme.md)
+[Unterrichtsablauf für die Lehrkraft](docs/Unterricht.md) · [Fachquellen](docs/Fachpruefung.md) · [Abnahme und offene Punkte](docs/Abnahme.md)
 
 ## Entwicklung und Prüfung
 
 **data/dialogdaten.js** ist die einzige redaktionelle Quelle für Fälle, Methodenwissen, Rückfragen, Antworten und Hilfen. Sie enthält ein Datenobjekt, das auch direkt über das lokale Dateisystem geladen werden kann. **app/app.js** verwaltet die Sitzungen und rendert die Ansichten. **index.html** und **app/style.css** bilden die Oberfläche.
 
-Der Build verwendet nur Python 3. Die folgenden Befehle im Repository-Stamm bauen und prüfen die Unterrichtsausgabe. Playwright und lxml werden nur in der Entwicklungs- und Testumgebung benötigt.
+Der Build verwendet nur Python 3. Die folgenden Befehle im Repository-Stamm bauen und prüfen die Unterrichtsausgabe. Druckausgabe und Prüfungen nutzen Playwright, lxml und pypdf in der Entwicklungsumgebung.
 
 ```sh
 python scripts/build.py
 python -m pip install -r tests/requirements.txt
 python -m playwright install --with-deps chromium webkit
 python tests/acceptance.py
+python scripts/worksheets.py
+python tests/worksheets.py
 python scripts/review.py
 ```
 
-Die drei Ausgabedateien liegen in **dist/**. Die Sichtprüfung lässt sich erst nach erfolgreichen Tests des identischen HTML-Stands packen. Die CI führt diese Schritte auch für Pull Requests aus.
+Die drei technischen Ausgaben liegen in **dist/**, die vier PDFs in **dist/Laufzettel/**. Die Sichtprüfung lässt sich erst nach erfolgreichen Tests des identischen HTML-Stands packen. Die CI führt diese Schritte auch für Pull Requests aus.
 
 ## Herkunft der Assets
 

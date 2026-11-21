@@ -12,6 +12,7 @@ from zipfile import ZipFile
 
 from playwright.sync_api import sync_playwright, expect
 from lxml import etree
+from feedback import run_scenarios
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'dist'
@@ -29,7 +30,7 @@ def save(name, data):
     (QA / (name + '.json')).write_text(json.dumps(result, indent=2, ensure_ascii=False))
 
 
-def test_matrix(browser):
+def test_matrix(browser, engine):
     page = browser.new_page()
     errors = []
     page.on('pageerror', lambda error: errors.append(str(error)))
@@ -41,8 +42,8 @@ def test_matrix(browser):
                 page.goto(LOCAL.as_uri())
                 records.append(page.evaluate(MATRIX, dict(person=person, tier=level, strategy=code, data=DATA)))
     assert not errors, errors
-    save('dialogwege', dict(browser=browser.version, paths=records, errors=errors))
     page.close()
+    return dict(engine=engine,version=browser.version,paths=records,errors=errors,scenarios=run_scenarios(browser,LOCAL,QA if engine=='chromium' else None))
 
 
 def measure(page):
@@ -78,6 +79,18 @@ def test_view(browser, engine, layout, size):
                               device_scale_factor=1, offline=engine=="chromium")
     # WebKit offline emulation also rejects file URLs. Block every HTTP(S) request instead.
     ctx.route(re.compile(r"^https?://"), lambda route: route.abort())
+    ctx.add_init_script("""
+      window.storageCalls = [];
+      for (const [api, method] of [['Storage','setItem'],['IDBFactory','open'],['CacheStorage','open']]) {
+        const prototype = window[api]?.prototype;
+        if (!prototype) continue;
+        const original = prototype[method];
+        prototype[method] = function(...args) {
+          window.storageCalls.push(api+'.'+method);
+          return original.apply(this,args);
+        };
+      }
+    """)
     page = ctx.new_page()
     errors, requests = [], []
     page.on('pageerror', lambda error: errors.append(str(error)))
@@ -97,14 +110,19 @@ def test_view(browser, engine, layout, size):
     page.get_by_role('button',name='Rückfrage stellen').click()
     page.locator('.question').first.click()
     send(page,'K')
-    page.get_by_role('button',name='Nächste Nachricht').click()
+    page.get_by_role('button',name='Vorschlag beibehalten').click()
     send(page,'K+H')
-    page.get_by_role('button',name='Nächste Nachricht').click()
+    page.get_by_role('button',name='Vorschlag beibehalten').click()
     page.get_by_role('button',name='Weiter nach dem Gespräch').click()
     send(page,'P')
     expect(page.locator('.response')).to_contain_text('nicht')
     page.get_by_role('button',name='Vorschlag ändern').click()
     page.locator('#method-H').click()
+    page.locator('#help').click()
+    page.get_by_role('button',name='Karte „Hormonspirale“ lesen').click()
+    expect(page.locator('#card-H')).to_have_attribute('open','')
+    page.locator('#resources .return').click()
+    expect(page.locator('#method-H')).to_have_attribute('aria-pressed','true')
     page.locator('#combine').check()
     measure(page)
     if engine=='chromium' and layout in ('iPad-hoch','iPad-quer','Mobil'):
@@ -129,10 +147,10 @@ def test_view(browser, engine, layout, size):
     page.locator('#resources .return').click()
     assert history.inner_text()==before
     for code in ('Cu','P','K+H'):
-        page.get_by_role('button',name='Nächste Nachricht').click()
+        page.get_by_role('button',name='Vorschlag beibehalten').click()
         send(page,code)
         measure(page)
-    page.get_by_role('button',name='Fall abschließen').click()
+    page.get_by_role('button',name='Vorschlag beibehalten').click()
     completed=history.inner_text()
     for name in ('Celina','Tom'):
         page.get_by_role('button',name=name+' starten').click()
@@ -143,23 +161,31 @@ def test_view(browser, engine, layout, size):
                     if tier=='AHR':
                         expect(history.locator('.article')).to_contain_text('266')
                         expect(history.locator('.article')).to_contain_text('YCT-529')
+                if stage['id']=='T2':
+                    page.locator('#help').click()
+                    page.get_by_role('button',name='Artikel nachlesen').click()
+                    expect(history.locator('.article')).to_be_focused()
                 measure(page)
                 page.locator('#work .primary').click()
             else:
                 send(page,'K' if name=='Tom' else 'K+Cu')
                 measure(page)
-                page.locator('#work .primary').click()
+                page.get_by_role('button',name='Vorschlag beibehalten').click()
         expect(page.locator('#task-title')).to_have_text('Gespräch abgeschlossen')
         page.locator('#pause-nav').click()
         page.locator('#review-laura').click()
         assert history.inner_text()==completed
+    storage=page.evaluate("""() => ({
+      calls:storageCalls, local:localStorage.length, session:sessionStorage.length, cookies:document.cookie
+    })""")
+    assert storage == dict(calls=[],local=0,session=0,cookies=''), storage
     page.reload()
     page.locator('[data-person=Laura]').click()
     expect(history.locator('.team')).to_have_count(0)
     assert not errors and not requests, (errors,requests)
     ctx.close()
     return dict(layout=layout,width=size[0],height=size[1],tier=tier,engine=engine,
-                version=browser.version,completed=['Laura','Celina','Tom'],external_requests=requests,errors=errors)
+                version=browser.version,completed=['Laura','Celina','Tom'],external_requests=requests,errors=errors,storage=storage)
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -208,17 +234,20 @@ def test_scorm(browser):
 if __name__=='__main__':
     (QA/'bedienung.json').unlink(missing_ok=True)
     results=[]
+    matrices=[]
     with sync_playwright() as p:
         for engine in ('chromium','webkit'):
             exe=os.environ.get(engine.upper()+'_EXECUTABLE')
             browser=getattr(p,engine).launch(**({'executable_path':exe} if exe else {}))
+            matrices.append(test_matrix(browser,engine))
+            print(engine,'84 Dialogwege und unabhängige Entscheidungsszenarien bestanden.',flush=True)
             if engine=='chromium':
-                test_matrix(browser)
                 test_scorm(browser)
-                print('84 Dialogwege, SCORM-Schema und LMS-Lebenszyklus bestanden.',flush=True)
+                print('SCORM-Schema und LMS-Lebenszyklus bestanden.',flush=True)
             for layout,size in FORMATS.items():
                 results.append(test_view(browser,engine,layout,size))
                 print(engine,layout,'bestanden',flush=True)
             browser.close()
+    save('dialogwege',dict(runs=matrices))
     images={p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in QA.glob('*.jpg')}
     save('bedienung',dict(runs=results,screenshots=images,real_ipad=False,itslearning=False,student_trial=False))

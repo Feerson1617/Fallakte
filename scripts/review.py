@@ -9,20 +9,23 @@ OUT = ROOT / 'dist'
 QA = OUT / 'qa'
 local = OUT / 'Fallakte.html'
 digest = hashlib.sha256(local.read_bytes()).hexdigest()
-names = ('dialogwege', 'scorm', 'bedienung')
+names = ('dialogwege', 'scorm', 'bedienung', 'laufzettel')
 reports = {}
 for name in names:
     reports[name] = json.loads((QA / (name + '.json')).read_text())
     if reports[name]['html_sha256'] != digest:
         raise SystemExit('Prüflauf gehört zu einer anderen HTML-Version: ' + name)
 
-paths = reports['dialogwege']['paths']
+matrices = reports['dialogwege']['runs']
 views = reports['bedienung']['runs']
-assert len(paths) == 84 and len(views) == 8
+assert len(views) == 8
+assert {r['engine'] for r in matrices} == {'chromium','webkit'}
+assert all(len(r['paths']) == 84 and len(r['scenarios']) == 4 and not r['errors'] for r in matrices)
 assert reports['scorm']['schema_valid']
 assert {view['engine'] for view in views} == {'chromium','webkit'}
 assert all(not row['errors'] and not row['external_requests'] for row in views)
-assert not reports['dialogwege']['errors']
+for sheet in reports['laufzettel']['pdfs']:
+    assert hashlib.sha256((OUT/'Laufzettel'/sheet['datei']).read_bytes()).hexdigest() == sheet['sha256']
 with ZipFile(OUT/'Fallakte-SCORM12.zip') as scorm:
     assert hashlib.sha256(scorm.read('index.html')).hexdigest() == digest
 
@@ -33,7 +36,7 @@ with ZipFile(package, 'w', ZIP_DEFLATED) as z:
     z.write(ROOT/'docs/Fachpruefung.md', 'Fachquellen.md')
     for name in names:
         z.write(QA/(name+'.json'), 'Protokolle/'+name+'.json')
-    for shot in ('Falluebersicht', 'iPad-hoch', 'iPad-quer', 'Mobil'):
+    for shot in ('Falluebersicht', 'iPad-hoch', 'iPad-quer', 'Mobil', 'Laura-Entscheidung', 'Tom-Eigener-Beitrag'):
         filename=shot+'.jpg'
         expected=reports['bedienung']['screenshots'][filename]
         assert hashlib.sha256((QA/filename).read_bytes()).hexdigest() == expected

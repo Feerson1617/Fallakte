@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><title>Laufzettel · {{niveau}}</title>
+<style>
+@page{size:A4;margin:0}
+@font-face{font-family:SerifDM;src:url("../../assets/dmseriftext.ttf")}
+*{box-sizing:border-box}body{margin:0;color:#20332e;font:12pt/1.32 Arial,"Liberation Sans",sans-serif}
+.page{width:210mm;height:297mm;padding:13mm 16mm 12mm;display:flex;flex-direction:column;break-after:page}
+.page:last-child{break-after:auto}
+header,footer,.labels{display:flex;justify-content:space-between;align-items:center;gap:4mm}
+header{border-bottom:1.3pt solid #344f43;padding-bottom:2mm;font-size:11pt}
+h1,h2,h3,p{margin:0}h1{font:30pt/1.08 SerifDM,Georgia,serif;margin:4mm 0 1.5mm;letter-spacing:-.7pt}
+h2{font:18pt/1.15 SerifDM,Georgia,serif;margin:0 0 1.3mm}h3{font-size:12pt;margin-bottom:1mm}
+section{margin-top:4mm}section+section{border-top:.6pt solid #adb9ad;padding-top:3mm}
+p{margin-bottom:1mm}.fields{margin-top:2mm}.field{margin:1.6mm 0 0;font-weight:600;font-size:11.4pt}
+.line{height:7.3mm;border-bottom:.65pt solid #87918a}
+.compare{display:grid;grid-template-columns:1fr 1fr;margin:2mm 0 0;gap:3mm}
+.box{border:.75pt solid #87988a;border-radius:2mm;padding:2mm 3mm;min-width:0}
+.tag{font:700 10.4pt Arial,"Liberation Sans",sans-serif;color:#38534a;background:#e7ede2;padding:1mm 2.5mm;border:1px solid #b6c2b5;border-radius:1.4mm}
+.labels{align-items:baseline;margin:2mm 0}.labels span{font-size:10pt}
+footer{margin-top:auto;border-top:.7pt solid #87918a;padding-top:2mm;color:#44544d;font-size:10pt}
+.optional section{margin-top:6mm}.optional .line{height:13mm;position:relative}.optional .line::before{content:'';position:absolute;top:6mm;left:0;right:0;border-top:.45pt solid #c3cac5}.optional h2{font-size:21pt}
+.review{background:#eff2ea;border-left:2pt solid #486354;padding:2mm 3mm}
+</style></head><body>
+<article class="page">
+<header><b>Fallakte · Biologie 8</b><span class="tag">{{niveau}}</span></header>
+<h1>Laura beraten</h1><p>Schreibe deine eigenen Gründe auf. Stichwörter reichen.</p>
+<section><h2>Mein erster Rat</h2><p>Laura fragt zuerst, wie sie sich beim Sex vor Infektionen schützen kann.</p>
+{{anfang}}</section>
+<section><h2>Zwei Vorschläge</h2><p>{{vergleich}}</p><div class="compare"><div class="box"><h3>Vorschlag A</h3>{{option}}</div><div class="box"><h3>Vorschlag B</h3>{{option}}</div></div></section>
+<section><h2>Mein letzter Rat</h2><p>{{schluss}}</p>{{urteil}}</section>
+<section class="review"><h3>Sicherung · Vergleicht eure Gründe</h3><p>{{sicherung}}</p></section>
+<footer><span>Hauptfall · Laura</span><span>1 / 2</span></footer></article>
+<article class="page optional">
+<header><b>Fallakte · Biologie 8</b><span class="tag">{{niveau}}</span></header>
+<h1>Ein weiterer Fall</h1><p>Schon fertig mit Laura? Wähle Celina oder Tom. Beim Stopp geht es zurück zur Sicherung.</p>
+<section><div class="labels"><h2>Celina</h2><span>Zusatzfall</span></div><p>{{celina}}</p>{{celina_felder}}</section>
+<section><div class="labels"><h2>Tom</h2><span>Zusatzfall · Forschung</span></div><p>{{tom}}</p>{{tom_felder}}</section>
+<footer><span>Zusatzfälle · Celina oder Tom</span><span>2 / 2</span></footer></article>
+</body></html>

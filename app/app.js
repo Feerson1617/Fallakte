@@ -191,6 +191,28 @@ function sendChoice() {
   drawWork();
   focusTask();
 }
+function decideProposal(keep) {
+  const s=stage();
+  const choice=code();
+  const declined=s.declined?.[choice.split('+').pop()];
+  const clarifyTom=s.id==='T0' && (!keep || choice!=='K');
+  changeHistory(()=>{
+    say('team',keep ? 'Wir bleiben bei unserem Vorschlag.' : 'Wir ziehen unseren Vorschlag zurück.');
+    if (keep && declined) say('person',declined);
+    if (clarifyTom) say('person',s.selfAnswer);
+  });
+  if (clarifyTom) {
+    current.mode='tomSelf';
+    current.help=0;
+    drawWork();
+    focusTask();
+  } else nextStage();
+}
+function reviseProposal() {
+  Object.assign(current,{mode:'choose',revised:true,selected:'',additional:'',combined:false,help:0});
+  drawWork();
+  focusTask();
+}
 function completeDiscussion() {
   changeHistory(()=>{
     say('team',stage().options.DONE);
@@ -244,6 +266,32 @@ function addTools(area) {
       if (i===current.help-1) {hint.id='hint-current';hint.tabIndex=-1;}
       area.append(hint);
     }
+    const method=code().split('+').pop() || (stage().id==='L2' ? 'P' : '');
+    if (method) {
+      const card=FALLAKTE.methods[method][0];
+      area.append(button('Karte „'+card+'“ lesen',()=>{
+        auxiliary('resources');
+        const target=$('card-'+method);
+        target.open=true;
+        target.querySelector('summary').focus();
+      },'text-button','book'));
+    } else if (['T1','T2'].includes(stage().id)) {
+      area.append(button('Artikel nachlesen',()=>{
+        const article=$('history').querySelector('.article');
+        toEntry([...$('history').children].indexOf(article));
+        article.tabIndex=-1;
+        article.focus();
+      },'text-button','book'));
+    } else {
+      area.append(button('Chatstelle lesen',()=>{
+        toEntry(current.log.findIndex(entry=>entry.type==='step' && entry.title===stage().title));
+        $('history').focus();
+      },'text-button','chat'));
+    }
+    const nextAction=current.mode==='reply' ? 'Besprecht euren Grund. Entscheidet euch dann.' :
+      stage().options.DONE ? (stage().id==='T2' ? 'Schreibe jetzt deine Idee bei Tom auf.' : 'Besprecht die Frage zu zweit.') :
+      current.selected ? 'Passt dein Vorschlag? Wähle neu oder sende ihn.' : 'Wähle jetzt eine Methode.';
+    area.append(el('p','pick',nextAction));
   }
 }
 function taskTitle(area,title) {
@@ -258,9 +306,10 @@ function drawWork() {
   $('bars').replaceChildren(...stages().map((_,i)=>el('i',i<=current.index?'filled':'')));
   if (current.mode==='finished') {
     taskTitle(area,'Gespräch abgeschlossen');
-    if (current.person!=='Tom') {
-      const prompt={Foerder:'Mein Vorschlag ist …, weil … . Ein Nachteil ist … .',ESA:'Notiere deinen Vorschlag, deinen wichtigsten Grund und einen Nachteil.',MSA:'Vergleiche deinen Vorschlag mit einer Alternative. Welches Kriterium zählt für dich mehr?',AHR:'Begründe deine Gewichtung. Unter welcher Bedingung wäre eine Alternative besser?'};
-      area.append(el('p','paper-note','Auf dem Laufzettel: '+prompt[current.level]));
+    if (current.person==='Laura') {
+      area.append(el('p','paper-note','Schreibe bei „Mein letzter Rat“ deinen eigenen Vorschlag und deinen wichtigsten Grund auf.'));
+    } else if (current.person==='Celina') {
+      area.append(el('p','paper-note','Fülle auf dem Laufzettel das Feld „Celina“ aus. Nenne deinen Rat und einen Grund.'));
     }
     if (current.person==='Laura') {
       area.append(el('p','','Zeit für die zweite Abstimmung. Vergleicht eure Gründe in der Klasse.'));
@@ -273,17 +322,26 @@ function drawWork() {
     return;
   }
   const s=stage();
+  if (current.mode==='tomSelf') {
+    taskTitle(area,'Ein Vorschlag für Tom selbst');
+    area.append(el('p','response',s.selfAnswer),el('p','preview',s.selfAdvice));
+    area.append(button('Nachricht senden',()=>{
+      changeHistory(()=>say('team',s.selfAdvice));
+      nextStage();
+    },'primary','send'));
+    return;
+  }
   if (current.mode==='reply') {
     taskTitle(area,current.person+' antwortet');
     area.append(el('p','response',forLevel(s.replies[code()])));
+    const prompt=current.revised ? 'Bleibt ihr dabei oder zieht ihr den Vorschlag zurück?' : 'Bleibt ihr bei eurem Vorschlag oder ändert ihr ihn?';
+    area.append(el('p','',prompt+' Sagt euch kurz, warum.'));
+    if (s.id==='L0') area.append(el('p','paper-note','Stimmt in der Klasse über euren ersten Rat ab.'));
     const row=el('div','row');
-    const last=current.index===stages().length-1;
-    if (s.id==='L0') area.append(el('p','paper-note','Stimmt jetzt in der Klasse über euren ersten Vorschlag ab.'));
-    row.append(button(last?'Fall abschließen':'Nächste Nachricht',nextStage,'primary','next'));
-    if (!current.revised) row.append(button('Vorschlag ändern',()=>{
-      Object.assign(current,{mode:'choose',revised:true,selected:'',additional:'',combined:false,help:0});
-      drawWork();focusTask();
-    },'outline'));
+    row.append(button('Vorschlag beibehalten',()=>decideProposal(true),'outline'));
+    if (current.revised) {
+      row.append(button('Vorschlag zurückziehen',()=>decideProposal(false),'outline'));
+    } else row.append(button('Vorschlag ändern',reviseProposal,'outline'));
     area.append(row);
     addTools(area);
     return;
@@ -359,8 +417,9 @@ function resume() {
   else home();
 }
 const sections=['Wirkung','Anwendung','Mögliche Nachteile','Blutung und Schmerzen','Infektionsschutz'];
-for (const [name,...facts] of Object.values(FALLAKTE.methods)) {
+for (const [id,[name,...facts]] of Object.entries(FALLAKTE.methods)) {
   const d=el('details');
+  d.id='card-'+id;
   const dl=el('dl');
   facts.forEach((fact,i)=>dl.append(el('dt','',sections[i]),el('dd','',fact)));
   d.append(el('summary','',name),dl);

@@ -35,10 +35,10 @@ const FALLAKTE = {
           ]
         },
         "task": {
-          "Foerder": "Auf dem Laufzettel: Notiere deinen ersten Vorschlag und einen Grund.",
-          "ESA": "Auf dem Laufzettel: Notiere deinen ersten Vorschlag und einen Grund.",
-          "MSA": "Auf dem Laufzettel: Notiere deine erste Empfehlung mit einem Grund aus dem Fall.",
-          "AHR": "Auf dem Laufzettel: Notiere eine erste Empfehlung. Begründe sie mit Lauras bisherigem Ziel."
+          "Foerder": "Fülle auf deinem Laufzettel „Mein erster Rat“ aus. Schreibe deinen Rat und einen Grund auf.",
+          "ESA": "Fülle auf deinem Laufzettel „Mein erster Rat“ aus. Schreibe deinen Rat und einen Grund auf.",
+          "MSA": "Fülle auf deinem Laufzettel „Mein erster Rat“ aus. Schreibe deinen Rat und einen Grund auf.",
+          "AHR": "Fülle auf deinem Laufzettel „Mein erster Rat“ aus. Schreibe deinen Rat und einen Grund auf."
         },
         "options": {
           "K": "Wir schlagen dir ein Kondom vor.",
@@ -60,31 +60,31 @@ const FALLAKTE = {
         },
         "hints": {
           "K": [
-            "Lies auf der Karte „Kondom“ den Abschnitt „Infektionsschutz“.",
+            "Karte „Kondom“, Abschnitt „Infektionsschutz“. Welches Risiko wird kleiner?",
             "Kondome senken das Risiko vieler Infektionen. Ganz ausschließen können sie es nicht."
           ],
           "P": [
-            "Lies auf der Karte „Kombinationspille“ den Abschnitt „Infektionsschutz“.",
+            "Karte „Kombinationspille“, Abschnitt „Infektionsschutz“. Hilft die Pille gegen Infektionen?",
             "Die Kombinationspille allein schützt nicht vor sexuell übertragbaren Infektionen."
           ],
           "Cu": [
-            "Lies auf der Karte „Kupferspirale“ den Abschnitt „Infektionsschutz“.",
+            "Karte „Kupferspirale“, Abschnitt „Infektionsschutz“. Hilft die Kupferspirale gegen Infektionen?",
             "Die Kupferspirale allein schützt nicht vor sexuell übertragbaren Infektionen."
           ],
           "H": [
-            "Lies auf der Karte „Hormonspirale“ den Abschnitt „Infektionsschutz“.",
+            "Karte „Hormonspirale“, Abschnitt „Infektionsschutz“. Hilft die Hormonspirale gegen Infektionen?",
             "Die Hormonspirale allein schützt nicht vor sexuell übertragbaren Infektionen."
           ],
           "K+P": [
-            "Lies auf der Karte „Kombinationspille“ den Abschnitt „Infektionsschutz“.",
+            "Karte „Kombinationspille“, Abschnitt „Infektionsschutz“. Hilft die Pille gegen Infektionen?",
             "Die Kombinationspille allein schützt nicht vor sexuell übertragbaren Infektionen. Das Kondom in eurem Vorschlag senkt das Risiko vieler Infektionen."
           ],
           "K+Cu": [
-            "Lies auf der Karte „Kupferspirale“ den Abschnitt „Infektionsschutz“.",
+            "Karte „Kupferspirale“, Abschnitt „Infektionsschutz“. Hilft die Kupferspirale gegen Infektionen?",
             "Die Kupferspirale allein schützt nicht vor sexuell übertragbaren Infektionen. Das Kondom in eurem Vorschlag senkt das Risiko vieler Infektionen."
           ],
           "K+H": [
-            "Lies auf der Karte „Hormonspirale“ den Abschnitt „Infektionsschutz“.",
+            "Karte „Hormonspirale“, Abschnitt „Infektionsschutz“. Hilft die Hormonspirale gegen Infektionen?",
             "Die Hormonspirale allein schützt nicht vor sexuell übertragbaren Infektionen. Das Kondom in eurem Vorschlag senkt das Risiko vieler Infektionen."
           ]
         },
@@ -100,7 +100,7 @@ const FALLAKTE = {
           ]
         ],
         "helpBefore": [
-          "Lies Lauras erste Frage. Wovor will sie sich schützen?",
+          "Lies im Chat „Infektionsschutz“. Wovor möchte sie sich schützen?",
           "Sie fragt nach Infektionen, die beim Sex übertragen werden."
         ]
       },
@@ -155,31 +155,31 @@ const FALLAKTE = {
         },
         "hints": {
           "K": [
-            "Lies auf der Kondom-Karte „Anwendung“. Wann braucht man es?",
+            "Karte „Kondom“, Abschnitt „Anwendung“. Wann braucht man ein neues Kondom?",
             "Ein Kondom braucht man bei jedem Sex neu. Es muss von Anfang an richtig sitzen."
           ],
           "P": [
-            "Lies auf der Pillen-Karte „Anwendung“. Wie oft wird sie genommen?",
+            "Karte „Kombinationspille“, Abschnitt „Anwendung“. Wie oft muss man an die Pille denken?",
             "Die Pille braucht regelmäßige Einnahme. Einnahmefehler können den Schutz verringern."
           ],
           "Cu": [
-            "Lies auf der Kupferspiralen-Karte „Anwendung“. Wer setzt sie ein?",
+            "Karte „Kupferspirale“, Abschnitt „Anwendung“. Wer setzt die Spirale ein?",
             "Eine Ärztin oder ein Arzt setzt sie ein. Es gibt keine tägliche Einnahme. Kontrollen bleiben wichtig."
           ],
           "H": [
-            "Lies auf der Hormonspiralen-Karte „Anwendung“. Was entfällt im Alltag?",
+            "Karte „Hormonspirale“, Abschnitt „Anwendung“. Muss man jeden Tag daran denken?",
             "Es gibt keine tägliche Einnahme. Die Spirale wird ärztlich eingesetzt und kontrolliert."
           ],
           "K+P": [
-            "Lies auf der Pillen-Karte „Anwendung“. Wie oft wird sie genommen?",
+            "Karte „Kombinationspille“, Abschnitt „Anwendung“. Wie oft muss man an die Pille denken?",
             "Die Pille braucht regelmäßige Einnahme. Einnahmefehler können den Schutz verringern."
           ],
           "K+Cu": [
-            "Lies auf der Kupferspiralen-Karte „Anwendung“. Wer setzt sie ein?",
+            "Karte „Kupferspirale“, Abschnitt „Anwendung“. Wer setzt die Spirale ein?",
             "Eine Ärztin oder ein Arzt setzt sie ein. Es gibt keine tägliche Einnahme. Kontrollen bleiben wichtig."
           ],
           "K+H": [
-            "Lies auf der Hormonspiralen-Karte „Anwendung“. Was entfällt im Alltag?",
+            "Karte „Hormonspirale“, Abschnitt „Anwendung“. Muss man jeden Tag daran denken?",
             "Es gibt keine tägliche Einnahme. Die Spirale wird ärztlich eingesetzt und kontrolliert."
           ]
         },
@@ -195,7 +195,7 @@ const FALLAKTE = {
           ]
         ],
         "helpBefore": [
-          "Lies Lauras Nachricht über ihren Tag. Was vergisst sie leicht?",
+          "Lies im Chat „Schutz im Alltag“. Was vergisst sie leicht?",
           "Eine feste Zeit ist für Laura schwierig. Vergleiche, wann man die Methoden anwendet."
         ]
       },
@@ -234,8 +234,8 @@ const FALLAKTE = {
         },
         "hints": {
           "DONE": [
-            "Lies auf der Pillen-Karte „Mögliche Nachteile“. Steht dort „immer“ oder „kann“?",
-            "Übelkeit ist möglich. Aus der Erfahrung einer Freundin folgt nicht, dass Laura dieselbe Nebenwirkung bekommt."
+            "Karte „Kombinationspille“, Abschnitt „Mögliche Nachteile“. Welche Nebenwirkung steht dort?",
+            "Manchen Menschen wird übel. Ob das bei Laura so wäre, weiß niemand."
           ]
         },
         "title": "Die Erfahrung einer Freundin",
@@ -302,31 +302,31 @@ const FALLAKTE = {
         },
         "hints": {
           "K": [
-            "Lies Lauras Nachricht „Die Pille möchte ich nicht nehmen“. Enthält dein Vorschlag eine Pille?",
-            "Ein Nein zur Pille ist kein Nein zum Kondom. Vergleiche danach die weiteren Wünsche."
+            "Karte „Kondom“, Abschnitt „Anwendung“. Wann braucht man ein neues Kondom?",
+            "Ein Kondom enthält keine Pille. Es muss bei jedem Sex richtig benutzt werden."
           ],
           "P": [
-            "Lies Lauras Nachricht zur Pille noch einmal.",
-            "Laura lehnt die Pille ab. Eine andere Person darf diese Entscheidung nicht für sie aufheben."
+            "Karte „Kombinationspille“, Abschnitt „Anwendung“. Wie oft muss man an die Pille denken? Denk an Lauras Nein.",
+            "Die Pille muss regelmäßig genommen werden. Laura hat zur Pille Nein gesagt."
           ],
           "Cu": [
-            "Lies Lauras Nachricht zum Einsetzen. Hat sie schon Nein gesagt?",
+            "Karte „Kupferspirale“, Abschnitt „Anwendung“. Wer setzt die Spirale ein?",
             "Laura ist bei einer Spirale noch unsicher. Das ist weder eine Zustimmung noch eine feste Ablehnung."
           ],
           "H": [
-            "Lies Lauras Nachricht zu anderen Hormonen. Was ist noch offen?",
+            "Karte „Hormonspirale“, Abschnitt „Anwendung“. Muss man jeden Tag daran denken?",
             "Laura lehnt die Pille ab, aber nicht automatisch alle Hormone. Über die Spirale entscheidet sie nach Beratung."
           ],
           "K+P": [
-            "Lies Lauras Nachricht zur Pille noch einmal.",
-            "Laura lehnt die Pille ab. Eine andere Person darf diese Entscheidung nicht für sie aufheben."
+            "Karte „Kombinationspille“, Abschnitt „Anwendung“. Wie oft muss man an die Pille denken? Denk an Lauras Nein.",
+            "Die Pille muss regelmäßig genommen werden. Laura hat zur Pille Nein gesagt."
           ],
           "K+Cu": [
-            "Lies Lauras Nachricht zum Einsetzen. Hat sie schon Nein gesagt?",
+            "Karte „Kupferspirale“, Abschnitt „Anwendung“. Wer setzt die Spirale ein?",
             "Laura ist bei einer Spirale noch unsicher. Das ist weder eine Zustimmung noch eine feste Ablehnung."
           ],
           "K+H": [
-            "Lies Lauras Nachricht zu anderen Hormonen. Was ist noch offen?",
+            "Karte „Hormonspirale“, Abschnitt „Anwendung“. Muss man jeden Tag daran denken?",
             "Laura lehnt die Pille ab, aber nicht automatisch alle Hormone. Über die Spirale entscheidet sie nach Beratung."
           ]
         },
@@ -342,9 +342,12 @@ const FALLAKTE = {
           ]
         ],
         "helpBefore": [
-          "Lies Lauras Satz über die Pille. Wozu sagt sie Nein?",
+          "Lies im Chat „Lauras Entscheidung“. Wozu sagt sie Nein?",
           "Laura sagt Nein zur Pille. Bei der Spirale hat sie noch Fragen."
-        ]
+        ],
+        "declined": {
+          "P": "Die Pille möchte ich nicht nehmen. Mein Nein gilt auch bei einer Kombination."
+        }
       },
       {
         "id": "L4",
@@ -399,32 +402,32 @@ const FALLAKTE = {
         },
         "hints": {
           "K": [
-            "Lies auf der Kondom-Karte „Blutung und Schmerzen“.",
+            "Karte „Kondom“, Abschnitt „Blutung und Schmerzen“. Ändert sich die Periode?",
             "Das Kondom behandelt keine Regelschmerzen. Starke Schmerzen sollen ärztlich geklärt werden."
           ],
           "P": [
-            "Lies die Pillen-Karte: „Blutung und Schmerzen“. Lies dann Lauras Nein zur Pille.",
-            "Die Pille kann Beschwerden verringern. Das erlaubt aber nicht, Lauras Nein zu übergehen."
+            "Karte „Kombinationspille“, Abschnitt „Blutung und Schmerzen“. Was kann sich bei der Blutung ändern?",
+            "Die Pille kann Schmerzen lindern. Laura will die Pille trotzdem nicht."
           ],
           "Cu": [
-            "Lies auf der Kupferspiralen-Karte „Blutung und Schmerzen“. Können sie stärker werden?",
+            "Karte „Kupferspirale“, Abschnitt „Blutung und Schmerzen“. Können die Schmerzen stärker werden?",
             "Mit einer Kupferspirale können Blutungen und Schmerzen zunehmen. Prüfe, wie wichtig das für Laura ist."
           ],
           "H": [
-            "Lies auf der Hormonspiralen-Karte „Blutung und Schmerzen“. Ist eine Wirkung garantiert?",
-            "Blutungen und Schmerzen können geringer werden. Das ist keine Garantie. Die medizinische Eignung muss geklärt werden."
+            "Karte „Hormonspirale“, Abschnitt „Blutung und Schmerzen“. Wie kann sich die Periode ändern?",
+            "Die Blutung kann schwächer werden. Schmerzen können nachlassen. Ob die Spirale für Laura passt, klärt sie in der Praxis."
           ],
           "K+P": [
-            "Lies die Pillen-Karte: „Blutung und Schmerzen“. Lies dann Lauras Nein zur Pille.",
-            "Die Pille kann Beschwerden verringern. Das erlaubt aber nicht, Lauras Nein zu übergehen."
+            "Karte „Kombinationspille“, Abschnitt „Blutung und Schmerzen“. Was kann sich bei der Blutung ändern?",
+            "Die Pille kann Schmerzen lindern. Laura will die Pille trotzdem nicht."
           ],
           "K+Cu": [
-            "Lies auf der Kupferspiralen-Karte „Blutung und Schmerzen“. Können sie stärker werden?",
+            "Karte „Kupferspirale“, Abschnitt „Blutung und Schmerzen“. Können die Schmerzen stärker werden?",
             "Mit einer Kupferspirale können Blutungen und Schmerzen zunehmen. Prüfe, wie wichtig das für Laura ist."
           ],
           "K+H": [
-            "Lies auf der Hormonspiralen-Karte „Blutung und Schmerzen“. Ist eine Wirkung garantiert?",
-            "Blutungen und Schmerzen können geringer werden. Das ist keine Garantie. Die medizinische Eignung muss geklärt werden."
+            "Karte „Hormonspirale“, Abschnitt „Blutung und Schmerzen“. Wie kann sich die Periode ändern?",
+            "Die Blutung kann schwächer werden. Schmerzen können nachlassen. Ob die Spirale für Laura passt, klärt sie in der Praxis."
           ]
         },
         "title": "Regelschmerzen",
@@ -439,9 +442,12 @@ const FALLAKTE = {
           ]
         ],
         "helpBefore": [
-          "Lies die Stelle über Schmerzen auf den Spiralen-Karten.",
+          "Lies im Chat „Regelschmerzen“. Was tut ihr weh?",
           "Blutungen und Schmerzen können sich je nach Spirale anders verändern."
-        ]
+        ],
+        "declined": {
+          "P": "Die Pille möchte ich nicht nehmen. Mein Nein gilt auch bei einer Kombination."
+        }
       },
       {
         "id": "L5",
@@ -494,31 +500,31 @@ const FALLAKTE = {
         },
         "hints": {
           "K": [
-            "Lies auf der Kondom-Karte „Infektionsschutz“.",
+            "Karte „Kondom“, Abschnitt „Infektionsschutz“. Welches Risiko wird kleiner?",
             "Kondome verringern das Risiko vieler Infektionen beim Sex. Vollständigen Schutz vor allen Infektionen bieten sie nicht."
           ],
           "P": [
-            "Lies auf der Pillen-Karte „Infektionsschutz“.",
+            "Karte „Kombinationspille“, Abschnitt „Infektionsschutz“. Hilft die Pille gegen Infektionen?",
             "Die Pille schützt nicht vor Infektionen beim Sex."
           ],
           "Cu": [
-            "Lies auf der Kupferspiralen-Karte „Infektionsschutz“.",
+            "Karte „Kupferspirale“, Abschnitt „Infektionsschutz“. Hilft die Kupferspirale gegen Infektionen?",
             "Die Kupferspirale schützt nicht vor Infektionen beim Sex."
           ],
           "H": [
-            "Lies auf der Hormonspiralen-Karte „Infektionsschutz“.",
+            "Karte „Hormonspirale“, Abschnitt „Infektionsschutz“. Hilft die Hormonspirale gegen Infektionen?",
             "Die Hormonspirale schützt nicht vor Infektionen beim Sex."
           ],
           "K+P": [
-            "Lies auf beiden gewählten Karten „Infektionsschutz“. Welche Methode übernimmt diese Aufgabe?",
+            "Karte „Kombinationspille“, Abschnitt „Infektionsschutz“. Hilft die Pille gegen Infektionen?",
             "Das Kondom im Vorschlag senkt das Risiko vieler Infektionen beim Sex. Die andere Methode schützt davor nicht."
           ],
           "K+Cu": [
-            "Lies auf beiden gewählten Karten „Infektionsschutz“. Welche Methode übernimmt diese Aufgabe?",
+            "Karte „Kupferspirale“, Abschnitt „Infektionsschutz“. Hilft die Kupferspirale gegen Infektionen?",
             "Das Kondom im Vorschlag senkt das Risiko vieler Infektionen beim Sex. Die andere Methode schützt davor nicht."
           ],
           "K+H": [
-            "Lies auf beiden gewählten Karten „Infektionsschutz“. Welche Methode übernimmt diese Aufgabe?",
+            "Karte „Hormonspirale“, Abschnitt „Infektionsschutz“. Hilft die Hormonspirale gegen Infektionen?",
             "Das Kondom im Vorschlag senkt das Risiko vieler Infektionen beim Sex. Die andere Methode schützt davor nicht."
           ]
         },
@@ -534,9 +540,12 @@ const FALLAKTE = {
           ]
         ],
         "helpBefore": [
-          "Lies auf zwei Karten den Abschnitt „Infektionsschutz“.",
+          "Lies im Chat „Zwei Schutzziele“. Welche zwei Dinge sind ihr wichtig?",
           "Schutz vor Schwangerschaft und Schutz vor Infektionen sind zwei verschiedene Ziele."
-        ]
+        ],
+        "declined": {
+          "P": "Die Pille möchte ich nicht nehmen. Mein Nein gilt auch bei einer Kombination."
+        }
       },
       {
         "id": "L6",
@@ -564,10 +573,10 @@ const FALLAKTE = {
           ]
         },
         "task": {
-          "Foerder": "Vergleiche zwei Vorschläge. Was passt für Laura? Was spricht dagegen?",
-          "ESA": "Vergleiche zwei Vorschläge. Welcher Grund zählt für Laura am meisten?",
-          "MSA": "Gewichte Schutz und Anwendung. Prüfe deinen Vorschlag an einem Einwand.",
-          "AHR": "Vergleicht zwei akzeptable Strategien. Wann würde sich eure Gewichtung ändern?"
+          "Foerder": "Fülle „Zwei Vorschläge“ auf dem Laufzettel aus. Welcher passt für Laura?",
+          "ESA": "Vergleiche auf dem Laufzettel zwei Vorschläge für Laura. Welcher Wunsch zählt für dich mehr?",
+          "MSA": "Nutze „Zwei Vorschläge“ auf deinem Laufzettel. Gewichte Schutz und Anwendung. Prüfe deinen Vorschlag an einem Einwand.",
+          "AHR": "Nutze „Zwei Vorschläge“ auf deinem Laufzettel. Vergleicht zwei akzeptable Strategien. Wann würde sich eure Gewichtung ändern?"
         },
         "options": {
           "K": "Wir würden dir ein Kondom empfehlen.",
@@ -589,31 +598,31 @@ const FALLAKTE = {
         },
         "hints": {
           "K": [
-            "Lies auf der Kondom-Karte „Anwendung“. Was muss jedes Mal klappen?",
+            "Karte „Kondom“, Abschnitt „Anwendung“. Wann braucht man ein neues Kondom?",
             "Ein Kondom senkt auch das Infektionsrisiko. Falsch benutzt schützt es schlechter."
           ],
           "P": [
-            "Lies im Chat, was Laura über die Pille entschieden hat.",
-            "Laura sagt Nein zur Pille. Auch ein guter Schutz hebt ihr Nein nicht auf."
+            "Karte „Kombinationspille“, Abschnitt „Anwendung“. Wie oft muss man an die Pille denken?",
+            "Die Pille muss regelmäßig genommen werden. Laura hat zur Pille Nein gesagt."
           ],
           "Cu": [
-            "Lies auf der Kupferspiralen-Karte „Blutung und Schmerzen“. Was ist Laura wichtig?",
+            "Karte „Kupferspirale“, Abschnitt „Blutung und Schmerzen“. Können die Schmerzen stärker werden?",
             "Die Periode kann mehr wehtun. Die Kupferspirale schützt nicht vor Infektionen."
           ],
           "H": [
-            "Lies auf der Hormonspiralen-Karte „Anwendung“ und „Infektionsschutz“.",
+            "Karte „Hormonspirale“, Abschnitt „Anwendung“. Muss man jeden Tag daran denken?",
             "Die Hormonspirale wirkt lange. Sie schützt nicht vor Infektionen. Laura hat der Einlage noch nicht zugestimmt."
           ],
           "K+P": [
-            "Lies Lauras Nachricht zur Pille. Was steckt in deinem Vorschlag?",
-            "Das Kondom senkt das Infektionsrisiko. Die Pille hat Laura abgelehnt."
+            "Karte „Kombinationspille“, Abschnitt „Anwendung“. Wie oft muss man an die Pille denken?",
+            "Die Pille muss regelmäßig genommen werden. Laura hat zur Pille Nein gesagt."
           ],
           "K+Cu": [
-            "Lies auf der Kupferspiralen-Karte die Stelle zur Periode. Vergleiche mit Lauras Wunsch.",
+            "Karte „Kupferspirale“, Abschnitt „Blutung und Schmerzen“. Können die Schmerzen stärker werden?",
             "Das Kondom senkt das Infektionsrisiko. Die Kupferspirale kann Schmerzen verstärken."
           ],
           "K+H": [
-            "Lies auf der Hormonspiralen-Karte „Anwendung“. Was muss Laura noch klären?",
+            "Karte „Hormonspirale“, Abschnitt „Anwendung“. Muss man jeden Tag daran denken?",
             "Das Kondom senkt das Infektionsrisiko. Die Hormonspirale wirkt lange. Vor der Einlage braucht Laura Beratung."
           ]
         },
@@ -629,9 +638,12 @@ const FALLAKTE = {
           ]
         ],
         "helpBefore": [
-          "Suche im Chat Lauras Nein und einen Wunsch.",
+          "Lies im Chat „Dein Rat an Laura“. Wer soll am Ende entscheiden?",
           "Ein Kondom wäre für sie möglich. Über eine Spirale möchte sie erst mehr wissen."
-        ]
+        ],
+        "declined": {
+          "P": "Die Pille möchte ich nicht nehmen. Mein Nein gilt auch bei einer Kombination."
+        }
       }
     ],
     "Celina": [
@@ -683,31 +695,31 @@ const FALLAKTE = {
         },
         "hints": {
           "K": [
-            "Lies auf der Kondom-Karte „Mögliche Nachteile“.",
+            "Karte „Kondom“, Abschnitt „Wirkung“. Enthält das Kondom Hormone?",
             "Das Kondom enthält keine Hormone. Die richtige Anwendung ist für den Schutz wichtig."
           ],
           "P": [
-            "Lies auf der Karte „Kombinationspille“ die Stelle zur Wirkung.",
+            "Karte „Kombinationspille“, Abschnitt „Wirkung“. Enthält die Pille Hormone?",
             "Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone."
           ],
           "Cu": [
-            "Lies auf der Kupferspiralen-Karte „Mögliche Nachteile“.",
+            "Karte „Kupferspirale“, Abschnitt „Wirkung“. Enthält die Spirale Hormone?",
             "Ohne Hormone bedeutet nicht ohne mögliche Nachteile. Blutungen und Schmerzen können stärker werden."
           ],
           "H": [
-            "Lies auf der Karte „Hormonspirale“ die Stelle zur Wirkung.",
+            "Karte „Hormonspirale“, Abschnitt „Wirkung“. Enthält die Spirale Hormone?",
             "Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone."
           ],
           "K+P": [
-            "Lies auf der Karte „Kombinationspille“ die Stelle zur Wirkung.",
+            "Karte „Kombinationspille“, Abschnitt „Wirkung“. Enthält die Pille Hormone?",
             "Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone."
           ],
           "K+Cu": [
-            "Lies auf der Kupferspiralen-Karte „Mögliche Nachteile“.",
+            "Karte „Kupferspirale“, Abschnitt „Wirkung“. Enthält die Spirale Hormone?",
             "Ohne Hormone bedeutet nicht ohne mögliche Nachteile. Blutungen und Schmerzen können stärker werden."
           ],
           "K+H": [
-            "Lies auf der Karte „Hormonspirale“ die Stelle zur Wirkung.",
+            "Karte „Hormonspirale“, Abschnitt „Wirkung“. Enthält die Spirale Hormone?",
             "Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone."
           ]
         },
@@ -723,9 +735,13 @@ const FALLAKTE = {
           ]
         ],
         "helpBefore": [
-          "Lies Celinas ersten Wunsch. Schau auf der Karte unter „Wirkung“ nach.",
+          "Lies im Chat „Ohne zusätzliche Hormone“. Was möchte sie vermeiden?",
           "Celina möchte ohne zusätzliche Hormone verhüten."
-        ]
+        ],
+        "declined": {
+          "P": "Die Pille enthält Hormone. Deshalb kommt sie für mich nicht infrage.",
+          "H": "Ich möchte keine zusätzlichen Hormone. Deshalb möchte ich auch die Hormonspirale nicht."
+        }
       },
       {
         "id": "C1",
@@ -775,31 +791,31 @@ const FALLAKTE = {
         },
         "hints": {
           "K": [
-            "Lies auf der Kondom-Karte „Anwendung“. Wann braucht man es?",
+            "Karte „Kondom“, Abschnitt „Anwendung“. Wann braucht man ein neues Kondom?",
             "Das Kondom wird bei jedem Sex neu und richtig verwendet. Es ist keine tägliche Tablette."
           ],
           "P": [
-            "Lies auf der Karte „Kombinationspille“ die Stelle zur Wirkung.",
+            "Karte „Kombinationspille“, Abschnitt „Wirkung“. Enthält die Pille Hormone?",
             "Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone."
           ],
           "Cu": [
-            "Lies auf der Kupferspiralen-Karte „Anwendung“. Wer setzt sie ein?",
+            "Karte „Kupferspirale“, Abschnitt „Anwendung“. Wer setzt die Spirale ein?",
             "Eine Ärztin oder ein Arzt setzt sie ein. Es gibt keine tägliche Einnahme. Kontrollen bleiben wichtig."
           ],
           "H": [
-            "Lies auf der Karte „Hormonspirale“ die Stelle zur Wirkung.",
+            "Karte „Hormonspirale“, Abschnitt „Wirkung“. Enthält die Spirale Hormone?",
             "Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone."
           ],
           "K+P": [
-            "Lies auf der Karte „Kombinationspille“ die Stelle zur Wirkung.",
+            "Karte „Kombinationspille“, Abschnitt „Wirkung“. Enthält die Pille Hormone?",
             "Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone."
           ],
           "K+Cu": [
-            "Lies auf der Kupferspiralen-Karte „Anwendung“. Wer setzt sie ein?",
+            "Karte „Kupferspirale“, Abschnitt „Anwendung“. Wer setzt die Spirale ein?",
             "Eine Ärztin oder ein Arzt setzt sie ein. Es gibt keine tägliche Einnahme. Kontrollen bleiben wichtig."
           ],
           "K+H": [
-            "Lies auf der Karte „Hormonspirale“ die Stelle zur Wirkung.",
+            "Karte „Hormonspirale“, Abschnitt „Wirkung“. Enthält die Spirale Hormone?",
             "Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone."
           ]
         },
@@ -815,9 +831,13 @@ const FALLAKTE = {
           ]
         ],
         "helpBefore": [
-          "Lies auf der Karte „Anwendung“. Wann muss Celina daran denken?",
+          "Lies im Chat „Schutz über längere Zeit“. Wann wäre eine Methode für sie praktisch?",
           "Eine Spirale bleibt längere Zeit im Körper. Ein Kondom braucht man bei jedem Sex neu."
-        ]
+        ],
+        "declined": {
+          "P": "Die Pille enthält Hormone. Deshalb kommt sie für mich nicht infrage.",
+          "H": "Ich möchte keine zusätzlichen Hormone. Deshalb möchte ich auch die Hormonspirale nicht."
+        }
       },
       {
         "id": "C2",
@@ -867,31 +887,31 @@ const FALLAKTE = {
         },
         "hints": {
           "K": [
-            "Lies auf der Kupferspiralen-Karte „Mögliche Nachteile“. Vergleiche mit dem Kondom.",
-            "Eine Kupferspirale muss eingesetzt werden. Blutungen und Schmerzen können zunehmen. Ein Kondom braucht keine Einlage. Vergleiche auch die Sicherheit."
+            "Karte „Kondom“, Abschnitt „Mögliche Nachteile“. Was kann bei der Anwendung passieren?",
+            "Ein Kondom wird nicht eingesetzt. Es muss jedes Mal richtig sitzen."
           ],
           "P": [
-            "Lies auf der Karte „Kombinationspille“ die Stelle zur Wirkung.",
+            "Karte „Kombinationspille“, Abschnitt „Wirkung“. Enthält die Pille Hormone?",
             "Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone."
           ],
           "Cu": [
-            "Lies auf der Kupferspiralen-Karte „Mögliche Nachteile“. Vergleiche mit dem Kondom.",
+            "Karte „Kupferspirale“, Abschnitt „Mögliche Nachteile“. Was kann beim Einsetzen wehtun?",
             "Eine Kupferspirale muss eingesetzt werden. Blutungen und Schmerzen können zunehmen. Ein Kondom braucht keine Einlage. Vergleiche auch die Sicherheit."
           ],
           "H": [
-            "Lies auf der Karte „Hormonspirale“ die Stelle zur Wirkung.",
+            "Karte „Hormonspirale“, Abschnitt „Wirkung“. Enthält die Spirale Hormone?",
             "Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone."
           ],
           "K+P": [
-            "Lies auf der Karte „Kombinationspille“ die Stelle zur Wirkung.",
+            "Karte „Kombinationspille“, Abschnitt „Wirkung“. Enthält die Pille Hormone?",
             "Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone."
           ],
           "K+Cu": [
-            "Lies auf der Kupferspiralen-Karte „Mögliche Nachteile“. Vergleiche mit dem Kondom.",
+            "Karte „Kupferspirale“, Abschnitt „Mögliche Nachteile“. Was kann beim Einsetzen wehtun?",
             "Eine Kupferspirale muss eingesetzt werden. Blutungen und Schmerzen können zunehmen. Ein Kondom braucht keine Einlage. Vergleiche auch die Sicherheit."
           ],
           "K+H": [
-            "Lies auf der Karte „Hormonspirale“ die Stelle zur Wirkung.",
+            "Karte „Hormonspirale“, Abschnitt „Wirkung“. Enthält die Spirale Hormone?",
             "Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone."
           ]
         },
@@ -907,9 +927,13 @@ const FALLAKTE = {
           ]
         ],
         "helpBefore": [
-          "Lies Celinas Satz über das Einsetzen.",
+          "Lies im Chat „Sorge vor dem Einsetzen“. Was macht ihr Sorgen?",
           "Celina hat Angst vor der Einlage. Sie hat noch nicht Nein gesagt."
-        ]
+        ],
+        "declined": {
+          "P": "Die Pille enthält Hormone. Deshalb kommt sie für mich nicht infrage.",
+          "H": "Ich möchte keine zusätzlichen Hormone. Deshalb möchte ich auch die Hormonspirale nicht."
+        }
       },
       {
         "id": "C3",
@@ -952,38 +976,38 @@ const FALLAKTE = {
           "K": "Erklärt bitte auch, welche Grenzen das Kondom hat.",
           "P": "Die Pille möchte ich nicht. Und meine Frage zum Infektionsschutz ist damit noch offen.",
           "Cu": "Was ist bei eurem Vorschlag mit meinem Wunsch nach Infektionsschutz?",
-          "H": "Die Hormonspirale enthält Hormone. Auch den Infektionsschutz müsst ihr getrennt prüfen.",
+          "H": "Die Hormonspirale möchte ich wegen der Hormone nicht. Und wie wäre das mit dem Schutz vor Infektionen?",
           "K+P": "Das Kondom ist möglich. Die Pille ist für mich weiter keine Option.",
           "K+Cu": "Erklärt, welche Aufgabe jeder Teil übernimmt. Meine Zustimmung zur Spirale ist noch offen.",
           "K+H": "Das Kondom ist möglich. Die Hormonspirale möchte ich aber nicht."
         },
         "hints": {
           "K": [
-            "Lies auf der Kondom-Karte „Infektionsschutz“.",
+            "Karte „Kondom“, Abschnitt „Infektionsschutz“. Welches Risiko wird kleiner?",
             "Kondome verringern das Risiko vieler Infektionen beim Sex. Vollständigen Schutz vor allen Infektionen bieten sie nicht."
           ],
           "P": [
-            "Lies auf der Karte „Kombinationspille“ die Stelle zur Wirkung.",
+            "Karte „Kombinationspille“, Abschnitt „Wirkung“. Enthält die Pille Hormone?",
             "Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone."
           ],
           "Cu": [
-            "Lies auf der Kupferspiralen-Karte „Infektionsschutz“.",
+            "Karte „Kupferspirale“, Abschnitt „Infektionsschutz“. Hilft die Kupferspirale gegen Infektionen?",
             "Die Kupferspirale schützt nicht vor Infektionen beim Sex."
           ],
           "H": [
-            "Lies auf der Karte „Hormonspirale“ die Stelle zur Wirkung.",
+            "Karte „Hormonspirale“, Abschnitt „Wirkung“. Enthält die Spirale Hormone?",
             "Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone."
           ],
           "K+P": [
-            "Lies auf der Karte „Kombinationspille“ die Stelle zur Wirkung.",
+            "Karte „Kombinationspille“, Abschnitt „Wirkung“. Enthält die Pille Hormone?",
             "Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone."
           ],
           "K+Cu": [
-            "Lies auf beiden gewählten Karten „Infektionsschutz“. Welche Methode übernimmt diese Aufgabe?",
+            "Karte „Kupferspirale“, Abschnitt „Infektionsschutz“. Hilft die Kupferspirale gegen Infektionen?",
             "Das Kondom im Vorschlag senkt das Risiko vieler Infektionen beim Sex. Die andere Methode schützt davor nicht."
           ],
           "K+H": [
-            "Lies auf der Karte „Hormonspirale“ die Stelle zur Wirkung.",
+            "Karte „Hormonspirale“, Abschnitt „Wirkung“. Enthält die Spirale Hormone?",
             "Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone."
           ]
         },
@@ -999,9 +1023,13 @@ const FALLAKTE = {
           ]
         ],
         "helpBefore": [
-          "Lies auf deiner Karte „Infektionsschutz“.",
+          "Lies im Chat „Schutz in der Beziehung“. Wovor möchte sie sich jetzt auch schützen?",
           "Vertrauen sagt nichts Sicheres über eine Infektion aus."
-        ]
+        ],
+        "declined": {
+          "P": "Die Pille enthält Hormone. Deshalb kommt sie für mich nicht infrage.",
+          "H": "Ich möchte keine zusätzlichen Hormone. Deshalb möchte ich auch die Hormonspirale nicht."
+        }
       },
       {
         "id": "C4",
@@ -1051,31 +1079,31 @@ const FALLAKTE = {
         },
         "hints": {
           "K": [
-            "Lies auf der Kondom-Karte „Anwendung“. Was muss jedes Mal klappen?",
+            "Karte „Kondom“, Abschnitt „Anwendung“. Wann braucht man ein neues Kondom?",
             "Ein Kondom enthält keine Hormone. Beide müssen jedes Mal daran denken."
           ],
           "P": [
-            "Lies auf der Karte „Kombinationspille“ die Stelle zur Wirkung.",
+            "Karte „Kombinationspille“, Abschnitt „Wirkung“. Enthält die Pille Hormone?",
             "Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone."
           ],
           "Cu": [
-            "Lies Celinas Nachricht über das Einsetzen. Was ist noch offen?",
+            "Karte „Kupferspirale“, Abschnitt „Anwendung“. Wer setzt die Spirale ein?",
             "Die Kupferspirale wirkt lange ohne Hormone. Celina möchte sich erst beraten lassen."
           ],
           "H": [
-            "Lies auf der Karte „Hormonspirale“ die Stelle zur Wirkung.",
+            "Karte „Hormonspirale“, Abschnitt „Wirkung“. Enthält die Spirale Hormone?",
             "Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone."
           ],
           "K+P": [
-            "Lies auf der Karte „Kombinationspille“ die Stelle zur Wirkung.",
+            "Karte „Kombinationspille“, Abschnitt „Wirkung“. Enthält die Pille Hormone?",
             "Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone."
           ],
           "K+Cu": [
-            "Lies Celinas Nachricht über das Einsetzen. Was ist noch offen?",
+            "Karte „Kupferspirale“, Abschnitt „Anwendung“. Wer setzt die Spirale ein?",
             "Die Kupferspirale wirkt lange ohne Hormone. Celina möchte sich erst beraten lassen."
           ],
           "K+H": [
-            "Lies auf der Karte „Hormonspirale“ die Stelle zur Wirkung.",
+            "Karte „Hormonspirale“, Abschnitt „Wirkung“. Enthält die Spirale Hormone?",
             "Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone."
           ]
         },
@@ -1091,9 +1119,13 @@ const FALLAKTE = {
           ]
         ],
         "helpBefore": [
-          "Lies noch einmal, was Celina zu Hormonen und zum Einsetzen sagt.",
+          "Lies im Chat „Dein Rat an Celina“. Welcher Wunsch gilt noch?",
           "Sie möchte keine Hormone. Über die Spirale entscheidet sie erst nach einer Beratung."
-        ]
+        ],
+        "declined": {
+          "P": "Die Pille enthält Hormone. Deshalb kommt sie für mich nicht infrage.",
+          "H": "Ich möchte keine zusätzlichen Hormone. Deshalb möchte ich auch die Hormonspirale nicht."
+        }
       }
     ],
     "Tom": [
@@ -1136,7 +1168,7 @@ const FALLAKTE = {
           "K+H": "Wir schlagen dir ein Kondom und die Hormonspirale vor."
         },
         "replies": {
-          "K": "Ein Kondom kann ich selbst benutzen. Ich hätte gern noch weitere Möglichkeiten. Dazu habe ich einen Artikel gefunden.",
+          "K": "Ein Kondom kann ich an meinem eigenen Körper benutzen. Das ist mir wichtig.",
           "P": "Diese Pille wirkt auf einen Zyklus mit Eisprung. So einen Zyklus habe ich nicht. Ich suche etwas, das ich selbst anwenden kann.",
           "Cu": "Eine Kupferspirale wird in eine Gebärmutter eingesetzt. Die habe ich nicht. Ich suche eine Methode für mich.",
           "H": "Auch eine Hormonspirale wird in eine Gebärmutter eingesetzt. Die habe ich nicht. Welche Methode kann ich selbst anwenden?",
@@ -1146,32 +1178,32 @@ const FALLAKTE = {
         },
         "hints": {
           "K": [
-            "Lies auf der Karte „Kondom“ den Abschnitt „Anwendung“.",
+            "Karte „Kondom“, Abschnitt „Anwendung“. Wer kann das Kondom am eigenen Körper benutzen?",
             "Ein Kondom benutzt Tom an seinem Penis."
           ],
           "P": [
-            "Lies auf der Karte „Kombinationspille“ den Abschnitt „Anwendung“.",
+            "Karte „Kombinationspille“, Abschnitt „Wirkung“. Was macht die Pille mit dem Eisprung?",
             "Die Kombinationspille hemmt den Eisprung. Tom hat keinen Eisprung."
           ],
           "Cu": [
-            "Lies auf der Karte „Kupferspirale“ den Abschnitt „Anwendung“.",
+            "Karte „Kupferspirale“, Abschnitt „Anwendung“. Wo sitzt die Spirale?",
             "Eine Kupferspirale wird in eine Gebärmutter eingesetzt. Tom hat keine."
           ],
           "H": [
-            "Lies auf der Karte „Hormonspirale“ den Abschnitt „Anwendung“.",
+            "Karte „Hormonspirale“, Abschnitt „Anwendung“. Wo sitzt die Spirale?",
             "Eine Hormonspirale wird in eine Gebärmutter eingesetzt. Tom hat keine."
           ],
           "K+P": [
-            "Lies auf der Karte „Kombinationspille“ den Abschnitt „Anwendung“.",
-            "Die Kombinationspille hemmt den Eisprung. Tom hat keinen Eisprung."
+            "Karte „Kombinationspille“, Abschnitt „Wirkung“. Was macht die Pille mit dem Eisprung?",
+            "Die Kombinationspille hemmt den Eisprung. Tom hat keinen Eisprung. Das Kondom kann er selbst benutzen."
           ],
           "K+Cu": [
-            "Lies auf der Karte „Kupferspirale“ den Abschnitt „Anwendung“.",
-            "Eine Kupferspirale wird in eine Gebärmutter eingesetzt. Tom hat keine."
+            "Karte „Kupferspirale“, Abschnitt „Anwendung“. Wo sitzt die Spirale?",
+            "Eine Kupferspirale wird in eine Gebärmutter eingesetzt. Tom hat keine. Das Kondom kann er selbst benutzen."
           ],
           "K+H": [
-            "Lies auf der Karte „Hormonspirale“ den Abschnitt „Anwendung“.",
-            "Eine Hormonspirale wird in eine Gebärmutter eingesetzt. Tom hat keine."
+            "Karte „Hormonspirale“, Abschnitt „Anwendung“. Wo sitzt die Spirale?",
+            "Eine Hormonspirale wird in eine Gebärmutter eingesetzt. Tom hat keine. Das Kondom kann er selbst benutzen."
           ]
         },
         "title": "Selbst verhüten",
@@ -1186,29 +1218,31 @@ const FALLAKTE = {
           ]
         ],
         "helpBefore": [
-          "Lies auf den Karten „Anwendung“. Wer benutzt die Methode?",
+          "Lies im Chat „Selbst verhüten“. Wer möchte das Mittel benutzen?",
           "Tom fragt nach einer Methode für seinen eigenen Körper."
-        ]
+        ],
+        "selfAdvice": "Für dich selbst schlagen wir ein Kondom vor.",
+        "selfAnswer": "Ein Kondom kann ich selbst benutzen. Was würdet ihr mir für meinen Körper vorschlagen?"
       },
       {
         "id": "T1",
         "type": "article",
         "message": {
           "Foerder": [
-            "Ein Kondom kann ich selbst benutzen. Ich hätte aber gern mehr Auswahl.",
-            "Ich habe dazu einen kurzen Artikel gefunden. Lest ihr mit?"
+            "Ich möchte mehr Auswahl. Gibt es bald noch etwas für mich?",
+            "Ich habe dazu einen Artikel gefunden. Lest mit mir!"
           ],
           "ESA": [
-            "Kondome sind eine Möglichkeit. Trotzdem wünsche ich mir mehr Auswahl.",
-            "Hier ist ein Artikel über neue Mittel. Was kann man daraus schließen?"
+            "Ich hätte gern noch mehr Möglichkeiten, mit denen ich selbst verhüten kann.",
+            "Ich habe einen Artikel über die Forschung gefunden. Lest ihr mit?"
           ],
           "MSA": [
-            "Eine weitere selbst anwendbare Möglichkeit wäre interessant.",
-            "Ich habe einen Artikel über Forschung gefunden. Warum dauert die Entwicklung wohl so lange?"
+            "Ich hätte gern noch mehr Möglichkeiten, mit denen ich selbst verhüten kann.",
+            "Ich habe einen Artikel über die Forschung gefunden. Lest ihr mit?"
           ],
           "AHR": [
-            "Mehr reversible, selbst anwendbare Optionen wären interessant.",
-            "Hier sind ein Artikel und zwei veröffentlichte Studien. Was rechtfertigen die Ergebnisse wirklich?"
+            "Ich hätte gern noch mehr Möglichkeiten, mit denen ich selbst verhüten kann.",
+            "Ich habe einen Artikel über die Forschung gefunden. Lest ihr mit?"
           ]
         },
         "task": {
@@ -1226,19 +1260,19 @@ const FALLAKTE = {
         "hints": {
           "DONE": {
             "Foerder": [
-              "Lies im Artikel die Stelle über die Tests. Was muss ein neues Mittel können?",
-              "Eine Testfrage kann lauten: Verhindert es Schwangerschaften? Welche Nebenwirkungen gibt es? Kehrt die Fruchtbarkeit zurück?"
+              "Lies im Artikel den letzten Absatz. Was muss ein neues Mittel können?",
+              "Es soll Schwangerschaften verhindern. Forschende müssen auch prüfen, ob es der Gesundheit schadet."
             ],
             "ESA": [
-              "Lies im Artikel den Absatz über die Prüfung eines neuen Mittels.",
+              "Lies den dritten Absatz im Artikel. Welche Fragen müssen Tests klären?",
               "Es kann einige Zeit dauern, bis klar ist, ob ein Mittel gut schützt und vertragen wird."
             ],
             "MSA": [
-              "Lies im Artikel den Absatz über die Spermienzahl. Was verrät dieser Messwert?",
+              "Lies im Artikel den Absatz zur Spermienzahl. Was sagt der Messwert über Schwangerschaften aus?",
               "Ein Ergebnis belegt nur das, was mit der beschriebenen Methode untersucht wurde."
             ],
             "AHR": [
-              "Vergleiche Zielgruppe, Vergleichsgruppe, Messgröße und Dauer beider Studien.",
+              "Lies die Kästen zu Studie A und B. Welche Messgröße wurde jeweils erhoben?",
               "In Studie B waren die Teilnehmer bereits vasektomiert. Spermienparameter wurden nicht gemessen. Prüfe, was das für die Behauptung über Schwangerschaftsschutz bedeutet."
             ]
           }
@@ -1267,15 +1301,15 @@ const FALLAKTE = {
             "Welche zusätzliche Information wäre nötig?"
           ],
           "AHR": [
-            "Ein Forschungsergebnis ist nicht automatisch eine Zulassungsempfehlung.",
-            "Welche Grenzen entstehen durch Stichprobe, Beobachtungsdauer und untersuchten Endpunkt?"
+            "Ein Freund meint: „Studie B zeigt schon, dass das Mittel sicher vor einer Schwangerschaft schützt.“",
+            "Was sagen die Ergebnisse wirklich? Welche weitere Untersuchung würdet ihr vorschlagen?"
           ]
         },
         "task": {
-          "Foerder": "Notiere eine Vermutung und eine offene Frage.",
-          "ESA": "Notiere deine Vermutung mit einem Grund aus dem Artikel. Was ist noch offen?",
-          "MSA": "Notiere einen Befund, deine Vermutung und eine offene Frage.",
-          "AHR": "Prüfe die Behauptung „Studie B belegt sicheren Schutz“. Nutze zwei Befunde und zwei Grenzen. Skizziere eine Folgeuntersuchung mit Zielgruppe, Vergleich und Endpunkt."
+          "Foerder": "Auf dem Laufzettel bei Tom: Schreibe deine Idee und eine offene Frage auf.",
+          "ESA": "Auf dem Laufzettel bei Tom: Begründe deine Vermutung mit dem Artikel. Welche Frage bleibt offen?",
+          "MSA": "Auf dem Laufzettel bei Tom: Notiere einen Befund, deine Vermutung und eine offene Frage.",
+          "AHR": "Auf dem Laufzettel bei Tom: Prüfe die Behauptung mit zwei Befunden und zwei Grenzen. Skizziere die nächste Studie."
         },
         "options": {
           "DONE": "Wir haben unsere Überlegungen aufgeschrieben."
@@ -1286,19 +1320,19 @@ const FALLAKTE = {
         "hints": {
           "DONE": {
             "Foerder": [
-              "Lies im Artikel die Stelle über die Tests. Was muss ein neues Mittel können?",
-              "Eine Testfrage kann lauten: Verhindert es Schwangerschaften? Welche Nebenwirkungen gibt es? Kehrt die Fruchtbarkeit zurück?"
+              "Lies den letzten Absatz des Artikels noch einmal. Was würdest du testen?",
+              "Ob ein Mittel gut vertragen wird, ist eine Frage. Ob es eine Schwangerschaft verhindert, ist eine andere."
             ],
             "ESA": [
-              "Lies im Artikel den Absatz über die Prüfung eines neuen Mittels.",
+              "Lies den dritten Absatz im Artikel. Welche Fragen müssen Tests klären?",
               "Es kann einige Zeit dauern, bis klar ist, ob ein Mittel gut schützt und vertragen wird."
             ],
             "MSA": [
-              "Lies im Artikel den Absatz über die Spermienzahl. Was verrät dieser Messwert?",
+              "Lies im Artikel den Absatz zur Spermienzahl. Was sagt der Messwert über Schwangerschaften aus?",
               "Ein Ergebnis belegt nur das, was mit der beschriebenen Methode untersucht wurde."
             ],
             "AHR": [
-              "Vergleiche Zielgruppe, Vergleichsgruppe, Messgröße und Dauer beider Studien.",
+              "Lies die Kästen zu Studie A und B. Welche Messgröße wurde jeweils erhoben?",
               "In Studie B waren die Teilnehmer bereits vasektomiert. Spermienparameter wurden nicht gemessen. Prüfe, was das für die Behauptung über Schwangerschaftsschutz bedeutet."
             ]
           }
@@ -1385,8 +1419,8 @@ const FALLAKTE = {
   "methods": {
     "K": [
       "Kondom",
-      "Hält Sperma auf. So gelangen Spermien bei intaktem Kondom nicht in die Scheide.",
-      "Für jeden Sex ein neues Kondom von Anfang an richtig benutzen.",
+      "Enthält keine Hormone. Das Kondom fängt Sperma auf. Bei intaktem Kondom gelangen so keine Spermien in die Scheide.",
+      "Das Kondom wird vor dem Sex über den steifen Penis gerollt. Jedes Mal ein neues benutzen.",
       "Kann reißen oder abrutschen. Fehler bei der Anwendung mindern den Schutz.",
       "Verändert die Periode nicht.",
       "Senkt das Risiko vieler sexuell übertragbarer Infektionen. Vollständigen Schutz bietet es nicht."

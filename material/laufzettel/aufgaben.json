@@ -1,0 +1,50 @@
+{
+  "Förder": {
+    "anfang": ["Ich schlage vor", "Das hilft Laura, weil"],
+    "vergleich": "Nenne zwei verschiedene Vorschläge. Du darfst zwei Mittel zusammen vorschlagen. Vergleiche mit deinen Karten.",
+    "option": ["Mittel", "Das hilft Laura, weil"],
+    "schluss": "Wähle A oder B. Ein neuer Vorschlag geht auch.",
+    "urteil": ["Ich wähle", "Mein wichtigster Grund", "Ein Nachteil"],
+    "sicherung": "Lies deinen ersten und deinen letzten Grund. Zeige, wo du erklärst, warum dein Rat zu Laura passt.",
+    "celina": "Welcher Rat passt zu Celinas Wunsch? Nenne einen Nachteil im Gespräch.",
+    "celina_felder": ["Mein Rat", "Mein Grund"],
+    "tom": "Lies Toms Artikel. Warum braucht die Forschung Zeit?",
+    "tom_felder": ["Ich vermute", "Das denke ich, weil im Artikel steht", "Meine Frage"]
+  },
+  "ESA": {
+    "anfang": ["Mein erster Vorschlag", "Er passt zu Lauras Ziel, weil"],
+    "vergleich": "Vergleiche zwei Strategien. Suche zu jeder eine Information auf den Karten, die für Laura zählt.",
+    "option": ["Methode oder Kombination", "Das passt zu Laura, weil"],
+    "schluss": "Wähle deinen Rat. Was ist dir für Laura wichtiger?",
+    "urteil": ["Mein Rat", "Lauras Wunsch und mein wichtigster Grund", "Diesen Nachteil sehe ich"],
+    "sicherung": "Unterstreiche den Grund, der Lauras Wunsch mit einer Karteninfo verbindet. Erkläre deinen Vergleich mündlich.",
+    "celina": "Vergleiche zwei Möglichkeiten mündlich. Welche passt besser zu Celinas Wünschen?",
+    "celina_felder": ["Mein Rat", "Dieser Grund zählt für Celina besonders"],
+    "tom": "Verbinde eine Idee aus dem Artikel mit deiner Vermutung.",
+    "tom_felder": ["Ich vermute", "Ein Hinweis aus dem Artikel", "Geprüft werden müsste noch"]
+  },
+  "MSA": {
+    "anfang": ["Vorläufige Empfehlung", "Begründung zu Lauras erstem Schutzziel"],
+    "vergleich": "Vergleiche zwei Strategien anhand desselben Kriteriums. Welches Kriterium ist für Laura entscheidend?",
+    "option": ["Strategie", "Beurteilung anhand meines Kriteriums"],
+    "schluss": "Entscheide, welches Kriterium schwerer wiegt. Beziehe einen Einwand ein.",
+    "urteil": ["Meine Empfehlung", "Dieses Kriterium wiegt für Laura stärker, weil", "Einwand und meine Antwort"],
+    "sicherung": "Welche Begründung verbindet Fallangabe, Fachwissen und Gewichtung? Belege den Unterschied an deinen eigenen Einträgen.",
+    "celina": "Wäge zwei Strategien für Celina ab. Welche Entscheidung bleibt ihr überlassen?",
+    "celina_felder": ["Mein Rat im Vergleich zur Alternative", "Mein wichtigster Grund", "Offen bleibt"],
+    "tom": "Nutze den Artikel. Trenne ein beobachtetes Ergebnis von deiner eigenen Erklärung.",
+    "tom_felder": ["Befund", "Meine begründete Vermutung", "Offene Frage"]
+  },
+  "AHR": {
+    "anfang": ["Vorläufige Empfehlung", "Mit den bisherigen Angaben kann ich sie so begründen"],
+    "vergleich": "Vergleiche zwei für Laura vertretbare Strategien. Trenne einen gesicherten Vorteil von einer noch offenen Annahme.",
+    "option": ["Strategie", "Vorteil und offene Annahme"],
+    "schluss": "Gewichte konkurrierende Ziele. Nenne die Bedingung, unter der die Alternative vorzuziehen wäre.",
+    "urteil": ["Meine bedingte Empfehlung", "Ausschlaggebend ist für Laura", "Die Alternative passt besser, wenn"],
+    "sicherung": "Prüfe an deinen Einträgen, welche Gewichtung fachlich gestützt ist und welche Annahme das Urteil begrenzt. Erkläre es mündlich.",
+    "celina": "Begründe eine Empfehlung mit Celinas Grenzen und einer medizinisch noch offenen Frage.",
+    "celina_felder": ["Mein Rat und die entscheidende Gewichtung", "Die Alternative käme infrage, wenn"],
+    "tom": "Beurteile die Aussage „Studie B belegt sicheren Schwangerschaftsschutz“. Nutze beide Studien und skizziere eine Folgeuntersuchung.",
+    "tom_felder": ["Studie A · Befund und Grenze", "Studie B · Befund und Grenze", "Mein Urteil zur Aussage", "Folgeuntersuchung · Zielgruppe, Vergleich und Endpunkt"]
+  }
+}

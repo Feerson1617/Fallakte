@@ -52,7 +52,16 @@
       click('#send');methods++;
       assert(history.lastChild.textContent.endsWith(pair(stage.replies[key])),'Selected response');
       assert(history.lastChild.previousSibling.textContent.endsWith(stage.options[key]),'Sent text');
-      click('#work .primary');
+      const choices=[...document.querySelectorAll('#work .row button')];
+      assert(choices.map(b=>b.textContent).includes('Vorschlag ändern'),'Revision missing');
+      const keep=choices.find(b=>b.textContent==='Vorschlag beibehalten');
+      assert(keep && choices.length===2,'Unreviewed exit');keep.click();
+      if (stage.id==='T0' && key!=='K') {
+        assert(!history.querySelector('.article'),'Article before personal recommendation');
+        assert(document.querySelector('#work .preview').textContent.includes('Kondom'),'Missing bridge');
+        click('#work .primary');methods++;
+        assert(history.querySelector('.article'),'Article missing after personal recommendation');
+      }
     }
   }
   assert(document.querySelector('#task-title').textContent==='Gespräch abgeschlossen','Case incomplete');

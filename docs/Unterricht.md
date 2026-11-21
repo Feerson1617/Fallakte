@@ -15,16 +15,12 @@ Ein Gerät je Paar, ein Laufzettel je Person. Eine Person liest Lauras Nachricht
 
 Ein Paar darf bei einer Empfehlung bleiben, sie verändern oder erweitern. Ein Kondom allein lässt sich mit dem STI-Schutzziel, Lauras Zustimmung und der Vermeidung eines Eingriffs begründen. Als Nachteil bleibt die Abhängigkeit von richtiger Anwendung bei jedem Sex. Ein Kondom plus eine grundsätzlich akzeptable weitere Methode kann zusätzlichen Schwangerschaftsschutz bieten. Eine Spirale setzt ärztlich geprüfte Eignung und Lauras Zustimmung voraus. Ihre Schmerzen bleiben abklärungsbedürftig. Eine medizinische Entscheidung wird im Unterricht nicht getroffen.
 
-## Kurze Laufzettelvorlage
+## Laufzettel einsetzen · nur für die Lehrkraft
 
-Diese drei Zeilen lassen sich in vorhandene Zettel übernehmen. Frühere Fassungen mit einem Einstieg über die Pille müssen für diese Stunde angepasst werden. Zwischenstufen werden mündlich im Paar bearbeitet.
+Das Actions-Artefakt **Fallakte-Laufzettel** enthält vier Schüler-PDFs. Pro Person die passende Fassung auf A4 ausdrucken, für Vorder- und Rückseite an der langen Kante wenden. Die Vorderseite reicht für die gemeinsame Stunde. Nur wer einen Zusatzfall bearbeitet, nutzt die Rückseite. Die Lehrkraftinformationen stehen getrennt von den Schülerblättern in diesem Dokument.
 
-| Zeitpunkt | Individueller Eintrag |
-| --- | --- |
-| Vor der ersten Abstimmung | Mein erster Vorschlag für Laura ist …, weil … |
-| Vor der zweiten Abstimmung | Jetzt schlage ich … vor. Für Laura zählt besonders …, weil … Ein Nachteil ist … |
-| Bei der Sicherung, mündlich | Eine andere Strategie wäre vertretbar, wenn … Entscheiden darf … |
+**Mein erster Rat** wird individuell vor der ersten Abstimmung ausgefüllt. **Zwei Vorschläge** gehört zur letzten Laura-Stufe. Stichwörter für A und B genügen. Unter **Mein letzter Rat** darf die Person auf A oder B verweisen und ihren eigenen Grund ergänzen. Wer beim gemeinsamen Stopp noch mitten im Fall ist, verwendet nur die bereits bekannten Angaben. In der Sicherung die beiden Gründe mündlich vergleichen. Eine Methodenänderung allein belegt keinen Lernzuwachs.
 
-Förder kann die Satzanfänge nutzen. ESA vergleicht anhand vorgegebener Fragen. MSA benennt und gewichtet ein eigenes Kriterium gegenüber einer Alternative. AHR formuliert eine Bedingung, unter der ein Gegenargument das Urteil verändern würde, und trennt gesicherte Angaben von Annahmen. Auf jedem Niveau sind dieselben Methoden erreichbar.
+**Rückmeldungen nutzen.** Die Teams besprechen nach einer Empfehlung kurz ihren Grund. Auch nach einem Nein kann ein Team beim Vorschlag bleiben. Die Figur hält ihre Grenze im Verlauf fest. Im Plenum kann die Lehrkraft fragen: „Wessen Entscheidung ist das?“ Bei einer bloßen Sorge kann das Team Bedingungen nennen, unter denen eine Strategie passen könnte.
 
-Celina ist eine eigenständige Zusatzaufgabe. Tom führt von Selbstanwendung zu Vermutungen über Forschung. In diesen Fällen genügt eine Schlussnotiz. Im AHR-Forschungsfall gehören Befund, Grenze und Vorschlag für eine Folgeuntersuchung zusammen. Die Sicherung hat Vorrang. Alle Beispiele beziehen sich auf die fiktiven Personen.
+**Differenzierung.** Förder vervollständigt Satzanfänge zu zwei Möglichkeiten. ESA verbindet einen Wunsch mit einer Information aus den Karten. MSA beurteilt beide Optionen anhand eines eigenen Kriteriums und prüft einen Einwand. AHR formuliert eine bedingte Empfehlung und nennt die Grenze einer Annahme. Tom bietet bei AHR einen zusätzlichen Studienvergleich mit Folgeuntersuchung. Alle Einträge betreffen die fiktiven Personen.
