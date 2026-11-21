@@ -15,6 +15,7 @@ from lxml import etree
 from feedback import run_scenarios
 from transitions import mixed_paths
 from disclosure import first_message_only
+from reading import article_return
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'dist'
@@ -264,26 +265,31 @@ def test_scorm(browser):
         finally:
             server.shutdown()
             server.server_close()
-    save('scorm',dict(schema_valid=True,launch=launch,members=members,observed_calls=calls))
+    return dict(launch=launch,members=members,observed_calls=calls)
 
 
 if __name__=='__main__':
     (QA/'bedienung.json').unlink(missing_ok=True)
     results=[]
     matrices=[]
+    scorm_runs=[]
     with sync_playwright() as p:
         for engine in ('chromium','webkit'):
             exe=os.environ.get(engine.upper()+'_EXECUTABLE')
             browser=getattr(p,engine).launch(**({'executable_path':exe} if exe else {}))
-            matrices.append(test_matrix(browser,engine))
+            matrix=test_matrix(browser,engine)
+            matrix['article_return']=article_return(browser,LOCAL)
+            matrices.append(matrix)
             print(engine,'84 Dialogwege und unabhängige Entscheidungsszenarien bestanden.',flush=True)
-            if engine=='chromium':
-                test_scorm(browser)
-                print('SCORM-Schema und LMS-Lebenszyklus bestanden.',flush=True)
+            scorm_runs.append(dict(engine=engine, **test_scorm(browser)))
+            print(engine,'SCORM-Schema und LMS-Lebenszyklus bestanden.',flush=True)
             for layout,size in FORMATS.items():
                 results.append(test_view(browser,engine,layout,size))
                 print(engine,layout,'bestanden',flush=True)
             browser.close()
     save('dialogwege',dict(runs=matrices))
+    first=scorm_runs[0]
+    save('scorm',dict(schema_valid=True,launch=first['launch'],members=first['members'],
+                     observed_calls=first['observed_calls'],runs=scorm_runs))
     images={p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in QA.glob('*.jpg')}
     save('bedienung',dict(runs=results,screenshots=images,real_ipad=False,itslearning=False,student_trial=False))

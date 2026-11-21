@@ -61,6 +61,7 @@ function show(id) {
   if (screen === 'room') {
     current.scroll=$('history').scrollTop;
     current.workScroll=$('work').scrollTop;
+    current.glossaryOpen=$('history').querySelector('.article details')?.open;
   }
   if (screen==='pause') {
     $('pause-facts').hidden=true;
@@ -158,6 +159,7 @@ function appendArticle() {
     }
   }
   const gloss=el('details');
+  gloss.open=Boolean(current.glossaryOpen);
   gloss.append(el('summary','','Wörter erklären'));
   for (const [word,meaning] of Object.entries(data.glossary)) gloss.append(el('p','',word+' – '+meaning));
   a.append(gloss);
@@ -176,7 +178,11 @@ function drawHistory() {
 }
 function updateJump() {
   const h=$('history');
-  $('latest').hidden=h.scrollHeight-h.scrollTop-h.clientHeight<65;
+  const last=h.lastElementChild;
+  // A long article can already be in view while its end is several screens away.
+  const readingLast=last && last.offsetHeight>h.clientHeight &&
+    last.getBoundingClientRect().top<=h.getBoundingClientRect().top+12;
+  $('latest').hidden=readingLast || h.scrollHeight-h.scrollTop-h.clientHeight<65;
 }
 function toEntry(index) {
   const h=$('history');

@@ -9,7 +9,7 @@ OUT = ROOT / 'dist'
 QA = OUT / 'qa'
 local = OUT / 'Fallakte.html'
 digest = hashlib.sha256(local.read_bytes()).hexdigest()
-names = ('dialogwege', 'scorm', 'bedienung', 'laufzettel', 'layout')
+names = ('dialogwege', 'scorm', 'bedienung', 'laufzettel', 'layout', 'inhaltsvergleich')
 reports = {}
 for name in names:
     reports[name] = json.loads((QA / (name + '.json')).read_text())
@@ -27,7 +27,12 @@ for matrix in matrices:
     assert all(len({tuple(r['choices']) for r in mixed if r['level']==tier})==3
                for tier in ('Foerder','ESA','MSA','AHR'))
 assert all(m['disclosure']['later_facts_visible'] is False for m in matrices)
+assert all(m['article_return']['glossary_state_preserved'] and m['article_return']['jump_to_article'] for m in matrices)
 assert reports['scorm']['schema_valid']
+assert {r['engine'] for r in reports['scorm']['runs']} == {'chromium', 'webkit'}
+content = reports['inhaltsvergleich']
+assert content['built_data_equal'] and content['rendered_paths'] == 84
+assert set(content['pdf_page_text_sha256']) == {'Foerder', 'ESA', 'MSA', 'AHR'}
 assert {view['engine'] for view in views} == {'chromium','webkit'}
 assert all(not row['errors'] and not row['external_requests'] for row in views)
 layout = reports['layout']
@@ -42,12 +47,19 @@ for sheet in reports['laufzettel']['pdfs']:
 teacher=reports['laufzettel']['lehrkraft']
 assert hashlib.sha256((OUT/teacher['datei']).read_bytes()).hexdigest()==teacher['sha256']
 with ZipFile(OUT/'Fallakte-SCORM12.zip') as scorm:
-    assert teacher['datei'] not in scorm.namelist()
+    resources = list((ROOT/'scorm').iterdir())
+    assert sorted(scorm.namelist()) == sorted(['index.html', *(p.name for p in resources)])
+    assert scorm.testzip() is None and teacher['datei'] not in scorm.namelist()
+    for path in resources:
+        assert scorm.read(path.name) == path.read_bytes()
     assert hashlib.sha256(scorm.read('index.html')).hexdigest() == digest
 
 report = OUT/'Fallakte-Pruefbericht.md'
 chapters = [(ROOT/'docs'/name).read_text().rstrip() for name in ('Abnahme.md','Fachpruefung.md','Unterricht.md')]
-report.write_text('\n\n'.join(chapters)+'\n\nGeprüfte HTML-Fassung (SHA-256) `'+digest+'`.\n', encoding='utf-8')
+versions = ', '.join(f"{m['engine']} {m['version']}" for m in matrices)
+release = (f"Geprüft mit {versions} gegen die Inhaltsreferenz `{content['reference_commit']}`. "
+           f"Die HTML-Datei hat den SHA-256-Wert `{digest}`.")
+report.write_text('\n\n'.join(chapters)+'\n\n'+release+'\n', encoding='utf-8')
 package = OUT / 'Fallakte-Sichtpruefung.zip'
 with ZipFile(package, 'w', ZIP_DEFLATED) as z:
     z.write(local, 'Fallakte.html')
@@ -72,4 +84,7 @@ with ZipFile(package, 'w', ZIP_DEFLATED) as z:
         z.write(path, 'Bildschirmfotos/Vergleich/'+name)
 with ZipFile(package) as z:
     assert z.testzip() is None and z.read('Fallakte.html') == local.read_bytes()
+    assert z.read('Pruefbericht.md') == report.read_bytes()
+    for name in names:
+        assert z.read(f'Protokolle/{name}.json') == (QA/f'{name}.json').read_bytes()
 print(package)

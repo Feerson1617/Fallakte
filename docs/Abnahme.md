@@ -2,6 +2,14 @@
 
 **Einsatzurteil.** Die Fassung ist technisch und fachlich-didaktisch für eine begleitete Erprobung vorbereitet. Der Transfer auf das Schul-iPad, der Import im konkreten itslearning-Kurs und ein Probelauf mit Lernenden stehen aus. Erprobungstermin ist der 2. Dezember 2026.
 
+## Technische Abnahme zum freigegebenen Inhaltsstand 859a01d
+
+In Toms AHR-Artikel schlossen sich geöffnete Worterklärungen beim Zurückkehren aus der Sicherung. Im Fenster mit 820 × 650 Pixeln sprang der Chat dabei in beiden Browsern um 244 CSS-Pixel. Der Fall merkt sich jetzt während der Sitzung, ob das Glossar offen war. Beim Wiederöffnen wird es vor dem Wiederherstellen der Leseposition aufgebaut. Der Sprung „Zur aktuellen Nachricht“ blendet sich aus, sobald der Anfang eines bildschirmhohen Artikels erreicht ist. Der Test prüft den Rückweg aus der Sicherung, von den Infokarten über die Sicherung und über einen anderen Fall. Er prüft auch das bewusst geschlossene Glossar.
+
+Der Inhaltsvergleich baut den freigegebenen Git-Commit separat. Dialogquelle, Laufzettelaufgaben und Druckvorlage werden byteweise geprüft. Chromium vergleicht die tatsächlich eingebetteten Falldaten sowie auf 84 vollständigen Wegen den Wortlaut im Antwortbereich und im gesamten Chat mit der gebauten Referenz. Bei den vier PDFs wird der extrahierte Text jeder einzelnen Seite mit der entsprechenden Referenzseite verglichen. Das Ergebnis steht in **Protokolle/inhaltsvergleich.json**.
+
+Der lokale LMS-Testrahmen öffnet das entpackte SCORM-Paket in Chromium und WebKit. Beide Browser prüfen das Öffnen und Schließen der Sitzung sowie die Rückkehr aus der frühen Sicherung. Die Offline-Ersatzfassung ist die einzelne **Fallakte.html** aus dem Unterrichtspaket. Diese Datei vor der Stunde auf dem Unterrichtsgerät speichern. Alle sechs JSON-Protokolle tragen die Prüfsumme derselben HTML-Datei.
+
 ## Arbeitsfläche im eingebetteten Beratungsraum
 
 Der Vergleich nutzt denselben Gesprächsstand in Laura, ESA. Nach zwei Vorschlägen und dem Gespräch über die Freundin öffnet das Team „Lauras Entscheidung“. Die frühere Fassung stammt aus Commit `3071562`. Beide Fassungen laufen in einem echten HTML-Frame innerhalb eines größeren Browserfensters. Die Maße beziehen sich auf den Chat-Scrollbereich einschließlich seiner Innenabstände, in gerundeten CSS-Pixeln.
@@ -68,6 +76,8 @@ Förder arbeitet mit Satzanfängen und zwei kurzen Vergleichsfeldern. ESA verbin
 
 ## Vor dem Praxistest
 
-1. Im Testkurs das geschlossene SCORM-ZIP importieren. Auf einem Schul-iPad in Safari senden, eine Empfehlung ändern, die Sicherung aufrufen und zu Laura zurückkehren. Auf dem Unterrichts-Mac die einzelne HTML-Datei öffnen. Browseremulation und der lokale LMS-Testrahmen decken diese schulischen Bedingungen nur teilweise ab.
-2. Mit einem Förder- oder ESA-Team ohne Bedienerklärung erproben, ob „Beibehalten“, „Ändern“ und die Kartenhilfe verständlich sind. Die geplanten 18–20 Minuten für Laura und die Qualität individueller Begründungen wurden noch nicht mit einer Klasse untersucht.
-3. Die passenden Laufzettel ausdrucken, selbst erarbeitete Infokarten bereitlegen und die zentrale Folie vom Lehrkraftgerät oder als Ausdruck bereithalten. In itslearning nur das SCORM-Paket an die Klasse geben. Die Lehrkraftdatei und das Sichtprüfungspaket bleiben bei der Vorbereitung. Die Lehrkraft entscheidet über den Einsatz. Eine unabhängige medizinische Endbegutachtung steht aus.
+1. **Schul-iPad und itslearning.** Das geschlossene SCORM-ZIP in den Testkurs importieren und als lernende Person in Safari öffnen. Laura auf Förder oder ESA starten, eine Kombination wählen, beide Hilfen öffnen und das iPad drehen. Die aktuelle Nachricht muss lesbar und „Nachricht senden“ erreichbar bleiben.
+2. **Unterbrechen und fortsetzen.** Eine Empfehlung senden. Über Infokarten und Sicherung die bisher bekannte Angabe ansehen. Mit „Zurück“ muss derselbe Chat samt Rückmeldung erscheinen. Zur Übersicht wechseln, Tom öffnen und Laura erneut aufrufen. Der Vorschlag muss weiterhin im Chat stehen.
+3. **Offline-Reserve.** Auf dem Unterrichts-Mac die gespeicherte **Fallakte.html** bei ausgeschaltetem WLAN direkt im Browser öffnen. Eine Empfehlung senden, die Seite neu laden und Laura erneut starten. Der neue Verlauf beginnt bei der ersten Nachricht.
+4. Mit einem Förder- oder ESA-Team ohne Bedienerklärung erproben, ob „Beibehalten“, „Ändern“ und die Kartenhilfe verständlich sind. Die geplanten 18–20 Minuten für Laura und die Qualität individueller Begründungen wurden noch nicht mit einer Klasse untersucht.
+5. Die passenden Laufzettel ausdrucken, selbst erarbeitete Infokarten bereitlegen und die zentrale Folie vom Lehrkraftgerät oder als Ausdruck bereithalten. In itslearning nur das SCORM-Paket an die Klasse geben. Die Lehrkraftdatei und das Sichtprüfungspaket bleiben bei der Vorbereitung. Die Lehrkraft entscheidet über den Einsatz. Eine unabhängige medizinische Endbegutachtung steht aus.

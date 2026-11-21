@@ -41,6 +41,7 @@ python tests/acceptance.py
 python tests/layout.py
 python scripts/worksheets.py
 python tests/worksheets.py
+python tests/content.py
 python scripts/review.py
 ```
 
