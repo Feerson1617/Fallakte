@@ -58,8 +58,15 @@ function code() {
 }
 const orderedMethods = Object.entries(FALLAKTE.methods).sort((a,b)=>a[1][0].localeCompare(b[1][0],'de'));
 function show(id) {
-  if (screen === 'room') current.scroll = $('history').scrollTop;
+  if (screen === 'room') {
+    current.scroll=$('history').scrollTop;
+    current.workScroll=$('work').scrollTop;
+  }
   screen = id;
+  document.documentElement.classList.toggle('consulting',id==='room');
+  $('room-identity').hidden=id!=='room';
+  $('home-label').textContent=id==='room'?'Übersicht':'Fallakten';
+  $('home-nav').setAttribute('aria-label','Fallübersicht');
   for (const section of ['home','room','resources','pause']) $(section).hidden = section !== id;
   const active = ({home:'home-nav',room:'home-nav',resources:'cards-nav',pause:'pause-nav'})[id];
   for (const b of document.querySelectorAll('nav button')) {
@@ -96,19 +103,38 @@ function openCase(person,tier) {
   const key=sessionKey(person,tier);
   current=sessions.get(key);
   if (!current) {
-    current={person,level:tier,index:0,log:[],scroll:0};
+    current={person,level:tier,index:0,log:[],scroll:0,workScroll:0,pane:'chat'};
     sessions.set(key,current);
     enterStage(0);
   }
   if (person==='Laura') lastLaura=current;
   $('avatar').className='avatar '+person.toLowerCase();
-  $('room-level').textContent='Niveau · '+FALLAKTE.meta.levels[tier];
+  $('room-level').textContent=FALLAKTE.meta.levels[tier];
   $('chat-name').textContent=person;
+  showPane(current.pane);
   drawHistory();
   $('history').scrollTop=current.scroll;
   updateJump();
   drawWork();
+  $('work').scrollTop=current.workScroll;
   $('chat-name').focus({preventScroll:true});
+}
+function showPane(pane) {
+  current.pane=pane;
+  $('room').dataset.pane=pane;
+  $('read-chat').setAttribute('aria-pressed',pane==='chat');
+  $('write-answer').setAttribute('aria-pressed',pane==='answer');
+}
+function revealInWork(target) {
+  const work=$('work');
+  const box=work.getBoundingClientRect();
+  const item=target.getBoundingClientRect();
+  if (item.top<box.top || item.height>box.height) work.scrollTop+=item.top-box.top;
+  else if (item.bottom>box.bottom) work.scrollTop+=item.bottom-box.bottom;
+}
+function focusInWork(target) {
+  target.focus({preventScroll:true});
+  revealInWork(target);
 }
 function enterStage(index) {
   Object.assign(current,{index,mode:'choose',selected:'',additional:'',combined:false,help:0,asked:[],questionsOpen:false,revised:false});
@@ -171,11 +197,13 @@ function nextStage() {
     return;
   }
   changeHistory(()=>enterStage(current.index+1));
+  showPane('chat');
   drawWork();
+  $('work').scrollTop=0;
   $('chat-name').focus({preventScroll:true});
-  if (matchMedia('(max-width:680px)').matches) $('room').scrollIntoView({block:'start'});
 }
 function focusTask() {
+  $('work').scrollTop=0;
   $('task-title')?.focus({preventScroll:true});
 }
 function sendChoice() {
@@ -195,6 +223,7 @@ function decideProposal(keep) {
   const s=stage();
   const choice=code();
   const declined=s.declined?.[choice.split('+').pop()];
+  if (current.index===stages().length-1) current.finalRefusal=keep ? declined : null;
   const clarifyTom=s.id==='T0' && (!keep || choice!=='K');
   changeHistory(()=>{
     say('team',keep ? 'Wir bleiben bei unserem Vorschlag.' : 'Wir ziehen unseren Vorschlag zurück.');
@@ -236,7 +265,7 @@ function addTools(area) {
     const help=button(current.help?'Zweite Hilfe':'Hilfe',()=>{
       current.help++;
       drawWork();
-      $('hint-current').focus();
+      focusInWork($('hint-current'));
     },'text-button','help');
     help.id='help';
     actions.append(help);
@@ -245,7 +274,7 @@ function addTools(area) {
     const q=button(current.questionsOpen?'Fragen schließen':'Rückfrage stellen',()=>{
       current.questionsOpen=!current.questionsOpen;
       drawWork();
-      (document.querySelector('.question') || $('ask')).focus();
+      focusInWork(document.querySelector('.question') || $('ask'));
     },'text-button','chat');
     q.id='ask';
     q.setAttribute('aria-expanded',current.questionsOpen);
@@ -277,15 +306,17 @@ function addTools(area) {
       },'text-button','book'));
     } else if (['T1','T2'].includes(stage().id)) {
       area.append(button('Artikel nachlesen',()=>{
+        showPane('chat');
         const article=$('history').querySelector('.article');
         toEntry([...$('history').children].indexOf(article));
         article.tabIndex=-1;
-        article.focus();
+        article.focus({preventScroll:true});
       },'text-button','book'));
     } else {
       area.append(button('Chatstelle lesen',()=>{
+        showPane('chat');
         toEntry(current.log.findIndex(entry=>entry.type==='step' && entry.title===stage().title));
-        $('history').focus();
+        $('history').focus({preventScroll:true});
       },'text-button','chat'));
     }
     const nextAction=current.mode==='reply' ? 'Besprecht euren Grund. Entscheidet euch dann.' :
@@ -301,11 +332,15 @@ function taskTitle(area,title) {
 }
 function drawWork() {
   const area=$('work');
+  $('send')?.remove();
   area.replaceChildren();
-  $('step').textContent=current.mode==='finished'?'Gespräch abgeschlossen':'Schritt '+(current.index+1)+' von '+stages().length;
-  $('bars').replaceChildren(...stages().map((_,i)=>el('i',i<=current.index?'filled':'')));
+  $('step').textContent='Schritt '+(current.index+1)+' von '+stages().length;
   if (current.mode==='finished') {
-    taskTitle(area,'Gespräch abgeschlossen');
+    taskTitle(area,current.finalRefusal?'Die Empfehlung bleibt offen':'Gespräch abgeschlossen');
+    if (current.finalRefusal) {
+      area.append(el('p','unresolved',current.person+' hat eurem letzten Vorschlag nicht zugestimmt.'),
+                  el('p','response',current.finalRefusal));
+    }
     if (current.person==='Laura') {
       area.append(el('p','paper-note','Schreibe bei „Mein letzter Rat“ deinen eigenen Vorschlag und deinen wichtigsten Grund auf.'));
     } else if (current.person==='Celina') {
@@ -366,7 +401,7 @@ function drawWork() {
       Object.assign(current,{selected:id,additional:'',combined:false,help:0,questionsOpen:false});
       drawWork();
       $('method-'+id).focus({preventScroll:true});
-      $('send').scrollIntoView({block:'nearest'});
+      revealInWork($('draft-preview'));
     },'method');
     b.id='method-'+id;
     b.setAttribute('aria-pressed',current.selected===id);
@@ -384,7 +419,7 @@ function drawWork() {
     menu.value=current.additional;
     menu.onchange=()=>{
       current.additional=menu.value; current.help=0;
-      drawWork(); $('additional').focus({preventScroll:true});
+      drawWork(); $('additional').focus({preventScroll:true}); revealInWork($('draft-preview'));
     };
     label.append(menu);area.append(label);
   } else if (current.selected) {
@@ -393,7 +428,7 @@ function drawWork() {
     check.type='checkbox';check.id='combine';check.checked=current.combined;
     check.onchange=()=>{
       current.combined=check.checked;current.help=0;
-      drawWork();$('combine').focus({preventScroll:true});
+      drawWork();$('combine').focus({preventScroll:true}); revealInWork($('draft-preview'));
     };
     label.append(check,'Zusätzlich ein Kondom vorschlagen');
     area.append(label);
@@ -402,14 +437,21 @@ function drawWork() {
     const preview=el('div','preview');
     preview.append(el('small','','Eure Nachricht'),el('p','',s.options[code()]));
     const send=button('Nachricht senden',sendChoice,'primary','send');
-    send.id='send';area.append(preview,send);
+    preview.id='draft-preview';
+    send.id='send'; send.setAttribute('aria-describedby','draft-preview');
+    area.append(preview);
+    $('answer-panel').append(send);
   } else area.append(el('p','pick','Wähle eine Methode aus.'));
   addTools(area);
 }
 function auxiliary(id) {
   if (screen==='home'||screen==='room') returnTo=screen;
   show(id);
-  if (id==='pause') $('review-laura').hidden=!lastLaura;
+  if (id==='pause') {
+    $('review-laura').hidden=!lastLaura;
+    $('pause-conflict').hidden=!lastLaura?.finalRefusal;
+    $('pause-conflict').textContent=lastLaura?.finalRefusal ? 'Laura hat eurem letzten Vorschlag nicht zugestimmt. Sie sagt: „'+lastLaura.finalRefusal+'“' : '';
+  }
   $(id).querySelector('h1').focus({preventScroll:true});
 }
 function resume() {
@@ -432,7 +474,9 @@ $('latest').onclick=()=>{
   toEntry(i);
   $('history').focus({preventScroll:true});
 };
-$('home-nav').onclick=$('back').onclick=home;
+$('read-chat').onclick=()=>showPane('chat');
+$('write-answer').onclick=()=>showPane('answer');
+$('home-nav').onclick=home;
 $('brand').onclick=e=>{e.preventDefault();home();};
 $('cards-nav').onclick=()=>auxiliary('resources');
 $('pause-nav').onclick=()=>auxiliary('pause');

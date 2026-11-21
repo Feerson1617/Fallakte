@@ -9,7 +9,7 @@ OUT = ROOT / 'dist'
 QA = OUT / 'qa'
 local = OUT / 'Fallakte.html'
 digest = hashlib.sha256(local.read_bytes()).hexdigest()
-names = ('dialogwege', 'scorm', 'bedienung', 'laufzettel')
+names = ('dialogwege', 'scorm', 'bedienung', 'laufzettel', 'layout')
 reports = {}
 for name in names:
     reports[name] = json.loads((QA / (name + '.json')).read_text())
@@ -20,10 +20,16 @@ matrices = reports['dialogwege']['runs']
 views = reports['bedienung']['runs']
 assert len(views) == 8
 assert {r['engine'] for r in matrices} == {'chromium','webkit'}
-assert all(len(r['paths']) == 84 and len(r['scenarios']) == 4 and not r['errors'] for r in matrices)
+assert all(len(r['paths']) == 84 and len(r['scenarios']) == 5 and not r['errors'] for r in matrices)
 assert reports['scorm']['schema_valid']
 assert {view['engine'] for view in views} == {'chromium','webkit'}
 assert all(not row['errors'] and not row['external_requests'] for row in views)
+layout = reports['layout']
+assert {run['engine'] for run in layout['runs']} == {'chromium','webkit'}
+for run in layout['runs']:
+    assert len(run['frames']) == 12
+    assert all(len(row['states']) == 4 for row in run['frames'])
+assert len(layout['screenshots']) == 8
 for sheet in reports['laufzettel']['pdfs']:
     assert hashlib.sha256((OUT/'Laufzettel'/sheet['datei']).read_bytes()).hexdigest() == sheet['sha256']
 with ZipFile(OUT/'Fallakte-SCORM12.zip') as scorm:
@@ -41,6 +47,10 @@ with ZipFile(package, 'w', ZIP_DEFLATED) as z:
         expected=reports['bedienung']['screenshots'][filename]
         assert hashlib.sha256((QA/filename).read_bytes()).hexdigest() == expected
         z.write(QA/filename, 'Bildschirmfotos/'+filename)
+    for name, expected in layout['screenshots'].items():
+        path=QA/'vergleich'/name
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == expected
+        z.write(path, 'Bildschirmfotos/Vergleich/'+name)
 with ZipFile(package) as z:
     assert z.testzip() is None and z.read('Fallakte.html') == local.read_bytes()
 print(package)

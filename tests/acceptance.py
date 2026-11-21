@@ -64,7 +64,14 @@ def measure(page):
     assert not issues, issues
 
 
+def pane(page, name):
+    control=page.locator('#'+name)
+    if control.is_visible() and control.get_attribute('aria-pressed')!='true':
+        control.click()
+
+
 def send(page, code):
+    pane(page,'write-answer')
     page.locator('#method-' + code.split('+')[-1]).click()
     if '+' in code:
         page.locator('#combine').check()
@@ -103,6 +110,7 @@ def test_view(browser, engine, layout, size):
     tier={'Desktop':'AHR','iPad-hoch':'Foerder','iPad-quer':'MSA','Mobil':'ESA'}[layout]
     page.locator('#level-'+tier).click()
     page.locator('[data-person=Laura]').click()
+    pane(page,'write-answer')
     page.locator('#help').click()
     expect(page.locator('.hint')).to_have_count(1)
     page.get_by_role('button',name='Zweite Hilfe').click()
@@ -113,6 +121,7 @@ def test_view(browser, engine, layout, size):
     page.get_by_role('button',name='Vorschlag beibehalten').click()
     send(page,'K+H')
     page.get_by_role('button',name='Vorschlag beibehalten').click()
+    pane(page,'write-answer')
     page.get_by_role('button',name='Weiter nach dem Gespräch').click()
     send(page,'P')
     expect(page.locator('.response')).to_contain_text('nicht')
@@ -129,9 +138,12 @@ def test_view(browser, engine, layout, size):
         page.screenshot(path=QA/(layout+'.jpg'),type='jpeg',quality=76)
     # Park the reader at the first message, then submit a revision.
     history = page.locator('#history')
+    pane(page,'read-chat')
     history.evaluate('(h)=>h.scrollTop=0')
     expect(page.locator('#latest')).to_be_visible()
+    pane(page,'write-answer')
     page.locator('#send').click()
+    pane(page,'read-chat')
     assert history.evaluate('(h)=>h.scrollTop')<3
     assert 'Kombinationspille' in history.inner_text()
     page.locator('#latest').click()
@@ -146,12 +158,13 @@ def test_view(browser, engine, layout, size):
         measure(page)
     page.locator('#resources .return').click()
     assert history.inner_text()==before
+    pane(page,'write-answer')
     for code in ('Cu','P','K+H'):
         page.get_by_role('button',name='Vorschlag beibehalten').click()
         send(page,code)
         measure(page)
     page.get_by_role('button',name='Vorschlag beibehalten').click()
-    completed=history.inner_text()
+    completed=history.text_content()
     for name in ('Celina','Tom'):
         page.get_by_role('button',name=name+' starten').click()
         for stage in DATA['cases'][name]:
@@ -161,10 +174,12 @@ def test_view(browser, engine, layout, size):
                     if tier=='AHR':
                         expect(history.locator('.article')).to_contain_text('266')
                         expect(history.locator('.article')).to_contain_text('YCT-529')
+                pane(page,'write-answer')
                 if stage['id']=='T2':
                     page.locator('#help').click()
                     page.get_by_role('button',name='Artikel nachlesen').click()
                     expect(history.locator('.article')).to_be_focused()
+                    pane(page,'write-answer')
                 measure(page)
                 page.locator('#work .primary').click()
             else:
@@ -174,7 +189,7 @@ def test_view(browser, engine, layout, size):
         expect(page.locator('#task-title')).to_have_text('Gespräch abgeschlossen')
         page.locator('#pause-nav').click()
         page.locator('#review-laura').click()
-        assert history.inner_text()==completed
+        assert history.text_content()==completed
     storage=page.evaluate("""() => ({
       calls:storageCalls, local:localStorage.length, session:sessionStorage.length, cookies:document.cookie
     })""")
@@ -209,7 +224,7 @@ def test_scorm(browser):
         (root/'host.html').write_text(f'''<script>
           window.calls=[];
           window.API=new Proxy({{}},{{get:(_,key)=>(...args)=>{{calls.push([key,...args]);return 'true';}}}});
-          </script><iframe src="{launch}"></iframe>''')
+          </script><iframe width="820" height="650" src="{launch}"></iframe>''')
         server=ThreadingHTTPServer(('127.0.0.1',0),partial(QuietHandler,directory=temp))
         Thread(target=server.serve_forever,daemon=True).start()
         try:

@@ -49,6 +49,30 @@ def run_scenarios(browser, local, screenshots=None):
     expect(page.locator('#task-title')).to_have_text('Gespräch abgeschlossen')
     expect(page.locator('.paper-note')).to_contain_text('Mein letzter Rat')
 
+    # A retained final pill proposal remains disputed through the class review and a return.
+    start('Laura')
+    for method in ('K', 'H'):
+        suggest(method)
+        keep()
+    button('Weiter nach dem Gespräch').click()
+    for method in ('H', 'K', 'K'):
+        suggest(method)
+        keep()
+    suggest('P')
+    button('Vorschlag ändern').click()
+    suggest('P', combine=True)
+    keep()
+    expect(page.locator('#task-title')).to_have_text('Die Empfehlung bleibt offen')
+    expect(page.locator('.unresolved')).to_contain_text('nicht zugestimmt')
+    refusal=page.locator('#work .response').inner_text()
+    expect(history.locator('.person p').last).to_have_text(refusal)
+    button('Zur gemeinsamen Sicherung').click()
+    expect(page.locator('#pause-conflict')).to_be_visible()
+    expect(page.locator('#pause-conflict')).to_contain_text(refusal)
+    button('Lauras Chat nachlesen').click()
+    expect(page.locator('.unresolved')).to_be_visible()
+    expect(page.locator('#work .response')).to_have_text(refusal)
+
     # Celina refuses hormones, yet can consider a copper IUD after counselling.
     start('Celina')
     suggest('H')
@@ -102,6 +126,7 @@ def run_scenarios(browser, local, screenshots=None):
     expect(history).not_to_contain_text('Für dich selbst schlagen wir ein Kondom vor.')
     page.close()
     return ['Laura: wiederholtes Nein, Sorge, Kombination bis zum Abschluss',
+            'Laura: letzter Kombinationsvorschlag bleibt in Abschluss, Sicherung und Wiederaufnahme strittig',
             'Celina: Hormongrenze, offene Einlage und Rücknahme',
             'Tom: zweimal ungeeignet, Unterbrechung, dann eigener Kondomvorschlag',
             'Tom: Revision direkt zum Kondom']

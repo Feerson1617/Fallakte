@@ -18,7 +18,7 @@ Auch im ausgecheckten Projekt lässt sich **index.html** direkt öffnen. Hierbei
 
 ## Im Klassenraum
 
-Laura öffnen, die erste Empfehlung auf Papier begründen und gemeinsam abstimmen. Der Verlauf führt in sieben Abschnitten zur zweiten Empfehlung. Frühere Antworten, Änderungen und Rückfragen bleiben im Chat lesbar. **Sicherung** unterbricht jeden Fall sofort. Über **Zurück** oder die Fallübersicht lässt sich die Arbeit derselben Stufe fortsetzen.
+Laura öffnen, die erste Empfehlung auf Papier begründen und gemeinsam abstimmen. Der Verlauf führt in sieben Abschnitten zur zweiten Empfehlung. Chat und Antworten haben eigene Scrollbereiche. Auf schmalen Displays wechselt das Team mit **Chat lesen** und **Antwort geben** zwischen beiden. Frühere Antworten, Änderungen und Rückfragen bleiben im Chat lesbar. **Sicherung** unterbricht jeden Fall sofort. Über **Zurück** oder die Fallübersicht lässt sich die Arbeit derselben Stufe fortsetzen.
 
 Die Anwendung hält die Gespräche ausschließlich im Arbeitsspeicher der geöffneten Seite. Neuladen beginnt eine neue Sitzung. Sie verlangt keine Namen oder persönlichen Erfahrungen. Der SCORM-Adapter öffnet und schließt lediglich die technische Sitzung. itslearning kann unabhängig davon Zugriffe protokollieren.
 
@@ -35,12 +35,13 @@ python scripts/build.py
 python -m pip install -r tests/requirements.txt
 python -m playwright install --with-deps chromium webkit
 python tests/acceptance.py
+python tests/layout.py
 python scripts/worksheets.py
 python tests/worksheets.py
 python scripts/review.py
 ```
 
-Die drei technischen Ausgaben liegen in **dist/**, die vier PDFs in **dist/Laufzettel/**. Die Sichtprüfung lässt sich erst nach erfolgreichen Tests des identischen HTML-Stands packen. Die CI führt diese Schritte auch für Pull Requests aus.
+Die drei technischen Ausgaben liegen in **dist/**, die vier PDFs in **dist/Laufzettel/**. Die Sichtprüfung lässt sich erst nach erfolgreichen Tests des identischen HTML-Stands packen. Der Layoutvergleich verwendet den vorherigen PR-Stand `3071562` aus der Git-Historie. Die CI führt diese Schritte auch für Pull Requests aus.
 
 ## Herkunft der Assets
 

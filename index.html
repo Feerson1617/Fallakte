@@ -11,8 +11,12 @@
 <header class="top">
   <div class="bar">
     <a href="#home" class="brand" id="brand"><span class="mark" data-icon="chat"></span>Fallakte<span class="brand-dot">.</span></a>
+    <div class="room-identity" id="room-identity" hidden>
+      <span class="avatar" id="avatar" aria-hidden="true"></span>
+      <div><h1 id="chat-name" tabindex="-1"></h1><div class="room-meta"><span id="room-level"></span> · <span id="step"></span></div></div>
+    </div>
     <nav aria-label="Arbeitsbereiche">
-      <button id="home-nav"><i data-icon="folder"></i>Fallakten</button>
+      <button id="home-nav"><i data-icon="folder"></i><span id="home-label">Fallakten</span></button>
       <button id="cards-nav"><i data-icon="book"></i>Infokarten</button>
       <button id="pause-nav"><i data-icon="group"></i>Sicherung</button>
     </nav>
@@ -28,18 +32,20 @@
     <p class="material"><i data-icon="pencil"></i> Lege deinen Laufzettel und die Infokarten bereit.</p>
   </section>
   <section id="room" class="shell" hidden>
-    <div class="room-heading"><button class="text-button" id="back"><i data-icon="back"></i> Fallübersicht</button><span id="room-level"></span></div>
+    <div class="pane-switch" role="group" aria-label="Arbeitsansicht">
+      <button id="read-chat" aria-controls="chat-panel"><i data-icon="chat"></i> Chat lesen</button>
+      <button id="write-answer" aria-controls="answer-panel"><i data-icon="pencil"></i> Antwort geben</button>
+    </div>
     <div class="workspace">
-      <section class="chat panel" aria-label="Beratungsgespräch">
-        <div class="chat-head"><span id="avatar" class="avatar"></span><div><span class="eyebrow">Beratungsgespräch</span><h1 id="chat-name" tabindex="-1"></h1></div><i class="head-icon" data-icon="chat"></i></div>
+      <section class="chat panel" id="chat-panel" aria-label="Beratungsgespräch">
         <div id="history" role="log" aria-live="off" aria-label="Bisherige Nachrichten" tabindex="0"></div>
         <button id="latest" class="latest" hidden><i data-icon="down"></i> Zur aktuellen Nachricht</button>
       </section>
-      <section class="work panel" aria-label="Antwortbereich"><div class="progress-head"><span id="step"></span><span id="bars" aria-hidden="true"></span></div><div id="work"></div></section>
+      <section class="work panel" id="answer-panel" aria-label="Antwortbereich"><div id="work"></div></section>
     </div>
   </section>
   <section class="shell secondary" id="resources" hidden><span class="eyebrow"><i data-icon="book"></i> Nachschlagen</span><h1 tabindex="-1">Infokarten</h1><p>Wähle eine Karte. Vergleiche ihre Angaben mit den Wünschen im Chat.</p><div id="method-cards"></div><button class="primary return">Zurück</button></section>
-  <section class="shell secondary" id="pause" hidden><span class="eyebrow"><i data-icon="group"></i> Gemeinsam in der Klasse</span><h1 tabindex="-1">Zeit für die Sicherung</h1><div class="pause-note"><h2>Dein zweiter Vorschlag für Laura</h2><p>Ist „Mein letzter Rat“ noch leer? Schreibe dort deinen Rat und deinen wichtigsten Grund auf.</p><p>Stimmt noch einmal ab. Lest eure beiden Gründe auf dem Laufzettel. Welcher erklärt besser, was für Laura zählt? Warum?</p></div><div class="row"><button id="review-laura" class="outline">Lauras Chat nachlesen</button><button class="primary return">Zurück</button></div></section>
+  <section class="shell secondary" id="pause" hidden><span class="eyebrow"><i data-icon="group"></i> Gemeinsam in der Klasse</span><h1 tabindex="-1">Zeit für die Sicherung</h1><div class="pause-note"><h2>Dein zweiter Vorschlag für Laura</h2><p id="pause-conflict" hidden></p><p>Ist „Mein letzter Rat“ noch leer? Schreibe dort deinen Rat und deinen wichtigsten Grund auf.</p><p>Stimmt noch einmal ab. Lest eure beiden Gründe auf dem Laufzettel. Welcher erklärt besser, was für Laura zählt? Warum?</p></div><div class="row"><button id="review-laura" class="outline">Lauras Chat nachlesen</button><button class="primary return">Zurück</button></div></section>
 </main>
 <footer><span class="footer-brand"><i data-icon="folder"></i> Fallakte</span><span>Fiktive Beratungsfälle für den Biologieunterricht</span></footer>
 <script src="data/dialogdaten.js"></script>

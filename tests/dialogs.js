@@ -17,6 +17,8 @@
   click('[data-person="'+person+'"]');
   let methods=0, questions=0, helps=0;
   for (const stage of data.cases[person]) {
+    const tab=document.querySelector('#write-answer');
+    if(tab.getClientRects().length) tab.click();
     assert([...document.querySelectorAll('.chat-step')].at(-1).textContent===stage.title,'Wrong step');
     const history=document.querySelector('#history');
     for(const line of stage.message[tier]) assert(history.textContent.includes(line),'Missing case information');
@@ -64,6 +66,13 @@
       }
     }
   }
-  assert(document.querySelector('#task-title').textContent==='Gespräch abgeschlossen','Case incomplete');
+  const refused = (person==='Laura' && ['P','K+P'].includes(strategy)) ||
+                  (person==='Celina' && ['P','K+P','H','K+H'].includes(strategy));
+  const title = refused ? 'Die Empfehlung bleibt offen' : 'Gespräch abgeschlossen';
+  assert(document.querySelector('#task-title').textContent===title,'Wrong final outcome');
+  if (refused) {
+    assert(document.querySelector('.unresolved').textContent.includes('nicht zugestimmt'),'No final disagreement');
+    assert(document.querySelector('#work .response').textContent.includes(person==='Laura'?'Pille':'Hormon'),'Missing personal boundary');
+  }
   return {person,tier,strategy,methods,questions,helps,stages:data.cases[person].length};
 }
