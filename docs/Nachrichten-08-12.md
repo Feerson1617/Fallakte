@@ -34,7 +34,7 @@ Die fünfte Hilfe stellt bei den Pflichtfällen die Verbindung von medizinischem
 
 ## Bedienung und Übergabe für Work
 
-Alle acht Abschnittsnamen stehen im Wortlaut des Auftrags in der Übersicht. Beim Argumenten-Check stehen oben Fakt und Wert, unten Norm und Folgerung. Jedes Feld behält seine bekannte Frage. Das Auswahlfeld verweist auf eine nummerierte Originalzeile. „Das passt.“ und „Prüfe noch einmal.“ begleiten die vorhandenen Rückmeldungsfarben. Sachlich plausible Doppelzuordnungen beim Vater sind im Lösungsschlüssel ausdrücklich ausgewiesen.
+Alle acht Abschnittsnamen stehen im Wortlaut des Auftrags in der Übersicht. Beim Argumenten-Check stehen oben Fakt und Wert, unten Norm und Folgerung. Jedes Feld behält seine bekannte Frage. Das Auswahlfeld verweist auf eine nummerierte Originalzeile. Bei 390 Pixeln und 200 Prozent Schrift prüft der Layouttest auch den Platz für die längste Option und den Auswahlpfeil. „Das passt.“ und „Prüfe noch einmal.“ begleiten die vorhandenen Rückmeldungsfarben. Sachlich plausible Doppelzuordnungen beim Vater sind im Lösungsschlüssel ausdrücklich ausgewiesen.
 
 Die Quelle steht links, die Arbeit rechts, auf schmalen Geräten untereinander. Im Urteil stehen die beiden geprüften Befunde im Quellenfeld. Originalnachrichten lassen sich auch zeilenweise lesen. Hilfe 1 bis 5, Fachkarten, Übersicht und Tagesauswahl bleiben während der Arbeit erreichbar. Entwürfe liegen pro Niveau und Abschnitt im Arbeitsspeicher. Nach einem vollständigen Neuladen lässt sich jeder der acht Abschnitte wieder direkt öffnen. Das Test-LMS protokolliert die technische Sitzung.
 

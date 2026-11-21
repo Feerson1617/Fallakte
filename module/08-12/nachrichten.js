@@ -233,7 +233,7 @@
     for (const field of task.fields) {
       const label=el('label','map-field'), select=el('select');
       select.setAttribute('aria-label',field.name);
-      const empty=el('option','','Zeile wählen');
+      const empty=el('option','','Zeile …');
       empty.value='';
       select.append(empty);
       for (const option of field.options) {

@@ -104,6 +104,12 @@ def layout(frame):
       small: [...body.querySelectorAll('button,summary,select')].filter(e=>e.getClientRects().length && (e.getBoundingClientRect().height < 43.9 || e.getBoundingClientRect().width < 43.9)).map(e=>e.textContent)
     })""")
     assert result['overflow']<=1 and not result['small'], result
+    clipped=frame.locator('select').evaluate_all("""els=>els.filter(el=>{
+      const ctx=document.createElement('canvas').getContext('2d');
+      ctx.font=getComputedStyle(el).font;
+      return [...el.options].some(o=>Math.ceil(ctx.measureText(o.text).width)+24>el.clientWidth);
+    }).map(el=>el.getAttribute('aria-label'))""")
+    assert not clipped, ('Abgeschnittene Zeilenauswahl',clipped)
 
 
 def shot(page,name):

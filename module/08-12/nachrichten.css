@@ -48,7 +48,7 @@ legend{margin:0 0 .35rem}
 .map-field small,.map-cell .feedback{font-size:.9em;margin-block:.25rem}
 .map-field select{font:inherit;color:inherit;background:#fffef9;min-height:44px;width:100%;border:1px solid #83978b;border-radius:.5rem}
 .map-field select:focus-visible{outline:3px solid #9b4c24;outline-offset:2px}
-@media(max-width:27rem){.map-field select{font-size:.9em}}
+@media(max-width:27rem){main{padding-inline:.45rem}.map-cell{padding:.3rem}.map-field select{font-size:.9em}}
 .note{border-left:3px solid #a86a39;background:#fbf1df;padding:.55rem .8rem}
 .feedback{border-left:3px solid #497653;background:#edf4e9;padding:.55rem .8rem}
 .retry{border-color:#aa5943;background:#fbede5}
