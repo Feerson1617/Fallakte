@@ -119,6 +119,14 @@ def exercise(browser, engine, version, size, url, images):
     pane(frame,'write-answer')
     operate(frame.locator('#method-P'),touch)
     selected = record('Auswahl')
+    if new:
+        # The four single-word method names fit without splitting off individual letters.
+        for button in frame.locator('.method').all():
+            lines = button.evaluate('''e=>{
+              const range=document.createRange(); range.selectNodeContents(e);
+              return new Set([...range.getClientRects()].map(r=>r.top)).size;
+            }''')
+            assert lines == 1, (size,button.inner_text(),lines)
     for _ in range(2):
         operate(frame.locator('#help'),touch)
         if new:
