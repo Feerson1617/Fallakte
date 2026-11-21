@@ -242,10 +242,31 @@ def exercise(browser,engine,person,level,n,base):
                 urteile=task['options'],wiedereinstieg=sections,externe_anfragen=requests,skriptfehler=errors)
 
 
+def standalone_zoom(browser,engine):
+    context=browser.new_context(viewport={'width':390,'height':650},has_touch=True,is_mobile=True)
+    page=context.new_page()
+    page.goto((OUT/'Fallakte.html').as_uri())
+    page.locator('html').evaluate("el=>el.style.fontSize='200%'")
+    # Exercise the fallback bar, long source words and every direct entry at this width.
+    for case in BANK['cases'].values():
+        for section in case['sections']:
+            layout(page)
+            btn(page,section).tap()
+            btn(page,'Hilfe').tap()
+            btn(page,'Hilfe 5 – So geht es.').tap()
+            layout(page)
+            page.locator('aside summary').first.tap()
+            layout(page)
+            btn(page,'Nachrichten').tap()
+    context.close()
+    return dict(browser=engine,viewport=[390,650],schrift_prozent=200,abschnitte=8)
+
+
 def main():
     check_content()
     QA.mkdir(parents=True,exist_ok=True)
     runs=[]
+    small=[]
     with TemporaryDirectory() as td:
         temp=Path(td)
         before=protect(temp)
@@ -256,6 +277,7 @@ def main():
         with host(temp/'sco') as url,sync_playwright() as pw:
             for engine in ('chromium','webkit'):
                 browser=getattr(pw,engine).launch(executable_path=os.getenv(engine.upper()+'_EXECUTABLE'))
+                small.append(standalone_zoom(browser,engine))
                 for pi,person in enumerate(BANK['cases']):
                     for li,level in enumerate(BANK['levels']):
                         runs.append(exercise(browser,engine,person,level,4*pi+li,url))
@@ -263,7 +285,7 @@ def main():
                 browser.close()
     report=dict(referenz=REVIEWED,version_a_sha256=before,html_sha256=digest((B/'Fallakte.html').read_bytes()),
                 scorm_sha256=digest((B/'Fallakte-SCORM12.zip').read_bytes()),bank_sha256=digest((OUT/'Aufgabenbank.json').read_bytes()),
-                durchlaeufe=runs,bilder={f.name:digest(f.read_bytes()) for f in sorted(QA.glob('*.jpg'))})
+                durchlaeufe=runs,kleinfenster=small,bilder={f.name:digest(f.read_bytes()) for f in sorted(QA.glob('*.jpg'))})
     (QA/'Nachrichten.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
 
 

@@ -87,13 +87,14 @@ def main():
     assert len(runs)==32 and {(v['browser'],v['person'],v['niveau']) for v in runs}=={
         (e,p,l) for e in ('chromium','webkit') for p in bank['cases'] for l in bank['levels']}
     assert all(v['hilfen_je_aufgabe']==5 and len(v['urteile'])==3 and not v['skriptfehler'] and not v['externe_anfragen'] for v in runs)
+    assert {x['browser'] for x in r['kleinfenster'] if x['schrift_prozent']==200 and x['abschnitte']==8}=={'chromium','webkit'}
     photos=[(QA/name,'Bildschirmfotos/'+name) for name in r['bilder']]
     assert all(r['bilder'][file.name]==sha(file) for file,_ in photos)
     assert len(photos)==20
     body=(ROOT/'docs/Nachrichten-08-12.md').read_text()
     summary = ['## Technische Abnahme',f"Geprüfter Ausgangsstand: `{r['referenz']}`. Der Referenzbau vergleicht Version A vollständig sowie Version B außerhalb des zweiten Moduldokuments byteweise. Die vorhandenen Prüfungen für den 02.12. liefen am eingebetteten Programmstand. Die Dateiinhalte von Offline-HTML und SCORM-Startdatei stimmen überein.",
                f"{len(runs)} vollständige Wege in Chromium und WebKit decken alle vier Personen und Niveaus ab. Getestet wurden richtige und falsche Textantworten, alle fünf Hilfen, Abschluss nach Hilfe 5 und alle drei Urteile. Die Tests öffnen Karten, wechseln die Ansicht und steigen nach vollständigem Neuladen in beide Abschnitte ein. Die Protokolle nennen Browserstand, Touch-Viewport, Schrift und Format für jeden Weg.",
-               'iPad-Ansichten: 820 × 1180 und 1180 × 820 CSS-Pixel bei 100 oder 150 Prozent Schrift im Modul. Die Offline-Prüfung blockiert externe Verbindungen. Das SCORM-Testsystem protokolliert Sitzungsbeginn und Sitzungsende. Schülerantworten werden im Arbeitsspeicher gehalten. Das LMS kann Zugriffe separat protokollieren.',
+               'iPad-Ansichten: 820 × 1180 und 1180 × 820 CSS-Pixel bei 100 oder 150 Prozent Schrift im Modul. Der separate lokale Einstieg wurde bei 390 × 650 und 200 Prozent Schrift mit allen acht Abschnitten und geöffneter Hilfe geprüft. Die Offline-Prüfung blockiert externe Verbindungen. Das SCORM-Testsystem protokolliert Sitzungsbeginn und Sitzungsende. Schülerantworten werden im Arbeitsspeicher gehalten. Das LMS kann Zugriffe separat protokollieren.',
                '| Niveau | Aufgaben Mutter | Aufgaben Freundin | davon eigene Urteile |','| --- | ---: | ---: | ---: |']
     for level in bank['levels']:
         summary.append('| '+level+' | '+' | '.join(str(len(bank['cases'][p]['levels'][level])) for p in ('Mutter','Freundin'))+' | 2 |')
