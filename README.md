@@ -1,42 +1,52 @@
-# Fallakte – digitaler Verhütungsberatungs-Chat
+# Fallakte · Verhütungsberatung
 
-**Entwicklungsstand: Prototyp v0.1 vom 20.11.2026. Nicht für den Unterricht freigegeben.**
+Unterrichtsanwendung für Biologie in Klasse 8. In drei fiktiven Beratungsgesprächen prüfen Lernende ihre Empfehlungen anhand von Infokarten, persönlichen Grenzen und neuen Fallinformationen. Die 19-jährige Laura ist der gemeinsame Hauptfall. Celina und Tom ergänzen ihn. Alle drei Gespräche stehen auf Förder-, ESA-, MSA- und AHR-Niveau zur Verfügung.
 
-Interaktive Unterrichtsfallakte für Biologie, Klasse 8, mit drei fiktiven Beratungsfällen (Laura, Celina, Tom), vier Unterstützungsstufen (Förder, ESA, MSA, AHR) und vorprogrammierten Chatreaktionen.
+## Digitale Erarbeitung öffnen
 
-## Vorschau starten
+Im erfolgreichen GitHub-Actions-Lauf **Unterrichtspakete** das Artefakt **Fallakte-Unterricht** herunterladen und entpacken.
 
-Die Datei `index.html` im Browser öffnen. Der Prototyp ist eine einzige HTML-Datei ohne Build-Schritt, externe Bibliotheken oder Netzwerkzugriff. Der Browser hält den Gesprächsverlauf nur bis zum Neuladen vor.
+| Datei | Verwendung |
+| --- | --- |
+| **Fallakte.html** | Direkt im Browser öffnen, auch ohne Netzwerk. Bilder, Schriften, Dialoge und Hilfen sind eingebettet. |
+| **Fallakte-SCORM12.zip** | Als geschlossenes SCORM-1.2-Paket in itslearning importieren. |
+| **Fallakte-Sichtpruefung.zip** | Bildschirmfotos und sieben JSON-Testprotokolle der gebauten Anwendung. |
+| **Fallakte-Pruefbericht.md** | Technische Ergebnisse und ausstehende Prüfungen auf Schulgeräten. |
 
-## Dateien
+Alle Teams beraten zuerst die 19-jährige Laura in fünf gemeinsamen Abschnitten. Sie greifen ihren notierten ersten Einzelrat auf und prüfen ihn bei drei neuen Gesprächsanlässen. Ab dem zweiten Schutzziel können sie ein Kondom mit einer weiteren Methode kombinieren. Beim letzten Rat nennen Förder- und ESA-Teams mündlich einen Grund und einen Nachteil. MSA und AHR wägen zwei Strategien ab. Auf allen Niveaus steht die Aufforderung zur eigenen Papierkarte direkt bei der Entscheidung. Die digitalen Karten und fünf freiwilligen Hilfen unterstützen bei Bedarf. Ohne Auswahl passen Kartenstelle und Beispielmethode zusammen. Bei einem Methodenvergleich erklärt das Beispiel, wie die Kartenangabe den Rat begründet. Jede Person arbeitet auf ihrem eigenen iPad im eigenen Niveau. Einen vorbereiteten Entwurf versendet das Team selbst. Nach Laura stehen im selben Niveau Celina und Tom zur Wahl.
 
-- `index.html`: direkt ausführbare Vorschau inklusive Styles, Anwendungslogik und eingebetteter Falldaten
-- `data/dialogdaten_prototyp.json`: dieselben Falldaten separat und lesbar strukturiert, als Grundlage für eine spätere Trennung von Daten und UI
-- `docs/QA_Bericht_v01.md`: getestete Funktionen, Einschränkungen und offene Punkte
+Bei einer Unterbrechung kann die Seite in jedem Gesprächsschritt geöffnet bleiben. Infokarten und Fallübersicht erlauben die Rückkehr zum Gespräch desselben Niveaus. Der Verlauf liegt nur im Arbeitsspeicher der geöffneten Seite. Nach dem Neuladen führt **Nach Neustart weitermachen** direkt zur Auswahl von Fall, Niveau und markierter Abschnittsnummer. Wer zum Beispiel **Laura 3 – Lauras Entscheidung** wählt, liest eine kurze Zusammenfassung und gibt einen eigenen Rat. In der Kopfzeile steht **Laura 3 von 5**. Auch Celina und Tom sind über diesen Zugang direkt erreichbar. Der SCORM-Adapter öffnet und schließt die technische Sitzung. Das LMS kann unabhängig davon Zugriffe protokollieren.
 
-**Wichtig:** Der JSON-Datensatz ist aktuell eine Kopie der in der HTML-Datei eingebetteten Daten. Änderungen an nur einer der Dateien aktualisieren die andere nicht automatisch. Codex soll eine einzige kanonische Datenquelle schaffen.
+[Technische Abnahme und offene Punkte](docs/Abnahme.md) · [Fachquellen](docs/Fachpruefung.md)
 
-## Didaktische Anforderungen für die weitere Entwicklung
+## Entwicklung und Prüfung
 
-1. Laura beginnt mit einem STI-Schutz-Anliegen, für das unter den vier behandelten Methoden das Kondom zunächst die naheliegende Antwort ist. Neue Informationen eröffnen später mehrere vertretbare Gesamtstrategien. Keine erzwungene eindeutige Endmethode.
-2. Lauras ausführlicher Chat und die schrittweise Informationsfreigabe sollen erhalten bleiben. Feedback durch die fiktive Figur muss zu der vorherigen Entscheidung passen und darf nicht die nächste Antwort verraten.
-3. Entscheidungen der beratenen Person respektieren. Eine Sorge ist nicht automatisch eine Ablehnung.
-4. Vier tatsächliche Anspruchs- und Unterstützungsniveaus; insbesondere kurze, **konkrete** Hilfen für Förder und ESA, etwa „Lies die Kupferspiralen-Karte: Was steht dort zu Regelschmerzen?“
-5. Antworten in vollständigen, natürlich formulierten Sätzen. Kein Antwortwortlaut, der bereits die „richtige“ Auswahl verrät.
-6. Jede Person muss erkennen, welche Aktion als Nächstes erwartet wird. Einfache Touch-Bedienung, klarer Senden-Button, keine überflüssigen Klicks.
-7. Der gesamte Messenger-Verlauf muss lesbar und frei scrollbar bleiben; frühere Entscheidungen bleiben nachvollziehbar.
-8. Kein automatisches Bewerten offener Begründungen. Der individuelle Lernzuwachs wird im Unterricht anhand des Laufzettels und der doppelten Laura-Abstimmung sichtbar gemacht.
-9. Celina ist der eigenständige zweite Beratungsfall; Tom behandelt als Vertiefung die Forschung an Verhütungsmitteln für Männer.
-10. Zielumgebung: Safari auf Schul-iPads, Bereitstellung über itslearning als SCORM-1.2-ZIP; **keine dauerhafte Speicherung** von Lernantworten, Punkten oder Spielständen in der Anwendung oder über SCORM.
+**data/dialogdaten.js** enthält die fachlichen Dialoge und Karten. **data/lernhilfen.js** enthält die stufenspezifischen Hilfen. **app/app.js** verwaltet die Gespräche, **app/ui.js** und **app/lernhilfen.js** stellen die gemeinsam verwendbaren Komponenten bereit.
 
-## Wichtige Grenzen dieser Version
+```sh
+python scripts/build.py
+python -m pip install -r tests/requirements.txt
+python -m playwright install --with-deps chromium webkit
+python tests/acceptance.py
+python tests/lernhilfen.py
+python tests/layout.py
+python tests/content.py
+python tests/recovery.py
+python scripts/review.py
+```
 
-- Der Prototyp wurde per Chromium getestet, **nicht** auf echten Schul-iPads oder in itslearning.
-- Die analogen Laufzettel und Einstiegsmaterialien enthalten teilweise noch den früheren Laura-Einstieg und müssen vor einem Einsatz angepasst werden.
-- Die komplette medizinische, pädagogische und sprachliche Endabnahme aller Dialogverzweigungen steht noch aus.
-- Ein SCORM-Testpaket existiert separat, ist jedoch **nicht** Bestandteil dieses Repository-Imports und keine Unterrichtsfreigabe.
-- Keine sensiblen Schülerdaten und keine schulinternen Lehrkraftdokumente in das öffentliche Repository aufnehmen.
+Die vier Ausgabedateien liegen unter **dist/**. Einzelne Testnachweise entstehen unter **build/qa/**. Der Inhaltsvergleich benötigt den Stand `940138e` aus der Git-Historie. Bereits vorhandene analoge Vorlagen liegen weiterhin unter **material/**, außerhalb der Softwareausgabe.
 
-## Nächster Schritt für Codex
+## Vorbereitung für die zweite Fallakte am 08.12.
 
-Die vorhandene Fassung zuerst lokal starten, die drei Fälle in allen vier Niveaus prüfen, die Dialogdaten von der HTML-Oberfläche entkoppeln und eine bedienungsarme iPad-Fassung entwickeln. Anschließend alle Fehlentscheidungen, Rückfragen, Hilfen, mögliche Kombinationen und Revisionswege automatisiert und manuell testen. Ein SCORM-1.2-Paket und eine kleine lokale Sichtprüfungsversion sollen aus derselben getesteten Quelle erzeugt werden.
+Eine eigene Einstiegsseite kann **app/ui.js** und **app/lernhilfen.js** direkt laden. Der Unterrichtsfall vom 02.12. verwendet dieselben Dateien. `levelText(wert, niveau)` liest gemeinsame oder stufenspezifische Texte und wird auch für situative Rückmeldungen verwendet. `renderHelp` erhält die geordneten Hilfetexte, die bereits geöffnete Stufe, den Rückruf zum Stufenwechsel und eine Quelle mit Beschriftung und Öffnungsaktion sowie optional die Handlung der letzten Stufe. Den Stand hält die aufrufende Fallakte je Gespräch und Niveau im Arbeitsspeicher. Die beiden gemeinsamen Dateien lassen sich unabhängig von den Fall- und Methodendaten laden. Das prüft ein eigener Browsertest.
+
+Die Abschnittsauswahl in **app/wiederaufnahme.js** erhält die geordneten Fälle und Niveaus sowie eine Funktion zum Einstieg in den gewählten Abschnitt. Jede Stufe liefert ihren Titel, bei Bedarf eine kürzere Beschriftung für den Laufzettel und einen kurzen Rückblick für spätere Einstiege. Über den fachlichen Kontext und eingeführte Quellen entscheidet das jeweilige Modul.
+
+Für die getrennte Planung am 08.12. gilt dieselbe Fallperson Laura, 19 Jahre. Der zeitliche Abstand bleibt offen. Aus der späteren ungeplanten Schwangerschaft trotz Verhütung lässt sich weder ein Anwendungsfehler noch die Unwirksamkeit einer bestimmten Methode ableiten. Dieser Planungshinweis gehört ausschließlich in die Entwicklungsdokumentation.
+
+Für den Argumenten-Check zum Thema Schwangerschaftsabbruch kann ein separat geprüfter Gesprächsschritt eine Textpassage als Quelle und eigene Rückmeldungen für die Unterscheidung von Fakt, Wert, Norm und Schlussfolgerung liefern. Die inhaltliche Redaktion und Prüfung dieses Moduls stehen aus. Die Unterrichtsfassung für den 02.12. lädt ausschließlich den Verhütungsfall.
+
+## Herkunft der Assets
+
+Die drei Illustrationen zeigen künstlich erzeugte fiktive Figuren. DM Sans und DM Serif Text stammen aus Google Fonts und sind lokal als Zeichensatz für die Unterrichtstexte eingebunden. Die OFL-Lizenzen liegen in **assets/** und sind in der Einzeldatei enthalten. Die IMS-Schemas stammen aus dem [IMS-Schemaarchiv](https://www.imsglobal.org/xsd/), das ADL-Schema aus der [SCORM-1.2-Schemasammlung](https://github.com/cybercussion/SCOBot/blob/e7ddc823a39943ad48dfdfebcedb31d985409a1f/schemas/scorm12_schemas/adlcp_rootv1p2.xsd).

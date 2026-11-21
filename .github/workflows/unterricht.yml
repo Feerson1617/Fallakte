@@ -1,0 +1,40 @@
+name: Unterrichtspakete
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  unterricht:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: tests/requirements.txt
+      - run: python -m pip install -r tests/requirements.txt
+      - run: python -m playwright install --with-deps chromium webkit
+      - run: python scripts/build.py
+      - run: python tests/acceptance.py
+      - run: python tests/lernhilfen.py
+      - run: python tests/layout.py
+      - run: python tests/content.py
+      - run: python tests/recovery.py
+      - run: python scripts/review.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Fallakte-Unterricht
+          path: |
+            dist/Fallakte.html
+            dist/Fallakte-SCORM12.zip
+            dist/Fallakte-Sichtpruefung.zip
+            dist/Fallakte-Pruefbericht.md
+          if-no-files-found: error
+          retention-days: 30

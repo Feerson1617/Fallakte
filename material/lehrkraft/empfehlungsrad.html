@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Empfehlungsrad · Laura</title>
+<style>
+@page { size: A3 landscape; margin: 0 }
+@font-face { font-family: DM Sans; src: url("../../assets/dmsans.ttf") }
+@font-face { font-family: DM Serif; src: url("../../assets/dmseriftext.ttf") }
+* { box-sizing: border-box }
+body { margin: 0; color: #20352e; font: 17pt/1.35 "DM Sans", sans-serif }
+main { width: 420mm; height: 297mm; padding: 16.5mm; display: grid; grid-template-columns: 106mm 264mm; gap: 17mm; align-items: center }
+header { border-top: 1mm solid #354d40; padding-top: 4mm; font-size: 14pt }
+h1 { font: 37pt/1.06 "DM Serif", Georgia, serif; margin: 5mm 0 9mm }
+p { margin: 0 0 5mm }
+svg { display: block; width: 264mm; height: 264mm; overflow: visible }
+.sector { fill: white; stroke: #40554a; stroke-width: .65; stroke-linejoin: round }
+.mark { stroke: #718078; stroke-width: .45; fill: white }
+text { font: bold 7.2px "DM Sans", sans-serif; text-anchor: middle; fill: #20352e }
+</style>
+</head>
+<body>
+<main>
+<section>
+<header>Fallakte · Laura</header>
+<h1></h1>
+<p id="question"></p>
+<p id="paper"></p>
+<p>Markiere einen freien Kreis bei deiner Empfehlung.</p>
+</section>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-132 -132 264 264" role="img" aria-label="Empfehlungsrad"></svg>
+</main>
+<script src="../../data/dialogdaten.js"></script>
+<script>
+const finalVote = new URLSearchParams(location.search).get('rad') === '2';
+document.querySelector('h1').textContent = finalVote ? 'Mein letzter Rat' : 'Mein erster Rat';
+document.querySelector('#question').textContent = finalVote
+  ? 'Was rätst du Laura jetzt?'
+  : 'Laura möchte sich beim Sex vor Infektionen schützen. Was rätst du ihr?';
+document.querySelector('#paper').textContent = finalVote
+  ? 'Wählst du „Kondom + weitere Methode“? Schreibe beide Namen auf deinen Laufzettel.'
+  : 'Schreibe deinen ersten Rat und deinen Grund auf den Laufzettel.';
+const labels = ['K','P','Cu','H'].map(id => [FALLAKTE.methods[id][0]]);
+if (finalVote) labels.push(['Kondom +', 'weitere Methode']);
+
+const wheel = document.querySelector('svg');
+function add(parent, element, attrs, value) {
+  const node = document.createElementNS(wheel.namespaceURI, element);
+  for (const [key, val] of Object.entries(attrs)) node.setAttribute(key, val);
+  if (value) node.textContent = value;
+  parent.append(node);
+  return node;
+}
+function point(radius, degrees) {
+  const angle = degrees * Math.PI / 180;
+  return [radius * Math.cos(angle), radius * Math.sin(angle)];
+}
+const span = 360 / labels.length;
+labels.forEach((lines, index) => {
+  const center = -90 + index * span;
+  const start = point(131, center - span / 2);
+  const end = point(131, center + span / 2);
+  const field = add(wheel, 'g', {'aria-label': lines.join(' ')});
+  add(field, 'path', {class: 'sector', d: 'M0 0 L'+start+' A131 131 0 0 1 '+end+' Z'});
+  const [x, y] = point(52, center);
+  lines.forEach((line, i) => add(field, 'text', {x, y: y + 2.5 + (i - (lines.length-1)/2)*8.5}, line));
+  for (const radius of [91, 101, 111, 121]) {
+    for (let column = -3; column <= 3; column++) {
+      const [cx, cy] = point(radius, center + column * (span - 16) / 6);
+      add(field, 'circle', {class: 'mark', cx, cy, r: 3.7});
+    }
+  }
+});
+</script>
+</body>
+</html>
