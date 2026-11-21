@@ -1,6 +1,7 @@
 """Read the delivered PDFs back independently of the HTML print template."""
 import hashlib
 import json
+import math
 from pathlib import Path
 
 from pypdf import PdfReader
@@ -8,6 +9,51 @@ from pypdf import PdfReader
 OUT = Path(__file__).resolve().parents[1] / 'dist'
 LEVELS = {'Foerder': ('Förder','Meinen Rat kann ich jetzt begründen'), 'ESA': ('ESA','Jetzt kann ich besser erklären'),
           'MSA': ('MSA','Kriterium'), 'AHR': ('AHR','Annahme')}
+
+
+def check_wheel(number):
+    path = OUT / f'Empfehlungsrad-{number}.pdf'
+    pages = PdfReader(path).pages
+    assert len(pages) == 1
+    page = pages[0]
+    assert abs(float(page.mediabox.width)-1191) < 2 and abs(float(page.mediabox.height)-842) < 2
+    text = ' '.join(page.extract_text().split())
+    instructions, separator, wheel_text = text.partition('Markiere einen freien Kreis bei deiner Empfehlung.')
+    assert separator
+    names = ['Kondom', 'Kombinationspille', 'Kupferspirale', 'Hormonspirale']
+    combined = 'Kondom + weitere Methode'
+    assert (combined in wheel_text) == (number == 2)
+    if number == 2:
+        names.append(combined)
+        assert 'beide Namen auf deinen Laufzettel' in instructions
+    assert all(name in wheel_text for name in names)
+    # Measure the printed circles in the wheel's millimetre coordinate system.
+    sectors = [[] for name in names]
+    span = 360 / len(sectors)
+    points = []
+    for args, op in page.get_contents().operations:
+        if op == b'm':
+            points = list(args)
+        elif op in (b'c', b'l'):
+            points.extend(args)
+        elif op == b'S' and points:
+            xs, ys = points[::2], points[1::2]
+            width, height = max(xs)-min(xs), max(ys)-min(ys)
+            if width > 50:  # outline of a sector
+                continue
+            assert 7 <= width <= 8 and abs(width-height) < .01
+            x, y = (min(xs)+max(xs))/2, (min(ys)+max(ys))/2
+            angle = (math.degrees(math.atan2(y, x)) + 90 + span/2) % 360
+            radius = math.hypot(x, y)
+            assert radius + width/2 < 131
+            assert radius * math.sin(math.radians(min(angle % span, span-angle % span))) > width/2
+            field = sectors[int(angle//span)]
+            assert all(math.dist((x,y), other) >= width+1 for other in field)
+            field.append((x,y))
+    counts = [len(field) for field in sectors]
+    assert counts == [28]*len(names), (path, counts)
+    return dict(datei=path.name, seiten=1, format='A3 quer', markierungen=dict(zip(names,counts)),
+                sha256=hashlib.sha256(path.read_bytes()).hexdigest())
 
 
 def check():
@@ -51,8 +97,9 @@ def check():
     (OUT/'qa'/'laufzettel.json').write_text(json.dumps({
         'html_sha256': hashlib.sha256((OUT/'Fallakte.html').read_bytes()).hexdigest(),
         'lehrkraft': dict(datei=teacher.name,sha256=hashlib.sha256(teacher.read_bytes()).hexdigest()),
+        'empfehlungsraeder': [check_wheel(number) for number in (1, 2)],
         'pdfs': results}, ensure_ascii=False, indent=2))
-    print('Vier Laufzettel mit acht A4-Seiten sowie Faktenfolie und Beobachtungsraster geprüft.')
+    print('Vier Laufzettel, Faktenfolie, Beobachtungsraster und zwei A3-Räder mit je 28 Markierungen pro Feld geprüft.')
 
 
 if __name__ == '__main__':

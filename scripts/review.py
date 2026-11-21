@@ -30,6 +30,7 @@ assert all(m['disclosure']['later_facts_visible'] is False for m in matrices)
 assert all(m['article_return']['glossary_state_preserved'] and m['article_return']['jump_to_article'] for m in matrices)
 assert reports['scorm']['schema_valid']
 assert all(run['laura_age']==19 and run['age_levels']==4 for run in reports['scorm']['runs'])
+assert all(run['kombination_ab_l1'] for run in reports['scorm']['runs'])
 assert {r['engine'] for r in reports['scorm']['runs']} == {'chromium', 'webkit'}
 content = reports['inhaltsvergleich']
 assert content['built_data_equal'] and content['rendered_paths'] == 84
@@ -41,6 +42,7 @@ assert {run['engine'] for run in help_runs} == {'chromium','webkit'}
 assert all({r['niveau'] for r in run['wege']} == {'Foerder','ESA','MSA','AHR'} for run in help_runs)
 for engine in help_runs:
     assert len(engine['wege'])==16
+    assert all(r['kombination_ab_l1'] for r in engine['wege'])
     assert all(r['hilfe_ohne_scroll'] and r['entwurf_ohne_senden'] and r['stufen']==5 for r in engine['wege'])
 layout = reports['layout']
 assert {run['engine'] for run in layout['runs']} == {'chromium','webkit'}
@@ -53,6 +55,8 @@ for sheet in reports['laufzettel']['pdfs']:
     assert hashlib.sha256((OUT/'Laufzettel'/sheet['datei']).read_bytes()).hexdigest() == sheet['sha256']
 teacher=reports['laufzettel']['lehrkraft']
 assert hashlib.sha256((OUT/teacher['datei']).read_bytes()).hexdigest()==teacher['sha256']
+for wheel in reports['laufzettel']['empfehlungsraeder']:
+    assert hashlib.sha256((OUT/wheel['datei']).read_bytes()).hexdigest()==wheel['sha256']
 with ZipFile(OUT/'Fallakte-SCORM12.zip') as scorm:
     resources = list((ROOT/'scorm').iterdir())
     assert sorted(scorm.namelist()) == sorted(['index.html', *(p.name for p in resources)])

@@ -59,6 +59,12 @@ def build():
         page.set_content(teacher.replace('{{fakten}}', ''.join(f'<li>{escape(f)}</li>' for f in facts)))
         page.pdf(path=ROOT / 'dist/Fallakte-Lehrkraft.pdf', prefer_css_page_size=True,
                  print_background=True, tagged=True)
+        wheel = ROOT / 'material/lehrkraft/empfehlungsrad.html'
+        for number in (1, 2):
+            page.goto(f'{wheel.as_uri()}?rad={number}')
+            page.evaluate('document.fonts.ready')
+            page.pdf(path=ROOT / f'dist/Empfehlungsrad-{number}.pdf', prefer_css_page_size=True,
+                     print_background=True, tagged=True)
         browser.close()
 
 

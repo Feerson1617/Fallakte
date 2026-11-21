@@ -43,10 +43,19 @@
       assert(history.lastChild.textContent.endsWith(answer),'Unexpected answer');
     }
     assert(!document.querySelector('#ask'),'Repeatable question');
-    const key=stage.options.DONE?'DONE':strategy;
+    let key=stage.options.DONE?'DONE':strategy;
+    if (stage.id==='L0') {
+      if (strategy.includes('+')) key='K';
+      if (testScaffold) {
+        assert(Object.keys(stage.options).sort().join(',')==='Cu,H,K,P','L0 option set');
+        assert(document.querySelectorAll('#work .method').length===4,'L0 method count');
+        assert(document.querySelector('#work').textContent.includes('notiert hast'),'Missing paper-to-chat instruction');
+      }
+    }
     if (key!=='DONE' && !review) {
       const method=key.split('+').pop();
       click('#method-'+method);
+      if (stage.id==='L0' && testScaffold) assert(!document.querySelector('#additional,#combine'),'L0 combination offered');
       if(key.includes('+'))click('#combine');
       if(key.includes('+')){
         click('#method-K');
@@ -91,6 +100,13 @@
     } else {
       click('#send');methods++;
       assert(history.lastChild.textContent.endsWith(pair(stage.replies[key])),'Selected response');
+      if (testScaffold && stage.id==='L0') assert(!/abstimm|stimmt .* ab/i.test(document.querySelector('#work').textContent),'Repeated class vote');
+      if (testScaffold && stage.id==='L6') {
+        const reply=document.querySelector('#work .response').textContent;
+        const boundary={K:/jedes Mal/, 'K+P':/möchte ich aber nicht/, 'K+Cu':/wegen meiner Schmerzen offen/,
+                        'K+H':/nur nach Beratung und mit meiner Zustimmung/};
+        if (boundary[key]) assert(boundary[key].test(reply),'Missing final condition for '+key);
+      }
       assert(history.lastChild.previousSibling.textContent.endsWith(stage.options[key]),'Sent text');
       const choices=[...document.querySelectorAll('#work .row button')];
       assert(choices.map(b=>b.textContent).includes('Vorschlag ändern'),'Revision missing');

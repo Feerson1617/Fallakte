@@ -38,6 +38,8 @@ jobs:
             dist/Fallakte-Sichtpruefung.zip
             dist/Fallakte-Pruefbericht.md
             dist/Fallakte-Lehrkraft.pdf
+            dist/Empfehlungsrad-1.pdf
+            dist/Empfehlungsrad-2.pdf
           if-no-files-found: error
           retention-days: 30
       - uses: actions/upload-artifact@v4

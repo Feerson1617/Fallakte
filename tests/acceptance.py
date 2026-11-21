@@ -246,6 +246,15 @@ def test_scorm(browser):
                 frame.locator('[data-person=Laura]').click()
                 expect(frame.locator('#history .person p').first).to_have_text(
                     'Hi, ich bin Laura. Ich bin 19.' if tier=='Foerder' else 'Hi, ich bin Laura, 19.')
+                for method in ('K','P','Cu','H'):
+                    frame.locator('#method-'+method).click()
+                    expect(frame.locator('#additional,#combine')).to_have_count(0)
+                frame.locator('#send').click()
+                frame.get_by_role('button',name='Vorschlag beibehalten').click()
+                frame.locator('#method-K').click()
+                frame.locator('#additional').select_option('Cu')
+                frame.locator('#send').click()
+                expect(frame.locator('#history .team p').last).to_contain_text('ein Kondom und die Kupferspirale')
                 frame.locator('#home-nav').click()
             frame.locator('#level-ESA').click()
             page.reload()
@@ -273,7 +282,7 @@ def test_scorm(browser):
         finally:
             server.shutdown()
             server.server_close()
-    return dict(launch=launch,members=members,observed_calls=calls,laura_age=19,age_levels=4)
+    return dict(launch=launch,members=members,observed_calls=calls,laura_age=19,age_levels=4,kombination_ab_l1=True)
 
 
 if __name__=='__main__':

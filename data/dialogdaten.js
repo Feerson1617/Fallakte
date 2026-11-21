@@ -42,28 +42,22 @@ const FALLAKTE = {
           ]
         },
         "task": {
-          "Foerder": "Fülle auf deinem Laufzettel „Mein erster Rat“ aus. Schreibe deinen Rat und einen Grund auf.",
-          "ESA": "Fülle auf deinem Laufzettel „Mein erster Rat“ aus. Schreibe deinen Rat und einen Grund auf.",
-          "MSA": "Fülle auf deinem Laufzettel „Mein erster Rat“ aus. Schreibe deinen Rat und einen Grund auf.",
-          "AHR": "Fülle auf deinem Laufzettel „Mein erster Rat“ aus. Schreibe deinen Rat und einen Grund auf."
+          "Foerder": "Wähle die Methode, die du bei „Mein erster Rat“ notiert hast.",
+          "ESA": "Wähle die Methode, die du bei „Mein erster Rat“ notiert hast.",
+          "MSA": "Wähle die Methode, die du bei „Mein erster Rat“ notiert hast.",
+          "AHR": "Wähle die Methode, die du bei „Mein erster Rat“ notiert hast."
         },
         "options": {
           "K": "Wir schlagen dir ein Kondom vor.",
           "P": "Wir schlagen dir die Kombinationspille vor.",
           "Cu": "Wir schlagen dir die Kupferspirale vor.",
-          "H": "Wir schlagen dir die Hormonspirale vor.",
-          "K+P": "Wir schlagen dir ein Kondom und die Kombinationspille vor.",
-          "K+Cu": "Wir schlagen dir ein Kondom und die Kupferspirale vor.",
-          "K+H": "Wir schlagen dir ein Kondom und die Hormonspirale vor."
+          "H": "Wir schlagen dir die Hormonspirale vor."
         },
         "replies": {
           "K": "Wie viel Schutz kann ich davon erwarten?",
           "P": "Wie hilft mir das gegen Infektionen beim Sex? Genau danach habe ich gefragt.",
           "Cu": "Wie hilft mir das gegen Infektionen beim Sex? Genau danach habe ich gefragt.",
-          "H": "Wie hilft mir das gegen Infektionen beim Sex? Genau danach habe ich gefragt.",
-          "K+P": "Ihr nennt zwei Mittel. Welches davon hilft bei meinem ersten Wunsch?",
-          "K+Cu": "Ihr nennt zwei Mittel. Welches davon hilft bei meinem ersten Wunsch?",
-          "K+H": "Ihr nennt zwei Mittel. Welches davon hilft bei meinem ersten Wunsch?"
+          "H": "Wie hilft mir das gegen Infektionen beim Sex? Genau danach habe ich gefragt."
         },
         "hints": {
           "K": {
@@ -85,21 +79,6 @@ const FALLAKTE = {
             "section": "Infektionsschutz",
             "find": "Hilft die Hormonspirale gegen Infektionen?",
             "fact": "Die Hormonspirale allein schützt nicht vor sexuell übertragbaren Infektionen."
-          },
-          "K+P": {
-            "section": "Infektionsschutz",
-            "find": "Hilft die Pille gegen Infektionen?",
-            "fact": "Die Kombinationspille allein schützt nicht vor sexuell übertragbaren Infektionen. Das Kondom in eurem Vorschlag senkt das Risiko vieler Infektionen."
-          },
-          "K+Cu": {
-            "section": "Infektionsschutz",
-            "find": "Hilft die Kupferspirale gegen Infektionen?",
-            "fact": "Die Kupferspirale allein schützt nicht vor sexuell übertragbaren Infektionen. Das Kondom in eurem Vorschlag senkt das Risiko vieler Infektionen."
-          },
-          "K+H": {
-            "section": "Infektionsschutz",
-            "find": "Hilft die Hormonspirale gegen Infektionen?",
-            "fact": "Die Hormonspirale allein schützt nicht vor sexuell übertragbaren Infektionen. Das Kondom in eurem Vorschlag senkt das Risiko vieler Infektionen."
           }
         },
         "title": "Infektionsschutz",

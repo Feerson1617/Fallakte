@@ -1,6 +1,7 @@
 """Compare the delivered learner materials with the approved Git revision."""
 import hashlib
 import io
+import json
 import subprocess
 import sys
 from pathlib import Path
@@ -21,6 +22,7 @@ TRACE = """args => {
   const steps = [];
   const capture = () => {
     const copy = work.cloneNode(true);
+    if (current && stage().id==='L0') copy.querySelectorAll('.extra-method,.combine').forEach(e => e.remove());
     copy.querySelectorAll('.tools,.hint,.pick,.task-reminder summary').forEach(e => e.remove());
     for (const button of copy.querySelectorAll('button.text-button')) {
       if (/^Karte „.+“ lesen$|^Chatstelle lesen$|^Artikel nachlesen$/.test(button.textContent)) button.remove();
@@ -31,7 +33,7 @@ TRACE = """args => {
       'Bleibt ihr dabei oder zieht ihr den Vorschlag zurück? Sagt euch kurz, warum.'];
     copy.querySelectorAll('p').forEach(e => { if (oldGuides.includes(e.textContent)) e.remove(); });
     const title = copy.querySelector('#task-title');
-    if (title && ['Dein Vorschlag','Prüfe deine Nachricht','Zuerst auf dem Laufzettel','Wähle eine Methode'].includes(title.textContent)) title.remove();
+    if (title && ['Dein Vorschlag','Prüfe deine Nachricht','Mein erster Rat','Zuerst auf dem Laufzettel','Wähle eine Methode'].includes(title.textContent)) title.remove();
     steps.push([copy.textContent, document.getElementById('send')?.textContent]);
   };
   document.addEventListener('click', capture, true);
@@ -56,14 +58,21 @@ def compare(reference):
     archive = subprocess.check_output(['git', 'archive', '--format=zip', APPROVED, *inputs], cwd=ROOT)
     with ZipFile(io.BytesIO(archive)) as files:
         files.extractall(reference)
-    # Apply only the expressly approved four greeting edits to the independent oracle.
+    # Apply the approved age and L0 changes to the independently archived materials.
     dialog_file = reference / 'data/dialogdaten.js'
     dialog = dialog_file.read_text()
     for before, after, count in [('Hi, ich bin Laura. Ich bin 16.', 'Hi, ich bin Laura. Ich bin 19.', 1),
                                  ('Hi, ich bin Laura, 16.', 'Hi, ich bin Laura, 19.', 3)]:
         assert dialog.count(before) == count
         dialog = dialog.replace(before, after)
-    dialog_file.write_text(dialog)
+    data = json.loads(dialog.split('=', 1)[1].strip()[:-1])
+    first = data['cases']['Laura'][0]
+    assert first['id'] == 'L0'
+    for section in ('options','hints','replies'):
+        for combination in ('K+P','K+Cu','K+H'):
+            del first[section][combination]
+    first['task'] = dict.fromkeys(first['task'], 'Wähle die Methode, die du bei „Mein erster Rat“ notiert hast.')
+    dialog_file.write_text('const FALLAKTE = '+json.dumps(data, ensure_ascii=False, indent=2)+';\n')
     for script in ('scripts/build.py', 'scripts/worksheets.py'):
         subprocess.run([sys.executable, script], cwd=reference, check=True)
     sources = ('data/dialogdaten.js', 'material/laufzettel/aufgaben.json', 'material/laufzettel/vorlage.html')
@@ -100,7 +109,7 @@ def compare(reference):
                         assert actual[part] == expected[part], (person, tier, strategy, part)
                     paths += 1
         browser.close()
-    return dict(reference_commit=APPROVED, approved_change='Laura · vier Begrüßungen · 19 Jahre', source_files=sources, built_data_equal=True,
+    return dict(reference_commit=APPROVED, approved_change='Laura · Alter 19 · L0 vier Einzelmethoden und Rückgriff auf den notierten Rat', source_files=sources, built_data_equal=True,
                 rendered_paths=paths, pdf_page_text_sha256=pdfs)
 
 

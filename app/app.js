@@ -19,8 +19,9 @@ const stage = () => stages()[current.index];
 const forLevel = value => levelText(value,current.level);
 function code() {
   if (current.mode==='review') return current.lastKept;
-  if (current.selected==='K' && current.additional) return 'K+'+current.additional;
-  return current.combined ? 'K+'+current.selected : current.selected;
+  const second=current.selected==='K' ? current.additional : current.combined && current.selected;
+  const choice=second ? 'K+'+second : current.selected;
+  return Object.hasOwn(stage().options,choice) ? choice : '';
 }
 const orderedMethods = Object.entries(FALLAKTE.methods).sort((a,b)=>a[1][0].localeCompare(b[1][0],'de'));
 function show(id) {
@@ -459,14 +460,12 @@ function drawWork() {
     if (current.replyQuestion) showQuestionAnswer(area);
     let guide='Besprecht kurz euren Grund. Behaltet den Vorschlag bei oder ändert ihn.';
     if (current.revised) guide='Besprecht euren neuen Rat. Behaltet ihn bei oder zieht ihn zurück.';
-    else if (s.id==='L0') guide='Stimmt zuerst in der Klasse ab. Entscheidet danach mit einem Grund: beibehalten oder ändern?';
     const issue=feedbackIssue(s,code());
     if (issue) {
       const next=current.revised ? 'Vorschlag zurückziehen' : 'Vorschlag ändern';
-      guide=(s.id==='L0' && !current.revised ? 'Stimmt zuerst in der Klasse ab. ' : '')+
-        issue+' Tippe auf „'+next+'“, wenn du deinen Rat korrigieren möchtest. Die Hilfe zeigt dir die Kartenstelle.';
+      guide=issue+' Tippe auf „'+next+'“, wenn du deinen Rat korrigieren möchtest. Die Hilfe zeigt dir die Kartenstelle.';
     }
-    area.append(el('p',s.id==='L0' && !current.revised?'decision-guide paper-note':'decision-guide',guide));
+    area.append(el('p','decision-guide',guide));
     const row=el('div','row');
     row.append(button('Vorschlag beibehalten',()=>decideProposal(true),'outline'));
     if (current.revised) {
@@ -477,8 +476,9 @@ function drawWork() {
     return;
   }
   taskTitle(area,s.options.DONE ? s.title : current.selected ? 'Prüfe deine Nachricht' :
-    s.id==='L0' || s.id==='L6' ? 'Zuerst auf dem Laufzettel' : 'Wähle eine Methode');
-  const task=el('p',s.id==='L0' || s.id==='T2'?'paper-note':'',s.task[current.level]);
+    s.id==='L0' ? 'Mein erster Rat' : s.id==='L6' ? 'Zuerst auf dem Laufzettel' : 'Wähle eine Methode');
+  const task=el('p',s.id==='L0' || s.id==='T2'?'paper-note':'',
+    s.id==='L0' && current.revised ? 'Wähle die Methode für deinen neuen Vorschlag.' : s.task[current.level]);
   if (current.selected) {
     const reminder=el('details','task-reminder');
     reminder.append(el('summary','','Arbeitsauftrag nachlesen'),task);
@@ -499,21 +499,20 @@ function drawWork() {
     methods.append(b);
   }
   area.append(methods);
-  if (current.selected==='K') {
+  const partners=orderedMethods.filter(([id])=>Object.hasOwn(s.options,'K+'+id));
+  if (current.selected==='K' && partners.length) {
     const label=el('label','extra-method','Kondom kombinieren');
     const menu=el('select');
     menu.id='additional';
     menu.add(new Option('Kondom allein',''));
-    for (const [id,[name]] of orderedMethods) {
-      if (id!=='K') menu.add(new Option('Mit '+name,id));
-    }
+    for (const [id,[name]] of partners) menu.add(new Option('Mit '+name,id));
     menu.value=current.additional;
     menu.onchange=()=>{
       current.additional=menu.value; current.help=0;
       drawWork(); $('additional').focus({preventScroll:true}); revealInWork($('draft-preview'));
     };
     label.append(menu);area.append(label);
-  } else if (current.selected) {
+  } else if (partners.some(([id])=>id===current.selected)) {
     const label=el('label','combine');
     const check=el('input');
     check.type='checkbox';check.id='combine';check.checked=current.combined;

@@ -103,18 +103,40 @@ def help_path(browser, level, size, photos=False):
     expect(ui('#method-K')).to_have_attribute('aria-pressed','true')
     assert history.text_content() == after_reply
     # Revision still allows a different draft and another visit to all levels of help.
+    expect(ui('#additional,#combine')).to_have_count(0)
     ui('#method-H').click()
+    expect(ui('#additional,#combine')).to_have_count(0)
     open_to(5)
     ui('#help-action').click()
-    ui('#additional').select_option('H')
+    expect(ui('#additional,#combine')).to_have_count(0)
+    expect(ui('#draft-preview p')).to_have_text('Wir schlagen dir ein Kondom vor.')
+    # Even a leftover draft value from a later stage must not enter the chat.
+    page.evaluate("""() => {
+        current.additional='H';
+        try { sendChoice(); } finally { current.additional=''; }
+    }""")
+    assert history.text_content() == after_reply
     ui('#send').click()
     expect(button('Vorschlag zurückziehen')).to_be_visible()
     button('Vorschlag beibehalten').click()
     expect(ui('#step')).to_have_text('Schritt 2 von 7')
     expect(panel).to_be_hidden()
+    ui('#method-K').click()
+    menu=ui('#additional')
+    assert set(menu.locator('option').evaluate_all('options=>options.map(o=>o.value)'))=={'','P','Cu','H'}
+    menu.select_option('P')
+    menu.select_option('H')
+    pair=ui('#draft-preview p').inner_text()
+    expect(menu).to_have_value('H')
+    ui('#method-H').click()
+    expect(ui('#combine')).not_to_be_checked()
+    ui('#combine').check()
+    expect(ui('#draft-preview p')).to_have_text(pair)
+    ui('#send').click()
+    expect(history.locator('.team p').last).to_have_text(pair)
     page.close()
     return dict(niveau=level,frame=size,vor_auswahl=True,methodenwechsel=True,nach_rueckmeldung=True,
-                kartenstelle=True,unterbrechung=True,kombination=True,satzanfang=scaffold,
+                kartenstelle=True,unterbrechung=True,kombination_ab_l1=True,satzanfang=scaffold,
                 laura_age=19,hilfe_ohne_scroll=True,stufen=5,entwurf_ohne_senden=True)
 
 

@@ -8,10 +8,12 @@ Die Fallperson Laura ist 19 Jahre alt. Ein Gerät je Paar, ein Laufzettel je Per
 
 | Abschnitt | Arbeit der Klasse |
 | --- | --- |
-| Einstieg und erste Abstimmung, ca. 3 Minuten | Laura öffnen. Zunächst geht es um Infektionsschutz. Jede Person notiert selbst einen ersten Rat und einen Grund. Einen gemeinsamen Vorschlag im Chat senden. An der Tafel kurz über die erste Empfehlung abstimmen. |
-| Laura, ca. 18–20 Minuten | Nach dem Zeichen der Lehrkraft weiterlesen. Zu zweit Karten vergleichen und entscheiden. Bei der Freundin zwischen möglicher Nebenwirkung und sicherer Vorhersage unterscheiden. Später Lauras Nein zur Pille und ihre Sorge vor einer Einlage auseinanderhalten. Bei neuen Informationen die bisherige Strategie erneut prüfen. Hilfen und Rückfragen sind freiwillig. |
-| Zweiter Rat und Abstimmung, ca. 3–5 Minuten | Auf das gemeinsame Zeichen auf jedem Gerät **Sicherung** öffnen, auch aus Celina oder Tom. Wer bereits fertig ist, nutzt die vorhandene Schlussnotiz. Die Lehrkraft zeigt Seite 1 von **Fallakte-Lehrkraft.pdf** oder liest die sieben Angaben vor. So beginnen alle vier Niveaus den Vergleich mit denselben Informationen. Auf dem iPad kann das Team die schon erreichten Angaben nachlesen. Jede Person hält ihren Rat und ihren wichtigsten Grund fest. Erneut individuell abstimmen. |
+| Einstieg und erste Abstimmung, ca. 3 Minuten | Die iPads bleiben zunächst geschlossen. Auf Rad 1 Lauras Frage zum Infektionsschutz vorlesen. Jede Person notiert unter „Mein erster Rat“ eine Einzelmethode und ihren Grund. Dann markiert sie einen Kreis auf Rad 1. |
+| Laura, ca. 18–20 Minuten | Jetzt den Laura-Chat öffnen und den notierten Vorschlag aufgreifen. Zu zweit Karten vergleichen und entscheiden. Bei der Freundin zwischen möglicher Nebenwirkung und sicherer Vorhersage unterscheiden. Später Lauras Nein zur Pille und ihre Sorge vor einer Einlage auseinanderhalten. Bei neuen Informationen die bisherige Strategie erneut prüfen. Hilfen und Rückfragen sind freiwillig. |
+| Zweiter Rat und Abstimmung, ca. 3–5 Minuten | Auf das gemeinsame Zeichen auf jedem Gerät **Sicherung** öffnen, auch aus Celina oder Tom. Wer bereits fertig ist, nutzt die vorhandene Schlussnotiz. Die Lehrkraft zeigt Seite 1 von **Fallakte-Lehrkraft.pdf** oder liest die sieben Angaben vor. So beginnen alle vier Niveaus den Vergleich mit denselben Informationen. Auf dem iPad kann das Team die schon erreichten Angaben nachlesen. Jede Person hält ihren Rat und ihren wichtigsten Grund fest und markiert auf Rad 2 einen Kreis. Bei „Kondom + weitere Methode“ benennt sie die zweite Methode unter „Mein letzter Rat“. |
 | Sicherung, ca. 6–8 Minuten | Zwei unterschiedlich begründete Strategien nebeneinanderstellen. Welche Schutzziele bleiben gleich? Welches Kriterium gewichtet ihr unterschiedlich? Was müsste eine Praxis klären, und wer entscheidet? |
+
+Beide Empfehlungsräder einzeln in A3 quer bei 100 % drucken. Jedes Feld hat Platz für 28 Stimmen. Rad 2 erst zur Schlussabstimmung aushängen.
 
 **Reserve bei einstimmiger Abstimmung.** Die Lehrkraft stellt zwei vertretbare Überlegungen zur Diskussion. „Ein Team schlägt ein Kondom vor. Ein anderes schlägt ebenfalls ein Kondom vor und möchte nach ärztlicher Beratung zusätzlich eine Hormonspirale mit Laura besprechen. Was spricht aus Lauras Sicht jeweils dafür? Was hängt von der Anwendung, was von ihrer Zustimmung und der medizinischen Abklärung ab?“ Auch bei gleicher Erstwahl können sich die Gewichte für Schutz, Aufwand und körperliche Belastung unterscheiden.
 
@@ -21,8 +23,8 @@ Alle sieben Stufen bleiben fachlich eigenständig. Ihr Bedienaufwand unterscheid
 
 | Abschnitt | Neue Information und Denkhandlung | Bedienung und Rückmeldung |
 | --- | --- | --- |
-| 1 · Infektionsschutz | Laura nennt ihr erstes Ziel. Jede Person begründet den ersten Rat vor der Abstimmung. | Freie Wahl und Rückmeldung zum STI-Schutz. |
-| 2 · Alltag | Schwangerschaftsschutz kommt hinzu. Der Tagesablauf ist unregelmäßig. | Erneute freie Wahl, da ein zweites Schutzziel hinzukommt. |
+| 1 · Infektionsschutz | Laura nennt ihr erstes Ziel. Jede Person begründet den ersten Rat vor der Abstimmung. | Im Chat die bereits notierte Einzelmethode wählen und die Rückmeldung zum STI-Schutz lesen. |
+| 2 · Alltag | Schwangerschaftsschutz kommt hinzu. Der Tagesablauf ist unregelmäßig. | Einzelmethode oder Kondom mit genau einer weiteren Methode wählen. Welchen zusätzlichen Nutzen und welche Nachteile hätte sie für Laura? |
 | 3 · Erfahrung der Freundin | Die Erfahrung einer anderen Person lässt Lauras Verträglichkeit offen. | Eine kurze Partnerfrage, anschließend weiterlesen. |
 | 4 · Lauras Entscheidung | Ihr Nein zur Pille gilt. Die Sorge vor der Einlage lässt eine Beratung offen. | Eigenständige Methodenwahl mit Möglichkeit zur Revision. |
 | 5 · Regelschmerzen | Die Schmerzen sind ungeklärt. Welcher Nachteil verändert die Abwägung? | Der zuletzt beibehaltene Rat steht neben Lauras passender Rückmeldung. Einmal beibehalten oder zum Ändern die vier Methoden öffnen. |

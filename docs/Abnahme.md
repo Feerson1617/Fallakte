@@ -2,6 +2,12 @@
 
 **Einsatzurteil.** Die Fassung ist technisch und fachlich-didaktisch für eine begleitete Erprobung vorbereitet. Der Transfer auf das Schul-iPad, der Import im konkreten itslearning-Kurs und ein Probelauf mit Lernenden stehen aus. Erprobungstermin ist der 2. Dezember 2026.
 
+## Vom analogen ersten Rat zur Schlussabstimmung
+
+In L0 greift das Team den bereits notierten Rat zum Infektionsschutz auf. Der Browsertest prüft die vier Einzelmethoden, die Revision und alle fünf Hilfen. Der letzte Hilfeschritt öffnet einen Einzelentwurf. Ab L1 stehen beide Wege zur Kombination offen. Das Team kann beim Kondom eine weitere Methode auswählen oder bei der anderen Methode ein Kondom ergänzen. Die Tests prüfen den Methodenwechsel, das Absenden und Lauras Rückmeldungen bis zum Schluss.
+
+Die beiden einseitigen Empfehlungsräder stehen als separate PDFs im Unterrichtspaket. Die Druckprüfung liest das A3-Querformat, die ausgeschriebenen Beschriftungen und die 28 getrennten Markierungsplätze je Feld aus den erzeugten Dateien. Die PDF-Prüfsummen stehen in **Protokolle/laufzettel.json**.
+
 ## Gestufte Hilfen für die selbstständige Arbeit
 
 **Fallperson.** Laura ist 19 Jahre alt. Das Alter stand in den vier ersten Chatnachrichten. Fallbeschreibungen, Infokarten, Hilfen, vier Schülerlaufzettel und die Lehrkraftvorlage wurden auf weitere Altersangaben geprüft. Die Entscheidungswege behandeln freiwillige Zustimmung, persönliche Wünsche, Infektionsschutz und die individuelle medizinische Eignung. Sie enthalten keine altersgebundene Einwilligungs-, Kosten- oder Verordnungsregel für Laura. Die bisherigen fachlichen Empfehlungen gelten weiter. Die Zahl 16 bei Toms Forschungsbeispiel bezeichnet die Teilnehmerzahl der Studie B.
@@ -24,7 +30,7 @@
 
 In Toms AHR-Artikel schlossen sich geöffnete Worterklärungen beim Zurückkehren aus der Sicherung. Im Fenster mit 820 × 650 Pixeln sprang der Chat dabei in beiden Browsern um 244 CSS-Pixel. Der Fall merkt sich jetzt während der Sitzung, ob das Glossar offen war. Beim Wiederöffnen wird es vor dem Wiederherstellen der Leseposition aufgebaut. Der Sprung „Zur aktuellen Nachricht“ blendet sich aus, sobald der Anfang eines bildschirmhohen Artikels erreicht ist. Der Test prüft den Rückweg aus der Sicherung, von den Infokarten über die Sicherung und über einen anderen Fall. Er prüft auch das bewusst geschlossene Glossar.
 
-Der Inhaltsvergleich baut den freigegebenen Git-Commit separat. Für den Vergleich wird ausschließlich die genehmigte Altersangabe in den vier Begrüßungen der Referenz angepasst. Anschließend werden Dialogquelle, Laufzettelaufgaben und Druckvorlage byteweise geprüft. Chromium vergleicht die tatsächlich eingebetteten Falldaten sowie auf 84 vollständigen Wegen Aufgaben, Methodenoptionen, Vorschautexte, fachliche Rückmeldungen und den gesamten Chat mit der gebauten Referenz. Bei den vier PDFs wird der extrahierte Text jeder einzelnen Seite mit der entsprechenden Referenzseite verglichen. Das Ergebnis steht in **Protokolle/inhaltsvergleich.json**.
+Der Inhaltsvergleich baut den freigegebenen Git-Commit separat. Die Referenz übernimmt die freigegebenen Änderungen an Lauras Alter und an L0. Dort entfallen drei Kombinationswege samt zugehörigen Rückmeldungen und Kartenhilfen. Der Arbeitsauftrag verweist auf den schon notierten Rat. Anschließend werden Dialogquelle, Laufzettelaufgaben und Druckvorlage byteweise geprüft. Chromium vergleicht die tatsächlich eingebetteten Falldaten sowie auf 84 vollständigen Wegen Aufgaben, Methodenoptionen, Vorschautexte, fachliche Rückmeldungen und den gesamten Chat mit der gebauten Referenz. Bei den vier PDFs wird der extrahierte Text jeder einzelnen Seite mit der entsprechenden Referenzseite verglichen. Das Ergebnis steht in **Protokolle/inhaltsvergleich.json**.
 
 Der lokale LMS-Testrahmen öffnet das entpackte SCORM-Paket in Chromium und WebKit. Beide Browser prüfen das Öffnen und Schließen der Sitzung sowie die Rückkehr aus der frühen Sicherung. Die Offline-Ersatzfassung ist die einzelne **Fallakte.html** aus dem Unterrichtspaket. Diese Datei vor der Stunde auf dem Unterrichtsgerät speichern. Alle sieben JSON-Protokolle tragen die Prüfsumme derselben HTML-Datei.
 
@@ -73,7 +79,7 @@ Laura und Celina können einen Schlussvorschlag ausdrücklich als vorläufigen R
 
 | Geprüfte Stufen | Denkhandlung und fachliche Grenze |
 | --- | --- |
-| Laura · Infektionsschutz und Alltag | Erstes Schutzziel, individuelle Begründung und Klassenabstimmung. Erst im nächsten Schritt kommen Schwangerschaftsschutz und Alltagsanwendung hinzu. Bei intaktem und richtig benutztem Kondom sinkt das Risiko vieler STI. |
+| Laura · Infektionsschutz und Alltag | Vor dem digitalen Start begründet jede Person eine Einzelmethode und stimmt auf Rad 1 ab. Erst im nächsten Schritt kommen Schwangerschaftsschutz und Alltagsanwendung hinzu. Bei intaktem und richtig benutztem Kondom sinkt das Risiko vieler STI. |
 | Laura · Erfahrung der Freundin, Entscheidung und Schmerzen | Eine mögliche Nebenwirkung erlaubt keine Vorhersage für Laura. Ihr Nein zur Pille gilt auch bei einer Kombination. Sorge vor der Einlage ist keine Absage. Bei Kupfer können Blutungen und Schmerzen zunehmen. Über die Eignung einer Spirale und die Ursache der Schmerzen lässt sich im Chat nicht entscheiden. |
 | Laura · zwei Schutzziele und Schlussentscheidung | Alle vier Niveaus vergleichen zwei Strategien. Kondom allein und eine für Laura akzeptable Kombination nach Beratung lassen sich unterschiedlich begründen. In die Gewichtung gehen Anwendung, körperliche Belastung, persönliche Grenzen und beide Schutzziele ein. |
 | Celina · fünf Stufen | Verzicht auf zusätzliche Hormone, längerfristiger Schutz, Bedenken zur Einlage, Schutz in der Beziehung und abschließender Vergleich bleiben getrennt. Vertrauen belegt keinen Infektionsstatus. |
@@ -94,8 +100,8 @@ Förder arbeitet mit Satzanfängen und zwei kurzen Vergleichsfeldern. ESA verbin
 
 ## Vor dem Praxistest
 
-1. **Schul-iPad und itslearning.** Das geschlossene SCORM-ZIP in den Testkurs importieren und als lernende Person in Safari öffnen. Laura auf Förder oder ESA starten, eine Kombination wählen, beide Hilfen öffnen und das iPad drehen. Die aktuelle Nachricht muss lesbar und „Nachricht senden“ erreichbar bleiben.
+1. **Schul-iPad und itslearning.** Das geschlossene SCORM-ZIP in den Testkurs importieren und als lernende Person in Safari öffnen. Laura auf Förder oder ESA starten und den notierten Einzelrat senden. Bei der nächsten Methodenwahl eine Kombination wählen, die Hilfen öffnen und das iPad drehen. Die aktuelle Nachricht muss lesbar und „Nachricht senden“ erreichbar bleiben.
 2. **Unterbrechen und fortsetzen.** Eine Empfehlung senden. Über Infokarten und Sicherung die bisher bekannte Angabe ansehen. Mit „Zurück“ muss derselbe Chat samt Rückmeldung erscheinen. Zur Übersicht wechseln, Tom öffnen und Laura erneut aufrufen. Der Vorschlag muss weiterhin im Chat stehen.
 3. **Offline-Reserve.** Auf dem Unterrichts-Mac die gespeicherte **Fallakte.html** bei ausgeschaltetem WLAN direkt im Browser öffnen. Eine Empfehlung senden, die Seite neu laden und Laura erneut starten. Der neue Verlauf beginnt bei der ersten Nachricht.
 4. Mit einem Förder- oder ESA-Team ohne Bedienerklärung erproben, ob „Beibehalten“, „Ändern“ und die Kartenhilfe verständlich sind. Die geplanten 18–20 Minuten für Laura und die Qualität individueller Begründungen wurden noch nicht mit einer Klasse untersucht.
-5. Die passenden Laufzettel ausdrucken, selbst erarbeitete Infokarten bereitlegen und die zentrale Folie vom Lehrkraftgerät oder als Ausdruck bereithalten. In itslearning nur das SCORM-Paket an die Klasse geben. Die Lehrkraftdatei und das Sichtprüfungspaket bleiben bei der Vorbereitung. Die Lehrkraft entscheidet über den Einsatz. Eine unabhängige medizinische Endbegutachtung steht aus.
+5. Die beiden Empfehlungsräder in A3 quer und die passenden Laufzettel in A4 ausdrucken, selbst erarbeitete Infokarten bereitlegen und die zentrale Folie vom Lehrkraftgerät oder als Ausdruck bereithalten. In itslearning nur das SCORM-Paket an die Klasse geben. Die Lehrkraftdatei und das Sichtprüfungspaket bleiben bei der Vorbereitung. Die Lehrkraft entscheidet über den Einsatz. Eine unabhängige medizinische Endbegutachtung steht aus.
