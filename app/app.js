@@ -110,9 +110,9 @@ function focusInWork(target) {
 }
 function enterStage(index) {
   Object.assign(current,{index,mode:'choose',selected:'',additional:'',combined:false,tentative:false,help:0,asked:[],questionsOpen:false,revised:false});
-  if ((stage().reviewPrevious || stage().reviewLevels?.includes(current.level)) && stage().options[current.lastKept]) current.mode='review';
+  if (stage().reviewPrevious && stage().options[current.lastKept]) current.mode='review';
   current.log.push({type:'step',title:stage().title});
-  current.log.push({type:'person',lines:stage().message[current.level]});
+  current.log.push({type:'person',lines:forLevel(stage().message)});
   if (stage().type==='article') current.log.push({type:'article'});
 }
 function appendArticle() {
@@ -177,7 +177,7 @@ function nextStage() {
   const first=current.log.length;
   changeHistory(()=>enterStage(current.index+1));
   showPane('chat');
-  if (current.mode==='review' && stage().reviewLevels?.includes(current.level)) toEntry(first);
+  if (current.mode==='review' && current.person==='Laura') toEntry(first);
   drawWork();
   $('work').scrollTop=0;
   $('chat-name').focus({preventScroll:true});
@@ -258,7 +258,7 @@ function ask(index) {
 function feedbackIssue(s,choice) {
   const last=choice.split('+').pop();
   if (s.declined?.[last]) return current.person==='Laura' ? 'Laura hat die Pille abgelehnt. Das gilt auch für eine Kombination.' : 'Celina möchte keine zusätzlichen Hormone. Diese Methode enthält Hormone.';
-  if (['L0','L5','C3'].includes(s.id) && !choice.includes('K'))
+  if (['L0','L4','C3'].includes(s.id) && !choice.includes('K'))
     return 'Dieser Vorschlag allein schützt nicht vor Infektionen beim Sex.';
   if (s.id==='T0' && choice!=='K') return choice.includes('+') ?
     'Nur das Kondom in eurem Vorschlag kann Tom selbst benutzen.' : 'Diese Methode kann Tom nicht am eigenen Körper anwenden.';
@@ -270,7 +270,7 @@ function lastHelp(s,method) {
   if (s.options.DONE || current.mode==='tomSelf') {
     const next=$('work').querySelector('.primary');
     const paper=s.id==='T2' ? s.task[current.level]+' ' :
-      s.id==='L2' || s.id==='T1' ? 'Besprecht euren Grund. ' : '';
+      s.id==='T1' ? 'Besprecht euren Grund. ' : '';
     return {text:paper+'Tippe danach auf „'+next.textContent+'“. '+
       'Mit „Zur Schaltfläche“ findest du sie wieder.',label:'Zur Schaltfläche',run:()=>focusInWork(next)};
   }
@@ -297,7 +297,7 @@ function stageSupport() {
   const support=LERNHILFEN[s.id];
   let choice=code();
   if (!choice && shortLaura() && !s.options.DONE && s.options[current.lastKept]) choice=current.lastKept;
-  if (current.mode==='tomSelf' || (current.mode==='reply' && ['L0','C3','L5','T0'].includes(s.id) &&
+  if (current.mode==='tomSelf' || (current.mode==='reply' && ['L0','C3','T0'].includes(s.id) &&
       !choice.includes('K') && !s.declined?.[choice])) choice='K';
   const method=choice.split('+').pop() || support.karte;
   const raw=s.hints[choice || (s.options.DONE?'DONE':method)];
@@ -408,6 +408,10 @@ function drawWork() {
   $('support-panel').hidden=true;
   $('support-panel').replaceChildren();
   $('step').textContent='Schritt '+(current.index+1)+' von '+stages().length;
+  const cue=$('card-cue');
+  cue.hidden=current.mode==='finished' || !!stage().options.DONE;
+  cue.textContent=['Foerder','ESA'].includes(current.level)
+    ? 'Prüfe deinen Rat mit deiner Infokarte auf Papier.' : 'Belege deinen Rat mit deiner Infokarte auf Papier.';
   if (current.mode==='finished') {
     taskTitle(area,'Gespräch abgeschlossen');
     if (current.withdrawn) area.append(el('p','response','Ihr habt den letzten Vorschlag zurückgezogen. Was bleibt zu klären?'));

@@ -84,6 +84,7 @@ html.consulting,html.consulting body{height:100vh;height:100dvh;min-height:0;ove
 .workspace .panel{border:0;border-radius:0}
 .chat{position:relative;display:flex;flex-direction:column}
 .work{display:flex;flex-direction:column;box-shadow:inset 1px 0 var(--line)}
+#card-cue{flex:none;margin:0;padding:4px clamp(12px,1.25vw,22px);background:#edf2e7;border-bottom:1px solid var(--line);font-size:.9375rem;font-weight:650;line-height:1.25}
 #history,#work{overflow:auto;overscroll-behavior:contain;flex:1;min-height:0}
 #history{background:#eff1e8;padding:clamp(12px,1.5vw,24px)}
 #work{container-type:inline-size;padding:clamp(12px,1.25vw,22px)}

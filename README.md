@@ -13,7 +13,7 @@ Im erfolgreichen GitHub-Actions-Lauf **Unterrichtspakete** das Artefakt **Fallak
 | **Fallakte-Sichtpruefung.zip** | Bildschirmfotos und sechs JSON-Testprotokolle der gebauten Anwendung. |
 | **Fallakte-Pruefbericht.md** | Technische Ergebnisse und ausstehende Prüfungen auf Schulgeräten. |
 
-Laura ist der Hauptfall. Nach ihrem Abschluss werden Celina und Tom für das gewählte Niveau verfügbar. In Laura greift das Team den auf dem persönlichen Laufzettel notierten Einzelrat auf. Ab der zweiten Gesprächsstufe kann es auch das Kondom mit einer weiteren Methode kombinieren. Auf Förder und ESA kann das Team in L1 und L3 seinen bisherigen Rat direkt prüfen. In L6 begründet es den vorläufigen Rat mündlich und nennt einen Nachteil. Der Hilfezugang führt bei Bedarf von einer Kartenstelle bis zu einem ausführbaren nächsten Schritt. Ein vorbereiteter Entwurf wird erst durch „Nachricht senden“ verschickt.
+Alle Teams beraten zuerst die 19-jährige Laura in fünf gemeinsamen Abschnitten. Sie greifen ihren notierten ersten Einzelrat auf und prüfen ihn bei drei neuen Gesprächsanlässen. Ab dem zweiten Schutzziel können sie ein Kondom mit einer weiteren Methode kombinieren. Beim letzten Rat nennen Förder- und ESA-Teams mündlich einen Grund und einen Nachteil. MSA und AHR wägen zwei Strategien ab. Auf allen Niveaus steht die Aufforderung zur eigenen Papierkarte direkt bei der Entscheidung. Die digitalen Karten und fünf freiwilligen Hilfen unterstützen bei Bedarf. Einen vorbereiteten Entwurf versendet das Team selbst. Nach Laura stehen im selben Niveau Celina und Tom zur Wahl.
 
 Bei einer Unterbrechung kann die Seite in jedem Gesprächsschritt geöffnet bleiben. Infokarten und Fallübersicht erlauben die Rückkehr zum Gespräch desselben Niveaus. Der Verlauf liegt nur im Arbeitsspeicher der geöffneten Seite. Neuladen beginnt eine neue Sitzung. Der SCORM-Adapter öffnet und schließt die technische Sitzung. Das LMS kann unabhängig davon Zugriffe protokollieren.
 
@@ -34,7 +34,7 @@ python tests/content.py
 python scripts/review.py
 ```
 
-Die vier Ausgabedateien liegen unter **dist/**. Einzelne Testnachweise entstehen unter **build/qa/**. Der Inhaltsvergleich benötigt den Commit `fa3009c` aus der Git-Historie. Bereits vorhandene analoge Vorlagen liegen weiterhin unter **material/**, außerhalb der Softwareausgabe.
+Die vier Ausgabedateien liegen unter **dist/**. Einzelne Testnachweise entstehen unter **build/qa/**. Der Inhaltsvergleich benötigt den Commit `0891d8c` aus der Git-Historie. Bereits vorhandene analoge Vorlagen liegen weiterhin unter **material/**, außerhalb der Softwareausgabe.
 
 ## Vorbereitung für die zweite Fallakte am 08.12.
 

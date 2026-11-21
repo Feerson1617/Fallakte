@@ -35,7 +35,6 @@ def run_scenarios(browser, local, screenshots=None):
     keep()
     suggest('H')
     keep()
-    button('Weiter nach dem Gespräch').click()
     suggest('P')
     if screenshots:
         page.screenshot(path=screenshots/'Laura-Entscheidung.jpg',type='jpeg',quality=78)
@@ -50,11 +49,9 @@ def run_scenarios(browser, local, screenshots=None):
     expect(button('Vorschlag zurückziehen')).to_be_focused()
     keep()
     expect(history).to_contain_text('Mein Nein gilt auch bei einer Kombination.')
-    expect(history.locator('.chat-step').last).to_have_text('Regelschmerzen')
+    expect(history.locator('.chat-step').last).to_have_text('Regelschmerzen und Infektionsschutz')
     suggest('H', combine=True)
     expect(page.locator('.response')).to_contain_text('ärztliche Beratung')
-    keep()
-    suggest('K')
     keep()
     suggest('H', combine=True)
     keep()
@@ -65,8 +62,7 @@ def run_scenarios(browser, local, screenshots=None):
     for method in ('K', 'H'):
         suggest(method)
         keep()
-    button('Weiter nach dem Gespräch').click()
-    for method in ('H', 'K', 'K'):
+    for method in ('H', 'K'):
         suggest(method)
         keep()
     suggest('P')
@@ -94,7 +90,6 @@ def run_scenarios(browser, local, screenshots=None):
     keep()
     suggest('H')
     keep()
-    button('Weiter nach dem Gespräch').click()
     page.locator('#change-prior').click()
     page.locator('#method-P').click()
     page.locator('#combine').check()

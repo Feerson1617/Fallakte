@@ -37,8 +37,8 @@ const FALLAKTE = {
         "task": {
           "Foerder": "Wähle die Methode, die du bei „Mein erster Rat“ notiert hast.",
           "ESA": "Wähle die Methode, die du bei „Mein erster Rat“ notiert hast.",
-          "MSA": "Wähle die Methode, die du bei „Mein erster Rat“ notiert hast.",
-          "AHR": "Wähle die Methode, die du bei „Mein erster Rat“ notiert hast."
+          "MSA": "Greift euren notierten Rat auf. Welche Kartenangabe belegt den Infektionsschutz?",
+          "AHR": "Prüft euren notierten Rat am ersten Schutzziel. Welche Grenze hat eure Aussage?"
         },
         "options": {
           "K": "Wir schlagen dir ein Kondom vor.",
@@ -135,10 +135,10 @@ const FALLAKTE = {
           ]
         },
         "task": {
-          "Foerder": "Lies Lauras neue Nachricht. Prüfe: Passt dein Vorschlag noch?",
-          "ESA": "Lies Lauras neue Wünsche. Prüfe deinen Vorschlag mit deinen Infokarten.",
+          "Foerder": "Passt euer Rat auch an Tagen, die anders laufen?",
+          "ESA": "Prüft, was Laura bei eurer Methode im Alltag tun müsste.",
           "MSA": "Prüfe beide Schutzziele und den Aufwand im Alltag. Vergleiche zwei Möglichkeiten.",
-          "AHR": "Gewichte Schwangerschaftsschutz, Infektionsschutz und Anwendung. Vergleiche zwei Strategien."
+          "AHR": "Wägt zwei Strategien für beide Ziele ab. Wann verändert Lauras Alltag eure Gewichtung?"
         },
         "options": {
           "K": "Wir möchten dir ein Kondom vorschlagen.",
@@ -229,113 +229,21 @@ const FALLAKTE = {
           "MSA": "Vergleiche zwei Vorschläge. Wie gut passen Schutz und Aufwand zu Lauras Alltag?",
           "AHR": "Vergleiche zwei Strategien. Wann könnte eine im Alltag weniger zuverlässig sein als auf der Karte?"
         },
-        "reviewLevels": [
-          "Foerder",
-          "ESA"
-        ]
-      },
-      {
-        "id": "L2",
-        "type": "reason_on_paper",
-        "message": {
-          "Foerder": [
-            "Meine Freundin nimmt die Pille. Ihr wurde davon übel.",
-            "Bekomme ich das dann auch? Ich bin unsicher."
-          ],
-          "ESA": [
-            "Eine Freundin erzählt, dass ihr von der Pille übel wurde.",
-            "Jetzt habe ich Sorge. Kann man daraus schon wissen, wie es mir damit gehen würde?"
-          ],
-          "MSA": [
-            "Meine Freundin hatte mit ihrer Pille Übelkeit. Sie meint, bei mir wäre das bestimmt genauso.",
-            "Was lässt sich aus ihrer Erfahrung wirklich sagen?"
-          ],
-          "AHR": [
-            "Eine Freundin berichtet von Übelkeit durch ihre Pille. Sie schließt daraus, dass ich sie ebenfalls nicht vertragen werde.",
-            "Was ist an ihrer Aussage eine Erfahrung, was eine Vermutung?"
-          ]
-        },
-        "task": {
-          "Foerder": "Lies die Pillen-Karte. Muss Laura auch übel werden? Sprecht zu zweit.",
-          "ESA": "Lies „Mögliche Nachteile“. Was weiß Laura über sich selbst? Sprecht zu zweit.",
-          "MSA": "Trenne die Erfahrung der Freundin von einer Vorhersage für Laura.",
-          "AHR": "Wie weit trägt ein einzelner Erfahrungsbericht? Erklärt, welche Aussage belegt ist."
-        },
-        "options": {
-          "DONE": "Wir haben über die Erfahrung deiner Freundin gesprochen."
-        },
-        "replies": {
-          "DONE": "Danke, dass ihr meine Sorge besprecht."
-        },
-        "hints": {
-          "DONE": {
-            "section": "Mögliche Nachteile",
-            "find": "Welche Nebenwirkung steht dort?",
-            "fact": "Manchen Menschen wird übel. Ob das bei Laura so wäre, weiß niemand."
-          }
-        },
-        "title": "Die Erfahrung einer Freundin",
-        "questions": [
-          [
-            "Wer hat die Pille genommen?",
-            "Meine Freundin. Sie hat mir von ihrer Übelkeit erzählt."
-          ],
-          [
-            "Weißt du, wie du die Pille verträgst?",
-            "Das weiß ich nicht. Ich mache mir wegen ihrer Erfahrung Sorgen."
-          ]
-        ],
-        "helpBefore": {
-          "Foerder": [
-            "Lies auf der Pillen-Karte den Abschnitt „Mögliche Nachteile“.",
-            "Übelkeit ist möglich. Bei Laura kann es anders sein als bei ihrer Freundin."
-          ],
-          "ESA": [
-            "Was steht auf der Karte, und was weiß Laura nur von ihrer Freundin?",
-            "Übelkeit ist möglich. Bei Laura kann es anders sein als bei ihrer Freundin."
-          ],
-          "MSA": [
-            "Vergleiche die Erfahrung der Freundin mit der Kartenangabe. Was lässt sich über Laura sagen?",
-            "Übelkeit ist möglich. Bei Laura kann es anders sein als bei ihrer Freundin."
-          ],
-          "AHR": [
-            "Was ist möglich, was ist für Laura ungewiss? Welche weitere Information würde deinen Rat ändern?",
-            "Übelkeit ist möglich. Bei Laura kann es anders sein als bei ihrer Freundin."
-          ]
-        },
-        "hintQuestions": {
-          "ESA": "Was steht auf der Karte, und was weiß Laura nur von ihrer Freundin?",
-          "MSA": "Vergleiche die Erfahrung der Freundin mit der Kartenangabe. Was lässt sich über Laura sagen?",
-          "AHR": "Was ist möglich, was ist für Laura ungewiss? Welche weitere Information würde deinen Rat ändern?"
-        }
+        "reviewPrevious": true
       },
       {
         "id": "L3",
         "type": "recommend",
-        "message": {
-          "Foerder": [
-            "Die Pille möchte ich nicht nehmen.",
-            "Bei anderen Mitteln mit Hormonen bin ich noch offen.",
-            "Über eine Spirale möchte ich erst mehr wissen. Das Einsetzen macht mir etwas Angst."
-          ],
-          "ESA": [
-            "Ich möchte die Pille nicht nehmen. Das habe ich für mich entschieden.",
-            "Andere Mittel mit Hormonen schließe ich nicht aus. Bei einer Spirale bin ich wegen des Einsetzens noch unsicher."
-          ],
-          "MSA": [
-            "Die Pille möchte ich für mich ausschließen. Das ist nicht dasselbe wie ein Nein zu allen Hormonen.",
-            "Über eine Spirale würde ich mich beraten lassen. Vor dem Einsetzen habe ich aber Respekt."
-          ],
-          "AHR": [
-            "Die Pille lehne ich ab. Andere hormonelle Methoden habe ich noch nicht ausgeschlossen.",
-            "Meine Sorge vor dem Einsetzen einer Spirale ist bisher keine feste Ablehnung. Ich möchte erst informiert entscheiden."
-          ]
-        },
+        "message": [
+          "Meiner Freundin wurde von der Pille übel. Wie ich sie vertragen würde, weiß ich nicht.",
+          "Ich möchte die Pille nicht nehmen. Für andere Hormone bin ich offen.",
+          "Das Einsetzen einer Spirale macht mir Sorgen. Ich möchte mich erst beraten lassen."
+        ],
         "task": {
-          "Foerder": "Laura sagt zur Pille Nein. Wo hat sie noch Fragen? Prüft euren Vorschlag.",
-          "ESA": "Beachte Lauras Nein zur Pille. Prüfe die übrigen Möglichkeiten mit deinen Karten.",
-          "MSA": "Unterscheide Lauras Entscheidung von ihrer noch offenen Sorge. Prüfe deinen Vorschlag.",
-          "AHR": "Trenne eine verbindliche Grenze von einer abwägbaren Präferenz. Vergleiche die verbleibenden Strategien."
+          "Foerder": "Wozu sagt Laura Nein? Wo hat sie noch Fragen?",
+          "ESA": "Was hat die Freundin erlebt? Was entscheidet Laura für sich?",
+          "MSA": "Was zeigt der Einzelfall? Unterscheidet Lauras feste Entscheidung von ihrer offenen Sorge.",
+          "AHR": "Prüft die Vorhersage aus dem Einzelfall. Welche Option schließt Lauras Nein aus, welche bleibt unter einer Bedingung offen?"
         },
         "options": {
           "K": "Wir würden dir ein Kondom vorschlagen.",
@@ -362,9 +270,9 @@ const FALLAKTE = {
             "fact": "Ein Kondom benutzt man bei jedem Sex neu und von Anfang an."
           },
           "P": {
-            "section": "Anwendung",
-            "find": "Was sagt Laura zur Pille?",
-            "fact": "Die Pille muss regelmäßig genommen werden. Laura hat zur Pille Nein gesagt."
+            "section": "Mögliche Nachteile",
+            "find": "Ist Übelkeit möglich oder sicher? Was folgt daraus für Laura?",
+            "fact": "Übelkeit ist möglich. Die Erfahrung der Freundin sagt Lauras Verträglichkeit nicht sicher voraus. Laura lehnt die Pille ab."
           },
           "Cu": {
             "section": "Anwendung",
@@ -377,9 +285,9 @@ const FALLAKTE = {
             "fact": "Laura lehnt die Pille ab, aber nicht automatisch alle Hormone. Über die Spirale entscheidet sie nach Beratung."
           },
           "K+P": {
-            "section": "Anwendung",
-            "find": "Was sagt Laura zur Pille?",
-            "fact": "Die Pille muss regelmäßig genommen werden. Laura hat zur Pille Nein gesagt."
+            "section": "Mögliche Nachteile",
+            "find": "Ist Übelkeit möglich oder sicher? Was folgt daraus für Laura?",
+            "fact": "Übelkeit ist möglich. Die Erfahrung der Freundin sagt Lauras Verträglichkeit nicht sicher voraus. Laura lehnt die Pille ab."
           },
           "K+Cu": {
             "section": "Anwendung",
@@ -394,6 +302,10 @@ const FALLAKTE = {
         },
         "title": "Lauras Entscheidung",
         "questions": [
+          [
+            "Weißt du, wie du die Pille verträgst?",
+            "Das weiß ich nicht. Ich mache mir wegen ihrer Erfahrung Sorgen."
+          ],
           [
             "Gilt dein Nein für alle Hormone?",
             "Nein. Für mich steht nur fest, dass ich die Pille nicht nehmen möchte."
@@ -429,38 +341,21 @@ const FALLAKTE = {
           "MSA": "Vergleiche zwei Möglichkeiten. Wo darf ein Vorteil der Methode Lauras Entscheidung nicht ersetzen?",
           "AHR": "Welche Alternative respektiert Lauras Grenze? Unter welcher Bedingung wäre ihre offene Frage geklärt?"
         },
-        "reviewLevels": [
-          "Foerder",
-          "ESA"
-        ]
+        "reviewPrevious": true
       },
       {
         "id": "L4",
         "type": "recommend",
-        "message": {
-          "Foerder": [
-            "Bei meiner Periode habe ich oft starke Schmerzen.",
-            "Ich war deshalb noch nicht bei einer Ärztin oder einem Arzt.",
-            "Noch mehr Schmerzen möchte ich nicht. Was bedeutet das für euren Vorschlag?"
-          ],
-          "ESA": [
-            "Bei meiner Periode habe ich oft starke Schmerzen. Bisher wurde das nicht untersucht.",
-            "Ich möchte nicht, dass sie noch stärker werden. Prüft ihr das bei eurem Vorschlag?"
-          ],
-          "MSA": [
-            "Ich habe häufig starke Regelschmerzen, die noch nicht ärztlich abgeklärt wurden.",
-            "Eine mögliche Verstärkung wäre für mich ein wichtiger Nachteil."
-          ],
-          "AHR": [
-            "Häufige starke Regelschmerzen wurden bisher nicht ärztlich abgeklärt.",
-            "Was würdet ihr mir jetzt raten, solange ich den Grund für die Schmerzen noch nicht kenne?"
-          ]
-        },
+        "message": [
+          "Bei meiner Regel habe ich oft starke Schmerzen. Die Ursache wurde noch nicht untersucht.",
+          "Mehr Schmerzen möchte ich nicht. Der Schutz vor Infektionen ist mir weiterhin wichtig.",
+          "Ein Kondom wäre für uns in Ordnung."
+        ],
         "task": {
-          "Foerder": "Schau auf deiner Karte bei „Blutung und Schmerzen“. Passt dein Vorschlag noch?",
-          "ESA": "Lies auf deiner gewählten Karte „Blutung und Schmerzen“. Prüfe deinen Vorschlag.",
-          "MSA": "Vergleiche die Angaben zu Blutung und Schmerzen bei zwei Strategien. Nenne eine offene medizinische Frage.",
-          "AHR": "Vergleiche Nutzen, mögliche Belastung und ungeklärte Eignung. Formuliere eine bedingte Empfehlung statt einer Diagnose."
+          "Foerder": "Wie passt euer Rat zu den Schmerzen und zum Schutz vor Infektionen?",
+          "ESA": "Prüft beides: Was könnte die Schmerzen verändern? Was schützt vor Infektionen?",
+          "MSA": "Vergleicht zwei Strategien bei Schmerzen und Infektionsschutz. Was muss eine Praxis klären?",
+          "AHR": "Wägt Infektionsschutz und mögliche Belastung bei zwei Strategien ab. Unter welcher medizinischen Bedingung würdet ihr anders raten?"
         },
         "options": {
           "K": "Wir schlagen dir ein Kondom vor.",
@@ -472,24 +367,24 @@ const FALLAKTE = {
           "K+H": "Wir schlagen dir ein Kondom und die Hormonspirale vor."
         },
         "replies": {
-          "K": "Meine Schmerzen bleiben dann eine eigene Frage. Ich möchte sie ärztlich klären lassen.",
+          "K": "Ein Kondom kommt für uns infrage. Meine Schmerzen möchte ich ärztlich klären lassen.",
           "P": "Die Pille möchte ich weiterhin nicht. Meine Schmerzen ändern daran nichts.",
           "Cu": {
-            "Foerder": "Ich habe schon oft starke Schmerzen. Könnte die Kupferspirale meine Schmerzen verändern?",
-            "ESA": "Meine Periode tut schon oft weh. Könnte die Kupferspirale das verändern?",
-            "MSA": "Welche Bedeutung hat die mögliche Veränderung meiner Beschwerden für euren Kupferspiralen-Vorschlag?",
-            "AHR": "Wie gewichtet ihr bei der Kupferspirale die möglichen Blutungs- und Schmerzveränderungen gegenüber den Vorteilen?"
+            "Foerder": "Könnten meine Schmerzen stärker werden? Wie schützen wir uns vor Infektionen?",
+            "ESA": "Könnte die Kupferspirale meine Schmerzen verstärken? Was ist mit dem Infektionsschutz?",
+            "MSA": "Wie berücksichtigt ihr mögliche stärkere Schmerzen und den fehlenden Infektionsschutz der Kupferspirale?",
+            "AHR": "Wie gewichtet ihr den Schutz vor Schwangerschaft gegenüber möglichen stärkeren Schmerzen und fehlendem Infektionsschutz?"
           },
-          "H": "Wäre das für mich medizinisch geeignet? Das ist bisher noch nicht geklärt.",
+          "H": "Ob sie für mich passt, muss ich ärztlich klären. Was schützt mich bei diesem Rat vor Infektionen?",
           "K+P": "Die Pille ist immer noch dabei. Ich habe sie aber abgelehnt.",
-          "K+Cu": "Bitte prüft den Teil zur Kupferspirale noch einmal. Mehr Schmerzen wären für mich ein wichtiger Nachteil.",
+          "K+Cu": "Das Kondom passt für uns. Könnte die Kupferspirale meine Schmerzen verstärken?",
           "K+H": "Bei der Hormonspirale brauche ich ärztliche Beratung. Und die Ursache meiner Schmerzen ist noch offen."
         },
         "hints": {
           "K": {
             "section": "Blutung und Schmerzen",
             "find": "Ändert sich die Periode?",
-            "fact": "Das Kondom behandelt keine Regelschmerzen. Starke Schmerzen sollen ärztlich geklärt werden."
+            "fact": "Ein richtig benutztes Kondom senkt das Risiko vieler Infektionen. Es behandelt keine Regelschmerzen. Die starken Schmerzen sollte Laura ärztlich klären lassen."
           },
           "P": {
             "section": "Blutung und Schmerzen",
@@ -499,12 +394,12 @@ const FALLAKTE = {
           "Cu": {
             "section": "Blutung und Schmerzen",
             "find": "Können die Schmerzen stärker werden?",
-            "fact": "Mit einer Kupferspirale können Blutungen und Schmerzen zunehmen. Prüfe, wie wichtig das für Laura ist."
+            "fact": "Die Kupferspirale kann Regelschmerzen verstärken. Die Spirale schützt nicht vor Infektionen."
           },
           "H": {
             "section": "Blutung und Schmerzen",
             "find": "Wie kann sich die Periode ändern?",
-            "fact": "Die Blutung kann schwächer werden. Schmerzen können nachlassen. Ob die Spirale für Laura passt, klärt sie in der Praxis."
+            "fact": "Bei einer Hormonspirale können Schmerzen nachlassen. Sie schützt nicht vor Infektionen. Die Eignung ist ärztlich zu klären."
           },
           "K+P": {
             "section": "Blutung und Schmerzen",
@@ -514,15 +409,15 @@ const FALLAKTE = {
           "K+Cu": {
             "section": "Blutung und Schmerzen",
             "find": "Können die Schmerzen stärker werden?",
-            "fact": "Mit einer Kupferspirale können Blutungen und Schmerzen zunehmen. Prüfe, wie wichtig das für Laura ist."
+            "fact": "Die Kupferspirale kann Regelschmerzen verstärken. Das Kondom senkt das Risiko vieler Infektionen."
           },
           "K+H": {
             "section": "Blutung und Schmerzen",
             "find": "Wie kann sich die Periode ändern?",
-            "fact": "Die Blutung kann schwächer werden. Schmerzen können nachlassen. Ob die Spirale für Laura passt, klärt sie in der Praxis."
+            "fact": "Das Kondom senkt das Infektionsrisiko. Ob die Hormonspirale bei Lauras Beschwerden passt, muss sie ärztlich klären. Laura entscheidet selbst."
           }
         },
-        "title": "Regelschmerzen",
+        "title": "Regelschmerzen und Infektionsschutz",
         "questions": [
           [
             "Kennst du den Grund für die Schmerzen?",
@@ -531,6 +426,10 @@ const FALLAKTE = {
           [
             "Wie wichtig sind dir die Schmerzen bei der Wahl?",
             "Sehr wichtig. Mehr Schmerzen wären für mich schwer auszuhalten."
+          ],
+          [
+            "Wäre ein Kondom für euch möglich?",
+            "Ja, wir können uns vorstellen, es jedes Mal zu benutzen."
           ]
         ],
         "helpBefore": {
@@ -558,131 +457,6 @@ const FALLAKTE = {
           "ESA": "Was steht über Schmerzen auf der Karte? Passt das zu Lauras Wunsch?",
           "MSA": "Wie wiegst du möglichen Schutz und mögliche Beschwerden bei zwei Vorschlägen ab?",
           "AHR": "Vergleiche zwei Strategien. Welche medizinische Unsicherheit begrenzt dein Urteil über Schmerzen?"
-        },
-        "reviewPrevious": true
-      },
-      {
-        "id": "L5",
-        "type": "recommend",
-        "message": {
-          "Foerder": [
-            "Der Schutz vor Infektionen ist mir immer noch wichtig.",
-            "Kondome wären für uns okay.",
-            "Passt euer Vorschlag auch zu diesem Wunsch?"
-          ],
-          "ESA": [
-            "Der Infektionsschutz ist mir weiterhin wichtig.",
-            "Kondome würden für uns infrage kommen.",
-            "Prüft eure bisherige Empfehlung noch einmal."
-          ],
-          "MSA": [
-            "Die Verringerung des Infektionsrisikos bleibt für mich ein wichtiges Ziel.",
-            "Kondome sind für uns vorstellbar.",
-            "Prüft, ob euer Vorschlag beide Schutzziele berücksichtigt."
-          ],
-          "AHR": [
-            "Die Verringerung des Infektionsrisikos bleibt eine eigenständige Priorität.",
-            "Kondome sind für uns akzeptabel.",
-            "Beurteilt, ob eure bisherige Strategie beide Schutzziele ausreichend berücksichtigt."
-          ]
-        },
-        "task": {
-          "Foerder": "Lies die neue Nachricht. Prüfe mit deiner Infokarte den Infektionsschutz.",
-          "ESA": "Prüfe mit deinen Infokarten: Welche Ziele deckt dein Vorschlag ab?",
-          "MSA": "Prüfe die beiden Schutzziele und mögliche Kombinationen.",
-          "AHR": "Beurteile die Strategie im Hinblick auf zwei unterschiedliche Schutzziele."
-        },
-        "options": {
-          "K": "Wir möchten dir ein Kondom vorschlagen.",
-          "P": "Wir möchten dir die Kombinationspille vorschlagen.",
-          "Cu": "Wir möchten dir die Kupferspirale vorschlagen.",
-          "H": "Wir möchten dir die Hormonspirale vorschlagen.",
-          "K+P": "Wir möchten dir ein Kondom und die Kombinationspille vorschlagen.",
-          "K+Cu": "Wir möchten dir ein Kondom und die Kupferspirale vorschlagen.",
-          "K+H": "Wir möchten dir ein Kondom und die Hormonspirale vorschlagen."
-        },
-        "replies": {
-          "K": "Erklärt mir bitte, was das Kondom leisten kann und was nicht.",
-          "P": "Die Pille möchte ich nicht. Und meine Frage zum Infektionsschutz bleibt auch noch offen.",
-          "Cu": "Und wie berücksichtigt euer Vorschlag das Infektionsrisiko? Schaut noch einmal auf die Karten.",
-          "H": "Welche Rolle spielt bei eurem Vorschlag mein Wunsch nach weniger Infektionsrisiko?",
-          "K+P": "Das Kondom ist für uns vorstellbar. Die Pille möchte ich aber nicht nehmen.",
-          "K+Cu": "Erklärt bitte beide Teile. Vergesst dabei meine Schmerzen und die offene Frage zum Einsetzen nicht.",
-          "K+H": "Erklärt bitte, wozu beide Teile dienen. Bei der Spirale bleibt meine Entscheidung noch offen."
-        },
-        "hints": {
-          "K": {
-            "section": "Infektionsschutz",
-            "find": "Welches Risiko wird kleiner?",
-            "fact": "Kondome verringern das Risiko vieler Infektionen beim Sex. Vollständigen Schutz vor allen Infektionen bieten sie nicht."
-          },
-          "P": {
-            "section": "Infektionsschutz",
-            "find": "Hilft die Pille gegen Infektionen?",
-            "fact": "Die Pille schützt nicht vor Infektionen beim Sex."
-          },
-          "Cu": {
-            "section": "Infektionsschutz",
-            "find": "Hilft die Kupferspirale gegen Infektionen?",
-            "fact": "Die Kupferspirale schützt nicht vor Infektionen beim Sex."
-          },
-          "H": {
-            "section": "Infektionsschutz",
-            "find": "Hilft die Hormonspirale gegen Infektionen?",
-            "fact": "Die Hormonspirale schützt nicht vor Infektionen beim Sex."
-          },
-          "K+P": {
-            "section": "Infektionsschutz",
-            "find": "Hilft die Pille gegen Infektionen?",
-            "fact": "Das Kondom im Vorschlag senkt das Risiko vieler Infektionen beim Sex. Die andere Methode schützt davor nicht."
-          },
-          "K+Cu": {
-            "section": "Infektionsschutz",
-            "find": "Hilft die Kupferspirale gegen Infektionen?",
-            "fact": "Das Kondom im Vorschlag senkt das Risiko vieler Infektionen beim Sex. Die andere Methode schützt davor nicht."
-          },
-          "K+H": {
-            "section": "Infektionsschutz",
-            "find": "Hilft die Hormonspirale gegen Infektionen?",
-            "fact": "Das Kondom im Vorschlag senkt das Risiko vieler Infektionen beim Sex. Die andere Methode schützt davor nicht."
-          }
-        },
-        "title": "Zwei Schutzziele",
-        "questions": [
-          [
-            "Welche Rolle spielt der Schutz vor Infektionen?",
-            "Den möchte ich bei meiner Entscheidung behalten."
-          ],
-          [
-            "Wäre ein Kondom für euch möglich?",
-            "Ja, wir können uns vorstellen, es jedes Mal zu benutzen."
-          ]
-        ],
-        "helpBefore": {
-          "Foerder": [
-            "Lies im Chat „Zwei Schutzziele“. Welche zwei Dinge sind ihr wichtig?",
-            "Schutz vor Schwangerschaft und Schutz vor Infektionen sind zwei verschiedene Ziele."
-          ],
-          "ESA": [
-            "Vergleiche die Karten. Was hilft bei welchem der beiden Schutzziele?",
-            "Schutz vor Schwangerschaft und Schutz vor Infektionen sind zwei verschiedene Ziele."
-          ],
-          "MSA": [
-            "Vergleiche eine einzelne Methode mit einer Kombination. Was gewinnt Laura, was muss sie dabei tun?",
-            "Schutz vor Schwangerschaft und Schutz vor Infektionen sind zwei verschiedene Ziele."
-          ],
-          "AHR": [
-            "Wann rechtfertigt ein zusätzlicher Nutzen den Aufwand? Prüfe die Alternative an Lauras Grenzen.",
-            "Schutz vor Schwangerschaft und Schutz vor Infektionen sind zwei verschiedene Ziele."
-          ]
-        },
-        "declined": {
-          "P": "Die Pille möchte ich nicht nehmen. Mein Nein gilt auch bei einer Kombination."
-        },
-        "hintQuestions": {
-          "ESA": "Vergleiche die Karten. Was hilft bei welchem der beiden Schutzziele?",
-          "MSA": "Vergleiche eine einzelne Methode mit einer Kombination. Was gewinnt Laura, was muss sie dabei tun?",
-          "AHR": "Wann rechtfertigt ein zusätzlicher Nutzen den Aufwand? Prüfe die Alternative an Lauras Grenzen."
         },
         "reviewPrevious": true
       },
@@ -715,7 +489,7 @@ const FALLAKTE = {
           "Foerder": "Wähle deinen Rat für Laura. Sag deinem Partner: Warum passt er? Nenne auch einen Nachteil.",
           "ESA": "Welchen Rat gebt ihr Laura jetzt? Begründet ihn mündlich mit einem Wunsch von Laura. Nennt einen Nachteil.",
           "MSA": "Vergleiche zwei vertretbare Vorschläge. Gewichte ein Kriterium und berücksichtige einen Nachteil.",
-          "AHR": "Wäge zwei für Laura vertretbare Strategien ab. Unter welcher Bedingung wäre die Alternative besser?"
+          "AHR": "Gewichtet zwei vertretbare Strategien. Unter welcher konkreten Bedingung wäre die Alternative besser?"
         },
         "options": {
           "K": "Wir würden dir ein Kondom empfehlen.",

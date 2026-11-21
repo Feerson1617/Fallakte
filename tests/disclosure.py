@@ -27,6 +27,6 @@ def first_message_only(browser, local, screenshot=None):
     page.locator('[data-person=Laura]').click()
     assert history.inner_text() == initial
     expect(page.locator('#send')).to_have_count(0)
-    expect(page.locator('#step')).to_have_text('Schritt 1 von 7')
+    expect(page.locator('#step')).to_have_text('Schritt 1 von 5')
     page.close()
     return dict(stage=1, navigation=['Fallakten','Infokarten'], later_facts_visible=False)

@@ -47,8 +47,6 @@ def to_refusal(frame, touch):
         press(frame.locator('#method-'+method))
         press(frame.locator('#send'))
         press(frame.get_by_role('button',name='Vorschlag beibehalten'))
-    pane(frame,'write-answer')
-    press(frame.get_by_role('button',name='Weiter nach dem Gespräch'))
 
 
 def unchanged_page(m, size):
@@ -71,6 +69,18 @@ def independent(frame):
         e.scrollTop=start;
       }
       return result;
+    }""")
+
+
+def paper_card(frame):
+    cue=frame.locator('#card-cue')
+    expect(cue).to_contain_text('Infokarte auf Papier')
+    expect(cue).to_be_in_viewport(ratio=.99)
+    return cue.evaluate("""e => {
+        const r=e.getBoundingClientRect();
+        if (document.elementFromPoint(r.left+r.width/2,r.top+r.height/2)!==e)
+            throw Error('Papierkartenhinweis ist verdeckt');
+        return r.top;
     }""")
 
 
@@ -113,7 +123,9 @@ def exercise(browser, engine, size, url, images):
 
     record('Nachricht')
     pane(frame,'write-answer')
+    paper_card(frame)
     operate(frame.locator('#change-prior'),touch)
+    paper_card(frame)
     operate(frame.locator('#method-P'),touch)
     selected = record('Auswahl')
     labels = measure_labels(frame)
@@ -127,6 +139,13 @@ def exercise(browser, engine, size, url, images):
     expect(frame.locator('.hint')).to_have_count(2)
     hints = record('Hilfen')
     extra = {}
+    cue_top=paper_card(frame)
+    work=frame.locator('#work')
+    position=work.evaluate('e=>e.scrollTop')
+    work.evaluate('e=>e.scrollTop=e.scrollHeight')
+    assert paper_card(frame)==cue_top
+    work.evaluate('(e,y)=>e.scrollTop=y',position)
+    extra['papierhinweis_beim_scrollen']=True
     extra['scrollRange'] = independent(frame)
     if size in ((820,650),(1024,600)):
         assert all(x>0 for x in extra['scrollRange'].values()), extra
@@ -149,14 +168,16 @@ def exercise(browser, engine, size, url, images):
         page.locator('iframe').evaluate('(e)=>{e.width=390;e.height=844}')
         expect(frame.locator('#history')).to_be_hidden()
         expect(frame.locator('.hint')).to_have_count(2)
-    elif size==(820,650):
+    elif size in ((820,650),(820,1180),(1180,820)):
         extra['enlargedText'] = large_text(frame,size)
     operate(frame.locator('#send'),touch)
     record('Rueckmeldung')
+    paper_card(frame)
     for label in ('Vorschlag beibehalten','Vorschlag ändern'):
         b = frame.get_by_role('button',name=label)
         expect(b).to_be_in_viewport(ratio=.99)
     operate(frame.get_by_role('button',name='Vorschlag ändern'),touch)
+    paper_card(frame)
     expect(frame.locator('#method-P')).to_have_attribute('aria-pressed','false')
     assert page.evaluate('[scrollX,scrollY]')==[0,0]
     ctx.close()
@@ -168,6 +189,7 @@ def large_text(frame,size):
     frame.evaluate("document.documentElement.style.fontSize='200%'")
     after=frame.locator('.bubble').first.evaluate("e=>parseFloat(getComputedStyle(e).fontSize)")
     assert after >= 2*before
+    paper_card(frame)
     current=frame.evaluate(GEOMETRY)
     unchanged_page(current,size)
     assert current['sendReachable']

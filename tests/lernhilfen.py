@@ -119,11 +119,10 @@ def help_path(browser, level, size, photos=False):
     ui('#send').click()
     expect(button('Vorschlag zurückziehen')).to_be_visible()
     button('Vorschlag beibehalten').click()
-    expect(ui('#step')).to_have_text('Schritt 2 von 7')
+    expect(ui('#step')).to_have_text('Schritt 2 von 5')
     expect(panel).to_be_hidden()
-    if level in ('Foerder','ESA'):
-        expect(ui('#work .preview')).to_contain_text('Kondom')
-        ui('#change-prior').click()
+    expect(ui('#work .preview')).to_contain_text('Kondom')
+    ui('#change-prior').click()
     ui('#method-K').click()
     menu=ui('#additional')
     assert set(menu.locator('option').evaluate_all('options=>options.map(o=>o.value)'))=={'','P','Cu','H'}
@@ -141,6 +140,48 @@ def help_path(browser, level, size, photos=False):
     return dict(niveau=level,frame=size,vor_auswahl=True,methodenwechsel=True,nach_rueckmeldung=True,
                 kartenstelle=True,unterbrechung=True,kombination_ab_l1=True,satzanfang=scaffold,
                 laura_age=19,hilfe_ohne_scroll=True,stufen=5,entwurf_ohne_senden=True)
+
+
+def five_phase_actions(browser, level):
+    """Open and execute the fifth help at each core decision without sending a reply."""
+    page=browser.new_page(viewport={'width':820,'height':650},has_touch=True)
+    page.goto(LOCAL.as_uri())
+    ui=page.locator
+    ui('#level-'+level).click()
+    ui('[data-person=Laura]').click()
+    results=[]
+    for number,method in enumerate(('P','K','P','Cu','H'),1):
+        expect(ui('#step')).to_have_text(f'Schritt {number} von 5')
+        if number in (2,3,4):
+            ui('#change-prior').click()
+        ui('#method-'+method).click()
+        if number in (3,4):
+            ui('#combine').check()
+        history=ui('#history').text_content()
+        for depth in range(1,6):
+            ui('#help').click()
+            expect(ui('#card-cue')).to_be_in_viewport(ratio=.99)
+            expect(ui('.hint')).to_have_count(depth)
+            if depth==1:
+                expect(ui('#hint-current')).to_contain_text('Abschnitt „')
+            if depth==2:
+                fact=ui('#hint-current p').inner_text()
+                if number==3:
+                    assert 'nicht sicher' in fact and 'lehnt die Pille ab' in fact
+                if number==4:
+                    assert 'schmerzen' in fact.lower() and 'Infektion' in fact
+            if depth==4:
+                expect(ui('#hint-current')).to_contain_text('Eine mögliche Begründung')
+        ui('#help-action').click()
+        expect(ui('#method-K')).to_have_attribute('aria-pressed','true')
+        expect(ui('#send')).to_be_enabled()
+        assert ui('#history').text_content()==history
+        ui('#send').click()
+        ui('#work .row button').first.click()
+        results.append(dict(abschnitt=number,fachhinweis=fact,entwurf_ohne_senden=True))
+    expect(ui('#task-title')).to_have_text('Gespräch abgeschlossen')
+    page.close()
+    return dict(niveau=level,abschnitte=results)
 
 
 def carried_advice(browser, level, photos):
@@ -173,11 +214,11 @@ def carried_advice(browser, level, photos):
         if stage=='L3' and photos:
             page.screenshot(path=QA/'Laura-Rat-pruefen.jpg',type='jpeg',quality=78)
         ui('#help').click()
-        expect(ui('#hint-current p')).to_contain_text('Karte „Kombinationspille“, Abschnitt „Anwendung“')
+        section = 'Anwendung' if stage=='L1' else 'Mögliche Nachteile'
+        expect(ui('#hint-current p')).to_contain_text(f'Karte „Kombinationspille“, Abschnitt „{section}“')
         if stage=='L1':
             expect(ui('#hint-current p')).to_contain_text('Wie oft')
             keep.click()
-            button('Weiter nach dem Gespräch').click()
     expect(ui('#hint-current p')).to_contain_text('Lauras Nein')
     before=history.inner_text()
     button('Karte „Kombinationspille“ lesen').click()
@@ -189,7 +230,7 @@ def carried_advice(browser, level, photos):
     expect(ui('#method-K')).to_have_attribute('aria-pressed','true')
     assert history.inner_text()==before
     ui('#send').click()
-    for _ in range(3): keep.click()  # L3 reply, then L4 and L5 reviews
+    for _ in range(2): keep.click()  # L3 reply, then L4 review
     expect(ui('#task-title')).to_have_text('Euer vorläufiger Rat')
     expect(ui('#work')).not_to_contain_text('Laufzettel')
     expect(ui('#work')).to_contain_text('Nachteil')
@@ -204,7 +245,7 @@ def carried_advice(browser, level, photos):
     ui('#level-AHR').click()
     expect(ui('[data-person=Tom]')).to_be_disabled()
 
-    # Withdrawing leaves no advice to carry, including across the discussion in L2.
+    # Withdrawing leaves no advice to carry, even after the two new goals are introduced.
     start()
     for _ in ('L0','L1'):
         expect(ui('#change-prior')).to_have_count(0)
@@ -212,7 +253,6 @@ def carried_advice(browser, level, photos):
         change.click()
         send('P')
         button('Vorschlag zurückziehen').click()
-    button('Weiter nach dem Gespräch').click()
     expect(ui('#change-prior')).to_have_count(0)
     expect(ui('.method')).to_have_count(4)
     expect(ui('.method[aria-pressed=true]')).to_have_count(0)
@@ -276,7 +316,8 @@ if __name__ == '__main__':
                     runs.append(help_path(browser,level,size,photos))
             assert len({r['satzanfang'] for r in runs})==4
             reviews=[carried_advice(browser,level,(engine,level)==('chromium','Foerder')) for level in ('Foerder','ESA')]
-            results.append(dict(engine=engine,version=browser.version,wege=runs,weiterfuehrung=reviews))
+            results.append(dict(engine=engine,version=browser.version,wege=runs,weiterfuehrung=reviews,
+                                fuenf_abschnitte=[five_phase_actions(browser,level) for level in ('Foerder','ESA','MSA','AHR')]))
             browser.close()
     save('lernhilfen',dict(runs=results,lernerprobung=False,
          modulunabhaengig_geprueft=True, screenshots={name:hashlib.sha256((QA/name).read_bytes()).hexdigest() for name in

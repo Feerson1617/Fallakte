@@ -130,7 +130,6 @@ def test_view(browser, engine, layout, size):
     send(page,'K+H')
     page.get_by_role('button',name='Vorschlag beibehalten').click()
     pane(page,'write-answer')
-    page.get_by_role('button',name='Weiter nach dem Gespräch').click()
     send(page,'P')
     expect(page.locator('.response')).to_contain_text('nicht')
     page.get_by_role('button',name='Vorschlag ändern').click()
@@ -169,7 +168,7 @@ def test_view(browser, engine, layout, size):
     page.locator('#resources .return').click()
     assert history.inner_text()==before
     pane(page,'write-answer')
-    for code in ('Cu','P','K+H'):
+    for code in ('Cu','K+H'):
         page.get_by_role('button',name='Vorschlag beibehalten').click()
         send(page,code)
         measure(page)
@@ -253,8 +252,7 @@ def test_scorm(browser):
                     expect(frame.locator('#additional,#combine')).to_have_count(0)
                 frame.locator('#send').click()
                 frame.get_by_role('button',name='Vorschlag beibehalten').click()
-                if tier in ('Foerder','ESA'):
-                    frame.locator('#change-prior').click()
+                frame.locator('#change-prior').click()
                 frame.locator('#method-K').click()
                 frame.locator('#additional').select_option('Cu')
                 frame.locator('#send').click()

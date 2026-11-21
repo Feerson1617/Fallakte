@@ -13,6 +13,14 @@
       assert(document.querySelector('#hint-current p').textContent===text,'Hint '+index);
     });
   }
+  function checkPaperCard() {
+    const cue=document.querySelector('#card-cue');
+    const rect=cue.getBoundingClientRect();
+    assert(cue.textContent.startsWith(['Foerder','ESA'].includes(tier)?'Prüfe':'Belege') &&
+      cue.textContent.includes('Infokarte auf Papier') && !cue.closest('#work,details') &&
+      rect.height>0 && rect.top>=0 && rect.bottom<=innerHeight &&
+      document.elementFromPoint(rect.left+rect.width/2,rect.top+rect.height/2)===cue,'Paper card not visible');
+  }
   const layered=!!document.querySelector('#support-panel');
   click('#level-'+tier);
   click('[data-person="'+person+'"]');
@@ -22,7 +30,8 @@
     if(tab.getClientRects().length) tab.click();
     assert([...document.querySelectorAll('.chat-step')].at(-1).textContent===stage.title,'Wrong step');
     const history=document.querySelector('#history');
-    for(const line of stage.message[tier]) assert(history.textContent.includes(line),'Missing case information');
+    for(const line of pair(stage.message)) assert(history.textContent.includes(line),'Missing case information');
+    if (!stage.options.DONE) checkPaperCard();
     let review=!!document.querySelector('#change-prior');
     assert(review===Boolean(stage.reviewPrevious || stage.reviewLevels?.includes(tier)),'Unexpected previous-proposal review');
     if (stage.hintQuestions && !stage.options.DONE && !review) {
@@ -49,12 +58,13 @@
       if (testScaffold) {
         assert(Object.keys(stage.options).sort().join(',')==='Cu,H,K,P','L0 option set');
         assert(document.querySelectorAll('#work .method').length===4,'L0 method count');
-        assert(document.querySelector('#work').textContent.includes('notiert hast'),'Missing paper-to-chat instruction');
+        assert(document.querySelector('#work').textContent.includes('notiert'),'Missing paper-to-chat instruction');
       }
     }
     if (review && stage.id==='L1' && strategy.includes('+')) {
       click('#change-prior');
       review=false;
+      checkPaperCard();
     }
     if (key!=='DONE' && !review) {
       const method=key.split('+').pop();
@@ -67,6 +77,7 @@
         menu.value=method;
         menu.dispatchEvent(new Event('change'));
       }
+      checkPaperCard();
       assert([...document.querySelectorAll('#work .preview p')].at(-1).textContent===stage.options[key],'Preview');
     }
     const hint = stage.hints[key];
@@ -75,6 +86,8 @@
       const find = !reference && person==='Laura' && ['Foerder','ESA'].includes(tier)
         ? (LERNHILFEN[stage.id].kartenfrage?.[method] || hint.find) : hint.find;
       const question = layered && (key==='DONE' || tier==='ESA') ? find : stage.hintQuestions[tier] || find;
+      const headings=[...document.querySelectorAll('#card-'+method+' dt')];
+      assert(headings.some(h=>h.textContent===hint.section),'Missing source section for '+stage.id+' '+key);
       checkHints(['Karte „'+data.methods[method][0]+'“, Abschnitt „'+hint.section+'“. '+question,hint.fact]);
     } else checkHints(pair(hint));
     helps+=2;
@@ -105,6 +118,7 @@
       reviews++;
     } else {
       click('#send');methods++;
+      checkPaperCard();
       assert(history.lastChild.textContent.endsWith(pair(stage.replies[key])),'Selected response');
       if (testScaffold && stage.id==='L0') assert(!/abstimm|stimmt .* ab/i.test(document.querySelector('#work').textContent),'Repeated class vote');
       if (testScaffold && stage.id==='L6') {
