@@ -274,8 +274,8 @@ COUNTERS = {
     'Vater': ('Laura kennt beide Wege schon. Was bringt ihr der Rat zur Beratung dann noch?', 'Die Wege kennt sie schon. Sie kann dort eigene Fragen stellen.'),
 }
 SELF_CHECK = {
-    'Mutter': 'Welche körperliche Folge nennst du? Was will Laura wissen? Warum reicht die Nachricht für sie aus oder nur zum Teil?',
-    'Freundin': 'Was weiß Laura über den Abbruch? Was möchte sie für ihre Ausbildung? Wie passt dein Grund zu deiner Einschätzung?',
+    'Mutter': 'Was steht auf deiner Fachkarte? Was will Laura? Passt dein Grund zu deiner Einschätzung?',
+    'Freundin': 'Was erfährt Laura über den Abbruch? Welche ihrer Aussagen hast du gewählt? Warum passt dein Grund?',
     'Großmutter': 'Was zeigt die Fachkarte zum Embryo? Welche Frage bleibt für Laura offen? Was bringt ihr das Angebot der Großmutter?',
     'Vater': 'Was kann eine Beratungsstelle tun? Was möchte Laura? Wie hilft ihr der Rat zum Termin?',
 }

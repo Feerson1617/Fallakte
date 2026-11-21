@@ -94,6 +94,7 @@ def check_content():
             if level=='AHR':
                 assert 'schon' in extension['prompt'] and 'Ausbildungsplatz' not in extension['prompt']
             assert 'results' not in tasks[-1]
+            assert 'aus oder nur zum Teil' not in tasks[-1]['selfCheck']
             assert all(o['citation'] for o in checks[0]['options'])
             depth=checks[1].get('depth')
             assert bool(depth)==(level in ('MSA','AHR'))
