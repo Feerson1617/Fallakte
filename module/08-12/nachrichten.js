@@ -15,11 +15,15 @@
     {id:'resources', label:'Fachkarten', icon:'book'},
     {id:'recovery', label:'Nach Neustart', icon:'restart'}
   ];
-  let port, screen = 'overview', person = people[0], level = book.levels[0], section = 1;
-  let returnScreen = 'overview', beforeCards = 'overview', recoveryPerson = '', recoveryLevel;
-  let openedCard = '';
-  const lastTask = new Map();
-  const sessions = new Map();
+  let port, screen='overview', person=people[0], section=1, lastTask=null;
+  let mode={first:book.levels[0],second:''}, recoveryMode;
+  let returnScreen='overview', beforeCards='overview', recoveryPerson='', recoveryQuestions=false;
+  let openedCard='';
+  const sessions=new Map();
+  function range() {
+    return book.levels.filter(l=>l===mode.first || l===mode.second);
+  }
+  function modeLabel() { return [mode.first,mode.second].filter(Boolean).join(' + '); }
 
   const block = (style = 'stack') => el('div', style);
   const heading = (tag, label, style) => {
@@ -40,15 +44,18 @@
     return b;
   }
   function session() {
-    const key = [level,person,section].join('/');
+    const key = [person,section].join('/');
     if (!sessions.has(key)) sessions.set(key, {index:section === 1 ? 0 : 1, drafts:{}, complete:false});
     return sessions.get(key);
   }
-  function tasks() { return book.cases[person].levels[level]; }
+  function tasks() {
+    const levels=range(), tier=session().index===0 ? levels[0] : levels.at(-1);
+    return book.cases[person].levels[tier];
+  }
   function item() { return tasks()[session().index]; }
   function draft() {
     const s = session();
-    return s.drafts[s.index] ||= {answer:null, hint:0, help:false, mark:null, evidence:null, link:null,
+    return s.drafts[s.index] ||= {answer:null, depthAnswers:{}, hint:0, help:false, topic:'', mark:null, evidence:null, goal:null, link:null,
       matches:{}, reason:'', spoken:false, own:false, reader:null, full:false, laura:false};
   }
   function show(view) {
@@ -57,8 +64,9 @@
     window.scrollTo(0,0);
     main.querySelector('h1')?.focus({preventScroll:true});
   }
-  function enter(who, part) {
-    person = who; section = part; lastTask.set(level,[who,part]);
+  function enter(who, part, question) {
+    person=who; section=part; lastTask=[who,part];
+    if (question!==undefined) session().index=question;
     show('task');
   }
   function navigate(action) {
@@ -69,15 +77,28 @@
         if (screen !== 'resources' || beforeCards !== 'recovery') {
           returnScreen = screen === 'resources' ? beforeCards : screen;
         }
-        recoveryPerson = ''; recoveryLevel = level; show('recovery');
+        recoveryPerson=''; recoveryQuestions=false; recoveryMode={...mode}; show('recovery');
       }
     } else if (action === 'overview') show('overview');
   }
-  function levelChoice(current, fn) {
-    const [box, options] = group('Niveau', 'levels');
-    for (const l of book.levels) options.append(press(l, () => fn(l), l === current));
+  function levelChoice(current,changed) {
+    const [box, options]=group('Niveau','levels');
+    for (const l of book.levels) options.append(press(l,()=>{
+      changed({first:l,second:l===current.second?current.first:current.second});
+    },l===current.first));
+    const label=el('label','pair-label','Zweites Niveau ');
+    const select=el('select');
+    select.setAttribute('aria-label','Zweites Niveau');
+    for (const l of ['',...book.levels.filter(l=>l!==current.first)]) {
+      const o=el('option','',l || 'Keins'); o.value=l; select.append(o);
+    }
+    select.value=current.second;
+    select.onchange=()=>changed({...current,second:select.value});
+    label.append(select);
+    box.append(disclosure('Zu zweit auf zwei Niveaus',label,Boolean(current.second)));
     return box;
   }
+  function changeMode(nextMode) { mode=nextMode; render(); }
   function lines(texts, ids) {
     const list = el('ol', 'lines');
     for (const id of ids || texts.map((_,i)=>i+1)) {
@@ -114,20 +135,28 @@
       }
       groups.append(part);
     }
-    main.append(hero,intro,levelChoice(level,l=>{level=l; render();}),groups);
-    if (lastTask.has(level)) main.append(button('Zur offenen Stelle',()=>enter(...lastTask.get(level))));
+    main.append(hero,intro,levelChoice(mode,changeMode),groups);
+    if (lastTask) main.append(button('Zur offenen Stelle',()=>enter(...lastTask)));
   }
   function recovery() {
-    main.append(heading('h1','Nach Neustart weitermachen'), levelChoice(recoveryLevel,l=>{recoveryLevel=l; render();}));
+    main.append(heading('h1','Nach Neustart weitermachen'), levelChoice(recoveryMode,m=>{recoveryMode=m;render();}));
     const [box, list] = group('Wähle die Person.', 'row');
-    for (const who of people) list.append(press(who,()=>{recoveryPerson=who;render();},who===recoveryPerson));
+    for (const who of people) list.append(press(who,()=>{recoveryPerson=who;recoveryQuestions=false;render();},who===recoveryPerson));
     main.append(box);
     if (recoveryPerson) {
       const [box, list] = group('Wähle den Abschnitt.', 'options');
       book.cases[recoveryPerson].sections.forEach((name,i) => list.append(button(name,()=>{
-        level = recoveryLevel; enter(recoveryPerson,i+1);
+        if (i===0) { mode={...recoveryMode}; enter(recoveryPerson,1,0); }
+        else { recoveryQuestions=true; render(); }
       })));
       main.append(box);
+    }
+    if (recoveryQuestions) {
+      const [part,choices]=group('Welche Frage steht auf deinem Lernbogen?', 'options');
+      book.questions.forEach((q,i)=>choices.append(button((i+1)+'. '+q,()=>{
+        mode={...recoveryMode};enter(recoveryPerson,2,i+1);
+      })));
+      main.append(part);
     }
     main.append(button('Zurück',()=>show(returnScreen)));
   }
@@ -158,11 +187,6 @@
   }
   function sourcePanel(task, state) {
     const panel = el('aside','panel stack'), message = book.cases[person].message;
-    if (task.results) {
-      const result = block('intro stack');
-      result.append(heading('h2','Geprüft'),...task.results.map(t=>el('p','',t)));
-      panel.append(result);
-    }
     panel.append(heading('h2','Nachricht · '+person));
     if (state.reader !== null) {
       panel.append(lines(message,[state.reader]));
@@ -182,7 +206,9 @@
       if (task.wishes.length) panel.append(heading('h3','Lauras Worte'),lines(book.laura,task.wishes));
     }
     panel.append(disclosure('Lauras ganze Nachricht',lines(book.laura),state.laura,v=>{state.laura=v;}));
-    if (task.card) {
+    if (task.kind==='judgment') {
+      panel.append(button('Ganze Fachkarte',()=>{beforeCards='task';openedCard=task.card[0];show('resources');}));
+    } else if (task.card) {
       const [key,ids] = task.card;
       const card = cardContent(key,ids);
       card.classList.add('intro');
@@ -191,44 +217,54 @@
     }
     return panel;
   }
-  function helpBox(task,state) {
-    const wrap = block('stack');
-    const toggle = button(state.help?'Hilfe schließen':'Hilfe',()=>{
-      state.help=!state.help;
-      update();
-    });
-    const panel = block('note stack'), list = block('help-list'), content = el('p');
+  function helpBox(state,topics,chooseTopic=true) {
+    const names=Object.keys(topics);
+    const wrap=block('stack');
+    if (!names.includes(state.topic)) state.topic=names[0];
+    const toggle=button('Hilfe',()=>{state.help=!state.help;update();});
+    const panel=block('note stack'), list=block('help-list'), content=el('p');
     content.setAttribute('aria-live','polite');
-    const buttons = book.helps.map((title,i)=>{
-      const b = button(String(i+1),()=>{state.hint=i;update();});
+    const target=el('select');
+    if (names.length>1 && chooseTopic) {
+      const label=el('label','pair-label','Hilfe zu ');
+      target.setAttribute('aria-label','Hilfe zu');
+      for (const name of names) target.append(el('option','',name));
+      target.onchange=()=>choose(target.value);
+      label.append(target);panel.append(label);
+    }
+    const buttons=book.helps.map((title,i)=>{
+      const b=button(String(i+1),()=>{state.hint=i;update();});
       b.setAttribute('aria-label','Hilfe '+(i+1)+' – '+title);
-      list.append(b);
-      return b;
+      list.append(b);return b;
     });
-    const title = el('h3');
+    const title=el('h3');
     panel.append(list,title,content);
+    function choose(name) {
+      if (state.topic!==name) {state.topic=name;state.hint=0;update();}
+    }
     function update() {
+      target.value=state.topic;
       toggle.setAttribute('aria-expanded',String(state.help));
-      toggle.textContent = state.help?'Hilfe schließen':'Hilfe';
+      toggle.textContent=state.help?'Hilfe schließen':'Hilfe';
       panel.hidden=!state.help;
       buttons.forEach((b,i)=>b.setAttribute('aria-pressed',String(state.hint===i)));
-      title.textContent = book.helps[state.hint];
-      content.textContent = task.hints[state.hint];
+      title.textContent=book.helps[state.hint];
+      content.textContent=topics[state.topic][state.hint];
     }
-    wrap.append(toggle,panel);
-    update();
-    return wrap;
+    wrap.append(toggle,panel);update();
+    return {wrap,choose};
   }
   function next() {
     if (section===1) {session().complete=true;enter(person,2);}
     else {session().index++;show('task');}
   }
   function argumentMap(task,state,body) {
-    body.append(el('p','',task.prompt),helpBox(task,state));
+    const help=helpBox(state,Object.fromEntries(task.fields.map(f=>[f.name,f.hints])));
+    body.append(el('p','',task.prompt),help.wrap);
     const fields=block('category-grid');
     const onward=button('Weiter',next,'primary');
     function updateNext() {
-      onward.hidden=!task.fields.every(f=>f.options.some(o=>o.line===state.matches[f.name] && o.correct));
+      onward.hidden=!book.cases[person].levels.AHR[0].fields.every(f=>f.options.some(o=>o.line===state.matches[f.name] && o.correct));
     }
     for (const field of task.fields) {
       const label=el('label','map-field'), select=el('select');
@@ -236,7 +272,13 @@
       const empty=el('option','','Zeile …');
       empty.value='';
       select.append(empty);
-      for (const option of field.options) {
+      const options=[...field.options];
+      const prior=state.matches[field.name];
+      if (prior && !options.some(o=>o.line===prior)) {
+        const full=book.cases[person].levels.AHR[0].fields.find(f=>f.name===field.name);
+        options.push(full.options.find(o=>o.line===prior));
+      }
+      for (const option of options) {
         const row=el('option','','Zeile '+option.line);
         row.value=String(option.line);
         select.append(row);
@@ -247,7 +289,7 @@
       const update=()=>{
         const value=Number(select.value);
         state.matches[field.name]=value;
-        const option=field.options.find(o=>o.line===value);
+        const option=options.find(o=>o.line===value);
         result.hidden=!option;
         if (option) {
           result.className=option.correct?'feedback':'feedback retry';
@@ -255,7 +297,8 @@
         }
         updateNext();
       };
-      select.onchange=update;
+      select.onfocus=()=>help.choose(field.name);
+      select.onchange=()=>{help.choose(field.name);update();};
       label.append(el('strong','',field.name),el('small','',book.categories[field.name]),select);
       const cell=block('map-cell');
       cell.append(label,result);
@@ -265,75 +308,105 @@
     body.append(fields,onward);
   }
   function check(task,state,body) {
-    body.append(el('p','',task.prompt),helpBox(task,state));
-    const options = block('options');
-    const feedback = el('div');
-    feedback.setAttribute('role','status');
-    const onward = button('Weiter',next,'primary');
-    const buttons = task.options.map((o,i)=>{
-      const b = press(o.label,()=>{state.answer=i;update();},false);
-      options.append(b);
-      return b;
-    });
-    function update() {
-      const o = task.options[state.answer];
-      buttons.forEach((b,i)=>b.setAttribute('aria-pressed',String(i===state.answer)));
-      feedback.hidden=!o;
-      feedback.className = o?.correct?'feedback':'feedback retry';
-      feedback.textContent = o ? (o.correct?'Das passt. ':'Prüfe noch einmal. ')+o.feedback : '';
-      onward.hidden=!o?.correct;
+    const tier=range().at(-1);
+    const topics={Grundfrage:task.hints};
+    if (task.depth) topics[tier]=task.depth.hints;
+    const help=helpBox(state,topics,false);
+    help.choose(task.options[state.answer]?.correct && task.depth?tier:'Grundfrage');
+    body.append(el('p','',task.prompt),help.wrap);
+    const onward=button('Weiter',next,'primary');
+    const extra=block('intro stack');
+    function refresh() {
+      const ready=task.options[state.answer]?.correct;
+      extra.hidden=!ready;
+      onward.hidden=!ready || Boolean(task.depth && !task.depth.options[state.depthAnswers[tier]]?.correct);
     }
-    body.append(options,feedback,onward);
-    update();
+    function answers(container,question,selected,change) {
+      const options=block('options'), feedback=el('div');
+      feedback.setAttribute('role','status');
+      const buttons=question.options.map((o,i)=>{
+        const b=press(o.label,()=>{change(i);selected=i;update();refresh();},false);
+        if (o.citation) b.append(el('small','source-ref','Kartenzeile '+o.citation));
+        options.append(b);return b;
+      });
+      function update() {
+        const o=question.options[selected];
+        buttons.forEach((b,i)=>b.setAttribute('aria-pressed',String(i===selected)));
+        feedback.hidden=!o;
+        feedback.className=o?.correct?'feedback':'feedback retry';
+        feedback.textContent=o?(o.correct?'Das passt. ':'Prüfe noch einmal. ')+o.feedback:'';
+      }
+      container.append(options,feedback);update();
+    }
+    answers(body,task,state.answer,i=>{
+      state.answer=i;
+      help.choose(task.options[i].correct && task.depth?tier:'Grundfrage');
+    });
+    if (task.depth) {
+      extra.append(heading('h2',tier+' · Weiterdenken'),el('p','',task.depth.prompt));
+      const remaining=task.depth.lines.filter(n=>!task.lines.includes(n));
+      if (remaining.length) extra.append(lines(book.cases[person].message,remaining));
+      answers(extra,task.depth,state.depthAnswers[tier],i=>{state.depthAnswers[tier]=i;help.choose(tier);});
+      body.append(extra);
+    }
+    body.append(onward);refresh();
   }
   function verdict(task,state,body) {
-    const ui = book.verdictUI;
-    body.append(el('p','',task.prompt),helpBox(task,state));
-    const [rating, marks] = group(ui.rating, 'row');
-    const [proof, proofs] = group(level==='Förder'?ui.simpleEvidence:ui.evidence, 'options');
-    const [reason, links] = group(ui.reason, 'options');
-    const panel = block('stack'), typed = el('textarea');
-    const label = el('label','',ui.write); typed.id='mein-grund';label.htmlFor=typed.id;
-    typed.value=state.reason; typed.oninput=()=>{state.reason=typed.value;clearNotice();};
-    const say = press(ui.spoken,()=>{state.spoken=!state.spoken;sync();},state.spoken);
-    panel.append(label,typed,el('p','small',ui.oral),say);
-    const notice = el('p','note');notice.setAttribute('role','status');
-    const scaffold = level==='Förder' || level==='ESA';
-    const finish = button(ui.done,()=>{
-      let missing;
-      if (state.mark===null) missing='Wähle dein Urteil.';
-      else if (state.evidence===null) missing='Wähle eine Stelle aus der Nachricht.';
-      else if (scaffold && state.link===null && (level==='ESA' || (!state.reason.trim() && !state.spoken))) missing='Wähle, warum die Stelle für Laura wichtig ist.';
-      else if (scaffold && !state.reason.trim() && !state.spoken && !task.matchingLinks[state.evidence].includes(state.link)) missing=ui.reconnect;
-      else if (level!=='Förder' && !state.reason.trim() && !state.spoken) missing='Schreibe deinen Grund. Oder sage ihn und tippe auf „Ich habe meinen Grund gesagt.“';
-      if (missing) {notice.hidden=false;notice.textContent=missing;return;}
+    const ui=book.verdictUI, levels=range(), tier=levels.at(-1);
+    const simple=levels[0]==='Förder', ownRequired=tier!=='Förder';
+    const [key,ids]=task.card, card=book.cards[key];
+    body.append(el('p','',task.prompt),helpBox(state,{Begründung:task.hints}).wrap);
+    const steps=[];
+    function picks(title,labels,field,style='options') {
+      const [box,list]=group(title,style);
+      const buttons=labels.map((s,i)=>{
+        const b=press(s,()=>{state[field]=i;sync();},false);
+        list.append(b);return b;
+      });
+      steps.push({box,buttons,field});body.append(box);
+    }
+    body.append(el('p','line-label','Fachkarte · '+card.title));
+    picks(ui.evidence,ids.map(n=>card.lines[n-1]),'evidence');
+    picks(ui.goal,task.goals.map(n=>book.laura[n-1]),'goal');
+    picks(ui.rating,task.options,'mark','row');
+    if (simple) picks(ui.reason,task.links,'link');
+    const writing=block('stack'), typed=el('textarea'), label=el('label','',ui.write);
+    typed.id='mein-grund';label.htmlFor=typed.id;typed.value=state.reason;
+    typed.oninput=()=>{state.reason=typed.value;notice.hidden=true;};
+    const say=press(ui.spoken,()=>{state.spoken=!state.spoken;sync();},state.spoken);
+    if (task.counter) writing.append(el('p','note',task.counter));
+    writing.append(label,typed,el('p','small',ui.oral),say);
+    if (ownRequired) writing.append(disclosure('Grund selbst prüfen',el('p','note',task.selfCheck)));
+    const own=ownRequired?writing:disclosure(ui.own,writing,state.own,v=>{state.own=v;});
+    const notice=el('p','note');notice.setAttribute('role','status');
+    const finish=button(ui.done,()=>{
+      if (simple && ownRequired && state.link===null) {
+        notice.textContent='Wählt einen Grund zur Fachinformation.';notice.hidden=false;return;
+      }
+      if (!state.reason.trim() && !state.spoken && (ownRequired || state.link===null)) {
+        notice.textContent=ownRequired?'Schreibe deinen Grund. Oder sage ihn und bestätige ihn.':'Wähle einen Grund. Oder erkläre ihn selbst.';
+        notice.hidden=false;return;
+      }
       session().complete=true;show('done');
     },'primary');
-    function clearNotice(){ notice.hidden=true; }
-    function picks(list, labels, field) {
-      labels.forEach((s,i)=>list.append(press(s,()=>{state[field]=i;sync();},false)));
-    }
-    picks(marks,task.options,'mark');picks(proofs,task.anchors,'evidence');picks(links,task.links,'link');
-    function sync(){
-      for (const [list,index] of [[marks,state.mark],[proofs,state.evidence],[links,state.link]]) {
-        Array.from(list.children).forEach((b,i)=>b.setAttribute('aria-pressed',String(i===index)));
+    function sync() {
+      let visible=true;
+      for (const {box,buttons,field} of steps) {
+        box.hidden=!visible;
+        buttons.forEach((b,i)=>b.setAttribute('aria-pressed',String(i===state[field])));
+        if (field!=='link') visible=visible && state[field]!==null;
       }
-      say.setAttribute('aria-pressed',String(state.spoken));clearNotice();
+      own.hidden=!visible;finish.hidden=!visible;
+      say.setAttribute('aria-pressed',String(state.spoken));notice.hidden=true;
     }
-    body.append(rating,proof);
-    if (scaffold) body.append(reason);
-    if (level==='Förder') {
-      body.append(disclosure(ui.own,panel,state.own,v=>{state.own=v;}));
-    }
-    else {
-      if (task.counter) body.append(el('p','note',task.counter));
-      body.append(panel,disclosure('Grund selbst prüfen',el('p','note',task.selfCheck)));
-    }
-    body.append(notice,finish);sync();
+    body.append(own,notice,finish);sync();
   }
   function taskPage() {
     const s=session(), task=item(), state=draft(), box=block('work'), body=el('article','panel stack');
-    main.append(el('p','eyebrow',book.cases[person].sections[section-1]+' · '+level));
+    const location=book.cases[person].sections[section-1]+(section===2?' · Frage '+s.index+' von 3':'');
+    const top=block('row');
+    top.append(el('p','eyebrow',location),disclosure('Niveau · '+modeLabel(),levelChoice(mode,changeMode)));
+    main.append(top);
     body.append(heading('h1',task.heading,'question'));
     if (task.kind==='judgment') verdict(task,state,body);
     else if (task.kind==='map') argumentMap(task,state,body);
@@ -343,9 +416,11 @@
   }
   function done() {
     const state=draft(), task=item();
-    main.append(heading('h1',person+' · Abschnitt fertig'),el('p','',task.options[state.mark]),
-      el('p','',task.anchors[state.evidence]));
-    if (state.link!==null) main.append(el('p','',task.links[state.link]));
+    main.append(heading('h1',person+' · Abschnitt fertig'),heading('h2','Gewählte Fachinformation'),
+      el('p','',book.cards[task.card[0]].lines[task.card[1][state.evidence]-1]),
+      el('p','','Laura: „'+book.laura[task.goals[state.goal]-1]+'“'),
+      heading('h2','Einschätzung'),el('p','',task.options[state.mark]));
+    if (range()[0]==='Förder' && state.link!==null) main.append(el('p','',task.links[state.link]));
     if (state.reason.trim()) main.append(el('p','',state.reason));
     main.append(el('p','note',book.verdictUI.reflect),
       button('Mein Urteil ansehen',()=>show('task')));
@@ -355,7 +430,7 @@
   function render() {
     main.replaceChildren();
     ({overview,resources,recovery,task:taskPage,done})[screen]();
-    const status = ['task','done'].includes(screen)?person+' '+section+' · '+level:'';
+    const status = ['task','done'].includes(screen)?person+' '+section+' · '+modeLabel():'';
     port?.postMessage({type:'view',active:screen,status});
   }
   if (parent === window) {

@@ -3,6 +3,7 @@ import base64
 import json
 import os
 import re
+import subprocess
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from zipfile import ZipFile
@@ -10,12 +11,13 @@ from zipfile import ZipFile
 from playwright.sync_api import expect, sync_playwright
 from bestandsschutz import archive, build, digest
 from tagesauswahl import HOST, host
+from grundweg import measure_route
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT/'build/08-12'
 QA = OUT/'Abnahme'
 BANK = json.loads((OUT/'Aufgabenbank.json').read_text())
-REVIEWED = 'de67cd741767180e40cbc0c02c863f1c719f0a83'
+REVIEWED = '66c66ed1548c3baa50d01386fe6b400ae23e714b'
 PHOTOS = {}
 B = ROOT/'dist/Version-B'
 PATTERN = rb'(<script id="modul-08" type="application/octet-stream">)([A-Za-z0-9+/=]+)(</script>)'
@@ -57,6 +59,8 @@ def check_content():
     raw=re.search(r'<script type="application/json" id="material">(.*?)</script>',document,re.S)[1]
     assert json.loads(raw)==BANK
     assert not any(old in document.lower() for old in ('video','weder blutungen noch schmerzen','verbessert den satz','ein feld kann fehlen','falsche behauptung der freundin'))
+    for phrase in ['Wähle dein Urteil','Welcher Beleg wiegt','Was zählt für Laura mehr','Wäge ab:', 'Suche für „']:
+        assert phrase not in document, phrase
     original=json.loads((ROOT/'module/08-12/nachrichten.json').read_text())
     assert BANK['laura']==original['laura']
     for person,case in BANK['cases'].items():
@@ -78,11 +82,21 @@ def check_content():
             assert solutions[0]==fact and link in solutions
             if person=='Freundin':
                 assert checks[0]['mother']==[1] and any(3 in t['mother'] for t in checks)
-            if person=='Vater' and level in ('MSA','AHR'):
-                assert 'Ja. Man kann im Gesetz prüfen, welche Regel gilt.' in solutions
+            assert len(tasks)==4 and [t['heading'] for t in tasks[1:]]==BANK['questions']
             assert tasks[-1]['options']==['Sie hilft viel.','Sie hilft zum Teil.','Sie hilft wenig.']
             assert bool(tasks[-1]['counter'])==(level=='AHR')
-            assert all(len(t['hints'])==5 and len(set(t['hints']))==5 for t in tasks)
+            assert 'results' not in tasks[-1]
+            assert all(o['citation'] for o in checks[0]['options'])
+            depth=checks[1].get('depth')
+            assert bool(depth)==(level in ('MSA','AHR'))
+            if person=='Freundin' and level=='AHR':
+                assert depth['mother']==[3,5] and 'zugleich' in depth['prompt']
+            if person=='Vater' and depth:
+                assert any('Wortlaut ist prüfbar' in o['label'] and o['correct'] for o in depth['options'])
+            sets=[t['hints'] for t in tasks[1:]]+[f['hints'] for f in tasks[0]['fields']]
+            if depth: sets.append(depth['hints'])
+            assert all(len(h)==len(set(h))==5 for h in sets)
+            assert all(f"Zeile {f['line']}" in f['hints'][4] for f in tasks[0]['fields'])
             for t in checks:
                 assert sum(o['correct'] for o in t['options'])==1
                 assert all(1<=n<=len(case['message']) for n in t['lines'])
@@ -104,7 +118,7 @@ def layout(frame):
       small: [...body.querySelectorAll('button,summary,select')].filter(e=>e.getClientRects().length && (e.getBoundingClientRect().height < 43.9 || e.getBoundingClientRect().width < 43.9)).map(e=>e.textContent)
     })""")
     assert result['overflow']<=1 and not result['small'], result
-    clipped=frame.locator('select').evaluate_all("""els=>els.filter(el=>{
+    clipped=frame.locator('select:visible').evaluate_all("""els=>els.filter(el=>{
       const ctx=document.createElement('canvas').getContext('2d');
       ctx.font=getComputedStyle(el).font;
       return [...el.options].some(o=>Math.ceil(ctx.measureText(o.text).width)+24>el.clientWidth);
@@ -118,15 +132,21 @@ def shot(page,name):
     PHOTOS[path.name]=digest(path.read_bytes())
 
 
-def inspect_task(frame,task):
+def inspect_task(frame,task,level):
     expect(frame.get_by_role('heading',name=task['heading'],exact=True)).to_be_visible()
     article = frame.locator('article')
     expect(article.get_by_text(task['prompt'],exact=True)).to_be_visible()
     # A real learner can go straight to 5, then back to any level without submitting.
+    if task['kind']=='map':
+        topics={f['name']:f['hints'] for f in task['fields']}
+    else:
+        topics={'Grundfrage':task['hints']}
     btn(article,'Hilfe').tap()
-    for index in [4,0,1,2,3,4]:
-        btn(article,f'Hilfe {index+1} – '+BANK['helps'][index]).dispatch_event('click')
-        expect(article.locator('.note p').first).to_have_text(task['hints'][index])
+    for name,hints in topics.items():
+        if len(topics)>1:article.get_by_label('Hilfe zu',exact=True).select_option(name)
+        for index in [4,0,1,2,3,4]:
+            btn(article,f'Hilfe {index+1} – '+BANK['helps'][index]).dispatch_event('click')
+            expect(article.locator('.help-list ~ p').first).to_have_text(hints[index])
     btn(article,'Hilfe schließen').dispatch_event('click')
     if task['kind']=='judgment':
         return
@@ -149,15 +169,24 @@ def inspect_task(frame,task):
                     expect(btn(article,'Weiter')).to_be_visible()
                     select.select_option(str(field['line']))
         return
-    options=article.locator('.options button')
-    for pos,option in enumerate(task['options']):
-        if not option['correct']:
-            options.nth(pos).dispatch_event('click')
-            expect(article.get_by_role('status')).to_contain_text(option['feedback'])
-            expect(btn(article,'Weiter')).to_be_hidden()
-    correct=next(i for i,o in enumerate(task['options']) if o['correct'])
-    options.nth(correct).tap()
-    expect(article.get_by_role('status')).to_contain_text(task['options'][correct]['feedback'])
+    for part,q in enumerate([task]+([task['depth']] if task.get('depth') else [])):
+        if part:
+            btn(article,'Hilfe').tap()
+            for index in [4,0,1,2,3,4]:
+                btn(article,f'Hilfe {index+1} – '+BANK['helps'][index]).dispatch_event('click')
+                expect(article.locator('.help-list ~ p')).to_have_text(q['hints'][index])
+            btn(article,'Hilfe schließen').tap()
+        options=article.locator('.options').nth(part).get_by_role('button')
+        status=article.get_by_role('status',include_hidden=True).nth(part)
+        for pos,option in enumerate(q['options']):
+            if not option['correct']:
+                options.nth(pos).dispatch_event('click')
+                expect(status).to_contain_text(option['feedback'])
+                expect(btn(article,'Weiter')).to_be_hidden()
+        correct=next(i for i,o in enumerate(q['options']) if o['correct'])
+        options.nth(correct).tap()
+        expect(status).to_contain_text(q['options'][correct]['feedback'])
+    expect(btn(article,'Weiter')).to_be_visible()
 
 
 def exercise(browser,engine,person,level,n,base):
@@ -200,7 +229,7 @@ def exercise(browser,engine,person,level,n,base):
     for i,task in enumerate(tasks):
         if n==1 and i==0:
             shot(p,engine+'-Argumenten-Check')
-        inspect_task(frame,task)
+        inspect_task(frame,task,level)
         layout(frame)
         if person=='Freundin' and task.get('mother'):
             for line in task['mother']:
@@ -237,44 +266,45 @@ def exercise(browser,engine,person,level,n,base):
             btn(frame,'Weiter').tap()
             continue
         article=frame.locator('article')
-        for result in task['results']:expect(frame.locator('aside').get_by_text(result,exact=True)).to_be_visible()
+        key,ids=task['card']
+        facts=[BANK['cards'][key]['lines'][n-1] for n in ids]
+        goals=[BANK['laura'][n-1] for n in task['goals']]
+        expect(btn(article,'Abschnitt beenden')).to_be_hidden()
+        expect(btn(article,task['options'][0])).to_be_hidden()
+        expect(article.get_by_text(task['hints'][4],exact=True)).to_be_hidden()
         if n==7:
-            btn(frame,'Hilfe').tap()
-            btn(frame,'Hilfe 5 – So geht es.').tap()
-            shot(p,engine+'-Beispielurteil')
-            btn(frame,'Hilfe schließen').tap()
-        btn(frame,'Abschnitt beenden').tap()
-        expect(article.get_by_role('status')).to_have_text('Wähle dein Urteil.')
-        # Deliberately submit all three judgements with evidence. None gets a score.
+            btn(frame,'Hilfe').tap();btn(frame,'Hilfe 5 – So geht es.').tap()
+            shot(p,engine+'-Beispielurteil');btn(frame,'Hilfe schließen').tap()
         for j,label in enumerate(task['options']):
+            fact=facts[j%2];goal=goals[j%2]
+            btn(article,fact).tap()
+            btn(article,goal).tap()
             btn(article,label).tap()
-            btn(article,task['anchors'][j%2]).tap()
-            if level in ('Förder','ESA'):
-                if j==0 and person!='Vater':
-                    btn(article,task['links'][1]).tap()
-                    btn(frame,'Abschnitt beenden').tap()
-                    expect(article.get_by_role('status')).to_have_text(BANK['verdictUI']['reconnect'])
+            if level=='Förder':
                 btn(article,task['links'][j%2]).tap()
-            if level!='Förder' and j==0:
-                reason = task['anchors'][0]+' '+task['links'][0]
+            elif j==0:
+                btn(frame,'Abschnitt beenden').tap()
+                expect(article.get_by_role('status')).to_contain_text('deinen Grund')
+                reason=fact+' Laura sagt: „'+goal+'“ '+task['links'][0]
                 article.get_by_label('Dein Grund').fill(reason)
                 action('overview').tap()
                 other=next(l for l in BANK['levels'] if l!=level)
                 btn(frame,other).tap();btn(frame,sections[1]).tap()
-                expect(frame.get_by_role('heading',name='Stimmt das?')).to_be_visible()
+                expect(frame.get_by_role('heading',name=BANK['questions'][2])).to_be_visible()
                 action('overview').tap();btn(frame,level).tap();btn(frame,'Zur offenen Stelle').tap()
                 expect(article.get_by_label('Dein Grund')).to_have_value(reason)
-            elif level!='Förder' and j==1:
-                article.get_by_label('Dein Grund').fill('')
-                btn(article,'Ich habe meinen Grund gesagt.').tap()
-            if level!='Förder' and j==0:
                 article.get_by_text('Grund selbst prüfen',exact=True).tap()
                 expect(article.get_by_text(task['selfCheck'],exact=True)).to_be_visible()
+            elif j==1:
+                article.get_by_label('Dein Grund').fill('')
+                btn(article,'Ich habe meinen Grund gesagt.').tap()
             if task['counter']:expect(article.get_by_text(task['counter'],exact=True)).to_be_visible()
             if n==5 and j==0:shot(p,engine+'-Urteil')
             btn(frame,'Abschnitt beenden').tap()
             expect(frame.get_by_role('heading',name=person+' · Abschnitt fertig')).to_be_visible()
             expect(frame.get_by_text(label,exact=True)).to_be_visible()
+            expect(frame.get_by_text(fact,exact=True)).to_be_visible()
+            expect(frame.get_by_text('Laura: „'+goal+'“',exact=True)).to_be_visible()
             if j<2:btn(frame,'Mein Urteil ansehen').tap()
     assert frame.locator('body').evaluate('()=>storageWrites')==[]
     if scorm:assert p.evaluate('calls')==[['LMSInitialize','']]
@@ -283,16 +313,25 @@ def exercise(browser,engine,person,level,n,base):
     shell.locator('#zweiter-tag').tap()
     frame=shell.frame_locator('iframe[title="Dienstag, 08.12.2026"]')
     action('recovery').tap();btn(frame,level).tap();btn(frame,person).tap()
-    if n==3:shot(p,engine+'-Wiedereinstieg')
-    # A true reload starts at the chosen section with an original source and no filled answer.
-    for j in [1,0]:
-        btn(frame,sections[j]).tap()
-        expect(frame.locator('.eyebrow')).to_have_text(sections[j]+' · '+level)
-        expect(frame.locator('aside')).to_contain_text(case['message'][tasks[j]['lines'][0]-1])
-        expect(btn(frame,'Weiter')).to_be_hidden()
-        if j:
-            action('recovery').tap()
-            btn(frame,person).tap()
+    for index in [3,2,1,0]:
+        if index:
+            btn(frame,sections[1]).tap()
+            if n==3 and index==3:shot(p,engine+'-Wiedereinstieg')
+            btn(frame,f'{index}. '+BANK['questions'][index-1]).tap()
+            expect(frame.locator('.eyebrow')).to_have_text(sections[1]+f' · Frage {index} von 3')
+            expect(frame.get_by_role('heading',name=BANK['questions'][index-1],exact=True)).to_be_visible()
+            if index==3:
+                expect(btn(frame,facts[0])).to_be_visible()
+                expect(btn(frame,'Abschnitt beenden')).to_be_hidden()
+                btn(frame,'Ganze Fachkarte').tap();btn(frame,'Zurück').tap()
+            else:
+                expect(btn(frame,'Weiter')).to_be_hidden()
+                expect(frame.locator('aside')).to_contain_text(case['message'][tasks[index]['lines'][0]-1])
+        else:
+            btn(frame,sections[0]).tap()
+            expect(frame.get_by_role('combobox',name='Norm',exact=True)).to_have_value('')
+        if index:
+            action('recovery').tap();btn(frame,person).tap()
     if scorm:
         p.locator('iframe').evaluate("e=>e.src='about:blank'")
         p.wait_for_function('calls.length===2')
@@ -328,6 +367,7 @@ def main():
     check_content()
     QA.mkdir(parents=True,exist_ok=True)
     runs=[]
+    routes=[]
     small=[]
     with TemporaryDirectory() as td:
         temp=Path(td)
@@ -344,10 +384,12 @@ def main():
                     for li,level in enumerate(BANK['levels']):
                         runs.append(exercise(browser,engine,person,level,4*pi+li,url))
                         print(engine,person,level,flush=True)
+                for first,second in [(l,'') for l in BANK['levels']]+[('Förder','AHR'),('ESA','MSA')]:
+                    routes.append(measure_route(browser,engine,B,BANK,first,second,shot))
                 browser.close()
-    report=dict(referenz=REVIEWED,version_a_sha256=before,html_sha256=digest((B/'Fallakte.html').read_bytes()),
+    report=dict(commit=subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip(),referenz=REVIEWED,version_a_sha256=before,html_sha256=digest((B/'Fallakte.html').read_bytes()),
                 scorm_sha256=digest((B/'Fallakte-SCORM12.zip').read_bytes()),bank_sha256=digest((OUT/'Aufgabenbank.json').read_bytes()),
-                durchlaeufe=runs,kleinfenster=small,bilder=PHOTOS)
+                durchlaeufe=runs,grundwege=routes,kleinfenster=small,bilder=PHOTOS)
     (QA/'Nachrichten.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
 
 
