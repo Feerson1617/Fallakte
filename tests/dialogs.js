@@ -23,8 +23,8 @@
     assert([...document.querySelectorAll('.chat-step')].at(-1).textContent===stage.title,'Wrong step');
     const history=document.querySelector('#history');
     for(const line of stage.message[tier]) assert(history.textContent.includes(line),'Missing case information');
-    const review=!!document.querySelector('#change-prior');
-    assert(review===Boolean(stage.reviewPrevious),'Unexpected previous-proposal review');
+    let review=!!document.querySelector('#change-prior');
+    assert(review===Boolean(stage.reviewPrevious || stage.reviewLevels?.includes(tier)),'Unexpected previous-proposal review');
     if (stage.hintQuestions && !stage.options.DONE && !review) {
       if (layered) {
         click('#help');
@@ -52,6 +52,10 @@
         assert(document.querySelector('#work').textContent.includes('notiert hast'),'Missing paper-to-chat instruction');
       }
     }
+    if (review && stage.id==='L1' && strategy.includes('+')) {
+      click('#change-prior');
+      review=false;
+    }
     if (key!=='DONE' && !review) {
       const method=key.split('+').pop();
       click('#method-'+method);
@@ -68,7 +72,9 @@
     const hint = stage.hints[key];
     if (stage.hintQuestions) {
       const method = key==='DONE' ? 'P' : key.split('+').pop();
-      const question = layered && (key==='DONE' || tier==='ESA') ? hint.find : stage.hintQuestions[tier] || hint.find;
+      const find = !reference && person==='Laura' && ['Foerder','ESA'].includes(tier)
+        ? (LERNHILFEN[stage.id].kartenfrage?.[method] || hint.find) : hint.find;
+      const question = layered && (key==='DONE' || tier==='ESA') ? find : stage.hintQuestions[tier] || find;
       checkHints(['Karte „'+data.methods[method][0]+'“, Abschnitt „'+hint.section+'“. '+question,hint.fact]);
     } else checkHints(pair(hint));
     helps+=2;
@@ -122,7 +128,7 @@
   }
   const refused = (person==='Laura' && ['P','K+P'].includes(strategy)) ||
                   (person==='Celina' && ['P','K+P','H','K+H'].includes(strategy));
-  const title = reference && refused ? 'Die Empfehlung bleibt offen' : 'Gespräch abgeschlossen';
+  const title = 'Gespräch abgeschlossen';
   assert(document.querySelector('#task-title').textContent===title,'Wrong final outcome');
   if (!reference) {
     const work=document.querySelector('#work');

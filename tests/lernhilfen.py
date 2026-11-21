@@ -1,6 +1,7 @@
 """Use visible controls to seek help, revise and resume without committing a choice."""
 import hashlib
 import os
+import re
 
 from playwright.sync_api import expect, sync_playwright
 
@@ -92,9 +93,8 @@ def help_path(browser, level, size, photos=False):
     ui('#resources .return').click()
     assert history.text_content() == after_reply
     ui('#home-nav').click()
-    ui('[data-person=Tom]').click()
-    expect(panel).to_be_hidden()
-    ui('#home-nav').click()
+    expect(ui('[data-person=Tom]')).to_be_disabled()
+    expect(ui('[data-person=Celina]')).to_be_disabled()
     ui('[data-person=Laura]').click()
     assert history.text_content() == after_reply
     expect(panel.locator('.hint')).to_have_count(5)
@@ -121,6 +121,9 @@ def help_path(browser, level, size, photos=False):
     button('Vorschlag beibehalten').click()
     expect(ui('#step')).to_have_text('Schritt 2 von 7')
     expect(panel).to_be_hidden()
+    if level in ('Foerder','ESA'):
+        expect(ui('#work .preview')).to_contain_text('Kondom')
+        ui('#change-prior').click()
     ui('#method-K').click()
     menu=ui('#additional')
     assert set(menu.locator('option').evaluate_all('options=>options.map(o=>o.value)'))=={'','P','Cu','H'}
@@ -138,6 +141,85 @@ def help_path(browser, level, size, photos=False):
     return dict(niveau=level,frame=size,vor_auswahl=True,methodenwechsel=True,nach_rueckmeldung=True,
                 kartenstelle=True,unterbrechung=True,kombination_ab_l1=True,satzanfang=scaffold,
                 laura_age=19,hilfe_ohne_scroll=True,stufen=5,entwurf_ohne_senden=True)
+
+
+def carried_advice(browser, level, photos):
+    page=browser.new_page(viewport={'width':820,'height':650},has_touch=True)
+    ui=page.locator
+    button=lambda text: page.get_by_role('button',name=text,exact=True)
+    keep=button('Vorschlag beibehalten')
+    change=button('Vorschlag ändern')
+    def start():
+        page.goto(LOCAL.as_uri())
+        ui('#level-'+level).click()
+        expect(ui('[data-person=Celina]')).to_be_disabled()
+        expect(ui('[data-person=Tom]')).to_be_disabled()
+        ui('[data-person=Laura]').click()
+    def send(method):
+        ui('#method-'+method).click()
+        ui('#send').click()
+
+    start()
+    send('P')
+    keep.click()
+    history=ui('#history')
+    for stage in ('L1','L3'):
+        latest=history.locator('.person').last
+        expect(latest).to_be_in_viewport()
+        expect(latest).to_contain_text('Pille' if stage=='L3' else re.compile('schwanger', re.I))
+        expect(ui('#work .preview')).to_contain_text('Kombinationspille')
+        expect(ui('#work .response')).to_contain_text('möchte ich nicht' if stage=='L3' else 'regelmäßig')
+        expect(ui('#send')).to_have_count(0)
+        if stage=='L3' and photos:
+            page.screenshot(path=QA/'Laura-Rat-pruefen.jpg',type='jpeg',quality=78)
+        ui('#help').click()
+        expect(ui('#hint-current p')).to_contain_text('Karte „Kombinationspille“, Abschnitt „Anwendung“')
+        if stage=='L1':
+            expect(ui('#hint-current p')).to_contain_text('Wie oft')
+            keep.click()
+            button('Weiter nach dem Gespräch').click()
+    expect(ui('#hint-current p')).to_contain_text('Lauras Nein')
+    before=history.inner_text()
+    button('Karte „Kombinationspille“ lesen').click()
+    ui('#resources .return').click()
+    for depth in range(2,6):
+        ui('#help').click()
+        expect(ui('.hint')).to_have_count(depth)
+    ui('#help-action').click()
+    expect(ui('#method-K')).to_have_attribute('aria-pressed','true')
+    assert history.inner_text()==before
+    ui('#send').click()
+    for _ in range(3): keep.click()  # L3 reply, then L4 and L5 reviews
+    expect(ui('#task-title')).to_have_text('Euer vorläufiger Rat')
+    expect(ui('#work')).not_to_contain_text('Laufzettel')
+    expect(ui('#work')).to_contain_text('Nachteil')
+    if photos:
+        page.screenshot(path=QA/'Laura-Muendlicher-Rat.jpg',type='jpeg',quality=78)
+    send('K')
+    keep.click()
+    expect(ui('#task-title')).to_have_text('Gespräch abgeschlossen')
+    ui('#home-nav').click()
+    expect(ui('[data-person=Celina]')).to_be_enabled()
+    expect(ui('[data-person=Tom]')).to_be_enabled()
+    ui('#level-AHR').click()
+    expect(ui('[data-person=Tom]')).to_be_disabled()
+
+    # Withdrawing leaves no advice to carry, including across the discussion in L2.
+    start()
+    for _ in ('L0','L1'):
+        expect(ui('#change-prior')).to_have_count(0)
+        send('P')
+        change.click()
+        send('P')
+        button('Vorschlag zurückziehen').click()
+    button('Weiter nach dem Gespräch').click()
+    expect(ui('#change-prior')).to_have_count(0)
+    expect(ui('.method')).to_have_count(4)
+    expect(ui('.method[aria-pressed=true]')).to_have_count(0)
+    send('H')
+    expect(ui('#work .response')).to_be_visible()
+    page.close()
+    return dict(niveau=level,ohne_vorwahl=['L1','L3'],uebernommen=['L1','L3'],entwurf_ohne_senden=True)
 
 
 def phone_entry(browser):
@@ -193,9 +275,10 @@ if __name__ == '__main__':
                     photos=(engine,level,size)==('chromium','Foerder',(820,650))
                     runs.append(help_path(browser,level,size,photos))
             assert len({r['satzanfang'] for r in runs})==4
-            results.append(dict(engine=engine,version=browser.version,wege=runs))
+            reviews=[carried_advice(browser,level,(engine,level)==('chromium','Foerder')) for level in ('Foerder','ESA')]
+            results.append(dict(engine=engine,version=browser.version,wege=runs,weiterfuehrung=reviews))
             browser.close()
     save('lernhilfen',dict(runs=results,lernerprobung=False,
          modulunabhaengig_geprueft=True, screenshots={name:hashlib.sha256((QA/name).read_bytes()).hexdigest() for name in
-             ('Auffanghilfe.jpg','Hilfe-vor-Auswahl.jpg','Hilfe-nach-Rueckmeldung.jpg')}))
+             ('Auffanghilfe.jpg','Hilfe-vor-Auswahl.jpg','Hilfe-nach-Rueckmeldung.jpg','Laura-Rat-pruefen.jpg','Laura-Muendlicher-Rat.jpg')}))
     print('32 Hilfewege über alle vier Niveaus in Chromium und WebKit bestanden.')

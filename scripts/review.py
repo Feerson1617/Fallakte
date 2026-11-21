@@ -26,7 +26,7 @@ for matrix in matrices:
     assert len(mixed)==12
     assert all(len({tuple(r['choices']) for r in mixed if r['level']==tier})==3
                for tier in ('Foerder','ESA','MSA','AHR'))
-    assert {r['level'] for r in mixed if r['unterbrochen']==['L2','L3','L4']} == {'Foerder','ESA','MSA','AHR'}
+    assert {r['level'] for r in mixed if r['unterbrochen']==['L1','L2','L3','L4','L5']} == {'Foerder','ESA','MSA','AHR'}
 assert all(m['disclosure']['later_facts_visible'] is False for m in matrices)
 assert all(m['article_return']['glossary_state_preserved'] and m['article_return']['jump_to_article'] for m in matrices)
 assert reports['scorm']['schema_valid']
@@ -36,6 +36,12 @@ assert {r['engine'] for r in reports['scorm']['runs']} == {'chromium', 'webkit'}
 content = reports['inhaltsvergleich']
 assert content['built_data_equal'] and content['rendered_paths'] == 84
 assert content['shared_help_equal']
+counts=content['bedienhandlungen']
+assert len(counts)==16 and {r['engine'] for r in counts}=={'chromium','webkit'}
+for row in counts:
+    expected=18 if row['korrektur_in_l0'] else 15
+    assert row['vorher']['total']==expected
+    assert row['jetzt']['total']==expected-(4 if row['niveau'] in ('Foerder','ESA') else 0)
 assert {view['engine'] for view in views} == {'chromium','webkit'}
 assert all(not row['errors'] and not row['external_requests'] for row in views)
 help_runs=reports['lernhilfen']['runs']
@@ -43,6 +49,7 @@ assert {run['engine'] for run in help_runs} == {'chromium','webkit'}
 assert all({r['niveau'] for r in run['wege']} == {'Foerder','ESA','MSA','AHR'} for run in help_runs)
 for engine in help_runs:
     assert len(engine['wege'])==16
+    assert {r['niveau'] for r in engine['weiterfuehrung']}=={'Foerder','ESA'}
     assert all(r['kombination_ab_l1'] for r in engine['wege'])
     assert all(r['hilfe_ohne_scroll'] and r['entwurf_ohne_senden'] and r['stufen']==5 for r in engine['wege'])
 layout = reports['layout']

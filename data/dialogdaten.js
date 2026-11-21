@@ -228,7 +228,11 @@ const FALLAKTE = {
           "ESA": "Wann müsste Laura bei diesem Vorschlag an die Anwendung denken?",
           "MSA": "Vergleiche zwei Vorschläge. Wie gut passen Schutz und Aufwand zu Lauras Alltag?",
           "AHR": "Vergleiche zwei Strategien. Wann könnte eine im Alltag weniger zuverlässig sein als auf der Karte?"
-        }
+        },
+        "reviewLevels": [
+          "Foerder",
+          "ESA"
+        ]
       },
       {
         "id": "L2",
@@ -424,7 +428,11 @@ const FALLAKTE = {
           "ESA": "Vergleiche mit Lauras Nachricht. Wozu sagt sie Nein, wo hat sie Fragen?",
           "MSA": "Vergleiche zwei Möglichkeiten. Wo darf ein Vorteil der Methode Lauras Entscheidung nicht ersetzen?",
           "AHR": "Welche Alternative respektiert Lauras Grenze? Unter welcher Bedingung wäre ihre offene Frage geklärt?"
-        }
+        },
+        "reviewLevels": [
+          "Foerder",
+          "ESA"
+        ]
       },
       {
         "id": "L4",
@@ -704,8 +712,8 @@ const FALLAKTE = {
           ]
         },
         "task": {
-          "Foerder": "Vergleiche A und B auf deinem Laufzettel. Was ist Laura besonders wichtig? Beachte ihr Nein.",
-          "ESA": "Vergleiche zwei für Laura mögliche Vorschläge. Welcher passt besser zu ihrem wichtigsten Wunsch?",
+          "Foerder": "Wähle deinen Rat für Laura. Sag deinem Partner: Warum passt er? Nenne auch einen Nachteil.",
+          "ESA": "Welchen Rat gebt ihr Laura jetzt? Begründet ihn mündlich mit einem Wunsch von Laura. Nennt einen Nachteil.",
           "MSA": "Vergleiche zwei vertretbare Vorschläge. Gewichte ein Kriterium und berücksichtige einen Nachteil.",
           "AHR": "Wäge zwei für Laura vertretbare Strategien ab. Unter welcher Bedingung wäre die Alternative besser?"
         },
@@ -781,7 +789,7 @@ const FALLAKTE = {
             "Ein Kondom wäre für sie möglich. Über eine Spirale möchte sie erst mehr wissen."
           ],
           "ESA": [
-            "Vergleiche deinen Vorschlag mit einem zweiten. Welcher Wunsch von Laura zählt für dich mehr?",
+            "Welcher Wunsch von Laura spricht für deinen Rat?",
             "Ein Kondom wäre für sie möglich. Über eine Spirale möchte sie erst mehr wissen."
           ],
           "MSA": [
@@ -797,7 +805,7 @@ const FALLAKTE = {
           "P": "Die Pille möchte ich nicht nehmen. Mein Nein gilt auch bei einer Kombination."
         },
         "hintQuestions": {
-          "ESA": "Welcher Wunsch spricht eher für deinen zweiten Vorschlag? Nutze die Karte.",
+          "ESA": "Was spricht bei Laura für deinen Vorschlag?",
           "MSA": "Wann würde ein anderes Kriterium für Laura schwerer wiegen? Vergleiche den Nachteil beider Vorschläge.",
           "AHR": "Welche noch offene Annahme könnte deine Gewichtung ändern? Begründe den Wechsel zur Alternative."
         },

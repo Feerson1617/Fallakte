@@ -1,0 +1,8 @@
+"""Run the complete simple Laura path via its rendered controls."""
+from pathlib import Path
+
+LAURA_PATH = Path(__file__).with_name('laura_path.js').read_text()
+
+
+def complete_laura(page, tier, correct_first=False):
+    return page.evaluate(LAURA_PATH, dict(tier=tier, correctFirst=correct_first))

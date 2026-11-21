@@ -38,11 +38,13 @@ def mixed_paths(browser,local):
 
             ui('[data-person=Laura]').click()
             for n,choice in enumerate(route):
+                if route_index==1 and n in (1,4):
+                    idle_without_action(page,2 if n==1 else 6)
                 if n==2:
                     if route_index==1:
                         idle_without_action(page,3)
                     button('Weiter nach dem Gespräch').click()
-                if n in (3,4):
+                if n in (3,4) or (tier in ('Foerder','ESA') and n in (1,2)):
                     if n==3 and route_index==1:
                         idle_without_action(page,5)
                     expect(ui('#change-prior')).to_be_visible()
@@ -68,10 +70,9 @@ def mixed_paths(browser,local):
                     ui('#cards-nav').click()
                     ui('#resources .return').click()
                     expect(ui('#draft-preview p')).to_have_text(draft)
-                    # Visit another case, then a different level of Laura, before returning.
+                    # A different level starts separately. This draft is still here on return.
                     ui('#home-nav').click()
-                    ui('[data-person=Tom]').click()
-                    ui('#home-nav').click()
+                    expect(ui('[data-person=Tom]')).to_be_disabled()
                     other=LEVELS[(LEVELS.index(tier)+1)%len(LEVELS)]
                     ui('#level-'+other).click()
                     ui('[data-person=Laura]').click()
@@ -133,7 +134,7 @@ def mixed_paths(browser,local):
                     button('Vorschlag beibehalten').click()
                 expect(ui('#work')).to_contain_text('Celina entscheidet nach der Beratung selbst')
             records.append(dict(level=tier,choices=list(route),revision=route_index==2,
-                                celina=route_index==1,unterbrochen=['L2','L3','L4'] if route_index==1 else [],
+                                celina=route_index==1,unterbrochen=['L1','L2','L3','L4','L5'] if route_index==1 else [],
                                 final='zurückgezogen' if route_index==2 else 'vorläufig'))
             page.close()
     return records

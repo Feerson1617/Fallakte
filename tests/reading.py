@@ -1,12 +1,13 @@
 """Keep the reader's place in Tom's long article across real navigation."""
 from playwright.sync_api import expect
+from paths import complete_laura
 
 
 def article_return(browser, standalone):
     page = browser.new_page(viewport={'width': 820, 'height': 650}, has_touch=True)
     page.goto(standalone.as_uri())
     ui = page.locator
-    ui('#level-AHR').click()
+    complete_laura(page,'AHR')
     ui('[data-person=Tom]').click()
     ui('#method-K').click()
     ui('#send').click()

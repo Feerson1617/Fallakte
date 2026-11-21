@@ -1,4 +1,5 @@
 // Einstiegskarte zum Nachschlagen, keine Vorauswahl. Satzanfänge verwenden nur bereits bekannte Angaben.
+const vergleichsbeispielLaura = 'Mein Rat wäre ein Kondom. Es hilft bei beiden Schutzzielen, muss aber jedes Mal richtig benutzt werden. Eine weitere Möglichkeit wäre, nach ärztlicher Beratung zusätzlich eine Hormonspirale zu erwägen. Das Einsetzen braucht Lauras Zustimmung.';
 const LERNHILFEN = {
   L0: {karte:'K', beispielMethode:'K', beispiel:'Ich würde ein Kondom vorschlagen. Wenn es richtig benutzt wird, sinkt das Risiko für viele Infektionen beim Sex. Ein Restrisiko bleibt.',
     Foerder:'Laura will sich vor Infektionen schützen. Mein Vorschlag hilft dabei gut / kaum, weil … . Darum … .',
@@ -15,7 +16,8 @@ const LERNHILFEN = {
     ESA:'Die Freundin hat … erlebt. Für Laura zeigt das eine Möglichkeit. Offen bleibt … .',
     MSA:'Der Einzelfall zeigt … . Eine Vorhersage für Laura wäre unsicher, weil … .',
     AHR:'Eine beobachtete Nebenwirkung belegt … . Für eine Aussage über Laura fehlt … .'},
-  L3: {karte:'H', beispielMethode:'K', beispiel:'Laura will keine Pille. Ich würde ein Kondom vorschlagen. Auch über eine Spirale kann sie sich informieren. Ob sie das möchte, entscheidet sie selbst.',
+  L3: {karte:'H', kartenfrage:{P:'Wie wird die Pille angewendet? Beachte Lauras Nein.',
+    Cu:'Wer setzt die Spirale ein? Laura hat dazu noch Fragen.', H:'Wer setzt die Spirale ein? Laura hat dazu noch Fragen.'}, beispielMethode:'K', beispiel:'Laura will keine Pille. Ich würde ein Kondom vorschlagen. Auch über eine Spirale kann sie sich informieren. Ob sie das möchte, entscheidet sie selbst.',
     Foerder:'Zur Pille sagt Laura Nein. Bei der Spirale fragt sie noch … . Mein Vorschlag beachtet das, weil … .',
     ESA:'Lauras Nein gilt für … . Über … möchte sie erst mehr wissen. Deshalb würde ich … .',
     MSA:'Ich unterscheide eine feste Grenze von einer offenen Sorge. Das spricht gegen … und lässt … offen.',
@@ -30,9 +32,12 @@ const LERNHILFEN = {
     ESA:'Mein Vorschlag hilft beim ersten Ziel durch … und beim zweiten durch … . Eine Schwierigkeit ist … .',
     MSA:'Für beide Schutzziele vergleiche ich … mit … . Im Alltag könnte … den Ausschlag geben.',
     AHR:'Die zusätzliche Methode hätte den Nutzen … und den Aufwand … . Für Laura wiegt … schwerer, weil … .'},
-  L6: {karte:'K', beispielMethode:'K', beispiel:'Mein Rat wäre ein Kondom. Es hilft bei beiden Schutzzielen, muss aber jedes Mal richtig benutzt werden. Eine weitere Möglichkeit wäre, nach ärztlicher Beratung zusätzlich eine Hormonspirale zu erwägen. Das Einsetzen braucht Lauras Zustimmung.',
-    Foerder:'A hilft Laura bei … . B hilft ihr bei … . Am wichtigsten ist ihr … . Darum würde ich … sagen.',
-    ESA:'Für A spricht …, für B … . Lauras Wunsch … zählt für mich mehr. Ein Nachteil bleibt … .',
+  L6: {karte:'K', beispielMethode:'K', beispiel:{
+      Foerder:'Ich schlage ein Kondom vor. Es hilft bei beiden Zielen. Es muss jedes Mal richtig benutzt werden.',
+      ESA:'Mein Rat wäre ein Kondom. Es schützt vor einer Schwangerschaft und senkt das Risiko vieler Infektionen. Es muss jedes Mal richtig benutzt werden.',
+      MSA:vergleichsbeispielLaura, AHR:vergleichsbeispielLaura},
+    Foerder:'Mein Rat ist … . Das passt zu Laura, weil … . Ein Nachteil ist … .',
+    ESA:'Ich schlage … vor, weil Laura … wichtig ist. Ein Nachteil ist … .',
     MSA:'Obwohl … für B spricht, wiegt bei A … schwerer. Für Laura ist das entscheidend, weil … .',
     AHR:'Unter der Bedingung … würde ich A empfehlen. Falls …, wäre B plausibler. Laura entscheidet über … .'},
   C0: {karte:'Cu', beispielMethode:'K', beispiel:'Ich würde ein Kondom vorschlagen. Es enthält keine Hormone. Auch die Kupferspirale kommt ohne Hormone aus. Bei beiden ist die Anwendung unterschiedlich.',

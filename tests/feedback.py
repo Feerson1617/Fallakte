@@ -1,5 +1,6 @@
 """Independent classroom scenarios. Expected decisions do not come from the dialog data."""
 from playwright.sync_api import expect
+from paths import complete_laura
 
 
 def run_scenarios(browser, local, screenshots=None):
@@ -10,6 +11,8 @@ def run_scenarios(browser, local, screenshots=None):
 
     def start(person):
         page.goto(local.as_uri())
+        if person!='Laura':
+            complete_laura(page,'ESA')
         page.locator('[data-person=' + person + ']').click()
 
     def suggest(method, combine=False, tentative=False):
@@ -56,7 +59,7 @@ def run_scenarios(browser, local, screenshots=None):
     suggest('H', combine=True)
     keep()
     expect(page.locator('#task-title')).to_have_text('Gespräch abgeschlossen')
-    expect(page.locator('.paper-note')).to_contain_text('Mein letzter Rat')
+    expect(page.locator('#work .paper-note')).to_have_count(0)
 
     start('Laura')
     for method in ('K', 'H'):
@@ -92,6 +95,7 @@ def run_scenarios(browser, local, screenshots=None):
     suggest('H')
     keep()
     button('Weiter nach dem Gespräch').click()
+    page.locator('#change-prior').click()
     page.locator('#method-P').click()
     page.locator('#combine').check()
     page.locator('#help').click()

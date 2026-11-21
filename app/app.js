@@ -4,9 +4,9 @@ const $ = id => document.getElementById(id);
 document.querySelectorAll('[data-icon]').forEach(el => el.append(icon(el.dataset.icon)));
 
 const cases = {
-  Laura:['Gemeinsamer Hauptfall','Laura fragt nach Schutz vor Infektionen. Was rätst du ihr?'],
-  Celina:['Weiterer Fall','Celina möchte ohne zusätzliche Hormone verhüten.'],
-  Tom:['Vertiefung','Tom möchte selbst verhüten. Welche Wege gibt es?']
+  Laura:['Hauptfall','Laura fragt nach Schutz vor Infektionen. Was rätst du ihr?'],
+  Celina:['Zusatzfall','Celina möchte ohne zusätzliche Hormone verhüten.'],
+  Tom:['Zusatzfall','Tom möchte selbst verhüten. Welche Wege gibt es?']
 };
 const sessions = new Map();
 let level = 'ESA';
@@ -17,6 +17,7 @@ const sessionKey = (person, tier) => person + '-' + tier;
 const stages = () => FALLAKTE.cases[current.person];
 const stage = () => stages()[current.index];
 const forLevel = value => levelText(value,current.level);
+const shortLaura = () => current.person==='Laura' && ['Foerder','ESA'].includes(current.level);
 function code() {
   if (current.mode==='review') return current.lastKept;
   const second=current.selected==='K' ? current.additional : current.combined && current.selected;
@@ -53,6 +54,8 @@ function home() {
     b.setAttribute('aria-pressed',key === level);
     levels.append(b);
   }
+  const extrasAvailable = sessions.get(sessionKey('Laura',level))?.mode==='finished';
+  $('case-order').textContent=extrasAvailable ? 'Weitere Fälle sind freigeschaltet.' : 'Beginne mit Laura. Danach kannst du Celina oder Tom wählen.';
   const list = $('case-list');
   list.replaceChildren();
   for (const [person,[role,summary]] of Object.entries(cases)) {
@@ -60,6 +63,7 @@ function home() {
     const body = el('div','case-info');
     const resume = sessions.has(sessionKey(person,level));
     const start = button(person+(resume?' öffnen':' starten'), () => openCase(person,level),person==='Laura'?'primary':'outline','next');
+    start.disabled=person!=='Laura' && !extrasAvailable;
     start.dataset.person=person;
     body.append(el('span','role',role),el('h3','',person),el('p','',summary),start);
     card.append(el('div','cover'),body);
@@ -106,7 +110,7 @@ function focusInWork(target) {
 }
 function enterStage(index) {
   Object.assign(current,{index,mode:'choose',selected:'',additional:'',combined:false,tentative:false,help:0,asked:[],questionsOpen:false,revised:false});
-  if (stage().reviewPrevious && current.lastKept) current.mode='review';
+  if ((stage().reviewPrevious || stage().reviewLevels?.includes(current.level)) && stage().options[current.lastKept]) current.mode='review';
   current.log.push({type:'step',title:stage().title});
   current.log.push({type:'person',lines:stage().message[current.level]});
   if (stage().type==='article') current.log.push({type:'article'});
@@ -170,8 +174,10 @@ function nextStage() {
     focusTask();
     return;
   }
+  const first=current.log.length;
   changeHistory(()=>enterStage(current.index+1));
   showPane('chat');
+  if (current.mode==='review' && stage().reviewLevels?.includes(current.level)) toEntry(first);
   drawWork();
   $('work').scrollTop=0;
   $('chat-name').focus({preventScroll:true});
@@ -290,6 +296,7 @@ function stageSupport() {
   const s=stage();
   const support=LERNHILFEN[s.id];
   let choice=code();
+  if (!choice && shortLaura() && !s.options.DONE && s.options[current.lastKept]) choice=current.lastKept;
   if (current.mode==='tomSelf' || (current.mode==='reply' && ['L0','C3','L5','T0'].includes(s.id) &&
       !choice.includes('K') && !s.declined?.[choice])) choice='K';
   const method=choice.split('+').pop() || support.karte;
@@ -300,7 +307,8 @@ function stageSupport() {
     const name=FALLAKTE.methods[method][0];
     if (Array.isArray(raw)) pair=raw;
     else {
-      const question=choice && ['MSA','AHR'].includes(current.level) ? s.hintQuestions[current.level] : raw.find;
+      const cardQuestion=(shortLaura() && support.kartenfrage?.[method]) || raw.find;
+      const question=choice && ['MSA','AHR'].includes(current.level) ? s.hintQuestions[current.level] : cardQuestion;
       pair=['Karte „'+name+'“, Abschnitt „'+raw.section+'“. '+question,raw.fact];
     }
     const section=raw.section || sections.find(title=>pair[0].includes('„'+title+'“'));
@@ -408,7 +416,7 @@ function drawWork() {
       area.append(el('p','unresolved',current.person+' hat eurem letzten Vorschlag nicht zugestimmt.'),
                   el('p','response',current.finalRefusal));
     }
-    if (current.person==='Laura') {
+    if (current.person==='Laura' && !shortLaura()) {
       area.append(el('p','paper-note','Schreibe bei „Mein letzter Rat“ deinen eigenen Vorschlag und deinen wichtigsten Grund auf.'));
     } else if (current.person==='Celina') {
       area.append(el('p','paper-note','Fülle auf dem Laufzettel das Feld „Celina“ aus. Nenne deinen Rat und einen Grund.'));
@@ -423,6 +431,11 @@ function drawWork() {
     area.append(el('p','preview','Euer letzter Rat war '+names.join(' und ')+'.'),
                 el('p','',s.task[current.level]),
                 el('p','response',current.person+' zu eurem Rat: „'+forLevel(s.replies[code()])+'“'));
+    if (shortLaura() && s.declined?.[code().split('+').pop()]) {
+      area.append(el('p','decision-guide','Tippe auf „Vorschlag ändern“, um einen Rat ohne Pille zu geben.'));
+    } else if (shortLaura() && feedbackIssue(s,code())) {
+      area.append(el('p','decision-guide','Prüfe den Schutz vor Infektionen. Mit „Vorschlag ändern“ kannst du anders wählen.'));
+    }
     showQuestionAnswer(area);
     const row=el('div','row');
     const change=button('Vorschlag ändern',reviseProposal,'outline');
@@ -464,7 +477,7 @@ function drawWork() {
     return;
   }
   taskTitle(area,s.options.DONE ? s.title : current.selected ? 'Prüfe deine Nachricht' :
-    s.id==='L0' ? 'Mein erster Rat' : s.id==='L6' ? 'Zuerst auf dem Laufzettel' : 'Wähle eine Methode');
+    s.id==='L0' ? 'Mein erster Rat' : s.id==='L6' && shortLaura() ? 'Euer vorläufiger Rat' : s.id==='L6' ? 'Zuerst auf dem Laufzettel' : 'Wähle eine Methode');
   const task=el('p',s.id==='L0' || s.id==='T2'?'paper-note':'',
     s.id==='L0' && current.revised ? 'Wähle die Methode für deinen neuen Vorschlag.' : s.task[current.level]);
   if (current.selected) {

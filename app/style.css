@@ -58,6 +58,7 @@ h1{font:clamp(39px,4.6vw,62px)/1.08 var(--serif);letter-spacing:-1.9px}
 .case-info p{color:var(--muted);font-size:16px;margin-bottom:20px}
 .role{color:#50664b;font-size:11px;gap:7px}.role:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--role,#537b55)}
 .celina{--role:#b5784e}.tom{--role:#648598}
+.case-info button:disabled{color:var(--muted);background:transparent;border-color:var(--line);cursor:default}
 .case-info button{margin-top:auto;display:flex;align-items:center;justify-content:space-between;text-align:left;width:100%}
 .primary,.outline,.secondary-button{padding:10px 16px;display:inline-flex;align-items:center;justify-content:center;gap:9px;line-height:1.35}
 .primary{background:var(--green);color:white}.outline{background:var(--white);border:1px solid #a2b2a0}.secondary-button{background:var(--tint)}

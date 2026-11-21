@@ -42,6 +42,8 @@ def to_refusal(frame, touch):
     press(frame.locator('[data-person=Laura]'))
     for method in ('K','H'):
         pane(frame,'write-answer')
+        if frame.locator('#change-prior').is_visible():
+            press(frame.locator('#change-prior'))
         press(frame.locator('#method-'+method))
         press(frame.locator('#send'))
         press(frame.get_by_role('button',name='Vorschlag beibehalten'))
@@ -111,6 +113,7 @@ def exercise(browser, engine, size, url, images):
 
     record('Nachricht')
     pane(frame,'write-answer')
+    operate(frame.locator('#change-prior'),touch)
     operate(frame.locator('#method-P'),touch)
     selected = record('Auswahl')
     labels = measure_labels(frame)
