@@ -26,6 +26,7 @@ for matrix in matrices:
     assert len(mixed)==12
     assert all(len({tuple(r['choices']) for r in mixed if r['level']==tier})==3
                for tier in ('Foerder','ESA','MSA','AHR'))
+assert all(m['disclosure']['later_facts_visible'] is False for m in matrices)
 assert reports['scorm']['schema_valid']
 assert {view['engine'] for view in views} == {'chromium','webkit'}
 assert all(not row['errors'] and not row['external_requests'] for row in views)
@@ -38,7 +39,10 @@ for run in layout['runs']:
 assert len(layout['screenshots']) == 8
 for sheet in reports['laufzettel']['pdfs']:
     assert hashlib.sha256((OUT/'Laufzettel'/sheet['datei']).read_bytes()).hexdigest() == sheet['sha256']
+teacher=reports['laufzettel']['lehrkraft']
+assert hashlib.sha256((OUT/teacher['datei']).read_bytes()).hexdigest()==teacher['sha256']
 with ZipFile(OUT/'Fallakte-SCORM12.zip') as scorm:
+    assert teacher['datei'] not in scorm.namelist()
     assert hashlib.sha256(scorm.read('index.html')).hexdigest() == digest
 
 report = OUT/'Fallakte-Pruefbericht.md'
@@ -52,7 +56,7 @@ with ZipFile(package, 'w', ZIP_DEFLATED) as z:
     z.write(ROOT/'docs/Unterricht.md', 'Unterrichtsablauf.md')
     for name in names:
         z.write(QA/(name+'.json'), 'Protokolle/'+name+'.json')
-    for shot in ('Falluebersicht', 'iPad-hoch', 'iPad-quer', 'Mobil', 'Laura-Entscheidung', 'Tom-Eigener-Beitrag', 'Frueher-Stopp'):
+    for shot in ('Falluebersicht', 'iPad-hoch', 'iPad-quer', 'Mobil', 'Laura-Entscheidung', 'Tom-Eigener-Beitrag', 'Frueher-Stopp', 'Sicherung-nach-Nachricht-1'):
         filename=shot+'.jpg'
         expected=reports['bedienung']['screenshots'][filename]
         assert hashlib.sha256((QA/filename).read_bytes()).hexdigest() == expected

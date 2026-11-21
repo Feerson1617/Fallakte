@@ -15,14 +15,16 @@
   }
   click('#level-'+tier);
   click('[data-person="'+person+'"]');
-  let methods=0, questions=0, helps=0;
+  let methods=0, questions=0, helps=0, reviews=0;
   for (const stage of data.cases[person]) {
     const tab=document.querySelector('#write-answer');
     if(tab.getClientRects().length) tab.click();
     assert([...document.querySelectorAll('.chat-step')].at(-1).textContent===stage.title,'Wrong step');
     const history=document.querySelector('#history');
     for(const line of stage.message[tier]) assert(history.textContent.includes(line),'Missing case information');
-    if (stage.hintQuestions && !stage.options.DONE) {checkHints(stage.helpBefore[tier]); helps+=2;}
+    const review=!!document.querySelector('#change-prior');
+    assert(review===Boolean(stage.reviewPrevious),'Unexpected previous-proposal review');
+    if (stage.hintQuestions && !stage.options.DONE && !review) {checkHints(stage.helpBefore[tier]); helps+=2;}
     const index=data.cases[person].indexOf(stage);
     for (const future of data.cases[person].slice(index+1)) assert(![...history.querySelectorAll('.chat-step')].some(x=>x.textContent===future.title),'Premature disclosure');
     for (const [question,answer] of stage.questions) {
@@ -33,7 +35,7 @@
     }
     assert(!document.querySelector('#ask'),'Repeatable question');
     const key=stage.options.DONE?'DONE':strategy;
-    if (key!=='DONE') {
+    if (key!=='DONE' && !review) {
       const method=key.split('+').pop();
       click('#method-'+method);
       if(key.includes('+'))click('#combine');
@@ -57,6 +59,15 @@
     }
     if(key==='DONE') {
       click('#work .primary');
+    } else if (review) {
+      assert(!document.querySelector('#send'),'Repeated sending required');
+      const row=document.querySelector('#work .row');
+      const keep=[...row.querySelectorAll('button')].find(b=>b.textContent==='Vorschlag beibehalten');
+      const start=history.children.length;
+      keep.click();
+      assert(history.children[start].textContent.endsWith(stage.options[key]),'Reviewed proposal lost');
+      assert(history.children[start+1].textContent.endsWith(pair(stage.replies[key])),'Reviewed feedback lost');
+      reviews++;
     } else {
       click('#send');methods++;
       assert(history.lastChild.textContent.endsWith(pair(stage.replies[key])),'Selected response');
@@ -81,5 +92,5 @@
     assert(document.querySelector('.unresolved').textContent.includes('nicht zugestimmt'),'No final disagreement');
     assert(document.querySelector('#work .response').textContent.includes(person==='Laura'?'Pille':'Hormon'),'Missing personal boundary');
   }
-  return {person,tier,strategy,methods,questions,helps,stages:data.cases[person].length};
+  return {person,tier,strategy,methods,reviews,questions,helps,stages:data.cases[person].length};
 }

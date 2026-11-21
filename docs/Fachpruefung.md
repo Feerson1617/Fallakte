@@ -1,6 +1,6 @@
 # Fachprüfung der Unterrichtstexte
 
-Quellenstand der erneuten Durchsicht am 21. November 2026. Die Figuren und ihre Wünsche sind fiktiv. Aussagen zu Wirkungen, Anwendungsfehlern und möglichen Beschwerden wurden für Klasse 8 sprachlich gekürzt. Die Karten arbeiten mit qualitativen Vergleichen. Dadurch müssen Lernende keine Raten aus unterschiedlichen Untersuchungen miteinander verrechnen.
+Quellenstand der erneuten Durchsicht am 21. November 2026. Die Figuren und ihre Wünsche sind fiktiv. Aussagen zu Wirkungen, Anwendungsfehlern und möglichen Beschwerden wurden für Klasse 8 sprachlich gekürzt. Die selbst erarbeiteten Schülerkarten bilden die Arbeitsgrundlage. Die digitalen Karten ergänzen sie mit einer gemeinsamen Vergleichszeile für den Schwangerschaftsschutz im Alltag.
 
 ## Schleswig-Holstein und die achte Klasse an der ETS
 
@@ -11,6 +11,17 @@ In der Fassung 2023, S. 17, heißt Sek. I – Bw2 „Handlungsoptionen formulier
 Die Fassung 2026, S. 26, nennt Bw2 „Kriteriengeleitet Entscheidungen treffen“. Sachinformationen, Werte und Normen fließen in das Benennen, Diskutieren und Begründen von Handlungsoptionen ein. Dazu passen Zustimmung, Schutzinteressen und das Abwägen zweier Strategien. Diese Übereinstimmung beschreibt die fachliche Anschlussfähigkeit. Die Jahrgangszuordnung für die aktuelle Klasse stammt aus dem ETS-Curriculum 2025/26. [Fachanforderungen Schleswig-Holstein](https://fachportal.lernnetz.de/sh/fachanforderungen/biologie.html)
 
 ## Methoden und Fallentscheidungen
+
+Für alle vier Methoden gilt derselbe Bezugsrahmen: Wie viele von 1.000 Frauen werden in einem Jahr bei Anwendung der jeweiligen Methode schwanger? Beim Kondom und bei der Pille werden die vom BIÖG ausdrücklich als Alltagsanwendung ausgewiesenen Häufigkeiten verwendet. Für die Spiralen nennt das BIÖG Einjahreshäufigkeiten bei liegender Spirale, abhängig vom Modell. Die Spannen erlauben eine Orientierung, keine individuelle Prognose. Sie stammen aus den jeweiligen Methodendossiers. Für Kombinationen wird keine Zahl errechnet. STI-Risikoverringerung wird in einem eigenen Kartenabschnitt erläutert.
+
+| Methode | Schwangerschaften je 1.000 in einem Jahr | Bedeutung für die Beratung |
+| --- | --- | --- |
+| Kondom | 60–130 | Bei jedem Sex zählen rechtzeitige und richtige Anwendung. |
+| Kombinationspille | 24–70 | Einnahmefehler können den Schutz im Alltag verringern. |
+| Kupferspirale | 1–10 | Nach Einlage sehr zuverlässig. Das Modell beeinflusst die Häufigkeit. |
+| Hormonspirale | 1–3 | Nach Einlage sehr zuverlässig. Die Spanne hängt vom Modell ab. |
+
+Die Bereiche von Pille und Kondom überschneiden sich. Bei einer einzelnen Person lassen sich daraus weder die geeignete Methode noch die Reihenfolge der persönlichen Wünsche ableiten. Die vier BIÖG-Quellseiten wurden für diese Ausgabe erneut abgerufen und mit Karten, Hilfen und methodenbezogenen Fallreaktionen verglichen.
 
 | Methode | Geprüfter Kern und Grenze | Grundlage |
 | --- | --- | --- |

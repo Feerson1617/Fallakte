@@ -13,6 +13,8 @@ def run_scenarios(browser, local, screenshots=None):
         page.locator('[data-person=' + person + ']').click()
 
     def suggest(method, combine=False, tentative=False):
+        if page.locator('#change-prior').is_visible():
+            page.locator('#change-prior').click()
         page.locator('#method-' + method).click()
         if combine:
             page.locator('#combine').check()
@@ -84,10 +86,10 @@ def run_scenarios(browser, local, screenshots=None):
     page.locator('#level-Foerder').click()
     button('Sicherung').click()
     facts = page.locator('#pause-facts')
-    stop = page.locator('#class-stop')
+    summary = facts.locator('summary')
     expect(page.locator('#review-laura')).to_be_hidden()
     expect(facts.locator('ul')).to_be_hidden()
-    expect(stop).to_be_hidden()
+    expect(summary).to_be_hidden()
     expect(facts.locator('li')).to_have_count(0)
     expect(page.locator('#pause-conflict')).to_be_hidden()
     page.locator('#pause .return').click()
@@ -107,17 +109,14 @@ def run_scenarios(browser, local, screenshots=None):
     step = page.locator('#step').inner_text()
     button('Sicherung').click()
     expect(facts.locator('ul')).to_be_hidden()
-    expect(facts.locator('li')).to_have_count(0)
-    stop.focus()
-    stop.press('Enter')
+    summary.focus()
+    summary.press('Enter')
     expect(facts.locator('li')).to_have_count(4)
-    expect(facts.locator('li').first).to_contain_text('will keine Pille')
-    expect(facts).to_contain_text('Andere Mittel mit Hormonen')
-    expect(facts).to_contain_text('Einsetzen')
-    expect(facts).to_contain_text('Regel')
-    expect(facts).to_contain_text('Kondom')
-    expect(facts).to_contain_text('selbst entscheiden')
-    expect(facts).not_to_contain_text('Freundin')
+    expect(facts.locator('li').last).to_contain_text('will keine Pille')
+    expect(facts).to_contain_text('Freundin')
+    expect(facts).not_to_contain_text('Regel')
+    expect(facts).not_to_contain_text('Kondom')
+    expect(facts).not_to_contain_text('selbst entscheiden')
     if screenshots:
         page.locator('.pause-note').screenshot(path=screenshots/'Frueher-Stopp.jpg',type='jpeg',quality=82)
     page.locator('#pause .return').click()
@@ -129,6 +128,14 @@ def run_scenarios(browser, local, screenshots=None):
     button('Nachricht senden').click()
     expect(page.locator('.response')).to_contain_text('nicht')
     expect(button('Vorschlag ändern')).to_be_visible()
+
+    # Retracting a revised proposal leaves no earlier method to prefill at the next step.
+    button('Vorschlag ändern').click()
+    suggest('P')
+    button('Vorschlag zurückziehen').click()
+    expect(page.locator('#change-prior')).to_have_count(0)
+    expect(page.locator('.method[aria-pressed="true"]')).to_have_count(0)
+    expect(page.locator('#method-K')).to_be_visible()
 
     # Celina refuses hormones, yet can consider a copper IUD after counselling.
     start('Celina')
@@ -184,7 +191,7 @@ def run_scenarios(browser, local, screenshots=None):
     page.close()
     return ['Laura: wiederholtes Nein, Sorge, Kombination bis zum Abschluss',
             'Laura: letzter Kombinationsvorschlag bleibt in Abschluss, Sicherung und Wiederaufnahme strittig',
-            'Sicherung bei frühem Stopp: offene Stufen, Niveauwechsel, Entwurf und Hilfen erhalten',
+            'Sicherung bei frühem Stopp: erreichte Stufen, Niveauwechsel, Entwurf und Hilfen erhalten',
             'Celina: Hormongrenze, offene Einlage und Rücknahme',
             'Tom: zweimal ungeeignet, Unterbrechung, dann eigener Kondomvorschlag',
             'Tom: Revision direkt zum Kondom']

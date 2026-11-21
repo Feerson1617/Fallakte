@@ -14,6 +14,7 @@ from playwright.sync_api import sync_playwright, expect
 from lxml import etree
 from feedback import run_scenarios
 from transitions import mixed_paths
+from disclosure import first_message_only
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'dist'
@@ -44,7 +45,7 @@ def test_matrix(browser, engine):
                 records.append(page.evaluate(MATRIX, dict(person=person, tier=level, strategy=code, data=DATA)))
     assert not errors, errors
     page.close()
-    return dict(engine=engine,version=browser.version,paths=records,errors=errors,transitions=mixed_paths(browser,LOCAL),scenarios=run_scenarios(browser,LOCAL,QA if engine=='chromium' else None))
+    return dict(engine=engine,version=browser.version,paths=records,errors=errors,disclosure=first_message_only(browser,LOCAL,QA/'Sicherung-nach-Nachricht-1.jpg' if engine=='chromium' else None),transitions=mixed_paths(browser,LOCAL),scenarios=run_scenarios(browser,LOCAL,QA if engine=='chromium' else None))
 
 
 def measure(page):
@@ -73,6 +74,8 @@ def pane(page, name):
 
 def send(page, code):
     pane(page,'write-answer')
+    if page.locator('#change-prior').is_visible():
+        page.locator('#change-prior').click()
     page.locator('#method-' + code.split('+')[-1]).click()
     if '+' in code:
         page.locator('#combine').check()
@@ -156,6 +159,11 @@ def test_view(browser, engine, layout, size):
     page.locator('#cards-nav').click()
     for card in page.locator('#method-cards summary').all():
         card.click()
+        details=card.locator('..')
+        frequency={'card-K':'60 bis 130','card-P':'24 bis 70','card-Cu':'1 bis 10','card-H':'1 bis 3'}
+        protection=details.locator('dt',has_text='Schwangerschaftsschutz im Alltag').locator('+ dd')
+        expect(protection).to_contain_text(frequency[details.get_attribute('id')]+' von 1.000')
+        expect(protection).to_contain_text('Jahr')
         measure(page)
     page.locator('#resources .return').click()
     assert history.inner_text()==before
@@ -241,10 +249,10 @@ def test_scorm(browser):
             frame.locator('#send').click()
             history = frame.locator('#history').text_content()
             frame.locator('#pause-nav').click()
-            expect(frame.locator('#pause-facts li')).to_have_count(0)
-            frame.locator('#class-stop').click()
+            frame.locator('#pause-facts summary').click()
             expect(frame.locator('#stop-task')).to_be_visible()
-            expect(frame.locator('#pause-facts li')).to_have_count(7)
+            expect(frame.locator('#pause-facts li')).to_have_count(1)
+            expect(frame.locator('#pause-facts li')).to_contain_text('Krankheiten')
             frame.locator('#pause .return').click()
             assert frame.locator('#history').text_content()==history
             assert page.evaluate('calls')==[['LMSInitialize','']]

@@ -6,7 +6,7 @@ from pathlib import Path
 from pypdf import PdfReader
 
 OUT = Path(__file__).resolve().parents[1] / 'dist'
-LEVELS = {'Foerder': ('Förder','Jetzt passt mein Rat besser'), 'ESA': ('ESA','Jetzt kann ich besser erklären'),
+LEVELS = {'Foerder': ('Förder','Meinen Rat kann ich jetzt begründen'), 'ESA': ('ESA','Jetzt kann ich besser erklären'),
           'MSA': ('MSA','Kriterium'), 'AHR': ('AHR','Annahme')}
 
 
@@ -37,10 +37,22 @@ def check():
         results.append(dict(datei=path.name,seiten=2,format='A4',
                             sha256=hashlib.sha256(path.read_bytes()).hexdigest()))
     assert len(list((OUT/'Laufzettel').glob('*.pdf'))) == 4
+    teacher = OUT / 'Fallakte-Lehrkraft.pdf'
+    pages = PdfReader(teacher).pages
+    assert len(pages) == 2
+    for page, (width, height) in zip(pages, [(842, 595), (595, 842)]):
+        assert abs(float(page.mediabox.width) - width) < 2
+        assert abs(float(page.mediabox.height) - height) < 2
+    facts = ' '.join(pages[0].extract_text().split())
+    rubric = ' '.join(pages[1].extract_text().split())
+    data = json.loads((OUT.parent/'data/dialogdaten.js').read_text().split('=', 1)[1].strip()[:-1])
+    assert all(stage['pauseFact'] in facts for stage in data['cases']['Laura'])
+    assert all(label in rubric for label in ('Fallwissen','Vergleich','Gewichtung','Grenzen','Erster Rat','Letzter Rat'))
     (OUT/'qa'/'laufzettel.json').write_text(json.dumps({
         'html_sha256': hashlib.sha256((OUT/'Fallakte.html').read_bytes()).hexdigest(),
+        'lehrkraft': dict(datei=teacher.name,sha256=hashlib.sha256(teacher.read_bytes()).hexdigest()),
         'pdfs': results}, ensure_ascii=False, indent=2))
-    print('Vier PDF-Fassungen, acht A4-Seiten und die Aufgaben aller Niveaus geprüft.')
+    print('Vier Laufzettel mit acht A4-Seiten sowie Faktenfolie und Beobachtungsraster geprüft.')
 
 
 if __name__ == '__main__':

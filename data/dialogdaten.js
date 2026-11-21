@@ -582,7 +582,8 @@ const FALLAKTE = {
           "ESA": "Was steht über Schmerzen auf der Karte? Passt das zu Lauras Wunsch?",
           "MSA": "Wie wiegst du möglichen Schutz und mögliche Beschwerden bei zwei Vorschlägen ab?",
           "AHR": "Vergleiche zwei Strategien. Welche medizinische Unsicherheit begrenzt dein Urteil über Schmerzen?"
-        }
+        },
+        "reviewPrevious": true
       },
       {
         "id": "L5",
@@ -707,7 +708,8 @@ const FALLAKTE = {
           "ESA": "Vergleiche die Karten. Was hilft bei welchem der beiden Schutzziele?",
           "MSA": "Vergleiche eine einzelne Methode mit einer Kombination. Was gewinnt Laura, was muss sie dabei tun?",
           "AHR": "Wann rechtfertigt ein zusätzlicher Nutzen den Aufwand? Prüfe die Alternative an Lauras Grenzen."
-        }
+        },
+        "reviewPrevious": true
       },
       {
         "id": "L6",
@@ -736,10 +738,10 @@ const FALLAKTE = {
           ]
         },
         "task": {
-          "Foerder": "Fülle „Zwei Vorschläge“ auf dem Laufzettel aus. Welcher passt für Laura?",
-          "ESA": "Vergleiche auf dem Laufzettel zwei Vorschläge für Laura. Welcher Wunsch zählt für dich mehr?",
-          "MSA": "Nutze „Zwei Vorschläge“ auf deinem Laufzettel. Gewichte Schutz und Anwendung. Prüfe deinen Vorschlag an einem Einwand.",
-          "AHR": "Nutze „Zwei Vorschläge“ auf deinem Laufzettel. Vergleicht zwei akzeptable Strategien. Wann würde sich eure Gewichtung ändern?"
+          "Foerder": "Vergleiche A und B auf deinem Laufzettel. Was ist Laura besonders wichtig? Beachte ihr Nein.",
+          "ESA": "Vergleiche zwei für Laura mögliche Vorschläge. Welcher passt besser zu ihrem wichtigsten Wunsch?",
+          "MSA": "Vergleiche zwei vertretbare Vorschläge. Gewichte ein Kriterium und berücksichtige einen Nachteil.",
+          "AHR": "Wäge zwei für Laura vertretbare Strategien ab. Unter welcher Bedingung wäre die Alternative besser?"
         },
         "options": {
           "K": "Wir würden dir ein Kondom empfehlen.",
@@ -829,9 +831,9 @@ const FALLAKTE = {
           "P": "Die Pille möchte ich nicht nehmen. Mein Nein gilt auch bei einer Kombination."
         },
         "hintQuestions": {
-          "ESA": "Vergleiche deinen Vorschlag mit einem zweiten. Welcher Wunsch von Laura zählt für dich mehr?",
-          "MSA": "Welchen Vorteil von A gewichtest du höher als den Vorteil von B? Nenne auch eine Grenze.",
-          "AHR": "Vergleiche deine Wahl mit einer Alternative. Welche offene Bedingung könnte den Ausschlag ändern?"
+          "ESA": "Welcher Wunsch spricht eher für deinen zweiten Vorschlag? Nutze die Karte.",
+          "MSA": "Wann würde ein anderes Kriterium für Laura schwerer wiegen? Vergleiche den Nachteil beider Vorschläge.",
+          "AHR": "Welche noch offene Annahme könnte deine Gewichtung ändern? Begründe den Wechsel zur Alternative."
         },
         "tentative": "Unser Rat ist vorläufig. Offene medizinische Fragen kannst du in der Praxis klären. Du entscheidest selbst."
       }
@@ -1611,6 +1613,7 @@ const FALLAKTE = {
     "K": [
       "Kondom",
       "Enthält keine Hormone. Das Kondom fängt Sperma auf. Bei intaktem Kondom gelangen so keine Spermien in die Scheide.",
+      "Bei einem Jahr Anwendung im Alltag werden etwa 60 bis 130 von 1.000 Frauen schwanger. Der Schutz hängt davon ab, ob das Kondom bei jedem Sex von Anfang an richtig benutzt wird.",
       "Das Kondom wird vor dem Sex über den steifen Penis gerollt. Jedes Mal ein neues benutzen.",
       "Kann reißen oder abrutschen. Fehler bei der Anwendung mindern den Schutz.",
       "Verändert die Periode nicht.",
@@ -1619,7 +1622,8 @@ const FALLAKTE = {
     "P": [
       "Kombinationspille",
       "Enthält zwei Hormone. Sie verhindern vor allem den Eisprung.",
-      "Bei richtiger Einnahme sehr zuverlässig. Wer die Pille vergisst, kann schlechter geschützt sein. Regelmäßig nach Einnahmeplan nehmen.",
+      "Bei einem Jahr Anwendung im Alltag werden etwa 24 bis 70 von 1.000 Frauen schwanger. Vergessene Tabletten können den Schutz verringern.",
+      "Die Pille wird regelmäßig nach Einnahmeplan genommen.",
       "Übelkeit ist möglich. Selten können gefährliche Blutgerinnsel entstehen. Die Eignung ärztlich klären.",
       "Blutungen können schwächer und weniger schmerzhaft werden.",
       "Schützt nicht vor sexuell übertragbaren Infektionen."
@@ -1627,6 +1631,7 @@ const FALLAKTE = {
     "Cu": [
       "Kupferspirale",
       "Kupfer hemmt die Beweglichkeit und die Befruchtungsfähigkeit von Spermien. Enthält keine Hormone.",
+      "Bei einem Jahr Anwendung werden etwa 1 bis 10 von 1.000 Frauen schwanger. Die Spirale schützt nach der Einlage sehr zuverlässig und braucht keine tägliche Anwendung. Das Modell spielt eine Rolle.",
       "Wird in einer Praxis in die Gebärmutter eingesetzt. Wirkt lange und sehr zuverlässig. Keine tägliche Einnahme.",
       "Das Einsetzen kann wehtun. Die Spirale kann verrutschen oder ausgestoßen werden.",
       "Die Periode kann stärker und schmerzhafter werden.",
@@ -1635,6 +1640,7 @@ const FALLAKTE = {
     "H": [
       "Hormonspirale",
       "Gibt ein Hormon ab. Der Schleim am Gebärmutterhals wird für Spermien schwer durchlässig.",
+      "Bei einem Jahr Anwendung werden etwa 1 bis 3 von 1.000 Frauen schwanger. Die Spirale schützt nach der Einlage sehr zuverlässig und braucht keine tägliche Anwendung. Das Modell spielt eine Rolle.",
       "Wird in einer Praxis in die Gebärmutter eingesetzt. Wirkt lange und sehr zuverlässig. Keine tägliche Einnahme.",
       "Das Einsetzen kann wehtun. Unregelmäßige Blutungen sind vor allem am Anfang möglich.",
       "Blutungen und Schmerzen können nachlassen. Wie es einer Person damit geht, ist offen.",

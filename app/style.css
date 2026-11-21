@@ -111,7 +111,7 @@ html.consulting,html.consulting body{height:100vh;height:100dvh;min-height:0;ove
 #method-cards{display:grid;gap:10px;max-width:850px;margin-bottom:18px}summary{font-weight:700;min-height:46px;padding:10px 0}
 #method-cards summary{padding:14px 18px}dl{margin:0;padding:0 18px 18px}dt{font-weight:700;margin-top:12px}dd{margin:1px 0}
 .pause-note{padding:22px;max-width:760px;margin-top:20px}.pause-note p{margin-top:12px}
-#class-stop{margin:12px 0}
+#pause-facts{margin-top:12px}
 #pause-facts ul{margin:0 0 12px;padding-inline-start:1.4em}
 #pause-facts li+li{margin-top:4px}
 #stop-task{font-weight:650}

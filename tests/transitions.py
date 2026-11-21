@@ -21,27 +21,29 @@ def mixed_paths(browser,local):
             ui=page.locator
             page.locator('#level-'+tier).click()
 
-            def stop(count, activate):
+            def stop(known, open_list):
                 ui('#pause-nav').click()
-                expect(ui('#pause-facts li')).to_have_count(0)
-                expect(ui('#stop-task')).to_be_empty()
-                if count:
-                    expect(ui('#class-stop')).to_be_visible()
-                    if activate:
-                        ui('#class-stop').click()
-                        expect(ui('#pause-facts li')).to_have_count(count)
-                        expect(ui('#stop-task')).to_contain_text({'Foerder':'Vergleiche','ESA':'Vergleiche','MSA':'Kriterium','AHR':'offene Frage'}[tier])
-                        expect(ui('#class-stop')).to_be_hidden()
-                else:
-                    expect(ui('#class-stop')).to_be_hidden()
+                expect(ui('#pause-facts li')).to_have_count(known)
+                expect(ui('#class-stop')).to_have_count(0)
+                if open_list:
+                    ui('#pause-facts summary').click()
+                    expect(ui('#pause-facts li').last).to_be_visible()
+                    expect(ui('#stop-task')).to_contain_text({'Foerder':'Vergleiche','ESA':'Vergleiche','MSA':'Kriterium','AHR':'offene Frage'}[tier])
                 ui('#pause .return').click()
 
             stop(0,False)
             ui('[data-person=Laura]').click()
-            stop(7,route_index==0)
+            stop(1,route_index==0)
             for n,choice in enumerate(route):
                 if n==2:
                     button('Weiter nach dem Gespräch').click()
+                if n in (3,4):
+                    expect(ui('#change-prior')).to_be_visible()
+                    if route[n-1]==choice:
+                        button('Vorschlag beibehalten').click()
+                        expect(ui('#history .team').last).to_contain_text('Wir bleiben')
+                        continue
+                    ui('#change-prior').click()
                 method=choice.split('+')[-1]
                 if n==1:
                     ui('#help').click()
@@ -67,7 +69,7 @@ def mixed_paths(browser,local):
                     stop(0,False)
                     ui('[data-person=Laura]').click()
                     expect(ui('#step')).to_have_text('Schritt 1 von 7')
-                    stop(7,False)
+                    stop(1,False)
                     ui('#home-nav').click()
                     ui('#level-'+tier).click()
                     ui('[data-person=Laura]').click()
@@ -75,7 +77,7 @@ def mixed_paths(browser,local):
                     assert ui('#history').text_content()==history
                     expect(ui('#combine')).to_be_checked()
                 if n==5:
-                    stop(1,route_index==1)
+                    stop(7,route_index==1)
                     ui('#tentative').check()
                     expect(ui('#draft-preview p')).to_contain_text('Praxis')
                 draft=ui('#draft-preview p').inner_text()

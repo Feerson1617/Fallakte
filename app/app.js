@@ -52,6 +52,7 @@ const stages = () => FALLAKTE.cases[current.person];
 const stage = () => stages()[current.index];
 const forLevel = value => typeof value === 'string' || Array.isArray(value) ? value : value[current.level];
 function code() {
+  if (current.mode==='review') return current.lastKept;
   if (current.selected==='K' && current.additional) return 'K+'+current.additional;
   return current.combined ? 'K+'+current.selected : current.selected;
 }
@@ -141,6 +142,7 @@ function focusInWork(target) {
 }
 function enterStage(index) {
   Object.assign(current,{index,mode:'choose',selected:'',additional:'',combined:false,tentative:false,help:0,asked:[],questionsOpen:false,revised:false});
+  if (stage().reviewPrevious && current.lastKept) current.mode='review';
   current.log.push({type:'step',title:stage().title});
   current.log.push({type:'person',lines:stage().message[current.level]});
   if (stage().type==='article') current.log.push({type:'article'});
@@ -237,9 +239,13 @@ function decideProposal(keep) {
     current.finalRefusal=keep ? declined : null;
     current.withdrawn=!keep;
   }
+  current.lastKept=keep ? choice : '';
   const clarifyTom=s.id==='T0' && (!keep || choice!=='K');
   changeHistory(()=>{
-    say('team',keep ? 'Wir bleiben bei unserem Vorschlag.' : 'Wir ziehen unseren Vorschlag zurück.');
+    if (current.mode==='review') {
+      say('team','Wir bleiben bei unserem Vorschlag. '+s.options[choice]);
+      say('person',forLevel(s.replies[choice]));
+    } else say('team',keep ? 'Wir bleiben bei unserem Vorschlag.' : 'Wir ziehen unseren Vorschlag zurück.');
     if (keep && declined) say('person',declined);
     if (clarifyTom) say('person',s.selfAnswer);
   });
@@ -251,7 +257,8 @@ function decideProposal(keep) {
   } else nextStage();
 }
 function reviseProposal() {
-  Object.assign(current,{mode:'choose',revised:true,selected:'',additional:'',combined:false,tentative:false,help:0});
+  const revised=current.mode==='reply';
+  Object.assign(current,{mode:'choose',revised,selected:'',additional:'',combined:false,tentative:false,help:0,questionsOpen:false});
   drawWork();
   focusTask();
 }
@@ -381,6 +388,21 @@ function drawWork() {
     return;
   }
   const s=stage();
+  if (current.mode==='review') {
+    taskTitle(area,'Passt euer bisheriger Rat noch?');
+    const names=code().split('+').map(id=>FALLAKTE.methods[id][0]);
+    area.append(el('p','preview','Euer letzter Rat war '+names.join(' und ')+'.'),
+                el('p','',s.task[current.level]),
+                el('p','response',current.person+' zu eurem Rat: „'+forLevel(s.replies[code()])+'“'));
+    showQuestionAnswer(area);
+    const row=el('div','row');
+    const change=button('Vorschlag ändern',reviseProposal,'outline');
+    change.id='change-prior';
+    row.append(button('Vorschlag beibehalten',()=>decideProposal(true),'outline'),change);
+    area.append(row);
+    addTools(area);
+    return;
+  }
   if (current.mode==='tomSelf') {
     taskTitle(area,'Ein Vorschlag für Tom selbst');
     area.append(el('p','response',s.selfAnswer),el('p','preview',s.selfAdvice));
@@ -481,10 +503,12 @@ function auxiliary(id) {
   if (id==='pause') {
     const laura=sessions.get(sessionKey('Laura',level));
     const facts=$('pause-facts');
-    facts.hidden=true;
-    facts.querySelector('ul').replaceChildren();
-    $('stop-task').textContent='';
-    $('class-stop').hidden=!laura || laura.mode==='finished';
+    facts.open=false;
+    facts.hidden=!laura || laura.mode==='finished';
+    const known=facts.hidden ? [] : FALLAKTE.cases.Laura.slice(0,laura.index+1);
+    facts.querySelector('ul').replaceChildren(...known.map(s=>el('li','',s.pauseFact)));
+    $('early-stop').hidden=laura?.mode==='finished';
+    $('stop-task').textContent=$('early-stop').hidden ? '' : FALLAKTE.meta.stopTask[level];
     $('review-laura').hidden=!laura;
     let outcome='';
     if (laura?.finalRefusal) outcome='Laura hat eurem letzten Vorschlag nicht zugestimmt. Sie sagt: „'+laura.finalRefusal+'“';
@@ -499,7 +523,7 @@ function resume() {
   if (returnTo==='room' && current) openCase(current.person,current.level);
   else home();
 }
-const sections=['Wirkung','Anwendung','Mögliche Nachteile','Blutung und Schmerzen','Infektionsschutz'];
+const sections=['Wirkung','Schwangerschaftsschutz im Alltag','Anwendung','Mögliche Nachteile','Blutung und Schmerzen','Infektionsschutz'];
 for (const [id,[name,...facts]] of Object.entries(FALLAKTE.methods)) {
   const d=el('details');
   d.id='card-'+id;
@@ -521,16 +545,6 @@ $('home-nav').onclick=home;
 $('brand').onclick=e=>{e.preventDefault();home();};
 $('cards-nav').onclick=()=>auxiliary('resources');
 $('pause-nav').onclick=()=>auxiliary('pause');
-$('class-stop').onclick=()=>{
-  const laura=sessions.get(sessionKey('Laura',level));
-  if (screen!=='pause' || !laura || laura.mode==='finished') return;
-  const facts=$('pause-facts');
-  facts.querySelector('ul').replaceChildren(...FALLAKTE.cases.Laura.slice(laura.index).map(s=>el('li','',s.pauseFact)));
-  $('stop-task').textContent=FALLAKTE.meta.stopTask[level];
-  facts.hidden=false;
-  $('class-stop').hidden=true;
-  facts.focus();
-};
 $('review-laura').onclick=()=>openCase('Laura',level);
 document.querySelectorAll('.return').forEach(b=>b.onclick=resume);
 home();

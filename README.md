@@ -10,6 +10,7 @@ Im erfolgreichen GitHub-Actions-Lauf **Unterrichtspakete** das Artefakt **Fallak
 | --- | --- |
 | **Fallakte-SCORM12.zip** | Als SCORM-1.2-Paket in itslearning importieren. Diese innere ZIP geschlossen lassen. |
 | **Fallakte.html** | Auf dem Mac per Doppelklick im Browser öffnen. Alle Bilder, Schriften, Dialoge und Infokarten sind eingebettet. |
+| **Fallakte-Lehrkraft.pdf** | Seite 1 erst beim Stopp zentral zeigen oder vorlesen. Seite 2 dient zum Vergleich der individuellen Begründungen. |
 | **Fallakte-Sichtpruefung.zip** | Enthält dieselbe HTML-Vorschau, echte Bildschirmfotos, einen Prüfbericht und maschinenlesbare Testprotokolle. |
 
 **Fallakte-Pruefbericht.md** bündelt die Abnahme, Fachquellen, curriculare Zuordnung und Unterrichtsplanung für denselben Programmstand.
@@ -20,7 +21,7 @@ Auch im ausgecheckten Projekt lässt sich **index.html** direkt öffnen. Hierbei
 
 ## Im Klassenraum
 
-Laura öffnen, die erste Empfehlung auf Papier begründen und gemeinsam abstimmen. Der Verlauf führt in sieben Abschnitten zur zweiten Empfehlung. Chat und Antworten haben eigene Scrollbereiche. Auf schmalen Displays wechselt das Team mit **Chat lesen** und **Antwort geben** zwischen beiden. Frühere Antworten, Änderungen und Rückfragen bleiben im Chat lesbar. **Sicherung** unterbricht jeden Fall sofort. Bei einem begonnenen Laura-Fall kann das Team auf Zeichen der Lehrkraft dort den Unterrichtsstopp starten und zwei Vorschläge auf dem Laufzettel vergleichen. Über **Zurück** oder die Fallübersicht lässt sich die Arbeit derselben Stufe fortsetzen.
+Laura öffnen, die erste Empfehlung auf Papier begründen und gemeinsam abstimmen. Der Verlauf führt in sieben Abschnitten zur zweiten Empfehlung. Chat und Antworten haben eigene Scrollbereiche. Auf schmalen Displays wechselt das Team mit **Chat lesen** und **Antwort geben** zwischen beiden. Frühere Antworten, Änderungen und Rückfragen bleiben im Chat lesbar. **Sicherung** unterbricht jeden Fall sofort. Die Sicherung zeigt die bereits erreichten Angaben zu Laura. Beim gemeinsamen Stopp stellt die Lehrkraft die übrigen Angaben mit ihrer Folie bereit. Alle Teams vergleichen dann zwei Vorschläge auf dem Laufzettel. Über **Zurück** oder die Fallübersicht lässt sich die Arbeit derselben Stufe fortsetzen.
 
 Die Anwendung hält die Gespräche ausschließlich im Arbeitsspeicher der geöffneten Seite. Neuladen beginnt eine neue Sitzung. Sie verlangt keine Namen oder persönlichen Erfahrungen. Der SCORM-Adapter öffnet und schließt lediglich die technische Sitzung. itslearning kann unabhängig davon Zugriffe protokollieren.
 
