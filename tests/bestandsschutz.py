@@ -1,6 +1,7 @@
 """Rebuild both independent Git references; allow only the reviewed overview changes."""
 import hashlib
 import io
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -10,6 +11,7 @@ from lxml import etree, html
 
 FACHSTAND = 'ca77bf793ef1d2577d2f474895de15c503eb6df2'
 TAGESSTAND = 'c1e5ce6a4f228d0f9e1c9b68df63159c27dddbda'
+NAVSTAND = '41504cc85ca1cc6cec2c182cc76ef7685f874bb2'
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -53,6 +55,11 @@ def check_template(original, current):
 
 
 def build_references(root):
+    previous = root/'vor-navigation'
+    paths = ('index.html','02-12.html','app','assets','data','scorm','module','tagesauswahl',
+             'scripts/build.py','scripts/modul_0212.py')
+    archive(NAVSTAND, previous, paths)
+    build(previous)
     shared = root/'gemeinsam'
     archive(TAGESSTAND, shared, ('index.html','02-12.html','app','assets','data','scorm',
                                  'module','tagesauswahl','scripts/build.py','scripts/modul_0212.py'))
@@ -70,9 +77,17 @@ def build_references(root):
         if name == 'app/app.js':
             check_logic(old,current)
         elif name == 'index.html':
-            check_template(old,current)
+            tag = b'<script src="app/navigation.js"></script>\n'
+            assert current.count(tag)==1
+            check_template(old,current.replace(tag,b''))
+            adapter = (ROOT/'app/navigation.js').read_bytes()
+            current = current.replace(tag,b'<script>'+adapter+b'</script>\n')
         elif name == 'app/style.css':
-            assert digest(current) == 'd9e394632729de5ef5e848006fd9fd17e194face1b5cf4876e41ec3af4036d38'
+            # Shared-mode selectors can only apply after the parent connects.
+            baseline, rules = current.split(b'\n/* Only the connected module gives the shared bar its header space. */\n')
+            assert all(selector.strip().startswith(b'html.mit-tagesnavigation') for selector in
+                       re.findall(rb'([^{}]+)\{[^{}]+\}', rules))
+            assert digest(baseline) == 'd9e394632729de5ef5e848006fd9fd17e194face1b5cf4876e41ec3af4036d38'
         else:
             assert current == old, name
             continue

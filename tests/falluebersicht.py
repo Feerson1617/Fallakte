@@ -48,6 +48,7 @@ def compare_overviews(browser, engine, address, photograph):
             host = shell.locator('iframe')
             expect(host.content_frame.locator('[data-person=Tom]')).to_be_visible()
             frame = host.element_handle().content_frame()
+            shell.evaluate('size => document.documentElement.style.fontSize=size+"%"',fontsize)
             frame.evaluate('size => document.documentElement.style.fontSize=size+"%"',fontsize)
             frame.evaluate('document.fonts.ready')
             m = frame.evaluate(GEOMETRY)
@@ -67,7 +68,11 @@ def compare_overviews(browser, engine, address, photograph):
                 else:
                     assert laura['bottom']<=task['y']+1
                 expect(frame.locator('#case-order')).to_have_text('Beginne mit Laura. Celina und Tom sind Zusatzfälle.')
-                expect(frame.locator('header #open-recovery')).to_be_in_viewport(ratio=.99)
+                restart = shell.locator('[data-action=recovery]')
+                expect(restart).to_be_in_viewport(ratio=.99)
+                m['neustart'] = restart.evaluate('el=>el.getBoundingClientRect().toJSON()')
+                m['neustart_im_rahmen'] = True
+                expect(frame.locator('header.top')).to_be_hidden()
                 expect(frame.locator('#open-recovery')).to_have_count(1)
                 expect(frame.locator('footer,.intro,.subject')).to_have_count(0)
                 expect(frame.locator('.laura .role')).to_have_text('Hauptfall')
@@ -75,7 +80,7 @@ def compare_overviews(browser, engine, address, photograph):
                 (engine=='webkit' and name=='iPad-quer')):
                 photograph(page,f'Uebersicht-{state}-{name}-{engine}')
         if name=='Einbettung':
-            frame.locator('#open-recovery').tap()
+            shell.locator('[data-action=recovery]').tap()
             frame.locator('#recovery').get_by_role('button',name='ESA',exact=True).tap()
             if engine=='webkit':
                 photograph(page,'Wiedereinstieg-kleines-Fenster')

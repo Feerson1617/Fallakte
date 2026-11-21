@@ -1,5 +1,5 @@
 // Measure the same visible path in both built versions, including an optional revision.
-({tier, correctFirst=false, stages=5, stepLabel='Laura'}) => {
+({tier, correctFirst=false, stages=5, stepLabel='Laura', returnToOverview=true}) => {
   const find = selector => document.querySelector(selector);
   const press = node => {
     if (!node || node.disabled || !node.getClientRects().length) throw Error('Missing control on Laura path');
@@ -48,6 +48,6 @@
     steps.push(actions);
   }
   if (find('#task-title').textContent!=='Gespräch abgeschlossen') throw Error('Missing completion');
-  press(find('#home-nav'));
+  if (returnToOverview) press(find('#home-nav'));
   return {steps, total:steps.flat().length, decisions, words};
 }

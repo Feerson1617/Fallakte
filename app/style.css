@@ -199,3 +199,10 @@ html.consulting,html.consulting body{height:100vh;height:100dvh;min-height:0;ove
 .recap h2{font-size:1rem}
 .recap ul{padding-left:1.2em;margin:.35em 0 0}
 .recap li+li{margin-top:.2em}
+
+/* Only the connected module gives the shared bar its header space. */
+html.mit-tagesnavigation .top { display: none; }
+html.mit-tagesnavigation.consulting body { grid-template-rows: minmax(0,1fr); }
+html.mit-tagesnavigation { scroll-padding-top: 0; }
+html.mit-tagesnavigation .card-nav { top: 0; }
+html.mit-tagesnavigation #room-identity { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }

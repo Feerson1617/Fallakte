@@ -2,7 +2,7 @@
 
 ## Vereinfachte Fallübersicht gegenüber `c1e5ce6`
 
-„Nach Neustart weitermachen“ befindet sich in der Kopfzeile der Übersicht. Niveauwahl, Laura und Arbeitsauftrag stehen vor den kleineren Zusatzfallkarten. Die geöffneten Fälle liegen im Arbeitsspeicher der Sitzung. Nach dem Neuladen öffnet die Fallkarte direkt Abschnitt 1. Über die Abschnittsnummer lässt sich die Arbeit bei Laura, Celina oder Tom auch später fortsetzen.
+Die gemeinsame Anwendung bietet „Nach Neustart“ in jeder Modulansicht. Separat geöffnet zeigt das Modul „Nach Neustart weitermachen“ in der Kopfzeile der Übersicht. Niveauwahl, Laura und Arbeitsauftrag stehen vor den kleineren Zusatzfallkarten. Die geöffneten Fälle liegen im Arbeitsspeicher der Sitzung. Nach dem Neuladen öffnet die Fallkarte direkt Abschnitt 1. Über die Abschnittsnummer lässt sich die Arbeit bei Laura, Celina oder Tom auch später fortsetzen.
 
 Die folgende fachliche Abnahme beschreibt die bereits im Referenzstand `ca77bf7` geprüften Hilfen. Der aktuelle UI-Vergleich und die Bilder vor und nach der Umstellung stehen im gemeinsamen Paketbericht.
 

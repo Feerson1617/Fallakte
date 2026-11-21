@@ -15,9 +15,10 @@ from lxml import etree, html
 from playwright.sync_api import expect, sync_playwright
 
 from acceptance import QuietHandler
-from bestandsschutz import FACHSTAND, TAGESSTAND, build_references, digest
+from bestandsschutz import FACHSTAND, TAGESSTAND, NAVSTAND, build_references, digest
 from falluebersicht import compare_overviews
 from paths import complete_laura
+from navigationsleiste import compare_navigation
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / 'dist'
@@ -51,11 +52,20 @@ def check_release(version, updated, frozen, previous, site):
              for node in doc.xpath('//script[@type="application/octet-stream"]')}
     assert list(blobs) == (['modul-02'] if version == 'A' else ['modul-02', 'modul-08'])
     assert blobs['modul-02'] == updated
-    # The entire common application, including the second day in B, must still
-    # match c1e5ce6 after substituting only the first day's approved document.
-    payload = base64.b64encode(updated)
-    assert standalone.count(payload) == 1
-    assert standalone.replace(payload,base64.b64encode(frozen)) == (previous/'Fallakte.html').read_bytes()
+    # Compare the whole common release after undoing only the approved navigation
+    # regions and the verified first-day payload. This also covers the complete day 08.
+    baseline = (previous/'Fallakte.html').read_bytes()
+    restored = standalone.replace(base64.b64encode(updated),base64.b64encode(frozen))
+    marker = b'id="erster-tag" data-modulnavigation'
+    assert restored.count(marker)==1
+    restored = restored.replace(marker,b'id="erster-tag"')
+    for region in (rb'<nav [^>]+>.*?</nav>',rb'#arbeitsplatz \{.*?(?=#arbeitsplatz iframe)'):
+        old, new = (re.findall(region,source,re.S) for source in (baseline,restored))
+        assert len(old)==len(new)==1
+        restored = restored.replace(new[0],old[0],1)
+    script = b'<script>'+(ROOT/'tagesauswahl/start.js').read_bytes()+b'</script>'
+    old_script = re.findall(rb'<script>.*?</script>',baseline,re.S)[-1]
+    assert restored.count(script)==1 and restored.replace(script,old_script)==baseline
     with ZipFile(previous/'Fallakte-SCORM12.zip') as original:
         for name in original.namelist():
             if name != 'index.html':
@@ -128,6 +138,10 @@ def exercise(browser, engine, version, kind, size, base, photos):
     if kind == 'HTML' and size[0] == 820:
         screenshot(page, 'Start-'+prefix, photos)
     back = shell.locator('#zurueck')
+    def action(name):
+        return shell.locator(f'#modulaktionen [data-action="{name}"]')
+    def state():
+        return [inner.locator(s).inner_text() for s in ('#history','#support-panel','#work')]
     if scorm:
         assert page.evaluate('calls') == [['LMSInitialize','']]
 
@@ -137,6 +151,8 @@ def exercise(browser, engine, version, kind, size, base, photos):
         expect(second.get_by_role('heading', name=TITLES[1])).to_be_visible()
         assert second.locator('body').evaluate("() => typeof FALLAKTE === 'undefined' && typeof LERNHILFEN === 'undefined'")
         assert second.locator('#history,#help').count() == 0
+        expect(shell.locator('#tagesnavigation button')).to_have_text(['← Tagesauswahl'])
+        expect(shell.locator('#gespraechsstand')).to_be_hidden()
         return second
 
     if version == 'B':
@@ -155,26 +171,50 @@ def exercise(browser, engine, version, kind, size, base, photos):
     expect(inner.locator('#modul-08,#zweiter-tag')).to_have_count(0)
     inner.locator('#level-Foerder').tap()
     inner.locator('[data-person=Laura]').tap()
-    expect(back).to_be_hidden()
+    expect(back).to_be_visible()
     expect(inner.locator('#step')).to_have_text('Laura 1 von 5')
-    assert inner.locator('body').evaluate('() => innerHeight') == shell.evaluate('innerHeight')
+    expect(shell.locator('#gespraechsstand')).to_have_text('Laura 1 von 5 · Förder')
+    expect(inner.locator('header.top')).to_be_hidden()
+    shell_height = shell.evaluate('innerHeight')
+    frame_height = inner.locator('body').evaluate('() => innerHeight')
+    assert abs(frame_height + shell.locator('#tagesnavigation').bounding_box()['height'] - shell_height) <= 1
     inner.locator('#method-P').tap()
-    inner.locator('#send').tap()
     for _ in range(5):
         inner.locator('#help').tap()
-    snapshot = [inner.locator(s).inner_text() for s in ('#history','#support-panel','#work')]
-    assert 'Infektionen' in snapshot[0]
-    inner.locator('#cards-nav').tap()
-    expect(back).to_be_hidden()
+    draft = state()
+    action('resources').tap()
+    expect(inner.locator('#resources')).to_be_visible()
     inner.locator('#resources .return').tap()
-    inner.locator('#home-nav').tap()
+    assert state()==draft
+    expect(inner.locator('#method-P')).to_have_attribute('aria-pressed','true')
+    action('recovery').tap()
+    inner.locator('#recovery').get_by_role('button',name='Tom',exact=True).tap()
+    inner.locator('#recovery').get_by_role('button',name='AHR',exact=True).tap()
+    action('resources').tap()
+    inner.locator('#resources .return').tap()
+    expect(inner.locator('#recovery').get_by_role('button',name='AHR',exact=True)).to_have_attribute('aria-pressed','true')
+    inner.locator('#leave-recovery').tap()
+    assert state()==draft
+    # Leave straight from a live draft. Re-enter the same document and same section.
     back.tap()
     if version == 'B':
         open_second()
         back.tap()
     cards.first.tap()
+    expect(shell.locator('#gespraechsstand')).to_have_text('Laura 1 von 5 · Förder')
+    assert state()==draft
+    inner.locator('#send').tap()
+    for _ in range(5):
+        inner.locator('#help').tap()
+    snapshot = state()
+    assert 'Infektionen' in snapshot[0]
+    action('resources').tap()
+    inner.locator('#resources .return').tap()
+    action('home').tap()
+    back.tap()
+    cards.first.tap()
     inner.locator('[data-person=Laura]').tap()
-    assert [inner.locator(s).inner_text() for s in ('#history','#support-panel','#work')] == snapshot
+    assert state()==snapshot
     if version == 'A' and not scorm:
         screenshot(page, 'Hilfe-02-'+prefix, photos)
 
@@ -185,7 +225,7 @@ def exercise(browser, engine, version, kind, size, base, photos):
     shell = page.frame(name='sco') if scorm else page.main_frame
     shell.locator('#erster-tag').tap()
     launched = shell.locator('iframe[title="Mittwoch, 02.12.2026"]')
-    expect(launched.content_frame.locator('#open-recovery')).to_be_visible()
+    expect(action('recovery')).to_be_visible()
     frame = launched.element_handle().content_frame()
     # A fresh launch must offer both additional cases even if Laura was interrupted.
     for person, total in [('Celina',5),('Tom',3)]:
@@ -193,16 +233,22 @@ def exercise(browser, engine, version, kind, size, base, photos):
         expect(frame.locator('#step')).to_have_text(f'{person} 1 von {total}')
         if version=='A' and engine=='webkit' and size[0]==1180 and scorm:
             screenshot(page,'Direktstart-'+person,photos)
-        frame.locator('#home-nav').tap()
-    frame.locator('#open-recovery').tap()
-    expect(shell.locator('#zurueck')).to_be_hidden()
+        action('home').tap()
+    action('recovery').tap()
+    expect(shell.locator('#zurueck')).to_be_visible()
     frame.locator('#recovery').get_by_role('button', name='ESA', exact=True).tap()
     frame.get_by_role('button', name='Laura 3 – Lauras Entscheidung').tap()
+    expect(shell.locator('#gespraechsstand')).to_have_text('Laura 3 von 5 · ESA')
     expect(frame.locator('#step')).to_have_text('Laura 3 von 5')
     expect(frame.locator('.recap')).to_be_visible()
     expect(frame.locator('#history .team')).to_have_count(0)
-    frame.locator('#home-nav').tap()
-    results = [complete_laura(frame, tier, correct_first=True)['total'] for tier in ('Foerder','MSA','AHR')]
+    action('home').tap()
+    expect(frame.locator('#home')).to_be_visible()
+    results = []
+    for tier in ('Foerder','MSA','AHR'):
+        results.append(complete_laura(frame,tier,correct_first=True,return_to_overview=False)['total'])
+        action('home').tap()
+        expect(frame.locator('#home')).to_be_visible()
     assert results == [12,12,12]
     if scorm:
         page.locator('iframe').evaluate("e => e.src='about:blank'")
@@ -224,13 +270,16 @@ def main():
     with TemporaryDirectory() as directory:
         root = Path(directory)
         frozen, updated, previous = build_references(root)
-        comparisons = []
+        comparisons, navigation = [], []
         # Serve yesterday's actual A build in the same LMS frame as today's.
         old = previous/'Version-A'
         (old/'index.html').write_bytes((old/'Fallakte.html').read_bytes())
         (old/'host.html').write_text(HOST)
         for version in 'AB':
             bundles[version] = check_release(version, updated, frozen, previous/f'Version-{version}', root/version)
+        last = root/'vor-navigation/dist/Version-A'
+        (last/'index.html').write_bytes((last/'Fallakte.html').read_bytes())
+        (last/'host.html').write_text(HOST)
         # Both launches differ only in the allowed card and its optional document.
         common = (root/'B/index.html').read_bytes().replace(
             b'aria-labelledby="datum-08" data-entry="modul-08"', b'aria-labelledby="datum-08" disabled')
@@ -240,6 +289,8 @@ def main():
             for engine in ('chromium','webkit'):
                 exe = os.environ.get(engine.upper()+'_EXECUTABLE')
                 browser = getattr(playwright,engine).launch(executable_path=exe)
+                navigation.extend(compare_navigation(browser,engine,address,
+                                  lambda page,name: screenshot(page,name,photos)))
                 comparisons.extend(compare_overviews(browser,engine,address,
                                    lambda page,name: screenshot(page,name,photos)))
                 for version in 'AB':
@@ -248,8 +299,8 @@ def main():
                             results.append(exercise(browser,engine,version,kind,size,address+'/'+version,photos))
                             print(engine,version,kind,size,'bestanden',flush=True)
                 browser.close()
-    report = dict(referenz=FACHSTAND, tagesreferenz=TAGESSTAND, original_sha256=digest(frozen),
-                  modul_02_sha256=digest(updated), uebersichten=comparisons, pakete=bundles, durchlaeufe=results, bilder=photos)
+    report = dict(referenz=FACHSTAND, tagesreferenz=TAGESSTAND, navreferenz=NAVSTAND, original_sha256=digest(frozen),
+                  modul_02_sha256=digest(updated), uebersichten=comparisons, navigation=navigation, pakete=bundles, durchlaeufe=results, bilder=photos)
     (QA/'Tagesauswahl.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
 
 

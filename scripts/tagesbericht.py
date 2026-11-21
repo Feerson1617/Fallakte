@@ -35,10 +35,16 @@ for version, files in report['pakete'].items():
 for name, checked in report['bilder'].items():
     assert digest(QA / name) == checked
 
+navigation = report['navigation']
+assert len(navigation)==10
+assert {(r['browser'], *r['viewport'],r['schrift_prozent']) for r in navigation} == {
+    (engine,w,h,scale) for engine in ('chromium','webkit')
+    for w,h,scale in ((820,1180,100),(1180,820,100),(820,1180,200),(1180,820,200),(390,650,100))}
+assert all(not r['nachher'][screen]['fehler'] for r in navigation for screen in ('home','room'))
 browsers = sorted({r['browser']+' '+r['browserversion'] for r in runs})
-positionen = '\n'.join(
-    f"| {r['ansicht']} | {r['vorher']['einstieg']['bottom']:.0f} | {r['nachher']['einstieg']['bottom']:.0f} |"
-    for r in views if r['browser']=='chromium' and r['ansicht'] in ('iPad-hoch','iPad-quer','Einbettung'))
+hoehen = '\n'.join(
+    f"| {r['browser']} · {r['viewport'][0]} × {r['viewport'][1]} | {r['vorher']['home']['hoehe']:.0f} → {r['nachher']['home']['hoehe']:.0f} | {r['vorher']['room']['hoehe']:.0f} → {r['nachher']['room']['hoehe']:.0f} |"
+    for r in navigation if r['schrift_prozent']==100 and r['viewport'][0]>=820)
 body = f"""# Fallakte. Abnahme der gemeinsamen Tagesauswahl
 
 ## Auslieferung
@@ -52,21 +58,19 @@ Jede Version enthält eine lokale Einzeldatei und ein SCORM-1.2-ZIP mit derselbe
 
 ## Bestandsschutz und Sitzungswechsel
 
-Der Fachstand ist `{report['referenz']}`. Fall- und Hilfedaten, gemeinsame Skripte, Bilder, Schriftdateien, Lizenzen und SCORM-Ressourcen wurden mit dem Git-Archiv verglichen. Die Implementierung für Gespräch, Entscheidung, Rückmeldung, Wiederaufnahme und Abschluss ist bytegleich. Geändert wurden ausschließlich die geprüfte Übersichtsvorlage, ihr Layout und die Darstellung der Fallzugänge. Der ursprüngliche Build mit diesen drei geprüften UI-Eingaben muss exakt das gelieferte Modul ergeben. Beide Versionen verwenden dieses Modul mit dem SHA-256-Wert `{report['modul_02_sha256']}`. Der Gesamtvergleich mit `{report['tagesreferenz']}` prüft die Startseite und den Inhalt des zweiten Tages in den ausgelieferten Dateien.
+Der Fachstand ist `{report['referenz']}`. Fall- und Hilfedaten, gemeinsame Skripte, Bilder, Schriftdateien, Lizenzen und SCORM-Ressourcen wurden mit dem Git-Archiv verglichen. Die Implementierung für Gespräch, Entscheidung, Rückmeldung, Wiederaufnahme und Abschluss ist bytegleich. Die Schutzprüfung baut das erste Modul mit den genehmigten Anpassungen der Fallübersicht und dem neuen Navigationsadapter nach. Beide Veröffentlichungen enthalten exakt dieses Modul mit dem SHA-256-Wert `{report['modul_02_sha256']}`. Der Vergleich mit `{report['tagesreferenz']}` prüft auch die Inhalte der Tagesauswahl und den vorbereiteten zweiten Tag.
 
-Jedes Modul läuft in einem eigenen Dokument. Beim Tageswechsel behält das Programm dessen geöffnete Instanz im Arbeitsspeicher. Der Rückweg zum Menü ist am 02.12. in der Fallübersicht erreichbar. Während der Beratung nutzt das Modul die volle Höhe. Nach dem Neuladen führt der bestehende Wiedereinstieg wieder zum markierten Abschnitt.
+## Eine Leiste für beide Unterrichtstage
 
-## Was sich für Lernende ändert
+Am 02.12. sind Tagesauswahl, Fallakten, Infokarten und Nach Neustart in allen Ansichten erreichbar. Im Gespräch stehen Abschnitt und Niveau in derselben Leiste. Beim 08.12. führt die Leiste zur Tagesauswahl zurück. Separat geöffnet behält das erste Modul die bisherige Kopfzeile mit ihren Funktionen.
 
-„Dein Beratungsraum“, die dekorative Themenzeile, die wiederholte Einleitung und die Fußzeile sind entfallen. An der Stelle der Klassenangabe in der Kopfzeile steht einmal „Nach Neustart weitermachen“. Es folgen die Niveauwahl, Lauras hervorgehobene Hauptfallkarte mit Arbeitsauftrag und die kleineren Zusatzfälle. Die Anweisung zum Markieren des Abschnitts steht beim Arbeitsauftrag.
+Der Wechsel zu den Infokarten oder zur Tagesauswahl erhält den begonnenen Rat und alle geöffneten Hilfen. In der Fallübersicht lässt sich ein begonnenes Gespräch wieder öffnen. Die Wiederaufnahme zeigt zunächst nur die Auswahl. Erst eine ausdrücklich gewählte Abschnittsnummer startet den Wiedereinstieg. Der Bericht erfasst den Abbruch der Auswahl und die Wiederaufnahme bei Laura 3 nach einem vollständigen Neuladen.
 
-Vorher setzte die normale Auswahl von Celina oder Tom eine abgeschlossene Laura-Beratung im selben Niveau voraus. Jetzt genügt nach der Niveauwahl ein Antippen der gewünschten Fallkarte. Die Orientierung „Beginne mit Laura. Celina und Tom sind Zusatzfälle.“ gilt während der gesamten Sitzung. Wer nach einem Neustart mitten in einen Fall zurückkehren möchte, wählt wie bisher die markierte Abschnittsnummer.
+Die Tabelle zeigt die gesamte sichtbare Navigationshöhe in CSS-Pixeln bei Standardschrift. Vergleichsstand ist `{report['navreferenz']}`. Das Sichtprüfungspaket enthält unter `Tagesauswahl/Bildschirmfotos/Navigation-…` die Fallübersicht und dasselbe laufende Laura-Gespräch vor und nach dem Umbau. Die JSON-Datei enthält auch die Messungen bei 200 Prozent Schriftgröße.
 
-Die Tabelle zeigt die Unterkante des Laura-Startknopfs in CSS-Pixeln ab Oberkante des Moduls. Der Vergleich verwendet dieselbe Rahmengröße und dieselbe Browserversion für den früheren und den aktuellen Stand.
-
-| Chromium | Vorher | Jetzt |
+| Browser und iPad-Ansicht | Fallübersicht, vorher → jetzt | Gespräch, vorher → jetzt |
 | --- | ---: | ---: |
-{positionen}
+{hoehen}
 
 ## Ausgeführte Prüfungen
 
@@ -87,7 +91,7 @@ for version, files in report['pakete'].items():
 body += """
 ## Offener Praxistest
 
-Beide Versionen auf einem Schul-iPad in Safari öffnen und getrennt als SCORM-Aktivitäten in den schulischen itslearning-Testkurs importieren. In A die Sperre prüfen. In B beide Tageskarten öffnen. Bei Laura einen Rat senden und die Hilfe öffnen. Über „Übersicht“ zur Tagesauswahl gehen, wieder zu Laura wechseln und den Verlauf prüfen. Nach einem Neuladen über „Nach Neustart weitermachen“ den markierten Abschnitt öffnen.
+Beide Versionen auf einem Schul-iPad in Safari öffnen und getrennt als SCORM-Aktivitäten in den schulischen itslearning-Testkurs importieren. In A die Sperre prüfen. In B beide Tageskarten öffnen. Bei Laura einen Rat senden und die Hilfe öffnen. Direkt „Tagesauswahl“ antippen, denselben Tag öffnen und den Verlauf prüfen. „Nach Neustart“ während der Beratung öffnen und mit „Zurück“ abbrechen. Nach einem Neuladen über „Nach Neustart“ den markierten Abschnitt öffnen.
 
 Die Unterrichtsinhalte und die pädagogische Abnahme für den 08.12. stehen aus. Die Bedienung mit realen Förder- und ESA-Lernenden sowie die Bearbeitungszeit unter Unterrichtsbedingungen wurden nicht erprobt.
 """

@@ -15,7 +15,7 @@
     </header>
     <div class="tage">
       <h2>
-        <button class="tag" id="erster-tag" aria-labelledby="datum-02" data-entry="02-12.html">
+        <button class="tag" id="erster-tag" data-modulnavigation aria-labelledby="datum-02" data-entry="02-12.html">
           <img width="480" height="480" src="assets/laura.webp" alt="Porträt von Laura">
           <span class="beschriftung"><span id="datum-02">Mittwoch, 02.12.2026</span><span class="zeichen" aria-hidden="true"></span></span>
         </button>
@@ -29,7 +29,12 @@
     </div>
   </main>
   <section id="arbeitsplatz" aria-label="Gewählter Unterrichtstag" hidden>
-    <nav aria-label="Unterrichtstage"><button id="zurueck" type="button"><span aria-hidden="true">←</span> Zur Tagesauswahl</button></nav>
+    <nav id="tagesnavigation" aria-label="Navigation im Unterrichtstag">
+      <button id="zurueck" type="button"><span aria-hidden="true">←</span> Tagesauswahl</button>
+      <span class="wortmarke" aria-hidden="true">Fallakte.</span>
+      <span id="modulaktionen"></span>
+      <span id="gespraechsstand" role="status" aria-atomic="true" hidden></span>
+    </nav>
   </section>
   <script src="tagesauswahl/sitzung.js"></script>
   <script src="tagesauswahl/start.js"></script>
