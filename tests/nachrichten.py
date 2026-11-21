@@ -15,7 +15,8 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT/'build/08-12'
 QA = OUT/'Abnahme'
 BANK = json.loads((OUT/'Aufgabenbank.json').read_text())
-REVIEWED = 'ec94147fd8d61442305a0281f7df032f3162362c'
+REVIEWED = 'de67cd741767180e40cbc0c02c863f1c719f0a83'
+PHOTOS = {}
 B = ROOT/'dist/Version-B'
 PATTERN = rb'(<script id="modul-08" type="application/octet-stream">)([A-Za-z0-9+/=]+)(</script>)'
 
@@ -34,40 +35,62 @@ def protect(temp):
             assert re.findall(PATTERN,before) and len(re.findall(PATTERN,current))==1
             current = re.sub(PATTERN,lambda m: re.search(PATTERN,before)[0],current)
         assert current==before, name
-    assert digest((ROOT/'module/08-12/nachrichten.json').read_bytes())=='f25563a5bc6d30528e3f47bc42412b03a054c9dc35df5322bc4624231a3b3278'
+    assert digest((ROOT/'module/08-12/nachrichten.json').read_bytes())=='2744d3335774ba496c52be34e19dba12b3cc2bee5d49cd3de6be4a3d33288742'
     assert all(word not in json.dumps(BANK,ensure_ascii=False).lower() for word in (
         'bewertungskompetenz','bewertungskriterium','argumentationsqualität','kriteriengeleitet'))
     return digest((ref/'dist/Version-A/Fallakte.html').read_bytes())
 
 
 def check_content():
-    # Independent anchors for the intended medical, legal and textual decisions.
-    anchors = {
-        'Mutter': ('Norm','Blutungen treten auf. Schmerzen sind möglich.'),
-        'Freundin': ('Fakt','Nein. Es geht grundsätzlich ohne Operation.',
-                     'Nein. Es kommt zu Blutungen. Schmerzen sind möglich.'),
-        'Großmutter': ('Wert','Sie nennt ihren Glauben und wünscht sich, dass Laura das Kind bekommt.'),
-        'Vater': ('Folgerung','Anerkannte Stelle und mindestens drei Tage Abstand.'),
+    # Expectation from the correction brief, independent of the authoring module.
+    reference = {
+        'Mutter': ([1,2,3,5], 'Die Gebärmutter zieht sich zusammen. Gewebe wird ausgestoßen.',
+                   'Sie bietet Hilfe mit dem Kind an. Laura möchte erst beide Wege kennen.'),
+        'Freundin': ([1,2,3,4], 'Medikamente wirken ohne Operation. Beim Ausstoßen von Gewebe blutet es.',
+                     'Die Mutter setzt auf Familienhilfe und rät zum Fortsetzen. Die Freundin denkt an die Zukunft und rät zum Abbruch.'),
+        'Großmutter': ([1,2,3,4], 'Nach der Einnistung wächst der Embryo in der Gebärmutter weiter.',
+                       'Sie bleibt bei Laura. Laura kann selbst entscheiden.'),
+        'Vater': ([1,2,3,4], 'Sie informiert. Für die Beratungsregelung sind eine anerkannte Stelle und mindestens drei Tage Abstand vorgeschrieben.',
+                  'Sie kann sich informieren und danach selbst entscheiden.'),
     }
+    document=(OUT/'Fallakte.html').read_text()
+    raw=re.search(r'<script type="application/json" id="material">(.*?)</script>',document,re.S)[1]
+    assert json.loads(raw)==BANK
+    assert not any(old in document.lower() for old in ('video','weder blutungen noch schmerzen','verbessert den satz','ein feld kann fehlen','falsche behauptung der freundin'))
+    original=json.loads((ROOT/'module/08-12/nachrichten.json').read_text())
+    assert BANK['laura']==original['laura']
     for person,case in BANK['cases'].items():
+        assert case['message']==original['nachrichten'][person]
+        assert case['sections']==[person+' 1 – Argumenten-Check',person+' 2 – Nachricht prüfen']
+        mapping, fact, link=reference[person]
         for level,tasks in case['levels'].items():
-            solutions=[next(o['label'] for o in t['options'] if o['correct']) for t in tasks[:-1]]
-            assert solutions[:len(anchors[person])]==list(anchors[person])
             assert list(dict.fromkeys(t['heading'] for t in tasks))==['Argumenten-Check',*BANK['questions']]
-            assert tasks[-1]['kind']=='judgment' and len(tasks[-1]['options'])==3
+            assert [(f['name'],f['line']) for f in tasks[0]['fields']]==list(zip(('Fakt','Wert','Norm','Folgerung'),mapping))
+            for f in tasks[0]['fields']:
+                valid={o['line'] for o in f['options'] if o['correct']}
+                expected={f['line']}
+                if person=='Vater' and f['name']=='Fakt' and any(o['line']==3 for o in f['options']):
+                    expected.add(3)
+                assert valid==expected and all(o['feedback'] for o in f['options'])
+            checks=tasks[1:-1]
+            solutions=[next(o['label'] for o in t['options'] if o['correct']) for t in checks]
+            assert solutions[0]==fact and link in solutions
+            if person=='Freundin':
+                assert checks[0]['mother']==[1] and any(3 in t['mother'] for t in checks)
+            if person=='Vater' and level in ('MSA','AHR'):
+                assert 'Ja. Man kann im Gesetz prüfen, welche Regel gilt.' in solutions
+            assert tasks[-1]['options']==['Sie hilft viel.','Sie hilft zum Teil.','Sie hilft wenig.']
+            assert bool(tasks[-1]['counter'])==(level=='AHR')
             assert all(len(t['hints'])==5 and len(set(t['hints']))==5 for t in tasks)
-            for t in tasks[:-1]:
+            for t in checks:
                 assert sum(o['correct'] for o in t['options'])==1
-                for line in t['lines']: assert 1<=line<=len(case['message'])
-                for line in t['wishes']: assert 1<=line<=len(BANK['laura'])
+                assert all(1<=n<=len(case['message']) for n in t['lines'])
+                assert all(1<=n<=len(BANK['laura']) for n in t['wishes'])
+                assert all(1<=n<=len(BANK['cases']['Mutter']['message']) for n in t['mother'])
                 if t['card']:
                     key,lines=t['card']
-                    assert all(1<=i<=len(BANK['cards'][key]['lines']) for i in lines)
-            if person=='Freundin' and level in ['MSA','AHR']:
-                assert 'Nein. Richtige Informationen helfen. Laura entscheidet selbst.' in solutions
-            if person=='Vater' and level in ['MSA','AHR']:
-                assert 'Ja. Man kann nachlesen, was vorgeschrieben ist.' in solutions
-            assert bool(tasks[-1]['counter'])==(level=='AHR')
+                    assert all(1<=n<=len(BANK['cards'][key]['lines']) for n in lines)
+
 
 
 def btn(frame,label):
@@ -77,13 +100,15 @@ def btn(frame,label):
 def layout(frame):
     result = frame.locator('body').evaluate("""body=>({
       overflow: document.documentElement.scrollWidth-innerWidth,
-      small: [...body.querySelectorAll('button,summary')].filter(e=>e.getClientRects().length && (e.getBoundingClientRect().height < 43.9 || e.getBoundingClientRect().width < 43.9)).map(e=>e.textContent)
+      small: [...body.querySelectorAll('button,summary,select')].filter(e=>e.getClientRects().length && (e.getBoundingClientRect().height < 43.9 || e.getBoundingClientRect().width < 43.9)).map(e=>e.textContent)
     })""")
     assert result['overflow']<=1 and not result['small'], result
 
 
 def shot(page,name):
-    page.screenshot(path=QA/(name+'.jpg'),type='jpeg',quality=73,animations='disabled')
+    path=QA/(name+'.jpg')
+    page.screenshot(path=path,type='jpeg',quality=73,animations='disabled')
+    PHOTOS[path.name]=digest(path.read_bytes())
 
 
 def inspect_task(frame,task):
@@ -98,7 +123,26 @@ def inspect_task(frame,task):
     btn(article,'Hilfe schließen').dispatch_event('click')
     if task['kind']=='judgment':
         return
-    options=article.locator('.category-grid button,.options button')
+    if task['kind']=='map':
+        expect(btn(article,'Weiter')).to_be_hidden()
+        for field in task['fields']:
+            select=article.get_by_role('combobox',name=field['name'],exact=True)
+            feedback=select.locator('xpath=../..').get_by_role('status')
+            for option in field['options']:
+                select.select_option(str(option['line']))
+                expect(feedback).to_contain_text(option['feedback'])
+                if not option['correct']: expect(btn(article,'Weiter')).to_be_hidden()
+            select.select_option(str(field['line']))
+        expect(btn(article,'Weiter')).to_be_visible()
+        for field in task['fields']:
+            for alternative in field['options']:
+                if alternative['correct'] and alternative['line']!=field['line']:
+                    select=article.get_by_role('combobox',name=field['name'],exact=True)
+                    select.select_option(str(alternative['line']))
+                    expect(btn(article,'Weiter')).to_be_visible()
+                    select.select_option(str(field['line']))
+        return
+    options=article.locator('.options button')
     for pos,option in enumerate(task['options']):
         if not option['correct']:
             options.nth(pos).dispatch_event('click')
@@ -151,7 +195,15 @@ def exercise(browser,engine,person,level,n,base):
             shot(p,engine+'-Argumenten-Check')
         inspect_task(frame,task)
         layout(frame)
+        if person=='Freundin' and task.get('mother'):
+            for line in task['mother']:
+                expect(frame.locator('aside').get_by_text(BANK['cases']['Mutter']['message'][line-1],exact=True).first).to_be_visible()
+            if n==5 and task['heading']==BANK['questions'][1]:shot(p,engine+'-Regeln-und-Rat')
         if i==0:
+            if n==1:shot(p,engine+'-Vier-Zuordnungen')
+            action('overview').tap();btn(frame,sections[0]).tap()
+            for field in task['fields']:
+                expect(frame.get_by_role('combobox',name=field['name'],exact=True)).to_have_value(str(field['line']))
             btn(frame,'Zeile für Zeile lesen').tap()
             btn(frame,'Nächster Teil').tap()
             expect(frame.locator('aside .lines').first).to_contain_text(case['message'][1])
@@ -190,13 +242,13 @@ def exercise(browser,engine,person,level,n,base):
         for j,label in enumerate(task['options']):
             btn(article,label).tap()
             btn(article,task['anchors'][j%2]).tap()
-            if level=='Förder':
+            if level in ('Förder','ESA'):
                 if j==0 and person!='Vater':
                     btn(article,task['links'][1]).tap()
                     btn(frame,'Abschnitt beenden').tap()
                     expect(article.get_by_role('status')).to_have_text(BANK['verdictUI']['reconnect'])
                 btn(article,task['links'][j%2]).tap()
-            elif j==0:
+            if level!='Förder' and j==0:
                 reason = task['anchors'][0]+' '+task['links'][0]
                 article.get_by_label('Dein Grund').fill(reason)
                 action('overview').tap()
@@ -205,9 +257,12 @@ def exercise(browser,engine,person,level,n,base):
                 expect(frame.get_by_role('heading',name='Stimmt das?')).to_be_visible()
                 action('overview').tap();btn(frame,level).tap();btn(frame,'Zur offenen Stelle').tap()
                 expect(article.get_by_label('Dein Grund')).to_have_value(reason)
-            elif j==1:
+            elif level!='Förder' and j==1:
                 article.get_by_label('Dein Grund').fill('')
                 btn(article,'Ich habe meinen Grund gesagt.').tap()
+            if level!='Förder' and j==0:
+                article.get_by_text('Grund selbst prüfen',exact=True).tap()
+                expect(article.get_by_text(task['selfCheck'],exact=True)).to_be_visible()
             if task['counter']:expect(article.get_by_text(task['counter'],exact=True)).to_be_visible()
             if n==5 and j==0:shot(p,engine+'-Urteil')
             btn(frame,'Abschnitt beenden').tap()
@@ -285,7 +340,7 @@ def main():
                 browser.close()
     report=dict(referenz=REVIEWED,version_a_sha256=before,html_sha256=digest((B/'Fallakte.html').read_bytes()),
                 scorm_sha256=digest((B/'Fallakte-SCORM12.zip').read_bytes()),bank_sha256=digest((OUT/'Aufgabenbank.json').read_bytes()),
-                durchlaeufe=runs,kleinfenster=small,bilder={f.name:digest(f.read_bytes()) for f in sorted(QA.glob('*.jpg'))})
+                durchlaeufe=runs,kleinfenster=small,bilder=PHOTOS)
     (QA/'Nachrichten.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
 
 

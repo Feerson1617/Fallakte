@@ -49,7 +49,7 @@
   function draft() {
     const s = session();
     return s.drafts[s.index] ||= {answer:null, hint:0, help:false, mark:null, evidence:null, link:null,
-      reason:'', spoken:false, own:false, reader:null, full:false, laura:false};
+      matches:{}, reason:'', spoken:false, own:false, reader:null, full:false, laura:false};
   }
   function show(view) {
     screen = view;
@@ -131,17 +131,25 @@
     }
     main.append(button('Zurück',()=>show(returnScreen)));
   }
-  function cardContent(key, ids, source) {
+  function cardLines(c,ids) {
+    if (!c.parts) return lines(c.lines,ids);
+    const part=block('stack');
+    for (const [title,numbers] of Object.entries(c.parts)) {
+      const selected=numbers.filter(n=>!ids || ids.includes(n));
+      if (selected.length) part.append(heading('h3',title),lines(c.lines,selected));
+    }
+    return part;
+  }
+  function cardContent(key, ids) {
     const c = book.cards[key], part = block('stack');
-    part.append(heading('h3',c.title),lines(c.lines,ids));
-    if (source) part.append(el('p','sources','Quellen: '+c.sources.join(' · ')));
+    part.append(heading('h2',c.title),cardLines(c,ids));
     return part;
   }
   function resources() {
     main.append(heading('h1','Fachkarten'));
     for (const [key, c] of Object.entries(book.cards)) {
       const body = block('stack');
-      body.append(lines(c.lines),el('p','sources','Quellen: '+c.sources.join(' · ')));
+      body.append(cardLines(c),el('p','sources','Quellen: '+c.sources.join(' · ')));
       const d = disclosure(c.title,body,openedCard===key);
       d.className = 'panel';
       main.append(d);
@@ -165,16 +173,18 @@
       panel.append(controls);
     } else {
       if (task.lines?.length) panel.append(lines(message,task.lines));
-      panel.append(disclosure('Ganze Nachricht lesen',lines(message),state.full,v=>{state.full=v;}),
-        button('Zeile für Zeile lesen',()=>{state.reader=1;render();}));
+      if (task.lines?.length !== message.length)
+        panel.append(disclosure('Ganze Nachricht lesen',lines(message),state.full,v=>{state.full=v;}));
+      panel.append(button('Zeile für Zeile lesen',()=>{state.reader=1;render();}));
     }
+    if (task.mother?.length) panel.append(heading('h3','Zum Vergleich · Mutter'),lines(book.cases.Mutter.message,task.mother));
     if (task.wishes) {
       if (task.wishes.length) panel.append(heading('h3','Lauras Worte'),lines(book.laura,task.wishes));
     }
     panel.append(disclosure('Lauras ganze Nachricht',lines(book.laura),state.laura,v=>{state.laura=v;}));
     if (task.card) {
       const [key,ids] = task.card;
-      const card = cardContent(key,ids,false);
+      const card = cardContent(key,ids);
       card.classList.add('intro');
       card.append(button('Ganze Fachkarte',()=>{beforeCards='task';openedCard=key;show('resources');}));
       panel.append(card);
@@ -213,17 +223,55 @@
     if (section===1) {session().complete=true;enter(person,2);}
     else {session().index++;show('task');}
   }
-  function check(task,state,body) {
-    const cat = task.kind==='category';
-    if (cat) body.append(el('p','small','Ein Feld kann fehlen. Eine Behauptung kann falsch sein.'));
+  function argumentMap(task,state,body) {
     body.append(el('p','',task.prompt),helpBox(task,state));
-    const options = block(cat?'category-grid':'options');
+    const fields=block('category-grid');
+    const onward=button('Weiter',next,'primary');
+    function updateNext() {
+      onward.hidden=!task.fields.every(f=>f.options.some(o=>o.line===state.matches[f.name] && o.correct));
+    }
+    for (const field of task.fields) {
+      const label=el('label','map-field'), select=el('select');
+      select.setAttribute('aria-label',field.name);
+      const empty=el('option','','Zeile wählen');
+      empty.value='';
+      select.append(empty);
+      for (const option of field.options) {
+        const row=el('option','','Zeile '+option.line);
+        row.value=String(option.line);
+        select.append(row);
+      }
+      select.value=String(state.matches[field.name] ?? '');
+      const result=el('small','');
+      result.setAttribute('role','status');
+      const update=()=>{
+        const value=Number(select.value);
+        state.matches[field.name]=value;
+        const option=field.options.find(o=>o.line===value);
+        result.hidden=!option;
+        if (option) {
+          result.className=option.correct?'feedback':'feedback retry';
+          result.textContent=(option.correct?'Das passt. ':'Prüfe noch einmal. ')+option.feedback;
+        }
+        updateNext();
+      };
+      select.onchange=update;
+      label.append(el('strong','',field.name),el('small','',book.categories[field.name]),select);
+      const cell=block('map-cell');
+      cell.append(label,result);
+      fields.append(cell);
+      update();
+    }
+    body.append(fields,onward);
+  }
+  function check(task,state,body) {
+    body.append(el('p','',task.prompt),helpBox(task,state));
+    const options = block('options');
     const feedback = el('div');
     feedback.setAttribute('role','status');
     const onward = button('Weiter',next,'primary');
     const buttons = task.options.map((o,i)=>{
       const b = press(o.label,()=>{state.answer=i;update();},false);
-      if (cat) b.append(el('small','',book.categories[o.label]));
       options.append(b);
       return b;
     });
@@ -250,12 +298,13 @@
     const say = press(ui.spoken,()=>{state.spoken=!state.spoken;sync();},state.spoken);
     panel.append(label,typed,el('p','small',ui.oral),say);
     const notice = el('p','note');notice.setAttribute('role','status');
+    const scaffold = level==='Förder' || level==='ESA';
     const finish = button(ui.done,()=>{
       let missing;
       if (state.mark===null) missing='Wähle dein Urteil.';
       else if (state.evidence===null) missing='Wähle eine Stelle aus der Nachricht.';
-      else if (level==='Förder' && !state.reason.trim() && !state.spoken && state.link===null) missing='Wähle, warum die Stelle für Laura wichtig ist.';
-      else if (level==='Förder' && !state.reason.trim() && !state.spoken && !task.matchingLinks[state.evidence].includes(state.link)) missing=ui.reconnect;
+      else if (scaffold && state.link===null && (level==='ESA' || (!state.reason.trim() && !state.spoken))) missing='Wähle, warum die Stelle für Laura wichtig ist.';
+      else if (scaffold && !state.reason.trim() && !state.spoken && !task.matchingLinks[state.evidence].includes(state.link)) missing=ui.reconnect;
       else if (level!=='Förder' && !state.reason.trim() && !state.spoken) missing='Schreibe deinen Grund. Oder sage ihn und tippe auf „Ich habe meinen Grund gesagt.“';
       if (missing) {notice.hidden=false;notice.textContent=missing;return;}
       session().complete=true;show('done');
@@ -272,12 +321,13 @@
       say.setAttribute('aria-pressed',String(state.spoken));clearNotice();
     }
     body.append(rating,proof);
+    if (scaffold) body.append(reason);
     if (level==='Förder') {
-      body.append(reason,disclosure(ui.own,panel,state.own,v=>{state.own=v;}));
+      body.append(disclosure(ui.own,panel,state.own,v=>{state.own=v;}));
     }
     else {
       if (task.counter) body.append(el('p','note',task.counter));
-      body.append(panel);
+      body.append(panel,disclosure('Grund selbst prüfen',el('p','note',task.selfCheck)));
     }
     body.append(notice,finish);sync();
   }
@@ -286,6 +336,7 @@
     main.append(el('p','eyebrow',book.cases[person].sections[section-1]+' · '+level));
     body.append(heading('h1',task.heading,'question'));
     if (task.kind==='judgment') verdict(task,state,body);
+    else if (task.kind==='map') argumentMap(task,state,body);
     else check(task,state,body);
     if (s.index>1) body.append(button('Vorige Frage',()=>{s.index--;show('task');}));
     box.append(sourcePanel(task,state),body);main.append(box);
@@ -294,7 +345,7 @@
     const state=draft(), task=item();
     main.append(heading('h1',person+' · Abschnitt fertig'),el('p','',task.options[state.mark]),
       el('p','',task.anchors[state.evidence]));
-    if (level==='Förder' && state.link!==null) main.append(el('p','',task.links[state.link]));
+    if (state.link!==null) main.append(el('p','',task.links[state.link]));
     if (state.reason.trim()) main.append(el('p','',state.reason));
     main.append(el('p','note',book.verdictUI.reflect),
       button('Mein Urteil ansehen',()=>show('task')));

@@ -43,7 +43,12 @@ fieldset{margin:0;padding:0;border:0}
 legend{margin:0 0 .35rem}
 .options{align-items:stretch;flex-direction:column}
 .category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.45rem}
-.category-grid small{display:block;font-size:.9em;margin-top:.15rem}
+.map-cell{border:1px solid #c0cabe;border-radius:.65rem;padding:.55rem;min-width:0}
+.map-field,.map-cell small{display:block}
+.map-field small,.map-cell .feedback{font-size:.9em;margin-block:.25rem}
+.map-field select{font:inherit;color:inherit;background:#fffef9;min-height:44px;width:100%;border:1px solid #83978b;border-radius:.5rem}
+.map-field select:focus-visible{outline:3px solid #9b4c24;outline-offset:2px}
+@media(max-width:27rem){.map-field select{font-size:.9em}}
 .note{border-left:3px solid #a86a39;background:#fbf1df;padding:.55rem .8rem}
 .feedback{border-left:3px solid #497653;background:#edf4e9;padding:.55rem .8rem}
 .retry{border-color:#aa5943;background:#fbede5}

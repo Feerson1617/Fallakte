@@ -23,9 +23,20 @@ def material(bank):
     text = ['# Materialübergabe · 08.12.2026',bank['lead'],bank['context'],'## Lauras Nachricht',*numbered(bank['laura'])]
     for person, case in bank['cases'].items():
         text.extend(['## Nachricht · '+person,*numbered(case['message'])])
+        text.append('**Zuordnung zum Originalwortlaut**')
+        for field in case['levels']['AHR'][0]['fields']:
+            text.append(f"- {field['name']} · Zeile {field['line']} · {field['meaning']}")
+            for option in field['options']:
+                if option['correct'] and option['line']!=field['line']:
+                    text.append(f"  - Auch Zeile {option['line']}: {option['feedback']}")
     text.append('## Fachkarten')
     for c in bank['cards'].values():
-        text.extend(['### '+c['title'],*numbered(c['lines'])])
+        text.append('### '+c['title'])
+        if 'parts' in c:
+            for title,ids in c['parts'].items():
+                text.extend(['#### '+title,*numbered(c['lines'],ids)])
+        else:
+            text.extend(numbered(c['lines']))
         text.extend(f"- [{name}]({bank['sources'][name]})" for name in c['sources'])
     text.extend(['## Argumenten-Check',*(f'- **{label}** · {q}' for label,q in bank['categories'].items())])
     for person,case in bank['cases'].items():
@@ -36,24 +47,33 @@ def material(bank):
                 text.extend(['#### '+t['heading'],t['prompt']])
                 if t.get('lines'):
                     text.extend([person,*numbered(case['message'],t['lines'])])
+                if t.get('mother'):
+                    text.extend(['Zum Vergleich · Mutter',*numbered(bank['cases']['Mutter']['message'],t['mother'])])
                 if t.get('wishes'):
                     text.extend(['Lauras Worte',*numbered(bank['laura'],t['wishes'])])
                 if t.get('card'):
                     key,ids=t['card']
                     card=bank['cards'][key]
                     text.extend([card['title'],*numbered(card['lines'],ids)])
-                if t['kind']=='judgment':
+                if t['kind']=='map':
+                    for field in t['fields']:
+                        text.extend(['**'+field['name']+'**',bank['categories'][field['name']]])
+                        for opt in field['options']:
+                            start='Das passt. ' if opt['correct'] else 'Prüfe noch einmal. '
+                            text.append(f"- Zeile {opt['line']} — {start}{opt['feedback']}")
+                elif t['kind']=='judgment':
                     text.extend(['**Geprüft**',*t['results'],ui['rating'],*t['options'],
                                  ui['simpleEvidence'] if level=='Förder' else ui['evidence'],*t['anchors']])
-                    if level=='Förder':
-                        text.extend([ui['reason'],*t['links'],ui['own'],ui['write'],ui['oral'],ui['spoken']])
+                    if level in ('Förder','ESA'):
+                        text.extend([ui['reason'],*t['links']])
                         for a,ids in enumerate(t['matchingLinks']):
                             text.append(t['anchors'][a]+' → '+' / '.join(t['links'][x] for x in ids))
                         if any(len(v)<len(t['links']) for v in t['matchingLinks']):
                             text.append('Rückfrage bei anderem Baustein: '+ui['reconnect'])
-                    else:
-                        if t['counter']:text.append(t['counter'])
-                        text.extend([ui['write'],ui['oral'],ui['spoken']])
+                    if level=='Förder':text.append(ui['own'])
+                    if t['counter']:text.append(t['counter'])
+                    text.extend([ui['write'],ui['oral'],ui['spoken']])
+                    if level!='Förder':text.extend(['Grund selbst prüfen',t['selfCheck']])
                     text.extend([ui['done'],ui['reflect'],'Alle drei Urteile stehen offen. Eine Musterantwort folgt bei Hilfe 5.'])
                 else:
                     for opt in t['options']:
@@ -90,10 +110,10 @@ def main():
     assert {x['browser'] for x in r['kleinfenster'] if x['schrift_prozent']==200 and x['abschnitte']==8}=={'chromium','webkit'}
     photos=[(QA/name,'Bildschirmfotos/'+name) for name in r['bilder']]
     assert all(r['bilder'][file.name]==sha(file) for file,_ in photos)
-    assert len(photos)==20
+    assert len(photos)==24
     body=(ROOT/'docs/Nachrichten-08-12.md').read_text()
     summary = ['## Technische Abnahme',f"Geprüfter Ausgangsstand: `{r['referenz']}`. Der Referenzbau vergleicht Version A vollständig sowie Version B außerhalb des zweiten Moduldokuments byteweise. Die vorhandenen Prüfungen für den 02.12. liefen am eingebetteten Programmstand. Die Dateiinhalte von Offline-HTML und SCORM-Startdatei stimmen überein.",
-               f"{len(runs)} vollständige Wege in Chromium und WebKit decken alle vier Personen und Niveaus ab. Getestet wurden richtige und falsche Textantworten, alle fünf Hilfen, Abschluss nach Hilfe 5 und alle drei Urteile. Die Tests öffnen Karten, wechseln die Ansicht und steigen nach vollständigem Neuladen in beide Abschnitte ein. Die Protokolle nennen Browserstand, Touch-Viewport, Schrift und Format für jeden Weg.",
+               f"{len(runs)} vollständige Wege in Chromium und WebKit decken alle vier Personen und Niveaus ab. Getestet wurden richtige und falsche Textantworten, alle vier Zuordnungen einschließlich konkurrierender Zeilen, alle fünf Hilfen, Abschluss nach Hilfe 5 und alle drei Urteile. Die Tests öffnen Karten, wechseln die Ansicht und steigen nach vollständigem Neuladen in beide Abschnitte ein. Die Protokolle nennen Browserstand, Touch-Viewport, Schrift und Format für jeden Weg.",
                'iPad-Ansichten: 820 × 1180 und 1180 × 820 CSS-Pixel bei 100 oder 150 Prozent Schrift im Modul. Der separate lokale Einstieg wurde bei 390 × 650 und 200 Prozent Schrift mit allen acht Abschnitten und geöffneter Hilfe geprüft. Die Offline-Prüfung blockiert externe Verbindungen. Das SCORM-Testsystem protokolliert Sitzungsbeginn und Sitzungsende. Schülerantworten werden im Arbeitsspeicher gehalten. Das LMS kann Zugriffe separat protokollieren.',
                '| Niveau | Aufgaben Mutter | Aufgaben Freundin | davon eigene Urteile |','| --- | ---: | ---: | ---: |']
     for level in bank['levels']:

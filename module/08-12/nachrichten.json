@@ -12,33 +12,31 @@
   ],
   "nachrichten": {
     "Mutter": [
-      "Laura, bei einem Abbruch mit Medikamenten kommt es zu Blutungen. Schmerzen sind möglich.",
+      "Laura, bei einem Abbruch mit Medikamenten kommt es zu Blutungen. Schmerzen können auftreten.",
       "Das macht mir Sorgen. Deine Gesundheit und unsere Familie sind mir wichtig.",
-      "In unserer Familie sollen wir einander in schwierigen Zeiten helfen.",
-      "Wenn du ein Kind bekommst, möchte ich dich unterstützen.",
-      "Deshalb rate ich dir, die Schwangerschaft fortzusetzen.",
-      "Ich möchte wissen, wie du darüber denkst."
+      "In einer Familie soll man sich gegenseitig helfen.",
+      "Wenn du das Kind bekommst, möchte ich dir helfen.",
+      "Deshalb rate ich dir, die Schwangerschaft fortzusetzen."
     ],
     "Freundin": [
-      "Du möchtest deine Ausbildung abschließen. Das ist mir für dich wichtig.",
-      "Ein Abbruch mit Medikamenten ist grundsätzlich ohne Operation möglich.",
-      "In einem Video hieß es: „Dabei gibt es weder Blutungen noch Schmerzen.“ Ich glaube, dass das stimmt.",
-      "Deshalb erscheint mir das einfach.",
-      "Ich rate dir deshalb zu einem Abbruch mit Medikamenten."
+      "Laura, ein Abbruch mit Medikamenten ist grundsätzlich ohne Operation möglich.",
+      "Ich weiß, wie wichtig dir deine Ausbildung ist. Deine Ausbildung und deine Zukunft sind mir auch wichtig.",
+      "Ich finde, bei wichtigen Entscheidungen sollte man auf seine Zukunftspläne achten.",
+      "Deshalb würde ich dir zu einem Schwangerschaftsabbruch raten."
     ],
     "Großmutter": [
-      "Liebe Laura, ungeborenes Leben ist mir sehr wichtig.",
-      "Zu meinem persönlichen Glauben gehört die Regel: Ungeborenes Leben soll geschützt werden.",
+      "Laura, am Anfang einer Schwangerschaft entwickelt sich in der Gebärmutter ein Embryo.",
+      "Ungeborenes Leben ist mir besonders wichtig.",
+      "Zu meinem Glauben gehört die Regel, dass ungeborenes Leben geschützt werden soll.",
       "Deshalb wünsche ich mir, dass du die Schwangerschaft fortsetzt.",
-      "Du musst meinen Glauben nicht teilen. Die Entscheidung triffst du.",
-      "Ich bleibe an deiner Seite."
+      "Du musst meinen Glauben nicht teilen. Ich bleibe an deiner Seite, egal wie du dich entscheidest."
     ],
     "Vater": [
-      "Du möchtest zuerst verlässliche Informationen. Das ist mir auch wichtig.",
-      "Für einen Abbruch nach der Beratungsregelung ist unter anderem vorgeschrieben: Die Beratung muss bei einer staatlich anerkannten Schwangerschaftskonfliktberatungsstelle stattfinden und mindestens drei Tage vor dem Abbruch liegen.",
-      "Deshalb rate ich dir, dort einen Beratungstermin zu vereinbaren.",
-      "Dort kannst du auch über Unterstützung für deine Ausbildung sprechen.",
-      "Wie du dich entscheidest, bleibt dir überlassen."
+      "Laura, bei einer anerkannten Beratungsstelle kannst du Informationen über deine Möglichkeiten bekommen.",
+      "Mir ist wichtig, dass du gut informiert bist und selbst entscheidest.",
+      "Für einen Abbruch nach der Beratungsregelung schreibt das Gesetz eine Beratung bei einer staatlich anerkannten Stelle vor. Die Beratung muss mindestens drei Tage vor dem Abbruch erfolgt sein.",
+      "Deshalb rate ich dir, zuerst eine Beratungsstelle aufzusuchen.",
+      "Danach kannst du selbst entscheiden."
     ]
   }
 }

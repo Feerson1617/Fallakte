@@ -53,7 +53,7 @@ Bei einer Unterbrechung kann die Seite in jedem Gesprächsschritt geöffnet blei
 
 ## Nachrichten am 08.12.
 
-Alle acht Abschnitte stehen auf jedem Niveau offen. Der Argumenten-Check umfasst pro Nachricht eine Zuordnung. Danach folgen der Quellenvergleich, Lauras Wünsche und das eigene Urteil mit Beleg. Hilfe 1 bis 5 ist bei jeder Aufgabe direkt erreichbar. Die Übersicht ermöglicht den Niveauwechsel. Antworten, offene Hilfen und Entwürfe bleiben innerhalb derselben Sitzung je Niveau und Abschnitt erhalten. Nach einem vollständigen Neuladen wählt man Person und Abschnitt erneut.
+Alle acht Abschnitte stehen auf jedem Niveau offen. Im Argumenten-Check ordnen die Lernenden auf einem Bildschirm vier Zeilen den vier Begriffen zu. Bei der Freundin vergleichen sie außerdem die zwei biologisch zutreffenden Aussagen und die unterschiedlichen Regeln hinter den Ratschlägen. Danach folgen der Quellenvergleich, Lauras Wünsche und das eigene Urteil mit Beleg. Hilfe 1 bis 5 ist bei jeder Aufgabe direkt erreichbar. Die Übersicht ermöglicht den Niveauwechsel. Antworten, offene Hilfen und Entwürfe bleiben innerhalb derselben Sitzung je Niveau und Abschnitt erhalten. Nach einem vollständigen Neuladen wählt man Person und Abschnitt erneut.
 
 `python scripts/build.py` baut beide Auslieferungen. Nach der Installation der Abhängigkeiten aus **tests/requirements.txt** und der beiden Playwright-Browser prüft `python tests/nachrichten.py` die zweite Fallakte. Anschließend erzeugt `python scripts/nachrichtenbericht.py` Bericht, Sichtprüfung und Work-Paket in **dist/**. Die fachlichen Belege, die Zeitplanung und der ausstehende Praxistest stehen im [Prüfvermerk](docs/Nachrichten-08-12.md).
 
