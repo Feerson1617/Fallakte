@@ -297,22 +297,21 @@ function lastHelp(s,method) {
     const next=$('work').querySelector('.primary');
     const paper=s.id==='T2' ? s.task[current.level]+' ' :
       s.id==='T1' ? 'Überlege dir einen Grund. ' : '';
-    return {text:paper+'Tippe danach auf „'+next.textContent+'“. '+
-      'Mit „Zur Schaltfläche“ findest du sie wieder.',label:'Zur Schaltfläche',run:()=>focusInWork(next)};
+    return {text:paper+'Tippe auf „'+next.textContent+'“.',label:'Zur Schaltfläche',run:()=>focusInWork(next)};
   }
   if (current.mode==='reply' || current.mode==='review') {
     const options=$('work').querySelector('.row').querySelectorAll('button');
     if (current.revised || code()===method) {
-      const withdraw=current.revised && Boolean(feedbackIssue(s,code()));
-      const target=withdraw ? options[1] : options[0];
-      const text=withdraw ? 'Wenn ihr den neuen Rat nicht mehr vertreten könnt, tippt auf „Vorschlag zurückziehen“.' :
-        'Wenn ihr bei eurem begründeten Rat bleibt, tippt auf „Vorschlag beibehalten“.';
+      const issue=current.revised && feedbackIssue(s,code());
+      const target=issue ? options[1] : options[0];
+      const text=issue ? 'Passt dein neuer Rat nicht? Dann tippe auf „Vorschlag zurückziehen“.' :
+        'Passt dein Rat? Dann tippe auf „Vorschlag beibehalten“.';
       return {text,label:'Zur Schaltfläche',run:()=>focusInWork(target)};
     }
   }
   const name=FALLAKTE.methods[method][0];
-  return {text:'Für dieses Beispiel: Wähle „'+name+'“. Prüfe den Entwurf und tippe selbst auf „Nachricht senden“. Du kannst auch anders wählen.',
-    label:name+' als Entwurf öffnen',run:()=>{
+  const label=name+' als Entwurf öffnen';
+  return {text:'Tippe auf „'+label+'“. Prüfe den Entwurf. Passt er, tippe auf „Nachricht senden“.',label,run:()=>{
       if (current.mode==='reply' || current.mode==='review') reviseProposal();
       selectMethod(method);
     }};
@@ -322,10 +321,9 @@ function stageSupport() {
   const s=stage();
   const support=LERNHILFEN[s.id];
   let choice=code();
-  if (!choice && shortLaura() && !s.options.DONE && s.options[current.lastKept]) choice=current.lastKept;
-  if (current.mode==='tomSelf' || (current.mode==='reply' && ['L0','C3','T0'].includes(s.id) &&
+  if (current.mode==='tomSelf' || (current.mode==='reply' && !current.revised && ['L0','C3','T0'].includes(s.id) &&
       !choice.includes('K') && !s.declined?.[choice])) choice='K';
-  const method=choice.split('+').pop() || support.karte;
+  const method=choice.split('+').pop() || support.beispielMethode;
   const raw=s.hints[choice || (s.options.DONE?'DONE':method)];
   let pair;
   let source;
@@ -362,8 +360,21 @@ function stageSupport() {
       article.focus({preventScroll:true});
     }};
   }
+  let example=forLevel(support.beispiel);
+  const comparison=support.vergleich?.[choice] || support.vergleich?.[method];
+  if (current.mode==='reply' && current.revised) {
+    // After a revision the only remaining actions are keeping or withdrawing the actual proposal.
+    const issue=feedbackIssue(s,choice);
+    if (issue) example='Ich ziehe meinen Rat zurück. '+pair[1];
+    else if (choice!==support.beispielMethode) {
+      const names=choice.split('+').map(key=>FALLAKTE.methods[key][0]).join(' und ');
+      example='Mein Rat mit '+names+' bleibt vorläufig. '+pair[1];
+    }
+  } else if (comparison) {
+    example=comparison+' '+support.vergleichsrat;
+  }
   const action=lastHelp(s,support.beispielMethode);
-  return {steps:[...pair,support[current.level],forLevel(support.beispiel),action.text],source,action};
+  return {steps:[...pair,support[current.level],example,action.text],source,action};
 }
 
 function positionHelp() {

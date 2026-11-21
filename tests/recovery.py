@@ -13,6 +13,7 @@ from playwright.sync_api import expect, sync_playwright
 from acceptance import DATA, LOCAL, OUT, QA, QuietHandler, save
 
 CHECK=Path(__file__).with_suffix('.js').read_text()
+CHAINS=Path(__file__).with_name('hilfeketten.js').read_text()
 LAURA_LABELS=['Infektionsschutz','Schutz im Alltag','Lauras Entscheidung','Schmerzen und Infektionsschutz','Mein letzter Rat']
 SIZES=((820,1180),(1180,820))
 # Collect attempted persistence across reloads outside the application. Web Storage state is
@@ -80,6 +81,7 @@ def exercise(browser,engine,size,host,photos):
     expect(view.locator('[data-person=Tom]')).to_be_disabled()
 
     records=[]
+    chains=[]
     for person,stages in DATA['cases'].items():
         for tier,label in DATA['meta']['levels'].items():
             for index,stage in enumerate(stages):
@@ -117,6 +119,8 @@ def exercise(browser,engine,size,host,photos):
                     page.screenshot(path=QA/name,type='jpeg',quality=78)
                     photos[name]=hashlib.sha256((QA/name).read_bytes()).hexdigest()
                 records.append(view.evaluate(CHECK,dict(person=person,tier=tier,index=index,stages=stages)))
+                chains.append(view.evaluate(CHAINS,dict(person=person,tier=tier,label=label,index=index,stage=stage,
+                                                          previous=stages[index-1] if index else None)))
                 assert view.evaluate('[localStorage.length,sessionStorage.length,document.cookie]')==[0,0,'']
     calls=[]
     if scorm:
@@ -127,7 +131,7 @@ def exercise(browser,engine,size,host,photos):
     assert not errors and not storage and not ctx.cookies(), (errors,storage)
     ctx.close()
     return dict(engine=engine,format='SCORM' if scorm else 'HTML',viewport=size,wege=records,
-                neuladen_bei_laura=[3,5],storage=storage,js_errors=errors,scorm_aufrufe=calls)
+                hilfeketten=chains,neuladen_bei_laura=[3,5],storage=storage,js_errors=errors,scorm_aufrufe=calls)
 
 
 if __name__=='__main__':

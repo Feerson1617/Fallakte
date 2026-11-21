@@ -34,21 +34,19 @@ assert all(run['laura_age']==19 and run['age_levels']==4 for run in reports['sco
 assert all(run['kombination_ab_l1'] for run in reports['scorm']['runs'])
 assert {r['engine'] for r in reports['scorm']['runs']} == {'chromium', 'webkit'}
 content = reports['inhaltsvergleich']
-assert content['additional_cases_equal'] and content['rendered_paths'] == 84
-assert content['shared_help_equal'] and content['laura_abschnitte']==5
+assert content['fachdaten_gleich'] and content['rendered_paths'] == 84
+assert content['textaenderungen'] and content['shared_help_equal'] and content['laura_abschnitte']==5
 levels=('Foerder','ESA','MSA','AHR')
 assert set(content['fachkern_geprueft'])==set(levels)
 counts=content['bedienhandlungen']
 assert len(counts)==16 and {r['engine'] for r in counts}=={'chromium','webkit'}
 for row in counts:
     correction=int(row['korrektur_in_l0'])
-    old=11 if row['niveau'] in ('Foerder','ESA') else 15
-    assert row['vorher']['total']==old+3*correction and row['jetzt']['total']==9+3*correction
-    assert row['vorher']['decisions']==6+correction and row['jetzt']['decisions']==5+correction
-    for version,n in [('vorher',7),('jetzt',5)]:
+    assert row['vorher']['total']==row['jetzt']['total']==9+3*correction
+    assert row['vorher']['decisions']==row['jetzt']['decisions']==5+correction
+    for version in ('vorher','jetzt'):
         words=row[version]['words']
-        assert len(words)==n and all(w['fall'] and w['auftrag'] for w in words)
-        assert all(bool(w['kartenhinweis'])==(version=='jetzt') for w in words)
+        assert len(words)==5 and all(w['fall'] and w['auftrag'] and w['kartenhinweis'] for w in words)
     match=next(r for r in counts if r['engine']!=row['engine'] and r['niveau']==row['niveau']
                and r['korrektur_in_l0']==row['korrektur_in_l0'])
     assert all(row[k]==match[k] for k in ('vorher','jetzt'))
@@ -84,6 +82,19 @@ for run in recovery['runs']:
     assert not run['storage'] and not run['js_errors'] and run['neuladen_bei_laura']==[3,5]
     if run['format']=='SCORM':
         assert {call[0] for call in run['scorm_aufrufe']}=={'LMSInitialize','LMSFinish'}
+    assert len(run['hilfeketten'])==52
+    for chain in run['hilfeketten']:
+        article=chain['person']=='Tom' and chain['abschnitt']>1
+        counts_by_state=chain['gepruefte_ketten']
+        assert counts_by_state['Ohne Auswahl']==1 and len(chain['ohne_auswahl'])==5
+        if not article:
+            options=4 if (chain['person'],chain['abschnitt'])==('Laura',1) else 7
+            assert all(counts_by_state[state]==options for state in ('Auswahl','Antwort','Revision','Zweite Antwort'))
+            assert counts_by_state['Revision ohne Auswahl']==1
+        if chain['person']=='Laura' and chain['abschnitt'] in (2,3,4):
+            assert counts_by_state['Prüfung']==(4 if chain['abschnitt']==2 else 7)
+        if (chain['person'],chain['abschnitt'])==('Tom',1):
+            assert counts_by_state['Eigener Beitrag']==1
     assert len(run['wege'])==52
     assert {(r['person'],r['niveau'],r['abschnitt']) for r in run['wege'] if r['hilfestufen']==5}=={
         (person,tier,index) for person,n in [('Laura',5),('Celina',5),('Tom',3)]
@@ -118,6 +129,15 @@ for level in levels:
     measurement.append('| '+label+' | '+' | '.join(f'{a} → {b}' for a,b in columns)+' |')
 body=(ROOT/'docs/Abnahme.md').read_text()
 body=body.replace('## Ausstehender Praxistest', '\n'.join(measurement)+'\n\n## Ausstehender Praxistest')
+# List every editorial field changed in the built content, with its exact wording.
+# Runtime comparisons combine the card-specific reason and the stage's example advice.
+audit=['<details>','<summary>Einzeländerungen im Wortlaut gegenüber '+content['reference_commit'][:7]+'</summary>','',
+       '| Abschnitt | Textstelle | Bisher | Jetzt |','| --- | --- | --- | --- |']
+for entry in content['textaenderungen']:
+    values=(entry['abschnitt'],entry['stelle'],entry['vorher'],entry['jetzt'])
+    audit.append('| '+' | '.join(str(v).replace('|',r'\|') if v is not None else '–' for v in values)+' |')
+audit.extend(['','</details>'])
+body+='\n\n'+'\n'.join(audit)
 report.write_text(body.rstrip()+'\n\n'+release+'\n', encoding='utf-8')
 
 evidence = {f'Protokolle/{name}.json': QA/(name+'.json') for name in names}

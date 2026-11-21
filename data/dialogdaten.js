@@ -136,8 +136,8 @@ const FALLAKTE = {
           ]
         },
         "task": {
-          "Foerder": "Passt euer Rat auch an Tagen, die anders laufen?",
-          "ESA": "Prüft, was Laura bei eurer Methode im Alltag tun müsste.",
+          "Foerder": "Prüfe, wann Laura deine Methode anwenden muss.",
+          "ESA": "Prüfe, ob die Anwendung zu Lauras Alltag passt.",
           "MSA": "Prüfe beide Schutzziele und den Aufwand im Alltag. Vergleiche zwei Möglichkeiten.",
           "AHR": "Wägt zwei Strategien für beide Ziele ab. Wann verändert Lauras Alltag eure Gewichtung?"
         },
@@ -242,8 +242,8 @@ const FALLAKTE = {
           "Das Einsetzen einer Spirale macht mir Sorgen. Ich möchte mich erst beraten lassen."
         ],
         "task": {
-          "Foerder": "Wozu sagt Laura Nein? Wo hat sie noch Fragen?",
-          "ESA": "Was hat die Freundin erlebt? Was entscheidet Laura für sich?",
+          "Foerder": "Prüfe deinen Rat. Laura will keine Pille. Zur Spirale hat sie Fragen.",
+          "ESA": "Prüfe deinen Rat. Beachte Lauras Nein zur Pille und ihre Frage zum Einsetzen.",
           "MSA": "Was zeigt der Einzelfall? Unterscheidet Lauras feste Entscheidung von ihrer offenen Sorge.",
           "AHR": "Prüft die Vorhersage aus dem Einzelfall. Welche Option schließt Lauras Nein aus, welche bleibt unter einer Bedingung offen?"
         },
@@ -268,8 +268,8 @@ const FALLAKTE = {
         "hints": {
           "K": {
             "section": "Anwendung",
-            "find": "Wann braucht man ein neues Kondom?",
-            "fact": "Ein Kondom benutzt man bei jedem Sex neu und von Anfang an."
+            "find": "Wie wird ein Kondom benutzt?",
+            "fact": "Das Kondom wird über den Penis gerollt. Dafür braucht Laura weder eine Pille noch eine Spirale."
           },
           "P": {
             "section": "Mögliche Nachteile",
@@ -355,8 +355,8 @@ const FALLAKTE = {
           "Ein Kondom wäre für uns in Ordnung."
         ],
         "task": {
-          "Foerder": "Wie passt euer Rat zu den Schmerzen und zum Schutz vor Infektionen?",
-          "ESA": "Prüft beides: Was könnte die Schmerzen verändern? Was schützt vor Infektionen?",
+          "Foerder": "Prüfe deinen Rat bei Regelschmerzen und beim Schutz vor Infektionen.",
+          "ESA": "Prüfe deinen Rat. Beachte die Schmerzen und den Schutz vor Infektionen.",
           "MSA": "Vergleicht zwei Strategien bei Schmerzen und Infektionsschutz. Was muss eine Praxis klären?",
           "AHR": "Wägt Infektionsschutz und mögliche Belastung bei zwei Strategien ab. Unter welcher medizinischen Bedingung würdet ihr anders raten?"
         },
@@ -386,8 +386,8 @@ const FALLAKTE = {
         "hints": {
           "K": {
             "section": "Blutung und Schmerzen",
-            "find": "Ändert sich die Periode?",
-            "fact": "Ein richtig benutztes Kondom senkt das Risiko vieler Infektionen. Es behandelt keine Regelschmerzen. Die starken Schmerzen sollte Laura ärztlich klären lassen."
+            "find": "Verändert ein Kondom die Regel?",
+            "fact": "Ein Kondom verändert die Regel nicht. Richtig benutzt senkt es das Risiko vieler Infektionen. Die starken Schmerzen sollte Laura ärztlich klären lassen."
           },
           "P": {
             "section": "Blutung und Schmerzen",
@@ -492,7 +492,7 @@ const FALLAKTE = {
         },
         "task": {
           "Foerder": "Wähle deinen Rat für Laura. Begründe ihn kurz. Nenne auch einen Nachteil.",
-          "ESA": "Welchen Rat gebt ihr Laura jetzt? Begründet ihn mündlich mit einem Wunsch von Laura. Nennt einen Nachteil.",
+          "ESA": "Nenne deinen Rat. Begründe ihn mit Lauras Wunsch und nenne einen Nachteil.",
           "MSA": "Vergleiche zwei vertretbare Vorschläge. Gewichte ein Kriterium und berücksichtige einen Nachteil.",
           "AHR": "Gewichtet zwei vertretbare Strategien. Unter welcher konkreten Bedingung wäre die Alternative besser?"
         },
@@ -650,7 +650,7 @@ const FALLAKTE = {
           ],
           "Cu": [
             "Karte „Kupferspirale“, Abschnitt „Wirkung“. Enthält die Spirale Hormone?",
-            "Ohne Hormone bedeutet nicht ohne mögliche Nachteile. Blutungen und Schmerzen können stärker werden."
+            "Die Kupferspirale enthält keine Hormone. Sie wird in einer Praxis eingesetzt."
           ],
           "H": [
             "Karte „Hormonspirale“, Abschnitt „Wirkung“. Enthält die Spirale Hormone?",
@@ -662,7 +662,7 @@ const FALLAKTE = {
           ],
           "K+Cu": [
             "Karte „Kupferspirale“, Abschnitt „Wirkung“. Enthält die Spirale Hormone?",
-            "Ohne Hormone bedeutet nicht ohne mögliche Nachteile. Blutungen und Schmerzen können stärker werden."
+            "Die Kupferspirale enthält keine Hormone. Sie wird in einer Praxis eingesetzt."
           ],
           "K+H": [
             "Karte „Hormonspirale“, Abschnitt „Wirkung“. Enthält die Spirale Hormone?",
@@ -835,8 +835,8 @@ const FALLAKTE = {
         },
         "hints": {
           "K": [
-            "Karte „Kondom“, Abschnitt „Mögliche Nachteile“. Was kann bei der Anwendung passieren?",
-            "Ein Kondom wird nicht eingesetzt. Es muss jedes Mal richtig sitzen."
+            "Karte „Kondom“, Abschnitt „Anwendung“. Wie wird das Kondom benutzt?",
+            "Für ein Kondom ist keine Einlage nötig. Bei jedem Sex braucht man von Anfang an ein neues Kondom."
           ],
           "P": [
             "Karte „Kombinationspille“, Abschnitt „Wirkung“. Enthält die Pille Hormone?",
