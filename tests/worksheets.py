@@ -11,6 +11,7 @@ LEVELS = {'Foerder': ('Förder','Zeige, wo'), 'ESA': ('ESA','Unterstreiche'),
 
 
 def check():
+    prompts = json.loads((OUT.parent/'material/laufzettel/aufgaben.json').read_text())
     results = []
     for slug, (level, skill) in LEVELS.items():
         path = OUT / 'Laufzettel' / f'Laufzettel-{slug}.pdf'
@@ -27,6 +28,10 @@ def check():
                          'Mein letzter Rat', 'Sicherung', skill, '1 / 2'):
             assert required in texts[0], (slug, required)
         assert all(word in texts[1] for word in ('Celina','Tom','Zusatzfall','2 / 2'))
+        for field, value in prompts[level].items():
+            page_text=texts[1 if field.startswith(('celina','tom')) else 0]
+            for prompt in value if isinstance(value,list) else [value]:
+                assert prompt in page_text, (level,field,prompt)
         if slug == 'AHR':
             assert all(word in texts[1] for word in ('Studie A','Studie B','Grenze','Endpunkt'))
         results.append(dict(datei=path.name,seiten=2,format='A4',

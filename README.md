@@ -18,7 +18,7 @@ Auch im ausgecheckten Projekt lässt sich **index.html** direkt öffnen. Hierbei
 
 ## Im Klassenraum
 
-Laura öffnen, die erste Empfehlung auf Papier begründen und gemeinsam abstimmen. Der Verlauf führt in sieben Abschnitten zur zweiten Empfehlung. Chat und Antworten haben eigene Scrollbereiche. Auf schmalen Displays wechselt das Team mit **Chat lesen** und **Antwort geben** zwischen beiden. Frühere Antworten, Änderungen und Rückfragen bleiben im Chat lesbar. **Sicherung** unterbricht jeden Fall sofort. Über **Zurück** oder die Fallübersicht lässt sich die Arbeit derselben Stufe fortsetzen.
+Laura öffnen, die erste Empfehlung auf Papier begründen und gemeinsam abstimmen. Der Verlauf führt in sieben Abschnitten zur zweiten Empfehlung. Chat und Antworten haben eigene Scrollbereiche. Auf schmalen Displays wechselt das Team mit **Chat lesen** und **Antwort geben** zwischen beiden. Frühere Antworten, Änderungen und Rückfragen bleiben im Chat lesbar. **Sicherung** unterbricht jeden Fall sofort. Bei einem frühen Stopp lassen sich dort Lauras Wünsche ab dem aktuellen Schritt nachlesen. Über **Zurück** oder die Fallübersicht lässt sich die Arbeit derselben Stufe fortsetzen.
 
 Die Anwendung hält die Gespräche ausschließlich im Arbeitsspeicher der geöffneten Seite. Neuladen beginnt eine neue Sitzung. Sie verlangt keine Namen oder persönlichen Erfahrungen. Der SCORM-Adapter öffnet und schließt lediglich die technische Sitzung. itslearning kann unabhängig davon Zugriffe protokollieren.
 

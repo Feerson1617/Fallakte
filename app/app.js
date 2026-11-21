@@ -47,7 +47,6 @@ let level = 'ESA';
 let current = null;
 let screen = 'home';
 let returnTo = 'home';
-let lastLaura = null;
 const sessionKey = (person, tier) => person + '-' + tier;
 const stages = () => FALLAKTE.cases[current.person];
 const stage = () => stages()[current.index];
@@ -107,7 +106,6 @@ function openCase(person,tier) {
     sessions.set(key,current);
     enterStage(0);
   }
-  if (person==='Laura') lastLaura=current;
   $('avatar').className='avatar '+person.toLowerCase();
   $('room-level').textContent=FALLAKTE.meta.levels[tier];
   $('chat-name').textContent=person;
@@ -448,9 +446,15 @@ function auxiliary(id) {
   if (screen==='home'||screen==='room') returnTo=screen;
   show(id);
   if (id==='pause') {
-    $('review-laura').hidden=!lastLaura;
-    $('pause-conflict').hidden=!lastLaura?.finalRefusal;
-    $('pause-conflict').textContent=lastLaura?.finalRefusal ? 'Laura hat eurem letzten Vorschlag nicht zugestimmt. Sie sagt: „'+lastLaura.finalRefusal+'“' : '';
+    const laura=sessions.get(sessionKey('Laura',level));
+    const facts=$('pause-facts');
+    facts.open=false;
+    facts.hidden=laura?.mode==='finished';
+    const remaining=facts.hidden ? [] : FALLAKTE.cases.Laura.slice(laura?.index ?? 0);
+    facts.querySelector('ul').replaceChildren(...remaining.map(s=>el('li','',s.pauseFact)));
+    $('review-laura').hidden=!laura;
+    $('pause-conflict').hidden=!laura?.finalRefusal;
+    $('pause-conflict').textContent=laura?.finalRefusal ? 'Laura hat eurem letzten Vorschlag nicht zugestimmt. Sie sagt: „'+laura.finalRefusal+'“' : '';
   }
   $(id).querySelector('h1').focus({preventScroll:true});
 }
@@ -480,7 +484,7 @@ $('home-nav').onclick=home;
 $('brand').onclick=e=>{e.preventDefault();home();};
 $('cards-nav').onclick=()=>auxiliary('resources');
 $('pause-nav').onclick=()=>auxiliary('pause');
-$('review-laura').onclick=()=>openCase('Laura',lastLaura.level);
+$('review-laura').onclick=()=>openCase('Laura',level);
 document.querySelectorAll('.return').forEach(b=>b.onclick=resume);
 home();
 

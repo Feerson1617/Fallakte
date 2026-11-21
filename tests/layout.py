@@ -120,13 +120,9 @@ def exercise(browser, engine, version, size, url, images):
     operate(frame.locator('#method-P'),touch)
     selected = record('Auswahl')
     if new:
-        # The four single-word method names fit without splitting off individual letters.
-        for button in frame.locator('.method').all():
-            lines = button.evaluate('''e=>{
-              const range=document.createRange(); range.selectNodeContents(e);
-              return new Set([...range.getClientRects()].map(r=>r.top)).size;
-            }''')
-            assert lines == 1, (size,button.inner_text(),lines)
+        labels = measure_labels(frame)
+        if w >= 820:
+            assert len({label['row'] for label in labels}) == 2, (size,labels)
     for _ in range(2):
         operate(frame.locator('#help'),touch)
         if new:
@@ -188,6 +184,46 @@ def large_text(frame,size):
     return dict(normal=before,doubled=after)
 
 
+def measure_labels(view):
+    labels = view.locator('.methods .method').evaluate_all("""buttons => buttons.map(b => {
+      const range = document.createRange();
+      range.selectNodeContents(b);
+      const lines = [...range.getClientRects()];
+      const box = b.getBoundingClientRect();
+      return {name:b.textContent, lines:lines.length, row:box.top, font:getComputedStyle(b).fontSize,
+              fits:lines.every(r => r.left >= box.left && r.right <= box.right &&
+                                    r.top >= box.top && r.bottom <= box.bottom)};
+    })""")
+    assert len(labels) == 4 and all(m['lines']==1 and m['fits'] for m in labels), labels
+    return labels
+
+
+def phone_labels(browser,engine,url):
+    folder = QA/'methoden'
+    folder.mkdir(exist_ok=True)
+    results = []
+    for width in (360,390,420):
+        page = browser.new_page(viewport={'width':width,'height':844},is_mobile=True,has_touch=True)
+        page.goto(url+'/nachher/index.html')
+        page.locator('[data-person=Laura]').tap()
+        page.locator('#write-answer').tap()
+        page.locator('#method-P').tap()
+        page.evaluate('document.fonts.ready')
+        sizes = {}
+        for percent in (100,105,110):
+            page.evaluate("n=>document.documentElement.style.fontSize=n+'%'",percent)
+            sizes[percent] = measure_labels(page)
+            if percent == 100:
+                distinct_rows = {label['row'] for label in sizes[percent]}
+                assert len(distinct_rows) == (4 if width<=390 else 2), (width,distinct_rows)
+                shot = folder/f'{engine}-{width}.jpg'
+                page.locator('.methods').screenshot(path=shot,type='jpeg',quality=85)
+        results.append(dict(width=width, sizes=sizes, screenshot=shot.name,
+                            sha256=hashlib.sha256(shot.read_bytes()).hexdigest()))
+        page.close()
+    return results
+
+
 def accessibility(browser,engine,url):
     # 200% desktop page zoom halves the CSS viewport available for reflow.
     ctx=browser.new_context(viewport={'width':410,'height':325},has_touch=True,is_mobile=True,
@@ -243,7 +279,8 @@ def run():
                             frames.append(exercise(browser,engine,version,size,url,images))
                         print(engine,size,'vier Zustände vor und nach der Optimierung geprüft',flush=True)
                     runs.append(dict(engine=engine,browser=browser.version,frames=frames,
-                                     accessibility=accessibility(browser,engine,url)))
+                                     accessibility=accessibility(browser,engine,url),
+                                     phone_labels=phone_labels(browser,engine,url)))
                     browser.close()
         finally:
             server.shutdown()

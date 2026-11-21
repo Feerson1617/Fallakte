@@ -49,6 +49,9 @@ def run_scenarios(browser, local, screenshots=None):
     expect(page.locator('#task-title')).to_have_text('Gespräch abgeschlossen')
     expect(page.locator('.paper-note')).to_contain_text('Mein letzter Rat')
 
+    button('Zur gemeinsamen Sicherung').click()
+    expect(page.locator('#pause-facts')).to_be_hidden()
+
     # A retained final pill proposal remains disputed through the class review and a return.
     start('Laura')
     for method in ('K', 'H'):
@@ -67,11 +70,63 @@ def run_scenarios(browser, local, screenshots=None):
     refusal=page.locator('#work .response').inner_text()
     expect(history.locator('.person p').last).to_have_text(refusal)
     button('Zur gemeinsamen Sicherung').click()
+    expect(page.locator('#pause-facts')).to_be_hidden()
     expect(page.locator('#pause-conflict')).to_be_visible()
     expect(page.locator('#pause-conflict')).to_contain_text(refusal)
     button('Lauras Chat nachlesen').click()
     expect(page.locator('.unresolved')).to_be_visible()
     expect(page.locator('#work .response')).to_have_text(refusal)
+
+    # A different level starts with its own unread facts, even after another team finished.
+    page.locator('#home-nav').click()
+    page.locator('#level-Foerder').click()
+    button('Sicherung').click()
+    facts = page.locator('#pause-facts')
+    summary = facts.locator('summary')
+    expect(page.locator('#review-laura')).to_be_hidden()
+    expect(facts.locator('ul')).to_be_hidden()
+    summary.click()
+    expect(facts.locator('li')).to_have_count(7)
+    expect(facts).to_contain_text('vor Krankheiten schützen')
+    expect(page.locator('#pause-conflict')).to_be_hidden()
+    page.locator('#pause .return').click()
+    page.locator('[data-person=Laura]').click()
+    suggest('K')
+    keep()
+    suggest('H')
+    keep()
+    button('Weiter nach dem Gespräch').click()
+    page.locator('#method-P').click()
+    page.locator('#combine').check()
+    page.locator('#help').click()
+    page.locator('#help').click()
+    before = history.text_content()
+    draft = page.locator('#draft-preview p').inner_text()
+    hints = page.locator('.hint').all_text_contents()
+    step = page.locator('#step').inner_text()
+    button('Sicherung').click()
+    expect(facts.locator('ul')).to_be_hidden()
+    summary.focus()
+    summary.press('Enter')
+    expect(facts.locator('li')).to_have_count(4)
+    expect(facts.locator('li').first).to_contain_text('will keine Pille')
+    expect(facts).to_contain_text('Andere Mittel mit Hormonen')
+    expect(facts).to_contain_text('Einsetzen')
+    expect(facts).to_contain_text('Regel')
+    expect(facts).to_contain_text('Kondom')
+    expect(facts).to_contain_text('selbst entscheiden')
+    expect(facts).not_to_contain_text('Freundin')
+    if screenshots:
+        page.locator('.pause-note').screenshot(path=screenshots/'Frueher-Stopp.jpg',type='jpeg',quality=82)
+    page.locator('#pause .return').click()
+    assert history.text_content()==before and page.locator('#step').inner_text()==step
+    expect(page.locator('#draft-preview p')).to_have_text(draft)
+    assert page.locator('.hint').all_text_contents()==hints
+    expect(page.locator('#combine')).to_be_checked()
+    expect(page.locator('#method-P')).to_have_attribute('aria-pressed','true')
+    button('Nachricht senden').click()
+    expect(page.locator('.response')).to_contain_text('nicht')
+    expect(button('Vorschlag ändern')).to_be_visible()
 
     # Celina refuses hormones, yet can consider a copper IUD after counselling.
     start('Celina')
@@ -127,6 +182,7 @@ def run_scenarios(browser, local, screenshots=None):
     page.close()
     return ['Laura: wiederholtes Nein, Sorge, Kombination bis zum Abschluss',
             'Laura: letzter Kombinationsvorschlag bleibt in Abschluss, Sicherung und Wiederaufnahme strittig',
+            'Sicherung bei frühem Stopp: offene Stufen, Niveauwechsel, Entwurf und Hilfen erhalten',
             'Celina: Hormongrenze, offene Einlage und Rücknahme',
             'Tom: zweimal ungeeignet, Unterbrechung, dann eigener Kondomvorschlag',
             'Tom: Revision direkt zum Kondom']

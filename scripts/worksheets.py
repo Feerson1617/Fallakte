@@ -30,7 +30,26 @@ def build():
             page.set_content(re.sub(r'{{(\w+)}}', lambda m: slots[m[1]], template))
             page.evaluate('document.fonts.ready')
             for sheet in page.locator('.page').all():
-                assert sheet.evaluate('(e)=>e.querySelector("footer").getBoundingClientRect().bottom < e.getBoundingClientRect().bottom'), tier
+                clipped = sheet.evaluate("""sheet => {
+                  const page = sheet.getBoundingClientRect();
+                  const footer = sheet.querySelector('footer').getBoundingClientRect();
+                  const words = document.createTreeWalker(sheet, NodeFilter.SHOW_TEXT);
+                  const range = document.createRange();
+                  for (let text; (text=words.nextNode());) {
+                    if (!text.textContent.trim()) continue;
+                    range.selectNodeContents(text);
+                    const parent = text.parentElement;
+                    const box = (parent.closest('.box,header,footer,section') || sheet).getBoundingClientRect();
+                    const bottom = parent.closest('footer') ? page.bottom : footer.top;
+                    for (const line of range.getClientRects()) {
+                      if (line.left < Math.max(page.left,box.left)-1 || line.right > Math.min(page.right,box.right)+1 ||
+                          line.top < page.top || line.bottom > Math.min(bottom,box.bottom)+1)
+                        return text.textContent;
+                    }
+                  }
+                  return null;
+                }""")
+                assert clipped is None, (tier,clipped)
             slug = 'Foerder' if tier == 'Förder' else tier
             page.pdf(path=OUT / f'Laufzettel-{slug}.pdf', prefer_css_page_size=True,
                      print_background=True, tagged=True)
