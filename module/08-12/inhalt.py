@@ -111,7 +111,9 @@ def argument_map(person, level):
         near = entries[[1, 2, 3, 2][i]][0]
         ids = [line, near]
         if level == 'ESA' or (person == 'Freundin' and level == 'Förder'):
-            ids.append(next(n for n in all_ids if n not in ids))
+            # Keep the legal fact/norm overlap for the independent, upper-level check.
+            extra = 4 if person == 'Vater' and name == 'Fakt' else next(n for n in all_ids if n not in ids)
+            ids.append(extra)
         if level in LEVELS[2:]:
             ids = all_ids
         options = []

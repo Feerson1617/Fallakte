@@ -69,8 +69,9 @@ def check_content():
             for f in tasks[0]['fields']:
                 valid={o['line'] for o in f['options'] if o['correct']}
                 expected={f['line']}
-                if person=='Vater' and f['name']=='Fakt' and any(o['line']==3 for o in f['options']):
-                    expected.add(3)
+                if person=='Vater' and f['name']=='Fakt':
+                    if level in ('MSA','AHR'): expected.add(3)
+                    else: assert 3 not in [o['line'] for o in f['options']]
                 assert valid==expected and all(o['feedback'] for o in f['options'])
             checks=tasks[1:-1]
             solutions=[next(o['label'] for o in t['options'] if o['correct']) for t in checks]
