@@ -40,6 +40,11 @@ def run_scenarios(browser, local, screenshots=None):
     suggest('P', combine=True)
     expect(page.locator('.response')).to_contain_text('nicht')
     expect(button('Vorschlag ändern')).to_have_count(0)
+    for _ in range(5):
+        page.locator('#help').click()
+    expect(page.locator('#hint-current')).to_contain_text('Vorschlag zurückziehen')
+    page.locator('#help-action').click()
+    expect(button('Vorschlag zurückziehen')).to_be_focused()
     keep()
     expect(history).to_contain_text('Mein Nein gilt auch bei einer Kombination.')
     expect(history.locator('.chat-step').last).to_have_text('Regelschmerzen')

@@ -29,6 +29,7 @@ for matrix in matrices:
 assert all(m['disclosure']['later_facts_visible'] is False for m in matrices)
 assert all(m['article_return']['glossary_state_preserved'] and m['article_return']['jump_to_article'] for m in matrices)
 assert reports['scorm']['schema_valid']
+assert all(run['laura_age']==19 and run['age_levels']==4 for run in reports['scorm']['runs'])
 assert {r['engine'] for r in reports['scorm']['runs']} == {'chromium', 'webkit'}
 content = reports['inhaltsvergleich']
 assert content['built_data_equal'] and content['rendered_paths'] == 84
@@ -38,6 +39,9 @@ assert all(not row['errors'] and not row['external_requests'] for row in views)
 help_runs=reports['lernhilfen']['runs']
 assert {run['engine'] for run in help_runs} == {'chromium','webkit'}
 assert all({r['niveau'] for r in run['wege']} == {'Foerder','ESA','MSA','AHR'} for run in help_runs)
+for engine in help_runs:
+    assert len(engine['wege'])==16
+    assert all(r['hilfe_ohne_scroll'] and r['entwurf_ohne_senden'] and r['stufen']==5 for r in engine['wege'])
 layout = reports['layout']
 assert {run['engine'] for run in layout['runs']} == {'chromium','webkit'}
 for run in layout['runs']:
@@ -76,9 +80,12 @@ with ZipFile(package, 'w', ZIP_DEFLATED) as z:
         expected=reports['bedienung']['screenshots'][filename]
         assert hashlib.sha256((QA/filename).read_bytes()).hexdigest() == expected
         z.write(QA/filename, 'Bildschirmfotos/'+filename)
-    shot=QA/'Auffanghilfe.jpg'
-    assert hashlib.sha256(shot.read_bytes()).hexdigest()==reports['lernhilfen']['screenshot_sha256']
-    z.write(shot,'Bildschirmfotos/'+shot.name)
+    help_photos=reports['lernhilfen']['screenshots']
+    assert set(help_photos)=={'Hilfe-vor-Auswahl.jpg','Hilfe-nach-Rueckmeldung.jpg','Auffanghilfe.jpg'}
+    for name, expected in help_photos.items():
+        shot = QA/name
+        assert hashlib.sha256(shot.read_bytes()).hexdigest()==expected
+        z.write(shot,'Bildschirmfotos/'+name)
     for run in layout['runs']:
         for row in run['phone_labels']:
             path=QA/'methoden'/row['screenshot']

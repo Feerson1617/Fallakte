@@ -253,10 +253,49 @@ function ask(index) {
   // If a partner is rereading, the answer is also available beside the controls.
   focusTask();
 }
+function feedbackIssue(s,choice) {
+  const last=choice.split('+').pop();
+  if (s.declined?.[last]) return current.person==='Laura' ? 'Laura hat die Pille abgelehnt. Das gilt auch für eine Kombination.' : 'Celina möchte keine zusätzlichen Hormone. Diese Methode enthält Hormone.';
+  if (['L0','L5','C3'].includes(s.id) && !choice.includes('K'))
+    return 'Dieser Vorschlag allein schützt nicht vor Infektionen beim Sex.';
+  if (s.id==='T0' && choice!=='K') return choice.includes('+') ?
+    'Nur das Kondom in eurem Vorschlag kann Tom selbst benutzen.' : 'Diese Methode kann Tom nicht am eigenen Körper anwenden.';
+  return '';
+}
+
+function lastHelp(s,method) {
+  // The final hint may prepare a draft. Sending or deciding stays with the team.
+  if (s.options.DONE || current.mode==='tomSelf') {
+    const next=$('work').querySelector('.primary');
+    const paper=s.id==='T2' ? s.task[current.level]+' ' :
+      s.id==='L2' || s.id==='T1' ? 'Besprecht euren Grund. ' : '';
+    return {text:paper+'Tippe danach auf „'+next.textContent+'“. '+
+      'Mit „Zur Schaltfläche“ findest du sie wieder.',label:'Zur Schaltfläche',run:()=>focusInWork(next)};
+  }
+  if (current.mode==='reply' || current.mode==='review') {
+    const options=$('work').querySelector('.row').querySelectorAll('button');
+    if (current.revised || code()===method) {
+      const withdraw=current.revised && Boolean(feedbackIssue(s,code()));
+      const target=withdraw ? options[1] : options[0];
+      const text=withdraw ? 'Wenn ihr den neuen Rat nicht mehr vertreten könnt, tippt auf „Vorschlag zurückziehen“.' :
+        'Wenn ihr bei eurem begründeten Rat bleibt, tippt auf „Vorschlag beibehalten“.';
+      return {text,label:'Zur Schaltfläche',run:()=>focusInWork(target)};
+    }
+  }
+  const name=FALLAKTE.methods[method][0];
+  return {text:'Für dieses Beispiel: Wähle „'+name+'“. Prüfe den Entwurf und tippe selbst auf „Nachricht senden“. Du kannst auch anders wählen.',
+    label:name+' als Entwurf öffnen',run:()=>{
+      if (current.mode==='reply' || current.mode==='review') reviseProposal();
+      selectMethod(method);
+    }};
+}
+
 function stageSupport() {
   const s=stage();
   const support=LERNHILFEN[s.id];
-  const choice=code();
+  let choice=code();
+  if (current.mode==='tomSelf' || (current.mode==='reply' && ['L0','C3','L5','T0'].includes(s.id) &&
+      !choice.includes('K') && !s.declined?.[choice])) choice='K';
   const method=choice.split('+').pop() || support.karte;
   const raw=s.hints[choice || (s.options.DONE?'DONE':method)];
   let pair;
@@ -293,7 +332,8 @@ function stageSupport() {
       article.focus({preventScroll:true});
     }};
   }
-  return {steps:[...pair,support[current.level]],source};
+  const action=lastHelp(s,support.beispielMethode);
+  return {steps:[...pair,support[current.level],forLevel(support.beispiel),action.text],source,action};
 }
 
 function positionHelp() {
@@ -306,7 +346,7 @@ function positionHelp() {
 function changeHelp(depth) {
   current.help=depth;
   drawWork();
-  if (!depth) {focusInWork($('help'));return;}
+  if (!depth) {$('help').focus({preventScroll:true});return;}
   const control=document.querySelector('#work .row, #work .methods, #work .primary');
   if (control && !$('send')) revealInWork(control);
   $('hint-current').focus({preventScroll:true});
@@ -314,11 +354,10 @@ function changeHelp(depth) {
 
 function addTools(area) {
   const actions=el('div','tools');
-  const access=current.help ? el('div','help-controls') : actions;
-  const {steps,source}=stageSupport();
-  renderHelp($('support-panel'),access,steps,current.help,changeHelp,source);
+  const {steps,source,action}=stageSupport();
+  renderHelp($('support-panel'),$('help-dock'),steps,current.help,changeHelp,source,action);
   positionHelp();
-  if (stage().questions.length>current.asked.length) {
+  if (current.mode!=='tomSelf' && stage().questions.length>current.asked.length) {
     const q=button(current.questionsOpen?'Fragen schließen':'Rückfrage stellen',()=>{
       current.questionsOpen=!current.questionsOpen;
       drawWork();
@@ -349,10 +388,19 @@ function taskTitle(area,title) {
   h.id='task-title';h.tabIndex=-1;
   area.append(h);
 }
+function selectMethod(id) {
+  Object.assign(current,{selected:id,additional:'',combined:false,help:0,questionsOpen:false});
+  drawWork();
+  $('method-'+id).focus({preventScroll:true});
+  revealInWork($('draft-preview'));
+}
 function drawWork() {
   const area=$('work');
   $('send')?.remove();
   area.replaceChildren();
+  $('help-dock').replaceChildren();
+  $('help-dock').hidden=true;
+  $('chat-help').hidden=current.mode==='finished';
   $('support-panel').hidden=true;
   $('support-panel').replaceChildren();
   $('step').textContent='Schritt '+(current.index+1)+' von '+stages().length;
@@ -402,6 +450,7 @@ function drawWork() {
       changeHistory(()=>say('team',s.selfAdvice));
       nextStage();
     },'primary','send'));
+    addTools(area);
     return;
   }
   if (current.mode==='reply') {
@@ -411,6 +460,12 @@ function drawWork() {
     let guide='Besprecht kurz euren Grund. Behaltet den Vorschlag bei oder ändert ihn.';
     if (current.revised) guide='Besprecht euren neuen Rat. Behaltet ihn bei oder zieht ihn zurück.';
     else if (s.id==='L0') guide='Stimmt zuerst in der Klasse ab. Entscheidet danach mit einem Grund: beibehalten oder ändern?';
+    const issue=feedbackIssue(s,code());
+    if (issue) {
+      const next=current.revised ? 'Vorschlag zurückziehen' : 'Vorschlag ändern';
+      guide=(s.id==='L0' && !current.revised ? 'Stimmt zuerst in der Klasse ab. ' : '')+
+        issue+' Tippe auf „'+next+'“, wenn du deinen Rat korrigieren möchtest. Die Hilfe zeigt dir die Kartenstelle.';
+    }
     area.append(el('p',s.id==='L0' && !current.revised?'decision-guide paper-note':'decision-guide',guide));
     const row=el('div','row');
     row.append(button('Vorschlag beibehalten',()=>decideProposal(true),'outline'));
@@ -438,12 +493,7 @@ function drawWork() {
   const methods=el('div','methods');
   methods.setAttribute('role','group');methods.setAttribute('aria-label','Methode auswählen');
   for (const [id,[name]] of orderedMethods) {
-    const b=button(name,()=>{
-      Object.assign(current,{selected:id,additional:'',combined:false,help:0,questionsOpen:false});
-      drawWork();
-      $('method-'+id).focus({preventScroll:true});
-      revealInWork($('draft-preview'));
-    },'method');
+    const b=button(name,()=>selectMethod(id),'method');
     b.id='method-'+id;
     b.setAttribute('aria-pressed',current.selected===id);
     methods.append(b);
@@ -492,7 +542,7 @@ function drawWork() {
     preview.id='draft-preview';
     send.id='send'; send.setAttribute('aria-describedby','draft-preview');
     area.append(preview);
-    $('answer-panel').append(send);
+    $('help-dock').before(send);
   }
   addTools(area);
 }
@@ -537,6 +587,10 @@ $('latest').onclick=()=>{
   const i=current.log.length-1;
   toEntry(i);
   $('history').focus({preventScroll:true});
+};
+$('chat-help').onclick=()=>{
+  showPane('answer');
+  changeHelp(current.help || 1);
 };
 $('read-chat').onclick=()=>showPane('chat');
 $('write-answer').onclick=()=>showPane('answer');

@@ -21,22 +21,22 @@ const FALLAKTE = {
         "type": "class_poll_intro",
         "message": {
           "Foerder": [
-            "Hi, ich bin Laura. Ich bin 16.",
+            "Hi, ich bin Laura. Ich bin 19.",
             "Beim Sex können Krankheiten übertragen werden. Davor möchte ich mich schützen.",
             "Welche Verhütungsmethode könnt ihr mir dafür empfehlen?"
           ],
           "ESA": [
-            "Hi, ich bin Laura, 16.",
+            "Hi, ich bin Laura, 19.",
             "Beim Sex möchte ich mich vor sexuell übertragbaren Infektionen schützen.",
             "Welche Verhütungsmethode könnt ihr mir dafür empfehlen?"
           ],
           "MSA": [
-            "Hi, ich bin Laura, 16.",
+            "Hi, ich bin Laura, 19.",
             "Ich möchte beim Sex das Risiko sexuell übertragbarer Infektionen verringern.",
             "Welche der bekannten Verhütungsmethoden würdet ihr mir empfehlen?"
           ],
           "AHR": [
-            "Hi, ich bin Laura, 16.",
+            "Hi, ich bin Laura, 19.",
             "Ich möchte beim Sex das Risiko sexuell übertragbarer Infektionen verringern.",
             "Welche der vier bekannten Methoden würdet ihr für dieses Ziel zunächst vorschlagen?"
           ]

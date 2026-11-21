@@ -67,7 +67,12 @@
       assert(document.querySelector('#help').textContent==='Satzanfang zeigen','Premature or absent scaffold');
       click('#help');
       assert(document.querySelector('#hint-current p').textContent.includes('…'),'Missing sentence frame');
-      assert(document.querySelectorAll('.hint').length===3 && !document.querySelector('#help'),'Unbounded hints');
+      assert(!document.querySelector('#help-action'),'Early action');
+      click('#help');
+      assert(document.querySelector('#hint-current small').textContent==='Eine mögliche Begründung','Missing example');
+      click('#help');
+      assert(document.querySelectorAll('.hint').length===5 && !document.querySelector('#help'),'Unbounded hints');
+      assert(document.querySelector('#help-action'),'Missing action');
     }
     for (const element of document.querySelectorAll('#work, #work button, #work p, #history .bubble, .article')) {
       assert(element.scrollWidth<=element.clientWidth+2,'Text overflow: '+stage.id+' '+element.className);

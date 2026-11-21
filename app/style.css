@@ -159,3 +159,12 @@ html.consulting,html.consulting body{height:100vh;height:100dvh;min-height:0;ove
 #answer-panel:has(#support-panel:not([hidden])) #work{flex:1}
 .task-reminder summary{display:flex;align-items:center;font-size:.9375rem;padding:0;color:var(--muted)}
 .task-reminder summary::before{content:'▸';margin-right:.4em}.task-reminder[open] summary::before{content:'▾'}
+#help-dock{flex:none;margin-top:auto;justify-content:flex-start;gap:4px;padding:3px 8px;background:#eef3f4;border-top:1px solid #c2d1d4}
+.help-trigger,#chat-help{display:inline-flex;align-items:center;justify-content:center;gap:7px;background:#214b61;color:#fff;padding:5px 10px;line-height:1.2}
+.help-trigger{flex:1;font-size:.9375rem}.help-trigger svg{order:-1}
+#room[data-pane="answer"] #chat-help{display:none}
+#help-dock .text-button{padding:0 5px}
+.help-notes #help-action{display:block;margin:4px 0}
+
+.card-nav{position:sticky;top:0;z-index:1;display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--paper)}
+@media(max-width:680px) and (min-height:550px){.card-nav{top:96px}}

@@ -56,6 +56,14 @@ def compare(reference):
     archive = subprocess.check_output(['git', 'archive', '--format=zip', APPROVED, *inputs], cwd=ROOT)
     with ZipFile(io.BytesIO(archive)) as files:
         files.extractall(reference)
+    # Apply only the expressly approved four greeting edits to the independent oracle.
+    dialog_file = reference / 'data/dialogdaten.js'
+    dialog = dialog_file.read_text()
+    for before, after, count in [('Hi, ich bin Laura. Ich bin 16.', 'Hi, ich bin Laura. Ich bin 19.', 1),
+                                 ('Hi, ich bin Laura, 16.', 'Hi, ich bin Laura, 19.', 3)]:
+        assert dialog.count(before) == count
+        dialog = dialog.replace(before, after)
+    dialog_file.write_text(dialog)
     for script in ('scripts/build.py', 'scripts/worksheets.py'):
         subprocess.run([sys.executable, script], cwd=reference, check=True)
     sources = ('data/dialogdaten.js', 'material/laufzettel/aufgaben.json', 'material/laufzettel/vorlage.html')
@@ -92,7 +100,7 @@ def compare(reference):
                         assert actual[part] == expected[part], (person, tier, strategy, part)
                     paths += 1
         browser.close()
-    return dict(reference_commit=APPROVED, source_files=sources, built_data_equal=True,
+    return dict(reference_commit=APPROVED, approved_change='Laura · vier Begrüßungen · 19 Jahre', source_files=sources, built_data_equal=True,
                 rendered_paths=paths, pdf_page_text_sha256=pdfs)
 
 

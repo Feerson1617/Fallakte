@@ -4,7 +4,7 @@
 
 ## Ablauf für 28 Lernende an 14 iPads
 
-Ein Gerät je Paar, ein Laufzettel je Person. Eine Person liest Lauras Nachricht, die andere sucht die passende Kartenstelle. Nach Lauras Bericht über ihre Freundin wechseln die Rollen. Die Zeiten sind Planungswerte und wurden noch nicht mit der Klasse gemessen.
+Die Fallperson Laura ist 19 Jahre alt. Ein Gerät je Paar, ein Laufzettel je Person. Eine Person liest Lauras Nachricht, die andere sucht die passende Kartenstelle. Nach Lauras Bericht über ihre Freundin wechseln die Rollen. Die Zeiten sind Planungswerte und wurden noch nicht mit der Klasse gemessen.
 
 | Abschnitt | Arbeit der Klasse |
 | --- | --- |

@@ -7,7 +7,7 @@ from playwright.sync_api import expect, sync_playwright
 from acceptance import LOCAL, QA, ROOT, save
 
 
-def help_path(browser, level, size, screenshot=None):
+def help_path(browser, level, size, photos=False):
     page = browser.new_page(viewport=dict(zip(('width', 'height'), size)), has_touch=True)
     page.goto(LOCAL.as_uri())
     ui = page.locator
@@ -15,57 +15,81 @@ def help_path(browser, level, size, screenshot=None):
     ui('#level-'+level).click()
     ui('[data-person=Laura]').click()
     history = ui('#history')
-    chat_top = history.evaluate('e=>e.scrollTop')
+    expect(history.locator('.person p').first).to_have_text(
+        'Hi, ich bin Laura. Ich bin 19.' if level=='Foerder' else 'Hi, ich bin Laura, 19.')
     messages = history.text_content()
+    chat_box = history.bounding_box()
     panel = ui('#support-panel')
+    labels = ('Du kommst nicht weiter? – Hilfe anzeigen','Zweite Hilfe','Satzanfang zeigen',
+              'Beispiel zeigen','Nächsten Schritt zeigen')
 
-    def open_three():
+    def shot(name):
+        if photos:
+            page.screenshot(path=QA/(name+'.jpg'), type='jpeg', quality=78)
+
+    def ready(control):
+        # No locator click/scroll before measuring. Detect clipping and overlapping siblings.
+        expect(control).to_be_in_viewport(ratio=.99)
+        if ui('#room').is_visible():
+            assert abs(ui('#help-dock').evaluate('e=>e.getBoundingClientRect().bottom-innerHeight'))<=1
+        assert control.evaluate("""b=>{const r=b.getBoundingClientRect();
+            return b.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));}""")
+
+    def open_to(depth):
         expect(panel).to_be_hidden()
-        for n, label in enumerate(('Hilfe','Zweite Hilfe','Satzanfang zeigen'), start=1):
-            if n < 3:
-                expect(button('Satzanfang zeigen')).to_have_count(0)
+        scroll = history.evaluate('e=>e.scrollTop')
+        for n,label in enumerate(labels[:depth],1):
+            ready(button(label))
+            expect(ui('#help-action')).to_have_count(0)
             button(label).click()
             expect(panel.locator('.hint')).to_have_count(n)
             expect(ui('#hint-current')).to_be_focused()
-            expect(history.locator('.person').last).to_be_in_viewport(ratio=.95)
-        expect(button('Satzanfang zeigen')).to_have_count(0)
-        expect(ui('#hint-current p')).to_contain_text('…')
+            assert history.bounding_box() == chat_box and history.evaluate('e=>e.scrollTop') == scroll
         assert page.evaluate('scrollY') == 0
-        return ui('#hint-current p').inner_text()
 
-    scaffold = open_three()
+    ready(button(labels[0]))
+    shot('Hilfe-vor-Auswahl')
+    open_to(3)
+    scaffold = ui('#hint-current p').inner_text()
+    expect(panel.locator('.hint').first).to_contain_text('Karte „Kondom“, Abschnitt „Infektionsschutz“')
     expect(ui('.method[aria-pressed=true]')).to_have_count(0)
     expect(ui('#send')).to_have_count(0)
-    expect(ui('#method-P')).to_be_in_viewport(ratio=.99)
-    assert history.text_content() == messages and history.evaluate('e=>e.scrollTop') == chat_top
-    button('Karte „Kombinationspille“ lesen').click()
-    expect(ui('#card-P dt').get_by_text('Infektionsschutz', exact=True)).to_be_focused()
+    assert history.text_content() == messages
+    button('Karte „Kondom“ lesen').click()
+    expect(ui('#card-K dt').get_by_text('Infektionsschutz', exact=True)).to_be_focused()
+    ready(ui('#resources .return'))
     ui('#resources .return').click()
     expect(ui('#hint-current p')).to_have_text(scaffold)
+    button('Vorherige Hilfe').click()
+    expect(ui('#hint-current p')).to_contain_text('Risiko')
     button('Hilfe schließen').click()
 
     ui('#method-Cu').click()
-    button('Hilfe').click()
+    button(labels[0]).click()
     expect(ui('#hint-current p')).to_contain_text('Kupferspirale')
     ui('#method-P').click()
     expect(panel).to_be_hidden()
-    open_three()
+    ui('#work').evaluate('e=>e.scrollTop=e.scrollHeight')
+    open_to(2)
     expect(panel.locator('.hint').first).to_contain_text('Kombinationspille')
-    expect(panel.locator('.hint').nth(1)).to_contain_text('schützt nicht')
-    expect(ui('#send')).to_be_in_viewport(ratio=.99)
+    ready(ui('#send'))
     ui('#send').click()
     expect(ui('#task-title')).to_have_text('Laura antwortet')
-    expect(ui('.decision-guide')).to_contain_text('Stimmt zuerst')
-    expect(ui('.response')).to_contain_text('Infektionen')
+    expect(ui('.decision-guide')).to_contain_text('Vorschlag ändern')
+    expect(ui('.decision-guide')).to_contain_text('schützt nicht vor Infektionen')
     after_reply = history.text_content()
-    open_three()
+    ready(button(labels[0]))
+    shot('Hilfe-nach-Rueckmeldung')
+    open_to(5)
+    expect(panel.locator('.hint').first).to_contain_text('Kondom')
+    expect(ui('#hint-current p')).to_contain_text('Nachricht senden')
+    expect(ui('#help-action')).to_have_text('Kondom als Entwurf öffnen')
+    ready(ui('#help-action'))
     for label in ('Vorschlag beibehalten','Vorschlag ändern'):
-        expect(button(label)).to_be_in_viewport(ratio=.99)
-    if screenshot:
-        page.screenshot(path=screenshot, type='jpeg', quality=78)
+        ready(button(label))
+    shot('Auffanghilfe')
     ui('#pause-nav').click()
     ui('#pause .return').click()
-    expect(ui('#hint-current p')).to_have_text(scaffold)
     assert history.text_content() == after_reply
     ui('#home-nav').click()
     ui('[data-person=Tom]').click()
@@ -73,18 +97,37 @@ def help_path(browser, level, size, screenshot=None):
     ui('#home-nav').click()
     ui('[data-person=Laura]').click()
     assert history.text_content() == after_reply
-    expect(panel.locator('.hint')).to_have_count(3)
-    button('Vorschlag ändern').click()
+    expect(panel.locator('.hint')).to_have_count(5)
+    ui('#help-action').click()
     expect(panel).to_be_hidden()
-    ui('#method-K').click()
+    expect(ui('#method-K')).to_have_attribute('aria-pressed','true')
+    assert history.text_content() == after_reply
+    # Revision still allows a different draft and another visit to all levels of help.
+    ui('#method-H').click()
+    open_to(5)
+    ui('#help-action').click()
     ui('#additional').select_option('H')
     ui('#send').click()
+    expect(button('Vorschlag zurückziehen')).to_be_visible()
     button('Vorschlag beibehalten').click()
     expect(ui('#step')).to_have_text('Schritt 2 von 7')
     expect(panel).to_be_hidden()
     page.close()
-    return dict(niveau=level, frame=size, vor_auswahl=True, methodenwechsel=True, nach_rueckmeldung=True,
-                kartenstelle=True, unterbrechung=True, kombination=True, satzanfang=scaffold)
+    return dict(niveau=level,frame=size,vor_auswahl=True,methodenwechsel=True,nach_rueckmeldung=True,
+                kartenstelle=True,unterbrechung=True,kombination=True,satzanfang=scaffold,
+                laura_age=19,hilfe_ohne_scroll=True,stufen=5,entwurf_ohne_senden=True)
+
+
+def phone_entry(browser):
+    page=browser.new_page(viewport={'width':390,'height':844},is_mobile=True,has_touch=True)
+    page.goto(LOCAL.as_uri())
+    page.locator('[data-person=Laura]').tap()
+    page.locator('#chat-help').tap()
+    expect(page.locator('#hint-current')).to_contain_text('Kondom')
+    expect(page.locator('.method[aria-pressed=true]')).to_have_count(0)
+    page.get_by_role('button',name='Hilfe schließen').tap()
+    expect(page.locator('#help')).to_be_in_viewport(ratio=.99)
+    page.close()
 
 
 def independent_panel(browser):
@@ -105,7 +148,7 @@ def independent_panel(browser):
       }
       draw(0);
     }""")
-    for name in ('Hilfe','Zweite Hilfe','Satzanfang zeigen','Quelle öffnen'):
+    for name in ('Du kommst nicht weiter? – Hilfe anzeigen','Zweite Hilfe','Satzanfang zeigen','Quelle öffnen'):
         page.get_by_role('button',name=name,exact=True).click()
     expect(page.locator('#panel')).to_have_attribute('data-source','open')
     page.get_by_role('button',name='Hilfe schließen').click()
@@ -121,13 +164,16 @@ if __name__ == '__main__':
             exe=os.environ.get(engine.upper()+'_EXECUTABLE')
             browser=getattr(p,engine).launch(**({'executable_path':exe} if exe else {}))
             independent_panel(browser)
+            phone_entry(browser)
             runs=[]
             for level in ('Foerder','ESA','MSA','AHR'):
-                shot=QA/'Auffanghilfe.jpg' if (engine,level)==('chromium','Foerder') else None
-                runs.append(help_path(browser,level,(820,650) if level in ('Foerder','MSA') else (1024,600),shot))
+                for size in ((820,650),(1024,600),(820,1180),(1180,820)):
+                    photos=(engine,level,size)==('chromium','Foerder',(820,650))
+                    runs.append(help_path(browser,level,size,photos))
             assert len({r['satzanfang'] for r in runs})==4
             results.append(dict(engine=engine,version=browser.version,wege=runs))
             browser.close()
     save('lernhilfen',dict(runs=results,lernerprobung=False,
-         modulunabhaengig_geprueft=True, screenshot_sha256=hashlib.sha256((QA/'Auffanghilfe.jpg').read_bytes()).hexdigest()))
-    print('Acht Hilfewege über alle vier Niveaus in Chromium und WebKit bestanden.')
+         modulunabhaengig_geprueft=True, screenshots={name:hashlib.sha256((QA/name).read_bytes()).hexdigest() for name in
+             ('Auffanghilfe.jpg','Hilfe-vor-Auswahl.jpg','Hilfe-nach-Rueckmeldung.jpg')}))
+    print('32 Hilfewege über alle vier Niveaus in Chromium und WebKit bestanden.')

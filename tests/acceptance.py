@@ -241,6 +241,14 @@ def test_scorm(browser):
             page=browser.new_page()
             page.goto(f'http://127.0.0.1:{server.server_port}/host.html')
             frame=page.frame_locator('iframe')
+            for tier in ('Foerder','ESA','MSA','AHR'):
+                frame.locator('#level-'+tier).click()
+                frame.locator('[data-person=Laura]').click()
+                expect(frame.locator('#history .person p').first).to_have_text(
+                    'Hi, ich bin Laura. Ich bin 19.' if tier=='Foerder' else 'Hi, ich bin Laura, 19.')
+                frame.locator('#home-nav').click()
+            frame.locator('#level-ESA').click()
+            page.reload()
             frame.locator('#pause-nav').click()
             expect(frame.locator('#class-stop')).to_be_hidden()
             expect(frame.locator('#pause-facts li')).to_have_count(0)
@@ -265,7 +273,7 @@ def test_scorm(browser):
         finally:
             server.shutdown()
             server.server_close()
-    return dict(launch=launch,members=members,observed_calls=calls)
+    return dict(launch=launch,members=members,observed_calls=calls,laura_age=19,age_levels=4)
 
 
 if __name__=='__main__':
@@ -291,5 +299,5 @@ if __name__=='__main__':
     first=scorm_runs[0]
     save('scorm',dict(schema_valid=True,launch=first['launch'],members=first['members'],
                      observed_calls=first['observed_calls'],runs=scorm_runs))
-    images={p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in QA.glob('*.jpg') if p.name!='Auffanghilfe.jpg'}
+    images={p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in QA.glob('*.jpg') if p.name not in {'Auffanghilfe.jpg','Hilfe-vor-Auswahl.jpg','Hilfe-nach-Rueckmeldung.jpg'}}
     save('bedienung',dict(runs=results,screenshots=images,real_ipad=False,itslearning=False,student_trial=False))

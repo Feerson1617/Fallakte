@@ -35,16 +35,17 @@
     <div class="pane-switch" role="group" aria-label="Arbeitsansicht">
       <button id="read-chat" aria-controls="chat-panel"><i data-icon="chat"></i> Chat lesen</button>
       <button id="write-answer" aria-controls="answer-panel"><i data-icon="pencil"></i> Antwort geben</button>
+      <button id="chat-help" aria-controls="support-panel"><i data-icon="help"></i> Hilfe</button>
     </div>
     <div class="workspace">
       <section class="chat panel" id="chat-panel" aria-label="Beratungsgespräch">
         <div id="history" role="log" aria-live="off" aria-label="Bisherige Nachrichten" tabindex="0"></div>
         <button id="latest" class="latest" hidden><i data-icon="down"></i> Zur aktuellen Nachricht</button>
       </section>
-      <section class="work panel" id="answer-panel" aria-label="Antwortbereich"><div id="work"></div><section id="support-panel" aria-label="Hilfen zum aktuellen Schritt" hidden></section></section>
+      <section class="work panel" id="answer-panel" aria-label="Antwortbereich"><div id="work"></div><section id="support-panel" aria-label="Hilfen zum aktuellen Schritt" hidden></section><div id="help-dock" class="help-controls" hidden></div></section>
     </div>
   </section>
-  <section class="shell secondary" id="resources" hidden><span class="eyebrow"><i data-icon="book"></i> Nachschlagen</span><h1 tabindex="-1">Infokarten</h1><p>Nutzt zuerst eure eigenen Infokarten. Hier könnt ihr nachlesen. Beim Schwangerschaftsschutz vergleichen alle vier Karten ein Jahr Anwendung im Alltag.</p><div id="method-cards"></div><button class="primary return">Zurück</button></section>
+  <section class="shell secondary" id="resources" hidden><span class="eyebrow"><i data-icon="book"></i> Nachschlagen</span><div class="card-nav"><h1 tabindex="-1">Infokarten</h1><button class="primary return">Zurück</button></div><p>Nutzt zuerst eure eigenen Infokarten. Hier könnt ihr nachlesen. Beim Schwangerschaftsschutz vergleichen alle vier Karten ein Jahr Anwendung im Alltag.</p><div id="method-cards"></div></section>
   <section class="shell secondary" id="pause" hidden>
     <span class="eyebrow"><i data-icon="group"></i> Gemeinsam in der Klasse</span>
     <h1 tabindex="-1">Zeit für die Sicherung</h1>
