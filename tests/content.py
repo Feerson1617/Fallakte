@@ -1,7 +1,5 @@
-"""Compare the delivered learner materials with the approved Git revision."""
-import hashlib
+"""Compare the built casework and every conversation with the pre-cleanup release."""
 import io
-import json
 import subprocess
 import sys
 from pathlib import Path
@@ -9,32 +7,21 @@ from tempfile import TemporaryDirectory
 from zipfile import ZipFile
 
 from playwright.sync_api import sync_playwright
-from pypdf import PdfReader
 
-from acceptance import LOCAL, MATRIX, OUT, QA, ROOT, save
+from acceptance import LOCAL, MATRIX, QA, ROOT, save
 
-APPROVED = '859a01d27989ed93d57759346aa2c6420d51b273'
+APPROVED = 'fc9b01c8c13b7bd4632c5b34e054a428ebc931d7'
 STRATEGIES = ('K', 'P', 'Cu', 'H', 'K+P', 'K+Cu', 'K+H')
-# Compare the approved tasks, decisions and feedback independently of the new help UI.
-# The history keeps the order of all sent messages, replies and shared articles.
 TRACE = """args => {
   const work = document.getElementById('work');
   const steps = [];
   const capture = () => {
-    const copy = work.cloneNode(true);
-    if (current && stage().id==='L0') copy.querySelectorAll('.extra-method,.combine').forEach(e => e.remove());
-    copy.querySelectorAll('.tools,.hint,.pick,.task-reminder summary').forEach(e => e.remove());
-    for (const button of copy.querySelectorAll('button.text-button')) {
-      if (/^Karte „.+“ lesen$|^Chatstelle lesen$|^Artikel nachlesen$/.test(button.textContent)) button.remove();
-    }
-    copy.querySelector('.decision-guide')?.remove();
-    const oldGuides = ['Stimmt in der Klasse über euren ersten Rat ab.',
-      'Bleibt ihr bei eurem Vorschlag oder ändert ihr ihn? Sagt euch kurz, warum.',
-      'Bleibt ihr dabei oder zieht ihr den Vorschlag zurück? Sagt euch kurz, warum.'];
-    copy.querySelectorAll('p').forEach(e => { if (oldGuides.includes(e.textContent)) e.remove(); });
-    const title = copy.querySelector('#task-title');
-    if (title && ['Dein Vorschlag','Prüfe deine Nachricht','Mein erster Rat','Zuerst auf dem Laufzettel','Wähle eine Methode'].includes(title.textContent)) title.remove();
-    steps.push([copy.textContent, document.getElementById('send')?.textContent]);
+    // The heading and navigation on the final screen changed. Its decision still matters.
+    const text = current?.mode==='finished'
+      ? Array.from(work.querySelectorAll('.unresolved,.response,.paper-note'), e=>e.textContent)
+      : work.textContent;
+    steps.push([text, document.getElementById('support-panel').textContent,
+                document.getElementById('send')?.textContent]);
   };
   document.addEventListener('click', capture, true);
   document.addEventListener('change', capture, true);
@@ -49,73 +36,46 @@ TRACE = """args => {
 }""".replace('MATRIX', MATRIX)
 
 
-def pdf_text(path):
-    return [' '.join(page.extract_text().split()) for page in PdfReader(path).pages]
-
-
 def compare(reference):
-    inputs = ('app', 'assets', 'data', 'index.html', 'material', 'scorm', 'scripts/build.py', 'scripts/worksheets.py')
+    inputs = ('app', 'assets', 'data', 'index.html', 'scorm', 'scripts/build.py')
     archive = subprocess.check_output(['git', 'archive', '--format=zip', APPROVED, *inputs], cwd=ROOT)
     with ZipFile(io.BytesIO(archive)) as files:
         files.extractall(reference)
-    # Apply the approved age and L0 changes to the independently archived materials.
-    dialog_file = reference / 'data/dialogdaten.js'
-    dialog = dialog_file.read_text()
-    for before, after, count in [('Hi, ich bin Laura. Ich bin 16.', 'Hi, ich bin Laura. Ich bin 19.', 1),
-                                 ('Hi, ich bin Laura, 16.', 'Hi, ich bin Laura, 19.', 3)]:
-        assert dialog.count(before) == count
-        dialog = dialog.replace(before, after)
-    data = json.loads(dialog.split('=', 1)[1].strip()[:-1])
-    first = data['cases']['Laura'][0]
-    assert first['id'] == 'L0'
-    for section in ('options','hints','replies'):
-        for combination in ('K+P','K+Cu','K+H'):
-            del first[section][combination]
-    first['task'] = dict.fromkeys(first['task'], 'Wähle die Methode, die du bei „Mein erster Rat“ notiert hast.')
-    dialog_file.write_text('const FALLAKTE = '+json.dumps(data, ensure_ascii=False, indent=2)+';\n')
-    for script in ('scripts/build.py', 'scripts/worksheets.py'):
-        subprocess.run([sys.executable, script], cwd=reference, check=True)
-    sources = ('data/dialogdaten.js', 'material/laufzettel/aufgaben.json', 'material/laufzettel/vorlage.html')
-    for name in sources:
+    subprocess.run([sys.executable, 'scripts/build.py'], cwd=reference, check=True)
+    for name in ('data/lernhilfen.js', 'app/lernhilfen.js', 'app/ui.js'):
         assert (ROOT / name).read_bytes() == (reference / name).read_bytes(), name
-
-    reference_dist = reference / 'dist'
-    pdfs = {}
-    for slug in ('Foerder', 'ESA', 'MSA', 'AHR'):
-        name = Path('Laufzettel') / f'Laufzettel-{slug}.pdf'
-        actual = pdf_text(OUT / name)
-        assert len(actual) == 2 and actual == pdf_text(reference_dist / name), name
-        pdfs[slug] = [hashlib.sha256(text.encode()).hexdigest() for text in actual]
 
     paths = 0
     with sync_playwright() as p:
         browser = p.chromium.launch()
         approved = browser.new_page()
         candidate = browser.new_page()
-        reference_url = (reference_dist / 'Fallakte.html').as_uri()
-        approved.goto(reference_url)
+        approved.goto((reference/'dist/Fallakte.html').as_uri())
         candidate.goto(LOCAL.as_uri())
         data = approved.evaluate('FALLAKTE')
-        assert candidate.evaluate('FALLAKTE') == data, 'Falldaten in der gebauten HTML-Datei'
+        del data['meta']['stopTask']
+        for stage in data['cases']['Laura']:
+            del stage['pauseFact']
+        assert candidate.evaluate('FALLAKTE') == data
         for tier in data['meta']['levels']:
             for person in data['cases']:
                 for strategy in STRATEGIES:
                     for page in (approved, candidate):
                         page.reload()
-                    case = dict(person=person, tier=tier, strategy=strategy, data=data)
-                    expected = approved.evaluate(TRACE, case)
+                    case = dict(person=person, tier=tier, strategy=strategy, data=data, testScaffold=True)
+                    expected = approved.evaluate(TRACE, dict(case, reference=True))
                     actual = candidate.evaluate(TRACE, case)
-                    for part in ('steps', 'history'):
-                        assert actual[part] == expected[part], (person, tier, strategy, part)
+                    for part in ('steps','history'):
+                        assert actual[part] == expected[part], (person,tier,strategy,part)
                     paths += 1
         browser.close()
-    return dict(reference_commit=APPROVED, approved_change='Laura · Alter 19 · L0 vier Einzelmethoden und Rückgriff auf den notierten Rat', source_files=sources, built_data_equal=True,
-                rendered_paths=paths, pdf_page_text_sha256=pdfs)
+    return dict(reference_commit=APPROVED, removed_fields=['meta.stopTask','cases.Laura[*].pauseFact'],
+                built_data_equal=True, shared_help_equal=True, rendered_paths=paths)
 
 
 if __name__ == '__main__':
-    (QA / 'inhaltsvergleich.json').unlink(missing_ok=True)
+    (QA/'inhaltsvergleich.json').unlink(missing_ok=True)
     with TemporaryDirectory() as directory:
         result = compare(Path(directory))
     save('inhaltsvergleich', result)
-    print(f"{result['rendered_paths']} Dialogwege und acht gedruckte Seiten stimmen mit {APPROVED[:7]} überein.")
+    print(f"{result['rendered_paths']} Dialogwege samt Hilfen und Rückmeldungen gegen {APPROVED[:7]} geprüft.")

@@ -25,8 +25,6 @@ jobs:
       - run: python tests/acceptance.py
       - run: python tests/lernhilfen.py
       - run: python tests/layout.py
-      - run: python scripts/worksheets.py
-      - run: python tests/worksheets.py
       - run: python tests/content.py
       - run: python scripts/review.py
       - uses: actions/upload-artifact@v4
@@ -37,14 +35,5 @@ jobs:
             dist/Fallakte-SCORM12.zip
             dist/Fallakte-Sichtpruefung.zip
             dist/Fallakte-Pruefbericht.md
-            dist/Fallakte-Lehrkraft.pdf
-            dist/Empfehlungsrad-1.pdf
-            dist/Empfehlungsrad-2.pdf
-          if-no-files-found: error
-          retention-days: 30
-      - uses: actions/upload-artifact@v4
-        with:
-          name: Fallakte-Laufzettel
-          path: dist/Laufzettel/*.pdf
           if-no-files-found: error
           retention-days: 30

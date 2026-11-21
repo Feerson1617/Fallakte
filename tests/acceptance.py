@@ -14,13 +14,13 @@ from playwright.sync_api import sync_playwright, expect
 from lxml import etree
 from feedback import run_scenarios
 from transitions import mixed_paths
-from disclosure import first_message_only
+from disclosure import first_message_only, check_navigation
 from reading import article_return
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'dist'
 LOCAL = OUT / 'Fallakte.html'
-QA = OUT / 'qa'
+QA = ROOT / 'build/qa'
 QA.mkdir(parents=True, exist_ok=True)
 DATA = json.loads((ROOT / 'data/dialogdaten.js').read_text().split('=', 1)[1].strip()[:-1])
 MATRIX = (ROOT / 'tests/dialogs.js').read_text()
@@ -46,7 +46,7 @@ def test_matrix(browser, engine):
                 records.append(page.evaluate(MATRIX, dict(person=person, tier=level, strategy=code, data=DATA, testScaffold=True)))
     assert not errors, errors
     page.close()
-    return dict(engine=engine,version=browser.version,paths=records,errors=errors,disclosure=first_message_only(browser,LOCAL,QA/'Sicherung-nach-Nachricht-1.jpg' if engine=='chromium' else None),transitions=mixed_paths(browser,LOCAL),scenarios=run_scenarios(browser,LOCAL,QA if engine=='chromium' else None))
+    return dict(engine=engine,version=browser.version,paths=records,errors=errors,disclosure=first_message_only(browser,LOCAL,QA/'Laura-Einstieg.jpg' if engine=='chromium' else None),transitions=mixed_paths(browser,LOCAL),scenarios=run_scenarios(browser,LOCAL,QA if engine=='chromium' else None))
 
 
 def measure(page):
@@ -154,9 +154,6 @@ def test_view(browser, engine, layout, size):
     page.locator('#latest').click()
     assert history.evaluate('(h)=>h.scrollTop')>0
     before=history.inner_text()
-    page.locator('#pause-nav').click()
-    page.locator('#pause .return').click()
-    assert history.inner_text()==before
     page.locator('#cards-nav').click()
     for card in page.locator('#method-cards summary').all():
         card.click()
@@ -176,7 +173,9 @@ def test_view(browser, engine, layout, size):
     page.get_by_role('button',name='Vorschlag beibehalten').click()
     completed=history.text_content()
     for name in ('Celina','Tom'):
-        page.get_by_role('button',name=name+' starten').click()
+        pane(page,'write-answer')
+        page.get_by_role('button',name='Zur Fallübersicht',exact=True).click()
+        page.locator('[data-person='+name+']').click()
         for stage in DATA['cases'][name]:
             if 'DONE' in stage['options']:
                 if stage['type']=='article':
@@ -197,8 +196,8 @@ def test_view(browser, engine, layout, size):
                 measure(page)
                 page.get_by_role('button',name='Vorschlag beibehalten').click()
         expect(page.locator('#task-title')).to_have_text('Gespräch abgeschlossen')
-        page.locator('#pause-nav').click()
-        page.locator('#review-laura').click()
+        page.get_by_role('button',name='Zur Fallübersicht',exact=True).click()
+        page.locator('[data-person=Laura]').click()
         assert history.text_content()==completed
     storage=page.evaluate("""() => ({
       calls:storageCalls, local:localStorage.length, session:sessionStorage.length, cookies:document.cookie
@@ -258,20 +257,14 @@ def test_scorm(browser):
                 frame.locator('#home-nav').click()
             frame.locator('#level-ESA').click()
             page.reload()
-            frame.locator('#pause-nav').click()
-            expect(frame.locator('#class-stop')).to_be_hidden()
-            expect(frame.locator('#pause-facts li')).to_have_count(0)
-            frame.locator('#pause .return').click()
+            check_navigation(frame)
             frame.locator('[data-person=Laura]').click()
             frame.locator('#method-Cu').click()
             frame.locator('#send').click()
             history = frame.locator('#history').text_content()
-            frame.locator('#pause-nav').click()
-            frame.locator('#pause-facts summary').click()
-            expect(frame.locator('#stop-task')).to_be_visible()
-            expect(frame.locator('#pause-facts li')).to_have_count(1)
-            expect(frame.locator('#pause-facts li')).to_contain_text('Krankheiten')
-            frame.locator('#pause .return').click()
+            frame.locator('#cards-nav').click()
+            frame.locator('#card-Cu summary').click()
+            frame.locator('#resources .return').click()
             assert frame.locator('#history').text_content()==history
             assert page.evaluate('calls')==[['LMSInitialize','']]
             page.evaluate("document.querySelector('iframe').src='about:blank'")
@@ -308,5 +301,7 @@ if __name__=='__main__':
     first=scorm_runs[0]
     save('scorm',dict(schema_valid=True,launch=first['launch'],members=first['members'],
                      observed_calls=first['observed_calls'],runs=scorm_runs))
-    images={p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in QA.glob('*.jpg') if p.name not in {'Auffanghilfe.jpg','Hilfe-vor-Auswahl.jpg','Hilfe-nach-Rueckmeldung.jpg'}}
+    shots=('Falluebersicht', 'iPad-hoch', 'iPad-quer', 'Mobil', 'Laura-Entscheidung',
+           'Tom-Eigener-Beitrag', 'Laura-Abschluss', 'Laura-Einstieg')
+    images={name+'.jpg': hashlib.sha256((QA/(name+'.jpg')).read_bytes()).hexdigest() for name in shots}
     save('bedienung',dict(runs=results,screenshots=images,real_ipad=False,itslearning=False,student_trial=False))

@@ -88,8 +88,8 @@ def help_path(browser, level, size, photos=False):
     for label in ('Vorschlag beibehalten','Vorschlag ändern'):
         ready(button(label))
     shot('Auffanghilfe')
-    ui('#pause-nav').click()
-    ui('#pause .return').click()
+    ui('#cards-nav').click()
+    ui('#resources .return').click()
     assert history.text_content() == after_reply
     ui('#home-nav').click()
     ui('[data-person=Tom]').click()

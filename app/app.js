@@ -30,18 +30,13 @@ function show(id) {
     current.workScroll=$('work').scrollTop;
     current.glossaryOpen=$('history').querySelector('.article details')?.open;
   }
-  if (screen==='pause') {
-    $('pause-facts').hidden=true;
-    $('pause-facts').querySelector('ul').replaceChildren();
-    $('stop-task').textContent='';
-  }
   screen = id;
   document.documentElement.classList.toggle('consulting',id==='room');
   $('room-identity').hidden=id!=='room';
   $('home-label').textContent=id==='room'?'Übersicht':'Fallakten';
   $('home-nav').setAttribute('aria-label','Fallübersicht');
-  for (const section of ['home','room','resources','pause']) $(section).hidden = section !== id;
-  const active = ({home:'home-nav',room:'home-nav',resources:'cards-nav',pause:'pause-nav'})[id];
+  for (const section of ['home','room','resources']) $(section).hidden = section !== id;
+  const active = id==='resources' ? 'cards-nav' : 'home-nav';
   for (const b of document.querySelectorAll('nav button')) {
     if (b.id === active) b.setAttribute('aria-current','page');
     else b.removeAttribute('aria-current');
@@ -310,7 +305,7 @@ function stageSupport() {
     }
     const section=raw.section || sections.find(title=>pair[0].includes('„'+title+'“'));
     source={label:'Karte „'+name+'“ lesen',open:()=>{
-      auxiliary('resources');
+      openCards();
       const card=$('card-'+method);
       card.open=true;
       const heading=[...card.querySelectorAll('dt')].find(dt=>dt.textContent===section);
@@ -406,7 +401,7 @@ function drawWork() {
   $('support-panel').replaceChildren();
   $('step').textContent='Schritt '+(current.index+1)+' von '+stages().length;
   if (current.mode==='finished') {
-    taskTitle(area,current.finalRefusal?'Die Empfehlung bleibt offen':'Gespräch abgeschlossen');
+    taskTitle(area,'Gespräch abgeschlossen');
     if (current.withdrawn) area.append(el('p','response','Ihr habt den letzten Vorschlag zurückgezogen. Was bleibt zu klären?'));
     else if (current.tentative && !current.finalRefusal) area.append(el('p','response','Euer Rat ist vorläufig. '+current.person+' entscheidet nach der Beratung selbst.'));
     if (current.finalRefusal) {
@@ -418,14 +413,7 @@ function drawWork() {
     } else if (current.person==='Celina') {
       area.append(el('p','paper-note','Fülle auf dem Laufzettel das Feld „Celina“ aus. Nenne deinen Rat und einen Grund.'));
     }
-    if (current.person==='Laura') {
-      area.append(el('p','','Zeit für die zweite Abstimmung. Vergleicht eure Gründe in der Klasse.'));
-      area.append(button('Zur gemeinsamen Sicherung',()=>auxiliary('pause'),'primary','group'));
-      area.append(el('p','extra','Noch Zeit bis zum Stopp? Öffne einen weiteren Fall.'));
-      const row=el('div','row');
-      for (const n of ['Celina','Tom']) row.append(button(n+' starten',()=>openCase(n,current.level),'outline','next'));
-      area.append(row);
-    } else area.append(button('Zur gemeinsamen Sicherung',()=>auxiliary('pause'),'primary','group'),button('Zur Fallübersicht',home,'text-button'));
+    area.append(button('Zur Fallübersicht',home,'outline','folder'));
     return;
   }
   const s=stage();
@@ -545,27 +533,10 @@ function drawWork() {
   }
   addTools(area);
 }
-function auxiliary(id) {
-  if (screen==='home'||screen==='room') returnTo=screen;
-  show(id);
-  if (id==='pause') {
-    const laura=sessions.get(sessionKey('Laura',level));
-    const facts=$('pause-facts');
-    facts.open=false;
-    facts.hidden=!laura || laura.mode==='finished';
-    const known=facts.hidden ? [] : FALLAKTE.cases.Laura.slice(0,laura.index+1);
-    facts.querySelector('ul').replaceChildren(...known.map(s=>el('li','',s.pauseFact)));
-    $('early-stop').hidden=laura?.mode==='finished';
-    $('stop-task').textContent=$('early-stop').hidden ? '' : FALLAKTE.meta.stopTask[level];
-    $('review-laura').hidden=!laura;
-    let outcome='';
-    if (laura?.finalRefusal) outcome='Laura hat eurem letzten Vorschlag nicht zugestimmt. Sie sagt: „'+laura.finalRefusal+'“';
-    else if (laura?.withdrawn) outcome='Ihr habt euren letzten Vorschlag zurückgezogen.';
-    else if (laura?.mode==='finished' && laura.tentative) outcome='Euer Rat ist vorläufig. Laura entscheidet nach der Beratung selbst.';
-    $('pause-conflict').hidden=!outcome;
-    $('pause-conflict').textContent=outcome;
-  }
-  $(id).querySelector('h1').focus({preventScroll:true});
+function openCards() {
+  if (screen!=='resources') returnTo=screen;
+  show('resources');
+  $('resources').querySelector('h1').focus({preventScroll:true});
 }
 function resume() {
   if (returnTo==='room' && current) openCase(current.person,current.level);
@@ -595,10 +566,8 @@ $('read-chat').onclick=()=>showPane('chat');
 $('write-answer').onclick=()=>showPane('answer');
 $('home-nav').onclick=home;
 $('brand').onclick=e=>{e.preventDefault();home();};
-$('cards-nav').onclick=()=>auxiliary('resources');
-$('pause-nav').onclick=()=>auxiliary('pause');
-$('review-laura').onclick=()=>openCase('Laura',level);
-document.querySelectorAll('.return').forEach(b=>b.onclick=resume);
+$('cards-nav').onclick=openCards;
+$('resources').querySelector('.return').onclick=resume;
 home();
 
 // SCORM 1.2 session lifecycle only. Look in the launch frame and popup opener.

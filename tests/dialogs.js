@@ -1,5 +1,5 @@
 // Browser-run path matrix. Drive rendered controls only, compare actual messages with the content file.
-({person, tier, strategy, data, testScaffold}) => {
+({person, tier, strategy, data, testScaffold, reference}) => {
   function click(selector) {
     const node = document.querySelector(selector);
     if (!node || !node.getClientRects().length) throw Error('Missing control ' + selector);
@@ -122,8 +122,13 @@
   }
   const refused = (person==='Laura' && ['P','K+P'].includes(strategy)) ||
                   (person==='Celina' && ['P','K+P','H','K+H'].includes(strategy));
-  const title = refused ? 'Die Empfehlung bleibt offen' : 'Gespräch abgeschlossen';
+  const title = reference && refused ? 'Die Empfehlung bleibt offen' : 'Gespräch abgeschlossen';
   assert(document.querySelector('#task-title').textContent===title,'Wrong final outcome');
+  if (!reference) {
+    const work=document.querySelector('#work');
+    assert(!/Sicherung|Abstimmung|stimmt .* ab|Unterrichtsstopp/i.test(work.textContent),'Class activity after completion');
+    assert(work.querySelectorAll('button').length===1 && work.querySelector('button').textContent==='Zur Fallübersicht','Unexpected completion action');
+  }
   if (refused) {
     assert(document.querySelector('.unresolved').textContent.includes('nicht zugestimmt'),'No final disagreement');
     assert(document.querySelector('#work .response').textContent.includes(person==='Laura'?'Pille':'Hormon'),'Missing personal boundary');

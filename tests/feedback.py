@@ -58,10 +58,6 @@ def run_scenarios(browser, local, screenshots=None):
     expect(page.locator('#task-title')).to_have_text('Gespräch abgeschlossen')
     expect(page.locator('.paper-note')).to_contain_text('Mein letzter Rat')
 
-    button('Zur gemeinsamen Sicherung').click()
-    expect(page.locator('#pause-facts')).to_be_hidden()
-
-    # A retained final pill proposal remains disputed through the class review and a return.
     start('Laura')
     for method in ('K', 'H'):
         suggest(method)
@@ -74,31 +70,23 @@ def run_scenarios(browser, local, screenshots=None):
     button('Vorschlag ändern').click()
     suggest('P', combine=True, tentative=True)
     keep()
-    expect(page.locator('#task-title')).to_have_text('Die Empfehlung bleibt offen')
+    expect(page.locator('#task-title')).to_have_text('Gespräch abgeschlossen')
     expect(page.locator('.unresolved')).to_contain_text('nicht zugestimmt')
     refusal=page.locator('#work .response').inner_text()
     expect(history.locator('.person p').last).to_have_text(refusal)
-    button('Zur gemeinsamen Sicherung').click()
-    expect(page.locator('#pause-facts')).to_be_hidden()
-    expect(page.locator('#pause-conflict')).to_be_visible()
-    expect(page.locator('#pause-conflict')).to_contain_text(refusal)
-    button('Lauras Chat nachlesen').click()
+    if screenshots:
+        page.screenshot(path=screenshots/'Laura-Abschluss.jpg',type='jpeg',quality=78)
+    button('Zur Fallübersicht').click()
+    page.locator('[data-person=Laura]').click()
     expect(page.locator('.unresolved')).to_be_visible()
     expect(page.locator('#work .response')).to_have_text(refusal)
 
     # A different level starts with its own unread facts, even after another team finished.
     page.locator('#home-nav').click()
     page.locator('#level-Foerder').click()
-    button('Sicherung').click()
-    facts = page.locator('#pause-facts')
-    summary = facts.locator('summary')
-    expect(page.locator('#review-laura')).to_be_hidden()
-    expect(facts.locator('ul')).to_be_hidden()
-    expect(summary).to_be_hidden()
-    expect(facts.locator('li')).to_have_count(0)
-    expect(page.locator('#pause-conflict')).to_be_hidden()
-    page.locator('#pause .return').click()
     page.locator('[data-person=Laura]').click()
+    expect(history.locator('.chat-step')).to_have_count(1)
+    expect(history.locator('.team')).to_have_count(0)
     suggest('K')
     keep()
     suggest('H')
@@ -112,19 +100,9 @@ def run_scenarios(browser, local, screenshots=None):
     draft = page.locator('#draft-preview p').inner_text()
     hints = page.locator('.hint').all_text_contents()
     step = page.locator('#step').inner_text()
-    button('Sicherung').click()
-    expect(facts.locator('ul')).to_be_hidden()
-    summary.focus()
-    summary.press('Enter')
-    expect(facts.locator('li')).to_have_count(4)
-    expect(facts.locator('li').last).to_contain_text('will keine Pille')
-    expect(facts).to_contain_text('Freundin')
-    expect(facts).not_to_contain_text('Regel')
-    expect(facts).not_to_contain_text('Kondom')
-    expect(facts).not_to_contain_text('selbst entscheiden')
-    if screenshots:
-        page.locator('.pause-note').screenshot(path=screenshots/'Frueher-Stopp.jpg',type='jpeg',quality=82)
-    page.locator('#pause .return').click()
+    page.locator('#cards-nav').click()
+    page.locator('#card-P summary').click()
+    page.locator('#resources .return').click()
     assert history.text_content()==before and page.locator('#step').inner_text()==step
     expect(page.locator('#draft-preview p')).to_have_text(draft)
     assert page.locator('.hint').all_text_contents()==hints
@@ -195,8 +173,8 @@ def run_scenarios(browser, local, screenshots=None):
     expect(history).not_to_contain_text('Für dich selbst schlagen wir ein Kondom vor.')
     page.close()
     return ['Laura: wiederholtes Nein, Sorge, Kombination bis zum Abschluss',
-            'Laura: letzter Kombinationsvorschlag bleibt in Abschluss, Sicherung und Wiederaufnahme strittig',
-            'Sicherung bei frühem Stopp: erreichte Stufen, Niveauwechsel, Entwurf und Hilfen erhalten',
+            'Laura: letzter Kombinationsvorschlag bleibt in Abschluss und nach Wiederaufnahme strittig',
+            'Kartenrückkehr und Niveauwechsel: Stufe, Entwurf und Hilfen erhalten',
             'Celina: Hormongrenze, offene Einlage und Rücknahme',
             'Tom: zweimal ungeeignet, Unterbrechung, dann eigener Kondomvorschlag',
             'Tom: Revision direkt zum Kondom']

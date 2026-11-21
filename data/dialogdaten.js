@@ -5,19 +5,12 @@ const FALLAKTE = {
       "ESA": "ESA",
       "MSA": "MSA",
       "AHR": "AHR"
-    },
-    "stopTask": {
-      "Foerder": "Vergleiche A und B auf dem Laufzettel. Was passt besser zu Lauras Wunsch? Nenne einen Grund.",
-      "ESA": "Vergleiche zwei Vorschläge auf dem Laufzettel. Welcher passt besser zu Laura? Nutze einen Fakt von der Karte.",
-      "MSA": "Vergleiche A und B. Welches Kriterium wiegt für Laura mehr? Nenne auch einen Nachteil.",
-      "AHR": "Wäge A und B mit zwei Kriterien ab. Welche offene Frage könnte dein Urteil ändern?"
     }
   },
   "cases": {
     "Laura": [
       {
         "id": "L0",
-        "pauseFact": "Laura will sich vor Krankheiten schützen, die beim Sex übertragen werden.",
         "type": "class_poll_intro",
         "message": {
           "Foerder": [
@@ -118,7 +111,6 @@ const FALLAKTE = {
       },
       {
         "id": "L1",
-        "pauseFact": "Sie möchte eine Schwangerschaft sicher vermeiden. Sie vergisst manchmal, was sie jeden Tag tun muss.",
         "type": "recommend",
         "message": {
           "Foerder": [
@@ -240,7 +232,6 @@ const FALLAKTE = {
       },
       {
         "id": "L2",
-        "pauseFact": "Lauras Freundin wurde von der Pille übel. Das macht Laura Sorgen.",
         "type": "reason_on_paper",
         "message": {
           "Foerder": [
@@ -316,7 +307,6 @@ const FALLAKTE = {
       },
       {
         "id": "L3",
-        "pauseFact": "Laura will keine Pille. Andere Mittel mit Hormonen kommen für sie infrage. Das Einsetzen einer Spirale macht ihr Sorgen.",
         "type": "recommend",
         "message": {
           "Foerder": [
@@ -438,7 +428,6 @@ const FALLAKTE = {
       },
       {
         "id": "L4",
-        "pauseFact": "Ihre Regel tut oft stark weh. Sie will nicht noch mehr Schmerzen. Den Grund kennt sie noch nicht.",
         "type": "recommend",
         "message": {
           "Foerder": [
@@ -566,7 +555,6 @@ const FALLAKTE = {
       },
       {
         "id": "L5",
-        "pauseFact": "Ein Kondom kommt für Laura infrage. Schutz vor Infektionen bleibt ihr wichtig.",
         "type": "recommend",
         "message": {
           "Foerder": [
@@ -692,7 +680,6 @@ const FALLAKTE = {
       },
       {
         "id": "L6",
-        "pauseFact": "Laura möchte sich beraten lassen und dann selbst entscheiden.",
         "type": "recommend",
         "message": {
           "Foerder": [

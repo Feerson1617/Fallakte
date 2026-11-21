@@ -1,24 +1,20 @@
-"""Real iframe layout comparison, with the last reviewed PR as the immutable baseline."""
+"""Exercise the current standalone application inside real school-sized frames."""
 import hashlib
-import io
 import os
 import shutil
-import subprocess
 from functools import partial
 from http.server import ThreadingHTTPServer
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from threading import Thread
-from zipfile import ZipFile
 
 from playwright.sync_api import expect, sync_playwright
 
 from acceptance import LOCAL, QA, ROOT, QuietHandler, pane, save
 
-BASE = '307156287cd26c07982ea19c44c84982746c5d30'
 SIZES = [(1366,768), (1180,820), (820,1180), (1024,600), (820,650), (390,844)]
 GEOMETRY = (ROOT/'tests/geometry.js').read_text()
-SHOTS = QA/'vergleich'
+SHOTS = QA/'rahmen'
 
 
 def operate(control, touch):
@@ -28,11 +24,11 @@ def operate(control, touch):
         control.click()
 
 
-def school_frame(page, url, version, size):
+def school_frame(page, url, size):
     page.goto(url+'/host.html')
     page.locator('iframe').evaluate("""(e,[src,w,h])=>{
       e.width=w; e.height=h; e.src=src;
-    }""", [version+'/index.html', *size])
+    }""", ['index.html', *size])
     frame = page.frame(name='lesson')
     frame.locator('[data-person=Laura]').wait_for()
     frame.evaluate('document.fonts.ready')
@@ -94,23 +90,21 @@ def check_state(m, size, state):
         assert m['focus']=='hint-current' and m['hint']['visibleHeight'] >= 40, m
 
 
-def exercise(browser, engine, version, size, url, images):
-    new = version == 'nachher'
+def exercise(browser, engine, size, url, images):
     w,h = size
     touch = w < 1300
     ctx = browser.new_context(viewport={'width':max(1200,w+30),'height':max(900,h+30)},
                               has_touch=touch,device_scale_factor=1)
     page = ctx.new_page()
-    frame = school_frame(page,url,version,size)
+    frame = school_frame(page,url,size)
     to_refusal(frame,touch)
     states = {}
     def record(state):
         m = frame.evaluate(GEOMETRY)
         states[state] = m
-        if new:
-            check_state(m,size,state)
+        check_state(m,size,state)
         if engine=='chromium' and size==(820,650):
-            shot = SHOTS/f'{version}-{state}.jpg'
+            shot = SHOTS/f'{state}.jpg'
             page.screenshot(path=shot,type='jpeg',quality=78,clip=page.locator('iframe').bounding_box())
             images[shot.name] = hashlib.sha256(shot.read_bytes()).hexdigest()
         return m
@@ -119,55 +113,51 @@ def exercise(browser, engine, version, size, url, images):
     pane(frame,'write-answer')
     operate(frame.locator('#method-P'),touch)
     selected = record('Auswahl')
-    if new:
-        labels = measure_labels(frame)
-        if w >= 820:
-            assert len({label['row'] for label in labels}) == 2, (size,labels)
+    labels = measure_labels(frame)
+    if w >= 820:
+        assert len({label['row'] for label in labels}) == 2, (size,labels)
     for _ in range(2):
         operate(frame.locator('#help'),touch)
-        if new:
-            m = frame.evaluate(GEOMETRY)
-            assert (m['chat'],m['scrollHistory'])==(selected['chat'],selected['scrollHistory']), m
-            unchanged_page(m,size)
+        m = frame.evaluate(GEOMETRY)
+        assert (m['chat'],m['scrollHistory'])==(selected['chat'],selected['scrollHistory']), m
+        unchanged_page(m,size)
     expect(frame.locator('.hint')).to_have_count(2)
     hints = record('Hilfen')
     extra = {}
-    if new:
-        extra['scrollRange'] = independent(frame)
-        if size in ((820,650),(1024,600)):
-            assert all(x>0 for x in extra['scrollRange'].values()), extra
-        if w==390:
-            log = frame.locator('#history').text_content()
-            pane(frame,'read-chat')
-            expect(frame.locator('#history')).to_be_visible()
-            expect(frame.locator('#work')).to_be_hidden()
-            frame.locator('#history').evaluate('(e)=>e.scrollTop=0')
-            pane(frame,'write-answer')
-            assert frame.evaluate(GEOMETRY)['scrollWork']==hints['scrollWork']
-            expect(frame.locator('#method-P')).to_have_attribute('aria-pressed','true')
-            expect(frame.locator('.hint')).to_have_count(2)
-            assert frame.locator('#history').text_content()==log
-            # Resize the live frame across the breakpoint, keeping both panes' contents.
-            page.locator('iframe').evaluate('(e)=>{e.width=844;e.height=390}')
-            expect(frame.locator('#history')).to_be_visible()
-            expect(frame.locator('#send')).to_be_visible()
-            assert frame.locator('#history').evaluate('e=>e.scrollTop')==0
-            page.locator('iframe').evaluate('(e)=>{e.width=390;e.height=844}')
-            expect(frame.locator('#history')).to_be_hidden()
-            expect(frame.locator('.hint')).to_have_count(2)
-        elif size==(820,650):
-            extra['enlargedText'] = large_text(frame,size)
+    extra['scrollRange'] = independent(frame)
+    if size in ((820,650),(1024,600)):
+        assert all(x>0 for x in extra['scrollRange'].values()), extra
+    if w==390:
+        log = frame.locator('#history').text_content()
+        pane(frame,'read-chat')
+        expect(frame.locator('#history')).to_be_visible()
+        expect(frame.locator('#work')).to_be_hidden()
+        frame.locator('#history').evaluate('(e)=>e.scrollTop=0')
+        pane(frame,'write-answer')
+        assert frame.evaluate(GEOMETRY)['scrollWork']==hints['scrollWork']
+        expect(frame.locator('#method-P')).to_have_attribute('aria-pressed','true')
+        expect(frame.locator('.hint')).to_have_count(2)
+        assert frame.locator('#history').text_content()==log
+        # Resize the live frame across the breakpoint, keeping both panes' contents.
+        page.locator('iframe').evaluate('(e)=>{e.width=844;e.height=390}')
+        expect(frame.locator('#history')).to_be_visible()
+        expect(frame.locator('#send')).to_be_visible()
+        assert frame.locator('#history').evaluate('e=>e.scrollTop')==0
+        page.locator('iframe').evaluate('(e)=>{e.width=390;e.height=844}')
+        expect(frame.locator('#history')).to_be_hidden()
+        expect(frame.locator('.hint')).to_have_count(2)
+    elif size==(820,650):
+        extra['enlargedText'] = large_text(frame,size)
     operate(frame.locator('#send'),touch)
     record('Rueckmeldung')
     for label in ('Vorschlag beibehalten','Vorschlag ändern'):
         b = frame.get_by_role('button',name=label)
-        if new:
-            expect(b).to_be_in_viewport(ratio=.99)
+        expect(b).to_be_in_viewport(ratio=.99)
     operate(frame.get_by_role('button',name='Vorschlag ändern'),touch)
     expect(frame.locator('#method-P')).to_have_attribute('aria-pressed','false')
     assert page.evaluate('[scrollX,scrollY]')==[0,0]
     ctx.close()
-    return dict(version=version, size=size, states=states, **extra)
+    return dict(size=size, states=states, **extra)
 
 
 def large_text(frame,size):
@@ -178,10 +168,13 @@ def large_text(frame,size):
     current=frame.evaluate(GEOMETRY)
     unchanged_page(current,size)
     assert current['sendReachable']
+    for control in frame.locator('#help-dock button').all():
+        expect(control).to_be_in_viewport(ratio=.99)
     frame.locator('#hint-current').scroll_into_view_if_needed()
-    assert frame.evaluate(GEOMETRY)['hint']['visibleHeight'] > 40
+    hint_height=frame.evaluate(GEOMETRY)['hint']['visibleHeight']
+    assert hint_height > 40, hint_height
     frame.evaluate("document.documentElement.style.removeProperty('font-size')")
-    return dict(normal=before,doubled=after)
+    return dict(normal=before,doubled=after,hint_visible_px=hint_height)
 
 
 def measure_labels(view):
@@ -204,7 +197,7 @@ def phone_labels(browser,engine,url):
     results = []
     for width in (360,390,420):
         page = browser.new_page(viewport={'width':width,'height':844},is_mobile=True,has_touch=True)
-        page.goto(url+'/nachher/index.html')
+        page.goto(url+'/index.html')
         page.locator('[data-person=Laura]').tap()
         page.locator('#write-answer').tap()
         page.locator('#method-P').tap()
@@ -229,7 +222,7 @@ def accessibility(browser,engine,url):
     ctx=browser.new_context(viewport={'width':410,'height':325},has_touch=True,is_mobile=True,
                             reduced_motion='reduce')
     page=ctx.new_page()
-    page.goto(url+'/nachher/index.html')
+    page.goto(url+'/index.html')
     page.locator('[data-person=Laura]').tap()
     pane(page,'write-answer')
     page.locator('#method-P').tap()
@@ -259,11 +252,7 @@ def run():
     images, runs = {}, []
     with TemporaryDirectory() as temp:
         site = Path(temp)
-        archive = subprocess.check_output(['git','archive','--format=zip',BASE,'index.html','assets','app','data'],cwd=ROOT)
-        with ZipFile(io.BytesIO(archive)) as zipped:
-            zipped.extractall(site/'vorher')
-        (site/'nachher').mkdir()
-        shutil.copyfile(LOCAL,site/'nachher/index.html')
+        shutil.copyfile(LOCAL,site/'index.html')
         (site/'host.html').write_text('<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><style>*{margin:0}iframe{display:block;border:0}</style><iframe name="lesson" title="Unterricht"></iframe>')
         server=ThreadingHTTPServer(('127.0.0.1',0),partial(QuietHandler,directory=temp))
         Thread(target=server.serve_forever,daemon=True).start()
@@ -275,9 +264,8 @@ def run():
                     browser=getattr(p,engine).launch(**({'executable_path':exe} if exe else {}))
                     frames=[]
                     for size in SIZES:
-                        for version in ('vorher','nachher'):
-                            frames.append(exercise(browser,engine,version,size,url,images))
-                        print(engine,size,'vier Zustände vor und nach der Optimierung geprüft',flush=True)
+                        frames.append(exercise(browser,engine,size,url,images))
+                        print(engine,size,'vier Gesprächszustände geprüft',flush=True)
                     runs.append(dict(engine=engine,browser=browser.version,frames=frames,
                                      accessibility=accessibility(browser,engine,url),
                                      phone_labels=phone_labels(browser,engine,url)))
@@ -285,7 +273,7 @@ def run():
         finally:
             server.shutdown()
             server.server_close()
-    save('layout',dict(baseline=BASE,runs=runs,screenshots=images))
+    save('layout',dict(runs=runs,screenshots=images))
 
 
 if __name__=='__main__':

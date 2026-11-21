@@ -11,33 +11,40 @@ ROUTES=(
 )
 
 
+def idle_without_action(page, expected_step):
+    work = page.locator('#work')
+    history = page.locator('#history')
+    step = page.locator('#step')
+    expect(step).to_have_text(f'Schritt {expected_step} von 7')
+    before = (work.inner_text(), history.inner_text(), page.locator('#send').count())
+    page.clock.fast_forward(25 * 60 * 1000)
+    expect(work).to_be_visible()
+    expect(step).to_have_text(f'Schritt {expected_step} von 7')
+    expect(page.locator('[role=alert],dialog[open]')).to_have_count(0)
+    assert before == (work.inner_text(), history.inner_text(), page.locator('#send').count())
+
+
 def mixed_paths(browser,local):
     records=[]
     for tier in LEVELS:
         for route_index,route in enumerate(ROUTES):
             page=browser.new_page(viewport={'width':820,'height':650},has_touch=True)
+            if route_index==1:
+                page.clock.install()
             page.goto(local.as_uri())
             button=lambda name: page.get_by_role('button',name=name,exact=True)
             ui=page.locator
             page.locator('#level-'+tier).click()
 
-            def stop(known, open_list):
-                ui('#pause-nav').click()
-                expect(ui('#pause-facts li')).to_have_count(known)
-                expect(ui('#class-stop')).to_have_count(0)
-                if open_list:
-                    ui('#pause-facts summary').click()
-                    expect(ui('#pause-facts li').last).to_be_visible()
-                    expect(ui('#stop-task')).to_contain_text({'Foerder':'Vergleiche','ESA':'Vergleiche','MSA':'Kriterium','AHR':'offene Frage'}[tier])
-                ui('#pause .return').click()
-
-            stop(0,False)
             ui('[data-person=Laura]').click()
-            stop(1,route_index==0)
             for n,choice in enumerate(route):
                 if n==2:
+                    if route_index==1:
+                        idle_without_action(page,3)
                     button('Weiter nach dem Gespräch').click()
                 if n in (3,4):
+                    if n==3 and route_index==1:
+                        idle_without_action(page,5)
                     expect(ui('#change-prior')).to_be_visible()
                     if route[n-1]==choice:
                         button('Vorschlag beibehalten').click()
@@ -55,21 +62,20 @@ def mixed_paths(browser,local):
                 if '+' in choice:
                     ui('#combine').check()
                 if n==2 and route_index==1:
+                    idle_without_action(page,4)
                     history=ui('#history').text_content()
                     draft=ui('#draft-preview p').inner_text()
-                    stop(4,True)
+                    ui('#cards-nav').click()
+                    ui('#resources .return').click()
                     expect(ui('#draft-preview p')).to_have_text(draft)
                     # Visit another case, then a different level of Laura, before returning.
                     ui('#home-nav').click()
                     ui('[data-person=Tom]').click()
-                    stop(4,True)
                     ui('#home-nav').click()
                     other=LEVELS[(LEVELS.index(tier)+1)%len(LEVELS)]
                     ui('#level-'+other).click()
-                    stop(0,False)
                     ui('[data-person=Laura]').click()
                     expect(ui('#step')).to_have_text('Schritt 1 von 7')
-                    stop(1,False)
                     ui('#home-nav').click()
                     ui('#level-'+tier).click()
                     ui('[data-person=Laura]').click()
@@ -77,7 +83,6 @@ def mixed_paths(browser,local):
                     assert ui('#history').text_content()==history
                     expect(ui('#combine')).to_be_checked()
                 if n==5:
-                    stop(7,route_index==1)
                     ui('#tentative').check()
                     expect(ui('#draft-preview p')).to_contain_text('Praxis')
                 draft=ui('#draft-preview p').inner_text()
@@ -111,10 +116,10 @@ def mixed_paths(browser,local):
             if route_index!=2:
                 expect(ui('#work')).to_contain_text('Rat ist vorläufig')
             assert ui('#history .chat-step').count()==7
-            stop(0,False)
             # Celina can consider a copper IUD while withholding consent about insertion.
             if route_index==1:
-                button('Celina starten').click()
+                button('Zur Fallübersicht').click()
+                ui('[data-person=Celina]').click()
                 for ix,code in enumerate(('H','K','Cu','K','K+Cu')):
                     ui('#method-'+code.split('+')[-1]).click()
                     if '+' in code:
@@ -128,6 +133,7 @@ def mixed_paths(browser,local):
                     button('Vorschlag beibehalten').click()
                 expect(ui('#work')).to_contain_text('Celina entscheidet nach der Beratung selbst')
             records.append(dict(level=tier,choices=list(route),revision=route_index==2,
-                                celina=route_index==1,final='zurückgezogen' if route_index==2 else 'vorläufig'))
+                                celina=route_index==1,unterbrochen=['L2','L3','L4'] if route_index==1 else [],
+                                final='zurückgezogen' if route_index==2 else 'vorläufig'))
             page.close()
     return records

@@ -6,10 +6,10 @@ from zipfile import ZIP_DEFLATED, ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'dist'
-QA = OUT / 'qa'
+QA = ROOT / 'build/qa'
 local = OUT / 'Fallakte.html'
 digest = hashlib.sha256(local.read_bytes()).hexdigest()
-names = ('dialogwege', 'scorm', 'bedienung', 'laufzettel', 'layout', 'inhaltsvergleich', 'lernhilfen')
+names = ('dialogwege', 'scorm', 'bedienung', 'layout', 'inhaltsvergleich', 'lernhilfen')
 reports = {}
 for name in names:
     reports[name] = json.loads((QA / (name + '.json')).read_text())
@@ -26,6 +26,7 @@ for matrix in matrices:
     assert len(mixed)==12
     assert all(len({tuple(r['choices']) for r in mixed if r['level']==tier})==3
                for tier in ('Foerder','ESA','MSA','AHR'))
+    assert {r['level'] for r in mixed if r['unterbrochen']==['L2','L3','L4']} == {'Foerder','ESA','MSA','AHR'}
 assert all(m['disclosure']['later_facts_visible'] is False for m in matrices)
 assert all(m['article_return']['glossary_state_preserved'] and m['article_return']['jump_to_article'] for m in matrices)
 assert reports['scorm']['schema_valid']
@@ -34,7 +35,7 @@ assert all(run['kombination_ab_l1'] for run in reports['scorm']['runs'])
 assert {r['engine'] for r in reports['scorm']['runs']} == {'chromium', 'webkit'}
 content = reports['inhaltsvergleich']
 assert content['built_data_equal'] and content['rendered_paths'] == 84
-assert set(content['pdf_page_text_sha256']) == {'Foerder', 'ESA', 'MSA', 'AHR'}
+assert content['shared_help_equal']
 assert {view['engine'] for view in views} == {'chromium','webkit'}
 assert all(not row['errors'] and not row['external_requests'] for row in views)
 help_runs=reports['lernhilfen']['runs']
@@ -48,60 +49,42 @@ layout = reports['layout']
 assert {run['engine'] for run in layout['runs']} == {'chromium','webkit'}
 for run in layout['runs']:
     assert {row['width'] for row in run['phone_labels']} == {360,390,420}
-    assert len(run['frames']) == 12
+    assert len(run['frames']) == 6
     assert all(len(row['states']) == 4 for row in run['frames'])
-assert len(layout['screenshots']) == 8
-for sheet in reports['laufzettel']['pdfs']:
-    assert hashlib.sha256((OUT/'Laufzettel'/sheet['datei']).read_bytes()).hexdigest() == sheet['sha256']
-teacher=reports['laufzettel']['lehrkraft']
-assert hashlib.sha256((OUT/teacher['datei']).read_bytes()).hexdigest()==teacher['sha256']
-for wheel in reports['laufzettel']['empfehlungsraeder']:
-    assert hashlib.sha256((OUT/wheel['datei']).read_bytes()).hexdigest()==wheel['sha256']
+assert len(layout['screenshots']) == 4
 with ZipFile(OUT/'Fallakte-SCORM12.zip') as scorm:
     resources = list((ROOT/'scorm').iterdir())
     assert sorted(scorm.namelist()) == sorted(['index.html', *(p.name for p in resources)])
-    assert scorm.testzip() is None and teacher['datei'] not in scorm.namelist()
+    assert scorm.testzip() is None
     for path in resources:
         assert scorm.read(path.name) == path.read_bytes()
     assert hashlib.sha256(scorm.read('index.html')).hexdigest() == digest
 
 report = OUT/'Fallakte-Pruefbericht.md'
-chapters = [(ROOT/'docs'/name).read_text().rstrip() for name in ('Abnahme.md','Fachpruefung.md','Unterricht.md')]
 versions = ', '.join(f"{m['engine']} {m['version']}" for m in matrices)
-release = (f"Geprüft mit {versions} gegen die Inhaltsreferenz `{content['reference_commit']}`. "
-           f"Die HTML-Datei hat den SHA-256-Wert `{digest}`.")
-report.write_text('\n\n'.join(chapters)+'\n\n'+release+'\n', encoding='utf-8')
-package = OUT / 'Fallakte-Sichtpruefung.zip'
+release = (f"Geprüft mit {versions} gegen den Ausgangsstand `{content['reference_commit'][:7]}`. "
+           f"SHA-256 der Offline-HTML und der SCORM-Startdatei: `{digest}`.")
+report.write_text((ROOT/'docs/Abnahme.md').read_text().rstrip()+'\n\n'+release+'\n', encoding='utf-8')
+
+evidence = {f'Protokolle/{name}.json': QA/(name+'.json') for name in names}
+def add_photos(folder, photos):
+    for filename, expected in photos.items():
+        path = QA/folder/filename
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == expected, filename
+        evidence[str(Path('Bildschirmfotos')/folder/filename)] = path
+
+add_photos('', reports['bedienung']['screenshots'])
+add_photos('', reports['lernhilfen']['screenshots'])
+for run in layout['runs']:
+    add_photos('methoden', {row['screenshot']:row['sha256'] for row in run['phone_labels']})
+add_photos('rahmen', layout['screenshots'])
+
+package = OUT/'Fallakte-Sichtpruefung.zip'
 with ZipFile(package, 'w', ZIP_DEFLATED) as z:
-    z.write(local, 'Fallakte.html')
-    z.write(report, 'Pruefbericht.md')
-    z.write(ROOT/'docs/Fachpruefung.md', 'Fachquellen.md')
-    z.write(ROOT/'docs/Unterricht.md', 'Unterrichtsablauf.md')
-    for name in names:
-        z.write(QA/(name+'.json'), 'Protokolle/'+name+'.json')
-    for shot in ('Falluebersicht', 'iPad-hoch', 'iPad-quer', 'Mobil', 'Laura-Entscheidung', 'Tom-Eigener-Beitrag', 'Frueher-Stopp', 'Sicherung-nach-Nachricht-1'):
-        filename=shot+'.jpg'
-        expected=reports['bedienung']['screenshots'][filename]
-        assert hashlib.sha256((QA/filename).read_bytes()).hexdigest() == expected
-        z.write(QA/filename, 'Bildschirmfotos/'+filename)
-    help_photos=reports['lernhilfen']['screenshots']
-    assert set(help_photos)=={'Hilfe-vor-Auswahl.jpg','Hilfe-nach-Rueckmeldung.jpg','Auffanghilfe.jpg'}
-    for name, expected in help_photos.items():
-        shot = QA/name
-        assert hashlib.sha256(shot.read_bytes()).hexdigest()==expected
-        z.write(shot,'Bildschirmfotos/'+name)
-    for run in layout['runs']:
-        for row in run['phone_labels']:
-            path=QA/'methoden'/row['screenshot']
-            assert hashlib.sha256(path.read_bytes()).hexdigest() == row['sha256']
-            z.write(path, 'Bildschirmfotos/Methodenfelder/'+path.name)
-    for name, expected in layout['screenshots'].items():
-        path=QA/'vergleich'/name
-        assert hashlib.sha256(path.read_bytes()).hexdigest() == expected
-        z.write(path, 'Bildschirmfotos/Vergleich/'+name)
+    for name, path in evidence.items():
+        z.write(path, name)
 with ZipFile(package) as z:
-    assert z.testzip() is None and z.read('Fallakte.html') == local.read_bytes()
-    assert z.read('Pruefbericht.md') == report.read_bytes()
-    for name in names:
-        assert z.read(f'Protokolle/{name}.json') == (QA/f'{name}.json').read_bytes()
+    assert z.testzip() is None and set(z.namelist()) == set(evidence)
+    for name, path in evidence.items():
+        assert z.read(name) == path.read_bytes(), name
 print(package)

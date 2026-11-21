@@ -1,33 +1,32 @@
-"""Attempt to reveal later case information through the learner interface."""
+"""Check that only the current case information is revealed during independent work."""
 from playwright.sync_api import expect
 
 
+def check_navigation(view):
+    expect(view.locator('nav button')).to_have_text(['Fallakten', 'Infokarten'])
+    expect(view.locator('#pause,#pause-nav,#stop-task,#review-laura')).to_have_count(0)
+    assert view.locator('main > section').evaluate_all('nodes => nodes.map(n => n.id)') == ['home','room','resources']
+
+
 def first_message_only(browser, local, screenshot=None):
-    page = browser.new_page(viewport={'width':820,'height':650},has_touch=True)
+    page = browser.new_page(viewport={'width':820, 'height':650}, has_touch=True)
     page.goto(local.as_uri())
-    page.get_by_role('button', name='Sicherung', exact=True).click()
-    expect(page.locator('#pause li')).to_have_count(0)
-    page.get_by_role('button', name='Zurück', exact=True).click()
+    check_navigation(page)
     page.locator('[data-person=Laura]').click()
-    history = page.locator('#history').inner_text()
-    for entry in ('pause-nav','cards-nav'):
-        page.locator('#'+entry).click()
-        if entry=='cards-nav':
-            page.locator('#pause-nav').click()
-        # Try every disclosure action offered on the shared review page (including the old stop).
-        actions = page.locator('#pause summary, #pause button:not(#review-laura):not(.return)')
-        for control in actions.all():
-            if control.is_visible():
-                control.click()
-        facts = page.locator('#pause li').all_inner_texts()
-        assert facts==['Laura will sich vor Krankheiten schützen, die beim Sex übertragen werden.'], facts
-        rendered=page.locator('#pause').inner_text().lower()
-        for later in ('schwangerschaft','freundin','pille','spirale','schmerzen','kondom'):
-            assert later not in rendered, (later,rendered)
-        if screenshot and entry=='pause-nav':
-            page.locator('.pause-note').screenshot(path=screenshot,type='jpeg',quality=82)
-        page.get_by_role('button', name='Zurück', exact=True).click()
-        assert page.locator('#history').inner_text()==history
-        expect(page.locator('#step')).to_have_text('Schritt 1 von 7')
+    history = page.locator('#history')
+    initial = history.inner_text()
+    expect(history.locator('.chat-step')).to_have_text(['Infektionsschutz'])
+    for word in ('Schwangerschaft','Freundin','Regelschmerzen','Einsetzen'):
+        assert word not in initial
+    if screenshot:
+        page.screenshot(path=screenshot, type='jpeg', quality=78)
+    page.locator('#cards-nav').click()
+    page.locator('#card-K summary').click()
+    page.locator('#resources .return').click()
+    page.locator('#home-nav').click()
+    page.locator('[data-person=Laura]').click()
+    assert history.inner_text() == initial
+    expect(page.locator('#send')).to_have_count(0)
+    expect(page.locator('#step')).to_have_text('Schritt 1 von 7')
     page.close()
-    return dict(stage=1,known_facts=1,attempts=['Sicherung','Infokarten → Sicherung'],later_facts_visible=False)
+    return dict(stage=1, navigation=['Fallakten','Infokarten'], later_facts_visible=False)

@@ -2,37 +2,26 @@
 
 Unterrichtsanwendung für Biologie in Klasse 8. In drei fiktiven Beratungsgesprächen prüfen Lernende ihre Empfehlungen anhand von Infokarten, persönlichen Grenzen und neuen Fallinformationen. Die 19-jährige Laura ist der gemeinsame Hauptfall. Celina und Tom ergänzen ihn. Alle drei Gespräche stehen auf Förder-, ESA-, MSA- und AHR-Niveau zur Verfügung.
 
-## Für den Unterricht öffnen
+## Digitale Erarbeitung öffnen
 
-Im erfolgreichen GitHub-Actions-Lauf **Unterrichtspakete** das Artefakt **Fallakte-Unterricht** herunterladen und die äußere Download-ZIP entpacken.
+Im erfolgreichen GitHub-Actions-Lauf **Unterrichtspakete** das Artefakt **Fallakte-Unterricht** herunterladen und entpacken.
 
 | Datei | Verwendung |
 | --- | --- |
-| **Fallakte-SCORM12.zip** | Als SCORM-1.2-Paket in itslearning importieren. Diese innere ZIP geschlossen lassen. |
-| **Fallakte.html** | Auf dem Mac per Doppelklick im Browser öffnen. Alle Bilder, Schriften, Dialoge und Infokarten sind eingebettet. |
-| **Fallakte-Lehrkraft.pdf** | Seite 1 erst beim Stopp zentral zeigen oder vorlesen. Seite 2 dient zum Vergleich der individuellen Begründungen. |
-| **Empfehlungsrad-1.pdf** und **Empfehlungsrad-2.pdf** | Je einmal in A3 quer in Originalgröße drucken. Rad 1 vor dem digitalen Start verwenden, Rad 2 zur Schlussabstimmung. |
-| **Fallakte-Sichtpruefung.zip** | Enthält dieselbe HTML-Vorschau, echte Bildschirmfotos, einen Prüfbericht und maschinenlesbare Testprotokolle. |
+| **Fallakte.html** | Direkt im Browser öffnen, auch ohne Netzwerk. Bilder, Schriften, Dialoge und Hilfen sind eingebettet. |
+| **Fallakte-SCORM12.zip** | Als geschlossenes SCORM-1.2-Paket in itslearning importieren. |
+| **Fallakte-Sichtpruefung.zip** | Bildschirmfotos und sechs JSON-Testprotokolle der gebauten Anwendung. |
+| **Fallakte-Pruefbericht.md** | Technische Ergebnisse und ausstehende Prüfungen auf Schulgeräten. |
 
-**Fallakte-Pruefbericht.md** bündelt die Abnahme, Fachquellen, curriculare Zuordnung und Unterrichtsplanung für denselben Programmstand.
+In Laura greift das Team den auf dem persönlichen Laufzettel notierten Einzelrat auf. Ab der zweiten Gesprächsstufe kann es auch das Kondom mit einer weiteren Methode kombinieren. Der Hilfezugang führt bei Bedarf von einer Kartenstelle bis zu einem ausführbaren nächsten Schritt. Ein vorbereiteter Entwurf wird erst durch „Nachricht senden“ verschickt.
 
-Das zweite Artefakt **Fallakte-Laufzettel** enthält vier Schüler-PDFs (Förder, ESA, MSA, AHR). Jede Fassung hat zwei A4-Seiten. Hinweise zur Moderation der Abstimmungen und zur Auswertung stehen separat im Unterrichtsablauf.
+Bei einer Unterbrechung kann die Seite in jedem Gesprächsschritt geöffnet bleiben. Infokarten und Fallübersicht erlauben die Rückkehr zum Gespräch desselben Niveaus. Der Verlauf liegt nur im Arbeitsspeicher der geöffneten Seite. Neuladen beginnt eine neue Sitzung. Der SCORM-Adapter öffnet und schließt die technische Sitzung. Das LMS kann unabhängig davon Zugriffe protokollieren.
 
-Auch im ausgecheckten Projekt lässt sich **index.html** direkt öffnen. Hierbei gehören die benachbarten Ordner zur Vorschau. Das einzelne weiterzugebende Offline-Dokument entsteht im Build.
-
-## Im Klassenraum
-
-Vor dem digitalen Start Lauras Frage zum Infektionsschutz vorlesen. Jede Person begründet eine Einzelmethode auf dem Laufzettel und markiert ihre Wahl auf Rad 1. Erst dann Laura öffnen und den notierten Vorschlag aufgreifen. Sobald Laura auch eine Schwangerschaft vermeiden möchte, lässt sich eine zweite Methode zum Kondom wählen. Der Verlauf führt in sieben Abschnitten zur zweiten Empfehlung. Chat und Antworten haben eigene Scrollbereiche. Auf schmalen Displays wechselt das Team mit **Chat lesen** und **Antwort geben** zwischen beiden. Frühere Antworten, Änderungen und Rückfragen bleiben im Chat lesbar. **Sicherung** unterbricht jeden Fall sofort. Die Sicherung zeigt die bereits erreichten Angaben zu Laura. Beim gemeinsamen Stopp stellt die Lehrkraft die übrigen Angaben mit ihrer Folie bereit. Alle Teams vergleichen dann zwei Vorschläge auf dem Laufzettel. Über **Zurück** oder die Fallübersicht lässt sich die Arbeit derselben Stufe fortsetzen.
-
-Die Anwendung hält die Gespräche ausschließlich im Arbeitsspeicher der geöffneten Seite. Neuladen beginnt eine neue Sitzung. Sie verlangt keine Namen oder persönlichen Erfahrungen. Der SCORM-Adapter öffnet und schließt lediglich die technische Sitzung. itslearning kann unabhängig davon Zugriffe protokollieren.
-
-[Unterrichtsablauf für die Lehrkraft](docs/Unterricht.md) · [Fachquellen](docs/Fachpruefung.md) · [Abnahme und offene Punkte](docs/Abnahme.md)
+[Technische Abnahme und offene Punkte](docs/Abnahme.md) · [Fachquellen](docs/Fachpruefung.md)
 
 ## Entwicklung und Prüfung
 
-**data/dialogdaten.js** enthält die freigegebenen Fälle, Methodeninformationen, Rückfragen, Antworten und fachlichen Hinweise. **data/lernhilfen.js** ordnet jeder Gesprächsstufe eine Einstiegskarte oder den bereits geteilten Artikel und Satzanfänge pro Niveau sowie eine mögliche Beispielbegründung zu. Sie enthält ein Datenobjekt, das auch direkt über das lokale Dateisystem geladen werden kann. **app/app.js** verwaltet die Sitzungen und rendert die Ansichten. **index.html** und **app/style.css** bilden die Oberfläche.
-
-Der Build verwendet nur Python 3. Die folgenden Befehle im Repository-Stamm bauen und prüfen die Unterrichtsausgabe. Druckausgabe und Prüfungen nutzen Playwright, lxml und pypdf in der Entwicklungsumgebung.
+**data/dialogdaten.js** enthält die fachlichen Dialoge und Karten. **data/lernhilfen.js** enthält die stufenspezifischen Hilfen. **app/app.js** verwaltet die Gespräche, **app/ui.js** und **app/lernhilfen.js** stellen die gemeinsam verwendbaren Komponenten bereit.
 
 ```sh
 python scripts/build.py
@@ -41,13 +30,11 @@ python -m playwright install --with-deps chromium webkit
 python tests/acceptance.py
 python tests/lernhilfen.py
 python tests/layout.py
-python scripts/worksheets.py
-python tests/worksheets.py
 python tests/content.py
 python scripts/review.py
 ```
 
-Die Unterrichtsdateien liegen in **dist/**, die vier PDFs in **dist/Laufzettel/**. Die Sichtprüfung lässt sich erst nach erfolgreichen Tests des identischen HTML-Stands packen. Der Layoutvergleich verwendet den vorherigen PR-Stand `3071562` aus der Git-Historie. Die CI führt diese Schritte auch für Pull Requests aus.
+Die vier Ausgabedateien liegen unter **dist/**. Einzelne Testnachweise entstehen unter **build/qa/**. Der Inhaltsvergleich benötigt den Commit `fc9b01c` aus der Git-Historie. Bereits vorhandene analoge Vorlagen liegen weiterhin unter **material/**, außerhalb der Softwareausgabe.
 
 ## Vorbereitung für die zweite Fallakte am 08.12.
 

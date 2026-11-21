@@ -18,17 +18,15 @@ def article_return(browser, standalone):
     position = history.evaluate('h => h.scrollTop')
     messages = history.text_content()
     assert position > 0
-    for via in ('Sicherung', 'Infokarten', 'Fallwechsel'):
+    for via in ('Infokarten', 'Fallwechsel'):
         if via == 'Fallwechsel':
             ui('#home-nav').click()
             ui('[data-person=Celina]').click()
             ui('#home-nav').click()
             ui('[data-person=Tom]').click()
         else:
-            if via == 'Infokarten':
-                ui('#cards-nav').click()
-            ui('#pause-nav').click()
-            ui('#pause .return').click()
+            ui('#cards-nav').click()
+            ui('#resources .return').click()
         expect(glossary).to_have_attribute('open', '')
         assert abs(history.evaluate('h => h.scrollTop') - position) <= 1, via
         assert history.text_content() == messages, via
@@ -42,5 +40,5 @@ def article_return(browser, standalone):
     ui('#resources .return').click()
     assert not glossary.evaluate('e => e.open')
     page.close()
-    return dict(case='Tom', level='AHR', restored_via=['Sicherung', 'Infokarten → Sicherung', 'Fallwechsel'],
+    return dict(case='Tom', level='AHR', restored_via=['Infokarten', 'Fallwechsel'],
                 glossary_state_preserved=True, scroll_position=position, jump_to_article=True)
