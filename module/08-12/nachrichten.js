@@ -56,7 +56,7 @@
   function draft() {
     const s = session();
     return s.drafts[s.index] ||= {answer:null, depthAnswers:{}, hint:0, help:false, topic:'', mark:null, evidence:null, goal:null, link:null,
-      matches:{}, reason:'', spoken:false, own:false, reader:null, full:false, laura:false};
+      matches:{}, reason:'', confirmed:'', own:false, reader:null, full:false, laura:false};
   }
   function show(view) {
     screen = view;
@@ -217,12 +217,12 @@
     }
     return panel;
   }
-  function helpBox(state,topics,chooseTopic=true) {
+  function helpBox(state,topics,chooseTopic=true,extension=null) {
     const names=Object.keys(topics);
     const wrap=block('stack');
     if (!names.includes(state.topic)) state.topic=names[0];
     const toggle=button('Hilfe',()=>{state.help=!state.help;update();});
-    const panel=block('note stack'), list=block('help-list'), content=el('p');
+    const panel=block('note stack'), list=block('help-list'), content=el('p','short-lines');
     content.setAttribute('aria-live','polite');
     const target=el('select');
     if (names.length>1 && chooseTopic) {
@@ -239,6 +239,8 @@
     });
     const title=el('h3');
     panel.append(list,title,content);
+    const extraText=el('p','short-lines');
+    if (extension) panel.append(disclosure(range().at(-1)+' · Weiterdenken',extraText));
     function choose(name) {
       if (state.topic!==name) {state.topic=name;state.hint=0;update();}
     }
@@ -250,6 +252,7 @@
       buttons.forEach((b,i)=>b.setAttribute('aria-pressed',String(state.hint===i)));
       title.textContent=book.helps[state.hint];
       content.textContent=topics[state.topic][state.hint];
+      if (extension) extraText.textContent=extension.hints[state.hint];
     }
     wrap.append(toggle,panel);update();
     return {wrap,choose};
@@ -353,9 +356,9 @@
   }
   function verdict(task,state,body) {
     const ui=book.verdictUI, levels=range(), tier=levels.at(-1);
-    const simple=levels[0]==='Förder', ownRequired=tier!=='Förder';
+    const simple=levels[0]==='Förder';
     const [key,ids]=task.card, card=book.cards[key];
-    body.append(el('p','',task.prompt),helpBox(state,{Begründung:task.hints}).wrap);
+    body.append(el('p','short-lines',task.prompt),helpBox(state,{Begründung:task.hints},true,task.extension).wrap);
     const steps=[];
     function picks(title,labels,field,style='options') {
       const [box,list]=group(title,style);
@@ -365,27 +368,43 @@
       });
       steps.push({box,buttons,field});body.append(box);
     }
-    body.append(el('p','line-label','Fachkarte · '+card.title));
-    picks(ui.evidence,ids.map(n=>card.lines[n-1]),'evidence');
+    picks(ui.evidence+' · '+card.title,ids.map(n=>card.lines[n-1]),'evidence');
     picks(ui.goal,task.goals.map(n=>book.laura[n-1]),'goal');
     picks(ui.rating,task.options,'mark','row');
-    if (simple) picks(ui.reason,task.links,'link');
+
+    const reason=block('stack');
+    reason.append(el('p','short-lines',ui.explain));
+    if (!mode.second) reason.append(el('p','small',ui.solo));
+    if (simple) {
+      const [box,choices]=group(ui.reason,'options');
+      task.links.forEach((text,i)=>choices.append(press(text,()=>{
+        state.link=state.link===i?null:i;
+        [...choices.children].forEach((b,n)=>b.setAttribute('aria-pressed',String(state.link===n)));
+      },state.link===i)));
+      reason.append(box);
+    }
+    if (task.extension) {
+      const extra=el('section','intro stack');
+      extra.append(heading('h2',tier+' · Weiterdenken'),el('p','',task.extension.prompt));
+      reason.append(extra);
+    }
+    const labels=block('row');
+    for (const method of ['spoken','paper']) {
+      labels.append(press(ui[method],()=>{
+        state.confirmed=state.confirmed===method?'':method;
+        sync();
+      },state.confirmed===method));
+    }
     const writing=block('stack'), typed=el('textarea'), label=el('label','',ui.write);
     typed.id='mein-grund';label.htmlFor=typed.id;typed.value=state.reason;
     typed.oninput=()=>{state.reason=typed.value;notice.hidden=true;};
-    const say=press(ui.spoken,()=>{state.spoken=!state.spoken;sync();},state.spoken);
-    if (task.counter) writing.append(el('p','note',task.counter));
-    writing.append(label,typed,el('p','small',ui.oral),say);
-    if (ownRequired) writing.append(disclosure('Grund selbst prüfen',el('p','note',task.selfCheck)));
-    const own=ownRequired?writing:disclosure(ui.own,writing,state.own,v=>{state.own=v;});
+    writing.append(label,typed);
+    reason.append(labels,disclosure(ui.own,writing,state.own,v=>{state.own=v;}));
+    if (tier!=='Förder') reason.append(disclosure('Grund selbst prüfen',el('p','note',task.selfCheck)));
     const notice=el('p','note');notice.setAttribute('role','status');
     const finish=button(ui.done,()=>{
-      if (simple && ownRequired && state.link===null) {
-        notice.textContent='Wählt einen Grund zur Fachinformation.';notice.hidden=false;return;
-      }
-      if (!state.reason.trim() && !state.spoken && (ownRequired || state.link===null)) {
-        notice.textContent=ownRequired?'Schreibe deinen Grund. Oder sage ihn und bestätige ihn.':'Wähle einen Grund. Oder erkläre ihn selbst.';
-        notice.hidden=false;return;
+      if (!state.reason.trim() && !state.confirmed) {
+        notice.textContent=ui.missing;notice.hidden=false;return;
       }
       session().complete=true;show('done');
     },'primary');
@@ -394,12 +413,14 @@
       for (const {box,buttons,field} of steps) {
         box.hidden=!visible;
         buttons.forEach((b,i)=>b.setAttribute('aria-pressed',String(i===state[field])));
-        if (field!=='link') visible=visible && state[field]!==null;
+        visible=visible && state[field]!==null;
       }
-      own.hidden=!visible;finish.hidden=!visible;
-      say.setAttribute('aria-pressed',String(state.spoken));notice.hidden=true;
+      reason.hidden=!visible;finish.hidden=!visible;
+      labels.children[0].setAttribute('aria-pressed',String(state.confirmed==='spoken'));
+      labels.children[1].setAttribute('aria-pressed',String(state.confirmed==='paper'));
+      notice.hidden=true;
     }
-    body.append(own,notice,finish);sync();
+    body.append(reason,notice,finish);sync();
   }
   function taskPage() {
     const s=session(), task=item(), state=draft(), box=block('work'), body=el('article','panel stack');
@@ -422,8 +443,7 @@
       heading('h2','Einschätzung'),el('p','',task.options[state.mark]));
     if (range()[0]==='Förder' && state.link!==null) main.append(el('p','',task.links[state.link]));
     if (state.reason.trim()) main.append(el('p','',state.reason));
-    main.append(el('p','note',book.verdictUI.reflect),
-      button('Mein Urteil ansehen',()=>show('task')));
+    main.append(button('Mein Urteil ansehen',()=>show('task')));
     if (person==='Mutter') main.append(button('Weiter zur Freundin',()=>enter('Freundin',1),'primary'));
     main.append(button('Zur Nachrichtenübersicht',()=>show('overview')));
   }

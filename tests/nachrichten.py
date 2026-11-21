@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT/'build/08-12'
 QA = OUT/'Abnahme'
 BANK = json.loads((OUT/'Aufgabenbank.json').read_text())
-REVIEWED = '66c66ed1548c3baa50d01386fe6b400ae23e714b'
+REVIEWED = 'e429cfb36aa45e85c17b54c43cc3e225ef48525b'
 PHOTOS = {}
 B = ROOT/'dist/Version-B'
 PATTERN = rb'(<script id="modul-08" type="application/octet-stream">)([A-Za-z0-9+/=]+)(</script>)'
@@ -27,6 +27,10 @@ def protect(temp):
     ref = temp/'ref'
     archive(REVIEWED,ref,['index.html','02-12.html','assets','app','data','module','tagesauswahl','scorm','scripts'])
     build(ref)
+    frozen=json.loads((ref/'build/08-12/Aufgabenbank.json').read_text())
+    for key in ('laura','cards','sources','questions','levels'):
+        assert BANK[key]==frozen[key], key
+    assert {p:c['message'] for p,c in BANK['cases'].items()}=={p:c['message'] for p,c in frozen['cases'].items()}
     for v in 'AB':
         name = 'Version-'+v
         current = (ROOT/'dist'/name/'Fallakte.html').read_bytes()
@@ -48,18 +52,18 @@ def check_content():
     reference = {
         'Mutter': ([1,2,3,5], 'Die Gebärmutter zieht sich zusammen. Gewebe wird ausgestoßen.',
                    'Sie bietet Hilfe mit dem Kind an. Laura möchte erst beide Wege kennen.'),
-        'Freundin': ([1,2,3,4], 'Medikamente wirken ohne Operation. Beim Ausstoßen von Gewebe blutet es.',
-                     'Die Mutter setzt auf Familienhilfe und rät zum Fortsetzen. Die Freundin denkt an die Zukunft und rät zum Abbruch.'),
+        'Freundin': ([1,2,3,4], 'Ein Abbruch mit Medikamenten ist meist ohne Operation möglich. Beim Ausstoßen von Gewebe blutet es.',
+                     'Die Mutter rät zum Fortsetzen und bietet Hilfe an. Die Freundin rät wegen der Ausbildung zum Abbruch.'),
         'Großmutter': ([1,2,3,4], 'Nach der Einnistung wächst der Embryo in der Gebärmutter weiter.',
                        'Sie bleibt bei Laura. Laura kann selbst entscheiden.'),
-        'Vater': ([1,2,3,4], 'Sie informiert. Für die Beratungsregelung sind eine anerkannte Stelle und mindestens drei Tage Abstand vorgeschrieben.',
+        'Vater': ([1,2,3,4], 'Sie informiert. Für die Beratungsregelung gilt: Die Stelle muss anerkannt sein. Bis zum Abbruch müssen mindestens drei Tage vergehen.',
                   'Sie kann sich informieren und danach selbst entscheiden.'),
     }
     document=(OUT/'Fallakte.html').read_text()
     raw=re.search(r'<script type="application/json" id="material">(.*?)</script>',document,re.S)[1]
     assert json.loads(raw)==BANK
     assert not any(old in document.lower() for old in ('video','weder blutungen noch schmerzen','verbessert den satz','ein feld kann fehlen','falsche behauptung der freundin'))
-    for phrase in ['Wähle dein Urteil','Welcher Beleg wiegt','Was zählt für Laura mehr','Wäge ab:', 'Suche für „']:
+    for phrase in ['passenden Kartenbeleg','Ausbildungsplatz zusichert','Wähle dein Urteil','Welcher Beleg wiegt','Was zählt für Laura mehr','Wäge ab:', 'Suche für „']:
         assert phrase not in document, phrase
     original=json.loads((ROOT/'module/08-12/nachrichten.json').read_text())
     assert BANK['laura']==original['laura']
@@ -84,7 +88,11 @@ def check_content():
                 assert checks[0]['mother']==[1] and any(3 in t['mother'] for t in checks)
             assert len(tasks)==4 and [t['heading'] for t in tasks[1:]]==BANK['questions']
             assert tasks[-1]['options']==['Sie hilft viel.','Sie hilft zum Teil.','Sie hilft wenig.']
-            assert bool(tasks[-1]['counter'])==(level=='AHR')
+            assert tasks[-1]['prompt'].splitlines()==['Wähle eine Information.','Wähle, was Laura möchte.','Erkläre deinen Grund.']
+            extension=tasks[-1].get('extension')
+            assert bool(extension)==(level in ('MSA','AHR'))
+            if level=='AHR':
+                assert 'schon' in extension['prompt'] and 'Ausbildungsplatz' not in extension['prompt']
             assert 'results' not in tasks[-1]
             assert all(o['citation'] for o in checks[0]['options'])
             depth=checks[1].get('depth')
@@ -95,6 +103,7 @@ def check_content():
                 assert any('Wortlaut ist prüfbar' in o['label'] and o['correct'] for o in depth['options'])
             sets=[t['hints'] for t in tasks[1:]]+[f['hints'] for f in tasks[0]['fields']]
             if depth: sets.append(depth['hints'])
+            if extension: sets.append(extension['hints'])
             assert all(len(h)==len(set(h))==5 for h in sets)
             assert all(f"Zeile {f['line']}" in f['hints'][4] for f in tasks[0]['fields'])
             for t in checks:
@@ -135,7 +144,7 @@ def shot(page,name):
 def inspect_task(frame,task,level):
     expect(frame.get_by_role('heading',name=task['heading'],exact=True)).to_be_visible()
     article = frame.locator('article')
-    expect(article.get_by_text(task['prompt'],exact=True)).to_be_visible()
+    expect(article.locator(':scope > p').first).to_have_text(task['prompt'])
     # A real learner can go straight to 5, then back to any level without submitting.
     if task['kind']=='map':
         topics={f['name']:f['hints'] for f in task['fields']}
@@ -179,6 +188,9 @@ def inspect_task(frame,task,level):
         options=article.locator('.options').nth(part).get_by_role('button')
         status=article.get_by_role('status',include_hidden=True).nth(part)
         for pos,option in enumerate(q['options']):
+            expect(options.nth(pos)).to_contain_text(option['label'])
+            if option.get('citation'):expect(options.nth(pos)).to_contain_text('Kartenzeile '+option['citation'])
+            if option['correct']:assert option['label'] in q['hints'][4]
             if not option['correct']:
                 options.nth(pos).dispatch_event('click')
                 expect(status).to_contain_text(option['feedback'])
@@ -187,6 +199,31 @@ def inspect_task(frame,task,level):
         options.nth(correct).tap()
         expect(status).to_contain_text(q['options'][correct]['feedback'])
     expect(btn(article,'Weiter')).to_be_visible()
+
+
+def finish_with_help(frame,person,level):
+    """Follow the rendered fifth hint after a fresh, direct entry to the verdict."""
+    article=frame.locator('article')
+    ui=BANK['verdictUI']
+    btn(article,'Hilfe').tap()
+    btn(article,'Hilfe 5 – So geht es.').tap()
+    hint=article.locator('.help-list ~ p').inner_text()
+    fact,goal,rating=re.search(r'Wähle „([^“]+)“ und Lauras Wunsch „([^“]+)“.\n„([^“]+)“',hint).groups()
+    for excerpt in [fact,goal]:
+        matching=article.locator('fieldset:visible').last.get_by_role('button').filter(has_text=excerpt)
+        expect(matching).to_have_count(1)
+        matching.tap()
+    btn(article,rating).tap()
+    if level in ('MSA','AHR'):
+        extra=article.locator('.help-list ~ details')
+        extra.locator('summary').tap()
+        for i,line in enumerate(BANK['cases'][person]['levels'][level][-1]['extension']['hints']):
+            btn(article,f'Hilfe {i+1} – '+BANK['helps'][i]).dispatch_event('click')
+            expect(extra.locator('p')).to_have_text(line)
+    assert ui['spoken'] in hint and ui['done'] in hint
+    btn(article,ui['spoken']).tap()
+    btn(article,ui['done']).tap()
+    expect(frame.get_by_role('heading',name=person+' · Abschnitt fertig')).to_be_visible()
 
 
 def exercise(browser,engine,person,level,n,base):
@@ -209,7 +246,7 @@ def exercise(browser,engine,person,level,n,base):
     p=context.new_page()
     p.on('pageerror',lambda err:errors.append(str(err)))
     p.goto(base+'/host.html' if scorm else (B/'Fallakte.html').as_uri())
-    shell=p.frame(name='sco') if scorm else p.main_frame
+    shell=p.frame_locator('iframe[name="sco"]') if scorm else p.main_frame
     shell.locator('#zweiter-tag').tap()
     frame=shell.frame_locator('iframe[title="Dienstag, 08.12.2026"]')
     sections=BANK['cases'][person]['sections']
@@ -280,25 +317,37 @@ def exercise(browser,engine,person,level,n,base):
             btn(article,fact).tap()
             btn(article,goal).tap()
             btn(article,label).tap()
-            if level=='Förder':
-                btn(article,task['links'][j%2]).tap()
-            elif j==0:
-                btn(frame,'Abschnitt beenden').tap()
-                expect(article.get_by_role('status')).to_contain_text('deinen Grund')
+            ui=BANK['verdictUI']
+            expect(article.get_by_text(ui['explain'],exact=True)).to_be_visible()
+            expect(article.get_by_text(ui['solo'],exact=True)).to_be_visible()
+            ext=task.get('extension')
+            if ext:
+                section=article.locator('section.intro')
+                expect(section.get_by_role('heading',name=level+' · Weiterdenken')).to_be_visible()
+                expect(section.get_by_text(ext['prompt'],exact=True)).to_be_visible()
+            if level=='Förder':btn(article,task['links'][j%2]).tap()
+            if j==0:
+                btn(frame,ui['done']).tap()
+                expect(article.get_by_role('status')).to_have_text(ui['missing'])
                 reason=fact+' Laura sagt: „'+goal+'“ '+task['links'][0]
+                article.get_by_text(ui['own'],exact=True).tap()
                 article.get_by_label('Dein Grund').fill(reason)
                 action('overview').tap()
                 other=next(l for l in BANK['levels'] if l!=level)
                 btn(frame,other).tap();btn(frame,sections[1]).tap()
                 expect(frame.get_by_role('heading',name=BANK['questions'][2])).to_be_visible()
+                for chosen in [fact,goal,label]: expect(btn(article,chosen)).to_have_attribute('aria-pressed','true')
                 action('overview').tap();btn(frame,level).tap();btn(frame,'Zur offenen Stelle').tap()
                 expect(article.get_by_label('Dein Grund')).to_have_value(reason)
-                article.get_by_text('Grund selbst prüfen',exact=True).tap()
-                expect(article.get_by_text(task['selfCheck'],exact=True)).to_be_visible()
+                if level!='Förder':
+                    article.get_by_text('Grund selbst prüfen',exact=True).tap()
+                    expect(article.get_by_text(task['selfCheck'],exact=True)).to_be_visible()
             elif j==1:
                 article.get_by_label('Dein Grund').fill('')
-                btn(article,'Ich habe meinen Grund gesagt.').tap()
-            if task['counter']:expect(article.get_by_text(task['counter'],exact=True)).to_be_visible()
+                btn(article,ui['spoken']).tap()
+            else:
+                btn(article,ui['paper']).tap()
+                expect(btn(article,ui['spoken'])).to_have_attribute('aria-pressed','false')
             if n==5 and j==0:shot(p,engine+'-Urteil')
             btn(frame,'Abschnitt beenden').tap()
             expect(frame.get_by_role('heading',name=person+' · Abschnitt fertig')).to_be_visible()
@@ -309,7 +358,7 @@ def exercise(browser,engine,person,level,n,base):
     assert frame.locator('body').evaluate('()=>storageWrites')==[]
     if scorm:assert p.evaluate('calls')==[['LMSInitialize','']]
     p.reload()
-    shell=p.frame(name='sco') if scorm else p.main_frame
+    shell=p.frame_locator('iframe[name="sco"]') if scorm else p.main_frame
     shell.locator('#zweiter-tag').tap()
     frame=shell.frame_locator('iframe[title="Dienstag, 08.12.2026"]')
     action('recovery').tap();btn(frame,level).tap();btn(frame,person).tap()
@@ -324,6 +373,7 @@ def exercise(browser,engine,person,level,n,base):
                 expect(btn(frame,facts[0])).to_be_visible()
                 expect(btn(frame,'Abschnitt beenden')).to_be_hidden()
                 btn(frame,'Ganze Fachkarte').tap();btn(frame,'Zurück').tap()
+                finish_with_help(frame,person,level)
             else:
                 expect(btn(frame,'Weiter')).to_be_hidden()
                 expect(frame.locator('aside')).to_contain_text(case['message'][tasks[index]['lines'][0]-1])
@@ -341,6 +391,55 @@ def exercise(browser,engine,person,level,n,base):
     return dict(browser=engine,version=browser.version,person=person,niveau=level,format='SCORM' if scorm else 'HTML',
                 viewport=[w,h],schrift_prozent=font,aufgaben=len(tasks),hilfen_je_aufgabe=5,
                 urteile=task['options'],wiedereinstieg=sections,externe_anfragen=requests,skriptfehler=errors)
+
+
+def pair_recovery(browser,engine,base,low,high,scorm):
+    page=browser.new_page(viewport={'width':820,'height':1180},has_touch=True)
+    page.goto(base+'/host.html' if scorm else (B/'Fallakte.html').as_uri())
+    def open_day():
+        shell=page.frame_locator('iframe[name="sco"]') if scorm else page.main_frame
+        shell.locator('#zweiter-tag').tap()
+        return shell,shell.frame_locator('iframe[title="Dienstag, 08.12.2026"]')
+    shell,frame=open_day()
+    btn(frame,BANK['cases']['Freundin']['sections'][0]).tap()
+    frame.get_by_role('combobox',name='Fakt',exact=True).select_option('1')
+    page.reload()
+    shell,frame=open_day()
+    shell.locator('#modulaktionen [data-action="recovery"]').tap()
+    btn(frame,high).tap()
+    frame.get_by_text('Zu zweit auf zwei Niveaus',exact=True).tap()
+    frame.get_by_label('Zweites Niveau',exact=True).select_option(low)
+    btn(frame,'Freundin').tap()
+    btn(frame,'Freundin 2 – Nachricht prüfen').tap()
+    btn(frame,'3. Hilft die Nachricht Laura? Warum?').tap()
+    article=frame.locator('article')
+    expect(frame.locator('.eyebrow')).to_contain_text('Frage 3 von 3')
+    expect(article.locator(':scope > p').first).to_have_text('Wähle eine Information. Wähle, was Laura möchte. Erkläre deinen Grund.')
+    frame.get_by_text('Ganze Nachricht lesen',exact=True).tap()
+    expect(frame.locator('aside')).to_contain_text(BANK['cases']['Freundin']['message'][0])
+    frame.get_by_text('Lauras ganze Nachricht',exact=True).tap()
+    expect(frame.locator('aside details[open]').last).to_contain_text(BANK['laura'][1])
+    btn(frame,'Ganze Fachkarte').tap()
+    expect(frame.locator('details[open]')).to_contain_text(BANK['cards']['medizin']['lines'][4])
+    btn(frame,'Zurück').tap()
+    fact=BANK['cards']['medizin']['lines'][4]
+    btn(frame,fact).tap()
+    frame.get_by_text('Niveau · '+high+' + '+low,exact=True).tap()
+    frame.get_by_label('Zweites Niveau',exact=True).select_option('')
+    expect(btn(frame,fact)).to_have_attribute('aria-pressed','true')
+    frame.get_by_text('Niveau · '+high,exact=True).tap()
+    frame.get_by_text('Zu zweit auf zwei Niveaus',exact=True).tap()
+    frame.get_by_label('Zweites Niveau',exact=True).select_option(low)
+    expect(btn(frame,fact)).to_have_attribute('aria-pressed','true')
+    btn(frame,BANK['laura'][1]).tap()
+    btn(frame,'Sie hilft wenig.').tap()
+    if low=='Förder':btn(frame,BANK['cases']['Freundin']['levels'][low][-1]['links'][1]).tap()
+    expect(article.get_by_text(BANK['verdictUI']['solo'],exact=True)).to_be_hidden()
+    expect(article.locator('section.intro').get_by_role('heading',name=high+' · Weiterdenken')).to_be_visible()
+    btn(frame,BANK['verdictUI']['paper']).tap();btn(frame,'Abschnitt beenden').tap()
+    expect(frame.get_by_role('heading',name='Freundin · Abschnitt fertig')).to_be_visible()
+    page.close()
+    return dict(browser=engine,niveaus=[low,high],format='SCORM' if scorm else 'HTML',teilfrage=3)
 
 
 def standalone_zoom(browser,engine):
@@ -369,6 +468,7 @@ def main():
     runs=[]
     routes=[]
     small=[]
+    restarts=[]
     with TemporaryDirectory() as td:
         temp=Path(td)
         before=protect(temp)
@@ -386,10 +486,12 @@ def main():
                         print(engine,person,level,flush=True)
                 for first,second in [(l,'') for l in BANK['levels']]+[('Förder','AHR'),('ESA','MSA')]:
                     routes.append(measure_route(browser,engine,B,BANK,first,second,shot))
+                for pair_index,(low,high) in enumerate([('Förder','AHR'),('ESA','MSA')]):
+                    restarts.append(pair_recovery(browser,engine,url,low,high,bool(pair_index)==(engine=='webkit')))
                 browser.close()
     report=dict(commit=subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip(),referenz=REVIEWED,version_a_sha256=before,html_sha256=digest((B/'Fallakte.html').read_bytes()),
                 scorm_sha256=digest((B/'Fallakte-SCORM12.zip').read_bytes()),bank_sha256=digest((OUT/'Aufgabenbank.json').read_bytes()),
-                durchlaeufe=runs,grundwege=routes,kleinfenster=small,bilder=PHOTOS)
+                durchlaeufe=runs,grundwege=routes,paar_neustart=restarts,kleinfenster=small,bilder=PHOTOS)
     (QA/'Nachrichten.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
 
 

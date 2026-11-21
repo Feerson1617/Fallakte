@@ -70,14 +70,19 @@ def material(bank):
                             text.append(f"- Zeile {opt['line']} — {start}{opt['feedback']}")
                         hints(field['hints'])
                 elif t['kind']=='judgment':
-                    text.extend([ui['evidence'],*numbered(bank['cards'][key]['lines'],ids),
+                    text.extend([ui['evidence']+' · '+bank['cards'][key]['title'],*numbered(bank['cards'][key]['lines'],ids),
                                  ui['goal'],*numbered(bank['laura'],t['goals']),ui['rating'],*t['options']])
-                    if level=='Förder':text.extend([ui['reason'],*t['links'],ui['own']])
-                    if t['counter']:text.append(t['counter'])
-                    text.extend([ui['write'],ui['oral'],ui['spoken']])
+                    text.extend([ui['explain'],'Einzelarbeit: '+ui['solo']])
+                    if level=='Förder':text.extend([ui['reason'],*t['links']])
+                    if 'extension' in t:
+                        text.extend(['**'+level+' · Weiterdenken**',t['extension']['prompt']])
+                    text.extend([ui['spoken'],ui['paper'],ui['own'],ui['write']])
                     if level!='Förder':text.extend(['Grund selbst prüfen',t['selfCheck']])
-                    text.extend([ui['done'],ui['reflect'],'Jede Gewichtung bleibt offen. Hilfe 5 enthält ein mögliches Beispiel.'])
+                    text.extend([ui['done'],ui['missing'],'Viel, zum Teil und wenig sind mit einer Begründung möglich.'])
                     hints(t['hints'])
+                    if 'extension' in t:
+                        text.append('**'+level+' · Weiterdenken innerhalb der geöffneten Hilfe**')
+                        hints(t['extension']['hints'])
                 else:
                     answers(t)
                     hints(t['hints'])
@@ -89,8 +94,8 @@ def material(bank):
                         answers(depth)
                         hints(depth['hints'])
     text.extend(['## Gemischte Paare und Wiedereinstieg',
-                 'Beide bearbeiten dieselben Teilfragen. Bei zwei Niveaus gelten die Auswahlhilfen des niedrigeren und die Begründungsaufträge des höheren Niveaus. Auf dem eigenen Lernbogen kann jede Person ihren Grund festhalten.',
-                 'Nach Neustart → Person → Abschnitt 2 → 1. Stimmt das? / 2. Was möchte Laura? Geht die Nachricht darauf ein? / 3. Hilft die Nachricht Laura? Warum?'])
+                 'Beide bearbeiten dieselben nummerierten Teilfragen. Der Auftrag vor den Auswahlen gilt für alle. Bei Förder/AHR kommen die freiwilligen Förder-Bausteine und unter „AHR · Weiterdenken“ die veränderte Voraussetzung hinzu. ESA/MSA erhält nach dem gemeinsamen Auftrag die MSA-Frage nach Nutzen und Grenze. Die Vertiefung gehört zum höheren Niveau. Die fünf Hilfen zur Vertiefung stehen in der jeweils geöffneten Hilfe unter „Weiterdenken“.',
+                 'Nach Neustart → Niveau wählen (für ein Paar auch das zweite Niveau) → Person → Abschnitt 2 → 1. Stimmt das? / 2. Was möchte Laura? Geht die Nachricht darauf ein? / 3. Hilft die Nachricht Laura? Warum?'])
     return '\n\n'.join(text)+'\n'
 
 
@@ -120,25 +125,27 @@ def main():
     assert {x['browser'] for x in r['kleinfenster'] if x['schrift_prozent']==200 and x['abschnitte']==8}=={'chromium','webkit'}
     photos=[(QA/name,'Bildschirmfotos/'+name) for name in r['bilder']]
     assert all(r['bilder'][file.name]==sha(file) for file,_ in photos)
-    assert len(photos)==28
+    assert len(photos)==30
+    assert {(v['browser'],tuple(v['niveaus'])) for v in r['paar_neustart'] if v['teilfrage']==3}=={
+        (e,p) for e in ('chromium','webkit') for p in [('Förder','AHR'),('ESA','MSA')]}
     body=(ROOT/'docs/Nachrichten-08-12.md').read_text()
     routes=r['grundwege']
     labels=[[l] for l in bank['levels']]+[['Förder','AHR'],['ESA','MSA']]
     assert sorted((x['browser'],x['niveaus']) for x in routes)==sorted((e,l) for e in ['chromium','webkit'] for l in labels)
     summary=['## Technische Abnahme',
              f"Referenz: `{r['referenz']}`. Geprüfter Commit: `{r['commit']}`. Version A und die gesamte B-Datei außerhalb des zweiten Moduls wurden byteweise gegen den Referenzbau verglichen. Die SCORM-Startdatei entspricht der jeweiligen Offline-Datei.",
-             f"{len(runs)} vollständige Einzelwege in Chromium und WebKit. Geprüft wurden alle Zuordnungen und Hilfeziele, falsche und richtige Teilantworten, drei Gesamturteile und der Neustart zu jeder einzelnen Teilfrage. Der Test-LMS empfing nur Sitzungsbeginn und -ende. Portrait und Querformat: 820 × 1180 und 1180 × 820 CSS-Pixel mit 100 oder 150 Prozent Schrift. Der Zusatztest nutzt 390 × 650 und 200 Prozent.",
+             f"{len(runs)} vollständige Einzelwege in Chromium und WebKit. Geprüft wurden alle Zuordnungen und Hilfeziele, falsche und richtige Teilantworten, drei Gesamturteile und der Neustart zu jeder einzelnen Teilfrage. Nach dem Neuladen ließ sich das Urteil bei allen 32 Einzelwegen direkt mit dem sichtbaren Beispiel aus Hilfe 5 abschließen. Vier zusätzliche Paarprüfungen führten nach dem Neuladen direkt zu Freundin 2, Frage 3. Dabei wurden die Materialien aufgerufen und das Niveau mit einer bereits gewählten Fachstelle gewechselt. Der Test-LMS empfing nur Sitzungsbeginn und -ende. Portrait und Querformat: 820 × 1180 und 1180 × 820 CSS-Pixel mit 100 oder 150 Prozent Schrift. Der Zusatztest nutzt 390 × 650 und 200 Prozent.",
              '## Umfang der Pflichtstrecke',
-             'Jede Zeile beruht auf zwei tatsächlichen Durchläufen. Die Tabelle zeigt den Chromium-Wert, bei Abweichung zusätzlich den WebKit-Wert. Ausgangspunkt ist die Tagesauswahl, Endpunkt die fertige Begründung zur Freundin. Gezählt wurden ein fehlerfreier Weg ohne freiwillige Hilfe und die mündliche Variante. Eine Zeilenauswahl zählt als eine Bedienhandlung. Das Öffnen und Bestätigen nativer Menüs, Scrollen, Lesezeit und Gesprächsdauer hängen vom Gerät und den Lernenden ab.',
-             '| Niveau am Gerät | Aufgabenbildschirme | Ansichtswechsel | Schaltflächen | Auswahlvorgänge | Angezeigte Wortvorkommen auf den acht Aufgaben |',
-             '| --- | ---: | ---: | ---: | ---: | ---: |']
+             'Jede Zeile beruht auf zwei tatsächlichen Durchläufen. Die Tabelle zeigt den Chromium-Wert, bei Abweichung zusätzlich den WebKit-Wert. Ausgangspunkt ist die Tagesauswahl, Endpunkt die fertige Begründung zur Freundin. Gezählt wurde ein fehlerfreier Weg mit mündlicher Bestätigung ohne freiwillige Hilfen und Begründungsbausteine. Die fachlichen Auswahlen zählen alle verlangten Zuordnungen, Antworten, Fachstellen, Laura-Aussagen und persönlichen Einschätzungen. Sie sind bereits in den Bedienhandlungen enthalten. Eine Zeilenauswahl zählt als eine Bedienhandlung. Das Öffnen und Bestätigen nativer Menüs, Scrollen, Lesezeit und Gesprächsdauer hängen vom Gerät und den Lernenden ab.',
+             '| Niveau am Gerät | Aufgabenbildschirme | Ansichtswechsel | Schaltflächen | Auswahlmenüs | Fachliche Auswahlen | Angezeigte Wortvorkommen auf den acht Aufgaben |',
+             '| --- | ---: | ---: | ---: | ---: | ---: | ---: |']
     for levels in labels:
         rows=[x for x in routes if x['niveaus']==levels]
         def cell(values):
             return ' / '.join(str(v) for v in dict.fromkeys(values))
         cells=[cell(x[k] for x in rows) for k in ('aufgaben','wechsel')]
         cells.extend(cell(x['bedienhandlungen'][k] for x in rows) for k in ('button','auswahl'))
-        cells.append(cell(x['wortvorkommen'] for x in rows))
+        cells.extend(cell(x[k] for x in rows) for k in ('fachliche_auswahlen','wortvorkommen'))
         summary.append('| '+' + '.join(levels)+' | '+' | '.join(cells)+' |')
     summary+=['','Die Textmessung zählt sichtbare Passagen einschließlich wiederkehrender Oberfläche, Quelltexten, Alternativen, ausgewählten Zeilen und eingeblendeten Rückmeldungen je Aufgabenbildschirm. Bei mehreren Zuständen einer Aufgabe wird dieselbe Passage höchstens so oft gezählt, wie sie gleichzeitig vorkommt. Geschlossene Hilfen, Menüs und der freie mündliche Grund zählen nicht mit. Die Aufschlüsselung pro Frage steht im JSON-Protokoll. Die Wortzahl beschreibt das Textangebot, keine individuell gelesene Menge.',
               '','| Geprüfte Datei | SHA-256 |','| --- | --- |']

@@ -6,10 +6,10 @@ SOURCE = json.loads(Path(__file__).with_name('nachrichten.json').read_text())
 LEVELS = ['Förder', 'ESA', 'MSA', 'AHR']
 QUESTIONS = ['Stimmt das?', 'Was möchte Laura? Geht die Nachricht darauf ein?', 'Hilft die Nachricht Laura? Warum?']
 CATEGORIES = {
-    'Fakt': 'Was behauptet die Person? Können wir das prüfen?',
+    'Fakt': 'Welche Aussage kannst du prüfen?',
     'Wert': 'Was ist der Person wichtig?',
     'Norm': 'Welche Regel nennt die Person?',
-    'Folgerung': 'Was soll Laura nach Meinung dieser Person tun?',
+    'Folgerung': 'Was rät die Person Laura?',
 }
 HELP = ['Was soll ich tun?', 'Was bedeutet die Frage?', 'Wo finde ich die passende Stelle?',
         'Wie hängen die Aussagen zusammen?', 'So geht es.']
@@ -24,14 +24,13 @@ SOURCES = {
     'SchKG § 9': 'https://www.gesetze-im-internet.de/beratungsg/__9.html',
 }
 VERDICT_UI = {
-    'evidence': 'Welche Stelle passt zu deiner Antwort?',
-    'goal': 'Welche Aussage von Laura ist für deine Antwort wichtig?',
-    'rating': 'Wie gut hilft die Nachricht Laura?',
-    'reason': 'Warum hilft diese Info Laura? Was bleibt offen?',
-    'own': 'Einen eigenen Grund sagen oder schreiben',
-    'write': 'Dein Grund', 'oral': 'Du kannst deinen Grund auch laut sagen.',
+    'evidence': 'Fachkarte', 'goal': 'Lauras Worte', 'rating': 'Wie gut hilft die Nachricht Laura?',
+    'reason': 'Das kann dir beim Erklären helfen', 'own': 'Am iPad schreiben',
+    'explain': 'Zeige die zwei Stellen.\nErkläre: Warum passt deine Antwort?',
+    'solo': 'Nutze deinen Lernbogen. Schreibe dort deinen Grund oder sage ihn laut.',
+    'write': 'Dein Grund', 'paper': 'Mein Grund steht auf dem Lernbogen.',
     'spoken': 'Ich habe meinen Grund gesagt.', 'done': 'Abschnitt beenden',
-    'reflect': 'Prüfe auf deinem Lernbogen: Erklärt dein Grund, wie die Fachinformation Laura hilft?',
+    'missing': 'Sage oder schreibe deinen Grund. Bestätige ihn oder gib ihn hier ein.',
 }
 
 
@@ -89,14 +88,16 @@ READING = {
     ],
 }
 FIELD_HELP = {
-    'Fakt': ('Einen Fakt kannst du an einer Quelle prüfen.',
-             'Diese Aussage kannst du mit einer Fachkarte vergleichen.'),
-    'Wert': ('Ein Wert zeigt, was jemand wichtig findet.',
-             'Ein Wert nennt, was zählt. Eine Regel sagt, wie man handeln soll.'),
-    'Norm': ('Eine Norm ist eine allgemeine Regel.',
-             'Die Regel gilt auch für andere Menschen. Der konkrete Rat richtet sich an Laura.'),
-    'Folgerung': ('Eine Folgerung ist hier der Rat an Laura.',
-                  'Überlege, was Laura aus Sicht der Person jetzt tun soll.'),
+    'Fakt': 'Ein Fakt ist eine Aussage, die du prüfen kannst.',
+    'Wert': 'Ein Wert zeigt, was jemand wichtig findet.',
+    'Norm': 'Eine Norm ist eine allgemeine Regel.',
+    'Folgerung': 'Eine Folgerung ist hier der Rat an Laura.',
+}
+FIELD_LINKS = {
+    'Mutter': ['Was im Körper passiert, kannst du auf der Fachkarte prüfen.', 'Die Sorge der Mutter zeigt, was ihr wichtig ist.', 'Die Regel gilt für die ganze Familie. Ihr Rat gilt für Laura.', 'Die Mutter bietet Hilfe an. Welchen Weg rät sie Laura deshalb?'],
+    'Freundin': ['Ob eine Operation nötig ist, kannst du auf der Fachkarte prüfen.', 'Die Freundin denkt an das, was Laura nach der Schule vorhat.', 'Die Regel über Zukunftspläne gilt auch für andere Menschen.', 'Die Freundin denkt an die Ausbildung. Was rät sie Laura deshalb?'],
+    'Großmutter': ['Wo der Embryo wächst, kannst du auf der Fachkarte prüfen.', 'Was liegt der Großmutter besonders am Herzen?', 'Die Regel kommt aus ihrem Glauben und gilt für sie allgemein.', 'Die Großmutter nennt ihre Glaubensregel. Was wünscht sie sich deshalb für Laura?'],
+    'Vater': ['Was eine Beratungsstelle anbietet, kannst du auf der Fachkarte prüfen.', 'Der Vater möchte, dass Laura Bescheid weiß und selbst wählt.', 'Das Gesetz gilt für alle, die diese Beratungsregelung nutzen.', 'Das Gesetz nennt eine Pflicht. Was schlägt der Vater Laura als ersten Schritt vor?'],
 }
 FIELD_PLACES = {
     'Mutter': ['Lies den Anfang über den Abbruch.', 'Lies die Stelle über ihre Sorge.', 'Lies die Stellen über Familie und Hilfe.', 'Lies den Schluss nach dem Hilfsangebot.'],
@@ -105,8 +106,8 @@ FIELD_PLACES = {
     'Vater': ['Suche die Auskunft über die Beratungsstelle.', 'Was sagt er über Wissen und Entscheiden?', 'Suche die Aussage über das Gesetz.', 'Was rät er Laura als ersten Schritt?'],
 }
 EXTRA_LINES = {'Mutter': 'Hier bietet sie Laura persönlich Hilfe an.',
-               'Großmutter': 'Hier verspricht sie Laura Unterstützung bei jeder Entscheidung.',
-               'Vater': 'Hier lässt er die Entscheidung ausdrücklich bei Laura.'}
+               'Großmutter': 'Hier verspricht sie Laura Hilfe bei jeder Wahl.',
+               'Vater': 'Hier sagt er: Laura entscheidet selbst.'}
 
 
 def argument_map(person, level):
@@ -136,9 +137,8 @@ def argument_map(person, level):
                 seen = roles[n] if n in roles else EXTRA_LINES[person]
                 feedback = f'{seen} {CATEGORIES[name]}'
             options.append(dict(line=n, correct=correct, feedback=feedback))
-        define, relation = FIELD_HELP[name]
         target = SOURCE['nachrichten'][person][line-1]
-        hints = [f'Wähle für {name} eine Zeile.', define, FIELD_PLACES[person][i], relation,
+        hints = [f'Wähle für {name} eine Zeile.', FIELD_HELP[name], FIELD_PLACES[person][i], FIELD_LINKS[person][i],
                  f'{meaning} Wähle bei {name} Zeile {line}.']
         if name == 'Norm' and person == 'Mutter':
             hints[-1] = f'„{target}“ Wähle bei Norm Zeile {line}.'
@@ -157,33 +157,33 @@ def check(prompt, lines, choices, *, look, clue, meaning, card=None, wishes=(), 
 
 
 FACTS = {
-    'Mutter': check('Wie kommt es bei diesem Abbruch zur Blutung?', [1], [
-        ('Die Gebärmutter zieht sich zusammen. Gewebe wird ausgestoßen.', 'Das Medikament wirkt auf die Gebärmutter. Dabei blutet es. Schmerzen sind möglich.'),
+    'Mutter': check('Wie kommt es zur Blutung?', [1], [
+        ('Die Gebärmutter zieht sich zusammen. Gewebe wird ausgestoßen.', 'So kommt es zur Blutung. Auch Schmerzen sind möglich.'),
         ('Die Blutung entsteht erst bei einer Operation.', 'Lies auf der Fachkarte Zeilen 2 und 3. Dort wirkt das Medikament.')
     ], card=['medizin', [2, 3, 4]], look='Lies Fachkarte „Abbruch mit Medikamenten“, Zeilen 2 bis 4.',
         clue='Das Medikament löst das Zusammenziehen aus. Gewebe verlässt die Gebärmutter.',
-        meaning='Suche im Körper den Grund für die Blutung.'),
-    'Freundin': check('Wie passen die beiden medizinischen Aussagen zusammen?', [1], [
-        ('Medikamente wirken ohne Operation. Beim Ausstoßen von Gewebe blutet es.', 'Beide beschreiben denselben Weg. Die Freundin nennt die Art des Abbruchs. Die Mutter nennt eine körperliche Folge.'),
+        meaning='Eine Blutung heißt: Blut tritt aus dem Körper aus.'),
+    'Freundin': check('Wie passen die Aussagen über Blutungen und Operationen zusammen?', [1], [
+        ('Ein Abbruch mit Medikamenten ist meist ohne Operation möglich. Beim Ausstoßen von Gewebe blutet es.', 'Beide beschreiben denselben Abbruch. Blutungen sind auch ohne Operation möglich.'),
         ('Die Mutter beschreibt eine Operation. Die Freundin beschreibt einen anderen Weg.', 'Lies die erste Zeile beider Nachrichten. Beide sprechen von Medikamenten.'),
-        ('Blutungen zeigen, dass eine Operation nötig war.', 'Lies Zeile 3 der Karte. Die Blutung entsteht beim Ausstoßen des Gewebes.')
+        ('Blutungen zeigen, dass eine Operation nötig war.', 'Was geschieht laut Kartenzeile 3 mit dem Gewebe?')
     ], card=['medizin', [2, 3, 4, 5]], mother=[1], look='Vergleiche beide ersten Zeilen mit den Kartenzeilen 2 bis 5.',
         clue='Das Medikament bringt die Gebärmutter zum Zusammenziehen. Dafür ist grundsätzlich keine Operation nötig.',
-        meaning='Können diese Dinge beim selben Abbruch passieren?'),
+        meaning='Bei einer Operation arbeiten Ärztinnen oder Ärzte mit Instrumenten im Körper.'),
     'Großmutter': check('Welche Aussage kannst du mit der Fachkarte prüfen?', [1, 3], [
-        ('Nach der Einnistung wächst der Embryo in der Gebärmutter weiter.', 'Die Entwicklung im Körper ist biologisch überprüfbar.'),
+        ('Nach der Einnistung wächst der Embryo in der Gebärmutter weiter.', 'Die Karte zeigt, wo der Embryo wächst.'),
         ('Die Entwicklung des Embryos beweist die Glaubensregel.', 'Lies Zeile 1 und Zeile 3 getrennt. Die Karte erklärt einen Vorgang im Körper. Die Regel stammt aus ihrem Glauben.')
     ], card=['entwicklung', [1, 2]], look='Lies auf der Karte „Am Anfang der Schwangerschaft“ die zweite Zeile.',
         clue='Die Karte erklärt, wo der Embryo wächst. Die Großmutter sagt selbst, woher ihre Regel kommt.',
-        meaning='Suche die Aussage über den Körper.'),
+        meaning='Bei der Einnistung verbindet sich der frühe Embryo mit der Schleimhaut der Gebärmutter.'),
     'Vater': check('Was stimmt über die Beratungsstelle?', [1, 3], [
-        ('Sie informiert. Für die Beratungsregelung sind eine anerkannte Stelle und mindestens drei Tage Abstand vorgeschrieben.',
-         'Das Angebot in Zeile 1 und die beiden gesetzlichen Vorgaben in Zeile 3 stimmen.'),
+        ('Sie informiert. Für die Beratungsregelung gilt: Die Stelle muss anerkannt sein. Bis zum Abbruch müssen mindestens drei Tage vergehen.',
+         'Der Vater nennt das Angebot und die Regeln für die Beratung.'),
         ('Jede Stelle reicht aus, wenn der Termin drei Tage vor dem Abbruch liegt.',
-         'Lies die Kartenzeilen 2 und 3. Für diese Regelung ist auch die staatliche Anerkennung vorgeschrieben.')
+         'Lies Kartenzeile 2. Welche Stelle nennt das Gesetz?')
     ], card=['beratung', [1, 2, 3]], look='Lies „Beratung und Gesetz“, Zeilen 1 bis 3.',
         clue='Unterscheide das Angebot der Stelle und die Vorgaben für die Beratungsregelung.',
-        meaning='Prüfe, was die Stelle anbietet und was für diese Regelung gilt.'),
+        meaning='Anerkannt heißt hier: Der Staat hat die Stelle für diese Beratung zugelassen.'),
 }
 
 WISHES = {
@@ -192,27 +192,27 @@ WISHES = {
         ('Das Hilfsangebot beantwortet schon, welcher Weg zu Laura passt.', 'Lies Lauras Worte. Ihr fehlen Informationen zu ihren Möglichkeiten.')
     ], wishes=[4, 5], look='Vergleiche die Zeilen 3 bis 5 der Mutter mit Lauras Worten.',
         clue='Mit einem Kind will die Mutter helfen. Laura hat noch keine Entscheidung getroffen.',
-        meaning='Was würde Laura durch die Nachricht bekommen? Was sucht sie noch?'),
+        meaning='Ein Angebot sagt, welche Hilfe Laura bekommen kann.'),
     'Freundin': check('Warum raten sie Laura zu verschiedenen Wegen?', [2, 3, 4], [
-        ('Die Mutter setzt auf Familienhilfe und rät zum Fortsetzen. Die Freundin denkt an die Zukunft und rät zum Abbruch.',
-         'Die dritte Zeile beider Nachrichten erklärt, warum die Ratschläge verschieden sind.'),
+        ('Die Mutter rät zum Fortsetzen und bietet Hilfe an. Die Freundin rät wegen der Ausbildung zum Abbruch.',
+         'Beide nennen in Zeile 3 ihre Regel.'),
         ('Eine der beiden muss sich beim Ablauf mit Medikamenten irren.',
          'Vergleiche die Regeln in Zeile 3 beider Nachrichten. Die medizinischen Aussagen passen zusammen.'),
         ('Der Ausbildungswunsch legt schon fest, was Laura tun soll.',
          'Lies Lauras Worte. Sie möchte die Ausbildung abschließen und selbst entscheiden.')
     ], wishes=[2, 5], mother=[2, 3, 5], look='Lies bei beiden die dritte Zeile und den Rat danach.',
         clue='Die Mutter nennt eine Familienregel. Die Freundin nennt eine Regel für Zukunftspläne.',
-        meaning='Suche, was bei jeder Person den Ausschlag gibt.'),
+        meaning='Ein Rat sagt Laura, was sie aus Sicht der Person tun soll.'),
     'Großmutter': check('Was bietet sie Laura bei einer anderen Wahl an?', [3, 4, 5], [
         ('Sie bleibt bei Laura. Laura kann selbst entscheiden.', 'Ihr Wunsch und ihr Angebot stehen nebeneinander. Laura muss den Glauben nicht teilen.'),
         ('Ihre Unterstützung hängt davon ab, dass Laura ihren Glauben teilt.', 'Lies Zeile 5. Dort verspricht sie Hilfe bei jeder Wahl.')
     ], wishes=[4, 5], look='Vergleiche den Wunsch in Zeile 4 mit dem Versprechen in Zeile 5.',
-        clue='Achte auf „egal wie du dich entscheidest“.', meaning='Was gilt, auch wenn Laura anders denkt?'),
+        clue='Achte auf „egal wie du dich entscheidest“.', meaning='Hilfe kann auch heißen: Jemand bleibt bei dir und hört zu.'),
     'Vater': check('Was bringt der Termin Laura?', [2, 4, 5], [
-        ('Sie kann sich informieren und danach selbst entscheiden.', 'Verlässliche Informationen und die freie Wahl sind auch dem Vater wichtig.'),
+        ('Sie kann sich informieren und danach selbst entscheiden.', 'Der Vater will, dass Laura gut informiert selbst entscheidet.'),
         ('Mit dem Termin entscheidet sie sich für einen Abbruch.', 'Lies Zeile 5 des Vaters und Kartenzeile 4. Das Ergebnis ist offen.')
     ], wishes=[4, 5], card=['beratung', [4, 5]], look='Lies seine letzte Zeile und Kartenzeile 4.',
-        clue='Ein Rat zum Gespräch lässt die spätere Wahl offen.', meaning='Ein Termin und eine Schwangerschaftsentscheidung sind zwei Schritte.'),
+        clue='Ein Rat zum Gespräch lässt die spätere Wahl offen.', meaning='Ergebnisoffen heißt: Laura kann nach dem Gespräch selbst wählen.'),
 }
 
 # Only the second question carries a deeper check. All four routes have the same positions.
@@ -224,7 +224,7 @@ DEPTH = {
     'Mutter': ('Welche Hilfe passt noch zur Regel der Mutter?', [3, 4, 5],
                'Sie könnte Laura auch zu einer Beratung begleiten. Das wäre ebenfalls Familienhilfe.',
                'Die Zusage in Zeile 4 gilt für ein Kind. Damit gilt auch die Familienregel nur für diesen Weg.',
-               'Die Zusage nennt einen bestimmten Fall. Die Regel über gegenseitige Hilfe ist weiter gefasst.'),
+               'Die Mutter bietet Hilfe mit dem Kind an. Ihre Regel lässt auch andere Hilfe zu.'),
     'Freundin': ('Was folgt aus der Regel über Zukunftspläne?', [2, 3, 4],
                  'Laura kann für beide Wege prüfen, wie sie die Ausbildung beenden könnte.',
                  'Laura will ihre Ausbildung beenden. Damit steht schon fest, welcher Weg besser zu ihrem Plan passt.',
@@ -235,13 +235,13 @@ DEPTH = {
                    'Die erste Stelle beschreibt den Körper. Die dritte sagt, was aus ihrer Sicht geschützt werden soll.'),
     'Vater': ('Kann die Stelle über das Gesetz Fakt und Norm sein?', [3],
               'Ja. Der Wortlaut ist prüfbar. Er sagt zugleich, was gesetzlich gilt.',
-              'Da der Vater das Gesetz nur wiedergibt, enthält seine Nachricht hier ausschließlich einen Fakt.',
+              'Der Vater berichtet von einer Vorschrift. Darum ist die Stelle nur ein Fakt.',
               'Auch eine zitierte Vorschrift beschreibt eine Regel. Ihr Wortlaut lässt sich prüfen.'),
 }
 AHR_FRIEND = ('Können beide Regeln zugleich gelten? Müssen beide dann dasselbe raten?', [2, 3, 4],
               'Beides kann zählen. Je nachdem, was Laura braucht, können die Regeln verschiedene Wege stützen.',
               'Beides kann zählen. Wenn beide dieselben Regeln annehmen, müssen sie auch zum selben Weg raten.',
-              'Familienhilfe und Zukunftspläne schließen sich nicht aus. Ihr Gewicht und Lauras Möglichkeiten können verschieden sein.')
+              'Beide Regeln können gelten. Wie wichtig jede Regel ist, hängt von Lauras Lage ab.')
 JUDGMENTS = ['Sie hilft viel.', 'Sie hilft zum Teil.', 'Sie hilft wenig.']
 
 # Each approved factual excerpt comes verbatim from the common card. An assessment
@@ -258,17 +258,20 @@ LINKS = {
     'Großmutter': ['Laura weiß mehr über die Entwicklung im Körper.', 'Laura sucht auch Informationen über ihre Möglichkeiten.'],
     'Vater': ['Laura weiß jetzt, wo sie Informationen bekommt.', 'Laura kann fragen und ihre Wahl offenlassen.'],
 }
-COUNTERS = {
-    'Mutter': ('Wie wäre es, wenn Laura schon gut informiert wäre und jetzt Hilfe im Alltag suchte?', 'Dann könnte das Hilfsangebot für sie mehr zählen.'),
-    'Freundin': ('Wie wäre es, wenn der Betrieb Laura auch mit Kind einen Ausbildungsplatz zusichert?', 'Dann könnte sie die Ausbildung auf beiden Wegen fortsetzen.'),
-    'Großmutter': ('Wie wäre es, wenn Laura gerade vor allem jemanden zum Reden bräuchte?', 'Dann könnte die zugesagte Nähe für sie mehr zählen.'),
-    'Vater': ('Wie wäre es, wenn Laura bereits eine Beratung besucht hätte?', 'Dann könnte ein weiteres Gespräch weniger dringlich sein.'),
-}
+# The fifth hint names real choices. The optional paragraph for the upper level
+# reflects on the same reason, without putting another task in the shared prompt.
 EXAMPLES = {
-    'Mutter': 'Für mich hilft sie zum Teil. Beim Ausstoßen von Gewebe kommt es zu Blutungen. Laura sucht richtige Infos. Jetzt kennt sie eine körperliche Folge. Für ihren Vergleich fehlt noch der andere Weg.',
-    'Freundin': 'Für mich hilft sie zum Teil. Der Abbruch ist grundsätzlich ohne Operation möglich. Laura will die Ausbildung abschließen. Die Info erklärt den Ablauf. Wie die Ausbildung weitergeht, muss sie für beide Wege klären.',
-    'Großmutter': 'Für mich hilft sie wenig bei Lauras Suche nach Möglichkeiten. Laura erfährt, wo sich der Embryo entwickelt. Was die beiden Wege für sie bedeuten, bleibt offen. Das Angebot, bei ihr zu bleiben, kann trotzdem helfen.',
-    'Vater': 'Für mich hilft sie viel. Die Stelle informiert über beide Wege. Laura möchte richtige Infos und selbst entscheiden. Beim Termin kann sie Fragen klären und ihre Wahl offenlassen.',
+    'Mutter': ('Blutungen', 'richtige Informationen', 1, 'Laura kennt eine Folge. Ihr fehlen Infos zum anderen Weg.'),
+    'Freundin': ('grundsätzlich ohne Operation', 'Ausbildung', 1, 'Laura kennt den Ablauf. Was er für ihre Ausbildung bedeutet, bleibt offen.'),
+    'Großmutter': ('Einnistung', 'richtige Informationen', 2, 'Laura weiß, wo der Embryo wächst. Ihre Frage nach beiden Wegen bleibt offen.'),
+    'Vater': ('Möglichkeiten und Hilfen', 'selbst entscheiden', 0, 'Laura kann Fragen stellen und danach selbst wählen.'),
+}
+# A changed information need, rather than a new planning exercise.
+COUNTERS = {
+    'Mutter': ('Laura kennt die Blutungen schon. Was hilft ihr an der Nachricht dann noch?', 'Die Blutung ist für sie nichts Neues. Das Hilfsangebot kann weiter zählen.'),
+    'Freundin': ('Laura weiß schon, dass meist keine Operation nötig ist. Wie hilfreich ist der Rat dann?', 'Der Ablauf ist für sie nichts Neues. Sie braucht noch Infos zum anderen Weg.'),
+    'Großmutter': ('Laura weiß schon, wo der Embryo wächst. Was hilft ihr an der Nachricht dann noch?', 'Die Entwicklung kennt sie schon. Das Angebot, bei ihr zu bleiben, kann helfen.'),
+    'Vater': ('Laura kennt beide Wege schon. Was bringt ihr der Rat zur Beratung dann noch?', 'Die Wege kennt sie schon. Sie kann dort eigene Fragen stellen.'),
 }
 SELF_CHECK = {
     'Mutter': 'Welche körperliche Folge nennst du? Was will Laura wissen? Warum reicht die Nachricht für sie aus oder nur zum Teil?',
@@ -280,21 +283,31 @@ SELF_CHECK = {
 
 def judgment(person, level):
     key, facts, goals = PROOF[person]
-    prompts = {'Förder': 'Wähle zuerst eine Fachinformation.',
-               'ESA': 'Verbinde eine Kartenstelle mit Lauras Wunsch. Erkläre deinen Grund kurz.',
-               'MSA': 'Was hilft Laura? Was fehlt ihr noch? Verbinde die Fachinformation mit Lauras Wunsch.',
-               'AHR': 'Verbinde die Fachinformation mit Lauras Wunsch. Prüfe, wann du anders urteilen würdest.'}
-    sample = EXAMPLES[person]
-    if level == 'AHR':
-        sample += ' ' + COUNTERS[person][1]
-    return dict(kind='judgment', heading=QUESTIONS[2], prompt=prompts[level], options=JUDGMENTS,
-                card=[key,facts], goals=goals, links=LINKS[person], selfCheck=SELF_CHECK[person],
-                counter=COUNTERS[person][0] if level=='AHR' else '',
-                hints=['Wähle eine Kartenstelle. Wähle dann Lauras Worte.',
-                       'Überlege: Was kann Laura mit dieser Info anfangen?',
-                       f'Lies „{CARDS[key]["title"]}“, Zeile {facts[-1]}. Vergleiche Lauras Worte darunter.',
-                       'Die Info zeigt … Laura möchte … Deshalb hilft die Nachricht aus meiner Sicht …',
-                       sample+' Wähle Kartenstelle, Lauras Worte und Einschätzung. Gib deinen Grund an. Tippe auf „Abschnitt beenden“.'])
+    fact, wish, rating, reason = EXAMPLES[person]
+    sample = (f'Beispiel: Wähle „{fact}“ und Lauras Wunsch „{wish}“.\n'
+              f'„{JUDGMENTS[rating]}“ {reason}\n'
+              'Sage den Grund. Tippe auf „Ich habe meinen Grund gesagt.“ und „Abschnitt beenden“.')
+    task = dict(kind='judgment', heading=QUESTIONS[2],
+                prompt='Wähle eine Information.\nWähle, was Laura möchte.\nErkläre deinen Grund.',
+                options=JUDGMENTS, card=[key,facts], goals=goals, links=LINKS[person], selfCheck=SELF_CHECK[person],
+                hints=['Wähle eine Stelle auf der Fachkarte. Wähle dann Lauras Worte.',
+                       'Dein Grund erklärt, warum die Nachricht Laura viel, zum Teil oder wenig hilft.',
+                       f'Lies auf der Fachkarte Zeile {facts[1] if person=="Großmutter" else facts[0]}. Lies dann Lauras Worte.',
+                       'Die Fachkarte sagt … Laura möchte … Darum hilft ihr die Nachricht …',
+                       sample])
+    if level in ('MSA','AHR'):
+        prompt, example = COUNTERS[person] if level=='AHR' else (
+            'Was hilft Laura? Was fehlt ihr noch?',
+            'Laura kennt das Angebot. Ihre Fragen sind damit noch offen.' if person=='Vater' else reason)
+        task['extension'] = dict(prompt=prompt, hints=[
+            'Ergänze deinen Grund um einen Satz.',
+            'Was Laura schon weiß, kann ändern, wie hilfreich eine Nachricht ist.' if level=='AHR'
+            else 'Eine Grenze heißt hier: Diese Frage bleibt für Laura offen.',
+            f'Lies deine Kartenstelle und Lauras Worte noch einmal. Achte auf den Rat von {person}.',
+            'Wenn Laura das schon weiß, hilft ihr noch …' if level=='AHR'
+            else 'Sie erfährt … Aber sie weiß noch nicht …',
+            f'Ein möglicher Zusatz: {example} Sage oder schreibe den Satz zu deinem Grund.'])
+    return task
 
 
 def bank():
@@ -303,15 +316,15 @@ def bank():
         by_level = {}
         for level in LEVELS:
             fact = dict(FACTS[person], heading=QUESTIONS[0])
-            fact['prompt'] += ' Wähle die Antwort mit dem passenden Kartenbeleg.'
+            fact['prompt'] = 'Lies die Fachkarte. '+fact['prompt']
             fact['options'] = [dict(o, citation=n) for o,n in zip(fact['options'],CITATIONS[person],strict=True)]
             wishes = dict(WISHES[person], heading=QUESTIONS[1])
             if level in LEVELS[2:]:
                 special = person=='Freundin' and level=='AHR'
                 prompt, ids, target, other, why = AHR_FRIEND if special else DEPTH[person]
-                q = check(prompt, ids, [(target, why), (other, 'Prüfe die Regel und den konkreten Rat noch einmal. '+why)],
+                q = check(prompt, ids, [(target, why), (other, 'Lies die Stelle noch einmal. Welche Regel gilt hier?')],
                           look=f'Lies {person}, Zeile {ids[0]} bis {ids[-1]}.' if len(ids)>1 else f'Lies {person}, Zeile {ids[0]}.',
-                          clue=why, meaning='Prüfe, ob die Regel auch einen anderen Weg zulässt.' if person!='Vater' else 'Eine Aussage kann zwei Aufgaben erfüllen.')
+                          clue=why, meaning='Eine Regel sagt, was allgemein gelten soll. Ein Rat gilt hier für Laura.' if person!='Vater' else 'Ein Fakt ist prüfbar. Eine Norm sagt, was gelten soll.')
                 if special:
                     q['mother']=[3,5]
                     q['hints'][2]='Vergleiche Zeile 3 der Mutter mit Zeile 3 der Freundin.'
