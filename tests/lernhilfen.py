@@ -119,7 +119,7 @@ def help_path(browser, level, size, photos=False):
     ui('#send').click()
     expect(button('Vorschlag zurückziehen')).to_be_visible()
     button('Vorschlag beibehalten').click()
-    expect(ui('#step')).to_have_text('Schritt 2 von 5')
+    expect(ui('#step')).to_have_text('Laura 2 von 5')
     expect(panel).to_be_hidden()
     expect(ui('#work .preview')).to_contain_text('Kondom')
     ui('#change-prior').click()
@@ -151,7 +151,7 @@ def five_phase_actions(browser, level):
     ui('[data-person=Laura]').click()
     results=[]
     for number,method in enumerate(('P','K','P','Cu','H'),1):
-        expect(ui('#step')).to_have_text(f'Schritt {number} von 5')
+        expect(ui('#step')).to_have_text(f'Laura {number} von 5')
         if number in (2,3,4):
             ui('#change-prior').click()
         ui('#method-'+method).click()

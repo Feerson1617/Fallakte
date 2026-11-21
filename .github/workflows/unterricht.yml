@@ -26,6 +26,7 @@ jobs:
       - run: python tests/lernhilfen.py
       - run: python tests/layout.py
       - run: python tests/content.py
+      - run: python tests/recovery.py
       - run: python scripts/review.py
       - uses: actions/upload-artifact@v4
         with:

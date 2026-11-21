@@ -107,7 +107,8 @@ const FALLAKTE = {
           "ESA": "Welche Karte passt zu Lauras erstem Schutzziel?",
           "MSA": "Vergleiche zwei Karten. Welche Wirkung hilft bei Lauras erster Frage?",
           "AHR": "Vergleiche zwei Möglichkeiten. Welches Risiko bleibt jeweils offen?"
-        }
+        },
+        "recap": "Laura ist 19. Sie möchte sich vor Krankheiten schützen, die beim Sex übertragen werden."
       },
       {
         "id": "L1",
@@ -229,7 +230,8 @@ const FALLAKTE = {
           "MSA": "Vergleiche zwei Vorschläge. Wie gut passen Schutz und Aufwand zu Lauras Alltag?",
           "AHR": "Vergleiche zwei Strategien. Wann könnte eine im Alltag weniger zuverlässig sein als auf der Karte?"
         },
-        "reviewPrevious": true
+        "reviewPrevious": true,
+        "recap": "Sie möchte auch eine Schwangerschaft vermeiden. Tägliche Dinge vergisst sie manchmal."
       },
       {
         "id": "L3",
@@ -341,7 +343,8 @@ const FALLAKTE = {
           "MSA": "Vergleiche zwei Möglichkeiten. Wo darf ein Vorteil der Methode Lauras Entscheidung nicht ersetzen?",
           "AHR": "Welche Alternative respektiert Lauras Grenze? Unter welcher Bedingung wäre ihre offene Frage geklärt?"
         },
-        "reviewPrevious": true
+        "reviewPrevious": true,
+        "recap": "Ihrer Freundin wurde von der Pille übel. Laura weiß nicht, wie sie die Pille verträgt. Sie will keine Pille. Andere Hormone sind für sie möglich. Das Einsetzen einer Spirale macht ihr Sorgen. Sie möchte Beratung."
       },
       {
         "id": "L4",
@@ -458,7 +461,9 @@ const FALLAKTE = {
           "MSA": "Wie wiegst du möglichen Schutz und mögliche Beschwerden bei zwei Vorschlägen ab?",
           "AHR": "Vergleiche zwei Strategien. Welche medizinische Unsicherheit begrenzt dein Urteil über Schmerzen?"
         },
-        "reviewPrevious": true
+        "reviewPrevious": true,
+        "recap": "Laura hat oft starke Regelschmerzen. Die Ursache ist noch offen. Mehr Schmerzen möchte sie nicht. Infektionsschutz bleibt ihr wichtig. Ein Kondom ist für sie in Ordnung.",
+        "resumeTitle": "Schmerzen und Infektionsschutz"
       },
       {
         "id": "L6",
@@ -486,7 +491,7 @@ const FALLAKTE = {
           ]
         },
         "task": {
-          "Foerder": "Wähle deinen Rat für Laura. Sag deinem Partner: Warum passt er? Nenne auch einen Nachteil.",
+          "Foerder": "Wähle deinen Rat für Laura. Begründe ihn kurz. Nenne auch einen Nachteil.",
           "ESA": "Welchen Rat gebt ihr Laura jetzt? Begründet ihn mündlich mit einem Wunsch von Laura. Nennt einen Nachteil.",
           "MSA": "Vergleiche zwei vertretbare Vorschläge. Gewichte ein Kriterium und berücksichtige einen Nachteil.",
           "AHR": "Gewichtet zwei vertretbare Strategien. Unter welcher konkreten Bedingung wäre die Alternative besser?"
@@ -583,7 +588,8 @@ const FALLAKTE = {
           "MSA": "Wann würde ein anderes Kriterium für Laura schwerer wiegen? Vergleiche den Nachteil beider Vorschläge.",
           "AHR": "Welche noch offene Annahme könnte deine Gewichtung ändern? Begründe den Wechsel zur Alternative."
         },
-        "tentative": "Unser Rat ist vorläufig. Offene medizinische Fragen kannst du in der Praxis klären. Du entscheidest selbst."
+        "tentative": "Unser Rat ist vorläufig. Offene medizinische Fragen kannst du in der Praxis klären. Du entscheidest selbst.",
+        "resumeTitle": "Mein letzter Rat"
       }
     ],
     "Celina": [
@@ -681,7 +687,8 @@ const FALLAKTE = {
         "declined": {
           "P": "Die Pille enthält Hormone. Deshalb kommt sie für mich nicht infrage.",
           "H": "Ich möchte keine zusätzlichen Hormone. Deshalb möchte ich auch die Hormonspirale nicht."
-        }
+        },
+        "recap": "Celina ist 17. Sie möchte eine Schwangerschaft vermeiden. Zusätzliche Hormone möchte sie nicht."
       },
       {
         "id": "C1",
@@ -777,7 +784,8 @@ const FALLAKTE = {
         "declined": {
           "P": "Die Pille enthält Hormone. Deshalb kommt sie für mich nicht infrage.",
           "H": "Ich möchte keine zusätzlichen Hormone. Deshalb möchte ich auch die Hormonspirale nicht."
-        }
+        },
+        "recap": "Sie möchte lange verhüten und später vielleicht ein Kind bekommen. Sie möchte keine tägliche Aufgabe. Ein Kondom ist für sie möglich."
       },
       {
         "id": "C2",
@@ -873,7 +881,8 @@ const FALLAKTE = {
         "declined": {
           "P": "Die Pille enthält Hormone. Deshalb kommt sie für mich nicht infrage.",
           "H": "Ich möchte keine zusätzlichen Hormone. Deshalb möchte ich auch die Hormonspirale nicht."
-        }
+        },
+        "recap": "Das Einsetzen einer Spirale macht ihr Angst. Entschieden hat sie noch nicht. Bei der Regel hat sie meist keine starken Schmerzen."
       },
       {
         "id": "C3",
@@ -969,7 +978,8 @@ const FALLAKTE = {
         "declined": {
           "P": "Die Pille enthält Hormone. Deshalb kommt sie für mich nicht infrage.",
           "H": "Ich möchte keine zusätzlichen Hormone. Deshalb möchte ich auch die Hormonspirale nicht."
-        }
+        },
+        "recap": "Celina möchte sich auch in ihrer festen Beziehung vor Infektionen schützen."
       },
       {
         "id": "C4",
@@ -1163,7 +1173,8 @@ const FALLAKTE = {
           "Tom fragt nach einer Methode für seinen eigenen Körper."
         ],
         "selfAdvice": "Für dich selbst schlagen wir ein Kondom vor.",
-        "selfAnswer": "Ein Kondom kann ich selbst benutzen. Was würdet ihr mir für meinen Körper vorschlagen?"
+        "selfAnswer": "Ein Kondom kann ich selbst benutzen. Was würdet ihr mir für meinen Körper vorschlagen?",
+        "recap": "Tom ist 17. Er möchte bei der Verhütung selbst etwas tun."
       },
       {
         "id": "T1",
@@ -1193,7 +1204,7 @@ const FALLAKTE = {
           "AHR": "Vergleiche die beiden Studien. Welche misst Schwangerschaften? Welche prüft Verträglichkeit?"
         },
         "options": {
-          "DONE": "Wir haben den Artikel gelesen und unsere Vermutung besprochen."
+          "DONE": "Wir haben den Artikel gelesen und eine Vermutung formuliert."
         },
         "replies": {
           "DONE": "Welche eurer Ideen lässt sich mit dem Text belegen?"
@@ -1223,7 +1234,8 @@ const FALLAKTE = {
         "helpBefore": [
           "Lies den Absatz über die Prüfung eines neuen Mittels.",
           "Forschende prüfen Wirkung und Risiken getrennt. Das braucht Zeit."
-        ]
+        ],
+        "recap": "Tom hat einen Artikel über die Forschung zur Verhütung für Männer mitgebracht."
       },
       {
         "id": "T2",

@@ -50,7 +50,7 @@ def to_refusal(frame, touch):
 
 
 def unchanged_page(m, size):
-    assert m['viewport'] == list(size), (size,m)
+    assert m['viewport'] == list(size) and m['markerVisible'], (size,m)
     assert m['document'] == list(size) and m['global'] == [0,0], (size,m)
     assert not m['touchOrTextIssues'], (size,m['touchOrTextIssues'])
 

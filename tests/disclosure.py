@@ -5,7 +5,7 @@ from playwright.sync_api import expect
 def check_navigation(view):
     expect(view.locator('nav button')).to_have_text(['Fallakten', 'Infokarten'])
     expect(view.locator('#pause,#pause-nav,#stop-task,#review-laura')).to_have_count(0)
-    assert view.locator('main > section').evaluate_all('nodes => nodes.map(n => n.id)') == ['home','room','resources']
+    assert view.locator('main > section').evaluate_all('nodes => nodes.map(n => n.id)') == ['home','recovery','room','resources']
 
 
 def first_message_only(browser, local, screenshot=None):
@@ -27,6 +27,6 @@ def first_message_only(browser, local, screenshot=None):
     page.locator('[data-person=Laura]').click()
     assert history.inner_text() == initial
     expect(page.locator('#send')).to_have_count(0)
-    expect(page.locator('#step')).to_have_text('Schritt 1 von 5')
+    expect(page.locator('#step')).to_have_text('Laura 1 von 5')
     page.close()
     return dict(stage=1, navigation=['Fallakten','Infokarten'], later_facts_visible=False)

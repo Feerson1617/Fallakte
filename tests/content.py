@@ -1,5 +1,6 @@
 """Compare delivered versions, shared case facts, optional cases and measured Laura paths."""
 import io
+import json
 import os
 import re
 import subprocess
@@ -13,7 +14,8 @@ from playwright.sync_api import sync_playwright
 from paths import complete_laura
 from acceptance import LOCAL, MATRIX, QA, ROOT, save
 
-APPROVED = '0891d8c8aa8089d8c92850d70984a7d013e8814d'
+APPROVED = 'e455e4dfd3aedf45954afb0cfb015578b70abde4'
+MEASUREMENT_BASE = '0891d8c8aa8089d8c92850d70984a7d013e8814d'
 STRATEGIES = ('K', 'P', 'Cu', 'H', 'K+P', 'K+Cu', 'K+H')
 
 # Compare the output a team actually sees when responding, including all optional hints.
@@ -69,12 +71,39 @@ def check_case_facts(stages, levels):
             assert word in stages[i]['task'][tier], (tier,i,word)
 
 
-def compare(reference):
+def build_reference(reference,commit):
     inputs = ('app','assets','data','index.html','scorm','scripts/build.py','tests/dialogs.js')
-    archive = subprocess.check_output(['git','archive','--format=zip',APPROVED,*inputs],cwd=ROOT)
+    archive = subprocess.check_output(['git','archive','--format=zip',commit,*inputs],cwd=ROOT)
     with ZipFile(io.BytesIO(archive)) as files:
         files.extractall(reference)
     subprocess.run([sys.executable,'scripts/build.py'],cwd=reference,check=True)
+
+
+# These classroom prompts no longer require a second learner. The clinical text is frozen.
+COPY_EDITS = {
+    'Wähle deinen Rat für Laura. Sag deinem Partner: Warum passt er? Nenne auch einen Nachteil.':
+        'Wähle deinen Rat für Laura. Begründe ihn kurz. Nenne auch einen Nachteil.',
+    'Wir haben den Artikel gelesen und unsere Vermutung besprochen.':
+        'Wir haben den Artikel gelesen und eine Vermutung formuliert.',
+    'Besprecht euren Grund. ': 'Überlege dir einen Grund. ',
+    'Besprecht kurz euren Grund. Behaltet den Vorschlag bei oder ändert ihn.':
+        'Prüfe deinen Grund. Behalte den Vorschlag bei oder ändere ihn.',
+    'Besprecht euren neuen Rat. Behaltet ihn bei oder zieht ihn zurück.':
+        'Prüfe deinen neuen Rat. Behalte ihn bei oder ziehe ihn zurück.'
+}
+
+
+def independent_work(value):
+    serialized=json.dumps(value,ensure_ascii=False)
+    for old,new in COPY_EDITS.items():
+        serialized=serialized.replace(old,new)
+    return json.loads(serialized)
+
+
+def compare(reference):
+    historical=reference/'measurement'
+    build_reference(reference,APPROVED)
+    build_reference(historical,MEASUREMENT_BASE)
     for name in ('app/lernhilfen.js','app/ui.js'):
         assert (ROOT/name).read_bytes()==(reference/name).read_bytes(), name
 
@@ -86,42 +115,29 @@ def compare(reference):
         approved.goto(old_html.as_uri())
         candidate.goto(LOCAL.as_uri())
         original, data = (page.evaluate('FALLAKTE') for page in (approved,candidate))
-        for key in set(original)|set(data):
-            if key!='cases':
-                assert original[key]==data[key], key
-        assert original['cases'].keys()==data['cases'].keys()
-        for person in ('Celina','Tom'):
-            assert original['cases'][person]==data['cases'][person], person
-        before, after = (page.evaluate('LERNHILFEN') for page in (approved,candidate))
-        assert {k:v for k,v in before.items() if not k.startswith('L')}=={k:v for k,v in after.items() if not k.startswith('L')}
-        old_stages={s['id']:s for s in original['cases']['Laura']}
+        comparable=candidate.evaluate('FALLAKTE')
+        for stages in comparable['cases'].values():
+            for stage in stages:
+                stage.pop('recap',None)
+                stage.pop('resumeTitle',None)
+        assert comparable==independent_work(original)
+        assert approved.evaluate('LERNHILFEN')==candidate.evaluate('LERNHILFEN')
         levels=data['meta']['levels']
         check_case_facts(data['cases']['Laura'],levels)
-        for stage in data['cases']['Laura']:
-            old=old_stages[stage['id']]
-            for key in ('options','declined','tentative'):
-                assert stage.get(key)==old.get(key), (stage['id'],key)
-            if stage['id'] in ('L0','L1','L6'):
-                assert stage['message']==old['message']
-            if stage['id']!='L4':
-                assert stage['replies']==old['replies']
 
         old_trace=TRACE.replace('MATRIX',(reference/'tests/dialogs.js').read_text())
         new_trace=TRACE.replace('MATRIX',MATRIX)
         for tier in levels:
             for person in original['cases']:
                 for strategy in STRATEGIES:
-                    for page,n in ((approved,7),(candidate,5)):
+                    for page,label in ((approved,'Schritt'),(candidate,'Laura')):
                         page.reload()
                         if person!='Laura':
-                            complete_laura(page,tier,stages=n)
+                            complete_laura(page,tier,step_label=label)
                     args=dict(person=person,tier=tier,strategy=strategy,testScaffold=True)
                     expected=approved.evaluate(old_trace,dict(args,data=original))
                     actual=candidate.evaluate(new_trace,dict(args,data=data))
-                    if person!='Laura':
-                        assert actual==expected, (person,tier,strategy)
-                    else:
-                        assert actual['outcome']==expected['outcome'], (person,tier,strategy)
+                    assert actual==independent_work(expected), (person,tier,strategy)
                     paths+=1
         browser.close()
         counts=[]
@@ -132,16 +148,16 @@ def compare(reference):
             for tier in levels:
                 for corrected in (False,True):
                     row=dict(engine=engine,niveau=tier,korrektur_in_l0=corrected)
-                    for version,url,n in [('vorher',old_html,7),('jetzt',LOCAL,5)]:
+                    for version,url,n in [('vorher',historical/'dist/Fallakte.html',7),('jetzt',LOCAL,5)]:
                         page.goto(url.as_uri())
-                        row[version]=complete_laura(page,tier,corrected,n)
+                        row[version]=complete_laura(page,tier,corrected,n,'Schritt' if version=='vorher' else 'Laura')
                     extra=3 if corrected else 0
                     assert row['vorher']['total']==(11 if tier in ('Foerder','ESA') else 15)+extra
                     assert row['jetzt']['total']==9+extra
                     assert row['vorher']['decisions']==6+corrected and row['jetzt']['decisions']==5+corrected
                     counts.append(row)
             browser.close()
-    return dict(reference_commit=APPROVED,additional_cases_equal=True,shared_help_equal=True,
+    return dict(reference_commit=APPROVED,measurement_commit=MEASUREMENT_BASE,additional_cases_equal=True,shared_help_equal=True,
                 laura_abschnitte=5,fachkern_geprueft=levels,rendered_paths=paths,bedienhandlungen=counts)
 
 

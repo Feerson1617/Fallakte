@@ -9,7 +9,7 @@ OUT = ROOT / 'dist'
 QA = ROOT / 'build/qa'
 local = OUT / 'Fallakte.html'
 digest = hashlib.sha256(local.read_bytes()).hexdigest()
-names = ('dialogwege', 'scorm', 'bedienung', 'layout', 'inhaltsvergleich', 'lernhilfen')
+names = ('dialogwege', 'scorm', 'bedienung', 'layout', 'inhaltsvergleich', 'lernhilfen', 'wiederaufnahme')
 reports = {}
 for name in names:
     reports[name] = json.loads((QA / (name + '.json')).read_text())
@@ -75,6 +75,21 @@ for run in layout['runs']:
                for row in run['frames'] if row['size'] in ([820,650],[820,1180],[1180,820]))
     assert all(len(row['states']) == 4 for row in run['frames'])
 assert len(layout['screenshots']) == 4
+recovery=reports['wiederaufnahme']
+assert {(r['engine'],r['format'],tuple(r['viewport'])) for r in recovery['runs']}=={
+    (engine,kind,size) for engine in ('chromium','webkit')
+    for kind,size in [('HTML',(820,1180)),('SCORM',(1180,820))]
+}
+for run in recovery['runs']:
+    assert not run['storage'] and not run['js_errors'] and run['neuladen_bei_laura']==[3,5]
+    if run['format']=='SCORM':
+        assert {call[0] for call in run['scorm_aufrufe']}=={'LMSInitialize','LMSFinish'}
+    assert len(run['wege'])==52
+    assert {(r['person'],r['niveau'],r['abschnitt']) for r in run['wege'] if r['hilfestufen']==5}=={
+        (person,tier,index) for person,n in [('Laura',5),('Celina',5),('Tom',3)]
+        for tier in levels for index in range(1,n+1)
+    }
+assert len(recovery['screenshots'])==3
 with ZipFile(OUT/'Fallakte-SCORM12.zip') as scorm:
     resources = list((ROOT/'scorm').iterdir())
     assert sorted(scorm.namelist()) == sorted(['index.html', *(p.name for p in resources)])
@@ -114,6 +129,7 @@ def add_photos(folder, photos):
 
 add_photos('', reports['bedienung']['screenshots'])
 add_photos('', reports['lernhilfen']['screenshots'])
+add_photos('', recovery['screenshots'])
 for run in layout['runs']:
     add_photos('methoden', {row['screenshot']:row['sha256'] for row in run['phone_labels']})
 add_photos('rahmen', layout['screenshots'])

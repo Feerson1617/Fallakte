@@ -1,5 +1,5 @@
 // Measure the same visible path in both built versions, including an optional revision.
-({tier, correctFirst=false, stages=5}) => {
+({tier, correctFirst=false, stages=5, stepLabel='Laura'}) => {
   const find = selector => document.querySelector(selector);
   const press = node => {
     if (!node || node.disabled || !node.getClientRects().length) throw Error('Missing control on Laura path');
@@ -14,7 +14,7 @@
   for (let index=0; index<stages; index++) {
     const tab = find('#write-answer');
     if (tab.getClientRects().length && tab.getAttribute('aria-pressed')!=='true') press(tab);
-    if (find('#step').textContent!=='Schritt '+(index+1)+' von '+stages) throw Error('Missing Laura stage '+index);
+    if (find('#step').textContent!==stepLabel+' '+(index+1)+' von '+stages) throw Error('Missing Laura stage '+index);
     const opening = [...document.querySelectorAll('.chat-step')].at(-1).nextElementSibling;
     const task = find('#work > p:not(.preview):not(.response)');
     words.push({

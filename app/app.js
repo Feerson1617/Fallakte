@@ -36,7 +36,7 @@ function show(id) {
   $('room-identity').hidden=id!=='room';
   $('home-label').textContent=id==='room'?'Übersicht':'Fallakten';
   $('home-nav').setAttribute('aria-label','Fallübersicht');
-  for (const section of ['home','room','resources']) $(section).hidden = section !== id;
+  for (const section of ['home','recovery','room','resources']) $(section).hidden = section !== id;
   const active = id==='resources' ? 'cards-nav' : 'home-nav';
   for (const b of document.querySelectorAll('nav button')) {
     if (b.id === active) b.setAttribute('aria-current','page');
@@ -56,6 +56,8 @@ function home() {
   }
   const extrasAvailable = sessions.get(sessionKey('Laura',level))?.mode==='finished';
   $('case-order').textContent=extrasAvailable ? 'Weitere Fälle sind freigeschaltet.' : 'Beginne mit Laura. Danach kannst du Celina oder Tom wählen.';
+  if (!extrasAvailable && Object.keys(cases).some(name=>name!=='Laura' && sessions.has(sessionKey(name,level))))
+    $('case-order').textContent='Begonnene Fälle kannst du wieder öffnen.';
   const list = $('case-list');
   list.replaceChildren();
   for (const [person,[role,summary]] of Object.entries(cases)) {
@@ -63,33 +65,41 @@ function home() {
     const body = el('div','case-info');
     const resume = sessions.has(sessionKey(person,level));
     const start = button(person+(resume?' öffnen':' starten'), () => openCase(person,level),person==='Laura'?'primary':'outline','next');
-    start.disabled=person!=='Laura' && !extrasAvailable;
+    start.disabled=person!=='Laura' && !extrasAvailable && !resume;
     start.dataset.person=person;
     body.append(el('span','role',role),el('h3','',person),el('p','',summary),start);
     card.append(el('div','cover'),body);
     list.append(card);
   }
 }
-function openCase(person,tier) {
+function openCase(person,tier,startIndex) {
   show('room');
   const key=sessionKey(person,tier);
   current=sessions.get(key);
-  if (!current) {
-    current={person,level:tier,index:0,log:[],scroll:0,workScroll:0,pane:'chat'};
+  let recapIndex;
+  if (!current || startIndex!==undefined) {
+    current={person,level:tier,log:[],scroll:0,workScroll:0,pane:'chat',lastKept:''};
     sessions.set(key,current);
-    enterStage(0);
+    if (startIndex>0) {
+      const earlier=stages().slice(0,startIndex);
+      // Keep an already introduced source available to later tasks and their help buttons.
+      if (earlier.some(s=>s.type==='article')) current.log.push({type:'article'});
+      recapIndex=current.log.length;
+      current.log.push({type:'recap',lines:earlier.map(s=>forLevel(s.recap))});
+    }
+    enterStage(startIndex ?? 0);
   }
   $('avatar').className='avatar '+person.toLowerCase();
   $('room-level').textContent=FALLAKTE.meta.levels[tier];
-  $('chat-name').textContent=person;
   showPane(current.pane);
   drawHistory();
   $('history').scrollTop=current.scroll;
+  if (recapIndex!==undefined) toEntry(recapIndex);
   updateJump();
   drawWork();
   $('work').scrollTop=current.workScroll;
   positionHelp();
-  $('chat-name').focus({preventScroll:true});
+  $('step').focus({preventScroll:true});
 }
 function showPane(pane) {
   current.pane=pane;
@@ -110,7 +120,7 @@ function focusInWork(target) {
 }
 function enterStage(index) {
   Object.assign(current,{index,mode:'choose',selected:'',additional:'',combined:false,tentative:false,help:0,asked:[],questionsOpen:false,revised:false});
-  if (stage().reviewPrevious && stage().options[current.lastKept]) current.mode='review';
+  if (current.lastKept && stage().reviewPrevious && Object.hasOwn(stage().options,current.lastKept)) current.mode='review';
   current.log.push({type:'step',title:stage().title});
   current.log.push({type:'person',lines:forLevel(stage().message)});
   if (stage().type==='article') current.log.push({type:'article'});
@@ -135,6 +145,22 @@ function appendArticle() {
 function entryNode(entry) {
   if (entry.type==='step') return el('div','chat-step',entry.title);
   if (entry.type==='article') return appendArticle();
+  if (entry.type==='recap') {
+    const box=el('section','recap');
+    const list=el('ul');
+    for (const fact of entry.lines) list.append(el('li','',fact));
+    box.append(el('h2','','Bisher im Fall'),list);
+    const articleIndex=current.log.findIndex(item=>item.type==='article');
+    if (articleIndex>=0 && articleIndex<current.log.indexOf(entry)) {
+      box.append(button('Artikel noch einmal lesen',()=>{
+        toEntry(articleIndex);
+        const article=$('history').children[articleIndex];
+        article.tabIndex=-1;
+        article.focus({preventScroll:true});
+      },'text-button','book'));
+    }
+    return box;
+  }
   const bubble=el('div','bubble '+entry.type);
   bubble.append(el('strong','speaker',entry.type==='team'?'Beratungsteam':current.person));
   for (const line of entry.lines) bubble.append(el('p','',line));
@@ -180,7 +206,7 @@ function nextStage() {
   if (current.mode==='review' && current.person==='Laura') toEntry(first);
   drawWork();
   $('work').scrollTop=0;
-  $('chat-name').focus({preventScroll:true});
+  $('step').focus({preventScroll:true});
 }
 function focusTask() {
   $('work').scrollTop=0;
@@ -270,7 +296,7 @@ function lastHelp(s,method) {
   if (s.options.DONE || current.mode==='tomSelf') {
     const next=$('work').querySelector('.primary');
     const paper=s.id==='T2' ? s.task[current.level]+' ' :
-      s.id==='T1' ? 'Besprecht euren Grund. ' : '';
+      s.id==='T1' ? 'Überlege dir einen Grund. ' : '';
     return {text:paper+'Tippe danach auf „'+next.textContent+'“. '+
       'Mit „Zur Schaltfläche“ findest du sie wieder.',label:'Zur Schaltfläche',run:()=>focusInWork(next)};
   }
@@ -407,7 +433,7 @@ function drawWork() {
   $('chat-help').hidden=current.mode==='finished';
   $('support-panel').hidden=true;
   $('support-panel').replaceChildren();
-  $('step').textContent='Schritt '+(current.index+1)+' von '+stages().length;
+  $('step').textContent=current.person+' '+(current.index+1)+' von '+stages().length;
   const cue=$('card-cue');
   cue.hidden=current.mode==='finished' || !!stage().options.DONE;
   cue.textContent=['Foerder','ESA'].includes(current.level)
@@ -463,8 +489,8 @@ function drawWork() {
     taskTitle(area,current.person+' antwortet');
     area.append(el('p','response',forLevel(s.replies[code()])));
     if (current.replyQuestion) showQuestionAnswer(area);
-    let guide='Besprecht kurz euren Grund. Behaltet den Vorschlag bei oder ändert ihn.';
-    if (current.revised) guide='Besprecht euren neuen Rat. Behaltet ihn bei oder zieht ihn zurück.';
+    let guide='Prüfe deinen Grund. Behalte den Vorschlag bei oder ändere ihn.';
+    if (current.revised) guide='Prüfe deinen neuen Rat. Behalte ihn bei oder ziehe ihn zurück.';
     const issue=feedbackIssue(s,code());
     if (issue) {
       const next=current.revised ? 'Vorschlag zurückziehen' : 'Vorschlag ändern';
@@ -557,7 +583,10 @@ function openCards() {
 }
 function resume() {
   if (returnTo==='room' && current) openCase(current.person,current.level);
-  else home();
+  else if (returnTo==='recovery') {
+    show('recovery');
+    $('recovery-title').focus({preventScroll:true});
+  } else home();
 }
 const sections=['Wirkung','Schwangerschaftsschutz im Alltag','Anwendung','Mögliche Nachteile','Blutung und Schmerzen','Infektionsschutz'];
 for (const [id,[name,...facts]] of Object.entries(FALLAKTE.methods)) {
@@ -581,6 +610,18 @@ $('chat-help').onclick=()=>{
 };
 $('read-chat').onclick=()=>showPane('chat');
 $('write-answer').onclick=()=>showPane('answer');
+$('open-recovery').onclick=()=>{
+  renderRecovery($('recovery-picker'),FALLAKTE.cases,FALLAKTE.meta.levels,(person,tier,index)=>{
+    level=tier;
+    openCase(person,tier,index);
+  });
+  show('recovery');
+  $('recovery-title').focus({preventScroll:true});
+};
+$('leave-recovery').onclick=()=>{
+  home();
+  $('open-recovery').focus();
+};
 $('home-nav').onclick=home;
 $('brand').onclick=e=>{e.preventDefault();home();};
 $('cards-nav').onclick=openCards;

@@ -14,11 +14,11 @@ def idle_without_action(page, expected_step):
     work = page.locator('#work')
     history = page.locator('#history')
     step = page.locator('#step')
-    expect(step).to_have_text(f'Schritt {expected_step} von 5')
+    expect(step).to_have_text(f'Laura {expected_step} von 5')
     before = (work.inner_text(), history.inner_text(), page.locator('#send').count())
     page.clock.fast_forward(25 * 60 * 1000)
     expect(work).to_be_visible()
-    expect(step).to_have_text(f'Schritt {expected_step} von 5')
+    expect(step).to_have_text(f'Laura {expected_step} von 5')
     expect(page.locator('[role=alert],dialog[open]')).to_have_count(0)
     assert before == (work.inner_text(), history.inner_text(), page.locator('#send').count())
 
@@ -69,7 +69,7 @@ def mixed_paths(browser,local):
                     other=LEVELS[(LEVELS.index(tier)+1)%len(LEVELS)]
                     ui('#level-'+other).click()
                     ui('[data-person=Laura]').click()
-                    expect(ui('#step')).to_have_text('Schritt 1 von 5')
+                    expect(ui('#step')).to_have_text('Laura 1 von 5')
                     ui('#home-nav').click()
                     ui('#level-'+tier).click()
                     ui('[data-person=Laura]').click()

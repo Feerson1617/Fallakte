@@ -165,3 +165,18 @@ html.consulting,html.consulting body{height:100vh;height:100dvh;min-height:0;ove
 
 .card-nav{position:sticky;top:0;z-index:1;display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--paper)}
 @media(max-width:680px) and (min-height:550px){.card-nav{top:96px}}
+
+#open-recovery{margin-top:12px}
+#recovery{max-width:55rem}
+#recovery h1{font-size:clamp(2rem,4vw,3rem)}
+#recovery fieldset{min-width:0;border:0;padding:0;margin:0 0 18px}
+#recovery legend{font-weight:700;padding:0;margin-bottom:6px}
+.recovery-options{display:flex;flex-wrap:wrap;gap:6px}
+.recovery-options button{min-height:46px;min-width:4em}
+.recovery-options [aria-pressed="true"]{background:var(--green);color:white}
+#recovery fieldset:last-child .recovery-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr))}
+#recovery fieldset:last-child button{justify-content:flex-start;text-align:left}
+.recap{background:#f8f8ee;border-left:3px solid #8da487;padding:9px 13px;margin-bottom:10px}
+.recap h2{font-size:1rem}
+.recap ul{padding-left:1.2em;margin:.35em 0 0}
+.recap li+li{margin-top:.2em}
