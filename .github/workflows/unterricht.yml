@@ -1,8 +1,8 @@
-name: Unterrichtspakete
+name: Gemeinsame Unterrichtstage
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, entwicklung/gemeinsame-tagesauswahl]
   workflow_dispatch:
 permissions:
   contents: read
@@ -28,13 +28,25 @@ jobs:
       - run: python tests/content.py
       - run: python tests/recovery.py
       - run: python scripts/review.py
+      - run: python tests/tagesauswahl.py
+      - run: python scripts/tagesbericht.py
       - uses: actions/upload-artifact@v4
         with:
-          name: Fallakte-Unterricht
+          name: Fallakte-Version-A-02-12
+          path: dist/Version-A/
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Fallakte-Version-B-08-12
+          path: dist/Version-B/
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Fallakte-Abnahme
           path: |
-            dist/Fallakte.html
-            dist/Fallakte-SCORM12.zip
-            dist/Fallakte-Sichtpruefung.zip
             dist/Fallakte-Pruefbericht.md
+            dist/Fallakte-Sichtpruefung.zip
           if-no-files-found: error
           retention-days: 30

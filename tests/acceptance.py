@@ -19,7 +19,7 @@ from disclosure import first_message_only, check_navigation
 from reading import article_return
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / 'dist'
+OUT = ROOT / 'build/02-12'
 LOCAL = OUT / 'Fallakte.html'
 QA = ROOT / 'build/qa'
 QA.mkdir(parents=True, exist_ok=True)

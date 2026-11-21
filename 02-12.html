@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#183c37">
+  <title>Fallakte · Beratungsraum</title>
+  <link rel="stylesheet" href="app/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="bar">
+    <a href="#home" class="brand" id="brand"><span class="mark" data-icon="chat"></span>Fallakte<span class="brand-dot">.</span></a>
+    <div class="room-identity" id="room-identity" hidden>
+      <span class="avatar" id="avatar" aria-hidden="true"></span>
+      <div><h1 id="step" tabindex="-1"></h1><div class="room-meta" id="room-level"></div></div>
+    </div>
+    <nav aria-label="Arbeitsbereiche">
+      <button id="home-nav"><i data-icon="folder"></i><span id="home-label">Fallakten</span></button>
+      <button id="cards-nav"><i data-icon="book"></i>Infokarten</button>
+    </nav>
+    <span class="subject">Biologie <b>·</b> Klasse 8</span>
+  </div>
+</header>
+<main>
+  <section id="home" class="shell">
+    <div class="intro"><span class="eyebrow"><i data-icon="chat"></i> Verhütungsberatung</span><h1>Dein Beratungsraum<span>.</span></h1><p>Lies die Nachrichten. Vergleiche die Möglichkeiten. Welchen Rat gibst du?</p><button class="outline" id="open-recovery">Nach Neustart weitermachen</button></div>
+    <div class="level-box"><div class="level-caption"><span class="square-icon"><i data-icon="layers"></i></span><div><h2>Wähle dein Niveau</h2><p>Markiere auf deinem Laufzettel immer den Abschnitt, den du beginnst.</p></div></div><div id="levels" aria-label="Niveau" role="group"></div></div>
+    <div class="section-heading"><h2>Fallübersicht</h2><span id="case-order"></span></div>
+    <div class="cases" id="case-list"></div>
+    <p class="material"><i data-icon="pencil"></i> Lege deinen Laufzettel und die Infokarten bereit.</p>
+  </section>
+  <section id="recovery" class="shell secondary" aria-labelledby="recovery-title" hidden>
+    <h1 id="recovery-title" tabindex="-1">Nach Neustart weitermachen</h1>
+    <p>Schau auf deinen Laufzettel. Du beginnst am markierten Abschnitt neu.</p>
+    <div id="recovery-picker"></div>
+    <button class="text-button" id="leave-recovery">Zur Fallübersicht</button>
+  </section>
+  <section id="room" class="shell" hidden>
+    <div class="pane-switch" role="group" aria-label="Arbeitsansicht">
+      <button id="read-chat" aria-controls="chat-panel"><i data-icon="chat"></i> Chat lesen</button>
+      <button id="write-answer" aria-controls="answer-panel"><i data-icon="pencil"></i> Antwort geben</button>
+      <button id="chat-help" aria-controls="support-panel"><i data-icon="help"></i> Hilfe</button>
+    </div>
+    <div class="workspace">
+      <section class="chat panel" id="chat-panel" aria-label="Beratungsgespräch">
+        <div id="history" role="log" aria-live="off" aria-label="Bisherige Nachrichten" tabindex="0"></div>
+        <button id="latest" class="latest" hidden><i data-icon="down"></i> Zur aktuellen Nachricht</button>
+      </section>
+      <section class="work panel" id="answer-panel" aria-label="Antwortbereich"><p id="card-cue" hidden></p><div id="work"></div><section id="support-panel" aria-label="Hilfen zum aktuellen Schritt" hidden></section><div id="help-dock" class="help-controls" hidden></div></section>
+    </div>
+  </section>
+  <section class="shell secondary" id="resources" hidden><span class="eyebrow"><i data-icon="book"></i> Nachschlagen</span><div class="card-nav"><h1 tabindex="-1">Infokarten</h1><button class="primary return">Zurück</button></div><p>Nutzt zuerst eure eigenen Infokarten. Hier könnt ihr nachlesen. Beim Schwangerschaftsschutz vergleichen alle vier Karten ein Jahr Anwendung im Alltag.</p><div id="method-cards"></div></section>
+</main>
+<footer><span class="footer-brand"><i data-icon="folder"></i> Fallakte</span><span>Fiktive Beratungsfälle für den Biologieunterricht</span></footer>
+<script src="data/dialogdaten.js"></script>
+<script src="data/lernhilfen.js"></script>
+<script src="app/ui.js"></script>
+<script src="app/lernhilfen.js"></script>
+<script src="app/wiederaufnahme.js"></script>
+<script src="app/app.js"></script>
+</body></html>

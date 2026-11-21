@@ -5,7 +5,7 @@ from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / 'dist'
+OUT = ROOT / 'build/02-12'
 QA = ROOT / 'build/qa'
 local = OUT / 'Fallakte.html'
 digest = hashlib.sha256(local.read_bytes()).hexdigest()

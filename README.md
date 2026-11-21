@@ -1,27 +1,24 @@
-# Fallakte · Verhütungsberatung
+# Fallakte. Zwei Unterrichtstage
 
-Unterrichtsanwendung für Biologie in Klasse 8. In drei fiktiven Beratungsgesprächen prüfen Lernende ihre Empfehlungen anhand von Infokarten, persönlichen Grenzen und neuen Fallinformationen. Die 19-jährige Laura ist der gemeinsame Hauptfall. Celina und Tom ergänzen ihn. Alle drei Gespräche stehen auf Förder-, ESA-, MSA- und AHR-Niveau zur Verfügung.
+Die Anwendung startet mit „Wähle deinen Unterrichtstag.“ Beide Datumsfelder zeigen dieselbe 19-jährige Laura. Am 02.12. öffnet sich ihre bisherige Fallübersicht. Am 08.12. ist ein eigener Einstieg für das noch in Prüfung befindliche Modul vorbereitet.
 
-## Digitale Erarbeitung öffnen
-
-Im erfolgreichen GitHub-Actions-Lauf **Unterrichtspakete** das Artefakt **Fallakte-Unterricht** herunterladen und entpacken.
-
-| Datei | Verwendung |
+| Auslieferung in GitHub Actions | Verwendung |
 | --- | --- |
-| **Fallakte.html** | Direkt im Browser öffnen, auch ohne Netzwerk. Bilder, Schriften, Dialoge und Hilfen sind eingebettet. |
-| **Fallakte-SCORM12.zip** | Als geschlossenes SCORM-1.2-Paket in itslearning importieren. |
-| **Fallakte-Sichtpruefung.zip** | Bildschirmfotos und sieben JSON-Testprotokolle der gebauten Anwendung. |
-| **Fallakte-Pruefbericht.md** | Technische Ergebnisse und ausstehende Prüfungen auf Schulgeräten. |
+| **Fallakte-Version-A-02-12** | Für den 02.12. ist die erste Karte aktiv und die zweite mit einem Schloss gekennzeichnet. Das Paket enthält ausschließlich das erste Unterrichtsmodul. |
+| **Fallakte-Version-B-08-12** | Beide Karten lassen sich öffnen. Der Einstieg für den 08.12. zeigt derzeit einen neutralen Vorbereitungshinweis. |
+| **Fallakte-Abnahme** | Gemeinsamer Prüfbericht und Sichtprüfungs-ZIP mit Bildschirmfotos, JSON-Protokollen und der Abnahme des eingebetteten Moduls vom 02.12. |
 
-Alle Teams beraten zuerst die 19-jährige Laura in fünf gemeinsamen Abschnitten. Sie greifen ihren notierten ersten Einzelrat auf und prüfen ihn bei drei neuen Gesprächsanlässen. Ab dem zweiten Schutzziel können sie ein Kondom mit einer weiteren Methode kombinieren. Beim letzten Rat nennen Förder- und ESA-Teams mündlich einen Grund und einen Nachteil. MSA und AHR wägen zwei Strategien ab. Auf allen Niveaus steht die Aufforderung zur eigenen Papierkarte direkt bei der Entscheidung. Die digitalen Karten und fünf freiwilligen Hilfen unterstützen bei Bedarf. Ohne Auswahl passen Kartenstelle und Beispielmethode zusammen. Bei einem Methodenvergleich erklärt das Beispiel, wie die Kartenangabe den Rat begründet. Jede Person arbeitet auf ihrem eigenen iPad im eigenen Niveau. Einen vorbereiteten Entwurf versendet das Team selbst. Nach Laura stehen im selben Niveau Celina und Tom zur Wahl.
+Im gewählten Versionsordner **Fallakte.html** direkt im Browser öffnen oder **Fallakte-SCORM12.zip** als geschlossenes Paket in das LMS importieren. Alle benötigten Bilder, Schriften und Moduldokumente sind eingebettet. Beide Pakete haben eigene SCORM-Kennungen.
 
-Bei einer Unterbrechung kann die Seite in jedem Gesprächsschritt geöffnet bleiben. Infokarten und Fallübersicht erlauben die Rückkehr zum Gespräch desselben Niveaus. Der Verlauf liegt nur im Arbeitsspeicher der geöffneten Seite. Nach dem Neuladen führt **Nach Neustart weitermachen** direkt zur Auswahl von Fall, Niveau und markierter Abschnittsnummer. Wer zum Beispiel **Laura 3 – Lauras Entscheidung** wählt, liest eine kurze Zusammenfassung und gibt einen eigenen Rat. In der Kopfzeile steht **Laura 3 von 5**. Auch Celina und Tom sind über diesen Zugang direkt erreichbar. Der SCORM-Adapter öffnet und schließt die technische Sitzung. Das LMS kann unabhängig davon Zugriffe protokollieren.
+## Tageswechsel und Bestandsschutz
 
-[Technische Abnahme und offene Punkte](docs/Abnahme.md) · [Fachquellen](docs/Fachpruefung.md)
+Im Gespräch führt **Übersicht** zurück zur Fallübersicht. Dort ist **Zur Tagesauswahl** erreichbar. Der Tageswechsel blendet die offene Modulinstanz aus. Beim erneuten Öffnen stehen Niveau, Fallverlauf und bereits geöffnete Hilfen weiter zur Verfügung. Ein Neuladen beginnt eine neue Sitzung.
 
-## Entwicklung und Prüfung
+Die Quelldatei **index.html** ist die Tagesauswahl und öffnet in der Entwicklung die A-Fassung. **02-12.html** ist das unveränderte ursprüngliche Einstiegsdokument des ersten Moduls. Es bezieht dieselben Dateien aus **app/**, **data/** und **assets/** wie am Stand `ca77bf793ef1d2577d2f474895de15c503eb6df2`. Der Build bettet das vollständige, einzeln ausführbare Dokument ein. Die Prüfungen bauen den genannten Commit aus einem unabhängigen Git-Archiv und vergleichen die eingebetteten Bytes in beiden Auslieferungsformaten.
 
-**data/dialogdaten.js** enthält die fachlichen Dialoge und Karten. **data/lernhilfen.js** enthält die stufenspezifischen Hilfen. **app/app.js** verwaltet die Gespräche, **app/ui.js** und **app/lernhilfen.js** stellen die gemeinsam verwendbaren Komponenten bereit.
+Der eigenständige Einstieg **module/08-12/index.html** wird ausschließlich beim Bau von Version B gelesen. Dieses Verzeichnis nimmt die geprüfte zweite Konzeption auf. Die Schnittstelle zum Tagesmenü ist ein eigenständig offline lauffähiges HTML-Dokument, in das spätere Modulskripte und Medien beim Modulbau eingebettet werden können. Jedes Modul hat ein eigenes Fenster mit eigenem DOM und eigenem Arbeitsspeicher. Das Menü verantwortet die gemeinsame SCORM-Sitzung.
+
+## Bauen und prüfen
 
 ```sh
 python scripts/build.py
@@ -33,9 +30,19 @@ python tests/layout.py
 python tests/content.py
 python tests/recovery.py
 python scripts/review.py
+python tests/tagesauswahl.py
+python scripts/tagesbericht.py
 ```
 
-Die vier Ausgabedateien liegen unter **dist/**. Einzelne Testnachweise entstehen unter **build/qa/**. Der Inhaltsvergleich benötigt den Stand `940138e` aus der Git-Historie. Bereits vorhandene analoge Vorlagen liegen weiterhin unter **material/**, außerhalb der Softwareausgabe.
+Unter **dist/Version-A/** und **dist/Version-B/** liegen die jeweiligen HTML- und SCORM-Dateien, unter **dist/** der gemeinsame Bericht und das Sichtprüfungspaket. Mit `python scripts/build.py --version A` lässt sich die erste Auslieferung auch eigenständig bauen. Die Prüfungen benötigen die Git-Historie mit den beiden Referenzständen `940138e` und `ca77bf7`.
+
+## Unterrichtstag am 02.12.
+
+Alle Teams beraten zuerst die 19-jährige Laura in fünf gemeinsamen Abschnitten. Sie greifen ihren notierten ersten Einzelrat auf und prüfen ihn bei drei neuen Gesprächsanlässen. Ab dem zweiten Schutzziel können sie ein Kondom mit einer weiteren Methode kombinieren. Beim letzten Rat nennen Förder- und ESA-Teams mündlich einen Grund und einen Nachteil. MSA und AHR wägen zwei Strategien ab. Auf allen Niveaus steht die Aufforderung zur eigenen Papierkarte direkt bei der Entscheidung. Die digitalen Karten und fünf freiwilligen Hilfen unterstützen bei Bedarf. Ohne Auswahl passen Kartenstelle und Beispielmethode zusammen. Bei einem Methodenvergleich erklärt das Beispiel, wie die Kartenangabe den Rat begründet. Jede Person arbeitet auf ihrem eigenen iPad im eigenen Niveau. Einen vorbereiteten Entwurf versendet das Team selbst. Nach Laura stehen im selben Niveau Celina und Tom zur Wahl.
+
+Bei einer Unterbrechung kann die Seite in jedem Gesprächsschritt geöffnet bleiben. Infokarten und Fallübersicht erlauben die Rückkehr zum Gespräch desselben Niveaus. Der Verlauf liegt nur im Arbeitsspeicher der geöffneten Seite. Nach dem Neuladen führt **Nach Neustart weitermachen** direkt zur Auswahl von Fall, Niveau und markierter Abschnittsnummer. Wer zum Beispiel **Laura 3 – Lauras Entscheidung** wählt, liest eine kurze Zusammenfassung und gibt einen eigenen Rat. In der Kopfzeile steht **Laura 3 von 5**. Auch Celina und Tom sind über diesen Zugang direkt erreichbar. Der SCORM-Adapter öffnet und schließt die technische Sitzung. Das LMS kann unabhängig davon Zugriffe protokollieren.
+
+[Technische Abnahme und offene Punkte](docs/Abnahme.md) · [Fachquellen](docs/Fachpruefung.md)
 
 ## Vorbereitung für die zweite Fallakte am 08.12.
 
@@ -49,4 +56,4 @@ Für den Argumenten-Check zum Thema Schwangerschaftsabbruch kann ein separat gep
 
 ## Herkunft der Assets
 
-Die drei Illustrationen zeigen künstlich erzeugte fiktive Figuren. DM Sans und DM Serif Text stammen aus Google Fonts und sind lokal als Zeichensatz für die Unterrichtstexte eingebunden. Die OFL-Lizenzen liegen in **assets/** und sind in der Einzeldatei enthalten. Die IMS-Schemas stammen aus dem [IMS-Schemaarchiv](https://www.imsglobal.org/xsd/), das ADL-Schema aus der [SCORM-1.2-Schemasammlung](https://github.com/cybercussion/SCOBot/blob/e7ddc823a39943ad48dfdfebcedb31d985409a1f/schemas/scorm12_schemas/adlcp_rootv1p2.xsd).
+Die drei Porträts zeigen künstlich erzeugte fiktive Figuren. Das Gruppenbild in der Tagesauswahl wurde mit dem freigegebenen Laura-Porträt als Bildreferenz erstellt. DM Sans und DM Serif Text stammen aus Google Fonts und sind lokal als Zeichensatz für die Unterrichtstexte eingebunden. Die OFL-Lizenzen liegen in **assets/** und sind in der Einzeldatei enthalten. Die IMS-Schemas stammen aus dem [IMS-Schemaarchiv](https://www.imsglobal.org/xsd/), das ADL-Schema aus der [SCORM-1.2-Schemasammlung](https://github.com/cybercussion/SCOBot/blob/e7ddc823a39943ad48dfdfebcedb31d985409a1f/schemas/scorm12_schemas/adlcp_rootv1p2.xsd).
