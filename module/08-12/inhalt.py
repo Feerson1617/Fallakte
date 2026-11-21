@@ -130,7 +130,7 @@ ANCHORS = {
 }
 WEIGHTS = {
     'Mutter': ['So weiß Laura, wer ihr helfen möchte.', 'So fehlen Laura noch Informationen für ihre Wahl.'],
-    'Freundin': ['So fühlt sich Laura mit der Ausbildung gesehen.', 'So kann Laura Folgen falsch einschätzen.'],
+    'Freundin': ['Das hilft Laura, ihren Plan im Blick zu behalten.', 'So kann Laura Folgen falsch einschätzen.'],
     'Großmutter': ['So kann Laura sich auch bei einer anderen Wahl auf sie verlassen.', 'So braucht Laura eine zweite Quelle.'],
     'Vater': ['So kann Laura passende Hilfe finden.', 'So kann Laura in Ruhe weiterfragen.'],
 }
@@ -152,7 +152,7 @@ CATS = {'Mutter': (3, 'Norm', '„Sollen“ nennt eine Regel der Familie.'),
         'Vater': (3, 'Folgerung', '„Deshalb rate ich dir“ zeigt seinen Rat.')}
 FACTS = {'Mutter': [MOTHER], 'Freundin': [FRIEND_OP, FRIEND_VIDEO], 'Großmutter': [GRAND], 'Vater': [FATHER]}
 FACT_RESULTS = {'Mutter': 'Blutungen treten auf. Schmerzen sind möglich.',
-                'Freundin': 'Ohne Operation ist möglich. Trotzdem kommt es zu Blutungen. Schmerzen sind möglich.',
+                'Freundin': 'Eine Operation ist dafür meist nicht nötig. Es kommt zu Blutungen. Schmerzen sind möglich.',
                 'Großmutter': 'Sie nennt ihren Glauben und ihren Wunsch. Über einen medizinischen Ablauf sagt sie nichts.',
                 'Vater': 'Für die Beratungsregelung stimmen beide Angaben zu Stelle und Frist.'}
 JUDGMENTS = ['Sie hilft viel.', 'Sie hilft zum Teil.', 'Sie hilft wenig.']
@@ -189,9 +189,19 @@ def judgment(person, level):
         'MSA': 'Wähle dein Urteil. Erkläre, wie beide Stellen dazu passen.',
         'AHR': 'Wähle dein Urteil. Was wiegt für dich mehr? Prüfe auch die andere Sicht.',
     }
-    sample = f'Für mich hilft sie zum Teil. {a} {WEIGHTS[person][0]}'
+    examples = {
+        'Mutter': ('Für mich hilft sie zum Teil. Die Mutter bietet Hilfe an. Laura fehlen aber Infos zu beiden Wegen.',
+                   'Für mich zählt hier mehr, dass Laura erst beide Wege kennen möchte.'),
+        'Freundin': ('Für mich hilft sie wenig. Sie denkt an die Ausbildung. Der falsche Satz kann Laura aber täuschen.',
+                     'Mir ist hier wichtiger, dass Laura sich auf die Infos verlassen kann.'),
+        'Großmutter': ('Für mich hilft sie viel. Sie bleibt bei Laura, auch wenn Laura anders entscheidet.',
+                       'Fachwissen fehlt. Laura kann es woanders bekommen. Für mich zählt hier die Nähe mehr.'),
+        'Vater': ('Für mich hilft sie viel. Laura kann bei der Beratung Fragen stellen. Die Wahl bleibt bei ihr.',
+                  'Der Vater erklärt die Wege noch nicht. Für mich zählt mehr, dass Laura weiß, wo sie Hilfe bekommt.'),
+    }
+    sample, weighting = examples[person]
     if level in LEVELS[2:]:
-        sample += ' ' + b + ' ' + WEIGHTS[person][1]
+        sample += ' ' + weighting
     if level == 'AHR':
         sample += ' ' + COUNTER_EXAMPLE[person]
     return dict(kind='judgment', prompt=acts[level], options=JUDGMENTS, anchors=[a, b], links=WEIGHTS[person],
