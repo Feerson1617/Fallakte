@@ -77,7 +77,7 @@ def btn(frame,label):
 def layout(frame):
     result = frame.locator('body').evaluate("""body=>({
       overflow: document.documentElement.scrollWidth-innerWidth,
-      small: [...body.querySelectorAll('button,summary')].filter(e=>e.getClientRects().length && e.getBoundingClientRect().height < 43.9).map(e=>e.textContent)
+      small: [...body.querySelectorAll('button,summary')].filter(e=>e.getClientRects().length && (e.getBoundingClientRect().height < 43.9 || e.getBoundingClientRect().width < 43.9)).map(e=>e.textContent)
     })""")
     assert result['overflow']<=1 and not result['small'], result
 
@@ -110,7 +110,7 @@ def inspect_task(frame,task):
 
 
 def exercise(browser,engine,person,level,n,base):
-    scorm=n%2==0
+    scorm=(n+(engine=='webkit'))%2==0
     w,h=(820,1180) if n%4 in (0,3) else (1180,820)
     font=150 if n%3==0 else 100
     context=browser.new_context(viewport={'width':w,'height':h},has_touch=True,is_mobile=True)
@@ -147,6 +147,8 @@ def exercise(browser,engine,person,level,n,base):
     case=BANK['cases'][person]
     tasks=case['levels'][level]
     for i,task in enumerate(tasks):
+        if n==1 and i==0:
+            shot(p,engine+'-Argumenten-Check')
         inspect_task(frame,task)
         layout(frame)
         if i==0:
@@ -158,6 +160,11 @@ def exercise(browser,engine,person,level,n,base):
             # Keep the answer and opened hint through card, shell and same-tier section changes.
             btn(frame,'Hilfe').tap()
             btn(frame,'Hilfe 3 – '+BANK['helps'][2]).tap()
+            if n==1:
+                btn(frame,'Ganze Fachkarte').tap()
+                expect(frame.locator('details[open]')).to_contain_text('Manchmal ist eine weitere Behandlung nötig.')
+                shot(p,engine+'-Fachkarte')
+                btn(frame,'Zurück').tap()
             action('resources').tap()
             expect(frame.get_by_role('heading',name='Fachkarten')).to_be_visible()
             btn(frame,'Zurück').tap()
@@ -171,7 +178,12 @@ def exercise(browser,engine,person,level,n,base):
             btn(frame,'Weiter').tap()
             continue
         article=frame.locator('article')
-        for result in task['results']:expect(article.get_by_text(result,exact=True)).to_be_visible()
+        for result in task['results']:expect(frame.locator('aside').get_by_text(result,exact=True)).to_be_visible()
+        if n==7:
+            btn(frame,'Hilfe').tap()
+            btn(frame,'Hilfe 5 – So geht es.').tap()
+            shot(p,engine+'-Beispielurteil')
+            btn(frame,'Hilfe schließen').tap()
         btn(frame,'Abschnitt beenden').tap()
         expect(article.get_by_role('status')).to_have_text('Wähle dein Urteil.')
         # Deliberately submit all three judgements with evidence. None gets a score.
@@ -185,7 +197,14 @@ def exercise(browser,engine,person,level,n,base):
                     expect(article.get_by_role('status')).to_have_text(BANK['verdictUI']['reconnect'])
                 btn(article,task['links'][j%2]).tap()
             elif j==0:
-                article.get_by_label('Dein Grund').fill('Ich beziehe mich auf die Stelle in der Nachricht.')
+                reason = task['anchors'][0]+' '+task['links'][0]
+                article.get_by_label('Dein Grund').fill(reason)
+                action('overview').tap()
+                other=next(l for l in BANK['levels'] if l!=level)
+                btn(frame,other).tap();btn(frame,sections[1]).tap()
+                expect(frame.get_by_role('heading',name='Stimmt das?')).to_be_visible()
+                action('overview').tap();btn(frame,level).tap();btn(frame,'Zur offenen Stelle').tap()
+                expect(article.get_by_label('Dein Grund')).to_have_value(reason)
             elif j==1:
                 article.get_by_label('Dein Grund').fill('')
                 btn(article,'Ich habe meinen Grund gesagt.').tap()

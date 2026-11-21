@@ -14,7 +14,7 @@ h3,legend{font-size:1.04rem;font-weight:700}
 section,article,details,fieldset{min-width:0}
 button,summary,textarea{font:inherit;color:inherit}
 button,summary{cursor:pointer;touch-action:manipulation}
-button{min-height:44px;max-width:100%;border:1px solid #a3b1a5;border-radius:.65rem;background:#fffef9;padding:.52rem .85rem;line-height:1.28;text-align:left;overflow-wrap:anywhere}
+button{min-height:44px;min-width:44px;max-width:100%;border:1px solid #a3b1a5;border-radius:.65rem;background:#fffef9;padding:.52rem .85rem;line-height:1.28;text-align:left;overflow-wrap:anywhere}
 button:hover,summary:hover{background:#eef2e9}
 button:focus-visible,summary:focus-visible,textarea:focus-visible{outline:3px solid #9b4c24;outline-offset:2px}
 button[aria-pressed=true],.primary{background:#285441;color:white;border-color:#285441}

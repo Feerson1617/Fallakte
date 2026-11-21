@@ -15,7 +15,7 @@ def sha(file):
 
 
 def numbered(lines, numbers=None):
-    return [f'{number}. {lines[number-1]}' for number in (numbers or range(1,len(lines)+1))]
+    return [f'**Zeile {number}** · {lines[number-1]}' for number in (numbers or range(1,len(lines)+1))]
 
 
 def material(bank):
@@ -89,7 +89,7 @@ def main():
     assert all(v['hilfen_je_aufgabe']==5 and len(v['urteile'])==3 and not v['skriptfehler'] and not v['externe_anfragen'] for v in runs)
     photos=[(QA/name,'Bildschirmfotos/'+name) for name in r['bilder']]
     assert all(r['bilder'][file.name]==sha(file) for file,_ in photos)
-    assert len(photos)==14
+    assert len(photos)==20
     body=(ROOT/'docs/Nachrichten-08-12.md').read_text()
     summary = ['## Technische Abnahme',f"Geprüfter Ausgangsstand: `{r['referenz']}`. Der Referenzbau vergleicht Version A vollständig sowie Version B außerhalb des zweiten Moduldokuments byteweise. Die vorhandenen Prüfungen für den 02.12. liefen am eingebetteten Programmstand. Die Dateiinhalte von Offline-HTML und SCORM-Startdatei stimmen überein.",
                f"{len(runs)} vollständige Wege in Chromium und WebKit decken alle vier Personen und Niveaus ab. Getestet wurden richtige und falsche Textantworten, alle fünf Hilfen, Abschluss nach Hilfe 5 und alle drei Urteile. Die Tests öffnen Karten, wechseln die Ansicht und steigen nach vollständigem Neuladen in beide Abschnitte ein. Die Protokolle nennen Browserstand, Touch-Viewport, Schrift und Format für jeden Weg.",

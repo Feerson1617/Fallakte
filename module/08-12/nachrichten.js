@@ -150,6 +150,11 @@
   }
   function sourcePanel(task, state) {
     const panel = el('aside','panel stack'), message = book.cases[person].message;
+    if (task.results) {
+      const result = block('intro stack');
+      result.append(heading('h2','Geprüft'),...task.results.map(t=>el('p','',t)));
+      panel.append(result);
+    }
     panel.append(heading('h2','Nachricht · '+person));
     if (state.reader !== null) {
       panel.append(lines(message,[state.reader]));
@@ -235,9 +240,7 @@
   }
   function verdict(task,state,body) {
     const ui = book.verdictUI;
-    const result = block('intro stack');
-    result.append(heading('h3','Geprüft'),...task.results.map(t=>el('p','',t)));
-    body.append(result,el('p','',task.prompt),helpBox(task,state));
+    body.append(el('p','',task.prompt),helpBox(task,state));
     const [rating, marks] = group(ui.rating, 'row');
     const [proof, proofs] = group(level==='Förder'?ui.simpleEvidence:ui.evidence, 'options');
     const [reason, links] = group(ui.reason, 'options');
