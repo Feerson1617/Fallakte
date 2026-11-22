@@ -1,12 +1,11 @@
-# Fallakte Laura · Runde 1
+# Fallakte Laura · Korrekturrunde 1b
 
 ## Entwicklungsstand und Einstieg
 
-Arbeitszweig `entwicklung/0212-neukonzeption`, Ausgangscommit `ec94147fd8d61442305a0281f7df032f3162362c`. Die gleichnamige Datei im Actions-Artefakt enthält zusätzlich den exakten Auslieferungscommit. Er steht auch im Feld `buildCommit` des Materialvertrags.
+Arbeitszweig `entwicklung/0212-neukonzeption`. Grundlage der Korrekturen ist der am 22.11.2026 ausgelieferte Zwei-Abschnitt-Prototyp auf Commit `8c6bd80c7aa636b55e50ef7522c63f9b48df0cb8`, Inhaltsbank `0212-r1.1`, Actions-Lauf `45046241473`. Der ursprüngliche Zweig begann auf `ec94147fd8d61442305a0281f7df032f3162362c`.
 
 - **Abschlusscommit der Auslieferung** · siehe `Materialvertrag.json`, Feld `buildCommit`.
-- **Abschlusscommit der Implementierung** · `821ff628390a1ff65352a11d83185ed3d1975dc9`.
-- **Inhaltsbankversion** · `0212-r1.1`
+- **Inhaltsbankversion** · `0212-r1.2`
 
 Mit `python scripts/build.py` entstehen unter `dist/Runde-1/` die eigenständige `Fallakte.html`, der maschinenlesbare und der lesbare Materialvertrag sowie diese Fortsetzungsdokumentation. Die HTML-Datei direkt im Browser öffnen. Für den Weg am Gerät die Stufe wählen und bei Laura „Neu beginnen“ antippen. „Abschnitt auswählen“ führt mit einer Zusammenfassung direkt zu Laura 2. „Weiterarbeiten“ führt zum tatsächlichen Entwurf dieses Niveaus im noch geöffneten Dokument.
 
@@ -20,7 +19,19 @@ Mit `python scripts/build.py` entstehen unter `dist/Runde-1/` die eigenständige
 | Laura 4 – Schmerzen und Einlage | Als Materialvertrag spezifiziert. Mögliche Wirkungen auf Schmerzen, ärztliche Abklärung und die eigene Entscheidung über die Einlage sind getrennte Kriterien. |
 | Laura 5 – Mein Schlussrat | Als Materialvertrag spezifiziert. Der Schlussrat und die analoge Sicherung nutzen ein gemeinsames Schreibfeld. Die Begründung wird mit dem ersten Rat verglichen. |
 
-Die Lehrkraft kann von Beginn an die gemeinsame Sicherung öffnen. Deren Fallübersicht enthält auch die späteren Anliegen. Das Öffnen verändert weder die Entscheidung noch den Bearbeitungsstand. Die digitale Pflichtstrecke dieser Entwicklungsrunde endet mit Lauras Antwort in Abschnitt 2.
+Für die gemeinsame Sicherung am Seitenfuß „Für die Lehrkraft“ aufklappen und „Gemeinsame Sicherung öffnen“ wählen. Die Übersicht enthält auch Lauras spätere Anliegen. Die Lehrkraft kann sie schon während Laura 1 projizieren, etwa wenn die Erarbeitung früher endet. Beim Schließen kehrt die Lerngruppe zu ihrem bisherigen Bearbeitungsstand zurück. Die digitale Pflichtstrecke endet mit Lauras Antwort in Abschnitt 2.
+
+## Was sich mit Runde 1b für die Bearbeitung ändert
+
+| Situation | Verhalten im korrigierten Prototyp |
+| --- | --- |
+| Start von Laura 1 | Förder erhält die Materialinformation direkt. ESA untersucht die Latexfrage mit einem konkreten Hinweis. MSA und AHR prüfen die Bedeutung für den eigenen Rat. Auf diesen drei Niveaus heißen die unbestätigten Wahlmöglichkeiten zunächst „Kondom“ beziehungsweise „Kondom und …“. |
+| Auswahl einer Strategie | Der Arbeitsimpuls wechselt mit dem Entwurf. Bei der Kupferspirale steht die Wirkung von Kupfer auf Spermien im Mittelpunkt. Bei Kombinationen sind die Beiträge beider Methoden und die zugehörigen Kartenstellen erreichbar. |
+| Fehlendes STI-Schutzziel in Laura 2 | Förder und ESA können eine ausdrücklich angebotene Ergänzung wählen. MSA und AHR erhalten einen Bewertungsimpuls und wählen selbst, wie sie ihren Rat ändern. Jeder geänderte Rat benötigt einen neuen Fachcheck. |
+| Papierarbeit auf MSA und AHR | Der reguläre Weg führt zum genannten Abschnitt auf dem Laufzettel und zurück zur Codeeingabe. Wer das Blatt nicht zur Hand hat, kann den Denkauftrag mit sämtlichen Aussagen digital öffnen. |
+| Direkter Wiedereinstieg | Die Abschnittsauswahl übernimmt genau einmal den Titel aus der Inhaltsbank. Laura 1 und Laura 2 sind auswählbar. |
+
+Der fachliche Vorher-Nachher-Bericht und das Sichtprüfungspaket im Actions-Artefakt dokumentieren die Korrekturen am gebauten HTML. Die vier technischen JSON-Protokolle darin nennen den geprüften Commit und die HTML-Prüfsumme.
 
 ## Technische Abhängigkeiten
 
@@ -32,7 +43,7 @@ Die Lehrkraft kann von Beginn an die gemeinsame Sicherung öffnen. Deren Fallüb
 
 ## Material und offene Erprobung
 
-Work übernimmt die freigegebenen Aufträge, Aussagen, Hin- und Rückverweise aus dem Materialvertrag. Die HTML-Datei lässt die Lernbogen-Aussagen auf Wunsch auch digital nachlesen. Ein richtiger Buchstabe bestätigt den fachlichen Anker. Die Qualität der persönlich geschriebenen Begründung wird im Unterricht geprüft.
+Work übernimmt Aufgaben, Begründungsoptionen und Hin- und Rückverweise aus dem Materialvertrag. Der Export unterscheidet den Einstieg vor der Wahl vom konkreten Arbeitsimpuls nach der Wahl. Ein richtiger Buchstabe bestätigt den fachlichen Anker. Die Qualität der persönlich geschriebenen Begründung wird im Unterricht geprüft.
 
 Für den Praxistest die Datei auf einem Schul-iPad öffnen. Je ein Förder-/ESA-Team und ein MSA-/AHR-Team möglichst selbstständig starten lassen. Beobachten, ob sie den zusätzlichen STI-Wunsch bemerken, ihre Begründung ändern und bei einer offenen medizinischen Frage eine bedingte Empfehlung formulieren können. Beim Codefeld die echte Bildschirmtastatur verwenden. Nach Neuladen über „Abschnitt auswählen“ zu Laura 2 einsteigen. Die geplanten 22 Minuten, die Passung der später gedruckten Lernbogen und der itslearning-Kurs sind unter Schulbedingungen zu erproben.
 

@@ -2,7 +2,7 @@
 
 Auf dem Zweig `entwicklung/0212-neukonzeption` startet die neue Beratung mit Latexallergie und dem Wunsch nach zuverlässiger Schwangerschaftsverhütung. In Laura 2 kommt der Infektionsschutz hinzu. Beide Abschnitte sind für Förder, ESA, MSA und AHR vorgesehen. Laura 3–5 stehen als Spezifikation für Work bereit.
 
-`python scripts/build.py` erzeugt die offline ausführbare Datei **dist/Runde-1/Fallakte.html** und beide Fassungen des Materialvertrags. Die vollständigen Ausgaben des getesteten Commits stehen im GitHub-Actions-Artefakt **Fallakte-Runde-1**. Für die Unterrichtserprobung sind keine externen Ressourcen erforderlich. [Umsetzungsstand und Wiedereinstieg](docs/0212-umsetzungsstand.md) · [Fachlich-didaktische Prüfung](docs/0212-fachpruefung-runde1.md)
+`python scripts/build.py` erzeugt die offline ausführbare Datei **dist/Runde-1/Fallakte.html** und beide Fassungen des Materialvertrags. Die Ausgaben der Korrekturrunde 1b mit Inhaltsbank `0212-r1.2` stehen im GitHub-Actions-Artefakt **Fallakte-Runde-1**. [Umsetzungsstand und Wiedereinstieg](docs/0212-umsetzungsstand.md) · [Fachlich-didaktische Prüfung der Korrekturen](docs/0212-fachpruefung-1b.md)
 
 ## Gemeinsame Anwendung im zugrunde liegenden Veröffentlichungsstand
 

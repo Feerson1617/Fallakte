@@ -1,0 +1,237 @@
+{
+  "pruefung": "Unabhängige fachlich-didaktische Gegenprüfung 1b",
+  "datumUTC": "2026-11-22T17:29:29.382072+00:00",
+  "inhaltsversion": "0212-r1.2",
+  "datenSHA256": "82f1007c0bdbf3dc7e0f4c40d1138cc23083126abe98bb20e1e1eb62eb02e2d2",
+  "vorabHTMLSHA256": "21ad27aab529a5b7c4e19cce5a5aa7e02db879ff310c25db19884b30630a3d6f",
+  "hinweisZumHTMLHash": "Hash der lokal gebauten Prüffassung vor dem Abschlusscommit. Der Commitstempel des Actions-Builds verändert die HTML-Prüfsumme. Der fachliche Abgleich verwendet datenSHA256.",
+  "auslieferungRunde1SHA256": "9fb58a23f276e29b591daa5a9e2cc5488228c58ef464b938f46f84cd7cf4f160",
+  "befundeRunde1": "Sechs von sechs Beanstandungen am heruntergeladenen Artefakt per Touch in beiden Browsern reproduziert.",
+  "ergebnis": {
+    "chromium": {
+      "kontexte": 56,
+      "entscheidungsstufen": "2 Abschnitte × 4 Niveaus × 7 Strategien",
+      "je_Kontext_geprueft": [
+        "aktiver Impuls",
+        "erste Kartenstelle und Rückweg",
+        "fünf Hilfen",
+        "Rückfrage und Lauras Antwort",
+        "falscher und fachlich zutreffender Grund oder Code"
+      ],
+      "C_nach_fachlich_richtiger_Antwort": 44,
+      "B_nach_fachlich_richtiger_Antwort": 12
+    },
+    "webkit": {
+      "kontexte": 56,
+      "entscheidungsstufen": "2 Abschnitte × 4 Niveaus × 7 Strategien",
+      "je_Kontext_geprueft": [
+        "aktiver Impuls",
+        "erste Kartenstelle und Rückweg",
+        "fünf Hilfen",
+        "Rückfrage und Lauras Antwort",
+        "falscher und fachlich zutreffender Grund oder Code"
+      ],
+      "C_nach_fachlich_richtiger_Antwort": 44,
+      "B_nach_fachlich_richtiger_Antwort": 12
+    }
+  },
+  "beispiele": [
+    {
+      "stage": "L01",
+      "tier": "ESA",
+      "method": "K",
+      "before": "Muss Laura wegen ihrer Latexallergie auf jedes Kondom verzichten? Auf der Kondomkarte kannst du das Material prüfen.",
+      "prompt": "Welches Kondommaterial kommt für Laura infrage, und wie schützt das Kondom vor einer Schwangerschaft?",
+      "initialCard": [
+        "K",
+        "material",
+        "Kondom",
+        "Material und Allergie",
+        "Es gibt Kondome aus Latex und Kondome ohne Latex. Für Laura kommt ein für die Verhütung geeignetes Kondom aus synthetischem Material infrage, zum Beispiel aus Polyurethan oder Polyisopren. Es hält Spermien zurück. Achte auf die Angaben auf der Packung."
+      ],
+      "checked": [
+        [
+          "A",
+          "Auch geeignete synthetische Kondome halten Spermien zurück. Entscheidend ist das passende Material."
+        ],
+        [
+          "C",
+          "Für Laura geeignetes synthetisches latexfreies Kondom bei jedem Sex von Anfang an richtig benutzen. Dein Rat kann unter diesen Bedingungen passen. Du kannst ihn mit deiner Begründung senden."
+        ]
+      ],
+      "correction": null
+    },
+    {
+      "stage": "L01",
+      "tier": "MSA",
+      "method": "Cu",
+      "before": "Was musst du über das Material wissen, bevor du deinen ersten Rat bestätigst oder änderst?",
+      "prompt": "Erkläre, wie das Kupfer der Kupferspirale Spermien beeinflusst. Welche Rolle spielt Latex für diese Wirkung?",
+      "initialCard": [
+        "Cu",
+        "wirkung",
+        "Kupferspirale",
+        "Kupfer und Spermien",
+        "Kupfer beeinträchtigt die Beweglichkeit und die Befruchtungsfähigkeit von Spermien. Die Kupferspirale enthält keine Hormone. Sie kann nach dem Einsetzen über längere Zeit sehr zuverlässig vor einer Schwangerschaft schützen."
+      ],
+      "checked": [
+        [
+          "A",
+          "Die Allergie betrifft Latex. Auch ohne Latex gibt es geeignete synthetische Kondome."
+        ],
+        [
+          "C",
+          "Eignung, individuelle Fragen und Zustimmung zur Einlage in der Praxis klären. Dein Rat kann unter diesen Bedingungen passen. Du kannst ihn mit deiner Begründung senden."
+        ]
+      ],
+      "correction": null
+    },
+    {
+      "stage": "L02",
+      "tier": "Foerder",
+      "method": "Cu",
+      "before": "Laura will nicht schwanger werden. Jetzt möchte sie sich auch vor Infektionen beim Sex schützen.",
+      "prompt": "Schützt die Kupferspirale auch vor Infektionen?",
+      "initialCard": [
+        "Cu",
+        "sti",
+        "Kupferspirale",
+        "Schutz vor Infektionen",
+        "Die Wirkung des Kupfers auf Spermien schützt nicht vor sexuell übertragbaren Infektionen. Die Kupferspirale bildet beim Sex keine Barriere gegen Krankheitserreger."
+      ],
+      "checked": [
+        [
+          "A",
+          "Die Wirkung auf Spermien ist kein Schutz vor sexuell übertragbaren Krankheitserregern."
+        ],
+        [
+          "B",
+          "Kupfer hemmt Spermien. Die Kupferspirale schützt nicht vor Infektionen. Entscheide, wie du Laura auch davor schützen möchtest."
+        ]
+      ],
+      "correction": {
+        "type": "bewusst ergänzen",
+        "neueStrategie": "K+Cu"
+      }
+    },
+    {
+      "stage": "L02",
+      "tier": "ESA",
+      "method": "Cu",
+      "before": "Laura nennt ein zweites Ziel. Welche Wirkung braucht dein vollständiger Rat jetzt zusätzlich?",
+      "prompt": "Was bedeutet die Wirkung von Kupfer auf Spermien für Lauras zwei Ziele?",
+      "initialCard": [
+        "Cu",
+        "sti",
+        "Kupferspirale",
+        "Schutz vor Infektionen",
+        "Die Wirkung des Kupfers auf Spermien schützt nicht vor sexuell übertragbaren Infektionen. Die Kupferspirale bildet beim Sex keine Barriere gegen Krankheitserreger."
+      ],
+      "checked": [
+        [
+          "A",
+          "Die Wirkung auf Spermien ist kein Schutz vor sexuell übertragbaren Krankheitserregern."
+        ],
+        [
+          "B",
+          "Die Kupferspirale beeinträchtigt Spermien. Sie schützt vor einer Schwangerschaft, aber nicht vor Infektionen beim Sex. Prüfe deinen vollständigen Rat."
+        ]
+      ],
+      "correction": {
+        "type": "bewusst ergänzen",
+        "neueStrategie": "K+Cu"
+      }
+    },
+    {
+      "stage": "L02",
+      "tier": "MSA",
+      "method": "Cu",
+      "before": "Was muss dein Rat jetzt leisten, damit er beide Wünsche berücksichtigt?",
+      "prompt": "Prüfe die Wirkung der Kupferspirale auf Spermien. Was bedeutet sie für jedes der beiden Schutzziele?",
+      "initialCard": [
+        "Cu",
+        "sti",
+        "Kupferspirale",
+        "Schutz vor Infektionen",
+        "Die Wirkung des Kupfers auf Spermien schützt nicht vor sexuell übertragbaren Infektionen. Die Kupferspirale bildet beim Sex keine Barriere gegen Krankheitserreger."
+      ],
+      "checked": [
+        [
+          "A",
+          "Die Pille hemmt vor allem den Eisprung. Sie schützt nicht vor Krankheitserregern beim Sex."
+        ],
+        [
+          "B",
+          "Die Kupferspirale berücksichtigt den Schwangerschaftsschutz. Welches Ziel aus Lauras neuer Nachricht bleibt offen? Wähle deinen vollständigen Rat neu."
+        ]
+      ],
+      "correction": {
+        "type": "eigene Wahl",
+        "neueStrategie": "K"
+      }
+    },
+    {
+      "stage": "L02",
+      "tier": "AHR",
+      "method": "Cu",
+      "before": "Wie verändert das zusätzliche Schutzziel deine bisherige Abwägung?",
+      "prompt": "Welche Aussage zum Schutz lässt die Kupferspirale durch ihre Wirkung auf Spermien zu? Prüfe die Reichweite deines Rats am zweiten Anliegen.",
+      "initialCard": [
+        "Cu",
+        "sti",
+        "Kupferspirale",
+        "Schutz vor Infektionen",
+        "Die Wirkung des Kupfers auf Spermien schützt nicht vor sexuell übertragbaren Infektionen. Die Kupferspirale bildet beim Sex keine Barriere gegen Krankheitserreger."
+      ],
+      "checked": [
+        [
+          "A",
+          "Die Pille hemmt vor allem den Eisprung. Sie schützt nicht vor Krankheitserregern beim Sex."
+        ],
+        [
+          "B",
+          "Die Wirkung von Kupfer auf Spermien beantwortet einen Teil von Lauras Anliegen. Welche Schutzlücke bleibt, und wo lägen die Grenzen deiner Anpassung?"
+        ]
+      ],
+      "correction": {
+        "type": "eigene Wahl",
+        "neueStrategie": "K"
+      }
+    }
+  ],
+  "grenzen": [
+    "Emulation, keine echten Schul-iPads oder itslearning",
+    "Kein Test mit Lernenden. Eigenständige Begründung und Gewichtung erfordern Beobachtung in der Klasse."
+  ],
+  "zusaetzlicheTouchwege": [
+    {
+      "browser": "chromium",
+      "niveau": "ESA",
+      "selbstOderAusdruecklichKorrigiertZu": "K+Cu",
+      "weiterarbeiten": true,
+      "abschnittseinstiegNachReload": true
+    },
+    {
+      "browser": "chromium",
+      "niveau": "AHR",
+      "selbstOderAusdruecklichKorrigiertZu": "K",
+      "weiterarbeiten": true,
+      "abschnittseinstiegNachReload": true
+    },
+    {
+      "browser": "webkit",
+      "niveau": "ESA",
+      "selbstOderAusdruecklichKorrigiertZu": "K+Cu",
+      "weiterarbeiten": true,
+      "abschnittseinstiegNachReload": true
+    },
+    {
+      "browser": "webkit",
+      "niveau": "AHR",
+      "selbstOderAusdruecklichKorrigiertZu": "K",
+      "weiterarbeiten": true,
+      "abschnittseinstiegNachReload": true
+    }
+  ],
+  "endentscheidung": "Sechs Ausgangsmängel in dieser Prüffassung behoben. Gewichtung eigener Gründe bleibt Aufgabe des Unterrichts."
+}

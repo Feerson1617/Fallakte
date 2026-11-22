@@ -111,6 +111,11 @@
     return context.strategy ? task.strategies[context.strategy] : task.before;
   }
 
+  function cardLabel(ref) {
+    const card=window.LAURA.cards[ref.method];
+    return 'Karte öffnen · '+card.title+' – '+card.sections[ref.section].title;
+  }
+
   function cardView(view) {
     const {method,section} = view.ref;
     const card = window.LAURA.cards[method];
@@ -165,9 +170,7 @@
     if (depth > 0) controls.append(button('Vorherige Hilfe',() => step(-1),'hilfe-zurueck'));
     if (depth+1 < data.hints.length) controls.append(button('Nächste Hilfe',() => step(1),'hilfe-weiter'));
     for (const [i,ref] of [data.card,...(data.extraCards || [])].entries()) {
-      const card = window.LAURA.cards[ref.method];
-      const label = i ? 'Auch zur Karte „'+card.title+'“' : 'Passende Infokarte öffnen';
-      const source = button(label,() => child({type:'card',ref},source),i ? 'hilfe-karte-'+i : 'hilfe-karte');
+      const source = button(cardLabel(ref),() => child({type:'card',ref},source),i ? 'hilfe-karte-'+i : 'hilfe-karte');
       source.dataset.method = ref.method;
       source.dataset.section = ref.section;
       controls.append(source);
@@ -212,7 +215,8 @@
     body.replaceChildren();
     const drawView = {cards:cardsView,card:cardView,help:helpView,questions:questionsView,summary:summaryView};
     if (view.context?.strategy) {
-      const chosen = window.LAURA.strategies[view.context.strategy].label;
+      const task = window.LAURA.stages[view.context.stageId].levels[view.context.levelId];
+      const chosen = task.choiceLabels?.[view.context.strategy] || window.LAURA.strategies[view.context.strategy].label;
       const context = element('p','Dein Entwurf · '+chosen);
       context.className = 'material-bezug';
       body.append(context);
@@ -230,6 +234,7 @@
   }
 
   window.Material = Object.freeze({
+    cardLabel,
     openCards: trigger => begin({type:'cards'},trigger),
     openCard: (ref,trigger) => begin({type:'card',ref},trigger),
     help: (context,trigger) => begin({type:'help',context,depth:0},trigger),

@@ -53,16 +53,27 @@ def readable(bank):
                '**Rückmeldung zum jeweiligen Fachanker**',lines(f"{key}. {fb['text']} ({reference(fb['card'],bank)})" for key,fb in stage['anchorFeedback'].items())]
         for tier,task in stage['levels'].items():
             text+=['### '+bank['levels'][tier]+' · '+task['taskId'],'**Nachricht von Laura** '+task['message'],
-                   '**Auftrag** '+task['task'], '**Hinweis im Arbeitsbereich** '+task.get('evidence',stage['evidence']),
+                   '**Auftrag** '+task['task'], '**Impuls vor der Strategiewahl** '+task.get('evidence',stage['evidence']),
                    '**Zuerst sichtbare Strategien** '+', '.join(task['primary'])]
             if task['paperPrompt']:text+=['**Weg zum Laufzettel** '+task['paperPrompt']]
             if task['returnPrompt']:text+=['**Zurück ins Gespräch** '+task['returnPrompt']]
+            if task.get('paperFallback'):
+                text+=['**Digitale Ersatzaufgabe** '+task['paperFallback'],
+                       task['task'],lines(letter+'. '+anchor for letter,anchor in stage['anchors'].items()),
+                       bank['paperFallbackInstruction']]
             before=task['before']
             text+=['**Vor der Auswahl** '+reference(before['card'],bank),questions(before),details(before['hints'])]
             for key,way in task['strategies'].items():
                 text+=['#### '+bank['strategies'][key]['label']+' ('+key+')',
                        '**Einordnung** '+way['status']+' · '+way['condition'],
                        '**Rückmeldung** '+way['feedback'],'**Kartenstelle** '+reference(way['card'],bank)]
+                if way.get('evidence'):text+=['**Impuls zu dieser Auswahl** '+way['evidence']]
+                if key in task.get('choiceLabels',{}):text+=['**Bezeichnung bei der Auswahl** '+task['choiceLabels'][key]]
+                if way.get('correction'):
+                    correction=way['correction']
+                    target=correction.get('target')
+                    effect='Auswahl: '+bank['strategies'][target]['label'] if target else 'Zurück zur eigenen Strategiewahl'
+                    text+=['**Korrekturweg** '+correction['label']+' · '+effect]
                 if way['extraCards']:
                     text+=['**Ergänzende Kartenstellen** '+', '.join(reference(ref,bank) for ref in way['extraCards'])]
                 if way.get('goalCard'):text+=['**Kartenstelle zum fehlenden Schutzziel** '+reference(way['goalCard'],bank)]

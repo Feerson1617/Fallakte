@@ -1,0 +1,74 @@
+{
+  "lauf": "45046241473",
+  "artefaktSHA256": "9fb58a23f276e29b591daa5a9e2cc5488228c58ef464b938f46f84cd7cf4f160",
+  "browser": {
+    "chromium": {
+      "4.Vorwahl_ESA": "Auch ein geeignetes synthetisches Kondom ohne Latex hält Spermien zurück. Prüfe deinen ersten Rat mit dieser Information.",
+      "1.Funktion_in_Navigation": true,
+      "1.Sicherungsfakten_aus_L01": [
+        "Laura ist 19. Sie möchte möglichst zuverlässig verhindern, dass sie schwanger wird.",
+        "Laura hat eine Latexallergie.",
+        "Es gibt für die Verhütung geeignete synthetische Kondome ohne Latex.",
+        "Sie ist unsicher, weil sie über Verhütung mit Hormonen noch wenig weiß.",
+        "Laura möchte zusätzlich das Risiko von Infektionen verringern, die beim Sex übertragen werden.",
+        "Lauras Alltag ist unregelmäßig. Tägliche Dinge vergisst sie manchmal.",
+        "Eine Freundin hat mit der Pille schlechte Erfahrungen gemacht. Laura weiß nicht, wie sie die Pille selbst vertragen würde.",
+        "Laura hat starke Regelschmerzen. Die Ursache ist noch nicht ärztlich abgeklärt.",
+        "Das Einsetzen einer Spirale macht Laura Sorgen. Über eine Einlage hat sie noch nicht entschieden."
+      ],
+      "2.MSA_Cu_Hinweis": "Prüfe auf der Kondomkarte, welche Rolle das Material für deine erste Empfehlung spielt.",
+      "2.Karte": [
+        "Kupferspirale",
+        "Kupfer und Spermien"
+      ],
+      "5.Aussagen_Zugang": "Aussagen vom Laufzettel ansehen",
+      "5.Aussagen": [
+        "A · Bei Latexallergie scheiden Kondome grundsätzlich aus.",
+        "B · Geeignete synthetische latexfreie Kondome bilden eine Barriere für Spermien.",
+        "C · Bei Latexallergie kommen nur hormonelle Methoden infrage.",
+        "Fertig? Kehre zum Chat mit Laura zurück. Gib den Buchstaben ein und sende deinen Rat."
+      ],
+      "6.Abschnittswahl": [
+        "Laura 1 – Laura 1 – Latexallergie",
+        "Laura 2 – Laura 2 – Zwei Schutzziele"
+      ],
+      "3.Rueckmeldung": "Kupferspirale kann zur Schwangerschaftsverhütung beitragen. Dein vollständiger Rat lässt den Schutz vor Infektionen noch offen. Prüfe, wie du ihn ergänzen möchtest.",
+      "3.Ergaenzungsbutton": "Ein passendes latexfreies Kondom ergänzen",
+      "3.Rat_nach_Ergaenzung": "Synthetisches Kondom ohne Latex und Kupferspirale"
+    },
+    "webkit": {
+      "4.Vorwahl_ESA": "Auch ein geeignetes synthetisches Kondom ohne Latex hält Spermien zurück. Prüfe deinen ersten Rat mit dieser Information.",
+      "1.Funktion_in_Navigation": true,
+      "1.Sicherungsfakten_aus_L01": [
+        "Laura ist 19. Sie möchte möglichst zuverlässig verhindern, dass sie schwanger wird.",
+        "Laura hat eine Latexallergie.",
+        "Es gibt für die Verhütung geeignete synthetische Kondome ohne Latex.",
+        "Sie ist unsicher, weil sie über Verhütung mit Hormonen noch wenig weiß.",
+        "Laura möchte zusätzlich das Risiko von Infektionen verringern, die beim Sex übertragen werden.",
+        "Lauras Alltag ist unregelmäßig. Tägliche Dinge vergisst sie manchmal.",
+        "Eine Freundin hat mit der Pille schlechte Erfahrungen gemacht. Laura weiß nicht, wie sie die Pille selbst vertragen würde.",
+        "Laura hat starke Regelschmerzen. Die Ursache ist noch nicht ärztlich abgeklärt.",
+        "Das Einsetzen einer Spirale macht Laura Sorgen. Über eine Einlage hat sie noch nicht entschieden."
+      ],
+      "2.MSA_Cu_Hinweis": "Prüfe auf der Kondomkarte, welche Rolle das Material für deine erste Empfehlung spielt.",
+      "2.Karte": [
+        "Kupferspirale",
+        "Kupfer und Spermien"
+      ],
+      "5.Aussagen_Zugang": "Aussagen vom Laufzettel ansehen",
+      "5.Aussagen": [
+        "A · Bei Latexallergie scheiden Kondome grundsätzlich aus.",
+        "B · Geeignete synthetische latexfreie Kondome bilden eine Barriere für Spermien.",
+        "C · Bei Latexallergie kommen nur hormonelle Methoden infrage.",
+        "Fertig? Kehre zum Chat mit Laura zurück. Gib den Buchstaben ein und sende deinen Rat."
+      ],
+      "6.Abschnittswahl": [
+        "Laura 1 – Laura 1 – Latexallergie",
+        "Laura 2 – Laura 2 – Zwei Schutzziele"
+      ],
+      "3.Rueckmeldung": "Kupferspirale kann zur Schwangerschaftsverhütung beitragen. Dein vollständiger Rat lässt den Schutz vor Infektionen noch offen. Prüfe, wie du ihn ergänzen möchtest.",
+      "3.Ergaenzungsbutton": "Ein passendes latexfreies Kondom ergänzen",
+      "3.Rat_nach_Ergaenzung": "Synthetisches Kondom ohne Latex und Kupferspirale"
+    }
+  }
+}

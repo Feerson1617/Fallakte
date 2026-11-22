@@ -31,11 +31,15 @@
 #beratung .fachmeldung[data-type=B]{border-color:#9b692d;background:#fbf2df}
 #beratung .code-form,#beratung .beratung-tools{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem .5rem}
 #beratung .code-form{margin-top:.45rem}
+#beratung #papier-ersatz{margin-top:.4rem}
+#beratung #papier-ersatz summary{font-weight:400;font-size:.94rem;text-decoration:underline;text-underline-offset:.16em}
+#beratung #papier-ersatz[open]{border-inline-start:.16rem solid #bdcabe;padding-inline-start:.65rem}
 #beratung .code-form label{font-weight:650}
 #beratung .code-form input{width:4rem;padding:.25rem .45rem;border:1px solid #758b7d;border-radius:.4rem;background:white}
 #beratung .senden,#beratung .ergaenzen{margin:.22rem .35rem .22rem 0}
 #beratung .senden{background:#265646;color:#fff;border-color:#265646;font-weight:700}
 #beratung .beratung-tools{margin-top:.35rem}
+#beratung .kartenverweise{display:flex;flex-wrap:wrap;gap:.25rem .5rem}
 #beratung .beratung-tools button{color:#284d42;border-color:transparent;text-decoration:underline;text-underline-offset:.16em;background:transparent}
 #beratung :focus-visible{outline:3px solid #ad6032;outline-offset:2px}
 @media(max-width:44rem){

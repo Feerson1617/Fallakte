@@ -18,6 +18,17 @@ LEVELS = ('Foerder', 'ESA', 'MSA', 'AHR')
 STRATEGIES = ('K','P','Cu','H','K+P','K+Cu','K+H')
 CODES = {'L01':'B','L02':'C'}  # Independent acceptance examples specified by the assignment.
 SHOTS = {}
+TITLES = ('Laura 1 – Latexallergie','Laura 2 – Zwei Schutzziele')
+
+
+def expected_references(stage, strategy):
+    """The pupil needs the chosen components, with the mechanism relevant at this stage."""
+    condom_section = 'material' if stage == 'L01' else 'sti'
+    if '+' in strategy:
+        return [(strategy.split('+')[1], 'wirkung'), ('K', condom_section)]
+    if strategy == 'K':
+        return ([('K', 'material')] if stage == 'L01' else [('K', 'sti'), ('K', 'wirkung')])
+    return [(strategy, 'wirkung' if stage == 'L01' else 'sti')]
 
 
 def sha(path):
@@ -99,6 +110,109 @@ def open_wrong_card(page, ref):
     return [method,section]
 
 
+def active_material(page, bank, tier, stage, strategy):
+    task = bank['stages'][stage]['levels'][tier]
+    context = task['strategies'][strategy]
+    source = page.locator('.abschnittshinweis')
+    expect(source).to_be_visible()
+    expect(source).to_have_text(context['evidence'])
+    txt = source.inner_text()
+    methods = strategy.split('+')
+    named = {'K':r'Kondom','P':r'Pille','Cu':r'Kupfer','H':r'Hormonspirale|Schleim|Gestagen'}
+    for method in methods:
+        assert re.search(named[method],txt,re.I),(stage,tier,strategy,txt)
+    if 'K' not in methods:
+        assert not re.search(r'(?:Kondomkarte|(?:Karte|Abschnitt) [„»]?Kondom)',txt,re.I),txt
+    references = expected_references(stage,strategy)
+    controls = page.locator('.beratung-tools button[id^=passende-karte]')
+    expect(controls).to_have_count(len(references))
+    history = text_log(page)
+    for i, (method, section) in enumerate(references):
+        ref = controls.nth(i)
+        card = bank['cards'][method]
+        passage = card['sections'][section]
+        expect(ref).to_have_attribute('data-method',method)
+        expect(ref).to_have_attribute('data-section',section)
+        expect(ref).to_have_accessible_name(re.compile(re.escape(card['title']),re.I))
+        expect(ref).to_have_accessible_name(re.compile(re.escape(passage['title']),re.I))
+        ref.tap()
+        assert marked_card(page) == (method,section)
+        expect(page.locator('#material-titel')).to_have_text(card['title'])
+        target = page.locator('#material-dialog [data-target=true]')
+        expect(target.locator('h3')).to_have_text(passage['title'])
+        expect(target.locator('p')).to_have_text(passage['text'])
+        back_from_material(page)
+        expect(ref).to_be_focused()
+    assert text_log(page)==history
+    return {'impuls':txt,'ziele':references}
+
+
+def pupil_view(page, stage):
+    """Look at the visible pupil view, without reading detached/hidden teacher material."""
+    expect(page.locator('#lokale-navigation').get_by_text(re.compile('Sicherung|Lehrkraft'))).to_have_count(0)
+    expect(page.locator('#lehrkraft')).not_to_have_attribute('open','')
+    expect(page.locator('#sicherung-oeffnen')).not_to_be_visible()
+    text=page.locator('#beratung').inner_text()
+    assert not re.search(r'(?:mein|ihr|Lauras) Alltag ist unregelmäßig|'
+                         r'(?:eine|meine) Freundin hat|(?:ich habe|Laura hat) starke Regelschmerzen|'
+                         r'(?:das Einsetzen einer Spirale|die Einlage) macht (?:mir|Laura) Sorgen',text,re.I),text
+    if stage == 'L01':
+        assert not re.search(r'(?:ich möchte|Laura möchte) (?:auch|zusätzlich).{0,45}(?:STI|Infektion)',text,re.I),text
+
+
+def introductory_clue(page, tier, stage, data):
+    source = page.locator('.abschnittshinweis')
+    expect(source).to_have_text(data['evidence'])
+    pupil_view(page,stage)
+    if stage != 'L01':
+        return
+    clue = source.inner_text()
+    if tier == 'Foerder':
+        assert re.search(r'(latexfrei|ohne Latex)',clue,re.I) and re.search(r'Sperm|Barriere',clue,re.I),clue
+        return
+    assert re.search(r'[?]|prüf|vergleich|untersuch|erkund',clue,re.I),clue
+    if tier == 'ESA':
+        assert re.search('Karte|Material',clue,re.I),clue
+    assert not re.search(r'(?:hält|halten|fängt|fangen).{0,12}Sperm|bildet.{0,15}Barriere|'
+                         r'(?:geeignet|wirksam).{0,25}(?:latexfrei|ohne Latex)',clue,re.I),clue
+    more = page.locator('#weitere-strategien summary')
+    if more.is_visible(): more.tap()
+    buttons = page.locator('#beratung button[data-strategy]:visible')
+    names = buttons.all_inner_texts()
+    assert len(names)==7 and not re.search(r'latexfrei|ohne Latex|synthetisch',' '.join(names),re.I),names
+    if more.is_visible(): more.tap()
+
+
+def paper_route(page, bank, tier, stage, screenshot=None):
+    task = bank['stages'][stage]['levels'][tier]
+    field = page.locator('.fachcheck')
+    fallback = field.locator('details#papier-ersatz')
+    expect(field.get_by_text(task['paperPrompt'],exact=True)).to_be_visible()
+    expect(field.get_by_text(task['returnPrompt'],exact=True)).to_be_visible()
+    assert TITLES[0 if stage=='L01' else 1] in task['paperPrompt']
+    expect(fallback.locator('summary')).to_have_text(re.compile(r'Laufzettel nicht zur Hand.+Aufgabe',re.I))
+    expect(fallback).not_to_have_attribute('open','')
+    anchors = bank['stages'][stage]['anchors']
+    for letter, statement in anchors.items():
+        expect(field.get_by_text(letter+' · '+statement,exact=True)).not_to_be_visible()
+    if screenshot:shot(page,screenshot+'-Papierweg-MSA')
+    before = text_log(page)
+    fallback.locator('summary').tap()
+    expect(fallback.get_by_text(task['task'],exact=True)).to_be_visible()
+    expect(fallback.get_by_text(bank['paperFallbackInstruction'],exact=True)).to_be_visible()
+    for letter, statement in anchors.items():
+        line=fallback.get_by_text(letter+' · '+statement,exact=True)
+        expect(line).to_be_visible()
+        assert not line.evaluate("el=>Boolean(el.closest('[aria-selected=true], [aria-current=true], mark'))")
+    expect(page.locator('#pruefcode')).to_have_value('')
+    assert not re.search(r'(?:korrekt|richtig|Lösung|Prüfcode)(?:e[rn]?)? (?:ist |lautet )?[:=] ?[ABC]\b',
+                         fallback.inner_text(),re.I)
+    if screenshot:shot(page,screenshot+'-Papierersatz-MSA')
+    fallback.locator('summary').tap()
+    assert text_log(page)==before
+    no_send(page)
+
+
 def exercise_check(page,tier,stage,strategy,context):
     send=page.locator('#nachricht-senden')
     status=page.locator('#fachmeldung')
@@ -140,6 +254,10 @@ def exercise_check(page,tier,stage,strategy,context):
         wrong=['',*sorted(set('ABC')-{CODES[stage]}),'xx']
         for value in wrong:
             code.fill(value)
+            method, section = expected_references(stage,strategy)[0]
+            primary = page.locator('#passende-karte')
+            expect(primary).to_have_attribute('data-method',method)
+            expect(primary).to_have_attribute('data-section',section)
             check.tap()
             expect(send).to_be_disabled()
             expect(status).to_be_visible()
@@ -160,7 +278,11 @@ def exercise_check(page,tier,stage,strategy,context):
     expect(status).to_have_attribute('data-type','B' if incomplete else 'C')
     if incomplete:
         expect(send).to_be_disabled()
-        assert re.search(r'Infektion|STI',status.inner_text(),re.I),status.inner_text()
+        expect(status).to_have_text(context['feedback'])
+        assert re.search(r'Infektion|STI|Schutzlücke|Ziel.{0,45}offen|Anliegen',status.inner_text(),re.I),status.inner_text()
+        if tier in LEVELS[2:]:
+            assert not re.search(r'Kondom',status.inner_text(),re.I),status.inner_text()
+        results[-1]['rueckmeldung']=status.inner_text()
         results[-1]['quelle']=open_wrong_card(page,{'method':strategy,'section':'sti'})
     else:
         expect(send).to_be_enabled()
@@ -237,6 +359,7 @@ def matrix(page,tier,strategy,bank,engine):
         if stage=='L01' and tier=='ESA' and strategy=='K':shot(page,engine+'-Start-ESA')
         data=bank['stages'][stage]['levels'][tier]
         assert message==data['message']
+        introductory_clue(page,tier,stage,data)
         if strategy=='K':
             materials(page,tier,stage,None,data['before'])
             questions(page,data['before'],ask=True)
@@ -244,15 +367,10 @@ def matrix(page,tier,strategy,bank,engine):
         choose(page,strategy)
         expect(page.locator('#fachmeldung')).to_have_attribute('data-type','')
         expect(page.locator('#strategie-ergaenzen')).not_to_be_visible()
+        actual_material=active_material(page,bank,tier,stage,strategy)
         if tier in LEVELS[2:]:
-            body=page.locator('#beratung')
-            expect(body).to_contain_text(data['paperPrompt'])
-            anchors=body.locator('.fachcheck details')
-            anchors.locator('summary').tap()
-            for letter,statement in bank['stages'][stage]['anchors'].items():
-                expect(anchors.get_by_text(letter+' · '+statement,exact=True)).to_be_visible()
-            expect(body.get_by_text(data['returnPrompt'],exact=True)).to_be_visible()
-            anchors.locator('summary').tap()
+            snap=engine if (tier,stage,strategy)==('MSA','L01','Cu') else None
+            paper_route(page,bank,tier,stage,snap)
         dialogue_guard(page)
         ctx=data['strategies'][strategy]
         offered=questions(page,ctx)
@@ -266,9 +384,26 @@ def matrix(page,tier,strategy,bank,engine):
         original=strategy
         if stage=='L02' and strategy in ('P','Cu','H'):
             dialogue_guard(page)
-            original=f'K+{strategy}'
-            expect(page.locator('#strategie-ergaenzen')).to_be_visible()
-            page.locator('#strategie-ergaenzen').tap()
+            expect(page.locator(f'button[data-strategy="{strategy}"]')).to_have_attribute('aria-pressed','true')
+            if strategy=='Cu' and tier!='AHR':shot(page,engine+'-B-Korrektur-'+tier)
+            if tier in LEVELS[:2]:
+                original=f'K+{strategy}'
+                lower=page.locator('#strategie-ergaenzen')
+                expect(lower).to_have_text(re.compile('Kondom',re.I))
+                checks[-1]['korrekturweg']=lower.inner_text()
+                lower.tap()
+            else:
+                expect(page.locator('#strategie-ergaenzen')).to_have_count(0)
+                change=page.locator('#strategie-neu-waehlen')
+                expect(change).to_be_visible()
+                assert not re.search('Kondom|Pille|Spirale',change.inner_text(),re.I)
+                checks[-1]['korrekturweg']=change.inner_text()
+                change.tap()
+                no_send(page)
+                expect(page.locator(f'button[data-strategy="{strategy}"]')).to_have_attribute('aria-pressed','true')
+                # A complete recommendation may keep, replace, or omit the initial component.
+                original={'P':'K+H','Cu':'K','H':'K+H'}[strategy]
+                choose(page,original)
             expect(page.locator(f'[data-strategy="{original}"]')).to_have_attribute('aria-pressed','true')
             no_send(page)
             checks+=exercise_check(page,tier,stage,original,data['strategies'][original])
@@ -283,7 +418,8 @@ def matrix(page,tier,strategy,bank,engine):
         if stage=='L01':page.locator('#beratung-weiter').tap()
         else:expect(page.locator('#beratung-fertig')).to_be_visible()
         chapters.append(dict(stage=stage,strategy=strategy,status=ctx['status'],
-                             versendete_strategie=original,kartenstelle=source,pruefversuche=checks,verfuegbare_fragen=offered,reaktion=reply))
+                             versendete_strategie=original,kartenstelle=source,arbeitsmaterial=actual_material,
+                             pruefversuche=checks,verfuegbare_fragen=offered,reaktion=reply))
     return dict(niveau=tier,strategy=strategy,chapters=chapters)
 
 
@@ -323,7 +459,7 @@ def correct_directly(page,tier,stage,strategy):
 
 def incomplete_text(page):
     text=page.locator('#fachmeldung').inner_text().strip()
-    assert re.search(r'Infektion|STI',text,re.I),text
+    assert re.search(r'Infektion|STI|Schutzlücke|Ziel.{0,45}offen',text,re.I),text
     return text
 
 
@@ -392,28 +528,67 @@ def switch_and_resume(page,engine,bank):
     choose(page,'K+H')
     expect(page.locator('#nachricht-senden')).to_be_disabled()
     assert 'L01' not in (page.locator('#fachmeldung').get_attribute('data-stage') or '')
+    previous_ids=set()
+    for method in ('Cu','H','K'):
+        choose(page,method)
+        ctx=bank['stages']['L02']['levels']['MSA']['strategies'][method]
+        active_material(page,bank,'MSA','L02',method)
+        offered=questions(page,ctx)
+        current_ids={qid for qid,_ in offered}
+        assert current_ids and not (previous_ids & current_ids)
+        previous_ids.update(current_ids)
+        questions(page,ctx,ask=True)
+        current=page.locator('#beratung-verlauf [data-kind=answer][data-historical=false]')
+        expect(current).to_have_count(1)
+        expect(current).to_have_attribute('data-about-strategy',method)
+        materials(page,'MSA','L02',method,ctx)
+        no_send(page)
+    page.locator('[data-nav=home]').tap()
+    expect(page.locator('#weiterarbeiten')).to_be_visible()
+    page.locator('#neu').tap()
+    expect(page.locator('#beratung-stage')).to_have_attribute('data-stage','L01')
+    assert len(text_log(page)) == len(text_log(page,'opening')) == 1
+    expect(page.locator('button[data-strategy][aria-pressed=true]')).to_have_count(0)
+    no_send(page)
     return dict(test='E/F/G/J',alte_frage=earlier['text'],erste_auswahl='Cu',neue_auswahl='K+H',
+                weitere_wechsel=['Cu','H','K'],bewusster_neubeginn=True,
                 verlauf_erhalten=True,freigabe_nach_strategie_und_codeaenderung_ungueltig=True,
                 tageswechsel='build/runde1/bestand.json · tageswechsel')
 
 
 def consolidation_and_keyboard(page,engine):
-    def summary():
+    def summary(capture=False):
         before=text_log(page)
         send=page.locator('#nachricht-senden')
         pending=send.is_visible() and send.is_enabled()
-        page.locator('[data-nav=summary]').tap()
+        state=page.locator('#beratung-stage').get_attribute('data-stage')
+        code=page.locator('#pruefcode')
+        value=code.input_value() if code.is_visible() else None
+        expect(page.locator('nav').get_by_text(re.compile('Sicherung|Lehrkraft'))).to_have_count(0)
+        teacher=page.locator('#lehrkraft summary')
+        expect(teacher).to_have_text(re.compile('Lehrkraft'))
+        expect(page.locator('#sicherung-oeffnen')).not_to_be_visible()
+        teacher.tap()
+        page.locator('#sicherung-oeffnen').tap()
         d=page.locator('#material-dialog[open]')
         expect(d).to_have_attribute('data-view','summary')
         text=d.inner_text()
-        for term in ('Latex','Hormon','Infektion|STI','Schmerz','Praxis|ärzt','später','biologisch'):
+        for term in ('Latex','Hormon','Infektion|STI','unregelmäßig','Freundin','Regelschmerz','Einsetzen|Einlage',
+                     'Praxis|ärzt','später','biologisch'):
             assert re.search(term,text,re.I),(term,text)
+        expect(d.locator('input')).to_have_count(0)
+        if capture:shot(page,engine+'-Lehreransicht')
         back_from_material(page)
+        expect(teacher).to_be_focused()
+        expect(page.locator('#sicherung-oeffnen')).not_to_be_visible()
+        expect(page.locator('#beratung-stage')).to_have_attribute('data-stage',state)
+        if value is not None:expect(code).to_have_value(value)
         assert text_log(page)==before and (send.is_visible() and send.is_enabled())==pending
     start(page,'AHR')
-    summary()
+    summary(capture=True)
     choose(page,'Cu')
     correct_directly(page,'AHR','L01','Cu')
+    summary()
     send_once(page,'L01')
     page.locator('#beratung-weiter').tap()
     summary()
@@ -425,11 +600,13 @@ def consolidation_and_keyboard(page,engine):
     assert not page.locator('#weiterarbeiten').is_visible() or page.locator('#weiterarbeiten').is_disabled()
     page.locator('#abschnitt-wahl').tap()
     expect(page.locator('#einstieg [data-stage]:visible')).to_have_count(2)
+    assert page.locator('#einstieg [data-stage]:visible').all_inner_texts()==list(TITLES)
     page.locator('#einstieg [data-stage=L02]').tap()
     expect(page.locator('#beratung-stage')).to_have_attribute('data-stage','L02')
     assert len(text_log(page,'send'))==len(text_log(page,'reaction'))==0
     recap=' '.join(text_log(page,'recap'))
     assert re.search('Latex',recap) and re.search('schwanger',recap,re.I),recap
+    assert not re.search(r'Laura\s*[12]\s*–\s*Laura\s*[12]',page.locator('#beratung').inner_text())
     no_send(page)
     choose(page,'Cu')
     page.locator('#pruefcode').fill('b')
@@ -489,6 +666,7 @@ def main():
     raw=json.loads((ROOT/'data/laura-0212.json').read_text())
     assert bank=={**raw,'buildCommit':bank['buildCommit']}
     work=(DIST/'Materialvertrag.md').read_text()
+    assert bank['paperFallbackInstruction'] in work
     for sid in ('L01','L02'):
         for task in bank['stages'][sid]['levels'].values():
             for key in ('task','paperPrompt','returnPrompt','message'):

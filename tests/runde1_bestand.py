@@ -85,12 +85,37 @@ def legacy_data(browser):
     return data,hints
 
 
+def presentation(frame):
+    """Open deliberately, project all facts and return to the same work area."""
+    access=frame.locator('#lehrkraft')
+    handle=access.locator('summary')
+    open_button=frame.get_by_role('button',name='Gemeinsame Sicherung öffnen',exact=True)
+    dialog=frame.locator('#material-dialog[open]')
+    expect(frame.locator('nav #lehrkraft,nav [data-nav=summary]')).to_have_count(0)
+    expect(open_button).to_have_count(0)
+    expect(dialog).to_have_count(0)
+    handle.tap()
+    expect(open_button).to_be_visible()
+    expect(dialog).to_have_count(0)
+    open_button.tap()
+    expect(dialog).to_have_attribute('data-view','summary')
+    facts=dialog.locator('li').all_text_contents()
+    for topic in ('Latexallergie','Infektionen','Alltag','Freundin','Regelschmerzen','Einsetzen'):
+        assert any(topic in fact for fact in facts),topic
+    expect(dialog.locator('input,textarea')).to_have_count(0)
+    dialog.get_by_role('button',name='Zurück',exact=True).tap()
+    expect(handle).to_be_focused()
+    expect(open_button).to_have_count(0)
+
+
 def reserve_paths(browser,engine,expected,prototype):
     page=browser.new_page(viewport={'width':820,'height':1180},has_touch=True)
     errors=[]
     page.on('pageerror',lambda e:errors.append(str(e)))
     page.goto(prototype.as_uri())
     expect(page.locator('[data-optional]')).to_have_text(['Tom','Celina'])
+    presentation(page)
+    expect(page.locator('#weiterarbeiten')).to_be_hidden()
     page.locator('#level-ESA').tap()
     page.locator('[data-optional=Tom]').tap()
     inner=page.frame_locator('#reserve-platz iframe')
@@ -128,6 +153,8 @@ def reserve_paths(browser,engine,expected,prototype):
     # A restart at the paper mark introduces no fictitious previous response.
     page.reload()
     page.locator('#abschnitt-wahl').tap()
+    presentation(page)
+    expect(page.locator('#abschnitte button')).to_have_text(['Laura 1 – Latexallergie','Laura 2 – Zwei Schutzziele'])
     page.locator('#wieder-level-AHR').tap()
     page.locator('#wiederfall').get_by_role('button',name='Celina',exact=True).tap()
     expect(page.locator('#abschnitte button')).to_have_count(5)
@@ -163,6 +190,11 @@ def switch_days(browser,engine,first_url,lms,size):
     history=first.locator('#beratung-verlauf').inner_text()
     expect(shell.locator('#gespraechsstand')).to_have_text('Laura 1 · ESA')
     expect(first.locator('#lokale-navigation')).to_be_hidden()
+    expect(shell.locator('#modulaktionen button')).to_have_text(['Fallakten','Infokarten','Abschnitt auswählen'])
+    presentation(first)
+    expect(chosen).to_have_attribute('aria-pressed','true')
+    expect(first.locator('#nachricht-senden')).to_be_disabled()
+    assert first.locator('#beratung-verlauf').inner_text()==history
     shell.locator('#zurueck').tap()
     shell.locator('#zweiter-tag').tap()
     second=shell.frame_locator('iframe[title^=Dienstag]')
@@ -181,6 +213,8 @@ def switch_days(browser,engine,first_url,lms,size):
     expect(reserve.locator('#step')).to_have_text('Tom 1 von 3')
     expect(shell.locator('#gespraechsstand')).to_have_text('Tom 1 · ESA')
     reserve.locator('#method-K').tap()
+    presentation(first)
+    expect(reserve.locator('#method-K')).to_have_attribute('aria-pressed','true')
     shell.locator('#zurueck').tap();shell.locator('#zweiter-tag').tap()
     expect(field).to_have_value('1')
     expect(second.get_by_role('heading',name='Argumenten-Check',exact=True)).to_be_visible()
@@ -200,6 +234,7 @@ def switch_days(browser,engine,first_url,lms,size):
     page.close()
     return dict(browser=engine,viewport=list(size),format='LMS-Testfenster' if lms else 'Datei',
                 laura_entwurf=strategy,tag_08='Mutter 1 – Fakt, Zeile 1',reserve_entwurf='Tom – Kondom',
+                lehrkraftzugang='Explizit geöffnet und geschlossen; Entwurf, Verlauf und Sendesperre erhalten.',
                 scorm_sitzung=calls,skriptfehler=errors,externe_anfragen=requests)
 
 

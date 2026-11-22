@@ -24,7 +24,7 @@ window.Beratung = (() => {
     button.id=id;
     button.type='button';
     button.onclick=()=>{
-      if (active && visibleRender===renderNumber && !button.disabled) fn(button);
+      if (active && visibleRender===renderNumber && button.isConnected && !button.disabled) fn(button);
     };
     return button;
   }
@@ -170,7 +170,10 @@ window.Beratung = (() => {
         entry.dataset.historical=String(historical);
         if (historical) {
           sender=message.kind==='question' ? 'Frühere Rückfrage' : 'Lauras frühere Antwort';
-          if (message.strategy) sender+=' · '+bank().strategies[message.strategy].label;
+          if (message.strategy) {
+            const previousTask=bank().stages[message.stageId].levels[active.tier];
+            sender+=' · '+(previousTask.choiceLabels?.[message.strategy] || bank().strategies[message.strategy].label);
+          }
         }
       }
       entry.append(element('strong','',sender),element('p','',message.text));
@@ -184,7 +187,8 @@ window.Beratung = (() => {
   }
   function strategyButton(id) {
     const selected=active.draft.strategy===id;
-    const b=control('strategie-'+id,bank().strategies[id].label,()=>select(id),'strategie');
+    const label=task().choiceLabels?.[id] || bank().strategies[id].label;
+    const b=control('strategie-'+id,label,()=>select(id),'strategie');
     b.dataset.strategy=id;
     b.setAttribute('aria-pressed',String(selected));
     return b;
@@ -224,16 +228,16 @@ window.Beratung = (() => {
     const section=element('section','fachcheck');
     const draft=active.draft;
     const details=element('details');
+    details.id='papier-ersatz';
     details.open=draft.anchorsOpen;
     details.ontoggle=()=>{if (details.isConnected) draft.anchorsOpen=details.open;};
     section.append(element('h3','',draft.recheck?'Dein geänderter Rat':'Auf dem Laufzettel'));
-    details.append(element('summary','',draft.recheck?'Auftrag und Aussagen vom Laufzettel ansehen':'Aussagen vom Laufzettel ansehen'));
     if (draft.recheck) section.append(element('p','','Passt dein notierter Grund noch zu deinem neuen Rat? Prüfe das und gib den passenden Buchstaben erneut ein.'));
-    const instructions=draft.recheck?details:section;
-    instructions.append(element('p','',task().paperPrompt),element('p','',task().task));
+    else section.append(element('p','',task().paperPrompt));
+    details.append(element('summary','',task().paperFallback),element('p','',task().task));
     for (const [letter,text] of Object.entries(stage().anchors)) details.append(element('p','',letter+' · '+text));
-    details.append(element('p','rueckkehr',task().returnPrompt));
-    section.append(details);
+    details.append(element('p','',bank().paperFallbackInstruction));
+    section.append(element('p','rueckkehr',task().returnPrompt));
     const form=element('form','code-form');
     const label=element('label','','Prüfcode');
     label.htmlFor='pruefcode';
@@ -254,13 +258,14 @@ window.Beratung = (() => {
       const message=document.getElementById('fachmeldung');
       message.textContent='';
       message.dataset.type='';
-      document.getElementById('strategie-ergaenzen')?.remove();
+      document.getElementById('strategie-neu-waehlen')?.remove();
+      document.getElementById('kartenverweise').replaceWith(cardLinks());
       document.getElementById('nachricht-senden').disabled=true;
     };
     const verify=control('fachcheck-pruefen','Code prüfen',()=>check(null),'pruefen');
     form.onsubmit=event=>{event.preventDefault();verify.click();};
     form.append(label,input,verify);
-    section.append(form);
+    section.append(form,details);
     return section;
   }
   function closedCheck() {
@@ -275,16 +280,35 @@ window.Beratung = (() => {
     }
     return field;
   }
+  function cardLinks() {
+    const links=element('div','kartenverweise');
+    links.id='kartenverweise';
+    const draft=active.draft;
+    const source=draft.strategy ? info() : task().before;
+    const references=[draft.feedback?.card || source.card];
+    if (draft.strategy) {
+      const methods=bank().strategies[draft.strategy].methods;
+      for (const ref of [source.card,...source.extraCards]) {
+        const listed=references.some(other=>other.method===ref.method && other.section===ref.section);
+        if (methods.includes(ref.method) && !listed) references.push(ref);
+      }
+    }
+    references.forEach((ref,index)=>{
+      const id=index?'passende-karte-'+index:'passende-karte';
+      const link=control(id,window.Material.cardLabel(ref),b=>window.Material.openCard(ref,b));
+      link.dataset.method=ref.method;
+      link.dataset.section=ref.section;
+      links.append(link);
+    });
+    return links;
+  }
   function materialTools() {
     const tools=element('div','beratung-tools');
     const key=contextKey();
     const asked=active.asked.get(key) || new Set();
     const context={stageId:active.stageId,levelId:active.tier,strategy:active.draft.strategy,
       asked:new Set(asked),feedback:active.draft.feedback};
-    if (active.draft.strategy) {
-      tools.append(control('passende-karte','Passende Infokarte öffnen',b=>
-        window.Material.openCard(active.draft.feedback?.card || info().card,b)));
-    }
+    if (active.draft.strategy || active.stageId==='L01') tools.append(cardLinks());
     tools.append(control('hilfe','Hilfe',b=>window.Material.help(context,b)));
     const questions=active.draft.strategy ? info().questions : (task().before?.questions || []);
     if (questions.some(q=>!asked.has(q.id))) {
@@ -315,7 +339,9 @@ window.Beratung = (() => {
         control('beratung-weiter','Weiter zu Laura 2',next,'senden'));
       return area;
     }
-    const evidence=element('p','abschnittshinweis',task().evidence || stage().evidence);
+    const evidence=element('p','abschnittshinweis',active.draft.strategy ? info().evidence : task().evidence || stage().evidence);
+    evidence.dataset.stage=active.stageId;
+    evidence.dataset.aboutStrategy=active.draft.strategy;
     area.append(evidence,choices());
     if (!active.draft.strategy) {
       const submit=control('nachricht-senden','Nachricht senden',send,'senden');
@@ -331,10 +357,15 @@ window.Beratung = (() => {
     feedback.setAttribute('role','status');
     area.append(feedback);
     if (active.draft.feedback?.type==='B') {
-      const addition='K+'+active.draft.strategy;
-      if (Object.hasOwn(task().strategies,addition)) {
-        const b=control('strategie-ergaenzen','Ein passendes latexfreies Kondom ergänzen',()=>select(addition),'ergaenzen');
-        area.append(b);
+      const correction=info().correction;
+      if (correction.target && !isPaper()) {
+        area.append(control('strategie-ergaenzen',correction.label,()=>select(correction.target),'ergaenzen'));
+      } else {
+        area.append(control('strategie-neu-waehlen',correction.label,()=>{
+          const selected=document.getElementById('strategie-'+active.draft.strategy);
+          selected.focus({preventScroll:true});
+          selected.scrollIntoView({block:'nearest'});
+        },'ergaenzen'));
       }
     }
     const submit=control('nachricht-senden','Nachricht senden',send,'senden');

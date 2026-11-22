@@ -1,5 +1,6 @@
 {
-  "version": "0212-r1.1",
+  "version": "0212-r1.2",
+  "paperFallbackInstruction": "Begründe deinen Rat kurz in eigenen Worten. Gib den Buchstaben der fachlich passenden Aussage ins Codefeld ein.",
   "baseCommit": "ec94147fd8d61442305a0281f7df032f3162362c",
   "caseId": "Laura",
   "opening": "Hey, ich bin Laura, 19. Ich möchte möglichst sicher verhindern, dass ich schwanger werde. Ich habe eine Latexallergie. Und bei Verhütung mit Hormonen bin ich unsicher, weil ich mich damit nicht gut auskenne. Was würdet ihr mir empfehlen?",
@@ -313,7 +314,8 @@
                     "section": "material"
                   }
                 }
-              ]
+              ],
+              "evidence": "Wie hält das passende Kondom Spermien zurück?"
             },
             "P": {
               "status": "C",
@@ -323,12 +325,7 @@
                 "method": "P",
                 "section": "wirkung"
               },
-              "extraCards": [
-                {
-                  "method": "K",
-                  "section": "material"
-                }
-              ],
+              "extraCards": [],
               "reply": "Jetzt verstehe ich die Pille besser. Ob ich die Hormone möchte, will ich erst in Ruhe klären.",
               "questions": [
                 {
@@ -365,7 +362,8 @@
                     "section": "wirkung"
                   }
                 }
-              ]
+              ],
+              "evidence": "Was macht die Pille mit dem Eisprung?"
             },
             "Cu": {
               "status": "C",
@@ -375,12 +373,7 @@
                 "method": "Cu",
                 "section": "wirkung"
               },
-              "extraCards": [
-                {
-                  "method": "K",
-                  "section": "material"
-                }
-              ],
+              "extraCards": [],
               "reply": "Die Kupferspirale wirkt also ohne Hormone. Darüber möchte ich mehr wissen.",
               "questions": [
                 {
@@ -417,7 +410,8 @@
                     "section": "wirkung"
                   }
                 }
-              ]
+              ],
+              "evidence": "Wie wirkt das Kupfer der Spirale auf Spermien?"
             },
             "H": {
               "status": "C",
@@ -427,12 +421,7 @@
                 "method": "H",
                 "section": "wirkung"
               },
-              "extraCards": [
-                {
-                  "method": "K",
-                  "section": "material"
-                }
-              ],
+              "extraCards": [],
               "reply": "Jetzt weiß ich mehr über das Hormon in der Spirale. Ich möchte mir das erst erklären lassen.",
               "questions": [
                 {
@@ -469,7 +458,8 @@
                     "section": "wirkung"
                   }
                 }
-              ]
+              ],
+              "evidence": "Wie verändert die Hormonspirale den Weg der Spermien?"
             },
             "K+P": {
               "status": "C",
@@ -521,7 +511,8 @@
                     "section": "material"
                   }
                 }
-              ]
+              ],
+              "evidence": "Was hält das Kondom zurück? Was verändert die Pille beim Eisprung?"
             },
             "K+Cu": {
               "status": "C",
@@ -573,7 +564,8 @@
                     "section": "wirkung"
                   }
                 }
-              ]
+              ],
+              "evidence": "Was hält das Kondom zurück? Was macht Kupfer mit Spermien?"
             },
             "K+H": {
               "status": "C",
@@ -625,7 +617,8 @@
                     "section": "wirkung"
                   }
                 }
-              ]
+              ],
+              "evidence": "Was hält das Kondom zurück? Was verändert die Hormonspirale am Gebärmutterhals?"
             }
           },
           "before": {
@@ -647,7 +640,8 @@
               "Mein Rat ist …, weil …",
               "Wähle deinen eigenen Rat. Du kannst ihn noch ändern, bevor du ihn sendest."
             ]
-          }
+          },
+          "evidence": "Es gibt Kondome ohne Latex. Ein geeignetes Kondom aus Kunststoff hält Spermien zurück."
         },
         "ESA": {
           "id": "ESA",
@@ -717,7 +711,8 @@
                     "section": "material"
                   }
                 }
-              ]
+              ],
+              "evidence": "Welches Kondommaterial kommt für Laura infrage, und wie schützt das Kondom vor einer Schwangerschaft?"
             },
             "P": {
               "status": "C",
@@ -727,12 +722,7 @@
                 "method": "P",
                 "section": "wirkung"
               },
-              "extraCards": [
-                {
-                  "method": "K",
-                  "section": "material"
-                }
-              ],
+              "extraCards": [],
               "reply": "Jetzt verstehe ich besser, was die Pille im Körper macht. Bevor ich sie nehme, möchte ich meine Fragen in der Praxis stellen.",
               "questions": [
                 {
@@ -779,7 +769,8 @@
                     "section": "material"
                   }
                 }
-              ]
+              ],
+              "evidence": "Wie trägt die Kombinationspille zum Schwangerschaftsschutz bei? Welche Rolle spielt Latex dabei?"
             },
             "Cu": {
               "status": "C",
@@ -789,12 +780,7 @@
                 "method": "Cu",
                 "section": "wirkung"
               },
-              "extraCards": [
-                {
-                  "method": "K",
-                  "section": "material"
-                }
-              ],
+              "extraCards": [],
               "reply": "Dass Kupfer ohne Hormone wirkt, finde ich interessant. Ich würde gern in der Praxis mehr darüber erfahren.",
               "questions": [
                 {
@@ -841,7 +827,8 @@
                     "section": "material"
                   }
                 }
-              ]
+              ],
+              "evidence": "Wie wirkt das Kupfer der Kupferspirale auf Spermien? Braucht diese Wirkung Latex?"
             },
             "H": {
               "status": "C",
@@ -851,12 +838,7 @@
                 "method": "H",
                 "section": "wirkung"
               },
-              "extraCards": [
-                {
-                  "method": "K",
-                  "section": "material"
-                }
-              ],
+              "extraCards": [],
               "reply": "Ich wusste nicht, wie das Hormon in der Spirale wirkt. Ich möchte erst mehr darüber erfahren, bevor ich mich festlege.",
               "questions": [
                 {
@@ -903,7 +885,8 @@
                     "section": "wirkung"
                   }
                 }
-              ]
+              ],
+              "evidence": "Wie erschwert die Hormonspirale Spermien den Weg? Welche Rolle spielt Latex für diese Wirkung?"
             },
             "K+P": {
               "status": "C",
@@ -965,7 +948,8 @@
                     "section": "material"
                   }
                 }
-              ]
+              ],
+              "evidence": "Kondom und Pille: Wie schützt jeder Teil vor einer Schwangerschaft? Achte beim Kondom auf das Material."
             },
             "K+Cu": {
               "status": "C",
@@ -1027,7 +1011,8 @@
                     "section": "wirkung"
                   }
                 }
-              ]
+              ],
+              "evidence": "Wie wirkt das Kondom, wie die Kupferspirale? Achte beim Kondom auf das Material und bei Kupfer auf die Spermien."
             },
             "K+H": {
               "status": "C",
@@ -1089,7 +1074,8 @@
                     "section": "wirkung"
                   }
                 }
-              ]
+              ],
+              "evidence": "Was trägt das Kondom zum Schutz bei, was die Hormonspirale? Achte auf das Material und den Schleim am Gebärmutterhals."
             }
           },
           "before": {
@@ -1111,6 +1097,13 @@
               "Laura muss Latex meiden. Mein Rat kann trotzdem passen, denn …",
               "Wähle deinen eigenen Rat. Du kannst ihn noch ändern, bevor du ihn sendest."
             ]
+          },
+          "evidence": "Muss Laura wegen ihrer Latexallergie auf jedes Kondom verzichten? Auf der Kondomkarte kannst du das Material prüfen.",
+          "choiceLabels": {
+            "K": "Kondom",
+            "K+P": "Kondom und Kombinationspille",
+            "K+Cu": "Kondom und Kupferspirale",
+            "K+H": "Kondom und Hormonspirale"
           }
         },
         "MSA": {
@@ -1127,7 +1120,7 @@
             "K+Cu",
             "K+H"
           ],
-          "paperPrompt": "Öffne auf deinem Laufzettel Laura 1 – Latexallergie. Bearbeite den Denkauftrag. Gib danach den Buchstaben der passenden Aussage hier ein.",
+          "paperPrompt": "Bearbeite auf deinem Laufzettel den Abschnitt „Laura 1 – Latexallergie“. Notiere deinen biologischen Grund und markiere die passende Aussage.",
           "returnPrompt": "Fertig? Kehre zum Chat mit Laura zurück. Gib den Buchstaben ein und sende deinen Rat.",
           "strategies": {
             "K": {
@@ -1154,7 +1147,8 @@
                 "An meinem ersten Grund ändere oder ergänze ich … Die Kartenstelle zeigt …",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Prüfe am Kondom, welches Material für Laura infrage kommt und wie die Barriere wirkt."
             },
             "P": {
               "status": "C",
@@ -1164,12 +1158,7 @@
                 "method": "P",
                 "section": "wirkung"
               },
-              "extraCards": [
-                {
-                  "method": "K",
-                  "section": "material"
-                }
-              ],
+              "extraCards": [],
               "reply": "Jetzt verstehe ich besser, was die Pille im Körper macht. Bevor ich sie nehme, möchte ich meine Fragen in der Praxis stellen.",
               "questions": [
                 {
@@ -1185,7 +1174,8 @@
                 "An meinem ersten Grund ändere oder ergänze ich … Die Kartenstelle zeigt …",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Erkläre am Eisprung, wie die Kombinationspille verhütet. Welche Bedeutung hat die Latexallergie für diese Wirkung?"
             },
             "Cu": {
               "status": "C",
@@ -1195,12 +1185,7 @@
                 "method": "Cu",
                 "section": "wirkung"
               },
-              "extraCards": [
-                {
-                  "method": "K",
-                  "section": "material"
-                }
-              ],
+              "extraCards": [],
               "reply": "Dass Kupfer ohne Hormone wirkt, finde ich interessant. Ich würde gern in der Praxis mehr darüber erfahren.",
               "questions": [
                 {
@@ -1216,7 +1201,8 @@
                 "An meinem ersten Grund ändere oder ergänze ich … Die Kartenstelle zeigt …",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Erkläre, wie das Kupfer der Kupferspirale Spermien beeinflusst. Welche Rolle spielt Latex für diese Wirkung?"
             },
             "H": {
               "status": "C",
@@ -1226,12 +1212,7 @@
                 "method": "H",
                 "section": "wirkung"
               },
-              "extraCards": [
-                {
-                  "method": "K",
-                  "section": "material"
-                }
-              ],
+              "extraCards": [],
               "reply": "Ich wusste nicht, wie das Hormon in der Spirale wirkt. Ich möchte erst mehr darüber erfahren, bevor ich mich festlege.",
               "questions": [
                 {
@@ -1247,7 +1228,8 @@
                 "An meinem ersten Grund ändere oder ergänze ich … Die Kartenstelle zeigt …",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Prüfe die Wirkung der Hormonspirale am Gebärmutterhals. Ist sie vom Material Latex abhängig?"
             },
             "K+P": {
               "status": "C",
@@ -1278,7 +1260,8 @@
                 "An meinem ersten Grund ändere oder ergänze ich … Die Kartenstelle zeigt …",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Vergleiche die Barriere des Kondoms mit der Wirkung der Kombinationspille auf den Eisprung. Für welchen Teil ist das Material entscheidend?"
             },
             "K+Cu": {
               "status": "C",
@@ -1309,7 +1292,8 @@
                 "An meinem ersten Grund ändere oder ergänze ich … Die Kartenstelle zeigt …",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Begründe die Materialwahl beim Kondom. Wie unterscheidet sich seine Barriere von der Wirkung der Kupferspirale auf Spermien?"
             },
             "K+H": {
               "status": "C",
@@ -1340,7 +1324,8 @@
                 "An meinem ersten Grund ändere oder ergänze ich … Die Kartenstelle zeigt …",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Begründe die Materialwahl beim Kondom. Wie unterscheidet sich seine Barriere von der Wirkung der Hormonspirale am Gebärmutterhals?"
             }
           },
           "before": {
@@ -1363,7 +1348,14 @@
               "Wähle deinen eigenen Rat. Du kannst ihn noch ändern, bevor du ihn sendest."
             ]
           },
-          "evidence": "Prüfe auf der Kondomkarte, welche Rolle das Material für deine erste Empfehlung spielt."
+          "evidence": "Was musst du über das Material wissen, bevor du deinen ersten Rat bestätigst oder änderst?",
+          "choiceLabels": {
+            "K": "Kondom",
+            "K+P": "Kondom und Kombinationspille",
+            "K+Cu": "Kondom und Kupferspirale",
+            "K+H": "Kondom und Hormonspirale"
+          },
+          "paperFallback": "Laufzettel nicht zur Hand? Aufgabe hier ansehen."
         },
         "AHR": {
           "id": "AHR",
@@ -1379,7 +1371,7 @@
             "K+Cu",
             "K+H"
           ],
-          "paperPrompt": "Öffne auf deinem Laufzettel Laura 1 – Latexallergie. Bearbeite den Denkauftrag. Gib danach den Buchstaben der passenden Aussage hier ein.",
+          "paperPrompt": "Bearbeite auf deinem Laufzettel den Abschnitt „Laura 1 – Latexallergie“. Notiere deinen biologischen Grund und markiere die passende Aussage.",
           "returnPrompt": "Fertig? Kehre zum Chat mit Laura zurück. Gib den Buchstaben ein und sende deinen Rat.",
           "strategies": {
             "K": {
@@ -1406,7 +1398,8 @@
                 "Die Unverträglichkeit betrifft … Für die Methode folgt daraus … Eine Alternative wäre …",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Welche Materialeigenschaft ist für Laura entscheidend? Begründe, wann ein Kondom seine Barrierewirkung entfalten kann."
             },
             "P": {
               "status": "C",
@@ -1416,12 +1409,7 @@
                 "method": "P",
                 "section": "wirkung"
               },
-              "extraCards": [
-                {
-                  "method": "K",
-                  "section": "material"
-                }
-              ],
+              "extraCards": [],
               "reply": "Jetzt verstehe ich besser, was die Pille im Körper macht. Bevor ich sie nehme, möchte ich meine Fragen in der Praxis stellen.",
               "questions": [
                 {
@@ -1437,7 +1425,8 @@
                 "Die Unverträglichkeit betrifft … Für die Methode folgt daraus … Eine Alternative wäre …",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Unterscheide die Wirkung der Kombinationspille auf den Eisprung von Lauras offenen Fragen zu Hormonen. Welche Rolle spielt das Material Latex für diesen Rat?"
             },
             "Cu": {
               "status": "C",
@@ -1447,12 +1436,7 @@
                 "method": "Cu",
                 "section": "wirkung"
               },
-              "extraCards": [
-                {
-                  "method": "K",
-                  "section": "material"
-                }
-              ],
+              "extraCards": [],
               "reply": "Dass Kupfer ohne Hormone wirkt, finde ich interessant. Ich würde gern in der Praxis mehr darüber erfahren.",
               "questions": [
                 {
@@ -1468,7 +1452,8 @@
                 "Die Unverträglichkeit betrifft … Für die Methode folgt daraus … Eine Alternative wäre …",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Begründe den Rat zur Kupferspirale mit der Wirkung von Kupfer auf Spermien. Welche Rolle spielen Lauras Latexallergie und ihre Unsicherheit bei Hormonen für deine Gewichtung?"
             },
             "H": {
               "status": "C",
@@ -1478,12 +1463,7 @@
                 "method": "H",
                 "section": "wirkung"
               },
-              "extraCards": [
-                {
-                  "method": "K",
-                  "section": "material"
-                }
-              ],
+              "extraCards": [],
               "reply": "Ich wusste nicht, wie das Hormon in der Spirale wirkt. Ich möchte erst mehr darüber erfahren, bevor ich mich festlege.",
               "questions": [
                 {
@@ -1499,7 +1479,8 @@
                 "Die Unverträglichkeit betrifft … Für die Methode folgt daraus … Eine Alternative wäre …",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Begründe die Hormonspirale über die Wirkung am Gebärmutterhals. Was kannst du aus der Latexallergie schließen, und was bleibt zu Lauras Fragen über Hormone offen?"
             },
             "K+P": {
               "status": "C",
@@ -1530,7 +1511,8 @@
                 "Die Unverträglichkeit betrifft … Für die Methode folgt daraus … Eine Alternative wäre …",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Prüfe Material und Barriere beim Kondom sowie die Wirkung der Kombinationspille auf den Eisprung. Welchen zusätzlichen Beitrag hätte die Pille für Laura?"
             },
             "K+Cu": {
               "status": "C",
@@ -1561,7 +1543,8 @@
                 "Die Unverträglichkeit betrifft … Für die Methode folgt daraus … Eine Alternative wäre …",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Vergleiche Material und Barriere beim Kondom mit der Wirkung des Kupfers auf Spermien. Warum erwägst du die Kupferspirale zusätzlich?"
             },
             "K+H": {
               "status": "C",
@@ -1592,7 +1575,8 @@
                 "Die Unverträglichkeit betrifft … Für die Methode folgt daraus … Eine Alternative wäre …",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Vergleiche die Barriere des Kondoms mit der Wirkung der Hormonspirale am Gebärmutterhals. Welche zusätzlich zu klärende Bedingung entsteht durch die Spirale?"
             }
           },
           "before": {
@@ -1615,7 +1599,14 @@
               "Wähle deinen eigenen Rat. Du kannst ihn noch ändern, bevor du ihn sendest."
             ]
           },
-          "evidence": "Prüfe auf der Kondomkarte, welche Rolle das Material für deine erste Empfehlung spielt."
+          "evidence": "Welche Annahme über Latex steckt in deinem ersten Rat? Prüfe, ob sie für die ganze Methode gilt.",
+          "choiceLabels": {
+            "K": "Kondom",
+            "K+P": "Kondom und Kombinationspille",
+            "K+Cu": "Kondom und Kupferspirale",
+            "K+H": "Kondom und Hormonspirale"
+          },
+          "paperFallback": "Laufzettel nicht zur Hand? Aufgabe hier ansehen."
         }
       }
     },
@@ -1729,12 +1720,13 @@
                     "section": "sti"
                   }
                 }
-              ]
+              ],
+              "evidence": "Wie hilft das Kondom gegen Schwangerschaft und gegen Infektionen?"
             },
             "P": {
               "status": "B",
               "condition": "Persönliche Fragen zu Hormonen und medizinische Eignung klären. Regelmäßige Einnahme nach Plan nötig.",
-              "feedback": "Kombinationspille kann zur Schwangerschaftsverhütung beitragen. Dein vollständiger Rat lässt den Schutz vor Infektionen noch offen. Prüfe, wie du ihn ergänzen möchtest.",
+              "feedback": "Die Pille schützt vor einer Schwangerschaft. Vor Infektionen schützt sie nicht. Entscheide, wie du Laura auch davor schützen möchtest.",
               "card": {
                 "method": "P",
                 "section": "sti"
@@ -1780,12 +1772,17 @@
               "goalCard": {
                 "method": "P",
                 "section": "sti"
+              },
+              "evidence": "Schützt die Pille auch vor Infektionen beim Sex?",
+              "correction": {
+                "label": "Synthetisches Kondom ohne Latex ergänzen",
+                "target": "K+P"
               }
             },
             "Cu": {
               "status": "B",
               "condition": "Eignung, individuelle Fragen und Zustimmung zur Einlage in der Praxis klären.",
-              "feedback": "Kupferspirale kann zur Schwangerschaftsverhütung beitragen. Dein vollständiger Rat lässt den Schutz vor Infektionen noch offen. Prüfe, wie du ihn ergänzen möchtest.",
+              "feedback": "Kupfer hemmt Spermien. Die Kupferspirale schützt nicht vor Infektionen. Entscheide, wie du Laura auch davor schützen möchtest.",
               "card": {
                 "method": "Cu",
                 "section": "sti"
@@ -1831,12 +1828,17 @@
               "goalCard": {
                 "method": "Cu",
                 "section": "sti"
+              },
+              "evidence": "Schützt die Kupferspirale auch vor Infektionen?",
+              "correction": {
+                "label": "Synthetisches Kondom ohne Latex ergänzen",
+                "target": "K+Cu"
               }
             },
             "H": {
               "status": "B",
               "condition": "Fragen zur hormonellen Wirkung, Eignung und Zustimmung zur Einlage klären.",
-              "feedback": "Hormonspirale kann zur Schwangerschaftsverhütung beitragen. Dein vollständiger Rat lässt den Schutz vor Infektionen noch offen. Prüfe, wie du ihn ergänzen möchtest.",
+              "feedback": "Die Hormonspirale schützt vor einer Schwangerschaft. Vor Infektionen schützt sie nicht. Entscheide, wie du Laura auch davor schützen möchtest.",
               "card": {
                 "method": "H",
                 "section": "sti"
@@ -1882,6 +1884,11 @@
               "goalCard": {
                 "method": "H",
                 "section": "sti"
+              },
+              "evidence": "Schützt die Hormonspirale auch vor Infektionen?",
+              "correction": {
+                "label": "Synthetisches Kondom ohne Latex ergänzen",
+                "target": "K+H"
               }
             },
             "K+P": {
@@ -1934,7 +1941,8 @@
                     "section": "wirkung"
                   }
                 }
-              ]
+              ],
+              "evidence": "Was leistet die Pille? Wobei hilft das Kondom zusätzlich?"
             },
             "K+Cu": {
               "status": "C",
@@ -1986,7 +1994,8 @@
                     "section": "sti"
                   }
                 }
-              ]
+              ],
+              "evidence": "Was macht Kupfer mit Spermien? Wobei hilft das Kondom zusätzlich?"
             },
             "K+H": {
               "status": "C",
@@ -2038,7 +2047,8 @@
                     "section": "wirkung"
                   }
                 }
-              ]
+              ],
+              "evidence": "Wie wirkt die Hormonspirale? Wobei hilft das Kondom zusätzlich?"
             }
           },
           "before": {
@@ -2060,7 +2070,8 @@
               "Gegen Schwangerschaft hilft … Beim Schutz vor Infektionen …",
               "Wähle deinen eigenen Rat. Du kannst ihn noch ändern, bevor du ihn sendest."
             ]
-          }
+          },
+          "evidence": "Laura will nicht schwanger werden. Jetzt möchte sie sich auch vor Infektionen beim Sex schützen."
         },
         "ESA": {
           "id": "ESA",
@@ -2135,12 +2146,13 @@
                     "section": "sti"
                   }
                 }
-              ]
+              ],
+              "evidence": "Wie trägt das passende Kondom zu beiden Schutzzielen bei? Wo liegt eine Grenze?"
             },
             "P": {
               "status": "B",
               "condition": "Persönliche Fragen zu Hormonen und medizinische Eignung klären. Regelmäßige Einnahme nach Plan nötig.",
-              "feedback": "Kombinationspille kann zur Schwangerschaftsverhütung beitragen. Dein vollständiger Rat lässt den Schutz vor Infektionen noch offen. Prüfe, wie du ihn ergänzen möchtest.",
+              "feedback": "Die Pille hemmt den Eisprung. Das senkt das Schwangerschaftsrisiko, aber nicht das Infektionsrisiko beim Sex. Prüfe deinen vollständigen Rat.",
               "card": {
                 "method": "P",
                 "section": "sti"
@@ -2196,12 +2208,17 @@
               "goalCard": {
                 "method": "P",
                 "section": "sti"
+              },
+              "evidence": "Was leistet die Kombinationspille für jedes der beiden Ziele?",
+              "correction": {
+                "label": "Synthetisches Kondom ohne Latex ergänzen",
+                "target": "K+P"
               }
             },
             "Cu": {
               "status": "B",
               "condition": "Eignung, individuelle Fragen und Zustimmung zur Einlage in der Praxis klären.",
-              "feedback": "Kupferspirale kann zur Schwangerschaftsverhütung beitragen. Dein vollständiger Rat lässt den Schutz vor Infektionen noch offen. Prüfe, wie du ihn ergänzen möchtest.",
+              "feedback": "Die Kupferspirale beeinträchtigt Spermien. Sie schützt vor einer Schwangerschaft, aber nicht vor Infektionen beim Sex. Prüfe deinen vollständigen Rat.",
               "card": {
                 "method": "Cu",
                 "section": "sti"
@@ -2257,12 +2274,17 @@
               "goalCard": {
                 "method": "Cu",
                 "section": "sti"
+              },
+              "evidence": "Was bedeutet die Wirkung von Kupfer auf Spermien für Lauras zwei Ziele?",
+              "correction": {
+                "label": "Synthetisches Kondom ohne Latex ergänzen",
+                "target": "K+Cu"
               }
             },
             "H": {
               "status": "B",
               "condition": "Fragen zur hormonellen Wirkung, Eignung und Zustimmung zur Einlage klären.",
-              "feedback": "Hormonspirale kann zur Schwangerschaftsverhütung beitragen. Dein vollständiger Rat lässt den Schutz vor Infektionen noch offen. Prüfe, wie du ihn ergänzen möchtest.",
+              "feedback": "Die Hormonspirale erschwert Spermien den Weg. Sie mindert das Schwangerschaftsrisiko, aber nicht das Infektionsrisiko beim Sex. Prüfe deinen vollständigen Rat.",
               "card": {
                 "method": "H",
                 "section": "sti"
@@ -2318,6 +2340,11 @@
               "goalCard": {
                 "method": "H",
                 "section": "sti"
+              },
+              "evidence": "Was leistet die Hormonspirale für Lauras zwei Ziele?",
+              "correction": {
+                "label": "Synthetisches Kondom ohne Latex ergänzen",
+                "target": "K+H"
               }
             },
             "K+P": {
@@ -2380,7 +2407,8 @@
                     "section": "sti"
                   }
                 }
-              ]
+              ],
+              "evidence": "Was leisten Kondom und Pille für die beiden Ziele? Wo bleibt ein Risiko?"
             },
             "K+Cu": {
               "status": "C",
@@ -2442,7 +2470,8 @@
                     "section": "wirkung"
                   }
                 }
-              ]
+              ],
+              "evidence": "Was leisten Kondom und Kupferspirale für die beiden Ziele? Wo bleibt ein Risiko?"
             },
             "K+H": {
               "status": "C",
@@ -2504,7 +2533,8 @@
                     "section": "sti"
                   }
                 }
-              ]
+              ],
+              "evidence": "Was leisten Kondom und Hormonspirale für die beiden Ziele? Wo bleibt ein Risiko?"
             }
           },
           "before": {
@@ -2526,7 +2556,8 @@
               "Eine Schwangerschaft wird weniger wahrscheinlich, weil … Gegen Infektionen …",
               "Wähle deinen eigenen Rat. Du kannst ihn noch ändern, bevor du ihn sendest."
             ]
-          }
+          },
+          "evidence": "Laura nennt ein zweites Ziel. Welche Wirkung braucht dein vollständiger Rat jetzt zusätzlich?"
         },
         "MSA": {
           "id": "MSA",
@@ -2542,7 +2573,7 @@
             "K+Cu",
             "K+H"
           ],
-          "paperPrompt": "Öffne auf deinem Laufzettel Laura 2 – Zwei Schutzziele. Bearbeite den Denkauftrag. Gib danach den Buchstaben der passenden Aussage hier ein.",
+          "paperPrompt": "Bearbeite auf deinem Laufzettel den Abschnitt „Laura 2 – Zwei Schutzziele“. Notiere deinen biologischen Grund und markiere die passende Aussage.",
           "returnPrompt": "Fertig? Kehre zum Chat mit Laura zurück. Gib den Buchstaben ein und sende deinen Rat.",
           "strategies": {
             "K": {
@@ -2574,12 +2605,13 @@
                 "Früher zählte … Jetzt muss mein Rat auch … Die biologische Wirkung ist …",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Erkläre am Kondom, wie die Barriere bei beiden Zielen hilft. Nenne eine Grenze des Infektionsschutzes."
             },
             "P": {
               "status": "B",
               "condition": "Persönliche Fragen zu Hormonen und medizinische Eignung klären. Regelmäßige Einnahme nach Plan nötig.",
-              "feedback": "Kombinationspille kann zur Schwangerschaftsverhütung beitragen. Dein vollständiger Rat lässt den Schutz vor Infektionen noch offen. Prüfe, wie du ihn ergänzen möchtest.",
+              "feedback": "Die Kombinationspille trägt zum Schwangerschaftsschutz bei. Welches Ziel aus Lauras neuer Nachricht bleibt offen? Wähle deinen vollständigen Rat neu.",
               "card": {
                 "method": "P",
                 "section": "sti"
@@ -2604,12 +2636,16 @@
               "goalCard": {
                 "method": "P",
                 "section": "sti"
+              },
+              "evidence": "Prüfe für die Kombinationspille, was aus der Hemmung des Eisprungs für jedes der beiden Schutzziele folgt.",
+              "correction": {
+                "label": "Vollständigen Rat neu wählen"
               }
             },
             "Cu": {
               "status": "B",
               "condition": "Eignung, individuelle Fragen und Zustimmung zur Einlage in der Praxis klären.",
-              "feedback": "Kupferspirale kann zur Schwangerschaftsverhütung beitragen. Dein vollständiger Rat lässt den Schutz vor Infektionen noch offen. Prüfe, wie du ihn ergänzen möchtest.",
+              "feedback": "Die Kupferspirale berücksichtigt den Schwangerschaftsschutz. Welches Ziel aus Lauras neuer Nachricht bleibt offen? Wähle deinen vollständigen Rat neu.",
               "card": {
                 "method": "Cu",
                 "section": "sti"
@@ -2634,12 +2670,16 @@
               "goalCard": {
                 "method": "Cu",
                 "section": "sti"
+              },
+              "evidence": "Prüfe die Wirkung der Kupferspirale auf Spermien. Was bedeutet sie für jedes der beiden Schutzziele?",
+              "correction": {
+                "label": "Vollständigen Rat neu wählen"
               }
             },
             "H": {
               "status": "B",
               "condition": "Fragen zur hormonellen Wirkung, Eignung und Zustimmung zur Einlage klären.",
-              "feedback": "Hormonspirale kann zur Schwangerschaftsverhütung beitragen. Dein vollständiger Rat lässt den Schutz vor Infektionen noch offen. Prüfe, wie du ihn ergänzen möchtest.",
+              "feedback": "Die Hormonspirale berücksichtigt den Schwangerschaftsschutz. Welches Ziel aus Lauras neuer Nachricht bleibt offen? Wähle deinen vollständigen Rat neu.",
               "card": {
                 "method": "H",
                 "section": "sti"
@@ -2664,6 +2704,10 @@
               "goalCard": {
                 "method": "H",
                 "section": "sti"
+              },
+              "evidence": "Prüfe, was die Wirkung der Hormonspirale am Gebärmutterhals für jedes der beiden Schutzziele bedeutet.",
+              "correction": {
+                "label": "Vollständigen Rat neu wählen"
               }
             },
             "K+P": {
@@ -2695,7 +2739,8 @@
                 "Früher zählte … Jetzt muss mein Rat auch … Die biologische Wirkung ist …",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Ordne die Wirkungen von Kondom und Kombinationspille den beiden Schutzzielen zu. Welche Grenze bleibt?"
             },
             "K+Cu": {
               "status": "C",
@@ -2726,7 +2771,8 @@
                 "Früher zählte … Jetzt muss mein Rat auch … Die biologische Wirkung ist …",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Ordne die Wirkung der Kupferspirale und die Barriere des Kondoms den beiden Schutzzielen zu. Welche Grenze bleibt?"
             },
             "K+H": {
               "status": "C",
@@ -2757,7 +2803,8 @@
                 "Früher zählte … Jetzt muss mein Rat auch … Die biologische Wirkung ist …",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Ordne die Wirkung der Hormonspirale und die Barriere des Kondoms den beiden Schutzzielen zu. Welche Grenze bleibt?"
             }
           },
           "before": {
@@ -2779,7 +2826,9 @@
               "Früher zählte … Jetzt muss mein Rat auch … Die biologische Wirkung ist …",
               "Wähle deinen eigenen Rat. Du kannst ihn noch ändern, bevor du ihn sendest."
             ]
-          }
+          },
+          "evidence": "Was muss dein Rat jetzt leisten, damit er beide Wünsche berücksichtigt?",
+          "paperFallback": "Laufzettel nicht zur Hand? Aufgabe hier ansehen."
         },
         "AHR": {
           "id": "AHR",
@@ -2795,7 +2844,7 @@
             "K+Cu",
             "K+H"
           ],
-          "paperPrompt": "Öffne auf deinem Laufzettel Laura 2 – Zwei Schutzziele. Bearbeite den Denkauftrag. Gib danach den Buchstaben der passenden Aussage hier ein.",
+          "paperPrompt": "Bearbeite auf deinem Laufzettel den Abschnitt „Laura 2 – Zwei Schutzziele“. Notiere deinen biologischen Grund und markiere die passende Aussage.",
           "returnPrompt": "Fertig? Kehre zum Chat mit Laura zurück. Gib den Buchstaben ein und sende deinen Rat.",
           "strategies": {
             "K": {
@@ -2827,12 +2876,13 @@
                 "Für das erste Ziel wirkt … Für das zusätzliche Ziel … Wenn …, bleibt … offen.",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Unterscheide beim Kondom die Spermienbarriere von der Risikominderung bei Infektionen. Unter welcher Anwendungsbedingung gilt dein Rat?"
             },
             "P": {
               "status": "B",
               "condition": "Persönliche Fragen zu Hormonen und medizinische Eignung klären. Regelmäßige Einnahme nach Plan nötig.",
-              "feedback": "Kombinationspille kann zur Schwangerschaftsverhütung beitragen. Dein vollständiger Rat lässt den Schutz vor Infektionen noch offen. Prüfe, wie du ihn ergänzen möchtest.",
+              "feedback": "Die Eisprunghemmung beantwortet einen Teil von Lauras Anliegen. Welche Schutzlücke bleibt, und wo lägen die Grenzen deiner Anpassung?",
               "card": {
                 "method": "P",
                 "section": "sti"
@@ -2857,12 +2907,16 @@
               "goalCard": {
                 "method": "P",
                 "section": "sti"
+              },
+              "evidence": "Begründe, welche Schutzaussage die Wirkung der Kombinationspille auf den Eisprung trägt. Wie weit reicht dein vollständiger Rat?",
+              "correction": {
+                "label": "Vollständigen Rat neu wählen"
               }
             },
             "Cu": {
               "status": "B",
               "condition": "Eignung, individuelle Fragen und Zustimmung zur Einlage in der Praxis klären.",
-              "feedback": "Kupferspirale kann zur Schwangerschaftsverhütung beitragen. Dein vollständiger Rat lässt den Schutz vor Infektionen noch offen. Prüfe, wie du ihn ergänzen möchtest.",
+              "feedback": "Die Wirkung von Kupfer auf Spermien beantwortet einen Teil von Lauras Anliegen. Welche Schutzlücke bleibt, und wo lägen die Grenzen deiner Anpassung?",
               "card": {
                 "method": "Cu",
                 "section": "sti"
@@ -2887,12 +2941,16 @@
               "goalCard": {
                 "method": "Cu",
                 "section": "sti"
+              },
+              "evidence": "Welche Aussage zum Schutz lässt die Kupferspirale durch ihre Wirkung auf Spermien zu? Prüfe die Reichweite deines Rats am zweiten Anliegen.",
+              "correction": {
+                "label": "Vollständigen Rat neu wählen"
               }
             },
             "H": {
               "status": "B",
               "condition": "Fragen zur hormonellen Wirkung, Eignung und Zustimmung zur Einlage klären.",
-              "feedback": "Hormonspirale kann zur Schwangerschaftsverhütung beitragen. Dein vollständiger Rat lässt den Schutz vor Infektionen noch offen. Prüfe, wie du ihn ergänzen möchtest.",
+              "feedback": "Die Wirkung der Hormonspirale auf den Weg der Spermien beantwortet einen Teil von Lauras Anliegen. Welche Schutzlücke bleibt, und wo lägen die Grenzen deiner Anpassung?",
               "card": {
                 "method": "H",
                 "section": "sti"
@@ -2917,6 +2975,10 @@
               "goalCard": {
                 "method": "H",
                 "section": "sti"
+              },
+              "evidence": "Welche Schutzaussage lässt die Wirkung der Hormonspirale am Gebärmutterhals zu? Prüfe, wie weit sie für Lauras zweiten Wunsch trägt.",
+              "correction": {
+                "label": "Vollständigen Rat neu wählen"
               }
             },
             "K+P": {
@@ -2948,7 +3010,8 @@
                 "Für das erste Ziel wirkt … Für das zusätzliche Ziel … Wenn …, bleibt … offen.",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Trenne Barrierewirkung und Eisprunghemmung bei Kondom und Pille. Begründe den zusätzlichen Beitrag jedes Teils und eine Grenze."
             },
             "K+Cu": {
               "status": "C",
@@ -2979,7 +3042,8 @@
                 "Für das erste Ziel wirkt … Für das zusätzliche Ziel … Wenn …, bleibt … offen.",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Vergleiche die Beiträge von Kondom und Kupferspirale zu den zwei Zielen. Welche Aussage kannst du trotz der Kombination nicht versprechen?"
             },
             "K+H": {
               "status": "C",
@@ -3010,7 +3074,8 @@
                 "Für das erste Ziel wirkt … Für das zusätzliche Ziel … Wenn …, bleibt … offen.",
                 "Schreibe deinen eigenen kurzen Grund. Wähle auf dem Laufzettel die passende Aussage und gib ihren Buchstaben im Chat ein."
               ],
-              "options": []
+              "options": [],
+              "evidence": "Vergleiche die Beiträge von Kondom und Hormonspirale zu beiden Zielen. Wovon hängt der Schutz auch bei der Kombination ab?"
             }
           },
           "before": {
@@ -3032,7 +3097,9 @@
               "Für das erste Ziel wirkt … Für das zusätzliche Ziel … Wenn …, bleibt … offen.",
               "Wähle deinen eigenen Rat. Du kannst ihn noch ändern, bevor du ihn sendest."
             ]
-          }
+          },
+          "evidence": "Wie verändert das zusätzliche Schutzziel deine bisherige Abwägung?",
+          "paperFallback": "Laufzettel nicht zur Hand? Aufgabe hier ansehen."
         }
       }
     },

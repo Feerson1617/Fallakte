@@ -15,7 +15,6 @@
     <button type="button" data-nav="home">Fallakten</button>
     <button type="button" data-nav="resources">Infokarten</button>
     <button type="button" data-nav="recovery" hidden>Abschnitt auswählen</button>
-    <button type="button" data-nav="summary">Gemeinsame Sicherung</button>
   </nav>
   <main>
     <section id="start" aria-labelledby="start-titel">
@@ -53,6 +52,12 @@
     <div id="reserve-platz" hidden></div>
     <p id="quellhinweis" hidden>Öffne die gebaute Datei <a href="dist/Runde-1/Fallakte.html">Fallakte.html</a>.</p>
   </main>
+  <footer id="praesentation">
+    <details id="lehrkraft">
+      <summary>Für die Lehrkraft</summary>
+      <button type="button" id="sicherung-oeffnen">Gemeinsame Sicherung öffnen</button>
+    </details>
+  </footer>
   <script id="materialvertrag" type="application/json"></script>
   <script id="reserve" type="application/octet-stream"></script>
   <script>

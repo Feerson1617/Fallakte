@@ -12,6 +12,8 @@ QA=ROOT/'build/runde1/qa'
 LEVELS={'Foerder','ESA','MSA','AHR'}
 METHODS={'K','P','Cu','H'}
 STRATEGIES=METHODS|{'K+P','K+Cu','K+H'}
+BASE='8c6bd80c7aa636b55e50ef7522c63f9b48df0cb8'
+TITLES=['Latexallergie','Zwei Schutzziele','Hormone und Alltag','Schmerzen und Einlage','Mein Schlussrat']
 
 
 def main():
@@ -22,6 +24,9 @@ def main():
     work=(OUT/'Materialvertrag.md').read_text()
     assert bank==json.loads(doc.get_element_by_id('materialvertrag').text)
     assert {k:v for k,v in bank.items() if k!='buildCommit'}==source
+    old=json.loads(subprocess.check_output(['git','show',BASE+':data/laura-0212.json'],cwd=ROOT))
+    assert bank['version']=='0212-r1.2'
+    assert all(bank['stages'][sid]==old['stages'][sid] for sid in ('L03','L04','L05'))
     sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     assert bank['buildCommit']==sha and sha in work
     assert len(app)<10_000_000 and not doc.xpath('//script[@src]|//link[@rel="stylesheet"]')
@@ -36,11 +41,15 @@ def main():
         title=bank['cards'][ref['method']]['sections'][ref['section']]['title']
         assert title in work
     assert bank['normalization'] in work
+    assert bank['paperFallbackInstruction'] in work
     assert all(rule['fact'] in bank['facts'] for rule in bank['goalRules'])
     previous=set()
     tasks=set()
     options=0
     for sid,stage in bank['stages'].items():
+        n=int(sid[1:])
+        assert stage['title']==f'Laura {n} – {TITLES[n-1]}'
+        assert f'Laura {n} – Laura {n}' not in work
         assert previous<=set(stage['knownFacts'])
         previous=set(stage['knownFacts'])
         assert set(stage['newFacts'])<=previous
@@ -53,6 +62,8 @@ def main():
         assert set(stage['levels'])==LEVELS
         for tier,item in stage['levels'].items():
             task=item['taskId']
+            original=old['stages'][sid]['levels'][tier]
+            assert item['id']==original['id'] and task==original['taskId']
             assert task not in tasks and task in work
             tasks.add(task)
             assert item['task'] in work and item['message'] in work and set(item['strategies'])==STRATEGIES
@@ -64,11 +75,24 @@ def main():
             if tier in ('MSA','AHR'):
                 assert item['paperPrompt'] and item['returnPrompt'] and item['paperPrompt'] in work and item['returnPrompt'] in work
                 assert stage['title'] in item['paperPrompt'],(sid,tier)
+                if stage['playable']:
+                    assert item['paperFallback'] in work
+            for key,label in item.get('choiceLabels',{}).items():
+                assert key in STRATEGIES and label in work
             for code,strategy in item['strategies'].items():
                 expected='B' if sid!='L01' and 'K' not in code.split('+') else 'C'
                 assert strategy['status']==expected,(sid,tier,code)
                 assert strategy['condition'] and strategy['feedback'] and strategy['feedback'] in work
                 audit_ref(strategy['card'])
+                if stage['playable']:
+                    assert strategy['evidence'].strip() and strategy['evidence'] in work
+                    corr=strategy.get('correction')
+                    if expected=='B':
+                        assert corr['label'] in work
+                        if tier in ('MSA','AHR'):
+                            assert not corr.get('target')
+                        else:
+                            assert corr['target']=='K+'+code
                 for ref in strategy['extraCards']:audit_ref(ref)
                 if strategy.get('goalCard'):audit_ref(strategy['goalCard'])
                 assert len(strategy['hints'])==len(set(strategy['hints']))==5

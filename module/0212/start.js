@@ -5,6 +5,7 @@
   if (!bank) {
     $('start').hidden=true;
     $('lokale-navigation').hidden=true;
+    $('praesentation').hidden=true;
     $('quellhinweis').hidden=false;
     if (parent!==window) location.replace($('quellhinweis').querySelector('a').href);
     return;
@@ -41,6 +42,7 @@
   function show(next) {
     if (view==='beratung' && next!=='beratung') window.Beratung.pause();
     window.Material.close(false);
+    $('lehrkraft').open=false;
     if (view==='reserve-platz' && next!==view) window.Reserve0212.hide();
     view=next;
     for (const id of sections) $(id).hidden=id!==next;
@@ -83,9 +85,9 @@
       b.setAttribute('aria-pressed',String(pickerPerson===person));return b;
     }));
     const steps=pickerPerson==='Laura' ? Object.values(bank.stages).filter(s=>s.playable).map(s=>[s.id,s.title]) :
-      Array.from({length:pickerPerson==='Tom'?3:5},(_,i)=>[String(i+1),'']);
+      Array.from({length:pickerPerson==='Tom'?3:5},(_,i)=>[String(i+1),pickerPerson+' '+(i+1)]);
     $('abschnitte').replaceChildren(...steps.map(([id,title],i)=>{
-      const b=control(pickerPerson+' '+(i+1)+(title?' – '+title:''),()=>{
+      const b=control(title,()=>{
         level=pickerTier;
         if (pickerPerson==='Laura') start(id);
         else reserve(pickerPerson,i+1);
@@ -105,8 +107,11 @@
       if (view==='reserve-platz')window.Reserve0212.cards();
       else window.Material.openCards(trigger);
     }
-    if (action==='summary') window.Material.summary(trigger);
   }
+  $('sicherung-oeffnen').onclick=()=>{
+    $('lehrkraft').open=false;
+    window.Material.summary($('lehrkraft').querySelector('summary'));
+  };
   $('neu').onclick=()=>start('L01');
   $('weiterarbeiten').onclick=()=>start(undefined,true);
   $('abschnitt-wahl').onclick=recovery;
@@ -126,7 +131,7 @@
     $('lokale-navigation').hidden=true;
     port.postMessage({type:'ready',actions:[
       {id:'home',label:'Fallakten',icon:'folder'},{id:'resources',label:'Infokarten',icon:'book'},
-      {id:'recovery',label:'Abschnitt auswählen',icon:'restart'},{id:'summary',label:'Gemeinsame Sicherung',icon:'book'}
+      {id:'recovery',label:'Abschnitt auswählen',icon:'restart'}
     ]});
     communicate();
   });
