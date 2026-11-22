@@ -1,5 +1,9 @@
 # Fachlich-didaktische Gegenprüfung · Laura 1 bis 5
 
+## Aktualisierung des Schlusschecks · Inhaltsbank 0212-r3.1
+
+In Laura 5 überprüft C jetzt die biologische Schutzwirkung. Ein geeignetes Kondom hält Sperma zurück und senkt das Risiko vieler STI. Eine Spirale kann den Schwangerschaftsschutz ergänzen. Ablenker A schreibt der Pille eine STI-Barriere zu. B verspricht vollständigen Schutz. Die Rückmeldungen erklären beide Irrtümer. Der Code prüft diese Unterscheidung, die eigenständige Bewertung steht weiterhin im Schlussratfeld. Das unten verlinkte fachliche Vorprüfprotokoll gehört zur Ausgangsbank. Die Browser- und Materialprotokolle im aktuellen Paket prüfen den neuen Anker.
+
 ## Erwartung vor der Freischaltung
 
 Ausgangsstand ist die geprüfte Zwei-Abschnitt-Fassung `62b6dca2723006c25cc7724f5f595799b5743dd2`, Bank `0212-r1.2`. In L01 prüft Laura eine Annahme über das Material. Erst ab L02 ist der zusätzliche persönliche Wunsch nach STI-Risikominderung bekannt. Er bleibt wirksam, wenn ab L03 individuelle Anwendungsfragen und ab L04 Schmerzen sowie die Sorge vor der Einlage hinzukommen. L05 führt das Bekannte zusammen. Eine in L02 fachlich tragfähige Strategie kann in L05 bestehen bleiben. Die Begründung muss nun sichtbar auf mindestens ein später hinzugekommenes Anliegen antworten.

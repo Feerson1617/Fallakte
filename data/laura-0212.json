@@ -1,5 +1,5 @@
 {
-  "version": "0212-r2a.1",
+  "version": "0212-r3.1",
   "paperFallbackInstruction": "Begründe deinen Rat kurz in eigenen Worten. Gib den Buchstaben der fachlich passenden Aussage ins Codefeld ein.",
   "baseCommit": "ec94147fd8d61442305a0281f7df032f3162362c",
   "caseId": "Laura",
@@ -6217,28 +6217,28 @@
       "evidence": "Vergleiche deinen ersten und letzten Grund. Der Schlussrat darf dieselbe Methode nennen.",
       "recovery": "Laura ist 19 und hat eine Latexallergie. Sie möchte eine Schwangerschaft vermeiden und das Infektionsrisiko senken. Geeignete Kondome aus Kunststoff sind möglich. Sie hat Fragen zu Hormonen. Ihr Alltag ist unregelmäßig und sie vergisst tägliche Dinge manchmal. Eine Freundin hatte schlechte Erfahrungen mit der Pille. Lauras starke Regelschmerzen wurden noch nicht ärztlich abgeklärt. Das Einsetzen einer Spirale macht ihr Sorgen. Sie hat sich dazu noch nicht entschieden.",
       "anchors": {
-        "A": "Für einen guten Schlussrat reicht der sicherste Schwangerschaftsschutz, auch wenn das STI-Anliegen offenbleibt.",
-        "B": "Ein Rat kann nur gut begründet sein, wenn Laura am Ende eine andere Methode als am Anfang empfohlen wird.",
-        "C": "Auch derselbe Rat kann jetzt besser begründet sein: Eine biologische Eigenschaft wird mit einem später hinzugekommenen Anliegen verknüpft, etwa der Barrierewirkung beim STI-Schutz."
+        "A": "Die Pille hemmt den Eisprung. Deshalb schützt sie beim Sex auch vor Krankheitserregern.",
+        "B": "Mit Kondom und Spirale zusammen können weder Spermien noch Krankheitserreger übertragen werden.",
+        "C": "Ein geeignetes Kondom hält Sperma zurück und senkt das Risiko vieler STI. Eine Spirale kann zusätzlich vor Schwangerschaft schützen. Sie bildet keine weitere STI-Barriere."
       },
       "code": "C",
       "anchorFeedback": {
         "A": {
-          "text": "Schwangerschaftsschutz allein beantwortet Lauras Wunsch nach STI-Risikominderung nicht.",
+          "text": "Die Pille wirkt auf den Zyklus. Sie bildet keine Barriere gegen Krankheitserreger.",
           "card": {
             "method": "P",
             "section": "sti"
           }
         },
         "B": {
-          "text": "Ein späteres persönliches Anliegen kann den Grund für dieselbe Strategie verändern.",
+          "text": "Auch mit Kondom bleibt ein STI-Risiko. Die Spirale wirkt gegen eine Schwangerschaft, nicht gegen STI.",
           "card": {
             "method": "K",
             "section": "sti"
           }
         },
         "C": {
-          "text": "Ein späteres Anliegen kann mit einer biologischen Eigenschaft verknüpft werden.",
+          "text": "Das passende Kondom bildet eine Barriere. Eine weitere Methode kann den Schwangerschaftsschutz ergänzen. Das verbleibende STI-Risiko verschwindet dadurch nicht.",
           "card": {
             "method": "K",
             "section": "sti"

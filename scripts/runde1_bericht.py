@@ -73,7 +73,7 @@ def main():
         assert len(paths)==28 and all([c['stage'] for c in p['chapters']]==['L01','L02','L03','L04','L05'] for p in paths)
         table.append(f"| {b['engine'].capitalize()} | {b['version']} | {len(paths)} | {sum(len(p['chapters']) for p in paths)} |")
     report = [
-        '# Technischer Prüfbericht · Runde 2A für den 02.12.2026',
+        '# Technischer Prüfbericht · Laura-Regression für den 02.12.2026',
         f"Branch `entwicklung/0212-neukonzeption` · Commit `{commit}` · Inhaltsbank `{material['bankversion']}`.",
         f"Die geprüfte **Fallakte.html** ist {material['bytes']:_} Bytes groß. SHA-256 `{app_hash}`.".replace('_', ' '),
         '## Browserdurchläufe', '\n'.join(table),
@@ -114,7 +114,14 @@ def main():
     fach.write_text((ROOT / 'docs/0212-fachpruefung-2a.md').read_text().replace(
         'pruefnachweise/'+files['fachliche-gegenpruefung'].name, review_url))
     review = json.loads(files['fachliche-gegenpruefung'].read_text())
-    assert review['datenSHA256'] == digest(ROOT / 'data/laura-0212.json')
+    prior = subprocess.check_output(['git','show','8e87505:data/laura-0212.json'],cwd=ROOT)
+    assert review['datenSHA256'] == sha256(prior).hexdigest()
+    original=json.loads(prior)
+    updated=json.loads((ROOT/'data/laura-0212.json').read_text())
+    original['version']=updated['version']
+    for key in ('anchors','anchorFeedback'):
+        original['stages']['L05'][key]=updated['stages']['L05'][key]
+    assert original==updated, 'Unbeabsichtigte Änderung außerhalb des biologischen Schlusschecks'
     index = ['# Sichtprüfung · Runde 2A', f'Commit `{commit}`. Die Bilder zeigen die offline geöffnete Anwendung.']
     for key, text in CAPTIONS.items():
         links = ' · '.join(f'[{engine.capitalize()}](Bilder/{engine}-{key}.jpg)' for engine in sorted(expected))

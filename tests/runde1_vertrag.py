@@ -25,9 +25,15 @@ def main():
     assert bank==json.loads(doc.get_element_by_id('materialvertrag').text)
     assert {k:v for k,v in bank.items() if k!='buildCommit'}==source
     old=json.loads(subprocess.check_output(['git','show',BASE+':data/laura-0212.json'],cwd=ROOT))
-    assert bank['version']=='0212-r2a.1'
+    assert bank['version']=='0212-r3.1'
     for sid,stage in bank['stages'].items():
         for key in ('id','title','knownFacts','newFacts','code','anchors'):
+            if sid=='L05' and key=='anchors':
+                choices=stage[key]
+                assert choices['A'].startswith('Die Pille hemmt den Eisprung.') and 'auch vor Krankheitserregern' in choices['A']
+                assert 'weder Spermien noch Krankheitserreger' in choices['B']
+                assert all(term in choices['C'] for term in ('hält Sperma zurück','Risiko vieler STI','zusätzlich vor Schwangerschaft','keine weitere STI-Barriere'))
+                continue
             assert stage[key]==old['stages'][sid][key], (sid,key)
     sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     assert bank['buildCommit']==sha and sha in work

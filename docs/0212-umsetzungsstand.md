@@ -5,7 +5,7 @@
 Arbeitszweig `entwicklung/0212-neukonzeption`, Basiscommit `62b6dca2723006c25cc7724f5f595799b5743dd2`. Die Ausgangsfassung war die Auslieferung mit Bank `0212-r1.2` aus Actions-Lauf `45049836491`.
 
 - **Abschlusscommit der Auslieferung** · siehe `Materialvertrag.json`, Feld `buildCommit`.
-- **Inhaltsbankversion** · `0212-r2a.1`.
+- **Inhaltsbankversion** · `0212-r3.1`.
 
 Im Artefakt **Fallakte-Runde-2A** die Datei **Fallakte.html** direkt im Browser öffnen. **Materialvertrag.md** enthält die lesbare Übergabe für Work. **Materialvertrag.json** enthält dieselben Aufgaben, Fachanker, Lösungen, Kartenstellen und Rückmeldungen wie die eingebettete Inhaltsbank. Die individuelle Begründung verbleibt auf Papier. Die HTML-Datei speichert den Beratungsstand im Arbeitsspeicher, getrennt nach Niveau.
 
