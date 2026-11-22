@@ -35,7 +35,7 @@ def digest(path):
 
 def load_table(usage):
     fields = ('entscheidungen','tipps','codeeingaben','papierphasen','medienwechsel','pflichtwoerter_im_blick_max')
-    rows = ['| Niveau | Ratsentscheidungen | Pflicht-Tipps | Codeeingaben | Papierphasen | Medienwechsel | Pflichtwörter zugleich, maximal |',
+    rows = ['| Niveau | Ratsentscheidungen | Erforderliche Berührungen | Codeeingaben | Papierphasen | Medienwechsel | Pflichtwörter zugleich, maximal |',
             '| --- | ---: | ---: | ---: | ---: | ---: | ---: |']
     for key in ('Foerder','ESA','MSA','AHR'):
         measures = usage['niveaus'][key]

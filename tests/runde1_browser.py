@@ -311,7 +311,9 @@ def exercise_check(page,tier,stage,strategy,context):
     if incomplete:
         expect(send).to_be_disabled()
         expect(status).to_have_text(context['feedback'])
-        assert re.search(r'Infektion|STI|Schutzlücke|Ziel.{0,45}offen|Anliegen',status.inner_text(),re.I),status.inner_text()
+        prompt = (r'Infektion|STI|Krankheitserreger' if tier in LEVELS[:2] else
+                  r'Infektion|STI|Schutzlücke|Ziel|Anliegen|Schutzwirkung|Teil des vollständigen Rats')
+        assert re.search(prompt,status.inner_text(),re.I),status.inner_text()
         if tier in LEVELS[2:]:
             assert not re.search(r'Kondom',status.inner_text(),re.I),status.inner_text()
         results[-1]['rueckmeldung']=status.inner_text()
@@ -656,7 +658,8 @@ def consolidation_and_keyboard(page,engine):
         expect(d).to_have_attribute('data-view','summary')
         text=d.inner_text()
         for term in ('Latex','Hormon','Infektion|STI','unregelmäßig','Freundin','Regelschmerz','Einsetzen|Einlage',
-                     'Praxis|ärzt','später','biologisch'):
+                     'Praxis|ärzt','Seit ich weiß, dass','biologisch','Gewichte zwei Anliegen','Alternative',
+                     'ersten und deinen letzten Grund'):
             assert re.search(term,text,re.I),(term,text)
         expect(d.locator('input')).to_have_count(0)
         if capture:shot(page,engine+'-Lehreransicht')
