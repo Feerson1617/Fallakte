@@ -329,7 +329,6 @@
       feedback.setAttribute('role','status');
       const buttons=question.options.map((o,i)=>{
         const b=press(o.label,()=>{change(i);selected=i;update();refresh();},false);
-        if (o.citation) b.append(el('small','source-ref','Kartenzeile '+o.citation));
         options.append(b);return b;
       });
       function update() {

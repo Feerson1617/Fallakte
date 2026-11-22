@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT/'build/08-12'
 QA = OUT/'Abnahme'
 BANK = json.loads((OUT/'Aufgabenbank.json').read_text())
-REVIEWED = 'e429cfb36aa45e85c17b54c43cc3e225ef48525b'
+REVIEWED = '40fef18eb9ea8cb7aacd28bc88579d9ddc376916'
 PHOTOS = {}
 B = ROOT/'dist/Version-B'
 PATTERN = rb'(<script id="modul-08" type="application/octet-stream">)([A-Za-z0-9+/=]+)(</script>)'
@@ -28,9 +28,16 @@ def protect(temp):
     archive(REVIEWED,ref,['index.html','02-12.html','assets','app','data','module','tagesauswahl','scorm','scripts'])
     build(ref)
     frozen=json.loads((ref/'build/08-12/Aufgabenbank.json').read_text())
-    for key in ('laura','cards','sources','questions','levels'):
-        assert BANK[key]==frozen[key], key
-    assert {p:c['message'] for p,c in BANK['cases'].items()}=={p:c['message'] for p,c in frozen['cases'].items()}
+    # Only the common source prompt and the post-choice explanations may differ.
+    for person,case in frozen['cases'].items():
+        for level,tasks in case['levels'].items():
+            before=tasks[1]
+            after=BANK['cases'][person]['levels'][level][1]
+            before['prompt']=after['prompt']
+            for old,new in zip(before['options'],after['options'],strict=True):
+                del old['citation']
+                old['feedback']=new['feedback']
+    assert BANK==frozen
     for v in 'AB':
         name = 'Version-'+v
         current = (ROOT/'dist'/name/'Fallakte.html').read_bytes()
@@ -95,7 +102,21 @@ def check_content():
                 assert 'schon' in extension['prompt'] and 'Ausbildungsplatz' not in extension['prompt']
             assert 'results' not in tasks[-1]
             assert 'aus oder nur zum Teil' not in tasks[-1]['selfCheck']
-            assert all(o['citation'] for o in checks[0]['options'])
+            question=checks[0]
+            key,ids=question['card']
+            start,end={'Mutter':(2,4),'Freundin':(2,5),'Großmutter':(1,2),'Vater':(1,3)}[person]
+            assert ids==list(range(start,end+1))
+            assert question['prompt'].startswith(f'Lies in der Fachkarte „{BANK["cards"][key]["title"]}“ die Zeilen {start} bis {end}. ')
+            for option in question['options']:
+                assert set(option)=={'label','correct','feedback'}
+                feedback=option['feedback'].lower()
+                cited=[int(n) for match in re.findall(r'kartenzeilen? (\d+(?: und \d+)?)',feedback)
+                       for n in re.findall(r'\d+',match)]
+                assert cited and set(cited)<=set(ids)
+                if person=='Freundin':assert {3,5}<=set(cited) and 'operation' in feedback
+                if person=='Mutter':assert {2,3}<=set(cited) and 'gewebe' in feedback
+                if person=='Großmutter':assert 2 in cited and 'embryo' in feedback
+                if person=='Vater':assert 2 in cited and 'anerkannt' in feedback
             depth=checks[1].get('depth')
             assert bool(depth)==(level in ('MSA','AHR'))
             if person=='Freundin' and level=='AHR':
@@ -142,10 +163,20 @@ def shot(page,name):
     PHOTOS[path.name]=digest(path.read_bytes())
 
 
-def inspect_task(frame,task,level):
+def inspect_task(frame,task,level,source_photo=None):
     expect(frame.get_by_role('heading',name=task['heading'],exact=True)).to_be_visible()
     article = frame.locator('article')
     expect(article.locator(':scope > p').first).to_have_text(task['prompt'])
+    if task['heading']=='Stimmt das?':
+        options=article.locator('.options button')
+        expect(options).to_have_text([o['label'] for o in task['options']])
+        expect(article.get_by_role('status',include_hidden=True)).to_be_empty()
+        expect(article.locator('[aria-pressed=true]:visible')).to_have_count(0)
+        key,ids=task['card']
+        source=frame.locator('aside .intro')
+        expect(source.get_by_role('heading',name=BANK['cards'][key]['title'],exact=True)).to_be_visible()
+        for line in ids:expect(source.get_by_text(BANK['cards'][key]['lines'][line-1],exact=True)).to_be_visible()
+        if source_photo:source_photo('Aufgabe')
     # A real learner can go straight to 5, then back to any level without submitting.
     if task['kind']=='map':
         topics={f['name']:f['hints'] for f in task['fields']}
@@ -189,16 +220,21 @@ def inspect_task(frame,task,level):
         options=article.locator('.options').nth(part).get_by_role('button')
         status=article.get_by_role('status',include_hidden=True).nth(part)
         for pos,option in enumerate(q['options']):
-            expect(options.nth(pos)).to_contain_text(option['label'])
-            if option.get('citation'):expect(options.nth(pos)).to_contain_text('Kartenzeile '+option['citation'])
+            expect(options.nth(pos)).to_have_accessible_name(option['label'])
             if option['correct']:assert option['label'] in q['hints'][4]
             if not option['correct']:
                 options.nth(pos).dispatch_event('click')
-                expect(status).to_contain_text(option['feedback'])
+                expect(status).to_be_visible()
+                expect(status).to_have_text('Prüfe noch einmal. '+option['feedback'])
+                if source_photo:
+                    status.scroll_into_view_if_needed()
+                    source_photo('Fehlversuch')
+                    source_photo=None
                 expect(btn(article,'Weiter')).to_be_hidden()
         correct=next(i for i,o in enumerate(q['options']) if o['correct'])
         options.nth(correct).tap()
-        expect(status).to_contain_text(q['options'][correct]['feedback'])
+        expect(status).to_be_visible()
+        expect(status).to_have_text('Das passt. '+q['options'][correct]['feedback'])
     expect(btn(article,'Weiter')).to_be_visible()
 
 
@@ -267,7 +303,8 @@ def exercise(browser,engine,person,level,n,base):
     for i,task in enumerate(tasks):
         if n==1 and i==0:
             shot(p,engine+'-Argumenten-Check')
-        inspect_task(frame,task,level)
+        source_photo=(lambda state:shot(p,engine+'-Quellenprüfung-'+state)) if n==1 and i==1 else None
+        inspect_task(frame,task,level,source_photo)
         layout(frame)
         if person=='Freundin' and task.get('mother'):
             for line in task['mother']:

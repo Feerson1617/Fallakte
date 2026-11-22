@@ -1,8 +1,10 @@
 # Fallakte Laura · Endkorrektur für den 08.12.2026
 
-## Änderungen gegenüber e429cfb
+## Korrektur gegenüber 40fef18
 
-Vor der Bearbeitung stimmten der lokale und der veröffentlichte Entwicklungszweig mit `e429cfb36aa45e85c17b54c43cc3e225ef48525b` überein. Dessen Auslieferung ist die Vergleichsfassung. [Vorheriger Paketlauf](https://github.com/Feerson1617/Fallakte/actions/runs/44938986347)
+Bei „Stimmt das?“ standen Quellenangaben auch unter falschen Antworten. Jetzt nennt der Arbeitsauftrag die Fachkarte und den Leseabschnitt für alle Antworten gemeinsam. Bei der Mutter sind es die Zeilen 2 bis 4, bei der Freundin 2 bis 5, bei der Großmutter 1 bis 2 und beim Vater 1 bis 3. Nach der Auswahl erklärt die Rückmeldung anhand konkreter Kartenzeilen, weshalb die gewählte Aussage passt oder wo der Irrtum liegt. Die Work-Aufgabenbank übernimmt den Wortlaut der gebauten Fassung. [Geprüfter Ausgangsstand](https://github.com/Feerson1617/Fallakte/commit/40fef18eb9ea8cb7aacd28bc88579d9ddc376916)
+
+## Pflichtweg und fachliche Grundlage
 
 Beim Urteil lesen alle zuerst denselben Auftrag: „Wähle eine Information. Wähle, was Laura möchte. Erkläre deinen Grund.“ Die Lernenden wählen die Fachinformation, Lauras eigene Worte und eine der drei Einschätzungen. Erst dann erscheint „Zeige die zwei Stellen. Erkläre: Warum passt deine Antwort?“ Die beiden ausgewählten Originalstellen lassen sich dabei weiterhin zeigen und ändern.
 

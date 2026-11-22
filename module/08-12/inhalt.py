@@ -158,29 +158,29 @@ def check(prompt, lines, choices, *, look, clue, meaning, card=None, wishes=(), 
 
 FACTS = {
     'Mutter': check('Wie kommt es zur Blutung?', [1], [
-        ('Die Gebärmutter zieht sich zusammen. Gewebe wird ausgestoßen.', 'So kommt es zur Blutung. Auch Schmerzen sind möglich.'),
-        ('Die Blutung entsteht erst bei einer Operation.', 'Lies auf der Fachkarte Zeilen 2 und 3. Dort wirkt das Medikament.')
+        ('Die Gebärmutter zieht sich zusammen. Gewebe wird ausgestoßen.', 'Die Kartenzeilen 2 und 3 beschreiben, wie sich die Gebärmutter zusammenzieht. Beim Ausstoßen von Gewebe kommt es zur Blutung.'),
+        ('Die Blutung entsteht erst bei einer Operation.', 'Lies die Kartenzeilen 2 und 3. Das Medikament bewirkt, dass die Gebärmutter sich zusammenzieht und Gewebe ausstößt. Dabei blutet es.')
     ], card=['medizin', [2, 3, 4]], look='Lies Fachkarte „Abbruch mit Medikamenten“, Zeilen 2 bis 4.',
         clue='Das Medikament löst das Zusammenziehen aus. Gewebe verlässt die Gebärmutter.',
         meaning='Eine Blutung heißt: Blut tritt aus dem Körper aus.'),
     'Freundin': check('Wie passen die Aussagen über Blutungen und Operationen zusammen?', [1], [
-        ('Ein Abbruch mit Medikamenten ist meist ohne Operation möglich. Beim Ausstoßen von Gewebe blutet es.', 'Beide beschreiben denselben Abbruch. Blutungen sind auch ohne Operation möglich.'),
-        ('Die Mutter beschreibt eine Operation. Die Freundin beschreibt einen anderen Weg.', 'Lies die erste Zeile beider Nachrichten. Beide sprechen von Medikamenten.'),
-        ('Blutungen zeigen, dass eine Operation nötig war.', 'Was geschieht laut Kartenzeile 3 mit dem Gewebe?')
+        ('Ein Abbruch mit Medikamenten ist meist ohne Operation möglich. Beim Ausstoßen von Gewebe blutet es.', 'Kartenzeile 3 erklärt die Blutung beim Ausstoßen von Gewebe. Laut Kartenzeile 5 ist dieser Abbruch grundsätzlich ohne Operation möglich.'),
+        ('Die Mutter beschreibt eine Operation. Die Freundin beschreibt einen anderen Weg.', 'Lies die Kartenzeilen 3 und 5. Beide Nachrichten beschreiben denselben Abbruch mit Medikamenten. Dabei blutet es. Meist ist keine Operation nötig.'),
+        ('Blutungen zeigen, dass eine Operation nötig war.', 'Laut Kartenzeile 3 blutet es, wenn die Gebärmutter Gewebe ausstößt. Laut Kartenzeile 5 geht das grundsätzlich ohne Operation.')
     ], card=['medizin', [2, 3, 4, 5]], mother=[1], look='Vergleiche beide ersten Zeilen mit den Kartenzeilen 2 bis 5.',
         clue='Das Medikament bringt die Gebärmutter zum Zusammenziehen. Dafür ist grundsätzlich keine Operation nötig.',
         meaning='Bei einer Operation arbeiten Ärztinnen oder Ärzte mit Instrumenten im Körper.'),
     'Großmutter': check('Welche Aussage kannst du mit der Fachkarte prüfen?', [1, 3], [
-        ('Nach der Einnistung wächst der Embryo in der Gebärmutter weiter.', 'Die Karte zeigt, wo der Embryo wächst.'),
-        ('Die Entwicklung des Embryos beweist die Glaubensregel.', 'Lies Zeile 1 und Zeile 3 getrennt. Die Karte erklärt einen Vorgang im Körper. Die Regel stammt aus ihrem Glauben.')
+        ('Nach der Einnistung wächst der Embryo in der Gebärmutter weiter.', 'Kartenzeile 2 beschreibt, wie sich der Embryo nach der Einnistung in der Gebärmutter weiterentwickelt.'),
+        ('Die Entwicklung des Embryos beweist die Glaubensregel.', 'Kartenzeile 2 beschreibt, wo der Embryo wächst. Die Großmutter erklärt ihre Regel mit ihrem Glauben.')
     ], card=['entwicklung', [1, 2]], look='Lies auf der Karte „Am Anfang der Schwangerschaft“ die zweite Zeile.',
         clue='Die Karte erklärt, wo der Embryo wächst. Die Großmutter sagt selbst, woher ihre Regel kommt.',
         meaning='Bei der Einnistung verbindet sich der frühe Embryo mit der Schleimhaut der Gebärmutter.'),
     'Vater': check('Was stimmt über die Beratungsstelle?', [1, 3], [
         ('Sie informiert. Für die Beratungsregelung gilt: Die Stelle muss anerkannt sein. Bis zum Abbruch müssen mindestens drei Tage vergehen.',
-         'Der Vater nennt das Angebot und die Regeln für die Beratung.'),
+         'Kartenzeile 1 nennt das Beratungsangebot. Nach den Kartenzeilen 2 und 3 muss die Stelle staatlich anerkannt sein. Die Beratung muss mindestens drei Tage vor dem Abbruch liegen.'),
         ('Jede Stelle reicht aus, wenn der Termin drei Tage vor dem Abbruch liegt.',
-         'Lies Kartenzeile 2. Welche Stelle nennt das Gesetz?')
+         'Lies Kartenzeile 2. Für die Beratungsregelung muss die Beratungsstelle staatlich anerkannt sein.')
     ], card=['beratung', [1, 2, 3]], look='Lies „Beratung und Gesetz“, Zeilen 1 bis 3.',
         clue='Unterscheide das Angebot der Stelle und die Vorgaben für die Beratungsregelung.',
         meaning='Anerkannt heißt hier: Der Staat hat die Stelle für diese Beratung zugelassen.'),
@@ -216,10 +216,6 @@ WISHES = {
 }
 
 # Only the second question carries a deeper check. All four routes have the same positions.
-CITATIONS = {
-    'Mutter': ['2–3', '5'], 'Freundin': ['3 und 5', '5', '3'],
-    'Großmutter': ['2','2'], 'Vater': ['1–3','3'],
-}
 DEPTH = {
     'Mutter': ('Welche Hilfe passt noch zur Regel der Mutter?', [3, 4, 5],
                'Sie könnte Laura auch zu einer Beratung begleiten. Das wäre ebenfalls Familienhilfe.',
@@ -316,8 +312,9 @@ def bank():
         by_level = {}
         for level in LEVELS:
             fact = dict(FACTS[person], heading=QUESTIONS[0])
-            fact['prompt'] = 'Lies die Fachkarte. '+fact['prompt']
-            fact['options'] = [dict(o, citation=n) for o,n in zip(fact['options'],CITATIONS[person],strict=True)]
+            key, lines = fact['card']
+            fact['prompt'] = (f'Lies in der Fachkarte „{CARDS[key]["title"]}“ die Zeilen {lines[0]} bis {lines[-1]}. '
+                              + fact['prompt'])
             wishes = dict(WISHES[person], heading=QUESTIONS[1])
             if level in LEVELS[2:]:
                 special = person=='Freundin' and level=='AHR'

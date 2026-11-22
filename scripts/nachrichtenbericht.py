@@ -45,9 +45,8 @@ def material(bank):
 
     def answers(t):
         for opt in t['options']:
-            ref=' · Kartenzeile '+opt['citation'] if opt.get('citation') else ''
             start='Das passt. ' if opt['correct'] else 'Prüfe noch einmal. '
-            text.append(f"- **{opt['label']}**{ref} — {start}{opt['feedback']}")
+            text.append(f"- **{opt['label']}** — {start}{opt['feedback']}")
 
     for person,case in bank['cases'].items():
         for level,tasks in case['levels'].items():
@@ -125,7 +124,10 @@ def main():
     assert {x['browser'] for x in r['kleinfenster'] if x['schrift_prozent']==200 and x['abschnitte']==8}=={'chromium','webkit'}
     photos=[(QA/name,'Bildschirmfotos/'+name) for name in r['bilder']]
     assert all(r['bilder'][file.name]==sha(file) for file,_ in photos)
-    assert len(photos)==30
+    assert len(photos)==34
+    for engine in ('chromium','webkit'):
+        for state in ('Aufgabe','Fehlversuch'):
+            assert f'{engine}-Quellenprüfung-{state}.jpg' in r['bilder']
     assert {(v['browser'],tuple(v['niveaus'])) for v in r['paar_neustart'] if v['teilfrage']==3}=={
         (e,p) for e in ('chromium','webkit') for p in [('Förder','AHR'),('ESA','MSA')]}
     body=(ROOT/'docs/Nachrichten-08-12.md').read_text()

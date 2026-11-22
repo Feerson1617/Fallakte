@@ -59,6 +59,4 @@ textarea{width:100%;min-height:4.5rem;border:1px solid #83978b;border-radius:.5r
 .pair-label{max-width:100%;display:inline-flex;flex-wrap:wrap;align-items:center;gap:.5rem}
 .pair-label select{font:inherit;color:inherit;background:#fffef9;min-height:44px;width:8.5em;min-width:44px;max-width:100%;border:1px solid #83978b;border-radius:.5rem}
 
-.source-ref{display:block;font-size:.85em}
-
 .short-lines{white-space:pre-line}
