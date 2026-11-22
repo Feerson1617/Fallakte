@@ -12,7 +12,7 @@ from playwright.sync_api import expect, sync_playwright
 from bestandsschutz import archive, build, digest
 from tagesauswahl import HOST, host, restore_group_image
 from grundweg import measure_route
-from nachrichtenansichten import inspect_views
+from nachrichtenansichten import check_names, inspect_views
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT/'build/08-12'
@@ -489,6 +489,11 @@ def standalone_zoom(browser,engine):
     page=context.new_page()
     page.goto((OUT/'Fallakte.html').as_uri())
     page.locator('html').evaluate("el=>el.style.fontSize='200%'")
+    check_names(page)
+    btn(page,'Nach Neustart').tap()
+    check_names(page)
+    layout(page)
+    btn(page,'Zurück').tap()
     # Exercise the fallback bar, long source words and every direct entry at this width.
     for case in BANK['cases'].values():
         for section in case['sections']:

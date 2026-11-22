@@ -41,6 +41,15 @@ def inspect_figures(page,frame,bank):
     return distances
 
 
+def check_names(frame):
+    wrapped=frame.locator('.person-card h3,.restart-people button').evaluate_all("""els=>els.filter(el=>{
+        const text=[...el.childNodes].find(n=>n.nodeType===Node.TEXT_NODE);
+        const range=document.createRange();range.selectNodeContents(text);
+        return range.getClientRects().length!==1 || el.scrollWidth>el.clientWidth+1;
+    }).map(el=>el.textContent)""")
+    assert not wrapped,('Umgebrochener Personenname',wrapped)
+
+
 def scroll_metrics(target):
     return target.evaluate("""el=>{
       const doc=document.documentElement;
@@ -64,6 +73,7 @@ def inspect_views(browser,engine,previous,current,bank,shot):
             def button(name):return f.get_by_role('button',name=name,exact=True)
             results={'Übersicht':scroll_metrics(button(bank['cases']['Mutter']['sections'][0]))}
             if tag=='aktuell':
+                check_names(f)
                 expect(f.locator('.inbox').first.get_by_role('heading',level=3)).to_have_text(['Mutter','Freundin'])
                 expect(f.locator('.inbox').last.get_by_role('heading',level=3)).to_have_text(['Großmutter','Vater'])
                 if width==390:shot(page,engine+'-Übersicht-390')
@@ -98,6 +108,7 @@ def inspect_views(browser,engine,previous,current,bank,shot):
             if tag=='aktuell':
                 page.locator('[data-action="recovery"]').tap()
                 expect(f.get_by_role('heading',name='Hier kannst du weiterarbeiten.')).to_be_visible()
+                check_names(f)
                 for person,(key,*_) in PEOPLE.items():
                     expect(button(person).locator('img')).to_have_attribute('src',src(ROOT/'module/08-12/assets'/f'{key}.webp'))
                 page.locator('[data-action="resources"]').tap()

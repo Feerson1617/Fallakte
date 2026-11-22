@@ -67,7 +67,8 @@ textarea{width:100%;min-height:4.5rem;border:1px solid #83978b;border-radius:.5r
 .mode-controls details{flex:0 1 auto;min-width:0}
 .level-choice legend,.inbox>h2{font-size:1rem;font-weight:700}
 .inbox>h2{margin-bottom:.35rem}
-.person-cards,.restart-people{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}
+.person-cards,.restart-people{display:grid;gap:.65rem}
+.person-cards{grid-template-columns:repeat(auto-fit,minmax(min(100%,10.7rem),1fr))}
 .person-card{display:grid;grid-template-columns:clamp(4rem,9vw,6rem) minmax(0,1fr);column-gap:.85rem;align-items:center;padding:.6rem;background:#fffef9;border:1px solid #bbc8bc;border-radius:.8rem}
 .person-card img{grid-row:span 2;width:100%;aspect-ratio:1;object-fit:cover;border-radius:.5rem}
 .person-card h3{font:normal 1.45rem/1.15 "DM Serif Text",Georgia,serif}
@@ -104,6 +105,6 @@ textarea{width:100%;min-height:4.5rem;border:1px solid #83978b;border-radius:.5r
 @media(max-width:36rem){
   .restart~fieldset{margin-top:.35rem}
   .restart~fieldset legend{margin-bottom:.18rem}
-  .restart-people{grid-template-columns:repeat(auto-fit,minmax(min(100%,5.2em),1fr));gap:.35rem}
-  .restart-people button{flex-direction:column;justify-content:center;gap:.12rem;padding:.25rem .1rem}
+  .restart-people{display:flex;flex-wrap:wrap;gap:.35rem}
+  .restart-people button{flex:1 1 auto;min-width:max-content;flex-direction:column;justify-content:center;gap:.12rem;padding:.25rem .35em;white-space:nowrap}
 }
