@@ -100,7 +100,7 @@ def main():
         '## Grenzen und nächster Praxistest',
         'Die Browserläufe verwenden Touch-Emulation. Für den Schulversuch stehen ein echtes iPad mit Bildschirmtastatur und VoiceOver, die Einbettung in itslearning sowie die selbstständige Arbeit von Förder- und ESA-Lernenden im vorgesehenen Zeitrahmen aus. '
         'Ein Buchstabe prüft den gewählten Fachanker. Die Qualität der selbst geschriebenen Begründung wird im Unterricht besprochen. Der individuelle Anfangs- und Schlussgrund wird auf Papier verglichen. '
-        'Die bisherigen Zusatzfälle wurden funktional geprüft. Ihre vollständige fachliche Revision steht aus.',
+        'Tom und Celina besitzen eigene Fachchecks. Die vertiefenden Browserprüfungen und die Aufgabenbanken sind Teil der Übergabe.',
         'Die fachlichen Vorher-Nachher-Befunde stehen in Fachpruefung.md. Das Sichtprüfungspaket ordnet die echten Browserbilder ihren Zuständen zu und enthält die zugehörigen JSON-Protokolle.'
     ]
     doc = OUT / 'Technischer-Pruefbericht.md'

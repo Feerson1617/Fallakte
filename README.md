@@ -1,3 +1,7 @@
+# Gemeinsamer Vorabkandidat für den 02. und 08.12.2026
+
+Das Actions-Artefakt **Fallakte-Vorabkandidat** enthält beide Offline-HTML-Dateien, beide SCORM-1.2-Pakete, die Work-Übergabe, die Sichtprüfung und den Abnahmebericht. `python scripts/vorabkandidat.py` baut beide digitalen Anwendungen aus diesem Checkout und dem festgelegten Git-Stand des zweiten Unterrichtstags. [Abnahme der Phasen](docs/vorab-abnahme.md) · [Materialübergabe](docs/work-uebergabe.md)
+
 # Fallakte · Laura am 02.12.2026
 
 Die Offline-Datei führt auf Förder, ESA, MSA und AHR durch fünf Beratungsschritte. Laura bringt weitere Anliegen ins Gespräch. Das Team prüft seinen vollständigen Rat in jedem Abschnitt erneut. Die Lehrkraft kann die gemeinsame Sicherung jederzeit über den Zugang im Seitenfuß öffnen.

@@ -39,22 +39,46 @@ def document(bank):
 def export(bank):
     person=bank['person']
     (OUT/f'{person}-Material.json').write_text(json.dumps(bank,ensure_ascii=False,indent=2)+'\n')
-    lines=[f'# {person} · Aufgaben und Rückwege',bank['buildCommit']]
-    def items(value):
-        if isinstance(value,dict):
-            for k,v in value.items():
-                lines.append('**'+k+'**');items(v)
-        elif isinstance(value,list):
-            for entry in value:items(entry)
-        else:lines.append(str(value))
-    for i,s in enumerate(bank['stages'],1):
-        lines+=['## '+person+' '+str(i)+' – '+s['title']]
-        for t,name in bank['levels'].items():
-            lines+=['### '+name,*s['message'][t],s['task'][t]]
-            if t in ('MSA','AHR'):lines.extend([s['paper'][t],s['return']])
-        for k in ('choices','answers','code','feedback','replies','questions','helpBefore','hints','shortSource','checks','ref'):
-            if k in s:
-                lines.append('**'+{'answers':'Aussagen A, B, C','code':'Lösungsbuchstabe','checks':'Prüfung je Strategie','ref':'Kartenanker'}.get(k,k)+'**');items(s[k])
-    for k in ('articles','studies','cards'):
-        if k in bank:items(bank[k])
+    lines=[f'# {person} · Material für Work',f"Inhaltsbank {bank['version']} · Commit {bank['buildCommit']}",
+           'Die Reihenfolge und Buchstaben unten entsprechen der App. Förder und ESA prüfen ihre Gründe im Gespräch. MSA und AHR begründen auf Papier und prüfen den Buchstaben im Chat.']
+    for index,stage in enumerate(bank['stages'],1):
+        lines+=['## '+person+' '+str(index)+' – '+stage['title'], 'Kennung '+stage['id']]
+        if stage['previousFacts']:lines+=['**Bisher im Fall**',*stage['previousFacts']]
+        for tier,label in bank['levels'].items():
+            lines+=['### '+label,*stage['message'][tier],stage['task'][tier]]
+            if tier in ('MSA','AHR'):lines+=[stage['paper'][tier],stage['return']]
+        lines+=['**Hilfe vor der Auswahl**',*stage['helpBefore']]
+        contexts=stage['choices'] or {'DONE':'Quelle auswerten'}
+        for key,label in contexts.items():
+            check=stage.get('checks',{}).get(key,stage)
+            lines+=['### '+label]
+            if key!='DONE':
+                method,section=check['ref']
+                card=bank['cards'][method]
+                lines+=['**Kartenstelle** '+card['title']+' · '+card['sections'][section]['title']]
+            else:
+                lines+=['**Materialstelle** Artikel und Studien öffnen. Siehe Lesematerial am Ende.',stage['shortSource']]
+            lines+=['**Förder** · Aussagen '+' und '.join(check['short']),
+                    '**ESA, MSA, AHR** · Aussagen A, B und C']
+            for letter,answer,feedback in zip('ABC',check['answers'],check['feedback'],strict=True):
+                lines+=[f'- {letter} · {answer}',f'  Rückmeldung · {feedback}']
+            lines+=['**Zutreffender Fachanker** '+check['code']]
+            if key!='DONE' and key not in stage['allowed']:
+                lines+=['Der Fachanker kann zutreffen und der Vorschlag dennoch unvollständig sein oder eine Grenze verletzen. Die App fordert zur erneuten Wahl auf.']
+            lines+=['**Fallbezogene Rückmeldung** '+stage['replies'][key]]
+            questions=check.get('questions',stage['questions'])
+            lines+=['**Rückfragen**',*[q+' — '+a for q,a in questions]]
+            hints=stage['hints'].get(key,stage['helpBefore']) if key!='DONE' else stage['helpBefore']
+            lines+=['**Hilfe im aktuellen Schritt**',*hints]
+    if 'articles' in bank:
+        lines+=['## Lesematerial zur Forschung']
+        for tier,article in bank['articles'].items():
+            lines+=['### '+bank['levels'][tier]+' · '+article['title'],*article['paragraphs']]
+            lines += [word+' · '+definition for word,definition in article['glossary'].items()]
+        for study in bank['studies']:lines+=['### '+study['label'],study['body'],study['meaning'],study['source']]
+    lines+=['## Infokarten']
+    for card in bank['cards'].values():
+        lines+=['### '+card['title']]
+        for passage in card['sections'].values():
+            lines+=['**'+passage['title']+'**',passage['text'],'Kurzfassung · '+passage['shortText']]
     (OUT/f'{person}-Material.md').write_text('\n\n'.join(lines)+'\n')

@@ -15,6 +15,8 @@ def package():
     from nachrichtenbericht import material
     source08=REF/'build/08-12/Aufgabenbank.json'
     with ZipFile(TARGET/'Work-Material.zip','w',ZIP_DEFLATED) as z:
+        z.write(ROOT/'docs/work-uebergabe.md','Start hier.md')
+        z.write(ROOT/'docs/tom-quellen.md','02-12/Tom-Quellen.md')
         for p in sorted(OUT.glob('*Material*')):z.write(p,'02-12/'+p.name)
         for p in sorted((ROOT/'dist/Uebungsakte').glob('*Material*')):z.write(p,'Uebung/'+p.name)
         z.write(source08,'08-12/Aufgabenbank.json')
@@ -30,6 +32,9 @@ def package():
                 selected=[p for p in shots if p.name.startswith(engine)]
                 assert selected,(folder,engine)
                 for p in selected[:2]:z.write(p,f'{folder.name}/{p.name}')
+    metadata=json.loads((TARGET/'Buildnachweis.json').read_text())
+    audit=(ROOT/'docs/vorab-abnahme.md').read_text().replace('COMMIT_DES_PAKETS','`'+metadata['commit']+'`')
+    (TARGET/'Abnahme-und-Uebergabe.md').write_text(audit)
     for p in TARGET.glob('*.zip'):
         with ZipFile(p) as z:assert z.testzip() is None
 if __name__=='__main__':package()
