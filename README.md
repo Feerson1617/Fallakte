@@ -1,4 +1,13 @@
-# Fallakte. Zwei Unterrichtstage
+# Fallakte · Laura-Prototyp für den 02.12.2026
+
+Auf dem Zweig `entwicklung/0212-neukonzeption` startet die neue Beratung mit Latexallergie und dem Wunsch nach zuverlässiger Schwangerschaftsverhütung. In Laura 2 kommt der Infektionsschutz hinzu. Beide Abschnitte sind für Förder, ESA, MSA und AHR vorgesehen. Laura 3–5 stehen als Spezifikation für Work bereit.
+
+`python scripts/build.py` erzeugt die offline ausführbare Datei **dist/Runde-1/Fallakte.html** und beide Fassungen des Materialvertrags. Die vollständigen Ausgaben des getesteten Commits stehen im GitHub-Actions-Artefakt **Fallakte-Runde-1**. Für die Unterrichtserprobung sind keine externen Ressourcen erforderlich. [Umsetzungsstand und Wiedereinstieg](docs/0212-umsetzungsstand.md) · [Fachlich-didaktische Prüfung](docs/0212-fachpruefung-runde1.md)
+
+## Gemeinsame Anwendung im zugrunde liegenden Veröffentlichungsstand
+
+Die nachfolgende Dokumentation beschreibt die bisherige Auslieferung auf dem Ausgangszweig `entwicklung/gemeinsame-tagesauswahl` (Referenz `ec94147`). Der weiterentwickelte zweite Tag wird separat auf `entwicklung/laura-nachrichten-08-12` gepflegt.
+
 
 Die Anwendung startet mit „Wähle deinen Unterrichtstag.“ Beide Datumsfelder zeigen dieselbe 19-jährige Laura. Am 02.12. öffnet sich die kompakte Fallübersicht. Am 08.12. ist ein eigener Einstieg für das noch in Prüfung befindliche Modul vorbereitet.
 

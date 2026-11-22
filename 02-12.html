@@ -2,70 +2,66 @@
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#183c37">
-  <title>Fallakte · Beratungsraum</title>
-  <link rel="stylesheet" href="app/style.css">
+  <meta name="viewport" content="width=device-width,initial-scale=1,interactive-widget=resizes-content">
+  <meta name="theme-color" content="#173e35">
+  <title>Fallakte · Beratung am 02.12.2026</title>
+  <link rel="stylesheet" href="module/0212/start.css">
+  <link rel="stylesheet" href="module/0212/beratung.css">
+  <link rel="stylesheet" href="module/0212/material.css">
 </head>
 <body>
-<header class="top">
-  <div class="bar">
-    <a href="#home" class="brand" id="brand"><span class="mark" data-icon="chat"></span>Fallakte<span class="brand-dot">.</span></a>
-    <div class="room-identity" id="room-identity" hidden>
-      <span class="avatar" id="avatar" aria-hidden="true"></span>
-      <div><h1 id="step" tabindex="-1"></h1><div class="room-meta" id="room-level"></div></div>
-    </div>
-    <nav aria-label="Arbeitsbereiche">
-      <button id="home-nav"><i data-icon="folder"></i><span id="home-label">Fallakten</span></button>
-      <button id="cards-nav"><i data-icon="book"></i>Infokarten</button>
-    </nav>
-    <button id="open-recovery">Nach Neustart weitermachen</button>
-  </div>
-</header>
-<main>
-  <section id="home" class="shell" aria-label="Fallübersicht">
-    <div class="level-box">
-      <h1 id="level-title">Wähle dein Niveau</h1>
-      <div id="levels" aria-labelledby="level-title" role="group"></div>
-    </div>
-    <div class="main-case">
-      <div id="primary-case"></div>
-      <section class="assignment" aria-labelledby="assignment-title">
-        <h2 id="assignment-title">Dein Arbeitsauftrag</h2>
-        <p>Lies Lauras Nachrichten. Nutze deine Infokarten. Prüfe deinen Rat. Die Hilfe unterstützt dich.</p>
-        <p>Markiere auf deinem Laufzettel immer den Abschnitt, den du beginnst.</p>
-      </section>
-    </div>
-    <p id="case-order">Beginne mit Laura. Celina und Tom sind Zusatzfälle.</p>
-    <div id="case-list"></div>
-  </section>
-  <section id="recovery" class="shell secondary" aria-labelledby="recovery-title" hidden>
-    <h1 id="recovery-title" tabindex="-1">Nach Neustart weitermachen</h1>
-    <p>Schau auf deinen Laufzettel. Du beginnst am markierten Abschnitt neu.</p>
-    <div id="recovery-picker"></div>
-    <button class="text-button" id="leave-recovery">Zur Fallübersicht</button>
-  </section>
-  <section id="room" class="shell" hidden>
-    <div class="pane-switch" role="group" aria-label="Arbeitsansicht">
-      <button id="read-chat" aria-controls="chat-panel"><i data-icon="chat"></i> Chat lesen</button>
-      <button id="write-answer" aria-controls="answer-panel"><i data-icon="pencil"></i> Antwort geben</button>
-      <button id="chat-help" aria-controls="support-panel"><i data-icon="help"></i> Hilfe</button>
-    </div>
-    <div class="workspace">
-      <section class="chat panel" id="chat-panel" aria-label="Beratungsgespräch">
-        <div id="history" role="log" aria-live="off" aria-label="Bisherige Nachrichten" tabindex="0"></div>
-        <button id="latest" class="latest" hidden><i data-icon="down"></i> Zur aktuellen Nachricht</button>
-      </section>
-      <section class="work panel" id="answer-panel" aria-label="Antwortbereich"><p id="card-cue" hidden></p><div id="work"></div><section id="support-panel" aria-label="Hilfen zum aktuellen Schritt" hidden></section><div id="help-dock" class="help-controls" hidden></div></section>
-    </div>
-  </section>
-  <section class="shell secondary" id="resources" hidden><span class="eyebrow"><i data-icon="book"></i> Nachschlagen</span><div class="card-nav"><h1 tabindex="-1">Infokarten</h1><button class="primary return">Zurück</button></div><p>Nutzt zuerst eure eigenen Infokarten. Hier könnt ihr nachlesen. Beim Schwangerschaftsschutz vergleichen alle vier Karten ein Jahr Anwendung im Alltag.</p><div id="method-cards"></div></section>
-</main>
-<script src="data/dialogdaten.js"></script>
-<script src="data/lernhilfen.js"></script>
-<script src="app/ui.js"></script>
-<script src="app/lernhilfen.js"></script>
-<script src="app/wiederaufnahme.js"></script>
-<script src="app/app.js"></script>
-<script src="app/navigation.js"></script>
-</body></html>
+  <nav id="lokale-navigation" aria-label="Arbeitsbereiche">
+    <span class="wortmarke">Fallakte<span>.</span></span>
+    <button type="button" data-nav="home">Fallakten</button>
+    <button type="button" data-nav="resources">Infokarten</button>
+    <button type="button" data-nav="recovery" hidden>Abschnitt auswählen</button>
+    <button type="button" data-nav="summary">Gemeinsame Sicherung</button>
+  </nav>
+  <main>
+    <section id="start" aria-labelledby="start-titel">
+      <p class="datum">Mittwoch, 02.12.2026</p>
+      <h1 id="start-titel" tabindex="-1">Fallakten</h1>
+      <div id="niveauplatz"></div>
+      <article class="hauptfall">
+        <img src="assets/laura.webp" alt="" width="160" height="160">
+        <div>
+          <p class="fallart">Pflichtfall</p>
+          <h2>Laura, 19</h2>
+          <p>Greife deinen ersten Rat vom Laufzettel im Gespräch mit Laura auf.</p>
+          <div class="startwege">
+            <button id="weiterarbeiten" class="hauptaktion" hidden>Weiterarbeiten</button>
+            <button id="neu" class="hauptaktion" disabled>Neu beginnen</button>
+            <button id="abschnitt-wahl">Abschnitt auswählen</button>
+          </div>
+        </div>
+      </article>
+      <h2 class="vertiefungen">Freiwillige Vertiefungen</h2>
+      <div class="reserven">
+        <button data-optional="Tom" disabled><img src="assets/tom.webp" alt="" width="64" height="64"><span>Tom</span></button>
+        <button data-optional="Celina" disabled><img src="assets/celina.webp" alt="" width="64" height="64"><span>Celina</span></button>
+      </div>
+    </section>
+    <section id="einstieg" hidden aria-labelledby="einstieg-titel">
+      <h1 id="einstieg-titel" tabindex="-1">Abschnitt auswählen</h1>
+      <p>Wähle die Stelle auf deinem Laufzettel. Dort beginnst du mit einem neuen Fachcheck.</p>
+      <div id="wiederniveau"></div>
+      <fieldset><legend>Fall</legend><div class="tasten" id="wiederfall"></div></fieldset>
+      <div id="abschnitte"></div>
+      <button id="abbrechen" type="button">Zurück</button>
+    </section>
+    <section id="beratung" hidden aria-label="Beratung mit Laura"></section>
+    <div id="reserve-platz" hidden></div>
+    <p id="quellhinweis" hidden>Öffne die gebaute Datei <a href="dist/Runde-1/Fallakte.html">Fallakte.html</a>.</p>
+  </main>
+  <script id="materialvertrag" type="application/json"></script>
+  <script id="reserve" type="application/octet-stream"></script>
+  <script>
+    const source=document.getElementById('materialvertrag').textContent;
+    if (source.trim()) window.LAURA=JSON.parse(source);
+  </script>
+  <script src="module/0212/material.js"></script>
+  <script src="module/0212/beratung.js"></script>
+  <script src="module/0212/reserve.js"></script>
+  <script src="module/0212/start.js"></script>
+</body>
+</html>

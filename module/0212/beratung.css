@@ -1,0 +1,46 @@
+#beratung{max-width:72rem;margin:0 auto;color:#213d36}
+#beratung .beratung-kopf{display:flex;align-items:baseline;gap:.65rem;flex-wrap:wrap;margin-bottom:.65rem}
+#beratung-stage{font:normal clamp(1.45rem,3.3vw,2rem)/1.13 "DM Serif Text",Georgia,serif;margin:0}
+#beratung-tier{color:#4a6256;font-weight:650}
+#beratung .beratung-spalten{display:grid;grid-template-columns:minmax(0,.87fr) minmax(0,1.13fr);align-items:start;gap:clamp(.65rem,1.7vw,1.25rem)}
+#beratung-verlauf{max-height:min(66vh,38rem);max-height:min(66dvh,38rem);overflow:auto;overscroll-behavior:contain;scroll-padding:.5rem;border-radius:.7rem;background:#eaf0e7;padding:.65rem .8rem}
+#beratung .abschnittsmarke{font-size:.875rem;font-weight:700;color:#4c6559;margin:.35em 0}
+#beratung .chat-entry{margin:.4rem 0;padding:.55rem .75rem;border-radius:.65rem .65rem .65rem .15rem;background:#fffef9;max-width:95%;overflow-wrap:anywhere;border:1px solid #cbd5c9}
+#beratung .chat-entry[data-speaker=Team]{margin-inline-start:auto;background:#dbe9df;border-radius:.65rem .65rem .15rem .65rem}
+#beratung .chat-entry strong{font-size:.85rem;color:#415e4e}
+#beratung .chat-entry p{margin:.12rem 0 0}
+#beratung .beratung-arbeit{min-width:0}
+#beratung legend,#beratung h3,#beratung .beratung-arbeit h2{font-size:1.1rem;font-weight:700;margin:0 0 .3rem;line-height:1.3}
+#beratung .beratung-arbeit p{line-height:1.42;margin:.3rem 0}
+#beratung fieldset{border:0;min-width:0;margin:0;padding:0}
+#beratung .bisher,#beratung .rueckkehr{color:#425d50}
+#beratung .strategie-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11em),1fr));gap:.35rem}
+#beratung button,#beratung summary,#beratung input{font:inherit;min-height:44px;max-width:100%;color:inherit}
+#beratung button,#beratung summary{cursor:pointer}
+#beratung button{border:1px solid #9eafa3;border-radius:.55rem;background:#fffef9;padding:.42rem .68rem;line-height:1.28;overflow-wrap:anywhere}
+#beratung button:disabled{opacity:.5;cursor:default}
+#beratung .strategie,#beratung .grund{text-align:start}
+#beratung [aria-pressed=true]{border-color:#245845;background:#deede1;box-shadow:inset .21rem 0 #245845}
+#beratung summary{align-content:center;color:#315745;font-weight:650;width:fit-content}
+#beratung .fachcheck{margin:.55rem 0 .35rem;border-top:1px solid #bdcabe;padding-top:.55rem}
+#beratung .fachcheck legend{float:left;width:100%;padding-top:.5rem}
+#beratung .grund{display:block;width:100%;margin:.3rem 0}
+#beratung .grund:first-of-type{clear:both}
+#beratung .fachmeldung:not(:empty){padding:.48rem .65rem;margin:.4rem 0;border-left:.22rem solid #57735c;background:#eaf2e7}
+#beratung .fachmeldung[data-type=A]{border-color:#995036;background:#f8eee7}
+#beratung .fachmeldung[data-type=B]{border-color:#9b692d;background:#fbf2df}
+#beratung .code-form,#beratung .beratung-tools{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem .5rem}
+#beratung .code-form{margin-top:.45rem}
+#beratung .code-form label{font-weight:650}
+#beratung .code-form input{width:4rem;padding:.25rem .45rem;border:1px solid #758b7d;border-radius:.4rem;background:white}
+#beratung .senden,#beratung .ergaenzen{margin:.22rem .35rem .22rem 0}
+#beratung .senden{background:#265646;color:#fff;border-color:#265646;font-weight:700}
+#beratung .beratung-tools{margin-top:.35rem}
+#beratung .beratung-tools button{color:#284d42;border-color:transparent;text-decoration:underline;text-underline-offset:.16em;background:transparent}
+#beratung :focus-visible{outline:3px solid #ad6032;outline-offset:2px}
+@media(max-width:44rem){
+  #beratung .beratung-spalten{grid-template-columns:minmax(0,1fr)}
+  #beratung-verlauf{max-height:min(11.5rem,34vh);max-height:min(11.5rem,34dvh)}
+}
+
+#beratung .abschnittshinweis{margin:0 0 .55rem;padding:.4rem .6rem;border-left:.18rem solid #728d72;background:#eff3eb}

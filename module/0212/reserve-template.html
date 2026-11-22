@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="de" class="mit-tagesnavigation">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Freiwillige Vertiefung</title>
+  <style>/* RESERVE_STYLE */</style>
+</head><body><main>
+  <section id="room" class="shell" hidden>
+    <div id="room-identity" hidden>
+      <span id="avatar" aria-hidden="true"></span>
+      <h1 id="step" tabindex="-1"></h1><span id="room-level"></span>
+    </div>
+    <div class="pane-switch" role="group" aria-label="Arbeitsansicht">
+      <button id="read-chat" aria-controls="chat-panel"><i data-icon="chat"></i> Chat lesen</button>
+      <button id="write-answer" aria-controls="answer-panel"><i data-icon="pencil"></i> Antwort geben</button>
+      <button id="chat-help" aria-controls="support-panel"><i data-icon="help"></i> Hilfe</button>
+    </div>
+    <div class="workspace">
+      <section class="chat panel" id="chat-panel" aria-label="Beratungsgespräch">
+        <div id="history" role="log" aria-live="off" aria-label="Bisherige Nachrichten" tabindex="0"></div>
+        <button id="latest" class="latest" hidden><i data-icon="down"></i> Zur aktuellen Nachricht</button>
+      </section>
+      <section class="work panel" id="answer-panel" aria-label="Antwortbereich"><p id="card-cue" hidden></p><div id="work"></div><section id="support-panel" aria-label="Hilfen zum aktuellen Schritt" hidden></section><div id="help-dock" class="help-controls" hidden></div></section>
+    </div>
+  </section>
+  <section class="shell secondary" id="resources" hidden><span class="eyebrow"><i data-icon="book"></i> Nachschlagen</span><div class="card-nav"><h1 tabindex="-1">Infokarten</h1><button class="primary return">Zurück</button></div><p>Nutzt zuerst eure eigenen Infokarten. Hier könnt ihr nachlesen. Beim Schwangerschaftsschutz vergleichen alle vier Karten ein Jahr Anwendung im Alltag.</p><div id="method-cards"></div></section>
+</main>
+<script>/* RESERVE_SCRIPTS */</script>
+<script>
+'use strict';
+let port;
+function home() { port?.postMessage({type:'home'}); }
+function show(id) {
+  if (screen==='room') {
+    current.scroll=$('history').scrollTop;
+    current.workScroll=$('work').scrollTop;
+    current.glossaryOpen=$('history').querySelector('.article details')?.open;
+  }
+  screen=id;
+  document.documentElement.classList.toggle('consulting',id==='room');
+  $('room-identity').hidden=id!=='room';
+  $('room').hidden=id!=='room';
+  $('resources').hidden=id!=='resources';
+  window.scrollTo(0,0);
+}
+function publish() {
+  if(current && port) port.postMessage({type:'status',person:current.person,tier:current.level,
+    abschnitt:current.index+1,view:screen});
+}
+const changes=new MutationObserver(publish);
+changes.observe($('step'),{childList:true});
+changes.observe($('resources'),{attributes:true,attributeFilter:['hidden']});
+$('resources').querySelector('.return').onclick=resume;
+addEventListener('message',event=>{
+  if(event.source!==parent || event.data!=='reserve0212:verbinden' || !event.ports[0]) return;
+  port?.close();
+  port=event.ports[0];
+  port.onmessage=({data})=>{
+    if(data.type==='cards' && current) { openCards(); return; }
+    if(data.type!=='open' || !Object.hasOwn(FALLAKTE.cases,data.person) || !Object.hasOwn(FALLAKTE.meta.levels,data.tier)) return;
+    if(data.abschnitt!==undefined && (!Number.isInteger(data.abschnitt) || data.abschnitt<1 || data.abschnitt>FALLAKTE.cases[data.person].length)) return;
+    openCase(data.person,data.tier,data.abschnitt===undefined?undefined:data.abschnitt-1);
+    publish();
+  };
+  port.postMessage({type:'ready'});
+});
+</script>
+<script type="text/plain" id="font-licenses">RESERVE_LICENSES</script>
+</body></html>

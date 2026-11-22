@@ -1,0 +1,58 @@
+[
+  {
+    "browser": "chromium",
+    "format": "HTML",
+    "sha256": "f4ae15e6af9935686dd675fe4cd45fc50b3a906839006809e7f54be46044839f",
+    "vorwahl": [
+      "ESA"
+    ],
+    "vor_ungepruefter_sendung": "Eure Nachricht\n\nWir schlagen dir ein Kondom vor.",
+    "nach_sendung_ohne_fachcheck": "Wie viel Schutz kann ich davon erwarten?",
+    "entscheidungen": [
+      "Vorschlag beibehalten",
+      "Vorschlag ändern"
+    ],
+    "vorschau_ohne_neue_sendung": "Laura zu eurem Rat: „An das Kondom müssten wir dann bei jedem Sex denken.“",
+    "weiter_ohne_neuen_check": "Laura 3 von 5",
+    "kupfer_zu_hormon": {
+      "vorher": "Laura auf eure Rückfrage\n\nMein Tag läuft oft anders als geplant. Dann vergesse ich feste Termine leicht.",
+      "nachher": "Laura auf eure Rückfrage\n\nMein Tag läuft oft anders als geplant. Dann vergesse ich feste Termine leicht.",
+      "vorherige_antwort_aktiv": true
+    },
+    "entwurf_vor_hilfe": "Wir möchten dir die Hormonspirale vorschlagen.",
+    "hinweis_5": "So kannst du weiterarbeitenTippe auf „Kondom als Entwurf öffnen“. Prüfe den Entwurf. Passt er, tippe auf „Nachricht senden“.",
+    "aktion_hilfe_5": "Kondom als Entwurf öffnen",
+    "entwurf_beim_lesen": "Wir möchten dir die Hormonspirale vorschlagen.",
+    "entwurf_nach_hilfsaktion": "Wir möchten dir ein Kondom vorschlagen.",
+    "l2_kupfer_rueckmeldung": "Prüfe deinen Grund. Behalte den Vorschlag bei oder ändere ihn.",
+    "fehler": []
+  },
+  {
+    "browser": "webkit",
+    "format": "SCORM",
+    "sha256": "f4ae15e6af9935686dd675fe4cd45fc50b3a906839006809e7f54be46044839f",
+    "vorwahl": [
+      "ESA"
+    ],
+    "vor_ungepruefter_sendung": "Eure Nachricht\n\nWir schlagen dir ein Kondom vor.",
+    "nach_sendung_ohne_fachcheck": "Wie viel Schutz kann ich davon erwarten?",
+    "entscheidungen": [
+      "Vorschlag beibehalten",
+      "Vorschlag ändern"
+    ],
+    "vorschau_ohne_neue_sendung": "Laura zu eurem Rat: „An das Kondom müssten wir dann bei jedem Sex denken.“",
+    "weiter_ohne_neuen_check": "Laura 3 von 5",
+    "kupfer_zu_hormon": {
+      "vorher": "Laura auf eure Rückfrage\n\nMein Tag läuft oft anders als geplant. Dann vergesse ich feste Termine leicht.",
+      "nachher": "Laura auf eure Rückfrage\n\nMein Tag läuft oft anders als geplant. Dann vergesse ich feste Termine leicht.",
+      "vorherige_antwort_aktiv": true
+    },
+    "entwurf_vor_hilfe": "Wir möchten dir die Hormonspirale vorschlagen.",
+    "hinweis_5": "So kannst du weiterarbeitenTippe auf „Kondom als Entwurf öffnen“. Prüfe den Entwurf. Passt er, tippe auf „Nachricht senden“.",
+    "aktion_hilfe_5": "Kondom als Entwurf öffnen",
+    "entwurf_beim_lesen": "Wir möchten dir die Hormonspirale vorschlagen.",
+    "entwurf_nach_hilfsaktion": "Wir möchten dir ein Kondom vorschlagen.",
+    "l2_kupfer_rueckmeldung": "Prüfe deinen Grund. Behalte den Vorschlag bei oder ändere ihn.",
+    "fehler": []
+  }
+]

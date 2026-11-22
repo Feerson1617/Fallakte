@@ -1,19 +1,21 @@
-name: Gemeinsame Unterrichtstage
+name: Fallakte · Laura Runde 1
 on:
   pull_request:
   push:
-    branches: [main, entwicklung/gemeinsame-tagesauswahl]
+    branches: [main, entwicklung/gemeinsame-tagesauswahl, entwicklung/0212-neukonzeption]
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  unterricht:
+  referenz-02:
+    name: Regression des bisherigen 02.12.-Stands
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ec94147fd8d61442305a0281f7df032f3162362c
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -30,23 +32,50 @@ jobs:
       - run: python scripts/review.py
       - run: python tests/tagesauswahl.py
       - run: python scripts/tagesbericht.py
+
+  nachrichten-08:
+    name: Originalprüfungen des geschützten 08.12.-Stands
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 5d27cc3d61db386468d3f851347690b33b5d86fe
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: tests/requirements.txt
+      - run: python -m pip install -r tests/requirements.txt
+      - run: python -m playwright install --with-deps chromium webkit
+      - run: python scripts/build.py
+      - run: python tests/nachrichten.py
+
+  prototyp:
+    name: Neuer Prototyp, Begründungsprüfung und Tageswechsel
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: tests/requirements.txt
+      - run: python -m pip install -r tests/requirements.txt
+      - run: python -m playwright install --with-deps chromium webkit
+      - run: python scripts/build.py
+      - run: python tests/runde1_vertrag.py
+      - run: python tests/runde1_browser.py
+      - run: python tests/runde1_karten.py
+      - run: python tests/runde1_bestand.py
+      - run: python scripts/runde1_bericht.py
       - uses: actions/upload-artifact@v4
         with:
-          name: Fallakte-Version-A-02-12
-          path: dist/Version-A/
-          if-no-files-found: error
-          retention-days: 30
-      - uses: actions/upload-artifact@v4
-        with:
-          name: Fallakte-Version-B-08-12
-          path: dist/Version-B/
-          if-no-files-found: error
-          retention-days: 30
-      - uses: actions/upload-artifact@v4
-        with:
-          name: Fallakte-Abnahme
-          path: |
-            dist/Fallakte-Pruefbericht.md
-            dist/Fallakte-Sichtpruefung.zip
+          name: Fallakte-Runde-1
+          path: dist/Runde-1/
           if-no-files-found: error
           retention-days: 30

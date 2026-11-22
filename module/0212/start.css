@@ -1,0 +1,41 @@
+@font-face{font-family:"DM Sans";src:url("../../assets/dmsans.ttf");font-weight:100 1000}
+@font-face{font-family:"DM Serif Text";src:url("../../assets/dmseriftext.ttf")}
+:root{font:100%/1.45 "DM Sans",system-ui,sans-serif;color:#213c34;background:#f7f6ef;color-scheme:light}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;touch-action:manipulation;min-height:44px;min-width:44px;border-radius:.5rem;border:1px solid #9dac9c;background:#fffefa;padding:.44rem .8rem;text-align:inherit}
+button:disabled{opacity:.56;cursor:default}
+button:enabled:hover{border-color:#315a47;background-color:#e9efe5}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #a64c27;outline-offset:2px}
+main{max-width:72rem;margin:auto;padding:clamp(.65rem,2.5vw,1.6rem)}
+#lokale-navigation{display:flex;flex-wrap:wrap;align-items:center;gap:.22rem;padding:.12rem max(.5rem,calc((100vw - 70rem)/2));background:#183c37;color:#fffdf7}
+#lokale-navigation button{color:inherit;background:transparent;border-color:transparent;padding-inline:.65rem}
+#lokale-navigation button:is(:hover,[aria-current=page]){background:#31554a}
+.wortmarke{font:1.46rem "DM Serif Text",Georgia,serif;padding:0 .48rem}
+.wortmarke span{color:#e7a478}
+#start,#einstieg{max-width:60rem;margin-inline:auto}
+#start h1,#einstieg h1{font:normal clamp(1.8rem,4vw,2.65rem)/1.12 "DM Serif Text",Georgia,serif;letter-spacing:-.025em;margin:.15rem 0 .65rem}
+#start p,#einstieg p{margin:.15rem 0 .45rem}
+.datum,.fallart{color:#4c6658;font-size:.92rem;font-weight:700}
+#start fieldset,#einstieg fieldset{border:0;margin:.75rem 0;padding:0;min-width:0}
+#start legend,#einstieg legend{font-weight:700;padding:0;margin-bottom:.23rem}
+.tasten,.startwege{display:flex;flex-wrap:wrap;gap:.4rem}
+.niveaus{display:inline-flex;flex-wrap:wrap;gap:.15rem;padding:.16rem;background:#fffef9;border-radius:.65rem;border:1px solid #b4bfb1}
+.niveaus button{border:none}
+.niveaus button[aria-pressed=true],.tasten button[aria-pressed=true],.hauptaktion:enabled{background:#29543f;color:white}
+.hauptaktion:enabled:hover{background:#193f2e;color:white}
+.hauptfall{display:grid;grid-template-columns:clamp(6rem,18vw,11rem) minmax(0,1fr);align-items:center;gap:clamp(.7rem,2.5vw,1.6rem);padding:.85rem;background:#fffef9;border:1px solid #b6c2b5;border-radius:1rem}
+.hauptfall img{width:100%;height:auto;border-radius:.65rem}
+.hauptfall h2{font:normal clamp(1.6rem,3.6vw,2.5rem)/1.16 "DM Serif Text",Georgia,serif;margin:.17rem 0}
+.vertiefungen{font-size:1.05rem;margin:1rem 0 .4rem}
+.reserven{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+.reserven button{display:flex;align-items:center;gap:.75rem;background:#faf9f3}
+.reserven img{border-radius:.42rem;width:3.1rem;height:3.1rem}
+.reserven span{font-weight:700}
+#einstieg{max-width:43rem}
+#abschnitte{display:grid;gap:.4rem;max-width:36rem;margin:.9rem 0}
+#reserve-platz iframe{width:100%;display:block;height:calc(100dvh - 5rem);min-height:18rem;border:0}
+body:has(#reserve-platz:not([hidden])) main{max-width:none;padding:0}
+@media(max-width:34rem){.wortmarke{display:none}.hauptfall{grid-template-columns:4.8rem 1fr;align-items:start}.hauptfall img{grid-row:span 2}.startwege{margin-top:.45rem}.reserven img{width:2.5rem;height:2.5rem}}

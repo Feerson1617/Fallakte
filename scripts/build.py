@@ -74,5 +74,6 @@ if __name__ == '__main__':
     parser.add_argument('--version', choices=('A', 'B'))
     requested = parser.parse_args().version
     first = build_first_day()
-    for version in ([requested] if requested else ['A', 'B']):
-        release(version, first)
+    # Round 1 distributes the standalone prototype. Explicit variants are integration fixtures.
+    if requested:
+        release(requested, first)
