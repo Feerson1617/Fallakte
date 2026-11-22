@@ -2,7 +2,7 @@ name: Fallakte · Laura Runde 2A
 on:
   pull_request:
   push:
-    branches: [main, entwicklung/gemeinsame-tagesauswahl, entwicklung/0212-neukonzeption]
+    branches: [main, entwicklung/gemeinsame-tagesauswahl, entwicklung/0212-neukonzeption, integration/vorabkandidat-02-und-08]
   workflow_dispatch:
 permissions:
   contents: read
@@ -88,3 +88,31 @@ jobs:
           path: dist/Runde-1/
           if-no-files-found: error
           retention-days: 30
+
+  vorabkandidat:
+    if: github.ref == 'refs/heads/integration/vorabkandidat-02-und-08'
+    name: Gemeinsamer Vorabkandidat im Browser und simulierten LMS
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: tests/requirements.txt
+      - run: python -m pip install -r tests/requirements.txt
+      - run: python -m playwright install --with-deps chromium webkit
+      - run: python scripts/vorabkandidat.py
+      - run: python tests/vorab_02.py
+      - run: python tests/vorab_08.py
+      - run: python tests/vertiefungen.py
+      - run: python tests/uebung.py
+      - run: python scripts/kandidatenpaket.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Fallakte-Vorabkandidat
+          path: dist/Vorabkandidat/
+          if-no-files-found: error
