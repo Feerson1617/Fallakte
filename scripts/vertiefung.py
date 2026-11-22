@@ -18,15 +18,23 @@ def make_bank(person):
         if person=='Celina':
             record['task']={**record['task'],'Foerder':'Welcher Grund passt zu diesem Vorschlag?','ESA':'Prüfe den Vorschlag an Celinas Anliegen. Wähle den passenden Grund.'}
         record['choices']=original['options'] if original['type']=='recommend' else {}
+        if person=='Tom' and record['choices']:
+            refs={'K':'alltag','P':'wirkung','Cu':'einlage','H':'einlage'}
+            record['checks']={}
+            for strategy in record['choices']:
+                method=strategy.split('+')[-1]
+                context={k:record[k] for k in ('answers','code','short','feedback')}
+                record['checks'][strategy]={**context,'ref':[method,refs[method]]}
         record['hints']=original['hints'].copy()
         for key,context in record.get('checks',{}).items():
             method,section=context['ref']
             card=laura['cards'][method]
-            record['hints'][key]=['Lies '+card['title']+' · '+card['sections'][section]['title']+'.',context['answers']['ABC'.index(context['code'])]]
+            fact=original['hints'][key][-1] if person=='Tom' else context['answers']['ABC'.index(context['code'])]
+            record['hints'][key]=['Lies '+card['title']+' · '+card['sections'][section]['title']+'.',fact]
         record['return']='Kehre zum Gespräch zurück. Gib den Buchstaben der fachlich passenden Aussage ein.'
         record['paper']={t:f"Laufzettel · {person} {len(records)+1} – {record['title']}. "+task for t,task in record['task'].items()}
         records.append(record)
-    bank={'version':person.lower()+'-1.0','buildCommit':commit(),'person':person,'levels':laura['levels'],
+    bank={'version':person.lower()+('-1.1' if person=='Tom' else '-1.0'),'buildCommit':commit(),'person':person,'levels':laura['levels'],
           'stages':records,'cards':laura['cards']}
     if person=='Tom':
         bank.update(articles=old['tom_articles'],studies=old['research'])

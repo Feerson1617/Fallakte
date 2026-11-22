@@ -22,8 +22,14 @@ def tom(p,tier,engine):
     for i,(truth,wrong) in enumerate([('B','A'),('C','A'),('A','B')]):
         f=enter(p,'Tom',tier,i);expect(f.locator('#step')).to_have_text(f'Tom {i+1} von 3')
         if i==0:
-            f.locator('#method-P').click();answer(f,tier,truth);expect(f.locator('#send')).to_have_count(0)
-            f.locator('#edit').click();f.locator('#method-K').click()
+            for key in ('P','Cu','H','K+P','K+Cu','K+H','K'):
+                if f.locator('#edit').is_visible():f.locator('#edit').click()
+                f.locator('[id="method-'+key+'"]').click()
+                method=key.split('+')[-1]
+                section={'K':'Bei jedem Sex','P':'Hormone und Eisprung','Cu':'Einsetzen und Entscheidung','H':'Einsetzen und Entscheidung'}[method]
+                f.locator('#help').click();expect(f.locator('#reading')).to_contain_text(section);f.locator('#back').click()
+                f.locator('#source').click();expect(f.locator('#resource')).to_contain_text(section);f.locator('#back').click()
+                if key!='K':answer(f,tier,truth);expect(f.locator('#send')).to_have_count(0)
         f.locator('#help').click();expect(f.locator('#reading')).not_to_be_empty();f.locator('#back').click()
         f.locator('#ask').click();f.locator('#q0').click()
         f.locator('#source').click()
