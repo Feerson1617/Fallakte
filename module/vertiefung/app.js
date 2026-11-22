@@ -2,6 +2,7 @@
 const bank=JSON.parse(document.querySelector('#bank').textContent);
 const desk=document.querySelector('#desk'),dialog=document.querySelector('dialog'),sessions=new Map();
 let port,state,tier;
+const readingTrail=[];
 const stage=()=>bank.stages[state.index];
 function add(parent,tag,text=''){const e=document.createElement(tag);e.textContent=text;parent.append(e);return e;}
 function btn(parent,label,id,action){const b=add(parent,'button',label);b.id=id;b.onclick=action;return b;}
@@ -9,8 +10,12 @@ function fresh(index,history=[]){return {index,history,choice:'',code:'',result:
 function save(next){state=next;sessions.set(tier,next);}
 function clearChoice(key){Object.assign(state,{choice:key,code:'',result:'',valid:false,asked:'',help:0});draw();}
 function resource(title,render){
-  document.querySelector('#resource').textContent=title;
-  const body=document.querySelector('#reading');body.replaceChildren();render(body);
+  const heading=document.querySelector('#resource'),body=document.querySelector('#reading');
+  if(dialog.open){
+    if(heading.textContent===title)return;
+    readingTrail.push({title:heading.textContent,nodes:[...body.childNodes],scroll:dialog.scrollTop});
+  }
+  heading.textContent=title;body.replaceChildren();render(body);dialog.scrollTop=0;
   if(!dialog.open)dialog.showModal();
 }
 function source(){
@@ -99,7 +104,15 @@ function draw(){
   if(state.asked)add(desk,'p',state.asked);
   port?.postMessage({type:'status',person:bank.person,tier,abschnitt:state.index+1,view:'room'});
 }
-document.querySelector('#back').onclick=()=>dialog.close();
+function leaveReading(){
+  const prior=readingTrail.pop();
+  if(!prior){dialog.close();return;}
+  document.querySelector('#resource').textContent=prior.title;
+  document.querySelector('#reading').replaceChildren(...prior.nodes);dialog.scrollTop=prior.scroll;
+}
+document.querySelector('#back').onclick=leaveReading;
+dialog.oncancel=e=>{e.preventDefault();leaveReading();};
+dialog.onclose=()=>{readingTrail.length=0;};
 addEventListener('message',e=>{
   if(e.source!==parent || e.data!=='reserve0212:verbinden' || !e.ports[0])return;
   port?.close();port=e.ports[0];

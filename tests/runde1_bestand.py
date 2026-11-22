@@ -135,7 +135,7 @@ def reserve_paths(browser,engine,expected,prototype):
     page.locator('[data-nav=resources]').tap()
     expect(inner.locator('#resource')).to_contain_text('Kupfer')
     inner.locator('#back').tap()
-    inner.locator('#help').tap()
+    expect(inner.locator('#resource')).to_have_text('Hilfe')
     expect(inner.locator('dialog[open]')).to_be_visible()
     expect(inner.locator('#selected')).to_contain_text('Kupfer')
     page.locator('[data-nav=home]').tap()
