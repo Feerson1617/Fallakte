@@ -68,6 +68,13 @@ jobs:
       - run: python -m pip install -r tests/requirements.txt
       - run: python -m playwright install --with-deps chromium webkit
       - run: python scripts/build.py
+      - run: python scripts/uebung.py
+      - run: python tests/uebung.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Uebungsakte
+          path: dist/Uebungsakte/
+          if-no-files-found: error
       - run: python tests/runde1_vertrag.py
       - run: python tests/runde1_browser.py
       - run: python tests/runde2a_bedienung.py
