@@ -110,7 +110,7 @@
   }
   $('sicherung-oeffnen').onclick=()=>{
     $('lehrkraft').open=false;
-    window.Material.summary($('lehrkraft').querySelector('summary'));
+    window.Material.summary($('lehrkraft').querySelector('summary'), view==='einstieg' ? pickerTier : level);
   };
   $('neu').onclick=()=>start('L01');
   $('weiterarbeiten').onclick=()=>start(undefined,true);

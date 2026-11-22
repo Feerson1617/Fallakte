@@ -9,6 +9,9 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'dist/Runde-1'
 QA = ROOT / 'build/runde1/qa'
 CAPTIONS = {
+    'Alltag-Kombinationspille-ESA': 'Laura 3. Die Einnahmeroutine wird für die gewählte Strategie geprüft.',
+    'Schmerzen-Kupferspirale-MSA': 'Laura 4. Kupferspirale, Beschwerden und Lauras Zustimmung.',
+    'Schlussrat-AHR': 'Laura 5. Gesendeter Schlussrat nach dem erneuten Fachcheck.',
     'Falluebersicht': 'Einstiegsseite mit bewusster Niveauwahl, Laura als Pflichtfall und beiden Vertiefungen.',
     'Start-ESA': 'Laura 1 bei ESA vor der ersten Auswahl.',
     'Lehreransicht': 'Die ausdrücklich aufgerufene Übersicht für die gemeinsame Sicherung.',
@@ -30,10 +33,21 @@ def digest(path):
     return sha256(path.read_bytes()).hexdigest()
 
 
+def load_table(usage):
+    fields = ('entscheidungen','tipps','codeeingaben','papierphasen','medienwechsel','pflichtwoerter_im_blick_max')
+    rows = ['| Niveau | Ratsentscheidungen | Pflicht-Tipps | Codeeingaben | Papierphasen | Medienwechsel | Pflichtwörter zugleich, maximal |',
+            '| --- | ---: | ---: | ---: | ---: | ---: | ---: |']
+    for key in ('Foerder','ESA','MSA','AHR'):
+        measures = usage['niveaus'][key]
+        label = 'Förder' if key=='Foerder' else key
+        rows.append('| '+' | '.join([label,*(str(measures[f]) for f in fields)])+' |')
+    return '\n'.join(rows)
+
+
 def main():
     commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     app_hash = digest(OUT / 'Fallakte.html')
-    files = {k: QA / (k+'.json') for k in ('browser', 'material', 'karten')}
+    files = {k: QA / (k+'.json') for k in ('browser', 'material', 'karten', 'bedienung')}
     files['bestand'] = QA.parent / 'bestand.json'
     records = {k: json.loads(p.read_text()) for k,p in files.items()}
     for record in records.values():
@@ -45,39 +59,35 @@ def main():
     expected = {'chromium','webkit'}
     assert {b['engine'] for b in browser['browsers']} == expected
     assert {b['engine'] for b in cards['browsers']} == expected
-    screenshots = browser['screenshots']
+    usage = records['bedienung']
+    screenshots = browser['screenshots'].copy()
     assert set(screenshots) == {f'{engine}-{key}.jpg' for engine in expected for key in CAPTIONS}
+    assert not set(screenshots).intersection(usage['bilder'])
+    screenshots.update(usage['bilder'])
     for name, checksum in screenshots.items():
         path = QA / name
         assert digest(path) == checksum and path.read_bytes().startswith(b'\xff\xd8\xff')
     table = ['| Browser | Version | Beratungswege | Abgeschlossene Kapitel |', '| --- | --- | ---: | ---: |']
     for b in browser['browsers']:
         paths = b['paths']
-        assert len(paths)==28 and all(len(p['chapters'])==2 for p in paths)
+        assert len(paths)==28 and all([c['stage'] for c in p['chapters']]==['L01','L02','L03','L04','L05'] for p in paths)
         table.append(f"| {b['engine'].capitalize()} | {b['version']} | {len(paths)} | {sum(len(p['chapters']) for p in paths)} |")
     report = [
-        '# Technischer Prüfbericht · Korrekturrunde 1b für den 02.12.2026',
+        '# Technischer Prüfbericht · Runde 2A für den 02.12.2026',
         f"Branch `entwicklung/0212-neukonzeption` · Commit `{commit}` · Inhaltsbank `{material['bankversion']}`.",
         f"Die geprüfte **Fallakte.html** ist {material['bytes']:_} Bytes groß. SHA-256 `{app_hash}`.".replace('_', ' '),
         '## Browserdurchläufe', '\n'.join(table),
-        'Die Vergleichsbasis der sechs Korrekturen war die aus Actions-Lauf 45046241473 heruntergeladene HTML-Datei '
-        'des Commits `8c6bd80`. Die Zustände vor und nach der Korrektur sind im fachlichen Prüfbericht beschrieben.',
-        'Jede Zeile umfasst vier Niveaus und sieben Ausgangsstrategien. In jedem Weg wurde Laura 1 mit einer Begründung versendet und Laura 2 neu beurteilt. '
-        'Bei Pille oder Spirale allein in Laura 2 wurde das fehlende Schutzziel erklärt. Die Lernenden konnten die Strategie ergänzen und erneut prüfen. Die Browserprotokolle enthalten die tatsächlich gesendete Strategie und die Antwort von Laura.',
-        'Geprüft wurden korrekte und falsche Gründe beziehungsweise Buchstaben, leere Eingaben, Leerzeichen, Kleinschreibung, Methodenwechsel nach Freigabe und wiederholtes Senden. '
-        'Die Rückfragen und fünf Hilfen wurden vor und nach der Auswahl geöffnet. Frühere Fragen blieben als frühere Gesprächsteile erkennbar. '
-        'Weitere Durchläufe prüften die Sicherung in beiden Abschnitten, die Rückkehr zur Übersicht, Niveauwechsel, Neustart und den Direkteinstieg in Laura 2 ohne erfundene Vorgeschichte.',
-        'Die lokale Datei lief ohne externe Netzabrufe, beobachtete Schreibzugriffe auf dauerhafte Webspeicher oder Skriptausnahmen. Ein vollständiges Neuladen führte zur bewussten Wahl eines neuen Einstiegs.',
-        '## Nachprüfung der sechs Korrekturen',
-        '1. In der Fallübersicht und im Gespräch liegt die Sicherung im geschlossenen Lehrkraftzugang. '
-        'Der ausdrücklich geöffnete Überblick zeigt die vollständigen Informationen und erhält den aktuellen Entwurf.\n'
-        '2. Nach einer Auswahl gehören Arbeitsimpuls und Kartenstelle zur gewählten Strategie. Bei Kombinationen lassen sich beide Beiträge gezielt nachlesen.\n'
-        '3. Bei einem offenen Schutzziel können Förder und ESA bewusst ergänzen. MSA und AHR treffen eine neue Wahl und bearbeiten den Fachcheck erneut.\n'
-        '4. Förder erhält die Materialinformation unmittelbar. ESA, MSA und AHR können die Latexfrage vor der fachlichen Prüfung anhand der Karte untersuchen.\n'
-        '5. Der reguläre Weg in MSA und AHR führt zum bezeichneten Papierabschnitt. Die freiwillige Ersatzansicht enthält denselben Denkauftrag und alle drei Aussagen.\n'
-        '6. Beim Wiedereinstieg sind genau die beiden spielbaren Abschnitte mit ihren vollständigen, einmal genannten Titeln zugänglich.',
+        'Alle vier Niveaus durchliefen fünf Abschnitte mit sieben Ausgangsstrategien. Die Protokolle halten die tatsächlich gewählte und versendete Strategie, die Fachprüfung und Lauras Reaktion fest. '
+        'Eine biologisch richtige Begründung kann ab Laura 2 ein noch offenes Schutzziel sichtbar machen. Auf Förder und ESA konnte das Team bewusst ergänzen. Auf MSA und AHR wählte es selbst einen neuen vollständigen Rat.',
+        'Geprüft wurden richtige und falsche Begründungen, Fehleingaben und erneute Fachchecks nach neuen Anliegen oder einem Wechsel der Methode. '
+        'Die Tests umfassten auch bedingte Empfehlungen, Rückfragen, fokussierte Kartenstellen und die ganze Karte, Rückkehr in den Entwurf, fünf Direkteinstiege, fortgesetzte Sitzungen und die vorgezogene Sicherung.',
+        'Die Offline-Datei lief ohne externe Netzabrufe oder Skriptausnahmen. Im Browserprotokoll sind die beobachteten Schreibzugriffe auf Webspeicher ausgewiesen.',
+        '## Bedienung und Bearbeitungslast',
+        load_table(usage),
+        'Die Messung erfasst einen erfolgreichen Beispielweg. Wiederholungen nach einem Fehler, das freiwillige Lesen von Hilfen und individuelle Schreibzeiten kommen je nach Lernweg hinzu. '
+        'Der persönliche Schlussrat wird einmal auf dem Laufzettel festgehalten. Ein früher Wechsel in die gemeinsame Sicherung führt zum selben Feld.',
         '## Material und Darstellung',
-        f"Die in der HTML eingebettete Bank und der Work-Export wurden verglichen. Geprüft wurden {material['aufgaben']} Niveauaufgaben, {material['strategiekontexte']} Strategiekontexte und {material['begruendungsoptionen']} geschlossene Antwortmöglichkeiten, einschließlich der Planung für Laura 3 bis 5.",
+        f"Die in der HTML eingebettete Bank und der Work-Export wurden verglichen. Geprüft wurden {material['aufgaben']} Niveauaufgaben, {material['strategiekontexte']} Strategiekontexte und {material['begruendungsoptionen']} geschlossene Antwortmöglichkeiten, für die fünf spielbaren Abschnitte.",
         'Vier Infokarten mit je fünf Abschnitten wurden in beiden Engines bei 820 × 1180 Pixeln (100 % Schrift), 1180 × 820 (150 %) und 390 × 450 (200 %) geöffnet. '
         'Beide Enden langer Texte, der Rückweg, Fokus und Scrollposition nach dem Kartenbesuch sowie die Korrektur eines falschen Codes wurden geprüft. '
         'Für die Codeeingabe bei Touchbedienung wurde die verfügbare Höhe auf 470 Pixel verkleinert.',
@@ -89,34 +99,41 @@ def main():
         'Die SCORM-Probe erfasste Initialisierung und Beendigung der Sitzung. Der Testverbund dient der Integrationsprüfung.',
         '## Grenzen und nächster Praxistest',
         'Die Browserläufe verwenden Touch-Emulation. Für den Schulversuch stehen ein echtes iPad mit Bildschirmtastatur und VoiceOver, die Einbettung in itslearning sowie die selbstständige Arbeit von Förder- und ESA-Lernenden im vorgesehenen Zeitrahmen aus. '
-        'Ein Buchstabe prüft den gewählten Fachanker. Die Qualität der selbst geschriebenen Begründung wird im Unterricht besprochen. Der digitale Prototyp endet nach Laura 2. '
+        'Ein Buchstabe prüft den gewählten Fachanker. Die Qualität der selbst geschriebenen Begründung wird im Unterricht besprochen. Der individuelle Anfangs- und Schlussgrund wird auf Papier verglichen. '
         'Die bisherigen Zusatzfälle wurden funktional geprüft. Ihre vollständige fachliche Revision steht aus.',
         'Die fachlichen Vorher-Nachher-Befunde stehen in Fachpruefung.md. Das Sichtprüfungspaket ordnet die echten Browserbilder ihren Zuständen zu und enthält die zugehörigen JSON-Protokolle.'
     ]
     doc = OUT / 'Technischer-Pruefbericht.md'
     doc.write_text('\n\n'.join(report)+'\n')
     fach = OUT / 'Fachpruefung.md'
-    files['ausgangsstand'] = ROOT / 'docs/pruefnachweise/0212-1b-vorher.json'
-    files['fachliche-gegenpruefung'] = ROOT / 'docs/pruefnachweise/0212-fachliche-gegenpruefung-1b.json'
+    pre = ROOT / 'docs/pruefnachweise/2a-vorpruefung'
+    files['vorpruefung'] = pre / 'bedienung.json'
+    files['fachliche-gegenpruefung'] = ROOT / 'docs/pruefnachweise/0212-fachliche-gegenpruefung-2a.json'
     review_path = files['fachliche-gegenpruefung'].relative_to(ROOT).as_posix()
     review_url = f'https://github.com/Feerson1617/Fallakte/blob/{commit}/{review_path}'
-    fach.write_text((ROOT / 'docs/0212-fachpruefung-1b.md').read_text().replace(
+    fach.write_text((ROOT / 'docs/0212-fachpruefung-2a.md').read_text().replace(
         'pruefnachweise/'+files['fachliche-gegenpruefung'].name, review_url))
     review = json.loads(files['fachliche-gegenpruefung'].read_text())
     assert review['datenSHA256'] == digest(ROOT / 'data/laura-0212.json')
-    assert review['auslieferungRunde1SHA256'] == json.loads(files['ausgangsstand'].read_text())['artefaktSHA256']
-    index = ['# Sichtprüfung · Korrekturrunde 1b', f'Commit `{commit}`. Dieselben Zustände wurden in Chromium und WebKit aufgenommen.']
+    index = ['# Sichtprüfung · Runde 2A', f'Commit `{commit}`. Die Bilder zeigen die offline geöffnete Anwendung.']
     for key, text in CAPTIONS.items():
         links = ' · '.join(f'[{engine.capitalize()}](Bilder/{engine}-{key}.jpg)' for engine in sorted(expected))
         index.append(f'- {text} {links}')
-    index.append('Die vier technischen Protokolle beziehen sich auf die ausgelieferte HTML. '
-                 'Die fachliche Gegenprüfung ist das Originalprotokoll der unabhängigen Durchsicht derselben '
-                 'Inhaltsbank vor dem Abschlusscommit. Das Protokoll zum Ausgangsstand dokumentiert die frühere Fassung.')
+    for name in sorted(usage['bilder']):
+        index.append(f'- [Bedienprüfung · {name.removesuffix(".jpg")}](Bilder/{name})')
+    index.append('Die Aufnahmen der Bedienprüfung und die zugehörigen Bildschirmgrößen stehen im Bedienprotokoll. '
+                 'Der Ordner Vorpruefung enthält echte Aufnahmen der vor dem Ausbau geprüften Zwei-Abschnitt-Fassung.')
     archive = OUT / 'Fallakte-Sichtpruefung.zip'
+    gate = json.loads(files['vorpruefung'].read_text())
+    assert gate['erprobte_abschnitte']==['L01','L02'] and gate['bilder']
+    assert usage['erprobte_abschnitte']==['L01','L02','L03','L04','L05']
     with ZipFile(archive,'w',ZIP_DEFLATED) as z:
         z.writestr('Uebersicht.md','\n\n'.join(index)+'\n')
         for name in sorted(screenshots):
             z.write(QA/name, 'Bilder/'+name)
+        for name, checksum in gate['bilder'].items():
+            assert digest(pre/name)==checksum
+            z.write(pre/name,'Vorpruefung/'+name)
         for key,path in files.items():
             z.write(path,'Protokolle/'+key+'.json')
         for path in (doc,fach):

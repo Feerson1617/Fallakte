@@ -1,65 +1,50 @@
-# Fallakte Laura · Korrekturrunde 1b
+# Fallakte Laura · Runde 2A für den 02.12.2026
 
-## Entwicklungsstand und Einstieg
+## Fassung und Arbeitsmaterial
 
-Arbeitszweig `entwicklung/0212-neukonzeption`. Grundlage der Korrekturen ist der am 22.11.2026 ausgelieferte Zwei-Abschnitt-Prototyp auf Commit `8c6bd80c7aa636b55e50ef7522c63f9b48df0cb8`, Inhaltsbank `0212-r1.1`, Actions-Lauf `45046241473`. Der ursprüngliche Zweig begann auf `ec94147fd8d61442305a0281f7df032f3162362c`.
+Arbeitszweig `entwicklung/0212-neukonzeption`, Basiscommit `62b6dca2723006c25cc7724f5f595799b5743dd2`. Die Ausgangsfassung war die Auslieferung mit Bank `0212-r1.2` aus Actions-Lauf `45049836491`.
 
 - **Abschlusscommit der Auslieferung** · siehe `Materialvertrag.json`, Feld `buildCommit`.
-- **Inhaltsbankversion** · `0212-r1.2`
+- **Inhaltsbankversion** · `0212-r2a.1`.
 
-Mit `python scripts/build.py` entstehen unter `dist/Runde-1/` die eigenständige `Fallakte.html`, der maschinenlesbare und der lesbare Materialvertrag sowie diese Fortsetzungsdokumentation. Die HTML-Datei direkt im Browser öffnen. Für den Weg am Gerät die Stufe wählen und bei Laura „Neu beginnen“ antippen. „Abschnitt auswählen“ führt mit einer Zusammenfassung direkt zu Laura 2. „Weiterarbeiten“ führt zum tatsächlichen Entwurf dieses Niveaus im noch geöffneten Dokument.
+Im Artefakt **Fallakte-Runde-2A** die Datei **Fallakte.html** direkt im Browser öffnen. **Materialvertrag.md** enthält die lesbare Übergabe für Work. **Materialvertrag.json** enthält dieselben Aufgaben, Fachanker, Lösungen, Kartenstellen und Rückmeldungen wie die eingebettete Inhaltsbank. Die individuelle Begründung verbleibt auf Papier. Die HTML-Datei speichert den Beratungsstand im Arbeitsspeicher, getrennt nach Niveau.
 
-## Umfang der Erprobung
+## Unterrichtsweg
 
-| Abschnitt | Stand und fachliche Leistung |
+| Abschnitt | Woran das Team seinen Rat prüft |
 | --- | --- |
-| Laura 1 – Latexallergie | Spielbar. Die Lerngruppe unterscheidet Material und Methode. Eine zutreffende erste Empfehlung lässt sich biologisch präzisieren oder bestätigen. |
-| Laura 2 – Zwei Schutzziele | Spielbar. Das neu genannte STI-Anliegen verlangt eine erneute Prüfung der vollständigen Strategie. Eine Methode mit gutem Schwangerschaftsschutz kann allein das zweite Ziel offenlassen. |
-| Laura 3 – Hormone und Alltag | Als Materialvertrag spezifiziert. Die regelmäßige Einnahme, Lauras Tagesablauf und die begrenzte Übertragbarkeit der Erfahrung ihrer Freundin werden relevant. |
-| Laura 4 – Schmerzen und Einlage | Als Materialvertrag spezifiziert. Mögliche Wirkungen auf Schmerzen, ärztliche Abklärung und die eigene Entscheidung über die Einlage sind getrennte Kriterien. |
-| Laura 5 – Mein Schlussrat | Als Materialvertrag spezifiziert. Der Schlussrat und die analoge Sicherung nutzen ein gemeinsames Schreibfeld. Die Begründung wird mit dem ersten Rat verglichen. |
+| Laura 1 – Latexallergie | Die Allergie betrifft das Material. Der erste Rat aus dem analogen Einstieg kann bestätigt oder präzisiert werden. |
+| Laura 2 – Zwei Schutzziele | Zum Schwangerschaftsschutz kommt STI-Risikominderung hinzu. Das Team prüft, welchen Beitrag jede gewählte Methode leistet. |
+| Laura 3 – Hormone und Alltag | Ein unregelmäßiger Tagesablauf erschwert die Einnahmeroutine. Die Erfahrung der Freundin erlaubt keine sichere Vorhersage über Lauras Verträglichkeit. |
+| Laura 4 – Schmerzen und Einlage | Die Wirkung auf Beschwerden, eine ärztliche Abklärung und Lauras Zustimmung sind eigenständige Gesichtspunkte. |
+| Laura 5 – Mein Schlussrat | Das Team begründet seine Gewichtung. Der erste und der letzte Grund werden verglichen, auch wenn die Empfehlung gleich bleibt. |
 
-Für die gemeinsame Sicherung am Seitenfuß „Für die Lehrkraft“ aufklappen und „Gemeinsame Sicherung öffnen“ wählen. Die Übersicht enthält auch Lauras spätere Anliegen. Die Lehrkraft kann sie schon während Laura 1 projizieren, etwa wenn die Erarbeitung früher endet. Beim Schließen kehrt die Lerngruppe zu ihrem bisherigen Bearbeitungsstand zurück. Die digitale Pflichtstrecke endet mit Lauras Antwort in Abschnitt 2.
+Nach der Wahl tritt der vollständige Rat an die Stelle der Auswahlliste. Der Fachcheck kann direkt bearbeitet werden. Eine bewusste neue Wahl entwertet die alte Sendefreigabe. Ein gezielter Kartenaufruf zeigt die betreffende Textstelle. Von dort ist die ganze Karte erreichbar. Förder und ESA prüfen Gründe im Gespräch. MSA und AHR nutzen regulär den Papierauftrag und einen Buchstaben. Die ausklappbare digitale Ersatzaufgabe enthält denselben Denkauftrag. Der Buchstabe bestätigt den Fachanker. Die Qualität des eigenen Schlussrats wird im Unterricht besprochen.
 
-## Was sich mit Runde 1b für die Bearbeitung ändert
+Nach einem Neuladen führen Niveau und „Abschnitt auswählen“ zu jedem der fünf Abschnitte. Der Einstieg nennt die erforderlichen bisherigen Fakten. „Weiterarbeiten“ setzt den tatsächlichen Entwurf im geöffneten Dokument fort. „Neu beginnen“ beginnt die gewählte Sitzung neu.
 
-| Situation | Verhalten im korrigierten Prototyp |
-| --- | --- |
-| Start von Laura 1 | Förder erhält die Materialinformation direkt. ESA untersucht die Latexfrage mit einem konkreten Hinweis. MSA und AHR prüfen die Bedeutung für den eigenen Rat. Auf diesen drei Niveaus heißen die unbestätigten Wahlmöglichkeiten zunächst „Kondom“ beziehungsweise „Kondom und …“. |
-| Auswahl einer Strategie | Der Arbeitsimpuls wechselt mit dem Entwurf. Bei der Kupferspirale steht die Wirkung von Kupfer auf Spermien im Mittelpunkt. Bei Kombinationen sind die Beiträge beider Methoden und die zugehörigen Kartenstellen erreichbar. |
-| Fehlendes STI-Schutzziel in Laura 2 | Förder und ESA können eine ausdrücklich angebotene Ergänzung wählen. MSA und AHR erhalten einen Bewertungsimpuls und wählen selbst, wie sie ihren Rat ändern. Jeder geänderte Rat benötigt einen neuen Fachcheck. |
-| Papierarbeit auf MSA und AHR | Der reguläre Weg führt zum genannten Abschnitt auf dem Laufzettel und zurück zur Codeeingabe. Wer das Blatt nicht zur Hand hat, kann den Denkauftrag mit sämtlichen Aussagen digital öffnen. |
-| Direkter Wiedereinstieg | Die Abschnittsauswahl übernimmt genau einmal den Titel aus der Inhaltsbank. Laura 1 und Laura 2 sind auswählbar. |
+Für die gemeinsame Sicherung am Seitenfuß „Für die Lehrkraft“ öffnen. Die vollständige Fallübersicht ist auch bei vorzeitigem Ende der Erarbeitung erreichbar. Alle verwenden das Feld „Mein Schlussrat“ auf dem Laufzettel. Wer den Schlussrat schon formuliert hat, nutzt diesen für den Vergleich. Tom und anschließend Celina sind freiwillige Vertiefungen.
 
-Der fachliche Vorher-Nachher-Bericht und das Sichtprüfungspaket im Actions-Artefakt dokumentieren die Korrekturen am gebauten HTML. Die vier technischen JSON-Protokolle darin nennen den geprüften Commit und die HTML-Prüfsumme.
+## Prüffolge und geänderte Erwartungen
 
-## Technische Abhängigkeiten
+1. Die überarbeitete Oberfläche wurde mit ausschließlich Laura 1 und 2 in der gebauten HTML geprüft. Das archivierte Protokoll enthält die Prüfsumme dieser Fassung und die damaligen Bildschirmaufnahmen.
+2. Nach dieser Prüfung wurden die drei weiteren Abschnitte aktiviert. Der Materialtest vergleicht Fallfakten, Abschnittstitel, IDs und Fachanker mit der Ausgangsbank. Die frühere Erwartung „zwei spielbare Abschnitte“ ist durch fünf spielbare Abschnitte und fünf reguläre Fachchecks ersetzt.
+3. Die Browserprüfungen unterscheiden Wahl, Begründung, Korrektur, Versand und Antwort. Sie bedienen zum Ändern eines Entwurfs den sichtbaren Auswahlzugang. Ein gezielter Kartenaufruf wird zuerst auf die einzelne Textstelle geprüft, die Vollansicht separat. Der Direkteinstieg und der Fortgang nach L02 werden anhand aller fünf freigegebenen Abschnitte geprüft. Für Laura 3 prüft der Kartentest bei Kombinationen den Alltagsbezug und das STI-Ziel. Für Laura 4 und 5 prüft er bei jeder Spirale zusätzlich die Kartenstelle zur Einlage.
+4. Die vollständigen Browserwege prüfen alle vier Niveaus, sieben Strategien und beide Browser. Der technische Bericht dokumentiert die tatsächlich bedienten Hauptentscheidungen, Papierwechsel, Codes und sichtbaren Pflichtwörter. Der fachliche Bericht erläutert die unabhängig geprüften Erwartungen zu Alltag, Schmerzen und Schlussrat.
+5. Der Bestandstest setzt die gemeinsame Tagesauswahl für die Integration mit dem tatsächlichen Nachrichtenmodul aus `5d27cc3d61db386468d3f851347690b33b5d86fe` zusammen. Eigenständige CI-Jobs prüfen außerdem die früher ausgelieferte 02.12.-Fassung und das Originalmodul vom 08.12.
 
-- `data/laura-0212.json` liefert Fallnachrichten, Aufgaben, strategienspezifische Gründe und Rückmeldungen, Fachanker, Codes, Kartenstellen, Hilfen, Wiederaufnahme und Sicherung. Der Build löst Quellenverweise auf und verwendet dieselben Daten für HTML und Work. Der Fall benutzt ausschließlich die sieben im Materialvertrag aufgeführten Strategien.
-- `module/0212/beratung.js` hält die Sitzungen getrennt nach Niveau im Arbeitsspeicher. Ein Fachcheck bezieht sich auf Abschnitt, bekannte Anliegen, Niveau und vollständige Strategie. Ein Methodenwechsel oder ein neuer Abschnitt verlangt einen neuen Fachcheck. Bei einem fachlich falschen Grund gibt es eine fachliche Korrektur. Ein zutreffender Grund kann zu einem noch unvollständigen Rat gehören. Eine unter Bedingungen vertretbare Strategie bleibt wählbar.
-- `module/0212/material.js` öffnet Hilfen, Rückfragen, Karten und Sicherung. Die Beantwortung einer Rückfrage erscheint im zeitlichen Verlauf des Gesprächs. Der Wechsel der Strategie aktualisiert das aktuelle Hilfe- und Fragenangebot.
-- `module/0212/start.js` steuert Einstieg und Rückkehr. Die bestehende Tagesauswahl kann das Dokument über ihren MessagePort einbetten. Der Test für die gemeinsame Hülle verwendet das echte Nachrichtenmodul des 08.12. vom geprüften Commit `5d27cc3d61db386468d3f851347690b33b5d86fe`. Für eine spätere gemeinsame Freigabe den dann aktuellen Kopf des 08.12.-Zweigs vergleichen, den 02.12.-Payload integrieren und beide Modultests erneut ausführen.
-- Die bisherigen Gesprächsdaten und Funktionen für Tom und Celina werden im eigenen Reservedokument weiterverwendet. Die erste freiwillige Vertiefung ist Tom, die zweite Celina. Ihre vollständige fachliche Neubewertung ist einer späteren Runde vorbehalten.
-
-## Material und offene Erprobung
-
-Work übernimmt Aufgaben, Begründungsoptionen und Hin- und Rückverweise aus dem Materialvertrag. Der Export unterscheidet den Einstieg vor der Wahl vom konkreten Arbeitsimpuls nach der Wahl. Ein richtiger Buchstabe bestätigt den fachlichen Anker. Die Qualität der persönlich geschriebenen Begründung wird im Unterricht geprüft.
-
-Für den Praxistest die Datei auf einem Schul-iPad öffnen. Je ein Förder-/ESA-Team und ein MSA-/AHR-Team möglichst selbstständig starten lassen. Beobachten, ob sie den zusätzlichen STI-Wunsch bemerken, ihre Begründung ändern und bei einer offenen medizinischen Frage eine bedingte Empfehlung formulieren können. Beim Codefeld die echte Bildschirmtastatur verwenden. Nach Neuladen über „Abschnitt auswählen“ zu Laura 2 einsteigen. Die geplanten 22 Minuten, die Passung der später gedruckten Lernbogen und der itslearning-Kurs sind unter Schulbedingungen zu erproben.
-
-Für die Fortsetzung zuerst die Papieraufträge mit Work abstimmen. Bevor Laura 3–5 spielbar werden, muss jedes Kapitel eigene unabhängige Tests für zusätzliche Kriterien, Widerruf der Freigabe und Wiedereinstieg bestehen. Der analoge Transfer zur Pearl-Index-App bleibt eine Unterrichtsreserve.
-
-## Prüfung erneut ausführen
-
-Mit den Python-Abhängigkeiten aus `tests/requirements.txt` und den zugehörigen Playwright-Browsern Chromium und WebKit im selben Checkout nacheinander ausführen:
+Zur Wiederholung im selben Checkout mit den Abhängigkeiten aus `tests/requirements.txt` und installierten Playwright-Browsern:
 
 ```sh
 python scripts/build.py
 python tests/runde1_vertrag.py
 python tests/runde1_browser.py
+python tests/runde2a_bedienung.py
 python tests/runde1_karten.py
 python tests/runde1_bestand.py
 python scripts/runde1_bericht.py
 ```
 
-Der Bericht vergleicht die Commit- und Dateiprüfsummen aller vier Protokolle. Das Sichtprüfungspaket ordnet die Aufnahmen dem tatsächlich geöffneten HTML zu. Der Bestandstest benötigt die Git-Historie mit den beiden angegebenen Referenzcommits.
+## Offen für die Unterrichtserprobung
+
+Auf echten Schul-iPads und im itslearning-Kurs den ersten Einstieg, eine Korrektur, die Codeeingabe mit der Bildschirmtastatur und die Rückkehr zur Sicherung prüfen. Mit realen Förder- und ESA-Lernenden beobachten, wie selbstständig die Kartenstelle genutzt und ein früherer Rat neu begründet wird. Das Zeitfenster von rund 22 Minuten ist ein Planungswert. Die automatisierten Bedienwege messen keine Schülerarbeitszeit. Die spätere Integration beider Tage, die fachliche Revision der Vertiefungen und die separate Übungsakte haben eigene Abnahmen.

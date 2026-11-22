@@ -1,0 +1,143 @@
+{
+  "datenSHA256": "e7449cbb7489e346243f09673e1b62d967323aeaf69bee1a4048d30d0af01eaf",
+  "vorabHTMLSHA256": "529451c4b279aeabf42b7582444f1d02f43eaa0e3bcd44af3aed90a91b9b52ad",
+  "version": "0212-r2a.1",
+  "datumUTC": "2026-11-22T18:12:11.398902+00:00",
+  "stand": "Prüfsumme der Vorab-HTML mit dem lokalen Build-Commit. Die Inhaltsbank wird separat verglichen.",
+  "erwartung": "Fachlich korrekte Begründung: L01 bei sieben Methoden C; ab L02 P/Cu/H allein B wegen des fehlenden STI-Ziels, die vier anderen C unter Bedingungen. Biologisch falsche Gründe gemäß den dokumentierten Wirkweisen A. MSA/AHR: B,C,A,B,C.",
+  "browser": {
+    "chromium": {
+      "kontexte": 140,
+      "begruendungenCodes": {
+        "A": 245,
+        "B": 48,
+        "C": 92
+      },
+      "fokussierteKarteUndGanzeKarteGeprueft": true,
+      "direkteinstiegInAllenAbschnitten": true,
+      "fuenfHilfenUndAlleRueckfragen": true
+    },
+    "webkit": {
+      "kontexte": 140,
+      "begruendungenCodes": {
+        "A": 245,
+        "B": 48,
+        "C": 92
+      },
+      "fokussierteKarteUndGanzeKarteGeprueft": true,
+      "direkteinstiegInAllenAbschnitten": true,
+      "fuenfHilfenUndAlleRueckfragen": true
+    }
+  },
+  "beispielwege": [
+    {
+      "tier": "ESA",
+      "stage": "L03",
+      "m": "K+P",
+      "prompt": "Wie benutzt Laura das Kondom? Wann muss sie an die Pille denken?",
+      "qas": [
+        [
+          "Was wäre bei Kondom und Pille im Alltag für dich die schwierigere Frage?",
+          "Das tägliche Drandenken an die Pille. Wie es mir damit ginge, ist auch noch offen."
+        ]
+      ],
+      "reaction": "Dann käme es bei der Pille auf die regelmäßige Einnahme an. Dass es meiner Freundin damit schlecht ging, entscheidet das für mich noch nicht.",
+      "fachurteil": "C",
+      "begruendung": "Bei jedem Sex ein passendes Kondom benutzen. Vergessene Pillen können den zusätzlichen Schwangerschaftsschutz mindern. Ob Laura die Pille verträgt, ist offen. Fachcheck erledigt. Du kannst deinen Rat senden."
+    },
+    {
+      "tier": "MSA",
+      "stage": "L03",
+      "m": "P",
+      "prompt": "Prüfe Einnahmeplan und persönliche Verträglichkeit der Pille als getrennte Fragen.",
+      "qas": [
+        [
+          "Was beschäftigt dich an der Erfahrung deiner Freundin?",
+          "Ich frage mich, ob es mir mit der Pille genauso gehen würde. Ich weiß es aber nicht."
+        ]
+      ],
+      "reaction": null,
+      "fachurteil": "B",
+      "begruendung": "Die Pille erklärt einen Teil des Schutzes. Welches bekannte Ziel bleibt unabhängig vom Einnahmeplan offen?"
+    },
+    {
+      "tier": "Foerder",
+      "stage": "L04",
+      "m": "K",
+      "prompt": "Was bleibt wegen der Schmerzen offen, wenn Laura ein Kondom benutzt?",
+      "qas": [
+        [
+          "Was möchtest du wegen deiner Regelschmerzen klären?",
+          "Ich weiß noch nicht, woher die starken Schmerzen kommen. Das möchte ich in der Praxis klären."
+        ]
+      ],
+      "reaction": "Mit dem Kondom können wir uns schützen. Wegen der Schmerzen will ich in die Praxis.",
+      "fachurteil": "C",
+      "begruendung": "Ein Kondom verändert die Regel nicht. Die starken, ungeklärten Schmerzen sollte Laura in der Arztpraxis abklären lassen. Fachcheck erledigt. Du kannst deinen Rat senden."
+    },
+    {
+      "tier": "ESA",
+      "stage": "L04",
+      "m": "K+H",
+      "prompt": "Was leistet das Kondom? Was muss vor einer möglichen Hormonspirale besprochen werden?",
+      "qas": [
+        [
+          "Was möchtest du vor deiner Entscheidung über die Hormonspirale wissen?",
+          "Ob sie mir helfen könnte und was beim Einsetzen auf mich zukäme. Das ist noch keine Zusage."
+        ]
+      ],
+      "reaction": "Ob die Hormonspirale bei mir hilft, steht also noch nicht fest. Ich will mich über das Einsetzen und die Schmerzen beraten lassen.",
+      "fachurteil": "C",
+      "begruendung": "Das Kondom senkt das Infektionsrisiko. Die Hormonspirale kann Schmerzen lindern, sicher ist das nicht. Schmerzen ärztlich abklären lassen. Laura entscheidet nach Beratung über die Einlage. Fachcheck erledigt. Du kannst deinen Rat senden."
+    },
+    {
+      "tier": "AHR",
+      "stage": "L04",
+      "m": "K+Cu",
+      "prompt": "Wie gewichtest du Kondomschutz und zusätzliche Kupferspirale angesichts der Schmerzen und Lauras Sorge vor der Einlage?",
+      "qas": [
+        [
+          "Wovon hängt deine Entscheidung zur Kupferspirale ab?",
+          "Ob sie bei meinen Schmerzen infrage kommt und ob ich das Einsetzen nach der Beratung möchte."
+        ]
+      ],
+      "reaction": "Wenn die Kupferspirale die Schmerzen verstärken könnte, ist mir die Beratung besonders wichtig. Ich will erst danach entscheiden.",
+      "fachurteil": "C",
+      "begruendung": "Das Kondom senkt das Infektionsrisiko. Die Kupferspirale kann Blutung und Regelschmerzen verstärken. Schmerzen ärztlich abklären lassen. Eine Einlage kommt nur mit Lauras Zustimmung infrage. Fachcheck erledigt. Du kannst deinen Rat senden."
+    },
+    {
+      "tier": "MSA",
+      "stage": "L05",
+      "m": "K",
+      "prompt": "Begründe das Kondom mit einem späteren Anliegen. Wäre ein ergänzender Rat vertretbar?",
+      "qas": [
+        [
+          "Was möchtest du beim Kondom allein noch klären?",
+          "Worauf wir jedes Mal achten müssten. Wegen der starken Regelschmerzen möchte ich mich trotzdem beraten lassen."
+        ]
+      ],
+      "reaction": "Das kann ich mir als Rat vorstellen. Wir müssten beim Sex jedes Mal daran denken. Wegen der Schmerzen möchte ich in die Praxis.",
+      "fachurteil": "C",
+      "begruendung": "Das richtig benutzte, passende Kondom hilft bei beiden Schutzzielen. Ein Risiko bleibt. Die starken Regelschmerzen sollten unabhängig davon ärztlich abgeklärt werden. Fachcheck erledigt. Du kannst deinen Rat senden."
+    },
+    {
+      "tier": "AHR",
+      "stage": "L05",
+      "m": "K+H",
+      "prompt": "Unter welchen Bedingungen käme neben dem Kondom die Hormonspirale infrage? Wäge Nutzen, Beschwerden und Einlage ab.",
+      "qas": [
+        [
+          "Welche Entscheidung willst du erst nach einer Beratung treffen?",
+          "Ob ich zusätzlich zum passenden Kondom eine Hormonspirale möchte."
+        ]
+      ],
+      "reaction": "Jetzt weiß ich, warum ihr das Kondom und die Hormonspirale zusammen erwägt. Über die Einlage möchte ich nach der Beratung selbst entscheiden.",
+      "fachurteil": "C",
+      "begruendung": "Das Kondom senkt das Infektionsrisiko. Die Hormonspirale wirkt lange und kann Schmerzen lindern. Vor einer Einlage müssen Beschwerden und Eignung geklärt sein. Laura entscheidet selbst. Fachcheck erledigt. Du kannst deinen Rat senden."
+    }
+  ],
+  "grenzen": [
+    "Keine Aussage über gemessene Bearbeitungszeit, eigenständige Begründungsqualität oder echte Unterrichtsbedingungen.",
+    "Automatisierte Browser einschließlich iPad-Viewport ersetzen die Erprobung auf Schulgeräten mit Lernenden nicht."
+  ]
+}

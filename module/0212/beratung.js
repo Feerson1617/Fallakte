@@ -48,6 +48,8 @@ window.Beratung = (() => {
     active.stageId=id;
     active.revision++;
     active.phase='choose';
+    active.editingChoice=false;
+    active.historyOpen=false;
     active.moreOpen=false;
     active.paperChecked=false;
     active.draft=newDraft();
@@ -69,7 +71,7 @@ window.Beratung = (() => {
   function pause() {
     if (!active) return;
     active.pageScroll=window.scrollY;
-    active.chatScroll=document.getElementById('beratung-verlauf')?.scrollTop ?? active.chatScroll;
+    active.chatScroll=document.getElementById('chat-meldungen')?.scrollTop ?? active.chatScroll;
     if (root().contains(document.activeElement)) active.focusId=document.activeElement.id;
     window.Material.close(false);
     active=null;
@@ -85,12 +87,24 @@ window.Beratung = (() => {
   }
   function select(strategy) {
     if (active.phase==='sent' || !Object.hasOwn(task().strategies,strategy)) return;
-    if (active.draft.strategy===strategy) return;
-    active.revision++;
-    active.draft=newDraft(strategy);
-    active.draft.recheck=isPaper() && active.paperChecked;
+    active.editingChoice=false;
+    if (active.draft.strategy!==strategy) {
+      active.revision++;
+      active.draft=newDraft(strategy);
+      active.draft.recheck=isPaper() && active.paperChecked;
+      active.phase='choose';
+    }
+    render('aktueller-rat');
+  }
+  function editChoice() {
+    active.editingChoice=true;
+    render('strategie-'+active.draft.strategy);
+  }
+  function editReason() {
+    active.draft.feedback=null;
+    active.draft.grant=null;
     active.phase='choose';
-    render('strategie-'+strategy);
+    render('aktueller-rat');
   }
   function matchesEvidence() {
     const draft=active.draft;
@@ -98,12 +112,12 @@ window.Beratung = (() => {
     return info().options.some(option=>option.id===draft.optionId && option.correct);
   }
   function canSend() {
-    if (!active || active.phase!=='checked' || !active.draft.strategy) return false;
+    if (!active || active.phase!=='checked' || active.editingChoice || !active.draft.strategy) return false;
     const draft=active.draft;
     return draft.grant===contextKey() && matchesEvidence() && !missingGoal() && info().status==='C';
   }
   function check(optionId) {
-    if (active.phase==='sent' || !active.draft.strategy) return;
+    if (active.phase==='sent' || active.editingChoice || !active.draft.strategy) return;
     const draft=active.draft;
     draft.grant=null;
     draft.optionId=optionId;
@@ -140,9 +154,15 @@ window.Beratung = (() => {
     active.chatScroll=null;
     render('beratung-reaktion',true);
   }
+  function followingStage() {
+    const stages=Object.values(bank().stages);
+    const index=stages.findIndex(item=>item.id===active.stageId);
+    return stages[index+1];
+  }
   function next() {
-    if (active.phase!=='sent' || active.stageId!=='L01' || !bank().stages.L02.playable) return;
-    enter('L02',false);
+    const following=followingStage();
+    if (active.phase!=='sent' || !following?.playable) return;
+    enter(following.id,false);
     render('beratung-stage',true);
     root().scrollIntoView({block:'start'});
   }
@@ -153,17 +173,32 @@ window.Beratung = (() => {
     history.setAttribute('role','log');
     history.setAttribute('aria-live','off');
     history.setAttribute('aria-label','Gespräch mit Laura');
-    let previousId='';
-    for (const message of active.messages) {
-      if (message.stageId!==previousId) {
-        history.append(element('p','abschnittsmarke',bank().stages[message.stageId].title));
-        previousId=message.stageId;
-      }
+    const messages=element('div','chat-meldungen');
+    messages.id='chat-meldungen';
+    const latest=active.messages.length-1;
+    const showPast=control('fruehere-nachrichten','Gesprächsverlauf',button=>{
+      active.historyOpen=!active.historyOpen;
+      for (const entry of messages.querySelectorAll('[data-past=true]')) entry.hidden=!active.historyOpen;
+      button.setAttribute('aria-expanded',String(active.historyOpen));
+      messages.scrollTop=0;
+    });
+    showPast.setAttribute('aria-controls',messages.id);
+    showPast.setAttribute('aria-expanded',String(active.historyOpen));
+    let hasPast=false;
+    for (const [index,message] of active.messages.entries()) {
       const entry=element('div','chat-entry');
       entry.dataset.stage=message.stageId;
       entry.dataset.kind=message.kind;
       entry.dataset.speaker=message.speaker;
       entry.dataset.aboutStrategy=message.strategy;
+      const currentStart=message.stageId===active.stageId && ['opening','recap'].includes(message.kind);
+      const recentPair=index>=latest-1 && message.revision===active.revision;
+      const visible=active.phase==='sent' ? recentPair : currentStart || recentPair;
+      if (!visible) {
+        hasPast=true;
+        entry.dataset.past='true';
+        entry.hidden=!active.historyOpen;
+      }
       let sender=message.speaker==='Team' ? 'Dein Beratungsteam' : message.speaker;
       if (message.kind==='question' || message.kind==='answer') {
         const historical=message.revision!==active.revision || active.phase==='sent';
@@ -181,8 +216,10 @@ window.Beratung = (() => {
         entry.id='beratung-reaktion';
         entry.tabIndex=-1;
       }
-      history.append(entry);
+      messages.append(entry);
     }
+    if (hasPast) history.append(showPast);
+    history.append(messages);
     return history;
   }
   function strategyButton(id) {
@@ -195,8 +232,8 @@ window.Beratung = (() => {
   }
   function choices() {
     const field=element('fieldset','beratung-wahl');
-    field.append(element('legend','','Du wählst jetzt deinen vollständigen Rat für Laura.'));
-    if (active.previous && active.stageId==='L02') {
+    field.append(element('legend','','Wähle deinen vollständigen Rat für Laura.'));
+    if (active.previous) {
       field.append(element('p','bisher','Dein bisheriger Rat: '+bank().strategies[active.previous].label+'.'));
     }
     // Keep the previous recommendation visible alongside the new alternatives.
@@ -206,9 +243,20 @@ window.Beratung = (() => {
       if (!isPaper() && primary.length>=3) primary.pop();
       primary.push(active.previous);
     }
-    const row=element('div','strategie-grid');
-    for (const id of primary) row.append(strategyButton(id));
-    field.append(row);
+    function group(ids,title) {
+      const row=element('div','strategie-grid');
+      if (title) {
+        field.append(element('p','strategie-gruppe',title));
+        row.setAttribute('role','group');
+        row.setAttribute('aria-label',title);
+      }
+      for (const id of ids) row.append(strategyButton(id));
+      field.append(row);
+    }
+    if (isPaper()) {
+      group(primary.filter(id=>bank().strategies[id].methods.length===1),'Einzelmethoden');
+      group(primary.filter(id=>bank().strategies[id].methods.length===2),'Kombinationen');
+    } else group(primary);
     const other=Object.keys(task().strategies).filter(id=>!primary.includes(id));
     if (other.length) {
       const more=element('details','weitere-strategien');
@@ -231,15 +279,13 @@ window.Beratung = (() => {
     details.id='papier-ersatz';
     details.open=draft.anchorsOpen;
     details.ontoggle=()=>{if (details.isConnected) draft.anchorsOpen=details.open;};
-    section.append(element('h3','',draft.recheck?'Dein geänderter Rat':'Auf dem Laufzettel'));
     if (draft.recheck) section.append(element('p','','Passt dein notierter Grund noch zu deinem neuen Rat? Prüfe das und gib den passenden Buchstaben erneut ein.'));
     else section.append(element('p','',task().paperPrompt));
     details.append(element('summary','',task().paperFallback),element('p','',task().task));
     for (const [letter,text] of Object.entries(stage().anchors)) details.append(element('p','',letter+' · '+text));
-    details.append(element('p','',bank().paperFallbackInstruction));
-    section.append(element('p','rueckkehr',task().returnPrompt));
+    details.append(element('p','',bank().paperFallbackInstruction),element('p','rueckkehr',task().returnPrompt));
     const form=element('form','code-form');
-    const label=element('label','','Prüfcode');
+    const label=element('label','','Prüfcode vom Laufzettel');
     label.htmlFor='pruefcode';
     const input=element('input');
     input.id='pruefcode';
@@ -295,7 +341,7 @@ window.Beratung = (() => {
     }
     references.forEach((ref,index)=>{
       const id=index?'passende-karte-'+index:'passende-karte';
-      const link=control(id,window.Material.cardLabel(ref),b=>window.Material.openCard(ref,b));
+      const link=control(id,window.Material.cardLabel(ref),b=>window.Material.openCard(ref,b,active.tier));
       link.dataset.method=ref.method;
       link.dataset.section=ref.section;
       links.append(link);
@@ -329,48 +375,78 @@ window.Beratung = (() => {
     }
     return tools;
   }
+  function currentStep() {
+    if (active.phase==='sent') return 'antwort';
+    if (!active.draft.strategy || active.editingChoice) return 'wahl';
+    if (active.phase==='checked') return 'senden';
+    return active.draft.feedback?.type==='B' ? 'korrektur' : 'grund';
+  }
+  function chosenStrategy(canEdit) {
+    const rat=element('div','gewaehlter-rat');
+    rat.id='aktueller-rat';
+    rat.tabIndex=-1;
+    rat.dataset.aboutStrategy=active.draft.strategy;
+    const label=task().choiceLabels?.[active.draft.strategy] || bank().strategies[active.draft.strategy].label;
+    rat.append(element('p','','Dein Rat · '+label));
+    if (canEdit) rat.append(control('strategie-bearbeiten','Auswahl ändern',editChoice,'textaktion'));
+    return rat;
+  }
   function work() {
-    const area=element('div','beratung-arbeit');
+    const area=element('section','beratung-arbeit');
+    const step=currentStep();
+    area.id='beratung-arbeit';
+    area.dataset.step=step;
+    area.setAttribute('aria-label','Dein aktueller Arbeitsschritt');
     if (active.phase==='sent') {
-      const end=active.stageId==='L02';
-      area.append(element('h2','',end?'Laura 2 bearbeitet':'Rat gesendet'));
-      if (end) area.append(element('p','','Hier endet der digitale Prototyp. Deinen Schlussrat formulierst du in der gemeinsamen Sicherung.'));
+      const following=followingStage();
+      const end=!following?.playable;
+      area.append(element('h2','',end?'Schlussrat gesendet':'Lies Lauras Antwort.'));
+      if (end) area.append(element('p','','Für die gemeinsame Sicherung nutzt du deinen Eintrag im Feld „Mein Schlussrat“.'));
       area.append(end ? control('beratung-fertig','Zur Fallübersicht',()=>window.Runde1.home(),'senden') :
-        control('beratung-weiter','Weiter zu Laura 2',next,'senden'));
+        control('beratung-weiter',following.title.split(' – ')[0]+' öffnen',next,'senden'));
       return area;
     }
-    const evidence=element('p','abschnittshinweis',active.draft.strategy ? info().evidence : task().evidence || stage().evidence);
-    evidence.dataset.stage=active.stageId;
-    evidence.dataset.aboutStrategy=active.draft.strategy;
-    area.append(evidence,choices());
-    if (!active.draft.strategy) {
-      const submit=control('nachricht-senden','Nachricht senden',send,'senden');
-      submit.disabled=true;
-      area.append(submit,materialTools());
-      return area;
+    if (step==='wahl' || step==='grund') {
+      const evidence=element('p','abschnittshinweis',step==='grund' ? info().evidence : task().evidence || stage().evidence);
+      evidence.dataset.stage=active.stageId;
+      evidence.dataset.aboutStrategy=step==='grund' ? active.draft.strategy : '';
+      if (step==='wahl') {
+        area.append(evidence,choices());
+      } else {
+        area.append(chosenStrategy(true),evidence,isPaper()?paperCheck():closedCheck());
+        if (task().paperFieldId) {
+          const guide=element('details','schlussrat-hilfe');
+          guide.append(element('summary','','Schreibhilfe für „Mein Schlussrat“'),window.Material.finalAdvice(active.tier));
+          area.append(guide);
+        }
+      }
+    } else {
+      const lowerCorrection=step==='korrektur' && !isPaper();
+      area.append(chosenStrategy(step==='senden' || lowerCorrection));
     }
-    area.append(isPaper()?paperCheck():closedCheck());
-    const feedback=element('p','fachmeldung',active.draft.feedback?.text || '');
+    const report=step==='wahl' ? null : active.draft.feedback;
+    const feedback=element('p','fachmeldung',report?.text || '');
     feedback.id='fachmeldung';
     feedback.tabIndex=-1;
-    feedback.dataset.type=active.draft.feedback?.type || '';
+    feedback.dataset.type=report?.type || '';
     feedback.setAttribute('role','status');
     area.append(feedback);
-    if (active.draft.feedback?.type==='B') {
+    if (step==='korrektur') {
       const correction=info().correction;
       if (correction.target && !isPaper()) {
         area.append(control('strategie-ergaenzen',correction.label,()=>select(correction.target),'ergaenzen'));
       } else {
-        area.append(control('strategie-neu-waehlen',correction.label,()=>{
-          const selected=document.getElementById('strategie-'+active.draft.strategy);
-          selected.focus({preventScroll:true});
-          selected.scrollIntoView({block:'nearest'});
-        },'ergaenzen'));
+        area.append(control('strategie-neu-waehlen',correction.label,editChoice,'ergaenzen'));
       }
     }
     const submit=control('nachricht-senden','Nachricht senden',send,'senden');
     submit.disabled=!canSend();
-    area.append(submit,materialTools());
+    submit.hidden=submit.disabled;
+    area.append(submit);
+    if (step==='senden' || step==='korrektur') {
+      area.append(control('grund-bearbeiten','Fachcheck bearbeiten',editReason,'textaktion'));
+    }
+    area.append(materialTools());
     return area;
   }
   function render(focusId,showLatest=false,restore=false) {
@@ -378,7 +454,7 @@ window.Beratung = (() => {
     const target=root();
     const lastHistory=target.querySelector('#beratung-verlauf');
     if (!showLatest && !restore && !target.hidden && lastHistory && lastHistory.dataset.level===active.tier) {
-      active.chatScroll=lastHistory.scrollTop;
+      active.chatScroll=lastHistory.querySelector('#chat-meldungen').scrollTop;
     }
     const header=element('header','beratung-kopf');
     const title=element('h1','',stage().title);
@@ -393,14 +469,14 @@ window.Beratung = (() => {
     history.dataset.level=active.tier;
     layout.append(history,work());
     target.replaceChildren(header,layout);
-    if (showLatest || active.chatScroll===null) {
-      const last=history.lastElementChild;
-      if (last) history.scrollTop+=last.getBoundingClientRect().top-history.getBoundingClientRect().top-6;
-    } else history.scrollTop=active.chatScroll;
+    const transcript=history.querySelector('#chat-meldungen');
+    transcript.scrollTop=showLatest || active.chatScroll===null ? transcript.scrollHeight : active.chatScroll;
     const focus=document.getElementById(focusId);
     focus?.focus({preventScroll:true});
-    if (focusId==='fachmeldung' && focus.getBoundingClientRect().bottom>innerHeight)
-      focus.scrollIntoView({block:'nearest'});
+    if (!restore && focus && (focusId==='fachmeldung' || focusId==='aktueller-rat' || focusId==='beratung-reaktion')) {
+      const rect=focus.getBoundingClientRect();
+      if (rect.bottom<0 || rect.top>innerHeight) focus.scrollIntoView({block:'nearest'});
+    }
     window.dispatchEvent(new Event('beratung:view'));
   }
   return Object.freeze({

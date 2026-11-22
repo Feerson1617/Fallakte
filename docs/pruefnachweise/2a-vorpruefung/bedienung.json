@@ -1,0 +1,4889 @@
+{
+  "commit": "62b6dca2723006c25cc7724f5f595799b5743dd2",
+  "html_sha256": "cd6b2872697e01b4d1c4cc9aad833e225bb027e451f49a11eee331198a2a2cf9",
+  "bankversion": "0212-r2a.1",
+  "geprueft_utc": "2026-11-22T18:07:17.623045+00:00",
+  "erprobte_abschnitte": [
+    "L01",
+    "L02"
+  ],
+  "vorpruefung_arbeitskopie": true,
+  "niveaus": {
+    "Foerder": {
+      "entscheidungen": 2,
+      "tipps": 9,
+      "codeeingaben": 0,
+      "papierphasen": 0,
+      "medienwechsel": 0,
+      "pflichtwoerter_im_blick_max": 82,
+      "pflichtwoerter_aufgeklappt_max": 82
+    },
+    "ESA": {
+      "entscheidungen": 2,
+      "tipps": 9,
+      "codeeingaben": 0,
+      "papierphasen": 0,
+      "medienwechsel": 0,
+      "pflichtwoerter_im_blick_max": 101,
+      "pflichtwoerter_aufgeklappt_max": 101
+    },
+    "MSA": {
+      "entscheidungen": 2,
+      "tipps": 11,
+      "codeeingaben": 2,
+      "papierphasen": 2,
+      "medienwechsel": 4,
+      "pflichtwoerter_im_blick_max": 77,
+      "pflichtwoerter_aufgeklappt_max": 77
+    },
+    "AHR": {
+      "entscheidungen": 2,
+      "tipps": 11,
+      "codeeingaben": 2,
+      "papierphasen": 2,
+      "medienwechsel": 4,
+      "pflichtwoerter_im_blick_max": 77,
+      "pflichtwoerter_aufgeklappt_max": 77
+    }
+  },
+  "bilder": {
+    "bedienung-chromium-Foerder-hoch-grund.jpg": "5677527250d48502148a89a9d1ff26470e4406882a14f47a72e97f3d076914cf",
+    "bedienung-chromium-Foerder-schmal-grund.jpg": "44efdd58d54d7b12c3a23178d562378cbfaf0b20f5a390006e0dca6c6d5eef4e",
+    "bedienung-chromium-Foerder-quelle.jpg": "b52ffa44fe06f6f3f7a06b393e7428e99bb04e000f6b89884c9fa4140a0cd677",
+    "bedienung-chromium-ESA-quer-grund.jpg": "261195774f0bb5d162330b31613f60309968fefc2c6b07cf7feeb308c0aa7885",
+    "bedienung-chromium-MSA-hoch-grund.jpg": "bbb19b2f26b2f1ff6daa49ebc1c05865530f0e60a922019dca6899764173f4bd",
+    "bedienung-chromium-MSA-schmal-grund.jpg": "dc19ecfc9b225f1951057c88066c0764069a282c183c7c1877eca15f701704ab",
+    "bedienung-chromium-AHR-quer-grund.jpg": "4138a0d6f816b051bd8dc45e211fb3b424bc3fa82d8c37f5d22b1cdb1f2b752c",
+    "bedienung-chromium-AHR-gross-kleinfenster.jpg": "2b7d2b7039321e7aaf7ff13e20ea29d3a4f1e4e6587f3854c0e1fb6b96f59da6",
+    "bedienung-webkit-Foerder-quer-grund.jpg": "e2457712dc8a512278553b3641594b45ddcc5d077f0de91d13b584172d60e59c",
+    "bedienung-webkit-Foerder-quelle.jpg": "5a29a58796026cbf791d3d132289bb35ea70f58dbed927939e29a60bc7c5dc8e",
+    "bedienung-webkit-ESA-hoch-grund.jpg": "d51dc665fbb88e5be661b840704570f0f64575098b201217401f272755b320ad",
+    "bedienung-webkit-ESA-schmal-grund.jpg": "b0223f74f82a0ceb0969eb004f038cac350b7d3370b2f995889e0ca4cf021dab",
+    "bedienung-webkit-MSA-quer-grund.jpg": "df63d1900f6589d5e21e7c95adbb38e96f39fd35a739027848387bfa58634f0f",
+    "bedienung-webkit-AHR-hoch-grund.jpg": "0e12031969daadd02a2bee141f7f2b7b3b525a11c2f6d38982f199838676d29e",
+    "bedienung-webkit-AHR-schmal-grund.jpg": "6db36c14cb152cda656fc60c359c5fa5b269df195aa4d7bc648907224a55b73f",
+    "bedienung-webkit-AHR-gross-kleinfenster.jpg": "5dfd52b88f5672654cc16a6ba15fbc243c9427d23630b52c8a5da75a48d8827f"
+  },
+  "durchlaeufe": [
+    {
+      "browser": "chromium",
+      "ansicht": "hoch",
+      "viewport": [
+        820,
+        1180
+      ],
+      "niveau": "Foerder",
+      "entscheidungen": 2,
+      "codeeingaben": 0,
+      "papierphasen": 0,
+      "medienwechsel": 0,
+      "tipps": 9,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 biologischen Grund wählen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 biologischen Grund wählen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 56,
+              "pflichtwoerter_aufgeklappt": 56,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-Cu",
+                "strategie-P",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 68,
+              "pflichtwoerter_aufgeklappt": 68,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L01.Foerder.K.1",
+                "grund-L01.Foerder.K.2",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 66,
+              "pflichtwoerter_aufgeklappt": 66,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 59,
+              "pflichtwoerter_aufgeklappt": 59,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-K+Cu",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+H",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 82,
+              "pflichtwoerter_aufgeklappt": 82,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L02.Foerder.K+Cu.1",
+                "grund-L02.Foerder.K+Cu.2",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 61,
+              "pflichtwoerter_aufgeklappt": 61,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 29,
+              "pflichtwoerter_aufgeklappt": 29,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "chromium",
+      "ansicht": "quer",
+      "viewport": [
+        1180,
+        820
+      ],
+      "niveau": "Foerder",
+      "entscheidungen": 2,
+      "codeeingaben": 0,
+      "papierphasen": 0,
+      "medienwechsel": 0,
+      "tipps": 9,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 biologischen Grund wählen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 biologischen Grund wählen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 56,
+              "pflichtwoerter_aufgeklappt": 56,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-Cu",
+                "strategie-P",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 68,
+              "pflichtwoerter_aufgeklappt": 68,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L01.Foerder.K.1",
+                "grund-L01.Foerder.K.2",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 66,
+              "pflichtwoerter_aufgeklappt": 66,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 59,
+              "pflichtwoerter_aufgeklappt": 59,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-K+Cu",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+H",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 82,
+              "pflichtwoerter_aufgeklappt": 82,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L02.Foerder.K+Cu.1",
+                "grund-L02.Foerder.K+Cu.2",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 61,
+              "pflichtwoerter_aufgeklappt": 61,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 29,
+              "pflichtwoerter_aufgeklappt": 29,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "chromium",
+      "ansicht": "schmal",
+      "viewport": [
+        390,
+        844
+      ],
+      "niveau": "Foerder",
+      "entscheidungen": 2,
+      "codeeingaben": 0,
+      "papierphasen": 0,
+      "medienwechsel": 0,
+      "tipps": 9,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 biologischen Grund wählen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 biologischen Grund wählen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 56,
+              "pflichtwoerter_aufgeklappt": 56,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-Cu",
+                "strategie-P",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 68,
+              "pflichtwoerter_aufgeklappt": 68,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L01.Foerder.K.1",
+                "grund-L01.Foerder.K.2",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 66,
+              "pflichtwoerter_aufgeklappt": 66,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 59,
+              "pflichtwoerter_aufgeklappt": 59,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-K+Cu",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+H",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 82,
+              "pflichtwoerter_aufgeklappt": 82,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L02.Foerder.K+Cu.1",
+                "grund-L02.Foerder.K+Cu.2",
+                "passende-karte",
+                "passende-karte-1"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 61,
+              "pflichtwoerter_aufgeklappt": 61,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 29,
+              "pflichtwoerter_aufgeklappt": 29,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "chromium",
+      "ansicht": "hoch",
+      "viewport": [
+        820,
+        1180
+      ],
+      "niveau": "ESA",
+      "entscheidungen": 2,
+      "codeeingaben": 0,
+      "papierphasen": 0,
+      "medienwechsel": 0,
+      "tipps": 9,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 biologischen Grund wählen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 biologischen Grund wählen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 55,
+              "pflichtwoerter_aufgeklappt": 55,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-P",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 89,
+              "pflichtwoerter_aufgeklappt": 89,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L01.ESA.K.1",
+                "grund-L01.ESA.K.2",
+                "grund-L01.ESA.K.3",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 60,
+              "pflichtwoerter_aufgeklappt": 60,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 67,
+              "pflichtwoerter_aufgeklappt": 67,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 101,
+              "pflichtwoerter_aufgeklappt": 101,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L02.ESA.K+Cu.1",
+                "grund-L02.ESA.K+Cu.2",
+                "grund-L02.ESA.K+Cu.3",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 65,
+              "pflichtwoerter_aufgeklappt": 65,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 41,
+              "pflichtwoerter_aufgeklappt": 41,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "chromium",
+      "ansicht": "quer",
+      "viewport": [
+        1180,
+        820
+      ],
+      "niveau": "ESA",
+      "entscheidungen": 2,
+      "codeeingaben": 0,
+      "papierphasen": 0,
+      "medienwechsel": 0,
+      "tipps": 9,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 biologischen Grund wählen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 biologischen Grund wählen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 55,
+              "pflichtwoerter_aufgeklappt": 55,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-P",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 89,
+              "pflichtwoerter_aufgeklappt": 89,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L01.ESA.K.1",
+                "grund-L01.ESA.K.2",
+                "grund-L01.ESA.K.3",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 60,
+              "pflichtwoerter_aufgeklappt": 60,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 67,
+              "pflichtwoerter_aufgeklappt": 67,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 101,
+              "pflichtwoerter_aufgeklappt": 101,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L02.ESA.K+Cu.1",
+                "grund-L02.ESA.K+Cu.2",
+                "grund-L02.ESA.K+Cu.3",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 65,
+              "pflichtwoerter_aufgeklappt": 65,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 41,
+              "pflichtwoerter_aufgeklappt": 41,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "chromium",
+      "ansicht": "schmal",
+      "viewport": [
+        390,
+        844
+      ],
+      "niveau": "ESA",
+      "entscheidungen": 2,
+      "codeeingaben": 0,
+      "papierphasen": 0,
+      "medienwechsel": 0,
+      "tipps": 9,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 biologischen Grund wählen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 biologischen Grund wählen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 55,
+              "pflichtwoerter_aufgeklappt": 55,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-P",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 89,
+              "pflichtwoerter_aufgeklappt": 89,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L01.ESA.K.1",
+                "grund-L01.ESA.K.2",
+                "grund-L01.ESA.K.3",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 60,
+              "pflichtwoerter_aufgeklappt": 60,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 67,
+              "pflichtwoerter_aufgeklappt": 67,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 101,
+              "pflichtwoerter_aufgeklappt": 101,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L02.ESA.K+Cu.1",
+                "grund-L02.ESA.K+Cu.2",
+                "grund-L02.ESA.K+Cu.3",
+                "passende-karte"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 65,
+              "pflichtwoerter_aufgeklappt": 65,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 41,
+              "pflichtwoerter_aufgeklappt": 41,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "chromium",
+      "ansicht": "hoch",
+      "viewport": [
+        820,
+        1180
+      ],
+      "niveau": "MSA",
+      "entscheidungen": 2,
+      "codeeingaben": 2,
+      "papierphasen": 2,
+      "medienwechsel": 4,
+      "tipps": 11,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 Codefeld antippen",
+        "L01 Code prüfen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 Codefeld antippen",
+        "L02 Code prüfen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 57,
+              "pflichtwoerter_aufgeklappt": 57,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 61,
+              "pflichtwoerter_aufgeklappt": 61,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 54,
+              "pflichtwoerter_aufgeklappt": 54,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 77,
+              "pflichtwoerter_aufgeklappt": 77,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 75,
+              "pflichtwoerter_aufgeklappt": 75,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 68,
+              "pflichtwoerter_aufgeklappt": 68,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 41,
+              "pflichtwoerter_aufgeklappt": 41,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "chromium",
+      "ansicht": "quer",
+      "viewport": [
+        1180,
+        820
+      ],
+      "niveau": "MSA",
+      "entscheidungen": 2,
+      "codeeingaben": 2,
+      "papierphasen": 2,
+      "medienwechsel": 4,
+      "tipps": 11,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 Codefeld antippen",
+        "L01 Code prüfen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 Codefeld antippen",
+        "L02 Code prüfen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 57,
+              "pflichtwoerter_aufgeklappt": 57,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 61,
+              "pflichtwoerter_aufgeklappt": 61,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 54,
+              "pflichtwoerter_aufgeklappt": 54,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 77,
+              "pflichtwoerter_aufgeklappt": 77,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 75,
+              "pflichtwoerter_aufgeklappt": 75,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 68,
+              "pflichtwoerter_aufgeklappt": 68,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 41,
+              "pflichtwoerter_aufgeklappt": 41,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "chromium",
+      "ansicht": "schmal",
+      "viewport": [
+        390,
+        844
+      ],
+      "niveau": "MSA",
+      "entscheidungen": 2,
+      "codeeingaben": 2,
+      "papierphasen": 2,
+      "medienwechsel": 4,
+      "tipps": 11,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 Codefeld antippen",
+        "L01 Code prüfen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 Codefeld antippen",
+        "L02 Code prüfen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 57,
+              "pflichtwoerter_aufgeklappt": 57,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 61,
+              "pflichtwoerter_aufgeklappt": 61,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 54,
+              "pflichtwoerter_aufgeklappt": 54,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 77,
+              "pflichtwoerter_aufgeklappt": 77,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 58,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 75,
+              "pflichtwoerter_aufgeklappt": 75,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 58,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 68,
+              "pflichtwoerter_aufgeklappt": 68,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 41,
+              "pflichtwoerter_aufgeklappt": 41,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "chromium",
+      "ansicht": "hoch",
+      "viewport": [
+        820,
+        1180
+      ],
+      "niveau": "AHR",
+      "entscheidungen": 2,
+      "codeeingaben": 2,
+      "papierphasen": 2,
+      "medienwechsel": 4,
+      "tipps": 11,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 Codefeld antippen",
+        "L01 Code prüfen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 Codefeld antippen",
+        "L02 Code prüfen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 56,
+              "pflichtwoerter_aufgeklappt": 56,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 58,
+              "pflichtwoerter_aufgeklappt": 58,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 51,
+              "pflichtwoerter_aufgeklappt": 51,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 73,
+              "pflichtwoerter_aufgeklappt": 73,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 77,
+              "pflichtwoerter_aufgeklappt": 77,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 67,
+              "pflichtwoerter_aufgeklappt": 67,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 41,
+              "pflichtwoerter_aufgeklappt": 41,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "chromium",
+      "ansicht": "quer",
+      "viewport": [
+        1180,
+        820
+      ],
+      "niveau": "AHR",
+      "entscheidungen": 2,
+      "codeeingaben": 2,
+      "papierphasen": 2,
+      "medienwechsel": 4,
+      "tipps": 11,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 Codefeld antippen",
+        "L01 Code prüfen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 Codefeld antippen",
+        "L02 Code prüfen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 56,
+              "pflichtwoerter_aufgeklappt": 56,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 58,
+              "pflichtwoerter_aufgeklappt": 58,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 51,
+              "pflichtwoerter_aufgeklappt": 51,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 73,
+              "pflichtwoerter_aufgeklappt": 73,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 77,
+              "pflichtwoerter_aufgeklappt": 77,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 67,
+              "pflichtwoerter_aufgeklappt": 67,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 41,
+              "pflichtwoerter_aufgeklappt": 41,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "chromium",
+      "ansicht": "schmal",
+      "viewport": [
+        390,
+        844
+      ],
+      "niveau": "AHR",
+      "entscheidungen": 2,
+      "codeeingaben": 2,
+      "papierphasen": 2,
+      "medienwechsel": 4,
+      "tipps": 11,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 Codefeld antippen",
+        "L01 Code prüfen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 Codefeld antippen",
+        "L02 Code prüfen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 56,
+              "pflichtwoerter_aufgeklappt": 56,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 58,
+              "pflichtwoerter_aufgeklappt": 58,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 51,
+              "pflichtwoerter_aufgeklappt": 51,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 73,
+              "pflichtwoerter_aufgeklappt": 73,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 58,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 77,
+              "pflichtwoerter_aufgeklappt": 77,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "passende-karte-1"
+              ],
+              "scroll_y": 58,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 67,
+              "pflichtwoerter_aufgeklappt": 67,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 41,
+              "pflichtwoerter_aufgeklappt": 41,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "webkit",
+      "ansicht": "hoch",
+      "viewport": [
+        820,
+        1180
+      ],
+      "niveau": "Foerder",
+      "entscheidungen": 2,
+      "codeeingaben": 0,
+      "papierphasen": 0,
+      "medienwechsel": 0,
+      "tipps": 9,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 biologischen Grund wählen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 biologischen Grund wählen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 56,
+              "pflichtwoerter_aufgeklappt": 56,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-Cu",
+                "strategie-P",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 68,
+              "pflichtwoerter_aufgeklappt": 68,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L01.Foerder.K.1",
+                "grund-L01.Foerder.K.2",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 66,
+              "pflichtwoerter_aufgeklappt": 66,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 59,
+              "pflichtwoerter_aufgeklappt": 59,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-K+Cu",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+H",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 82,
+              "pflichtwoerter_aufgeklappt": 82,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L02.Foerder.K+Cu.1",
+                "grund-L02.Foerder.K+Cu.2",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 61,
+              "pflichtwoerter_aufgeklappt": 61,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 29,
+              "pflichtwoerter_aufgeklappt": 29,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "webkit",
+      "ansicht": "quer",
+      "viewport": [
+        1180,
+        820
+      ],
+      "niveau": "Foerder",
+      "entscheidungen": 2,
+      "codeeingaben": 0,
+      "papierphasen": 0,
+      "medienwechsel": 0,
+      "tipps": 9,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 biologischen Grund wählen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 biologischen Grund wählen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 56,
+              "pflichtwoerter_aufgeklappt": 56,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-Cu",
+                "strategie-P",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 68,
+              "pflichtwoerter_aufgeklappt": 68,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L01.Foerder.K.1",
+                "grund-L01.Foerder.K.2",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 66,
+              "pflichtwoerter_aufgeklappt": 66,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 59,
+              "pflichtwoerter_aufgeklappt": 59,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-K+Cu",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+H",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 82,
+              "pflichtwoerter_aufgeklappt": 82,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L02.Foerder.K+Cu.1",
+                "grund-L02.Foerder.K+Cu.2",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 61,
+              "pflichtwoerter_aufgeklappt": 61,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 29,
+              "pflichtwoerter_aufgeklappt": 29,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "webkit",
+      "ansicht": "schmal",
+      "viewport": [
+        390,
+        844
+      ],
+      "niveau": "Foerder",
+      "entscheidungen": 2,
+      "codeeingaben": 0,
+      "papierphasen": 0,
+      "medienwechsel": 0,
+      "tipps": 9,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 biologischen Grund wählen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 biologischen Grund wählen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 56,
+              "pflichtwoerter_aufgeklappt": 56,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-Cu",
+                "strategie-P",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 68,
+              "pflichtwoerter_aufgeklappt": 68,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L01.Foerder.K.1",
+                "grund-L01.Foerder.K.2",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 66,
+              "pflichtwoerter_aufgeklappt": 66,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 59,
+              "pflichtwoerter_aufgeklappt": 59,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-K+Cu",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+H",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 82,
+              "pflichtwoerter_aufgeklappt": 82,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L02.Foerder.K+Cu.1",
+                "grund-L02.Foerder.K+Cu.2",
+                "passende-karte",
+                "passende-karte-1"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 61,
+              "pflichtwoerter_aufgeklappt": 61,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 29,
+              "pflichtwoerter_aufgeklappt": 29,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "webkit",
+      "ansicht": "hoch",
+      "viewport": [
+        820,
+        1180
+      ],
+      "niveau": "ESA",
+      "entscheidungen": 2,
+      "codeeingaben": 0,
+      "papierphasen": 0,
+      "medienwechsel": 0,
+      "tipps": 9,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 biologischen Grund wählen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 biologischen Grund wählen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 55,
+              "pflichtwoerter_aufgeklappt": 55,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-P",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 89,
+              "pflichtwoerter_aufgeklappt": 89,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L01.ESA.K.1",
+                "grund-L01.ESA.K.2",
+                "grund-L01.ESA.K.3",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 60,
+              "pflichtwoerter_aufgeklappt": 60,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 67,
+              "pflichtwoerter_aufgeklappt": 67,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 101,
+              "pflichtwoerter_aufgeklappt": 101,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L02.ESA.K+Cu.1",
+                "grund-L02.ESA.K+Cu.2",
+                "grund-L02.ESA.K+Cu.3",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 65,
+              "pflichtwoerter_aufgeklappt": 65,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 41,
+              "pflichtwoerter_aufgeklappt": 41,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "webkit",
+      "ansicht": "quer",
+      "viewport": [
+        1180,
+        820
+      ],
+      "niveau": "ESA",
+      "entscheidungen": 2,
+      "codeeingaben": 0,
+      "papierphasen": 0,
+      "medienwechsel": 0,
+      "tipps": 9,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 biologischen Grund wählen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 biologischen Grund wählen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 55,
+              "pflichtwoerter_aufgeklappt": 55,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-P",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 89,
+              "pflichtwoerter_aufgeklappt": 89,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L01.ESA.K.1",
+                "grund-L01.ESA.K.2",
+                "grund-L01.ESA.K.3",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 60,
+              "pflichtwoerter_aufgeklappt": 60,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 67,
+              "pflichtwoerter_aufgeklappt": 67,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 101,
+              "pflichtwoerter_aufgeklappt": 101,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L02.ESA.K+Cu.1",
+                "grund-L02.ESA.K+Cu.2",
+                "grund-L02.ESA.K+Cu.3",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 65,
+              "pflichtwoerter_aufgeklappt": 65,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 41,
+              "pflichtwoerter_aufgeklappt": 41,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "webkit",
+      "ansicht": "schmal",
+      "viewport": [
+        390,
+        844
+      ],
+      "niveau": "ESA",
+      "entscheidungen": 2,
+      "codeeingaben": 0,
+      "papierphasen": 0,
+      "medienwechsel": 0,
+      "tipps": 9,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 biologischen Grund wählen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 biologischen Grund wählen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 55,
+              "pflichtwoerter_aufgeklappt": 55,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-P",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 89,
+              "pflichtwoerter_aufgeklappt": 89,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L01.ESA.K.1",
+                "grund-L01.ESA.K.2",
+                "grund-L01.ESA.K.3",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 60,
+              "pflichtwoerter_aufgeklappt": 60,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 67,
+              "pflichtwoerter_aufgeklappt": 67,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 101,
+              "pflichtwoerter_aufgeklappt": 101,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "grund-L02.ESA.K+Cu.1",
+                "grund-L02.ESA.K+Cu.2",
+                "grund-L02.ESA.K+Cu.3",
+                "passende-karte"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 65,
+              "pflichtwoerter_aufgeklappt": 65,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 41,
+              "pflichtwoerter_aufgeklappt": 41,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "webkit",
+      "ansicht": "hoch",
+      "viewport": [
+        820,
+        1180
+      ],
+      "niveau": "MSA",
+      "entscheidungen": 2,
+      "codeeingaben": 2,
+      "papierphasen": 2,
+      "medienwechsel": 4,
+      "tipps": 11,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 Codefeld antippen",
+        "L01 Code prüfen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 Codefeld antippen",
+        "L02 Code prüfen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 57,
+              "pflichtwoerter_aufgeklappt": 57,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 61,
+              "pflichtwoerter_aufgeklappt": 61,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 54,
+              "pflichtwoerter_aufgeklappt": 54,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 77,
+              "pflichtwoerter_aufgeklappt": 77,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 75,
+              "pflichtwoerter_aufgeklappt": 75,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 68,
+              "pflichtwoerter_aufgeklappt": 68,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 41,
+              "pflichtwoerter_aufgeklappt": 41,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "webkit",
+      "ansicht": "quer",
+      "viewport": [
+        1180,
+        820
+      ],
+      "niveau": "MSA",
+      "entscheidungen": 2,
+      "codeeingaben": 2,
+      "papierphasen": 2,
+      "medienwechsel": 4,
+      "tipps": 11,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 Codefeld antippen",
+        "L01 Code prüfen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 Codefeld antippen",
+        "L02 Code prüfen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 57,
+              "pflichtwoerter_aufgeklappt": 57,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 61,
+              "pflichtwoerter_aufgeklappt": 61,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 54,
+              "pflichtwoerter_aufgeklappt": 54,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 77,
+              "pflichtwoerter_aufgeklappt": 77,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 75,
+              "pflichtwoerter_aufgeklappt": 75,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 68,
+              "pflichtwoerter_aufgeklappt": 68,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 41,
+              "pflichtwoerter_aufgeklappt": 41,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "webkit",
+      "ansicht": "schmal",
+      "viewport": [
+        390,
+        844
+      ],
+      "niveau": "MSA",
+      "entscheidungen": 2,
+      "codeeingaben": 2,
+      "papierphasen": 2,
+      "medienwechsel": 4,
+      "tipps": 11,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 Codefeld antippen",
+        "L01 Code prüfen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 Codefeld antippen",
+        "L02 Code prüfen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 57,
+              "pflichtwoerter_aufgeklappt": 57,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 61,
+              "pflichtwoerter_aufgeklappt": 61,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 54,
+              "pflichtwoerter_aufgeklappt": 54,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 77,
+              "pflichtwoerter_aufgeklappt": 77,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 58,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 75,
+              "pflichtwoerter_aufgeklappt": 75,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 58,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 68,
+              "pflichtwoerter_aufgeklappt": 68,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 3,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 41,
+              "pflichtwoerter_aufgeklappt": 41,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "webkit",
+      "ansicht": "hoch",
+      "viewport": [
+        820,
+        1180
+      ],
+      "niveau": "AHR",
+      "entscheidungen": 2,
+      "codeeingaben": 2,
+      "papierphasen": 2,
+      "medienwechsel": 4,
+      "tipps": 11,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 Codefeld antippen",
+        "L01 Code prüfen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 Codefeld antippen",
+        "L02 Code prüfen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 56,
+              "pflichtwoerter_aufgeklappt": 56,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 58,
+              "pflichtwoerter_aufgeklappt": 58,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 51,
+              "pflichtwoerter_aufgeklappt": 51,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 73,
+              "pflichtwoerter_aufgeklappt": 73,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 77,
+              "pflichtwoerter_aufgeklappt": 77,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 67,
+              "pflichtwoerter_aufgeklappt": 67,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 41,
+              "pflichtwoerter_aufgeklappt": 41,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 820,
+              "fensterbreite": 820,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "webkit",
+      "ansicht": "quer",
+      "viewport": [
+        1180,
+        820
+      ],
+      "niveau": "AHR",
+      "entscheidungen": 2,
+      "codeeingaben": 2,
+      "papierphasen": 2,
+      "medienwechsel": 4,
+      "tipps": 11,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 Codefeld antippen",
+        "L01 Code prüfen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 Codefeld antippen",
+        "L02 Code prüfen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 56,
+              "pflichtwoerter_aufgeklappt": 56,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 58,
+              "pflichtwoerter_aufgeklappt": 58,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 51,
+              "pflichtwoerter_aufgeklappt": 51,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 73,
+              "pflichtwoerter_aufgeklappt": 73,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 77,
+              "pflichtwoerter_aufgeklappt": 77,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 67,
+              "pflichtwoerter_aufgeklappt": 67,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 41,
+              "pflichtwoerter_aufgeklappt": 41,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 1180,
+              "fensterbreite": 1180,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    },
+    {
+      "browser": "webkit",
+      "ansicht": "schmal",
+      "viewport": [
+        390,
+        844
+      ],
+      "niveau": "AHR",
+      "entscheidungen": 2,
+      "codeeingaben": 2,
+      "papierphasen": 2,
+      "medienwechsel": 4,
+      "tipps": 11,
+      "handlungen": [
+        "Niveau wählen",
+        "Neu beginnen",
+        "L01 vollständigen Rat wählen",
+        "L01 Codefeld antippen",
+        "L01 Code prüfen",
+        "L01 Nachricht senden",
+        "L01 zum nächsten Abschnitt",
+        "L02 vollständigen Rat wählen",
+        "L02 Codefeld antippen",
+        "L02 Code prüfen",
+        "L02 Nachricht senden"
+      ],
+      "abschnitte": [
+        {
+          "abschnitt": "L01",
+          "strategie": "K",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 56,
+              "pflichtwoerter_aufgeklappt": 56,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 58,
+              "pflichtwoerter_aufgeklappt": 58,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 51,
+              "pflichtwoerter_aufgeklappt": 51,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 22,
+              "pflichtwoerter_aufgeklappt": 22,
+              "bedienung_im_blick": [
+                "beratung-weiter"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        },
+        {
+          "abschnitt": "L02",
+          "strategie": "K+Cu",
+          "zustaende": [
+            {
+              "schritt": "wahl",
+              "pflichtwoerter_im_blick": 73,
+              "pflichtwoerter_aufgeklappt": 73,
+              "bedienung_im_blick": [
+                "strategie-K",
+                "strategie-P",
+                "strategie-Cu",
+                "strategie-H",
+                "strategie-K+P",
+                "strategie-K+Cu",
+                "strategie-K+H",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 58,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "grund",
+              "pflichtwoerter_im_blick": 77,
+              "pflichtwoerter_aufgeklappt": 77,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "pruefcode",
+                "fachcheck-pruefen",
+                "passende-karte",
+                "passende-karte-1"
+              ],
+              "scroll_y": 58,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "senden",
+              "pflichtwoerter_im_blick": 67,
+              "pflichtwoerter_aufgeklappt": 67,
+              "bedienung_im_blick": [
+                "strategie-bearbeiten",
+                "nachricht-senden",
+                "grund-bearbeiten",
+                "passende-karte",
+                "passende-karte-1",
+                "hilfe",
+                "ask"
+              ],
+              "scroll_y": 3,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            },
+            {
+              "schritt": "antwort",
+              "pflichtwoerter_im_blick": 41,
+              "pflichtwoerter_aufgeklappt": 41,
+              "bedienung_im_blick": [
+                "beratung-fertig"
+              ],
+              "scroll_y": 0,
+              "umbruchfehler": [],
+              "dokumentbreite": 390,
+              "fensterbreite": 390,
+              "naechste_handlung_im_blick": true
+            }
+          ]
+        }
+      ],
+      "skriptfehler": []
+    }
+  ],
+  "bedienproben": {
+    "hilfen_und_korrektur": [
+      {
+        "browser": "chromium",
+        "niveau": "Foerder",
+        "gezielte_kartenstelle": "Kupfer und Spermien\n\nDas Kupfer stört Spermien. Sie können sich schlechter bewegen und eine Eizelle schlechter befruchten. Die Kupferspirale wirkt ohne Hormone.",
+        "ganze_karte_abschnitte": 5,
+        "hilfe_stufen": 5,
+        "fachfehler_korrigierbar": true,
+        "alte_freigabe_nach_neuwahl_entwertet": true
+      },
+      {
+        "browser": "chromium",
+        "niveau": "ESA",
+        "gezielte_kartenstelle": "Kupfer und Spermien\n\nDas Kupfer stört Spermien. Sie können sich schlechter bewegen und eine Eizelle schlechter befruchten. Die Kupferspirale wirkt ohne Hormone.",
+        "ganze_karte_abschnitte": 5,
+        "hilfe_stufen": 5,
+        "fachfehler_korrigierbar": true,
+        "alte_freigabe_nach_neuwahl_entwertet": true
+      },
+      {
+        "browser": "chromium",
+        "niveau": "MSA",
+        "gezielte_kartenstelle": "Kupfer und Spermien\n\nKupfer beeinträchtigt die Beweglichkeit und die Befruchtungsfähigkeit von Spermien. Die Kupferspirale enthält keine Hormone. Sie kann nach dem Einsetzen über längere Zeit sehr zuverlässig vor einer Schwangerschaft schützen.",
+        "ganze_karte_abschnitte": 5,
+        "hilfe_stufen": 5,
+        "fachfehler_korrigierbar": true,
+        "alte_freigabe_nach_neuwahl_entwertet": true
+      },
+      {
+        "browser": "chromium",
+        "niveau": "AHR",
+        "gezielte_kartenstelle": "Kupfer und Spermien\n\nKupfer beeinträchtigt die Beweglichkeit und die Befruchtungsfähigkeit von Spermien. Die Kupferspirale enthält keine Hormone. Sie kann nach dem Einsetzen über längere Zeit sehr zuverlässig vor einer Schwangerschaft schützen.",
+        "ganze_karte_abschnitte": 5,
+        "hilfe_stufen": 5,
+        "fachfehler_korrigierbar": true,
+        "alte_freigabe_nach_neuwahl_entwertet": true
+      },
+      {
+        "browser": "webkit",
+        "niveau": "Foerder",
+        "gezielte_kartenstelle": "Kupfer und Spermien\n\nDas Kupfer stört Spermien. Sie können sich schlechter bewegen und eine Eizelle schlechter befruchten. Die Kupferspirale wirkt ohne Hormone.",
+        "ganze_karte_abschnitte": 5,
+        "hilfe_stufen": 5,
+        "fachfehler_korrigierbar": true,
+        "alte_freigabe_nach_neuwahl_entwertet": true
+      },
+      {
+        "browser": "webkit",
+        "niveau": "ESA",
+        "gezielte_kartenstelle": "Kupfer und Spermien\n\nDas Kupfer stört Spermien. Sie können sich schlechter bewegen und eine Eizelle schlechter befruchten. Die Kupferspirale wirkt ohne Hormone.",
+        "ganze_karte_abschnitte": 5,
+        "hilfe_stufen": 5,
+        "fachfehler_korrigierbar": true,
+        "alte_freigabe_nach_neuwahl_entwertet": true
+      },
+      {
+        "browser": "webkit",
+        "niveau": "MSA",
+        "gezielte_kartenstelle": "Kupfer und Spermien\n\nKupfer beeinträchtigt die Beweglichkeit und die Befruchtungsfähigkeit von Spermien. Die Kupferspirale enthält keine Hormone. Sie kann nach dem Einsetzen über längere Zeit sehr zuverlässig vor einer Schwangerschaft schützen.",
+        "ganze_karte_abschnitte": 5,
+        "hilfe_stufen": 5,
+        "fachfehler_korrigierbar": true,
+        "alte_freigabe_nach_neuwahl_entwertet": true
+      },
+      {
+        "browser": "webkit",
+        "niveau": "AHR",
+        "gezielte_kartenstelle": "Kupfer und Spermien\n\nKupfer beeinträchtigt die Beweglichkeit und die Befruchtungsfähigkeit von Spermien. Die Kupferspirale enthält keine Hormone. Sie kann nach dem Einsetzen über längere Zeit sehr zuverlässig vor einer Schwangerschaft schützen.",
+        "ganze_karte_abschnitte": 5,
+        "hilfe_stufen": 5,
+        "fachfehler_korrigierbar": true,
+        "alte_freigabe_nach_neuwahl_entwertet": true
+      }
+    ],
+    "gross_schmal_tastatur": [
+      {
+        "browser": "chromium",
+        "niveau": "Foerder",
+        "schrift_prozent": 150,
+        "normal": {
+          "schritt": "wahl",
+          "pflichtwoerter_im_blick": 47,
+          "pflichtwoerter_aufgeklappt": 56,
+          "bedienung_im_blick": [
+            "strategie-K"
+          ],
+          "scroll_y": 0,
+          "umbruchfehler": [],
+          "dokumentbreite": 390,
+          "fensterbreite": 390,
+          "naechste_handlung_im_blick": true
+        },
+        "fachcheck": {
+          "schritt": "grund",
+          "pflichtwoerter_im_blick": 45,
+          "pflichtwoerter_aufgeklappt": 68,
+          "bedienung_im_blick": [
+            "strategie-bearbeiten"
+          ],
+          "scroll_y": 11,
+          "umbruchfehler": [],
+          "dokumentbreite": 390,
+          "fensterbreite": 390,
+          "naechste_handlung_im_blick": false
+        }
+      },
+      {
+        "browser": "chromium",
+        "niveau": "ESA",
+        "schrift_prozent": 150,
+        "normal": {
+          "schritt": "wahl",
+          "pflichtwoerter_im_blick": 43,
+          "pflichtwoerter_aufgeklappt": 55,
+          "bedienung_im_blick": [
+            "strategie-K"
+          ],
+          "scroll_y": 0,
+          "umbruchfehler": [],
+          "dokumentbreite": 390,
+          "fensterbreite": 390,
+          "naechste_handlung_im_blick": true
+        },
+        "fachcheck": {
+          "schritt": "grund",
+          "pflichtwoerter_im_blick": 40,
+          "pflichtwoerter_aufgeklappt": 89,
+          "bedienung_im_blick": [
+            "strategie-bearbeiten"
+          ],
+          "scroll_y": 15,
+          "umbruchfehler": [],
+          "dokumentbreite": 390,
+          "fensterbreite": 390,
+          "naechste_handlung_im_blick": false
+        }
+      },
+      {
+        "browser": "chromium",
+        "niveau": "MSA",
+        "schrift_prozent": 150,
+        "normal": {
+          "schritt": "wahl",
+          "pflichtwoerter_im_blick": 42,
+          "pflichtwoerter_aufgeklappt": 57,
+          "bedienung_im_blick": [],
+          "scroll_y": 0,
+          "umbruchfehler": [],
+          "dokumentbreite": 390,
+          "fensterbreite": 390,
+          "naechste_handlung_im_blick": false
+        },
+        "fachcheck": {
+          "schritt": "grund",
+          "pflichtwoerter_im_blick": 41,
+          "pflichtwoerter_aufgeklappt": 61,
+          "bedienung_im_blick": [
+            "strategie-bearbeiten"
+          ],
+          "scroll_y": 29,
+          "umbruchfehler": [],
+          "dokumentbreite": 390,
+          "fensterbreite": 390,
+          "naechste_handlung_im_blick": false
+        },
+        "tastatur_flaeche": [
+          390,
+          460
+        ],
+        "senden": {
+          "schritt": "senden",
+          "pflichtwoerter_im_blick": 11,
+          "pflichtwoerter_aufgeklappt": 54,
+          "bedienung_im_blick": [
+            "nachricht-senden",
+            "grund-bearbeiten",
+            "passende-karte",
+            "hilfe",
+            "ask"
+          ],
+          "scroll_y": 712,
+          "umbruchfehler": [],
+          "dokumentbreite": 390,
+          "fensterbreite": 390,
+          "naechste_handlung_im_blick": true
+        }
+      },
+      {
+        "browser": "chromium",
+        "niveau": "AHR",
+        "schrift_prozent": 150,
+        "normal": {
+          "schritt": "wahl",
+          "pflichtwoerter_im_blick": 42,
+          "pflichtwoerter_aufgeklappt": 56,
+          "bedienung_im_blick": [],
+          "scroll_y": 0,
+          "umbruchfehler": [],
+          "dokumentbreite": 390,
+          "fensterbreite": 390,
+          "naechste_handlung_im_blick": false
+        },
+        "fachcheck": {
+          "schritt": "grund",
+          "pflichtwoerter_im_blick": 35,
+          "pflichtwoerter_aufgeklappt": 58,
+          "bedienung_im_blick": [
+            "strategie-bearbeiten"
+          ],
+          "scroll_y": 29,
+          "umbruchfehler": [],
+          "dokumentbreite": 390,
+          "fensterbreite": 390,
+          "naechste_handlung_im_blick": false
+        },
+        "tastatur_flaeche": [
+          390,
+          460
+        ],
+        "senden": {
+          "schritt": "senden",
+          "pflichtwoerter_im_blick": 11,
+          "pflichtwoerter_aufgeklappt": 51,
+          "bedienung_im_blick": [
+            "nachricht-senden",
+            "grund-bearbeiten",
+            "passende-karte",
+            "hilfe",
+            "ask"
+          ],
+          "scroll_y": 712,
+          "umbruchfehler": [],
+          "dokumentbreite": 390,
+          "fensterbreite": 390,
+          "naechste_handlung_im_blick": true
+        }
+      },
+      {
+        "browser": "webkit",
+        "niveau": "Foerder",
+        "schrift_prozent": 150,
+        "normal": {
+          "schritt": "wahl",
+          "pflichtwoerter_im_blick": 45,
+          "pflichtwoerter_aufgeklappt": 56,
+          "bedienung_im_blick": [],
+          "scroll_y": 0,
+          "umbruchfehler": [],
+          "dokumentbreite": 390,
+          "fensterbreite": 390,
+          "naechste_handlung_im_blick": false
+        },
+        "fachcheck": {
+          "schritt": "grund",
+          "pflichtwoerter_im_blick": 45,
+          "pflichtwoerter_aufgeklappt": 68,
+          "bedienung_im_blick": [
+            "strategie-bearbeiten"
+          ],
+          "scroll_y": 46,
+          "umbruchfehler": [],
+          "dokumentbreite": 390,
+          "fensterbreite": 390,
+          "naechste_handlung_im_blick": false
+        }
+      },
+      {
+        "browser": "webkit",
+        "niveau": "ESA",
+        "schrift_prozent": 150,
+        "normal": {
+          "schritt": "wahl",
+          "pflichtwoerter_im_blick": 42,
+          "pflichtwoerter_aufgeklappt": 55,
+          "bedienung_im_blick": [],
+          "scroll_y": 0,
+          "umbruchfehler": [],
+          "dokumentbreite": 390,
+          "fensterbreite": 390,
+          "naechste_handlung_im_blick": false
+        },
+        "fachcheck": {
+          "schritt": "grund",
+          "pflichtwoerter_im_blick": 43,
+          "pflichtwoerter_aufgeklappt": 89,
+          "bedienung_im_blick": [
+            "strategie-bearbeiten"
+          ],
+          "scroll_y": 49,
+          "umbruchfehler": [],
+          "dokumentbreite": 390,
+          "fensterbreite": 390,
+          "naechste_handlung_im_blick": false
+        }
+      },
+      {
+        "browser": "webkit",
+        "niveau": "MSA",
+        "schrift_prozent": 150,
+        "normal": {
+          "schritt": "wahl",
+          "pflichtwoerter_im_blick": 42,
+          "pflichtwoerter_aufgeklappt": 57,
+          "bedienung_im_blick": [],
+          "scroll_y": 0,
+          "umbruchfehler": [],
+          "dokumentbreite": 390,
+          "fensterbreite": 390,
+          "naechste_handlung_im_blick": false
+        },
+        "fachcheck": {
+          "schritt": "grund",
+          "pflichtwoerter_im_blick": 47,
+          "pflichtwoerter_aufgeklappt": 61,
+          "bedienung_im_blick": [
+            "strategie-bearbeiten",
+            "pruefcode",
+            "fachcheck-pruefen",
+            "passende-karte"
+          ],
+          "scroll_y": 459,
+          "umbruchfehler": [],
+          "dokumentbreite": 390,
+          "fensterbreite": 390,
+          "naechste_handlung_im_blick": true
+        },
+        "tastatur_flaeche": [
+          390,
+          460
+        ],
+        "senden": {
+          "schritt": "senden",
+          "pflichtwoerter_im_blick": 11,
+          "pflichtwoerter_aufgeklappt": 54,
+          "bedienung_im_blick": [
+            "nachricht-senden",
+            "grund-bearbeiten",
+            "passende-karte",
+            "hilfe",
+            "ask"
+          ],
+          "scroll_y": 712,
+          "umbruchfehler": [],
+          "dokumentbreite": 390,
+          "fensterbreite": 390,
+          "naechste_handlung_im_blick": true
+        }
+      },
+      {
+        "browser": "webkit",
+        "niveau": "AHR",
+        "schrift_prozent": 150,
+        "normal": {
+          "schritt": "wahl",
+          "pflichtwoerter_im_blick": 42,
+          "pflichtwoerter_aufgeklappt": 56,
+          "bedienung_im_blick": [],
+          "scroll_y": 0,
+          "umbruchfehler": [],
+          "dokumentbreite": 390,
+          "fensterbreite": 390,
+          "naechste_handlung_im_blick": false
+        },
+        "fachcheck": {
+          "schritt": "grund",
+          "pflichtwoerter_im_blick": 47,
+          "pflichtwoerter_aufgeklappt": 58,
+          "bedienung_im_blick": [
+            "strategie-bearbeiten",
+            "pruefcode",
+            "fachcheck-pruefen",
+            "passende-karte"
+          ],
+          "scroll_y": 459,
+          "umbruchfehler": [],
+          "dokumentbreite": 390,
+          "fensterbreite": 390,
+          "naechste_handlung_im_blick": true
+        },
+        "tastatur_flaeche": [
+          390,
+          460
+        ],
+        "senden": {
+          "schritt": "senden",
+          "pflichtwoerter_im_blick": 11,
+          "pflichtwoerter_aufgeklappt": 51,
+          "bedienung_im_blick": [
+            "nachricht-senden",
+            "grund-bearbeiten",
+            "passende-karte",
+            "hilfe",
+            "ask"
+          ],
+          "scroll_y": 712,
+          "umbruchfehler": [],
+          "dokumentbreite": 390,
+          "fensterbreite": 390,
+          "naechste_handlung_im_blick": true
+        }
+      }
+    ]
+  },
+  "messweise": "Regulärer Beispielweg ohne freiwillige Hilfen. Tipps zählen Niveauwahl und Start, Wahl, Fachcheck und Senden sowie Übergänge bis zur letzten Antwort. Ein Antippen des Codefelds zählt als Tipp, die Texteingabe separat. Papierphasen folgen den Pflichtaufträgen; pro Phase zählen Hin- und Rückweg. Ab Laura 5 zählt das gemeinsame Schlussratfeld einmal, mit dem Codeauftrag auf demselben Bogen. Analoger Unterrichtseinstieg und anschließende Projektion liegen außerhalb der Messung. Textmessung zählt Wörter der aktuellen Laura-Nachricht und des sichtbaren Arbeitsbereichs einschließlich Auswahl- und Schaltflächenbeschriftungen. Optionale Hilfe, Kartenlinks, Ersatzaufgabe, Verlauf und Navigation sind ausgenommen. Wortmittelpunkte innerhalb des Viewports und seiner Scrollcontainer zählen als im Blick. Größere Schrift ist eine 150%-Emulation; die kleinere Arbeitshöhe ersetzt nur den Platzbedarf einer Tastatur. Keine Messung von Schülerarbeitszeit, Lesen oder Schreibqualität.",
+  "referenz_commit": "62b6dca2723006c25cc7724f5f595799b5743dd2"
+}

@@ -12,7 +12,7 @@ QA=ROOT/'build/runde1/qa'
 LEVELS={'Foerder','ESA','MSA','AHR'}
 METHODS={'K','P','Cu','H'}
 STRATEGIES=METHODS|{'K+P','K+Cu','K+H'}
-BASE='8c6bd80c7aa636b55e50ef7522c63f9b48df0cb8'
+BASE='62b6dca2723006c25cc7724f5f595799b5743dd2'
 TITLES=['Latexallergie','Zwei Schutzziele','Hormone und Alltag','Schmerzen und Einlage','Mein Schlussrat']
 
 
@@ -25,16 +25,27 @@ def main():
     assert bank==json.loads(doc.get_element_by_id('materialvertrag').text)
     assert {k:v for k,v in bank.items() if k!='buildCommit'}==source
     old=json.loads(subprocess.check_output(['git','show',BASE+':data/laura-0212.json'],cwd=ROOT))
-    assert bank['version']=='0212-r1.2'
-    assert all(bank['stages'][sid]==old['stages'][sid] for sid in ('L03','L04','L05'))
+    assert bank['version']=='0212-r2a.1'
+    for sid,stage in bank['stages'].items():
+        for key in ('id','title','knownFacts','newFacts','code','anchors'):
+            assert stage[key]==old['stages'][sid][key], (sid,key)
     sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     assert bank['buildCommit']==sha and sha in work
     assert len(app)<10_000_000 and not doc.xpath('//script[@src]|//link[@rel="stylesheet"]')
     assert all(src.startswith('data:image/') for src in doc.xpath('//img/@src'))
     assert set(bank['levels'])==LEVELS and set(bank['strategies'])==STRATEGIES and set(bank['cards'])==METHODS
+    for key,card in bank['cards'].items():
+        for section,passage in card['sections'].items():
+            assert passage['text']==old['cards'][key]['sections'][section]['text']
+            assert passage['shortText'] in work and passage['text'] in work
+    ending=bank['consolidation']['finalAdvice']
+    assert ending['title']==bank['consolidation']['paperField'] and ending['compare'] in work
+    for tier in LEVELS:
+        writing=ending['levels'][tier]
+        assert writing['focus'] in work and all(stem in work for stem in writing['stems'])
     for code,item in bank['strategies'].items():assert item['methods']==code.split('+')
     assert list(bank['stages'])==['L01','L02','L03','L04','L05']
-    assert [s['playable'] for s in bank['stages'].values()]==[True,True,False,False,False]
+    assert all(stage['playable'] for stage in bank['stages'].values())
     # Independent expectation from the brief. The tests never supply codes to the application or Work.
     assert ''.join(s['code'] for s in bank['stages'].values())=='BCABC'
     def audit_ref(ref):
@@ -117,7 +128,7 @@ def main():
     assert len(bank['consolidation']['facts'])>1 and bank['consolidation']['paperField'] in work
     QA.mkdir(parents=True,exist_ok=True)
     (QA/'material.json').write_text(json.dumps(dict(commit=sha,bankversion=bank['version'],
-        html_sha256=hashlib.sha256(app).hexdigest(),bytes=len(app),abschnitte=5,spielbar=2,aufgaben=len(tasks),
+        html_sha256=hashlib.sha256(app).hexdigest(),bytes=len(app),abschnitte=5,spielbar=5,aufgaben=len(tasks),
         strategiekontexte=len(tasks)*len(STRATEGIES),begruendungsoptionen=options,
         vertrag_sha256=hashlib.sha256((OUT/'Materialvertrag.json').read_bytes()).hexdigest()),indent=2)+'\n')
     print(f'20 Aufgaben, 140 Strategiekontexte und {options} begründete Antwortmöglichkeiten mit Work abgeglichen.')

@@ -62,7 +62,8 @@ def readable(bank):
                        task['task'],lines(letter+'. '+anchor for letter,anchor in stage['anchors'].items()),
                        bank['paperFallbackInstruction']]
             before=task['before']
-            text+=['**Vor der Auswahl** '+reference(before['card'],bank),questions(before),details(before['hints'])]
+            card_hint='Infokarten · Karte selbst auswählen' if before.get('freeCards') else reference(before['card'],bank)
+            text+=['**Vor der Auswahl** '+card_hint,questions(before),details(before['hints'])]
             for key,way in task['strategies'].items():
                 text+=['#### '+bank['strategies'][key]['label']+' ('+key+')',
                        '**Einordnung** '+way['status']+' · '+way['condition'],
@@ -88,9 +89,14 @@ def readable(bank):
     text+=['## Infokarten']
     for card in bank['cards'].values():
         text+=['### '+card['title']]
-        for section in card['sections'].values():text+=['**'+section['title']+'** '+section['text']]
+        for section in card['sections'].values():
+            text+=['**'+section['title']+'** '+section['text'], '**Kurzfassung für Förder und ESA** '+section['shortText']]
     shared=bank['consolidation']
     text+=['## Gemeinsame Sicherung',lines(shared['facts']),shared['paperField'],shared['prompt'],shared['compare']]
+    advice=shared['finalAdvice']
+    text+=['## Gemeinsames Schreibfeld · '+advice['title'], advice['id'], lines(advice['stems']),advice['compare']]
+    for level,guide in advice['levels'].items():
+        text+=['### '+bank['levels'][level],guide['focus'],lines(guide['stems'])]
     return '\n\n'.join(text)+'\n'
 
 

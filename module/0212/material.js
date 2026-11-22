@@ -123,17 +123,23 @@
     dialog.dataset.method = method;
     if (section) dialog.dataset.section = section;
     let target = title;
-    for (const [id,passage] of Object.entries(card.sections)) {
+    const passages = section ? [[section,card.sections[section]]] : Object.entries(card.sections);
+    const short = section && (view.levelId === 'Foerder' || view.levelId === 'ESA');
+    for (const [id,passage] of passages) {
       const entry = element('section');
       entry.dataset.sectionId = id;
       const heading = element('h3',passage.title);
-      entry.append(heading,element('p',passage.text));
+      entry.append(heading,element('p',short && passage.shortText ? passage.shortText : passage.text));
       if (id === section) {
         entry.dataset.target = 'true';
         heading.tabIndex = -1;
         target = heading;
       }
       body.append(entry);
+    }
+    if (section) {
+      const more = button('Ganze Karte lesen',() => child({type:'card',ref:{method}},more),'material-ganze-karte');
+      body.append(more);
     }
     return target;
   }
@@ -169,11 +175,16 @@
     }
     if (depth > 0) controls.append(button('Vorherige Hilfe',() => step(-1),'hilfe-zurueck'));
     if (depth+1 < data.hints.length) controls.append(button('Nächste Hilfe',() => step(1),'hilfe-weiter'));
-    for (const [i,ref] of [data.card,...(data.extraCards || [])].entries()) {
-      const source = button(cardLabel(ref),() => child({type:'card',ref},source),i ? 'hilfe-karte-'+i : 'hilfe-karte');
-      source.dataset.method = ref.method;
-      source.dataset.section = ref.section;
-      controls.append(source);
+    if (data.freeCards) {
+      const browse = button('Infokarte auswählen',() => child({type:'cards'},browse),'hilfe-kartenauswahl');
+      controls.append(browse);
+    } else {
+      for (const [i,ref] of [data.card,...(data.extraCards || [])].entries()) {
+        const source = button(cardLabel(ref),() => child({type:'card',ref,levelId:context.levelId},source),i ? 'hilfe-karte-'+i : 'hilfe-karte');
+        source.dataset.method = ref.method;
+        source.dataset.section = ref.section;
+        controls.append(source);
+      }
     }
     body.append(controls);
     return hint;
@@ -199,12 +210,29 @@
       'Für diesen Schritt gibt es gerade keine weitere Rückfrage.'));
   }
 
-  function summaryView() {
+  function finalAdvice(levelId) {
+    const {finalAdvice:advice,prompt,compare} = window.LAURA.consolidation;
+    const instructions = element('div');
+    instructions.className = 'schlussrat-impulse';
+    if (!advice) {
+      instructions.append(element('p',prompt),element('p',compare));
+      return instructions;
+    }
+    const level = advice.levels[levelId];
+    const stems = element('ul');
+    for (const stem of level?.stems || advice.stems) stems.append(element('li',stem));
+    instructions.append(stems);
+    if (level) instructions.append(element('p',level.focus));
+    instructions.append(element('p',advice.compare));
+    return instructions;
+  }
+
+  function summaryView(view) {
     const data = window.LAURA.consolidation;
     title.textContent = 'Gemeinsame Sicherung';
     const facts = element('ul');
     for (const fact of data.facts) facts.append(element('li',fact));
-    body.append(facts,element('h3',data.paperField),element('p',data.prompt),element('p',data.compare));
+    body.append(facts,element('h3',data.finalAdvice?.title || data.paperField),finalAdvice(view.levelId));
   }
 
   function draw() {
@@ -226,20 +254,16 @@
     body.scrollTop = view.scrollTop || 0;
     const focus = view.focusId && document.getElementById(view.focusId);
     (focus || first).focus({preventScroll:true});
-    if (!focus && first.closest('[data-target="true"]')) {
-      // Only scroll the source. The chat and the input behind the modal stay in place.
-      const passage = first.parentElement;
-      body.scrollTop += passage.getBoundingClientRect().top - body.getBoundingClientRect().top;
-    }
   }
 
   window.Material = Object.freeze({
     cardLabel,
+    finalAdvice,
     openCards: trigger => begin({type:'cards'},trigger),
-    openCard: (ref,trigger) => begin({type:'card',ref},trigger),
+    openCard: (ref,trigger,levelId) => begin({type:'card',ref,levelId},trigger),
     help: (context,trigger) => begin({type:'help',context,depth:0},trigger),
     questions: (context,onAsk,trigger) => begin({type:'questions',context,onAsk},trigger),
-    summary: trigger => begin({type:'summary'},trigger),
+    summary: (trigger,levelId) => begin({type:'summary',levelId},trigger),
     close,
     get isOpen() { return Boolean(dialog?.open); }
   });

@@ -1,4 +1,4 @@
-name: Fallakte · Laura Runde 1
+name: Fallakte · Laura Runde 2A
 on:
   pull_request:
   push:
@@ -70,12 +70,13 @@ jobs:
       - run: python scripts/build.py
       - run: python tests/runde1_vertrag.py
       - run: python tests/runde1_browser.py
+      - run: python tests/runde2a_bedienung.py
       - run: python tests/runde1_karten.py
       - run: python tests/runde1_bestand.py
       - run: python scripts/runde1_bericht.py
       - uses: actions/upload-artifact@v4
         with:
-          name: Fallakte-Runde-1
+          name: Fallakte-Runde-2A
           path: dist/Runde-1/
           if-no-files-found: error
           retention-days: 30

@@ -15,6 +15,7 @@ EXPECTED_SECTIONS = {
     'H': ['wirkung', 'sti', 'alltag', 'einlage', 'schmerzen'],
 }
 LAYOUTS = [(820, 1180, 100), (1180, 820, 150), (390, 450, 200)]
+COPPER_SOURCE = {'L01': 'wirkung', 'L02': 'sti', 'L03': 'alltag', 'L04': 'schmerzen', 'L05': 'schmerzen'}
 
 
 def set_layout(page, width, height, font):
@@ -34,6 +35,7 @@ def read_cards(page, bank, width, height, font):
         choice = dialog.locator('#material-karte-' + method)
         choice.tap()
         expect(dialog.locator('h2')).to_have_text(bank[method]['title'])
+        expect(dialog.locator('#material-ganze-karte')).to_have_count(0)
         expect(dialog.locator('[data-section-id]')).to_have_count(len(sections))
         for key in sections:
             section = dialog.locator(f'[data-section-id="{key}"]')
@@ -62,10 +64,57 @@ def read_cards(page, bank, width, height, font):
                 zurueck_sichtbar=True, rueckkehrfokus=True)
 
 
+def focused_card(page, bank, tier, stage):
+    if stage == 'L01':
+        start(page, tier)
+    else:
+        page.goto(HTML.as_uri())
+        page.locator('#level-' + tier).tap()
+        page.locator('#abschnitt-wahl').tap()
+        page.locator(f'#einstieg [data-stage={stage}]').tap()
+    if stage == 'L05':
+        help_button = page.locator('#hilfe')
+        help_button.tap()
+        dialog = page.locator('#material-dialog[open]')
+        browse = dialog.locator('#hilfe-kartenauswahl')
+        expect(dialog.locator('[data-method]')).to_have_count(0)
+        browse.tap()
+        expect(dialog.locator('.material-auswahl button')).to_have_count(4)
+        page.keyboard.press('Escape')
+        expect(browse).to_be_focused()
+        page.keyboard.press('Escape')
+        expect(help_button).to_be_focused()
+        expect(page.locator('button[data-strategy][aria-pressed=true]')).to_have_count(0)
+    choose(page, 'Cu')
+    source = page.locator('#passende-karte')
+    source.tap()
+    dialog = page.locator('#material-dialog[open]')
+    section = COPPER_SOURCE[stage]
+    assert marked_card(page) == ('Cu', section)
+    expect(dialog.locator('[data-section-id]')).to_have_count(1)
+    field = 'shortText' if tier in ('Foerder', 'ESA') else 'text'
+    expected = bank['Cu']['sections'][section][field]
+    expect(dialog.locator('[data-section-id] p')).to_have_text(expected)
+    more = dialog.locator('#material-ganze-karte')
+    more.tap()
+    expect(dialog.locator('h2')).to_have_text('Kupferspirale')
+    expect(dialog.locator('[data-section-id]')).to_have_count(5)
+    for key in EXPECTED_SECTIONS['Cu']:
+        expect(dialog.locator(f'[data-section-id="{key}"] p')).to_have_text(bank['Cu']['sections'][key]['text'])
+    dialog.locator('#material-zurueck').tap()
+    expect(more).to_be_focused()
+    expect(dialog.locator('[data-section-id]')).to_have_count(1)
+    expect(dialog.locator('[data-section-id] p')).to_have_text(expected)
+    page.keyboard.press('Escape')
+    expect(source).to_be_focused()
+    return dict(niveau=tier, abschnitt=stage, fundstelle=['Cu', section], textfassung=field,
+                fokusabschnitte=1, vollstaendige_abschnitte=5, rueckkehrfokus=True)
+
+
 def working_state(page):
     return page.evaluate('''() => {
         const chat = document.querySelector('#beratung-verlauf');
-        return {draft: document.querySelector('[data-strategy][aria-pressed="true"]').dataset.strategy,
+        return {draft: document.querySelector('#aktueller-rat').dataset.aboutStrategy,
                 code: document.querySelector('#pruefcode').value, chat: chat.textContent,
                 chatScroll: chat.scrollTop, scrollX, scrollY};
     }''')
@@ -161,6 +210,9 @@ def main():
             result = dict(engine=engine, version=browser.version, layouts=[])
             for layout in LAYOUTS:
                 result['layouts'].append(read_cards(page, bank, *layout))
+            set_layout(page, 820, 1180, 100)
+            result['gezielte_karten'] = [focused_card(page, bank, tier, stage)
+                                          for tier in ('Foerder', 'ESA', 'MSA', 'AHR') for stage in COPPER_SOURCE]
             result['hilfe_5_hochformat'] = compact_help(page)
             result['tastatur'] = return_to_draft(page)
             assert json.loads(page.locator('#materialvertrag').text_content())['buildCommit'] == commit

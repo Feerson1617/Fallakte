@@ -1,8 +1,8 @@
-# Fallakte · Laura-Prototyp für den 02.12.2026
+# Fallakte · Laura am 02.12.2026
 
-Auf dem Zweig `entwicklung/0212-neukonzeption` startet die neue Beratung mit Latexallergie und dem Wunsch nach zuverlässiger Schwangerschaftsverhütung. In Laura 2 kommt der Infektionsschutz hinzu. Beide Abschnitte sind für Förder, ESA, MSA und AHR vorgesehen. Laura 3–5 stehen als Spezifikation für Work bereit.
+Die Offline-Datei führt auf Förder, ESA, MSA und AHR durch fünf Beratungsschritte. Laura bringt weitere Anliegen ins Gespräch. Das Team prüft seinen vollständigen Rat in jedem Abschnitt erneut. Die Lehrkraft kann die gemeinsame Sicherung jederzeit über den Zugang im Seitenfuß öffnen.
 
-`python scripts/build.py` erzeugt die offline ausführbare Datei **dist/Runde-1/Fallakte.html** und beide Fassungen des Materialvertrags. Die Ausgaben der Korrekturrunde 1b mit Inhaltsbank `0212-r1.2` stehen im GitHub-Actions-Artefakt **Fallakte-Runde-1**. [Umsetzungsstand und Wiedereinstieg](docs/0212-umsetzungsstand.md) · [Fachlich-didaktische Prüfung der Korrekturen](docs/0212-fachpruefung-1b.md)
+`python scripts/build.py` erzeugt **dist/Runde-1/Fallakte.html** und den Materialvertrag für Work als JSON und Markdown. Das GitHub-Actions-Artefakt **Fallakte-Runde-2A** enthält außerdem beide Prüfberichte und das Sichtprüfungspaket. [Umsetzungsstand](docs/0212-umsetzungsstand.md) · [Fachlich-didaktische Prüfung](docs/0212-fachpruefung-2a.md)
 
 ## Gemeinsame Anwendung im zugrunde liegenden Veröffentlichungsstand
 

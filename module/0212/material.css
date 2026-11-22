@@ -23,6 +23,7 @@
   padding:.8rem 1rem 1rem;overflow:auto;overscroll-behavior:contain;min-height:0;overflow-wrap:anywhere;line-height:1.45
 }
 #material-dialog .material-inhalt>*+*,#material-dialog .material-inhalt li+li{margin-top:.55rem}
+#material-dialog .schlussrat-impulse>*+*{margin-top:.55rem}
 #material-dialog .material-inhalt ul{padding-inline-start:1.2em}
 #material-dialog .material-inhalt section{padding:.35rem .65rem;border-inline-start:3px solid transparent}
 #material-dialog .material-inhalt [data-target="true"]{border-inline-start-color:#386343;background:#eaf2e3;border-radius:.2rem}

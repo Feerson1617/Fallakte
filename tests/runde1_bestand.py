@@ -154,7 +154,8 @@ def reserve_paths(browser,engine,expected,prototype):
     page.reload()
     page.locator('#abschnitt-wahl').tap()
     presentation(page)
-    expect(page.locator('#abschnitte button')).to_have_text(['Laura 1 – Latexallergie','Laura 2 – Zwei Schutzziele'])
+    expect(page.locator('#abschnitte button')).to_have_text(['Laura 1 – Latexallergie','Laura 2 – Zwei Schutzziele',
+        'Laura 3 – Hormone und Alltag','Laura 4 – Schmerzen und Einlage','Laura 5 – Mein Schlussrat'])
     page.locator('#wieder-level-AHR').tap()
     page.locator('#wiederfall').get_by_role('button',name='Celina',exact=True).tap()
     expect(page.locator('#abschnitte button')).to_have_count(5)
@@ -185,14 +186,15 @@ def switch_days(browser,engine,first_url,lms,size):
     first.locator('#level-ESA').tap()
     first.locator('#neu').tap()
     chosen=first.locator('.strategie:visible').first
+    strategy=chosen.get_attribute('data-strategy')
     chosen.tap()
-    strategy=chosen.get_attribute('id')
+    draft=first.locator('#aktueller-rat')
     history=first.locator('#beratung-verlauf').inner_text()
     expect(shell.locator('#gespraechsstand')).to_have_text('Laura 1 · ESA')
     expect(first.locator('#lokale-navigation')).to_be_hidden()
     expect(shell.locator('#modulaktionen button')).to_have_text(['Fallakten','Infokarten','Abschnitt auswählen'])
     presentation(first)
-    expect(chosen).to_have_attribute('aria-pressed','true')
+    expect(draft).to_have_attribute('data-about-strategy',strategy)
     expect(first.locator('#nachricht-senden')).to_be_disabled()
     assert first.locator('#beratung-verlauf').inner_text()==history
     shell.locator('#zurueck').tap()
@@ -205,7 +207,7 @@ def switch_days(browser,engine,first_url,lms,size):
     assert second.locator('body').evaluate('()=>typeof window.LAURA')=='undefined'
     shell.locator('#zurueck').tap()
     shell.locator('#erster-tag').tap()
-    expect(first.locator('#'+strategy)).to_have_attribute('aria-pressed','true')
+    expect(draft).to_have_attribute('data-about-strategy',strategy)
     assert first.locator('#beratung-verlauf').inner_text()==history
     shell.locator('[data-action=home]').tap()
     first.locator('[data-optional=Tom]').tap()
@@ -221,7 +223,7 @@ def switch_days(browser,engine,first_url,lms,size):
     shell.locator('#zurueck').tap();shell.locator('#erster-tag').tap()
     expect(reserve.locator('#method-K')).to_have_attribute('aria-pressed','true')
     shell.locator('[data-action=home]').tap();first.locator('#weiterarbeiten').tap()
-    expect(first.locator('#'+strategy)).to_have_attribute('aria-pressed','true')
+    expect(draft).to_have_attribute('data-about-strategy',strategy)
     calls=[]
     if lms:
         expect(page.locator('iframe')).to_have_count(1)
