@@ -21,10 +21,12 @@ def build():
         css = css.replace('../../assets/'+name, 'data:font/ttf;base64,'+base64.b64encode((ROOT/'assets'/name).read_bytes()).decode())
     page = page.replace('<link rel="stylesheet" href="nachrichten.css">', '<style>'+css+'</style>')
     page = page.replace('id="material"></script>', 'id="material">'+data.replace('<',r'\u003c')+'</script>')
+    for image in ('../../assets/laura.webp','assets/mutter.webp','assets/freundin.webp','assets/grossmutter.webp','assets/vater.webp'):
+        src = f'src="{image}"'
+        assert page.count(src) == 1
+        page = page.replace(src, 'src="data:image/webp;base64,'+base64.b64encode((MODULE/image).read_bytes()).decode()+'"')
     for src in ('../../app/ui.js','nachrichten.js'):
         code = (MODULE/src).read_text()
-        if src == 'nachrichten.js':
-            code = code.replace('../../assets/laura.webp','data:image/webp;base64,'+base64.b64encode((ROOT/'assets/laura.webp').read_bytes()).decode())
         page = page.replace(f'<script src="{src}"></script>', '<script>'+code+'</script>')
     target = OUT/'Fallakte.html'
     target.write_text(page)

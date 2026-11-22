@@ -10,14 +10,15 @@ from zipfile import ZipFile
 
 from playwright.sync_api import expect, sync_playwright
 from bestandsschutz import archive, build, digest
-from tagesauswahl import HOST, host
+from tagesauswahl import HOST, host, restore_group_image
 from grundweg import measure_route
+from nachrichtenansichten import inspect_views
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT/'build/08-12'
 QA = OUT/'Abnahme'
 BANK = json.loads((OUT/'Aufgabenbank.json').read_text())
-REVIEWED = '40fef18eb9ea8cb7aacd28bc88579d9ddc376916'
+REVIEWED = '5f9806755f892deb38669c350bf95fd60c894b01'
 PHOTOS = {}
 B = ROOT/'dist/Version-B'
 PATTERN = rb'(<script id="modul-08" type="application/octet-stream">)([A-Za-z0-9+/=]+)(</script>)'
@@ -28,27 +29,24 @@ def protect(temp):
     archive(REVIEWED,ref,['index.html','02-12.html','assets','app','data','module','tagesauswahl','scorm','scripts'])
     build(ref)
     frozen=json.loads((ref/'build/08-12/Aufgabenbank.json').read_text())
-    # Only the common source prompt and the post-choice explanations may differ.
-    for person,case in frozen['cases'].items():
-        for level,tasks in case['levels'].items():
-            before=tasks[1]
-            after=BANK['cases'][person]['levels'][level][1]
-            before['prompt']=after['prompt']
-            for old,new in zip(before['options'],after['options'],strict=True):
-                del old['citation']
-                old['feedback']=new['feedback']
-    assert BANK==frozen
+    # All four family arguments, tasks, criteria, options, depth and five hints remain identical.
+    assert frozen.pop('laura') != BANK['laura']
+    assert frozen == {k:v for k,v in BANK.items() if k not in ('laura','lauraAbsaetze')}
+    old_source=json.loads((ref/'module/08-12/nachrichten.json').read_text())
+    assert old_source['nachrichten']==json.loads((ROOT/'module/08-12/nachrichten.json').read_text())['nachrichten']
     for v in 'AB':
         name = 'Version-'+v
         current = (ROOT/'dist'/name/'Fallakte.html').read_bytes()
         before = (ref/'dist'/name/'Fallakte.html').read_bytes()
         if v=='B':
+            current = restore_group_image(current)
             module = (OUT/'Fallakte.html').read_bytes()
             assert base64.b64decode(re.search(PATTERN,current)[2],validate=True)==module
             assert re.findall(PATTERN,before) and len(re.findall(PATTERN,current))==1
             current = re.sub(PATTERN,lambda m: re.search(PATTERN,before)[0],current)
         assert current==before, name
-    assert digest((ROOT/'module/08-12/nachrichten.json').read_bytes())=='2744d3335774ba496c52be34e19dba12b3cc2bee5d49cd3de6be4a3d33288742'
+    with ZipFile(ref/'dist/Version-A/Fallakte-SCORM12.zip') as old, ZipFile(ROOT/'dist/Version-A/Fallakte-SCORM12.zip') as new:
+        assert old.namelist()==new.namelist() and all(old.read(n)==new.read(n) for n in old.namelist())
     assert all(word not in json.dumps(BANK,ensure_ascii=False).lower() for word in (
         'bewertungskompetenz','bewertungskriterium','argumentationsqualität','kriteriengeleitet'))
     return digest((ref/'dist/Version-A/Fallakte.html').read_bytes())
@@ -73,7 +71,10 @@ def check_content():
     for phrase in ['passenden Kartenbeleg','Ausbildungsplatz zusichert','Wähle dein Urteil','Welcher Beleg wiegt','Was zählt für Laura mehr','Wäge ab:', 'Suche für „']:
         assert phrase not in document, phrase
     original=json.loads((ROOT/'module/08-12/nachrichten.json').read_text())
-    assert BANK['laura']==original['laura']
+    assert BANK['laura']==original['laura'] and BANK['lauraAbsaetze']==original['lauraAbsaetze']
+    assert sorted(n for paragraph in BANK['lauraAbsaetze'] for n in paragraph)==list(range(1,len(BANK['laura'])+1))
+    for quote,phrase in [(2,'Ausbildung'),(4,'richtige Informationen'),(5,'selbst entscheiden')]:
+        assert phrase in BANK['laura'][quote-1]
     for person,case in BANK['cases'].items():
         assert case['message']==original['nachrichten'][person]
         assert case['sections']==[person+' 1 – Argumenten-Check',person+' 2 – Nachricht prüfen']
@@ -456,7 +457,10 @@ def pair_recovery(browser,engine,base,low,high,scorm):
     frame.get_by_text('Ganze Nachricht lesen',exact=True).tap()
     expect(frame.locator('aside')).to_contain_text(BANK['cases']['Freundin']['message'][0])
     frame.get_by_text('Lauras ganze Nachricht',exact=True).tap()
-    expect(frame.locator('aside details[open]').last).to_contain_text(BANK['laura'][1])
+    expect(frame.locator('aside .message-text')).to_contain_text(BANK['laura'][1])
+    expect(frame.locator('aside ol')).to_have_count(0)
+    btn(frame,'Zurück zur Familiennachricht').tap()
+    expect(frame.locator('aside details[open]')).to_contain_text(BANK['cases']['Freundin']['message'][0])
     btn(frame,'Ganze Fachkarte').tap()
     expect(frame.locator('details[open]')).to_contain_text(BANK['cards']['medizin']['lines'][4])
     btn(frame,'Zurück').tap()
@@ -493,7 +497,8 @@ def standalone_zoom(browser,engine):
             btn(page,'Hilfe').tap()
             btn(page,'Hilfe 5 – So geht es.').tap()
             layout(page)
-            page.locator('aside summary').first.tap()
+            btn(page,'Lauras ganze Nachricht').tap()
+            expect(page.locator('aside .message-text')).to_contain_text(BANK['laura'][4])
             layout(page)
             btn(page,'Nachrichten').tap()
     context.close()
@@ -507,6 +512,8 @@ def main():
     routes=[]
     small=[]
     restarts=[]
+    views=[]
+    figures={}
     with TemporaryDirectory() as td:
         temp=Path(td)
         before=protect(temp)
@@ -517,6 +524,8 @@ def main():
         with host(temp/'sco') as url,sync_playwright() as pw:
             for engine in ('chromium','webkit'):
                 browser=getattr(pw,engine).launch(executable_path=os.getenv(engine.upper()+'_EXECUTABLE'))
+                screens,figures[engine]=inspect_views(browser,engine,temp/'ref/dist/Version-B',B,BANK,shot)
+                views.extend(screens)
                 small.append(standalone_zoom(browser,engine))
                 for pi,person in enumerate(BANK['cases']):
                     for li,level in enumerate(BANK['levels']):
@@ -529,7 +538,7 @@ def main():
                 browser.close()
     report=dict(commit=subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip(),referenz=REVIEWED,version_a_sha256=before,html_sha256=digest((B/'Fallakte.html').read_bytes()),
                 scorm_sha256=digest((B/'Fallakte-SCORM12.zip').read_bytes()),bank_sha256=digest((OUT/'Aufgabenbank.json').read_bytes()),
-                durchlaeufe=runs,grundwege=routes,paar_neustart=restarts,kleinfenster=small,bilder=PHOTOS)
+                ansichten=views,figurenvergleich=figures,durchlaeufe=runs,grundwege=routes,paar_neustart=restarts,kleinfenster=small,bilder=PHOTOS)
     (QA/'Nachrichten.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
 
 

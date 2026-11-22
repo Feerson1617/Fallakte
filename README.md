@@ -6,7 +6,7 @@ Die Anwendung startet mit „Wähle deinen Unterrichtstag.“ Beide Datumsfelder
 | --- | --- |
 | **Fallakte-Version-A-02-12** | Für den 02.12. ist die erste Karte aktiv und die zweite mit einem Schloss gekennzeichnet. Das Paket enthält ausschließlich das erste Unterrichtsmodul. |
 | **Fallakte-Version-B-08-12** | Beide Karten lassen sich öffnen. Am 08.12. sind Mutter und Freundin die Pflichtstrecke. Großmutter und Vater sind direkt zugängliche Reserven. |
-| **Fallakte-Nachrichten-08-12** | Sichtprüfung, Prüfbericht und vollständige Materialübergabe für Work zum zweiten Tag. |
+| **Fallakte-Nachrichten-08-12** | Sichtprüfung, Figurenübersicht als PDF, Prüfbericht und vollständige Materialübergabe für Work zum zweiten Tag. |
 | **Fallakte-Abnahme** | Gemeinsamer Prüfbericht und Sichtprüfungs-ZIP mit Bildschirmfotos, JSON-Protokollen und der Abnahme des eingebetteten Moduls vom 02.12. |
 
 Im gewählten Versionsordner **Fallakte.html** direkt im Browser öffnen oder **Fallakte-SCORM12.zip** als geschlossenes Paket in das LMS importieren. Alle benötigten Bilder, Schriften und Moduldokumente sind eingebettet. Beide Pakete haben eigene SCORM-Kennungen.
@@ -17,7 +17,7 @@ Die gemeinsame Leiste öffnet **Tagesauswahl**, **Fallakten**, **Infokarten** un
 
 Das einzeln geöffnete Dokument **02-12.html** und seine Offline-Datei **build/02-12/Fallakte.html** verwenden ihre bisherige Kopfzeile. Die gemeinsame Leiste übernimmt die Navigation, sobald das Modul eine Verbindung zum Tagesmenü hat.
 
-Die Quelldatei **index.html** ist die Tagesauswahl und öffnet in der Entwicklung die A-Fassung. **02-12.html** enthält die Fallübersicht des ersten Moduls. Der unabhängige Vergleich mit `ca77bf7` schützt Falldaten, Hilfe, Entscheidung, Rückmeldung, Wiedereinstieg und Abschluss. Der Referenzbau berücksichtigt die geprüften Änderungen an der Fallübersicht und die Anbindung an die gemeinsame Leiste. Beide Auslieferungen müssen genau das daraus entstandene Dokument einbetten. Die Prüfungen schützen die beiden Tageskarten gegenüber `c1e5ce6`. Ein weiterer Referenzbau schützt die gesamte A-Fassung und die B-Fassung außerhalb des neuen Moduldokuments gegenüber `ec94147`. Bildschirmfotos und Höhenmessungen vergleichen die Navigation mit dem Stand `41504cc`.
+Die Quelldatei **index.html** ist die Tagesauswahl und öffnet in der Entwicklung die A-Fassung. **02-12.html** enthält die Fallübersicht des ersten Moduls. Der unabhängige Vergleich mit `ca77bf7` schützt Falldaten, Hilfe, Entscheidung, Rückmeldung, Wiedereinstieg und Abschluss. Der Referenzbau berücksichtigt die geprüften Änderungen an der Fallübersicht und die Anbindung an die gemeinsame Leiste. Beide Auslieferungen müssen genau das daraus entstandene Dokument einbetten. Die Prüfungen schützen die beiden Tageskarten gegenüber `c1e5ce6`. Der Vergleich mit `5f98067` schützt die gesamte A-Fassung, das Modul vom 02.12. und die Aufgabenbank des zweiten Tages. In der B-Startseite wird gezielt das Gruppenbild der zweiten Tageskarte ausgetauscht. Bildschirmfotos und Höhenmessungen vergleichen die Navigation mit dem Stand `41504cc`.
 
 Der Compiler für Version B verbindet die Vorlage in **module/08-12/** mit dem gemeinsamen UI-Code, lokalen Schriften, Lauras Porträt und der aufgelösten Aufgabenbank. **build/08-12/Fallakte.html** lässt sich auch direkt öffnen. Die beiden Module haben getrennte Dokumente und Arbeitsspeicher. Das Tagesmenü verwaltet die SCORM-Sitzung.
 

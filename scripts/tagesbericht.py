@@ -54,11 +54,11 @@ body = f"""# Fallakte. Abnahme der gemeinsamen Tagesauswahl
 | Version A | Freigegebene Fallübersicht und Beratung | Gesperrte Karte mit Schloss. Das zweite Moduldokument fehlt im Paket. |
 | Version B | Freigegebene Fallübersicht und Beratung | Vier Nachrichten mit Argumenten-Check, Fachkarten und begründetem Urteil. |
 
-Jede Version enthält eine lokale Einzeldatei und ein SCORM-1.2-ZIP mit derselben Startdatei. Beide Startseiten zeigen das ursprüngliche Laura-Porträt und das daraus abgeleitete Gruppenbild. Die Bilder sind in beiden Versionen bytegleich. Die Gruppe zeigt Laura im Zentrum mit vier Personen in Kopf- und Schulteransicht.
+Jede Version enthält eine lokale Einzeldatei und ein SCORM-1.2-ZIP mit derselben Startdatei. Beide Startseiten verwenden dieselbe Originaldatei für Lauras Porträt. Version A enthält das bisherige Gruppenbild. In Version B zeigt die zweite Tageskarte die neue Illustration mit Mutter, Freundin, Großmutter und Vater.
 
 ## Bestandsschutz und Sitzungswechsel
 
-Der Fachstand ist `{report['referenz']}`. Fall- und Hilfedaten, gemeinsame Skripte, Bilder, Schriftdateien, Lizenzen und SCORM-Ressourcen wurden mit dem Git-Archiv verglichen. Die Implementierung für Gespräch, Entscheidung, Rückmeldung, Wiederaufnahme und Abschluss ist bytegleich. Die Schutzprüfung baut das erste Modul mit den genehmigten Anpassungen der Fallübersicht und dem neuen Navigationsadapter nach. Beide Veröffentlichungen enthalten exakt dieses Modul mit dem SHA-256-Wert `{report['modul_02_sha256']}`. Der Vergleich mit `{report['tagesreferenz']}` prüft auch die Inhalte der Tagesauswahl außerhalb des separat geprüften zweiten Moduldokuments.
+Der Fachstand ist `{report['referenz']}`. Fall- und Hilfedaten, gemeinsame Skripte, Bilder, Schriftdateien, Lizenzen und SCORM-Ressourcen wurden mit dem Git-Archiv verglichen. Die Implementierung für Gespräch, Entscheidung, Rückmeldung, Wiederaufnahme und Abschluss ist bytegleich. Die Schutzprüfung baut das erste Modul mit den genehmigten Anpassungen der Fallübersicht und dem neuen Navigationsadapter nach. Beide Veröffentlichungen enthalten exakt dieses Modul mit dem SHA-256-Wert `{report['modul_02_sha256']}`. Der Vergleich mit `{report['tagesreferenz']}` prüft auch die Inhalte der Tagesauswahl mit gesonderter Prüfung des neuen B-Gruppenbilds und des zweiten Moduldokuments.
 
 ## Eine Leiste für beide Unterrichtstage
 

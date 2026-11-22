@@ -94,6 +94,10 @@ def measure_route(browser,engine,dist,bank,first,second,shot):
         if person=='Mutter':click(btn('Weiter zur Freundin'))
     page.close()
     assert len(screens)==12 and len(texts)==8
+    # Counts from the reviewed build, including selecting the level(s) on entry.
+    expected={('Förder',''):(23,8),('ESA',''):(24,8),('MSA',''):(26,8),('AHR',''):(26,8),
+              ('Förder','AHR'):(26,9),('ESA','MSA'):(27,9)}
+    assert (actions['button'],actions['auswahl'])==expected[first,second]
     counts={screen:sum(len(re.findall(r"[^\W_]+(?:[’'-][^\W_]+)*",t))*n for t,n in fragments.items())
             for screen,fragments in texts.items()}
     return dict(browser=engine,niveaus=[first,second] if second else [first],aufgaben=len(texts),wechsel=len(screens)-1,

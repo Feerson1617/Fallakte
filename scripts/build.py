@@ -28,7 +28,10 @@ def launcher(version, first_day):
         css = single_replace(css, f'../assets/{font}.ttf', 'data:font/ttf;base64,' + encoded(ROOT / f'assets/{font}.ttf'))
     html = single_replace(html, '<link rel="stylesheet" href="tagesauswahl/start.css">', f'<style>{css}</style>')
     for picture in ('assets/laura.webp', 'tagesauswahl/assets/laura-umfeld.webp'):
-        html = single_replace(html, f'src="{picture}"', f'src="data:image/webp;base64,{encoded(ROOT / picture)}"')
+        asset = ROOT / picture
+        if version == 'B' and picture == 'tagesauswahl/assets/laura-umfeld.webp':
+            asset = ROOT / 'module/08-12/assets/laura-umfeld.webp'
+        html = single_replace(html, f'src="{picture}"', f'src="data:image/webp;base64,{encoded(asset)}"')
     for name in ('sitzung', 'start'):
         code = (ROOT / f'tagesauswahl/{name}.js').read_text()
         html = single_replace(html, f'<script src="tagesauswahl/{name}.js"></script>', f'<script>{code}</script>')

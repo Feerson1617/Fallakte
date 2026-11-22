@@ -1,14 +1,27 @@
 {
   "laura": [
-    "Ich bin ungeplant schwanger geworden, obwohl ich verhütet habe.",
-    "Meine Ausbildung möchte ich unbedingt abschließen.",
-    "Ich weiß noch nicht, ob ich die Schwangerschaft fortsetzen möchte.",
-    "Ich brauche richtige Informationen. Zuerst möchte ich wissen, welche Möglichkeiten ich habe.",
-    "Danach möchte ich selbst entscheiden.",
-    "Das habe ich meiner Familie und meiner Freundin gesagt.",
-    "Alle möchten mir helfen.",
-    "Trotzdem fühle ich mich durch manche Nachrichten nicht richtig verstanden.",
-    "Könnt ihr die Nachrichten mit mir prüfen?"
+    "Ich bin trotz Verhütung schwanger geworden.",
+    "Ich will meine Ausbildung unbedingt abschließen.",
+    "Aber ich weiß noch nicht, ob ich das Kind bekommen möchte.",
+    "Ich brauche erst richtige Informationen.",
+    "Am Ende möchte ich selbst entscheiden.",
+    "Meine Mutter und meine Freundin raten mir ganz unterschiedliche Dinge.",
+    "Könnt ihr mir helfen, ihre Nachrichten zu prüfen?"
+  ],
+  "lauraAbsaetze": [
+    [
+      1,
+      2,
+      3
+    ],
+    [
+      6,
+      4,
+      5
+    ],
+    [
+      7
+    ]
   ],
   "nachrichten": {
     "Mutter": [

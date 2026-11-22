@@ -30,6 +30,13 @@ HOST = """<!doctype html><html lang="de"><meta name="viewport" content="width=de
 <iframe name="sco" src="index.html"></iframe></html>"""
 
 
+def restore_group_image(launcher):
+    old = base64.b64encode((ROOT/'tagesauswahl/assets/laura-umfeld.webp').read_bytes())
+    new = base64.b64encode((ROOT/'module/08-12/assets/laura-umfeld.webp').read_bytes())
+    assert old != new and launcher.count(new) == 1
+    return launcher.replace(new,old)
+
+
 def check_release(version, updated, frozen, previous, site):
     folder = DIST / f'Version-{version}'
     standalone = (folder / 'Fallakte.html').read_bytes()
@@ -57,6 +64,7 @@ def check_release(version, updated, frozen, previous, site):
     baseline = (previous/'Fallakte.html').read_bytes()
     restored = standalone.replace(base64.b64encode(updated),base64.b64encode(frozen))
     if version == 'B':
+        restored = restore_group_image(restored)
         old_second = re.search(rb'<script id="modul-08" type="application/octet-stream">([^<]+)</script>',baseline)[1]
         second = (ROOT/'build/08-12/Fallakte.html').read_bytes()
         assert blobs['modul-08'] == second
@@ -78,7 +86,7 @@ def check_release(version, updated, frozen, previous, site):
                 assert (site/name).read_bytes() == original.read(name), name
     if version == 'A':
         assert b'modul-08' not in standalone and b'Dieser Unterrichtstag wird vorbereitet.' not in standalone
-    image_paths = ['assets/laura.webp', 'tagesauswahl/assets/laura-umfeld.webp']
+    image_paths = ['assets/laura.webp', ('tagesauswahl' if version=='A' else 'module/08-12')+'/assets/laura-umfeld.webp']
     assert [base64.b64decode(src.split(',')[1]) for src in doc.xpath('//img/@src')] == [
         (ROOT/path).read_bytes() for path in image_paths]
     (site / 'host.html').write_text(HOST)
@@ -152,7 +160,7 @@ def exercise(browser, engine, version, kind, size, base, photos):
     def open_second():
         cards.last.tap()
         second = shell.frame_locator('iframe[title="Dienstag, 08.12.2026"]')
-        expect(second.get_by_role('heading', name=TITLES[1])).to_be_visible()
+        expect(second.get_by_role('heading', name='Wie gut helfen die Nachrichten Laura?')).to_be_visible()
         assert second.locator('body').evaluate("() => typeof FALLAKTE === 'undefined' && typeof LERNHILFEN === 'undefined'")
         assert second.locator('#history,#help').count() == 0
         expect(shell.locator('#tagesnavigation button')).to_have_text(['← Tagesauswahl','Nachrichten','Fachkarten','Nach Neustart'])
@@ -288,7 +296,7 @@ def main():
         common = (root/'B/index.html').read_bytes().replace(
             b'aria-labelledby="datum-08" data-entry="modul-08"', b'aria-labelledby="datum-08" disabled')
         common, count = re.subn(rb'<script id="modul-08" type="application/octet-stream">[A-Za-z0-9+/=]+</script>\n', b'', common)
-        assert count == 1 and common == (root/'A/index.html').read_bytes()
+        assert count == 1 and restore_group_image(common) == (root/'A/index.html').read_bytes()
         with host(root) as address, sync_playwright() as playwright:
             for engine in ('chromium','webkit'):
                 exe = os.environ.get(engine.upper()+'_EXECUTABLE')

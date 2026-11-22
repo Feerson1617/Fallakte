@@ -22,18 +22,11 @@ button[aria-pressed=true],.primary{background:#285441;color:white;border-color:#
 .primary:hover,button[aria-pressed=true]:hover{background:#1c4232}
 main>*+*,.stack>*+*{margin-top:.8rem}
 .eyebrow,.line-label{font-size:.9rem;font-weight:700;color:#52665a}
-header.hero{display:grid;grid-template-columns:4.4rem 1fr;align-items:center;gap:1rem;border-top:2px solid #315746;padding-top:1rem}
-.portrait{width:100%;aspect-ratio:1;border-radius:50%;object-fit:cover}
-.date{font:600 .95rem/1.25 "DM Sans",sans-serif;color:#52665a}
-.intro,.panel,.group,.notice{background:#fffef9;border:1px solid #c0cabe;border-radius:.85rem;padding:clamp(.75rem,1.7vw,1.12rem)}
+.intro,.panel,.notice{background:#fffef9;border:1px solid #c0cabe;border-radius:.85rem;padding:clamp(.75rem,1.7vw,1.12rem)}
 .intro{background:#edf1e7}
 .intro summary{font-weight:700}
 summary{min-height:44px;align-content:center;padding:.3rem 0}
-.groups,.work{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;align-items:start}
-.group{display:grid;gap:.65rem}
-.group .person+.person{border-top:1px solid #d9dfd5;padding-top:.6rem}
-.section-link{display:block;width:100%;margin-top:.35rem}
-.work{grid-template-columns:minmax(0,.83fr) minmax(0,1.17fr)}
+.work{display:grid;grid-template-columns:minmax(0,.83fr) minmax(0,1.17fr);gap:.85rem;align-items:start}
 .work aside{border-top:3px solid #b87951}
 .work article{border-top:3px solid #416751}
 .lines{list-style:none;margin:.45rem 0 0;padding:0}
@@ -55,8 +48,62 @@ legend{margin:0 0 .35rem}
 .small{font-size:.94rem}
 textarea{width:100%;min-height:4.5rem;border:1px solid #83978b;border-radius:.5rem;padding:.6rem;background:white}
 .sources{color:#51655a;font-size:.9rem}
-@media(max-width:43rem){.work,.groups{grid-template-columns:minmax(0,1fr)}.work{gap:.6rem}main>*+*,.stack>*+*{margin-top:.6rem}.panel{padding:.75rem}}
+@media(max-width:43rem){.work{grid-template-columns:minmax(0,1fr)}.work{gap:.6rem}main>*+*,.stack>*+*{margin-top:.6rem}.panel{padding:.75rem}}
 .pair-label{max-width:100%;display:inline-flex;flex-wrap:wrap;align-items:center;gap:.5rem}
 .pair-label select{font:inherit;color:inherit;background:#fffef9;min-height:44px;width:8.5em;min-width:44px;max-width:100%;border:1px solid #83978b;border-radius:.5rem}
 
 .short-lines{white-space:pre-line}
+
+.letter{display:grid;grid-template-columns:clamp(5.25rem,13vw,8rem) minmax(0,1fr);column-gap:1.15rem;align-items:start}
+.letter img{grid-row:span 3;width:100%;aspect-ratio:1;border-radius:1rem;object-fit:cover}
+.signature{font-weight:700;color:#486653}
+.letter h1,.restart h1{font-size:clamp(1.48rem,3vw,2rem);margin:.1rem 0 .35rem}
+.message-text p+p{margin-top:.24em}
+.letter .message-text{max-width:76ch;line-height:1.35}
+.level-choice .levels{display:inline-flex;gap:0;background:#fffef9;border:1px solid #bcc8bc;border-radius:.65rem;padding:2px}
+.level-choice .levels button{border:0;background:transparent;min-width:3.6em;text-align:center;padding-inline:.5em}
+.level-choice .levels button[aria-pressed=true]{background:#285441}
+.mode-controls{display:flex;flex-wrap:wrap;gap:0 .75rem;align-items:center}
+.mode-controls details{flex:0 1 auto;min-width:0}
+.level-choice legend,.inbox>h2{font-size:1rem;font-weight:700}
+.inbox>h2{margin-bottom:.35rem}
+.person-cards,.restart-people{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.65rem}
+.person-card{display:grid;grid-template-columns:clamp(4rem,9vw,6rem) minmax(0,1fr);column-gap:.85rem;align-items:center;padding:.6rem;background:#fffef9;border:1px solid #bbc8bc;border-radius:.8rem}
+.person-card img{grid-row:span 2;width:100%;aspect-ratio:1;object-fit:cover;border-radius:.5rem}
+.person-card h3{font:normal 1.45rem/1.15 "DM Serif Text",Georgia,serif}
+.entry-links{display:grid;gap:.18rem}
+.entry-links button{border:0;border-radius:.4rem;background:transparent;padding:.22rem .35rem;text-align:left;text-decoration:underline;text-decoration-color:#a1b4a5;text-underline-offset:.17em}
+.entry-links button:hover{background:#eef2e9}
+.extra .person-card{grid-template-columns:clamp(2.8rem,6vw,4.2rem) minmax(0,1fr);background:transparent}
+.extra .person-card h3{font-size:1.2rem}
+.sender,.restart-people button{display:flex;align-items:center;gap:.55rem}
+.sender img,.restart-people img{width:2rem;height:2rem;object-fit:cover;border-radius:50%;flex:none}
+.restart-people{grid-template-columns:repeat(auto-fit,minmax(min(100%,9em),1fr))}
+.restart-people button{padding:.3rem .5rem}
+.restart p{max-width:62ch}
+@media(max-width:44rem){
+  .person-card,.extra .person-card{grid-template-columns:2.6rem minmax(0,1fr);gap:.25rem .4rem;padding:.38rem}
+  .person-card img{grid-row:auto}
+  .person-card h3{font-size:1.16rem}
+  .extra .person-card img{width:2.2rem}
+  .entry-links{grid-column:1/-1}
+  .mode-controls details{flex:1 1 7rem}
+  .level-choice .levels button{min-width:44px}
+}
+@media(max-width:32rem){
+  .letter{grid-template-columns:3.65rem minmax(0,1fr);column-gap:.65rem}
+  .letter img{grid-row:span 2}
+  .letter .message-text{grid-column:1/-1;margin-top:.35rem}
+  .person-cards{gap:.4rem}
+}
+@media(max-width:20rem){.person-cards{grid-template-columns:minmax(0,1fr)}}
+
+.work aside.stack>*+*{margin-top:.44rem}
+.work aside .lines li{padding-block:.18rem}
+.restart-people img{width:2.35rem;height:2.35rem}
+@media(max-width:36rem){
+  .restart~fieldset{margin-top:.35rem}
+  .restart~fieldset legend{margin-bottom:.18rem}
+  .restart-people{grid-template-columns:repeat(auto-fit,minmax(min(100%,5.2em),1fr));gap:.35rem}
+  .restart-people button{flex-direction:column;justify-content:center;gap:.12rem;padding:.25rem .1rem}
+}

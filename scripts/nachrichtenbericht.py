@@ -2,6 +2,7 @@
 import hashlib
 import json
 from pathlib import Path
+from figuren import IMAGES, PORTRAITS, print_sheet
 from zipfile import ZIP_DEFLATED, ZipFile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,7 +21,13 @@ def numbered(lines, numbers=None):
 
 def material(bank):
     ui = bank['verdictUI']
-    text = ['# Materialübergabe · 08.12.2026',bank['lead'],bank['context'],'## Lauras Nachricht',*numbered(bank['laura'])]
+    def quotes(ids):
+        return [bank['laura'][n-1] for n in ids]
+    text = ['# Materialübergabe · 08.12.2026','## Laura, 19',bank['lead'],
+            *(' '.join(quotes(ids)) for ids in bank['lauraAbsaetze']),
+            'Niveau · '+' · '.join(bank['levels']),'Zu zweit auf zwei Niveaus',
+            'Pflichtnachrichten · Mutter und Freundin','Zusatznachrichten · Großmutter und Vater',
+            '1. Argumenten-Check · 2. Nachricht prüfen']
     for person, case in bank['cases'].items():
         text.extend(['## Nachricht · '+person,*numbered(case['message'])])
         text.append('**Zuordnung zum Originalwortlaut**')
@@ -55,11 +62,15 @@ def material(bank):
                 if i<=1:text.append('### '+case['sections'][i])
                 number=f'{i}. ' if i else ''
                 text.extend(['#### '+number+t['heading'],t['prompt']])
-                if t.get('lines'):text.extend([person,*numbered(case['message'],t['lines'])])
+                if t.get('lines'):
+                    numbered_message=i in (0,2) or (person=='Freundin' and i==1)
+                    passage=numbered(case['message'],t['lines']) if numbered_message else [case['message'][n-1] for n in t['lines']]
+                    text.extend([person,*passage])
                 if t.get('mother'):text.extend(['Zum Vergleich · Mutter',*numbered(bank['cases']['Mutter']['message'],t['mother'])])
-                if t.get('wishes'):text.extend(['Lauras Worte',*numbered(bank['laura'],t['wishes'])])
+                if t.get('wishes'):text.extend(['Lauras Worte',*quotes(t['wishes'])])
                 if t.get('card'):
                     key,ids=t['card']
+                if t.get('card') and t['kind']!='judgment':
                     text.extend([bank['cards'][key]['title'],*numbered(bank['cards'][key]['lines'],ids)])
                 if t['kind']=='map':
                     for field in t['fields']:
@@ -69,8 +80,8 @@ def material(bank):
                             text.append(f"- Zeile {opt['line']} — {start}{opt['feedback']}")
                         hints(field['hints'])
                 elif t['kind']=='judgment':
-                    text.extend([ui['evidence']+' · '+bank['cards'][key]['title'],*numbered(bank['cards'][key]['lines'],ids),
-                                 ui['goal'],*numbered(bank['laura'],t['goals']),ui['rating'],*t['options']])
+                    text.extend([ui['evidence']+' · '+bank['cards'][key]['title'],*(bank['cards'][key]['lines'][n-1] for n in ids),
+                                 ui['goal'],*quotes(t['goals']),ui['rating'],*t['options']])
                     text.extend([ui['explain'],'Einzelarbeit: '+ui['solo']])
                     if level=='Förder':text.extend([ui['reason'],*t['links']])
                     if 'extension' in t:
@@ -94,6 +105,7 @@ def material(bank):
                         hints(depth['hints'])
     text.extend(['## Gemischte Paare und Wiedereinstieg',
                  'Beide bearbeiten dieselben nummerierten Teilfragen. Der Auftrag vor den Auswahlen gilt für alle. Bei Förder/AHR kommen die freiwilligen Förder-Bausteine und unter „AHR · Weiterdenken“ die veränderte Voraussetzung hinzu. ESA/MSA erhält nach dem gemeinsamen Auftrag die MSA-Frage nach Nutzen und Grenze. Die Vertiefung gehört zum höheren Niveau. Die fünf Hilfen zur Vertiefung stehen in der jeweils geöffneten Hilfe unter „Weiterdenken“.',
+                 'Hier kannst du weiterarbeiten.', 'Schau auf deinen Lernbogen. Wähle dein Niveau, die Person und deine letzte Frage.',
                  'Nach Neustart → Niveau wählen (für ein Paar auch das zweite Niveau) → Person → Abschnitt 2 → 1. Stimmt das? / 2. Was möchte Laura? Geht die Nachricht darauf ein? / 3. Hilft die Nachricht Laura? Warum?'])
     return '\n\n'.join(text)+'\n'
 
@@ -124,8 +136,10 @@ def main():
     assert {x['browser'] for x in r['kleinfenster'] if x['schrift_prozent']==200 and x['abschnitte']==8}=={'chromium','webkit'}
     photos=[(QA/name,'Bildschirmfotos/'+name) for name in r['bilder']]
     assert all(r['bilder'][file.name]==sha(file) for file,_ in photos)
-    assert len(photos)==34
+    assert len(photos)==44
     for engine in ('chromium','webkit'):
+        for view in ('Tagesauswahl','Posteingang-iPad','Übersicht-390','Pflichtkarte','Absender','Wiedereinstieg'):
+            assert f'{engine}-{view}.jpg' in r['bilder']
         for state in ('Aufgabe','Fehlversuch'):
             assert f'{engine}-Quellenprüfung-{state}.jpg' in r['bilder']
     assert {(v['browser'],tuple(v['niveaus'])) for v in r['paar_neustart'] if v['teilfrage']==3}=={
@@ -135,7 +149,7 @@ def main():
     labels=[[l] for l in bank['levels']]+[['Förder','AHR'],['ESA','MSA']]
     assert sorted((x['browser'],x['niveaus']) for x in routes)==sorted((e,l) for e in ['chromium','webkit'] for l in labels)
     summary=['## Technische Abnahme',
-             f"Referenz: `{r['referenz']}`. Geprüfter Commit: `{r['commit']}`. Version A und die gesamte B-Datei außerhalb des zweiten Moduls wurden byteweise gegen den Referenzbau verglichen. Die SCORM-Startdatei entspricht der jeweiligen Offline-Datei.",
+             f"Referenz: `{r['referenz']}`. Geprüfter Commit: `{r['commit']}`. Version A und das erste Modul sind bytegleich mit dem Referenzbau. In der B-Startseite unterscheidet sich außerhalb des zweiten Moduls ausschließlich die Bilddatei der zweiten Tageskarte. Die SCORM-Startdatei entspricht der jeweiligen Offline-Datei.",
              f"{len(runs)} vollständige Einzelwege in Chromium und WebKit. Geprüft wurden alle Zuordnungen und Hilfeziele, falsche und richtige Teilantworten, drei Gesamturteile und der Neustart zu jeder einzelnen Teilfrage. Nach dem Neuladen ließ sich das Urteil bei allen 32 Einzelwegen direkt mit dem sichtbaren Beispiel aus Hilfe 5 abschließen. Vier zusätzliche Paarprüfungen führten nach dem Neuladen direkt zu Freundin 2, Frage 3. Dabei wurden die Materialien aufgerufen und das Niveau mit einer bereits gewählten Fachstelle gewechselt. Der Test-LMS empfing nur Sitzungsbeginn und -ende. Portrait und Querformat: 820 × 1180 und 1180 × 820 CSS-Pixel mit 100 oder 150 Prozent Schrift. Der Zusatztest nutzt 390 × 650 und 200 Prozent.",
              '## Umfang der Pflichtstrecke',
              'Jede Zeile beruht auf zwei tatsächlichen Durchläufen. Die Tabelle zeigt den Chromium-Wert, bei Abweichung zusätzlich den WebKit-Wert. Ausgangspunkt ist die Tagesauswahl, Endpunkt die fertige Begründung zur Freundin. Gezählt wurde ein fehlerfreier Weg mit mündlicher Bestätigung ohne freiwillige Hilfen und Begründungsbausteine. Die fachlichen Auswahlen zählen alle verlangten Zuordnungen, Antworten, Fachstellen, Laura-Aussagen und persönlichen Einschätzungen. Sie sind bereits in den Bedienhandlungen enthalten. Eine Zeilenauswahl zählt als eine Bedienhandlung. Das Öffnen und Bestätigen nativer Menüs, Scrollen, Lesezeit und Gesprächsdauer hängen vom Gerät und den Lernenden ab.',
@@ -154,12 +168,27 @@ def main():
     for key,name in [('html_sha256','Fallakte.html · B'),('scorm_sha256','Fallakte-SCORM12.zip · B'),('bank_sha256','Aufgabenbank.json'),('version_a_sha256','Fallakte.html · A')]:
         summary.append(f'| {name} | `{r[key]}` |')
     report=DIST/'Nachrichten-Pruefbericht.md'
-    report.write_text(body+'\n'+'\n'.join(s+'\n' if not s.startswith('|') else s for s in summary)+'\n')
+    detail=OUT/'Pruefdetails.md'
+    detail.write_text(body+'\n'+'\n'.join(s+'\n' if not s.startswith('|') else s for s in summary)+'\n')
     readable=OUT/'Materialbank.md'
     readable.write_text(material(bank))
-    evidence=[(report,report.name),(log,'Protokolle/'+log.name),(legacy,'Protokolle/'+legacy.name),*photos]
+    small=[x for x in r['ansichten'] if x['viewport'][0]==390]
+    report.write_text('\n\n'.join([
+        '# Abnahme · Fallakte vom 08.12.2026',
+        f"Geprüfter Commit `{r['commit']}`. Vergleich mit `{r['referenz']}`.",
+        'Laura, 19, schreibt in drei direkt sichtbaren Absätzen. Die vier ursprünglichen Familiennachrichten, Fachkarten, Aufgaben, Antwortkontrollen und fünf Hilfen stimmen mit der geprüften Aufgabenbank überein. Die Zitate zu Ausbildung, Informationen und Selbstbestimmung wurden auf ihre neuen Wortlaute geprüft.',
+        'Pflichtpersonen und Zusatzpersonen haben direkte Zugänge zu beiden Abschnitten. Die vier Porträts sind Ausschnitte des neuen Gruppenbilds. Die Abnahme vergleicht die Bildpixel und prüft die Bilddateien in Übersicht, Absender und Wiedereinstieg. Lauras Einzelporträt und die gesamte Offline-Datei A sind bytegleich mit der Referenz. Alle Dateien innerhalb des SCORM-Pakets A wurden byteweise verglichen.',
+        f"Chromium und WebKit bestanden {len(runs)} Einzelwege, {len(routes)} Pflichtwege einschließlich gemischter Paare und vier Paar-Wiedereinstiege zu Freundin 2, Frage 3. Die Pflichtstrecke hat acht Aufgabenbildschirme, elf Ansichtswechsel und je nach Niveau oder Paar 31 bis 36 Bedienhandlungen. Die HTML-Datei ist identisch mit der SCORM-Startdatei.",
+        'Die Messung vergleicht Übersicht, acht Abschnittseinstiege, alle weiteren Teilfragen und den Wiedereinstieg mit dem Referenzbau. Bei 390 × 650 Pixeln änderte sich der vertikale Scrollbereich der Übersicht wie folgt. '+', '.join(f"{v['browser'].capitalize()} von {v['vorher']['Übersicht']['seite']} auf {v['aktuell']['Übersicht']['seite']} CSS-Pixel" for v in small)+'. Auf beiden iPad-Formaten sind alle vier Personenkarten bei Standardschrift ohne Scrollen erreichbar.',
+        'Offen für die Unterrichtserprobung bleiben die Verständlichkeit für Förder- und ESA-Lernende, die tatsächliche Arbeitszeit sowie der Test auf einem Schul-iPad im itslearning-Kurs. Dafür den Pflichtweg zu zweit beginnen und nach Neuladen über den Lernbogen direkt zu Freundin 2, Frage 3 zurückkehren.'
+    ])+'\n')
+    sheet=DIST/'Figurenuebersicht-08-12.pdf'
+    print_sheet(sheet)
+    evidence=[(report,report.name),(detail,detail.name),(log,'Protokolle/'+log.name),(legacy,'Protokolle/'+legacy.name),*photos]
     package(DIST/'Nachrichten-Sichtpruefung.zip',evidence)
-    package(DIST/'Materialuebergabe-Work.zip',[(data,data.name),(readable,readable.name),*evidence])
+    package(DIST/'Materialuebergabe-Work.zip',[(data,data.name),(readable,readable.name),
+            (sheet,sheet.name),(OUT/'Fallakte.html','Schueleransicht-08-12.html'),
+            *((p,'Figuren/'+p.name) for p in [*PORTRAITS.values(),IMAGES/'laura-umfeld.webp']),*evidence])
     print(len(runs),'Browserwege,',len(photos),'Bildschirmfotos. Alle Übergabedateien geprüft.')
 
 

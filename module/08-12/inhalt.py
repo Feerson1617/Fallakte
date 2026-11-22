@@ -336,5 +336,5 @@ def bank():
             by_level[level]=[argument_map(person,level),fact,wishes,judgment(person,level)]
         cases[person]=dict(message=message,sections=[person+' 1 – Argumenten-Check',person+' 2 – Nachricht prüfen'],levels=by_level)
     return dict(lead='Wie gut helfen die Nachrichten Laura?',context='Laura ist 19 Jahre alt und macht eine Ausbildung.',
-                laura=SOURCE['laura'],levels=LEVELS,categories=CATEGORIES,questions=QUESTIONS,helps=HELP,
+                laura=SOURCE['laura'],lauraAbsaetze=SOURCE['lauraAbsaetze'],levels=LEVELS,categories=CATEGORIES,questions=QUESTIONS,helps=HELP,
                 sources=SOURCES,cards=CARDS,verdictUI=VERDICT_UI,cases=cases)

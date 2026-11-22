@@ -1,6 +1,12 @@
 # Fallakte Laura · Endkorrektur für den 08.12.2026
 
-## Korrektur gegenüber 40fef18
+## Gestaltung gegenüber 5f98067
+
+Lauras Nachricht steht mit ihrem ursprünglichen Porträt direkt vor der Niveauauswahl. Die drei Absätze werden aus denselben Aussagen gebildet, die im Urteil und in Frage 2 als Zitate erscheinen. Die Kennungen für Ausbildung, Informationsbedarf und Selbstbestimmung bleiben intern stabil. Die beiden Pflichtpersonen stehen vor den beiden Zusatzpersonen. Beide Abschnitte jeder Person sind sofort erreichbar.
+
+Die zweite Tageskarte der Version B zeigt die neue Gruppenillustration. Bildausschnitte daraus kennzeichnen Mutter, Freundin, Großmutter und Vater in der Übersicht, in ihren Nachrichten und bei der Wiederaufnahme. Die Figurenübersicht im Work-Paket enthält dieselben Porträts. Der Argumenten-Check und konkrete Zeilenvergleiche zeigen die benötigten Nummern. Bei freiem Lesen stehen Lauras Worte, Familiennachrichten und Fachkarten in Absätzen. Die zu einer Aufgabe gehörende ganze Fachkarte behält die zitierten Zeilennummern.
+
+## Quellenprüfung
 
 Bei „Stimmt das?“ standen Quellenangaben auch unter falschen Antworten. Jetzt nennt der Arbeitsauftrag die Fachkarte und den Leseabschnitt für alle Antworten gemeinsam. Bei der Mutter sind es die Zeilen 2 bis 4, bei der Freundin 2 bis 5, bei der Großmutter 1 bis 2 und beim Vater 1 bis 3. Nach der Auswahl erklärt die Rückmeldung anhand konkreter Kartenzeilen, weshalb die gewählte Aussage passt oder wo der Irrtum liegt. Die Work-Aufgabenbank übernimmt den Wortlaut der gebauten Fassung. [Geprüfter Ausgangsstand](https://github.com/Feerson1617/Fallakte/commit/40fef18eb9ea8cb7aacd28bc88579d9ddc376916)
 
@@ -12,7 +18,7 @@ MSA und AHR sehen ihren ergänzenden Pflichtauftrag in einem eigenen Feld „Wei
 
 Die Fachprüfung nennt direkt die Karte und fragt nach dem Vorgang im Körper, dem Vergleich beider Aussagen oder dem Beratungsangebot. Im Urteil ersetzt der Kartentitel die doppelte Aufforderung zur Auswahl eines Belegs. Der Auftrag zur Erklärung steht beim Arbeitsprodukt. Das Eingabefeld am iPad öffnet sich auf Wunsch. Die Begründung kann auf dem persönlichen Lernbogen stehen, mündlich bestätigt oder am Gerät eingegeben werden. Ein gewählter Förder-Baustein allein schließt das Urteil nicht ab.
 
-Die vier Originalnachrichten, Lauras Nachricht und die fachlichen Grundlagen bleiben erhalten. Beide Pflichtpersonen nennen biologisch zutreffende Informationen über dasselbe Verfahren. Medikamente können die Schwangerschaft grundsätzlich ohne Operation beenden. Das Zusammenziehen der Gebärmutter und das Ausstoßen von Gewebe erklären die Blutung. Schmerzen sind möglich. Im Vergleich der beiden Empfehlungen werden familiäre Hilfe und Zukunftspläne als unterschiedliche, miteinander vereinbare Gesichtspunkte geprüft. Die Wahl bleibt bei Laura.
+Die vier Originalnachrichten der Bezugspersonen und die fachlichen Grundlagen stimmen mit der Referenz überein. Beide Pflichtpersonen nennen biologisch zutreffende Informationen über dasselbe Verfahren. Medikamente können die Schwangerschaft grundsätzlich ohne Operation beenden. Das Zusammenziehen der Gebärmutter und das Ausstoßen von Gewebe erklären die Blutung. Schmerzen sind möglich. Im Vergleich der beiden Empfehlungen werden familiäre Hilfe und Zukunftspläne als unterschiedliche, miteinander vereinbare Gesichtspunkte geprüft. Die Wahl bleibt bei Laura.
 
 Bei der Großmutter bleiben die biologische Entwicklung, ihr persönlicher Glaube und ihr Unterstützungsangebot unterscheidbar. Der Vater nennt das Beratungsangebot und eine gesetzliche Vorgabe der Beratungsregelung. Ein Beratungstermin lässt das Ergebnis offen. Auf MSA und AHR akzeptiert die Software die Gesetzesstelle als prüfbare Aussage und als Norm. Die Fachkarten enthalten die bereits geprüften Informationen zu Blutungen, Schmerzen, möglicher weiterer Behandlung und individueller medizinischer Eignung. [BIÖG zum medikamentösen Abbruch](https://www.familienplanung.de/schwangerschaftskonflikt/schwangerschaftsabbruch/der-medikamentoese-schwangerschaftsabbruch/) · [IQWiG](https://www.gesundheitsinformation.de/medikamentoeser-schwangerschaftsabbruch.html) · [BIÖG zur frühen Entwicklung](https://www.familienplanung.de/schwangerschaft/schwangerschaftswochen/1-bis-4-schwangerschaftswoche/) · [§ 218a StGB](https://www.gesetze-im-internet.de/stgb/__218a.html) · [§ 219 StGB](https://www.gesetze-im-internet.de/stgb/__219.html) · [§ 5 SchKG](https://www.gesetze-im-internet.de/beratungsg/__5.html)
 
@@ -37,7 +43,7 @@ Es gibt weiterhin einen sichtbaren Hilfezugang. Im Argumenten-Check lässt sich 
 
 „Nach Neustart“ führt über die Person zum Abschnitt. Für Abschnitt 2 wählt die Person genau die auf dem Lernbogen markierte Frage 1, 2 oder 3. Auch bei direktem Einstieg ins Urteil stehen die Nachricht, Lauras Worte und die Fachkarte zur Verfügung. Persönliche Antworten aus der früheren Sitzung werden dabei nicht rekonstruiert. Die Nummern im Work-Paket stimmen mit den angezeigten Nummern überein.
 
-In der Übersicht stehen Pflicht und Reserve nebeneinander, auf schmalen Geräten untereinander. Die Quelle steht links und die Aufgabe rechts. Die vier Argumentenfelder behalten ihre Position. Begriffe, ausgeschriebene Rückmeldungen und die bekannten Farben unterstützen die Orientierung. Die Work-Übergabe enthält die vollständige aufgelöste Bank als JSON und lesbaren Text, alle Antwort- und Hilfewortlaute sowie echte Bilder der aktuellen Oberfläche.
+In der Übersicht stehen Mutter und Freundin in der ersten Reihe, Großmutter und Vater darunter. Die Quelle steht links und die Aufgabe rechts. Die vier Argumentenfelder behalten ihre Position. Begriffe, ausgeschriebene Rückmeldungen und die bekannten Farben unterstützen die Orientierung. Die Work-Übergabe enthält die vollständige aufgelöste Bank als JSON und lesbaren Text, alle Antwort- und Hilfewortlaute sowie echte Bilder der aktuellen Oberfläche.
 
 ## Grenze der Zeit- und Lernwirksamkeitsprüfung
 

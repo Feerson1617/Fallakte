@@ -95,7 +95,10 @@
     select.value=current.second;
     select.onchange=()=>changed({...current,second:select.value});
     label.append(select);
-    box.append(disclosure('Zu zweit auf zwei Niveaus',label,Boolean(current.second)));
+    box.className='level-choice';
+    const controls=block('mode-controls');
+    controls.append(options,disclosure('Zu zweit auf zwei Niveaus',label,Boolean(current.second)));
+    box.append(controls);
     return box;
   }
   function changeMode(nextMode) { mode=nextMode; render(); }
@@ -115,33 +118,55 @@
     if (changed) d.ontoggle = () => changed(d.open);
     return d;
   }
+  function portrait(who) {
+    return document.querySelector('#personenbilder').content.querySelector('[data-person="'+who+'"]').cloneNode();
+  }
+  function prose(texts, ids) {
+    const copy=block('message-text');
+    for (const text of ids ? ids.map(n=>texts[n-1]) : texts) copy.append(el('p','',text));
+    return copy;
+  }
+  function lauraMessage() {
+    return prose(book.lauraAbsaetze.map(ids=>ids.map(n=>book.laura[n-1]).join(' ')));
+  }
+  function sender(who, label) {
+    const row=block('sender');
+    row.append(portrait(who),heading('h2',label));
+    return row;
+  }
   function overview() {
-    const hero = el('header','hero'), image = el('img','portrait');
-    image.src = '../../assets/laura.webp'; image.alt = 'Laura';
-    const title = block('');
-    title.append(heading('h2','Dienstag, 08.12.2026','date'), heading('h1',book.lead));
-    hero.append(image,title);
-    const intro = el('section','intro');
-    intro.append(el('p','',book.context+' Sie ist trotz Verhütung ungeplant schwanger.'),
-      disclosure('Lauras ganze Nachricht',lines(book.laura)));
-    const groups = block('groups');
-    for (const [n, label] of ['Pflichtaufgaben – Bearbeite beide Nachrichten.', 'Zusatzaufgaben – Wenn du fertig bist.'].entries()) {
-      const part = el('section','group');
-      part.append(heading('h2',label));
-      for (const who of people.slice(2*n,2*n+2)) {
-        const entry = block('person');
-        book.cases[who].sections.forEach((name,i) => entry.append(button(name,()=>enter(who,i+1),'section-link')));
-        part.append(entry);
+    const hero=el('header','letter');
+    hero.append(portrait('Laura'),el('p','signature','Laura, 19'),heading('h1',book.lead),lauraMessage());
+    main.append(hero,levelChoice(mode,changeMode));
+    for (const [index,label] of ['Pflichtnachrichten','Zusatznachrichten'].entries()) {
+      const part=el('section',index?'inbox extra':'inbox');
+      const cards=block('person-cards');
+      for (const who of people.slice(index*2,index*2+2)) {
+        const card=el('section','person-card'), links=block('entry-links');
+        const name=el('h3','',who);
+        card.append(portrait(who),name);
+        book.cases[who].sections.forEach((section,i)=>{
+          const link=button(section.slice(who.length+1).replace(' – ','. '),()=>enter(who,i+1));
+          link.setAttribute('aria-label',section);
+          links.append(link);
+        });
+        card.append(links);cards.append(card);
       }
-      groups.append(part);
+      part.append(heading('h2',label),cards);
+      main.append(part);
     }
-    main.append(hero,intro,levelChoice(mode,changeMode),groups);
     if (lastTask) main.append(button('Zur offenen Stelle',()=>enter(...lastTask)));
   }
   function recovery() {
-    main.append(heading('h1','Nach Neustart weitermachen'), levelChoice(recoveryMode,m=>{recoveryMode=m;render();}));
-    const [box, list] = group('Wähle die Person.', 'row');
-    for (const who of people) list.append(press(who,()=>{recoveryPerson=who;recoveryQuestions=false;render();},who===recoveryPerson));
+    const intro=el('header','restart');
+    intro.append(heading('h1','Hier kannst du weiterarbeiten.'),
+      el('p','','Schau auf deinen Lernbogen. Wähle dein Niveau, die Person und deine letzte Frage.'));
+    main.append(intro,levelChoice(recoveryMode,m=>{recoveryMode=m;render();}));
+    const [box, list] = group('Wähle die Person.', 'restart-people');
+    for (const who of people) {
+      const b=press(who,()=>{recoveryPerson=who;recoveryQuestions=false;render();},who===recoveryPerson);
+      b.prepend(portrait(who));list.append(b);
+    }
     main.append(box);
     if (recoveryPerson) {
       const [box, list] = group('Wähle den Abschnitt.', 'options');
@@ -160,12 +185,13 @@
     }
     main.append(button('Zurück',()=>show(returnScreen)));
   }
-  function cardLines(c,ids) {
-    if (!c.parts) return lines(c.lines,ids);
+  function cardLines(c,ids,numbered=Boolean(ids)) {
+    const format=numbered ? lines : prose;
+    if (!c.parts) return format(c.lines,ids);
     const part=block('stack');
     for (const [title,numbers] of Object.entries(c.parts)) {
       const selected=numbers.filter(n=>!ids || ids.includes(n));
-      if (selected.length) part.append(heading('h3',title),lines(c.lines,selected));
+      if (selected.length) part.append(heading('h3',title),format(c.lines,selected));
     }
     return part;
   }
@@ -178,7 +204,7 @@
     main.append(heading('h1','Fachkarten'));
     for (const [key, c] of Object.entries(book.cards)) {
       const body = block('stack');
-      body.append(cardLines(c),el('p','sources','Quellen: '+c.sources.join(' · ')));
+      body.append(cardLines(c,null,openedCard===key),el('p','sources','Quellen: '+c.sources.join(' · ')));
       const d = disclosure(c.title,body,openedCard===key);
       d.className = 'panel';
       main.append(d);
@@ -187,25 +213,32 @@
   }
   function sourcePanel(task, state) {
     const panel = el('aside','panel stack'), message = book.cases[person].message;
-    panel.append(heading('h2','Nachricht · '+person));
+    // The map, the wishes comparison and the friend's first-line comparison cite message lines.
+    const format=task.kind==='map' || task.heading===book.questions[1] ||
+      (person==='Freundin' && task.heading===book.questions[0]) ? lines : prose;
+    panel.append(sender(person,'Nachricht · '+person));
     if (state.reader !== null) {
-      panel.append(lines(message,[state.reader]));
+      panel.append(format(message,[state.reader]));
       const controls = block('row');
       if (state.reader>1) controls.append(button('Voriger Teil',()=>{state.reader--;render();}));
       if (state.reader<message.length) controls.append(button('Nächster Teil',()=>{state.reader++;render();}));
       controls.append(button('Lesen beenden',()=>{state.reader=null;render();}));
       panel.append(controls);
     } else {
-      if (task.lines?.length) panel.append(lines(message,task.lines));
+      if (task.lines?.length) panel.append(format(message,task.lines));
       if (task.lines?.length !== message.length)
-        panel.append(disclosure('Ganze Nachricht lesen',lines(message),state.full,v=>{state.full=v;}));
+        panel.append(disclosure('Ganze Nachricht lesen',format(message),state.full,v=>{state.full=v;}));
       panel.append(button('Zeile für Zeile lesen',()=>{state.reader=1;render();}));
     }
-    if (task.mother?.length) panel.append(heading('h3','Zum Vergleich · Mutter'),lines(book.cases.Mutter.message,task.mother));
-    if (task.wishes) {
-      if (task.wishes.length) panel.append(heading('h3','Lauras Worte'),lines(book.laura,task.wishes));
+    if (task.mother?.length) panel.append(sender('Mutter','Zum Vergleich · Mutter'),format(book.cases.Mutter.message,task.mother));
+    if (task.wishes?.length) panel.append(heading('h3','Lauras Worte'),prose(book.laura,task.wishes));
+    // The original message is always available at the point of work, also on direct re-entry.
+    const back=button('Zurück zur Familiennachricht',()=>{state.laura=false;render();});
+    if (state.laura) {
+      panel.replaceChildren(sender('Laura','Laura, 19'),lauraMessage(),back);
+    } else {
+      panel.append(button('Lauras ganze Nachricht',()=>{state.laura=true;render();}));
     }
-    panel.append(disclosure('Lauras ganze Nachricht',lines(book.laura),state.laura,v=>{state.laura=v;}));
     if (task.kind==='judgment') {
       panel.append(button('Ganze Fachkarte',()=>{beforeCards='task';openedCard=task.card[0];show('resources');}));
     } else if (task.card) {
