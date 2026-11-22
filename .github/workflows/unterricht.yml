@@ -111,6 +111,7 @@ jobs:
       - run: python tests/vertiefungen.py
       - run: python tests/uebung.py
       - run: python scripts/kandidatenpaket.py
+      - run: python tests/kandidatenmaterial.py
       - uses: actions/upload-artifact@v4
         with:
           name: Fallakte-Vorabkandidat
