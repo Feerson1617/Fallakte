@@ -5,6 +5,7 @@
 Arbeitszweig `entwicklung/0212-neukonzeption`, Ausgangscommit `ec94147fd8d61442305a0281f7df032f3162362c`. Die gleichnamige Datei im Actions-Artefakt enthält zusätzlich den exakten Auslieferungscommit. Er steht auch im Feld `buildCommit` des Materialvertrags.
 
 - **Abschlusscommit der Auslieferung** · siehe `Materialvertrag.json`, Feld `buildCommit`.
+- **Abschlusscommit der Implementierung** · `821ff628390a1ff65352a11d83185ed3d1975dc9`.
 - **Inhaltsbankversion** · `0212-r1.1`
 
 Mit `python scripts/build.py` entstehen unter `dist/Runde-1/` die eigenständige `Fallakte.html`, der maschinenlesbare und der lesbare Materialvertrag sowie diese Fortsetzungsdokumentation. Die HTML-Datei direkt im Browser öffnen. Für den Weg am Gerät die Stufe wählen und bei Laura „Neu beginnen“ antippen. „Abschnitt auswählen“ führt mit einer Zusammenfassung direkt zu Laura 2. „Weiterarbeiten“ führt zum tatsächlichen Entwurf dieses Niveaus im noch geöffneten Dokument.

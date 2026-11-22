@@ -71,6 +71,26 @@ def working_state(page):
     }''')
 
 
+def compact_help(page):
+    start(page, 'Foerder')
+    set_layout(page, 820, 1180, 100)
+    choose(page, 'Cu')
+    page.locator('#hilfe').tap()
+    dialog = page.locator('#material-dialog[open]')
+    for _ in range(4):
+        dialog.locator('#hilfe-weiter').tap()
+    expect(dialog.locator('#hilfe-text')).to_have_attribute('data-depth', '5')
+    dimensions = dialog.evaluate('''el => ({
+        dialog_px: el.getBoundingClientRect().height,
+        leerraum_unten_px: el.clientHeight - el.querySelector('.material-kopf').offsetHeight
+                          - el.querySelector('.material-inhalt').offsetHeight
+    })''')
+    # The frame may round individual sizes, but it must shrink to the size of short help text.
+    assert abs(dimensions['leerraum_unten_px']) <= 2, dimensions
+    dialog.locator('#material-zurueck').tap()
+    return dimensions
+
+
 def return_to_draft(page):
     start(page, 'MSA')
     choose(page, 'Cu')
@@ -141,6 +161,7 @@ def main():
             result = dict(engine=engine, version=browser.version, layouts=[])
             for layout in LAYOUTS:
                 result['layouts'].append(read_cards(page, bank, *layout))
+            result['hilfe_5_hochformat'] = compact_help(page)
             result['tastatur'] = return_to_draft(page)
             assert json.loads(page.locator('#materialvertrag').text_content())['buildCommit'] == commit
             assert not errors, (engine, errors)

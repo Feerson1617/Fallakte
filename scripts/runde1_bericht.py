@@ -66,6 +66,8 @@ def main():
         'Vier Infokarten mit je fünf Abschnitten wurden in beiden Engines bei 820 × 1180 Pixeln (100 % Schrift), 1180 × 820 (150 %) und 390 × 450 (200 %) geöffnet. '
         'Beide Enden langer Texte, der Rückweg, Fokus und Scrollposition nach dem Kartenbesuch sowie die Korrektur eines falschen Codes wurden geprüft. '
         'Für die Codeeingabe bei Touchbedienung wurde die verfügbare Höhe auf 470 Pixel verkleinert.',
+        'Die fünfte Hilfe im iPad-Hochformat richtet ihre Höhe nach dem Inhalt. Gemessene Dialoghöhen: '+
+        ', '.join(f"{b['engine'].capitalize()} {b['hilfe_5_hochformat']['dialog_px']:.0f} Pixel" for b in cards['browsers'])+'.',
         '## Zusatzfälle und Bestandsschutz',
         f"Die Tests durchliefen {len(bestand['tageswechsel'])} Wechsel über die gemeinsame Tagesauswahl, per Datei und im simulierten LMS, sowie Tom und Celina in beiden Browsern. "
         f"Das tatsächlich eingebettete Modul des 08.12. stammt aus `{bestand['schutz_08']['commit']}` (SHA-256 `{bestand['schutz_08']['sha256']}`). "
