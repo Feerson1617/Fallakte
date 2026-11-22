@@ -101,7 +101,6 @@ def readable(bank):
 
 
 def build():
-    from reserve_0212 import reserve_html
     from vertiefung import make_bank, document as case_document, export
     OUT.mkdir(parents=True,exist_ok=True)
     bank=json.loads((ROOT/'data/laura-0212.json').read_text())
@@ -122,9 +121,7 @@ def build():
     page=re.sub(r'src="(assets/[^"]+\.webp)"',lambda m:'src="'+data_url(ROOT/m[1],'image/webp')+'"',page)
     page=page.replace('<script id="materialvertrag" type="application/json"></script>',
         '<script id="materialvertrag" type="application/json">'+contract.replace('<','\\u003c')+'</script>')
-    reserve=base64.b64encode(reserve_html().encode()).decode('ascii')
-    page=page.replace('id="reserve" type="application/octet-stream"></script>','id="reserve" type="application/octet-stream">'+reserve+'</script>')
-    for person in ('Tom',):
+    for person in ('Tom','Celina'):
         case=make_bank(person)
         export(case)
         payload=base64.b64encode(case_document(case).encode()).decode()

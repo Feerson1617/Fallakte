@@ -34,7 +34,7 @@ window.Reserve0212 = (() => {
     pending={type:'open',person,tier,abschnitt};
     pendingCards=false;
     slot().hidden=false;
-    const payload=document.getElementById('reserve-'+person) || document.getElementById('reserve');
+    const payload=document.getElementById('reserve-'+person);
     const frameId='rahmen-'+payload.id;
     frame=document.getElementById(frameId);
     for (const child of slot().querySelectorAll('iframe')) child.hidden=child!==frame;

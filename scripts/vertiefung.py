@@ -14,8 +14,15 @@ def make_bank(person):
     for original,check in zip(stages,checks,strict=True):
         record={k:original[k] for k in ('id','title','message','task','questions','replies','helpBefore')}
         record.update(check)
+        record['previousFacts']=[s['recap'] for s in stages[:len(records)] if s.get('recap')]
+        if person=='Celina':
+            record['task']={**record['task'],'Foerder':'Welcher Grund passt zu diesem Vorschlag?','ESA':'Prüfe den Vorschlag an Celinas Anliegen. Wähle den passenden Grund.'}
         record['choices']=original['options'] if original['type']=='recommend' else {}
-        record['hints']=original['hints']
+        record['hints']=original['hints'].copy()
+        for key,context in record.get('checks',{}).items():
+            method,section=context['ref']
+            card=laura['cards'][method]
+            record['hints'][key]=['Lies '+card['title']+' · '+card['sections'][section]['title']+'.',context['answers']['ABC'.index(context['code'])]]
         record['return']='Kehre zum Gespräch zurück. Gib den Buchstaben der fachlich passenden Aussage ein.'
         record['paper']={t:f"Laufzettel · {person} {len(records)+1} – {record['title']}. "+task for t,task in record['task'].items()}
         records.append(record)

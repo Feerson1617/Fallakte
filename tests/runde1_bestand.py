@@ -118,7 +118,7 @@ def reserve_paths(browser,engine,expected,prototype):
     expect(page.locator('#weiterarbeiten')).to_be_hidden()
     page.locator('#level-ESA').tap()
     page.locator('[data-optional=Tom]').tap()
-    inner=page.frame_locator('#rahmen-reserve')
+    inner=page.frame_locator('#rahmen-reserve-Celina')
     tom=page.frame_locator('#rahmen-reserve-Tom')
     expect(tom.locator('#step')).to_have_text('Tom 1 von 3')
     tom.locator('#method-K').tap()
@@ -133,10 +133,11 @@ def reserve_paths(browser,engine,expected,prototype):
     inner.locator('#method-Cu').tap()
     inner.locator('#help').tap()
     page.locator('[data-nav=resources]').tap()
-    expect(inner.locator('#resources')).to_be_visible()
-    inner.locator('#resources .return').tap()
-    expect(inner.locator('#hint-current')).to_be_visible()
-    expect(inner.locator('#method-Cu')).to_have_attribute('aria-pressed','true')
+    expect(inner.locator('#resource')).to_contain_text('Kupfer')
+    inner.locator('#back').tap()
+    inner.locator('#help').tap()
+    expect(inner.locator('dialog[open]')).to_be_visible()
+    expect(inner.locator('#selected')).to_contain_text('Kupfer')
     page.locator('[data-nav=home]').tap()
     page.locator('[data-optional=Tom]').tap()
     expect(tom.locator('#step')).to_have_text('Tom 2 von 3')
@@ -147,8 +148,8 @@ def reserve_paths(browser,engine,expected,prototype):
         tom.locator('#next').tap()
     expect(page.locator('#start')).to_be_visible()
     page.locator('[data-optional=Celina]').tap()
-    expect(inner.locator('#method-Cu')).to_have_attribute('aria-pressed','true')
-    expect(inner.locator('#hint-current')).to_be_visible()
+    expect(inner.locator('#selected')).to_contain_text('Kupfer')
+    expect(inner.locator('dialog[open]')).to_be_visible()
     # A restart at the paper mark introduces no fictitious previous response.
     page.reload()
     page.locator('#abschnitt-wahl').tap()
@@ -160,12 +161,12 @@ def reserve_paths(browser,engine,expected,prototype):
     expect(page.locator('#abschnitte button')).to_have_count(5)
     page.locator('#abschnitte button').nth(2).tap()
     expect(inner.locator('#step')).to_have_text('Celina 3 von 5')
-    expect(inner.locator('#room-level')).to_have_text('AHR')
-    expect(inner.locator('#history .team')).to_have_count(0)
-    expect(inner.locator('.method[aria-pressed=true]')).to_have_count(0)
+    expect(inner.locator('#desk')).to_contain_text('AHR')
+    expect(inner.get_by_text('Gesprächsverlauf',exact=True)).to_have_count(0)
+    expect(inner.locator('#selected')).to_have_count(0)
     assert not errors,errors
     page.close()
-    return dict(browser=engine,daten_und_hilfen_wie=BASE,tom='1–3 mit Unterbrechung und Rückweg',
+    return dict(browser=engine,ausgangsdialoge=BASE,tom='1–3 mit Unterbrechung und Rückweg',
                 celina='Kupferentwurf und geöffnete Hilfe; nach Reload AHR, Abschnitt 3 ohne alte Antworten')
 
 

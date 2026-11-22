@@ -54,6 +54,7 @@ function draw(){
   desk.replaceChildren();const h=add(desk,'h1',bank.person+' '+(state.index+1)+' von '+bank.stages.length);h.id='step';
   add(desk,'p',s.title+' · '+bank.levels[tier]);
   if(state.history.length){const old=add(desk,'details');add(old,'summary','Gesprächsverlauf');state.history.forEach(x=>add(old,'p',x));}
+  if(state.direct && s.previousFacts.length){const facts=add(desk,'details');add(facts,'summary','Bisher im Fall');s.previousFacts.forEach(text=>add(facts,'p',text));}
   add(desk,'blockquote',s.message[tier].join(' '));
   if(state.sent){
     add(desk,'p',state.reply);
@@ -101,13 +102,17 @@ function draw(){
 document.querySelector('#back').onclick=()=>dialog.close();
 addEventListener('message',e=>{
   if(e.source!==parent || e.data!=='reserve0212:verbinden' || !e.ports[0])return;
-  port=e.ports[0];
+  port?.close();port=e.ports[0];
   port.onmessage=({data})=>{
     if(data.type==='cards' && state){source();return;}
     if(data.type!=='open'||data.person!==bank.person||!Object.hasOwn(bank.levels,data.tier))return;
     tier=data.tier;
-    if(dialog.open)dialog.close();
-    save(data.abschnitt===undefined && sessions.has(tier)?sessions.get(tier):fresh((data.abschnitt||1)-1));draw();
+    const previous=sessions.get(tier);
+    const returning=data.abschnitt===undefined && previous;
+    if(dialog.open && (!returning || state!==previous))dialog.close();
+    save(returning?previous:fresh((data.abschnitt||1)-1));
+    if(data.abschnitt!==undefined)state.direct=true;
+    draw();
   };
   port.postMessage({type:'ready'});
 });

@@ -39,6 +39,33 @@ def tom(p,tier,engine):
         expect(f.locator('#next')).to_be_visible()
         f.locator('#next').click()
 
+def celina(p,tier,engine):
+    counts=[]
+    for i,truth in enumerate('BACBC'):
+        f=enter(p,'Celina',tier,i)
+        expect(f.locator('#step')).to_have_text(f'Celina {i+1} von 5')
+        for strategy in ('P','H','K+P','K+H','Cu','K+Cu','K'):
+            if f.locator('#edit').is_visible():f.locator('#edit').click()
+            expect(f.locator('#send')).to_have_count(0)
+            f.locator('[id="method-'+strategy+'"]').click()
+            expect(f.locator('#desk')).not_to_contain_text('Latexallergie')
+            f.locator('#ask').click();f.locator('#q0').click()
+            if strategy=='K':expect(f.locator('#desk')).not_to_contain_text('Ob eine Kupferspirale zu mir passt')
+            f.locator('#source').click();expect(f.locator('#reading')).not_to_be_empty();f.locator('#back').click()
+            f.locator('#help').click();expect(f.locator('#reading')).not_to_be_empty();f.locator('#back').click()
+            wrong=next(k for k in 'ABC' if k!=truth and (tier not in LEVELS[:2] or f.locator('#answer-'+k).count()))
+            answer(f,tier,wrong);expect(f.locator('#send')).to_have_count(0)
+            answer(f,tier,truth)
+            allowed=strategy in ('K','K+Cu') or strategy=='Cu' and i<3
+            if allowed:expect(f.locator('#send')).to_be_visible()
+            else:
+                expect(f.locator('#send')).to_have_count(0)
+                expect(f.locator('#feedback')).to_contain_text('Vorschlag neu')
+            counts.append([i+1,strategy,allowed])
+        if i==4 and tier=='ESA':p.screenshot(path=QA/f'{engine}-Celina-Schluss.jpg')
+        f.locator('#send').click();f.locator('#next').click()
+    return counts
+
 def run():
     QA.mkdir(parents=True,exist_ok=True);log=[]
     with sync_playwright() as pw:
@@ -47,8 +74,8 @@ def run():
             for i,tier in enumerate(LEVELS):
                 p=b.new_page(has_touch=True,viewport={'width':820 if i%2==0 else 1180,'height':1180 if i%2==0 else 820})
                 issues=[];p.on('pageerror',lambda e:issues.append(str(e)))
-                tom(p,tier,engine);assert not issues,issues
-                log.append([engine,tier,3]);p.close()
+                tom(p,tier,engine);choices=celina(p,tier,engine);assert not issues,issues
+                log.append({'browser':engine,'niveau':tier,'Tom':3,'Celina':choices});p.close()
             b.close()
     (QA/'Vertiefungspruefung.json').write_text(json.dumps(log))
 if __name__=='__main__':run()

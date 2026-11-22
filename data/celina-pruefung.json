@@ -1,0 +1,1090 @@
+[
+  {
+    "allowed": [
+      "K",
+      "K+Cu",
+      "Cu"
+    ],
+    "checks": {
+      "K": {
+        "answers": [
+          "Auch das Kondom enthält Hormone.",
+          "Kondome wirken als Barriere ohne zusätzliche Hormone.",
+          "Hormonfreie Methoden können keine Schwangerschaft verhindern."
+        ],
+        "code": "B",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Kondome wirken als Barriere ohne zusätzliche Hormone.",
+          "Das stimmt. Kondome wirken als Barriere ohne zusätzliche Hormone.",
+          "Prüfe deinen Grund. Kondome wirken als Barriere ohne zusätzliche Hormone."
+        ],
+        "questions": [
+          [
+            "Wie wäre ein Kondom für dich?",
+            "Eine Anwendung beim Sex kann ich mir vorstellen."
+          ]
+        ],
+        "ref": [
+          "K",
+          "wirkung"
+        ]
+      },
+      "P": {
+        "answers": [
+          "Die Kombinationspille passt, weil Celina keine Hormone aufnehmen würde.",
+          "Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Wer zuverlässig verhüten will, muss Hormone akzeptieren."
+        ],
+        "code": "B",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Das stimmt. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Prüfe deinen Grund. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone."
+        ],
+        "questions": [
+          [
+            "Wie stehst du zu Hormonen bei dieser Methode?",
+            "Ich möchte keine zusätzlichen Hormone. Das gilt auch für eine Kombination."
+          ]
+        ],
+        "ref": [
+          "P",
+          "wirkung"
+        ]
+      },
+      "Cu": {
+        "answers": [
+          "Kupfer wirkt nur zusammen mit einem Hormon.",
+          "Kupfer beeinträchtigt Spermien ohne zusätzliche Hormone.",
+          "Hormonfreie Methoden können keine Schwangerschaft verhindern."
+        ],
+        "code": "B",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Kupfer beeinträchtigt Spermien ohne zusätzliche Hormone.",
+          "Das stimmt. Kupfer beeinträchtigt Spermien ohne zusätzliche Hormone.",
+          "Prüfe deinen Grund. Kupfer beeinträchtigt Spermien ohne zusätzliche Hormone."
+        ],
+        "questions": [
+          [
+            "Was möchtest du bei diesem Vorschlag selbst entscheiden?",
+            "Ob eine Kupferspirale zu mir passt und ich sie einsetzen lassen möchte."
+          ]
+        ],
+        "ref": [
+          "Cu",
+          "wirkung"
+        ]
+      },
+      "H": {
+        "answers": [
+          "Die Hormonspirale passt, weil Celina keine Hormone aufnehmen würde.",
+          "Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Wer zuverlässig verhüten will, muss Hormone akzeptieren."
+        ],
+        "code": "B",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Das stimmt. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Prüfe deinen Grund. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone."
+        ],
+        "questions": [
+          [
+            "Wie stehst du zu Hormonen bei dieser Methode?",
+            "Ich möchte keine zusätzlichen Hormone. Das gilt auch für eine Kombination."
+          ]
+        ],
+        "ref": [
+          "H",
+          "wirkung"
+        ]
+      },
+      "K+P": {
+        "answers": [
+          "Die Kombinationspille passt, weil Celina keine Hormone aufnehmen würde.",
+          "Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Wer zuverlässig verhüten will, muss Hormone akzeptieren."
+        ],
+        "code": "B",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Das stimmt. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Prüfe deinen Grund. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts."
+        ],
+        "questions": [
+          [
+            "Wie stehst du zu Hormonen bei dieser Methode?",
+            "Ich möchte keine zusätzlichen Hormone. Das gilt auch für eine Kombination."
+          ]
+        ],
+        "ref": [
+          "P",
+          "wirkung"
+        ]
+      },
+      "K+Cu": {
+        "answers": [
+          "Zwei Methoden bedeuten eine doppelte Hormondosis.",
+          "Beide Methoden wirken ohne Hormone. Das Kondom bildet eine Barriere, Kupfer beeinträchtigt Spermien.",
+          "Hormonfreie Methoden können keine Schwangerschaft verhindern."
+        ],
+        "code": "B",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Beide Methoden wirken ohne Hormone. Das Kondom bildet eine Barriere, Kupfer beeinträchtigt Spermien.",
+          "Das stimmt. Beide Methoden wirken ohne Hormone. Das Kondom bildet eine Barriere, Kupfer beeinträchtigt Spermien.",
+          "Prüfe deinen Grund. Beide Methoden wirken ohne Hormone. Das Kondom bildet eine Barriere, Kupfer beeinträchtigt Spermien."
+        ],
+        "questions": [
+          [
+            "Was möchtest du bei diesem Vorschlag selbst entscheiden?",
+            "Ob eine Kupferspirale zu mir passt und ich sie einsetzen lassen möchte."
+          ]
+        ],
+        "ref": [
+          "Cu",
+          "wirkung"
+        ]
+      },
+      "K+H": {
+        "answers": [
+          "Die Hormonspirale passt, weil Celina keine Hormone aufnehmen würde.",
+          "Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Wer zuverlässig verhüten will, muss Hormone akzeptieren."
+        ],
+        "code": "B",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Das stimmt. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Prüfe deinen Grund. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts."
+        ],
+        "questions": [
+          [
+            "Wie stehst du zu Hormonen bei dieser Methode?",
+            "Ich möchte keine zusätzlichen Hormone. Das gilt auch für eine Kombination."
+          ]
+        ],
+        "ref": [
+          "H",
+          "wirkung"
+        ]
+      }
+    },
+    "recap": true,
+    "answers": [
+      "Auch das Kondom enthält Hormone.",
+      "Kondome wirken als Barriere ohne zusätzliche Hormone.",
+      "Hormonfreie Methoden können keine Schwangerschaft verhindern."
+    ],
+    "code": "B",
+    "short": [
+      "A",
+      "B"
+    ],
+    "feedback": [
+      "Prüfe deinen Grund. Kondome wirken als Barriere ohne zusätzliche Hormone.",
+      "Das stimmt. Kondome wirken als Barriere ohne zusätzliche Hormone.",
+      "Prüfe deinen Grund. Kondome wirken als Barriere ohne zusätzliche Hormone."
+    ],
+    "ref": [
+      "K",
+      "wirkung"
+    ]
+  },
+  {
+    "allowed": [
+      "K",
+      "K+Cu",
+      "Cu"
+    ],
+    "checks": {
+      "K": {
+        "answers": [
+          "Bei jedem Sex ist ein neues Kondom nötig. Die Anwendung lässt sich später beenden.",
+          "Ein Kondom kann mehrere Tage verwendet werden.",
+          "Langfristiger Schutz bedeutet endgültige Unfruchtbarkeit."
+        ],
+        "code": "A",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Das stimmt. Bei jedem Sex ist ein neues Kondom nötig. Die Anwendung lässt sich später beenden.",
+          "Prüfe deinen Grund. Bei jedem Sex ist ein neues Kondom nötig. Die Anwendung lässt sich später beenden.",
+          "Prüfe deinen Grund. Bei jedem Sex ist ein neues Kondom nötig. Die Anwendung lässt sich später beenden."
+        ],
+        "questions": [
+          [
+            "Wie wäre ein Kondom für dich?",
+            "Eine Anwendung beim Sex kann ich mir vorstellen."
+          ]
+        ],
+        "ref": [
+          "K",
+          "alltag"
+        ]
+      },
+      "P": {
+        "answers": [
+          "Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Die Kombinationspille passt, weil Celina keine Hormone aufnehmen würde.",
+          "Wer zuverlässig verhüten will, muss Hormone akzeptieren."
+        ],
+        "code": "A",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Das stimmt. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Prüfe deinen Grund. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Prüfe deinen Grund. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone."
+        ],
+        "questions": [
+          [
+            "Wie stehst du zu Hormonen bei dieser Methode?",
+            "Ich möchte keine zusätzlichen Hormone. Das gilt auch für eine Kombination."
+          ]
+        ],
+        "ref": [
+          "P",
+          "wirkung"
+        ]
+      },
+      "Cu": {
+        "answers": [
+          "Kupfer wirkt über längere Zeit. Die Spirale kann ärztlich entfernt werden.",
+          "Nach der Einlage lässt sich die Methode nicht mehr beenden.",
+          "Langfristiger Schutz bedeutet endgültige Unfruchtbarkeit."
+        ],
+        "code": "A",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Das stimmt. Kupfer wirkt über längere Zeit. Die Spirale kann ärztlich entfernt werden.",
+          "Prüfe deinen Grund. Kupfer wirkt über längere Zeit. Die Spirale kann ärztlich entfernt werden.",
+          "Prüfe deinen Grund. Kupfer wirkt über längere Zeit. Die Spirale kann ärztlich entfernt werden."
+        ],
+        "questions": [
+          [
+            "Was möchtest du bei diesem Vorschlag selbst entscheiden?",
+            "Ob eine Kupferspirale zu mir passt und ich sie einsetzen lassen möchte."
+          ]
+        ],
+        "ref": [
+          "Cu",
+          "alltag"
+        ]
+      },
+      "H": {
+        "answers": [
+          "Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Die Hormonspirale passt, weil Celina keine Hormone aufnehmen würde.",
+          "Wer zuverlässig verhüten will, muss Hormone akzeptieren."
+        ],
+        "code": "A",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Das stimmt. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Prüfe deinen Grund. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Prüfe deinen Grund. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone."
+        ],
+        "questions": [
+          [
+            "Wie stehst du zu Hormonen bei dieser Methode?",
+            "Ich möchte keine zusätzlichen Hormone. Das gilt auch für eine Kombination."
+          ]
+        ],
+        "ref": [
+          "H",
+          "wirkung"
+        ]
+      },
+      "K+P": {
+        "answers": [
+          "Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Die Kombinationspille passt, weil Celina keine Hormone aufnehmen würde.",
+          "Wer zuverlässig verhüten will, muss Hormone akzeptieren."
+        ],
+        "code": "A",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Das stimmt. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Prüfe deinen Grund. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Prüfe deinen Grund. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts."
+        ],
+        "questions": [
+          [
+            "Wie stehst du zu Hormonen bei dieser Methode?",
+            "Ich möchte keine zusätzlichen Hormone. Das gilt auch für eine Kombination."
+          ]
+        ],
+        "ref": [
+          "P",
+          "wirkung"
+        ]
+      },
+      "K+Cu": {
+        "answers": [
+          "Kupfer wirkt langfristig. Beim Kondom müssen beide weiterhin bei jedem Sex an die Anwendung denken.",
+          "Mit einer Spirale kann dasselbe Kondom mehrfach benutzt werden.",
+          "Langfristiger Schutz bedeutet endgültige Unfruchtbarkeit."
+        ],
+        "code": "A",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Das stimmt. Kupfer wirkt langfristig. Beim Kondom müssen beide weiterhin bei jedem Sex an die Anwendung denken.",
+          "Prüfe deinen Grund. Kupfer wirkt langfristig. Beim Kondom müssen beide weiterhin bei jedem Sex an die Anwendung denken.",
+          "Prüfe deinen Grund. Kupfer wirkt langfristig. Beim Kondom müssen beide weiterhin bei jedem Sex an die Anwendung denken."
+        ],
+        "questions": [
+          [
+            "Was möchtest du bei diesem Vorschlag selbst entscheiden?",
+            "Ob eine Kupferspirale zu mir passt und ich sie einsetzen lassen möchte."
+          ]
+        ],
+        "ref": [
+          "Cu",
+          "alltag"
+        ]
+      },
+      "K+H": {
+        "answers": [
+          "Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Die Hormonspirale passt, weil Celina keine Hormone aufnehmen würde.",
+          "Wer zuverlässig verhüten will, muss Hormone akzeptieren."
+        ],
+        "code": "A",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Das stimmt. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Prüfe deinen Grund. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Prüfe deinen Grund. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts."
+        ],
+        "questions": [
+          [
+            "Wie stehst du zu Hormonen bei dieser Methode?",
+            "Ich möchte keine zusätzlichen Hormone. Das gilt auch für eine Kombination."
+          ]
+        ],
+        "ref": [
+          "H",
+          "wirkung"
+        ]
+      }
+    },
+    "recap": true,
+    "answers": [
+      "Bei jedem Sex ist ein neues Kondom nötig. Die Anwendung lässt sich später beenden.",
+      "Ein Kondom kann mehrere Tage verwendet werden.",
+      "Langfristiger Schutz bedeutet endgültige Unfruchtbarkeit."
+    ],
+    "code": "A",
+    "short": [
+      "A",
+      "B"
+    ],
+    "feedback": [
+      "Das stimmt. Bei jedem Sex ist ein neues Kondom nötig. Die Anwendung lässt sich später beenden.",
+      "Prüfe deinen Grund. Bei jedem Sex ist ein neues Kondom nötig. Die Anwendung lässt sich später beenden.",
+      "Prüfe deinen Grund. Bei jedem Sex ist ein neues Kondom nötig. Die Anwendung lässt sich später beenden."
+    ],
+    "ref": [
+      "K",
+      "alltag"
+    ]
+  },
+  {
+    "allowed": [
+      "K",
+      "K+Cu",
+      "Cu"
+    ],
+    "checks": {
+      "K": {
+        "answers": [
+          "Auch ein Kondom muss ärztlich eingesetzt werden.",
+          "Der Rat des Teams ersetzt die persönliche Entscheidung.",
+          "Das Kondom wird beim Sex benutzt. Dafür ist keine Einlage nötig."
+        ],
+        "code": "C",
+        "short": [
+          "A",
+          "C"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Das Kondom wird beim Sex benutzt. Dafür ist keine Einlage nötig.",
+          "Prüfe deinen Grund. Das Kondom wird beim Sex benutzt. Dafür ist keine Einlage nötig.",
+          "Das stimmt. Das Kondom wird beim Sex benutzt. Dafür ist keine Einlage nötig."
+        ],
+        "questions": [
+          [
+            "Wie wäre ein Kondom für dich?",
+            "Eine Anwendung beim Sex kann ich mir vorstellen."
+          ]
+        ],
+        "ref": [
+          "K",
+          "alltag"
+        ]
+      },
+      "P": {
+        "answers": [
+          "Die Kombinationspille passt, weil Celina keine Hormone aufnehmen würde.",
+          "Wer zuverlässig verhüten will, muss Hormone akzeptieren.",
+          "Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone."
+        ],
+        "code": "C",
+        "short": [
+          "A",
+          "C"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Prüfe deinen Grund. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Das stimmt. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone."
+        ],
+        "questions": [
+          [
+            "Wie stehst du zu Hormonen bei dieser Methode?",
+            "Ich möchte keine zusätzlichen Hormone. Das gilt auch für eine Kombination."
+          ]
+        ],
+        "ref": [
+          "P",
+          "wirkung"
+        ]
+      },
+      "Cu": {
+        "answers": [
+          "Celinas wenig schmerzhafte Regel beweist, dass die Spirale passt.",
+          "Der Rat des Teams ersetzt die persönliche Entscheidung.",
+          "Eine Kupferspirale braucht eine Einlage. Beratung und Celinas Zustimmung sind Voraussetzung."
+        ],
+        "code": "C",
+        "short": [
+          "A",
+          "C"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Eine Kupferspirale braucht eine Einlage. Beratung und Celinas Zustimmung sind Voraussetzung.",
+          "Prüfe deinen Grund. Eine Kupferspirale braucht eine Einlage. Beratung und Celinas Zustimmung sind Voraussetzung.",
+          "Das stimmt. Eine Kupferspirale braucht eine Einlage. Beratung und Celinas Zustimmung sind Voraussetzung."
+        ],
+        "questions": [
+          [
+            "Was möchtest du bei diesem Vorschlag selbst entscheiden?",
+            "Ob eine Kupferspirale zu mir passt und ich sie einsetzen lassen möchte."
+          ]
+        ],
+        "ref": [
+          "Cu",
+          "einlage"
+        ]
+      },
+      "H": {
+        "answers": [
+          "Die Hormonspirale passt, weil Celina keine Hormone aufnehmen würde.",
+          "Wer zuverlässig verhüten will, muss Hormone akzeptieren.",
+          "Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone."
+        ],
+        "code": "C",
+        "short": [
+          "A",
+          "C"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Prüfe deinen Grund. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Das stimmt. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone."
+        ],
+        "questions": [
+          [
+            "Wie stehst du zu Hormonen bei dieser Methode?",
+            "Ich möchte keine zusätzlichen Hormone. Das gilt auch für eine Kombination."
+          ]
+        ],
+        "ref": [
+          "H",
+          "wirkung"
+        ]
+      },
+      "K+P": {
+        "answers": [
+          "Die Kombinationspille passt, weil Celina keine Hormone aufnehmen würde.",
+          "Wer zuverlässig verhüten will, muss Hormone akzeptieren.",
+          "Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts."
+        ],
+        "code": "C",
+        "short": [
+          "A",
+          "C"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Prüfe deinen Grund. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Das stimmt. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts."
+        ],
+        "questions": [
+          [
+            "Wie stehst du zu Hormonen bei dieser Methode?",
+            "Ich möchte keine zusätzlichen Hormone. Das gilt auch für eine Kombination."
+          ]
+        ],
+        "ref": [
+          "P",
+          "wirkung"
+        ]
+      },
+      "K+Cu": {
+        "answers": [
+          "Wer ein Kondom benutzt, stimmt damit auch der Einlage zu.",
+          "Der Rat des Teams ersetzt die persönliche Entscheidung.",
+          "Bis zur Entscheidung über die Einlage ist das Kondom allein möglich. Die Kupferspirale setzt Beratung und Zustimmung voraus."
+        ],
+        "code": "C",
+        "short": [
+          "A",
+          "C"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Bis zur Entscheidung über die Einlage ist das Kondom allein möglich. Die Kupferspirale setzt Beratung und Zustimmung voraus.",
+          "Prüfe deinen Grund. Bis zur Entscheidung über die Einlage ist das Kondom allein möglich. Die Kupferspirale setzt Beratung und Zustimmung voraus.",
+          "Das stimmt. Bis zur Entscheidung über die Einlage ist das Kondom allein möglich. Die Kupferspirale setzt Beratung und Zustimmung voraus."
+        ],
+        "questions": [
+          [
+            "Was möchtest du bei diesem Vorschlag selbst entscheiden?",
+            "Ob eine Kupferspirale zu mir passt und ich sie einsetzen lassen möchte."
+          ]
+        ],
+        "ref": [
+          "Cu",
+          "einlage"
+        ]
+      },
+      "K+H": {
+        "answers": [
+          "Die Hormonspirale passt, weil Celina keine Hormone aufnehmen würde.",
+          "Wer zuverlässig verhüten will, muss Hormone akzeptieren.",
+          "Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts."
+        ],
+        "code": "C",
+        "short": [
+          "A",
+          "C"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Prüfe deinen Grund. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Das stimmt. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts."
+        ],
+        "questions": [
+          [
+            "Wie stehst du zu Hormonen bei dieser Methode?",
+            "Ich möchte keine zusätzlichen Hormone. Das gilt auch für eine Kombination."
+          ]
+        ],
+        "ref": [
+          "H",
+          "wirkung"
+        ]
+      }
+    },
+    "recap": true,
+    "answers": [
+      "Auch ein Kondom muss ärztlich eingesetzt werden.",
+      "Der Rat des Teams ersetzt die persönliche Entscheidung.",
+      "Das Kondom wird beim Sex benutzt. Dafür ist keine Einlage nötig."
+    ],
+    "code": "C",
+    "short": [
+      "A",
+      "C"
+    ],
+    "feedback": [
+      "Prüfe deinen Grund. Das Kondom wird beim Sex benutzt. Dafür ist keine Einlage nötig.",
+      "Prüfe deinen Grund. Das Kondom wird beim Sex benutzt. Dafür ist keine Einlage nötig.",
+      "Das stimmt. Das Kondom wird beim Sex benutzt. Dafür ist keine Einlage nötig."
+    ],
+    "ref": [
+      "K",
+      "alltag"
+    ]
+  },
+  {
+    "allowed": [
+      "K",
+      "K+Cu"
+    ],
+    "checks": {
+      "K": {
+        "answers": [
+          "Ein Kondom verhindert jede STI.",
+          "Das Kondom senkt bei richtiger Anwendung das Risiko vieler STI. Ein Restrisiko bleibt.",
+          "Schwangerschaftsschutz schützt immer auch vor Infektionen."
+        ],
+        "code": "B",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Das Kondom senkt bei richtiger Anwendung das Risiko vieler STI. Ein Restrisiko bleibt.",
+          "Das stimmt. Das Kondom senkt bei richtiger Anwendung das Risiko vieler STI. Ein Restrisiko bleibt.",
+          "Prüfe deinen Grund. Das Kondom senkt bei richtiger Anwendung das Risiko vieler STI. Ein Restrisiko bleibt."
+        ],
+        "questions": [
+          [
+            "Wie wäre ein Kondom für dich?",
+            "Eine Anwendung beim Sex kann ich mir vorstellen."
+          ]
+        ],
+        "ref": [
+          "K",
+          "sti"
+        ]
+      },
+      "P": {
+        "answers": [
+          "Die Kombinationspille passt, weil Celina keine Hormone aufnehmen würde.",
+          "Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Wer zuverlässig verhüten will, muss Hormone akzeptieren."
+        ],
+        "code": "B",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Das stimmt. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Prüfe deinen Grund. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone."
+        ],
+        "questions": [
+          [
+            "Wie stehst du zu Hormonen bei dieser Methode?",
+            "Ich möchte keine zusätzlichen Hormone. Das gilt auch für eine Kombination."
+          ]
+        ],
+        "ref": [
+          "P",
+          "wirkung"
+        ]
+      },
+      "Cu": {
+        "answers": [
+          "Die Spirale hält Krankheitserreger zurück.",
+          "Kupfer schützt vor Schwangerschaft. Ohne Barriere bleibt das STI-Anliegen offen.",
+          "Schwangerschaftsschutz schützt immer auch vor Infektionen."
+        ],
+        "code": "B",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Kupfer schützt vor Schwangerschaft. Ohne Barriere bleibt das STI-Anliegen offen.",
+          "Das stimmt. Kupfer schützt vor Schwangerschaft. Ohne Barriere bleibt das STI-Anliegen offen.",
+          "Prüfe deinen Grund. Kupfer schützt vor Schwangerschaft. Ohne Barriere bleibt das STI-Anliegen offen."
+        ],
+        "questions": [
+          [
+            "Was möchtest du bei diesem Vorschlag selbst entscheiden?",
+            "Ob eine Kupferspirale zu mir passt und ich sie einsetzen lassen möchte."
+          ]
+        ],
+        "ref": [
+          "Cu",
+          "sti"
+        ]
+      },
+      "H": {
+        "answers": [
+          "Die Hormonspirale passt, weil Celina keine Hormone aufnehmen würde.",
+          "Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Wer zuverlässig verhüten will, muss Hormone akzeptieren."
+        ],
+        "code": "B",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Das stimmt. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Prüfe deinen Grund. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone."
+        ],
+        "questions": [
+          [
+            "Wie stehst du zu Hormonen bei dieser Methode?",
+            "Ich möchte keine zusätzlichen Hormone. Das gilt auch für eine Kombination."
+          ]
+        ],
+        "ref": [
+          "H",
+          "wirkung"
+        ]
+      },
+      "K+P": {
+        "answers": [
+          "Die Kombinationspille passt, weil Celina keine Hormone aufnehmen würde.",
+          "Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Wer zuverlässig verhüten will, muss Hormone akzeptieren."
+        ],
+        "code": "B",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Das stimmt. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Prüfe deinen Grund. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts."
+        ],
+        "questions": [
+          [
+            "Wie stehst du zu Hormonen bei dieser Methode?",
+            "Ich möchte keine zusätzlichen Hormone. Das gilt auch für eine Kombination."
+          ]
+        ],
+        "ref": [
+          "P",
+          "wirkung"
+        ]
+      },
+      "K+Cu": {
+        "answers": [
+          "Erst die Kupferspirale macht das Kondom zu einer STI-Barriere.",
+          "Die STI-Barriere ist das Kondom. Kupfer kann den Schwangerschaftsschutz ergänzen.",
+          "Schwangerschaftsschutz schützt immer auch vor Infektionen."
+        ],
+        "code": "B",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Die STI-Barriere ist das Kondom. Kupfer kann den Schwangerschaftsschutz ergänzen.",
+          "Das stimmt. Die STI-Barriere ist das Kondom. Kupfer kann den Schwangerschaftsschutz ergänzen.",
+          "Prüfe deinen Grund. Die STI-Barriere ist das Kondom. Kupfer kann den Schwangerschaftsschutz ergänzen."
+        ],
+        "questions": [
+          [
+            "Was möchtest du bei diesem Vorschlag selbst entscheiden?",
+            "Ob eine Kupferspirale zu mir passt und ich sie einsetzen lassen möchte."
+          ]
+        ],
+        "ref": [
+          "K",
+          "sti"
+        ]
+      },
+      "K+H": {
+        "answers": [
+          "Die Hormonspirale passt, weil Celina keine Hormone aufnehmen würde.",
+          "Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Wer zuverlässig verhüten will, muss Hormone akzeptieren."
+        ],
+        "code": "B",
+        "short": [
+          "A",
+          "B"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Das stimmt. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Prüfe deinen Grund. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts."
+        ],
+        "questions": [
+          [
+            "Wie stehst du zu Hormonen bei dieser Methode?",
+            "Ich möchte keine zusätzlichen Hormone. Das gilt auch für eine Kombination."
+          ]
+        ],
+        "ref": [
+          "H",
+          "wirkung"
+        ]
+      }
+    },
+    "recap": true,
+    "answers": [
+      "Ein Kondom verhindert jede STI.",
+      "Das Kondom senkt bei richtiger Anwendung das Risiko vieler STI. Ein Restrisiko bleibt.",
+      "Schwangerschaftsschutz schützt immer auch vor Infektionen."
+    ],
+    "code": "B",
+    "short": [
+      "A",
+      "B"
+    ],
+    "feedback": [
+      "Prüfe deinen Grund. Das Kondom senkt bei richtiger Anwendung das Risiko vieler STI. Ein Restrisiko bleibt.",
+      "Das stimmt. Das Kondom senkt bei richtiger Anwendung das Risiko vieler STI. Ein Restrisiko bleibt.",
+      "Prüfe deinen Grund. Das Kondom senkt bei richtiger Anwendung das Risiko vieler STI. Ein Restrisiko bleibt."
+    ],
+    "ref": [
+      "K",
+      "sti"
+    ]
+  },
+  {
+    "allowed": [
+      "K",
+      "K+Cu"
+    ],
+    "checks": {
+      "K": {
+        "answers": [
+          "Bei richtiger Anwendung bietet das Kondom vollständigen Schutz.",
+          "Die zuverlässigste Methode passt unabhängig von Celinas Grenzen.",
+          "Ein neues Kondom bei jedem Sex passt zu beiden Schutzzielen. Die richtige Anwendung bleibt entscheidend."
+        ],
+        "code": "C",
+        "short": [
+          "A",
+          "C"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Ein neues Kondom bei jedem Sex passt zu beiden Schutzzielen. Die richtige Anwendung bleibt entscheidend.",
+          "Prüfe deinen Grund. Ein neues Kondom bei jedem Sex passt zu beiden Schutzzielen. Die richtige Anwendung bleibt entscheidend.",
+          "Das stimmt. Ein neues Kondom bei jedem Sex passt zu beiden Schutzzielen. Die richtige Anwendung bleibt entscheidend."
+        ],
+        "questions": [
+          [
+            "Wie wäre ein Kondom für dich?",
+            "Eine Anwendung beim Sex kann ich mir vorstellen."
+          ]
+        ],
+        "ref": [
+          "K",
+          "sti"
+        ]
+      },
+      "P": {
+        "answers": [
+          "Die Kombinationspille passt, weil Celina keine Hormone aufnehmen würde.",
+          "Wer zuverlässig verhüten will, muss Hormone akzeptieren.",
+          "Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone."
+        ],
+        "code": "C",
+        "short": [
+          "A",
+          "C"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Prüfe deinen Grund. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Das stimmt. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone."
+        ],
+        "questions": [
+          [
+            "Wie stehst du zu Hormonen bei dieser Methode?",
+            "Ich möchte keine zusätzlichen Hormone. Das gilt auch für eine Kombination."
+          ]
+        ],
+        "ref": [
+          "P",
+          "wirkung"
+        ]
+      },
+      "Cu": {
+        "answers": [
+          "Kupfer allein beantwortet beide Schutzziele.",
+          "Die zuverlässigste Methode passt unabhängig von Celinas Grenzen.",
+          "Kupfer kann langfristig vor Schwangerschaft schützen. Für das STI-Anliegen fehlt noch eine Barriere."
+        ],
+        "code": "C",
+        "short": [
+          "A",
+          "C"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Kupfer kann langfristig vor Schwangerschaft schützen. Für das STI-Anliegen fehlt noch eine Barriere.",
+          "Prüfe deinen Grund. Kupfer kann langfristig vor Schwangerschaft schützen. Für das STI-Anliegen fehlt noch eine Barriere.",
+          "Das stimmt. Kupfer kann langfristig vor Schwangerschaft schützen. Für das STI-Anliegen fehlt noch eine Barriere."
+        ],
+        "questions": [
+          [
+            "Was möchtest du bei diesem Vorschlag selbst entscheiden?",
+            "Ob eine Kupferspirale zu mir passt und ich sie einsetzen lassen möchte."
+          ]
+        ],
+        "ref": [
+          "Cu",
+          "einlage"
+        ]
+      },
+      "H": {
+        "answers": [
+          "Die Hormonspirale passt, weil Celina keine Hormone aufnehmen würde.",
+          "Wer zuverlässig verhüten will, muss Hormone akzeptieren.",
+          "Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone."
+        ],
+        "code": "C",
+        "short": [
+          "A",
+          "C"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Prüfe deinen Grund. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone.",
+          "Das stimmt. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone."
+        ],
+        "questions": [
+          [
+            "Wie stehst du zu Hormonen bei dieser Methode?",
+            "Ich möchte keine zusätzlichen Hormone. Das gilt auch für eine Kombination."
+          ]
+        ],
+        "ref": [
+          "H",
+          "wirkung"
+        ]
+      },
+      "K+P": {
+        "answers": [
+          "Die Kombinationspille passt, weil Celina keine Hormone aufnehmen würde.",
+          "Wer zuverlässig verhüten will, muss Hormone akzeptieren.",
+          "Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts."
+        ],
+        "code": "C",
+        "short": [
+          "A",
+          "C"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Prüfe deinen Grund. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Das stimmt. Die Kombinationspille enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts."
+        ],
+        "questions": [
+          [
+            "Wie stehst du zu Hormonen bei dieser Methode?",
+            "Ich möchte keine zusätzlichen Hormone. Das gilt auch für eine Kombination."
+          ]
+        ],
+        "ref": [
+          "P",
+          "wirkung"
+        ]
+      },
+      "K+Cu": {
+        "answers": [
+          "Eine Kombination ist immer die beste Empfehlung.",
+          "Die zuverlässigste Methode passt unabhängig von Celinas Grenzen.",
+          "Das Kondom senkt das STI-Risiko. Kupfer könnte den Schwangerschaftsschutz ergänzen, wenn Celina nach Beratung zustimmt."
+        ],
+        "code": "C",
+        "short": [
+          "A",
+          "C"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Das Kondom senkt das STI-Risiko. Kupfer könnte den Schwangerschaftsschutz ergänzen, wenn Celina nach Beratung zustimmt.",
+          "Prüfe deinen Grund. Das Kondom senkt das STI-Risiko. Kupfer könnte den Schwangerschaftsschutz ergänzen, wenn Celina nach Beratung zustimmt.",
+          "Das stimmt. Das Kondom senkt das STI-Risiko. Kupfer könnte den Schwangerschaftsschutz ergänzen, wenn Celina nach Beratung zustimmt."
+        ],
+        "questions": [
+          [
+            "Was möchtest du bei diesem Vorschlag selbst entscheiden?",
+            "Ob eine Kupferspirale zu mir passt und ich sie einsetzen lassen möchte."
+          ]
+        ],
+        "ref": [
+          "Cu",
+          "einlage"
+        ]
+      },
+      "K+H": {
+        "answers": [
+          "Die Hormonspirale passt, weil Celina keine Hormone aufnehmen würde.",
+          "Wer zuverlässig verhüten will, muss Hormone akzeptieren.",
+          "Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts."
+        ],
+        "code": "C",
+        "short": [
+          "A",
+          "C"
+        ],
+        "feedback": [
+          "Prüfe deinen Grund. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Prüfe deinen Grund. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts.",
+          "Das stimmt. Die Hormonspirale enthält Hormone. Celina möchte keine zusätzlichen Hormone. Das Kondom ändert daran nichts."
+        ],
+        "questions": [
+          [
+            "Wie stehst du zu Hormonen bei dieser Methode?",
+            "Ich möchte keine zusätzlichen Hormone. Das gilt auch für eine Kombination."
+          ]
+        ],
+        "ref": [
+          "H",
+          "wirkung"
+        ]
+      }
+    },
+    "recap": true,
+    "answers": [
+      "Bei richtiger Anwendung bietet das Kondom vollständigen Schutz.",
+      "Die zuverlässigste Methode passt unabhängig von Celinas Grenzen.",
+      "Ein neues Kondom bei jedem Sex passt zu beiden Schutzzielen. Die richtige Anwendung bleibt entscheidend."
+    ],
+    "code": "C",
+    "short": [
+      "A",
+      "C"
+    ],
+    "feedback": [
+      "Prüfe deinen Grund. Ein neues Kondom bei jedem Sex passt zu beiden Schutzzielen. Die richtige Anwendung bleibt entscheidend.",
+      "Prüfe deinen Grund. Ein neues Kondom bei jedem Sex passt zu beiden Schutzzielen. Die richtige Anwendung bleibt entscheidend.",
+      "Das stimmt. Ein neues Kondom bei jedem Sex passt zu beiden Schutzzielen. Die richtige Anwendung bleibt entscheidend."
+    ],
+    "ref": [
+      "K",
+      "sti"
+    ]
+  }
+]
