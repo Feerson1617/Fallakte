@@ -102,6 +102,7 @@ def readable(bank):
 
 def build():
     from reserve_0212 import reserve_html
+    from vertiefung import make_bank, document as case_document, export
     OUT.mkdir(parents=True,exist_ok=True)
     bank=json.loads((ROOT/'data/laura-0212.json').read_text())
     bank['buildCommit']=commit()
@@ -123,6 +124,11 @@ def build():
         '<script id="materialvertrag" type="application/json">'+contract.replace('<','\\u003c')+'</script>')
     reserve=base64.b64encode(reserve_html().encode()).decode('ascii')
     page=page.replace('id="reserve" type="application/octet-stream"></script>','id="reserve" type="application/octet-stream">'+reserve+'</script>')
+    for person in ('Tom',):
+        case=make_bank(person)
+        export(case)
+        payload=base64.b64encode(case_document(case).encode()).decode()
+        page=page.replace('</main>',f'<script id="reserve-{person}" type="application/octet-stream">{payload}</script></main>')
     def javascript(m):
         source=(ROOT/m[1]).read_text().replace('</script',r'<\/script')
         return '<script>\n'+source+'\n</script>'

@@ -79,6 +79,7 @@ jobs:
       - run: python tests/runde1_browser.py
       - run: python tests/runde2a_bedienung.py
       - run: python tests/runde1_karten.py
+      - run: python tests/vertiefungen.py
       - run: python tests/runde1_bestand.py
       - run: python scripts/runde1_bericht.py
       - uses: actions/upload-artifact@v4

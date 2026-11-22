@@ -34,14 +34,20 @@ window.Reserve0212 = (() => {
     pending={type:'open',person,tier,abschnitt};
     pendingCards=false;
     slot().hidden=false;
+    const payload=document.getElementById('reserve-'+person) || document.getElementById('reserve');
+    const frameId='rahmen-'+payload.id;
+    frame=document.getElementById(frameId);
+    for (const child of slot().querySelectorAll('iframe')) child.hidden=child!==frame;
     if (!frame) {
       frame=document.createElement('iframe');
-      frame.title='Freiwillige Vertiefung';
-      frame.addEventListener('load',connect);
-      const bytes=Uint8Array.from(atob(document.getElementById('reserve').textContent),c=>c.charCodeAt(0));
+      const created=frame;
+      frame.id=frameId;frame.title='Freiwillige Vertiefung · '+person;
+      frame.addEventListener('load',()=>{created.dataset.loaded='true';if(frame===created)connect();});
+      const bytes=Uint8Array.from(atob(payload.textContent),c=>c.charCodeAt(0));
       frame.srcdoc=new TextDecoder().decode(bytes);
       slot().append(frame);
-    }
+      ready=false;
+    } else if(frame.dataset.loaded)connect();
     const status={person,tier,abschnitt:abschnitt??progress.get(active)??1,view:'room'};
     announce(status);
     send();

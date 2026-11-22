@@ -43,3 +43,5 @@ body:has(#reserve-platz:not([hidden])) main{max-width:none;padding:0}
 #lehrkraft summary{min-height:44px;padding:.65rem .35rem;cursor:pointer;width:fit-content;margin-inline-start:auto}
 #lehrkraft button{color:#294d3c}
 @media(max-width:34rem){.wortmarke{display:none}.hauptfall{grid-template-columns:4.8rem 1fr;align-items:start}.hauptfall img{grid-row:span 2}.startwege{margin-top:.45rem}.reserven img{width:2.5rem;height:2.5rem}}
+
+#reserve-platz iframe[hidden]{display:none}
