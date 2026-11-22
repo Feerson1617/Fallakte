@@ -22,7 +22,10 @@ def package():
                 if p.name not in ('Uebungsakte-Material.json',):z.write(p,f'{folder.name}/{p.name}')
             shots=sorted(folder.glob('*.jpg'))
             assert shots,folder
-            for p in shots[:4]:z.write(p,f'{folder.name}/{p.name}')
+            for engine in ('chromium','webkit'):
+                selected=[p for p in shots if p.name.startswith(engine)]
+                assert selected,(folder,engine)
+                for p in selected[:2]:z.write(p,f'{folder.name}/{p.name}')
     for p in TARGET.glob('*.zip'):
         with ZipFile(p) as z:assert z.testzip() is None
 if __name__=='__main__':package()

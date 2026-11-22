@@ -1,5 +1,6 @@
 """Apply the unmodified reference assertions and its browser exercises to the candidate."""
-import json,os,sys
+import json,os,subprocess,sys
+from unittest.mock import patch
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from zipfile import ZipFile
@@ -17,7 +18,11 @@ def main():
     with TemporaryDirectory() as td:
         temp=Path(td)
         # The comparator also checks the frozen historical version A, in its own build tree.
-        reference.protect(temp)
+        # The extracted tree lives below build/. Resolve git-archive paths at that
+        # tree's root while retaining access to the actual historical objects.
+        git_dir=subprocess.check_output(['git','rev-parse','--absolute-git-dir'],cwd=ROOT,text=True).strip()
+        with patch.dict(os.environ,{'GIT_DIR':git_dir,'GIT_WORK_TREE':str(REF)}):
+            reference.protect(temp)
         reference.B=TARGET
         with ZipFile(TARGET/'Fallakte-SCORM12.zip') as z:
             assert z.testzip() is None and z.read('index.html')==(TARGET/'Fallakte.html').read_bytes()
