@@ -1,5 +1,6 @@
 """Compose the approved modules from the actual reviewed release of December 8."""
 import base64, hashlib, io, json, re, subprocess, sys
+from datetime import datetime, timezone
 from pathlib import Path
 from zipfile import ZipFile, ZIP_DEFLATED
 from modul_0212 import ROOT, OUT, build, commit
@@ -37,7 +38,7 @@ def assemble():
     with ZipFile(released/'Fallakte-SCORM12.zip') as original,ZipFile(TARGET/'Fallakte-SCORM12.zip','w',ZIP_DEFLATED) as output:
         assert original.read('index.html')==shell
         for member in original.namelist():output.writestr(member,candidate if member=='index.html' else original.read(member))
-    metadata=dict(commit=commit(),tag08=DAY8,tag08_sha256=digest(second),tag02_sha256=digest(first),html_sha256=digest(candidate),bytes=len(candidate))
+    metadata=dict(build_utc=datetime.now(timezone.utc).isoformat(),commit=commit(),tag08=DAY8,tag08_sha256=digest(second),tag02_sha256=digest(first),html_sha256=digest(candidate),bytes=len(candidate))
     (TARGET/'Buildnachweis.json').write_text(json.dumps(metadata,indent=2)+'\n')
     print(TARGET,metadata['bytes'])
 if __name__=='__main__':assemble()

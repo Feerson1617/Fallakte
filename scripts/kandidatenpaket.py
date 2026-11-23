@@ -27,7 +27,10 @@ def package():
     (TARGET/'Buildnachweis.json').write_text(json.dumps(metadata,indent=2)+'\n')
     with ZipFile(TARGET/'Fallakte-Sichtpruefung.zip','w',ZIP_DEFLATED) as z:
         z.write(TARGET/'Buildnachweis.json','Buildnachweis.json')
-        for folder in (report02.parent,report08.parent,ROOT/'build/vertiefungen',ROOT/'dist/Uebungsakte'):
+        folders = [report02.parent, report08.parent, ROOT/'build/vertiefungen', ROOT/'dist/Uebungsakte']
+        if (ROOT/'build/Releasepruefung/Abnahme.json').exists():
+            folders.append(ROOT/'build/Releasepruefung')
+        for folder in folders:
             for p in sorted(folder.glob('*.json')):
                 if p.name not in ('Uebungsakte-Material.json',):z.write(p,f'{folder.name}/{p.name}')
             shots=sorted(folder.glob('*.jpg'))
