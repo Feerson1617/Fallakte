@@ -2105,7 +2105,8 @@
     "digitalCheck": "Wähle am Gerät Nachricht, Anliegen und passenden Fakt. Prüfe die Grenze des Fakts.",
     "endRecovery": "Nutze den Auftrag unten, wenn deine frühere Rückmeldung auf dem Bogen vorliegt. Fehlt sie, öffne zuerst den digitalen Fachvergleich.",
     "sameStep": "Prüfe deinen Vorschlag hier im geöffneten Abschnitt.",
-    "helpBeforePaper": "Bleib am Gerät. Wähle die Erklärung zur neuen Frage."
+    "helpBeforePaper": "Bleib am Gerät. Wähle die Erklärung zur neuen Frage.",
+    "readMatrix": "Am Gerät nachlesen: die Argumente der Nachricht"
   },
   "levelPrompts": {
     "Förder": {

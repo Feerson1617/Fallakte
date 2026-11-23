@@ -262,18 +262,23 @@ function caseView(){
       }
       paragraph(box,applicationStatus(person),'tag');
     }
-    el(box,'h2',ui.paper);
-    if(!saved.records[person+'/Ergänzung']?.valid)paragraph(box,ui.supported+' · '+ui.noPast,'note');
-    for(const [key,value] of Object.entries(c.matrix)){el(box,'strong',key);paragraph(box,value);}
     const prefix=c.recovery[0].id.split('-')[0];
     const key=prefix+(idx>=2 && !saved.completedReview?'-einstieg':'-ergebnis');
     const result=saved.records[person+'/Ergänzung'];
     if(result?.valid)paragraph(box,status(result),'tag');
+    else{
+      paragraph(box,ui.supported+' · '+ui.noPast,'small');
+      paragraph(box,c.addition);
+    }
+    el(box,'h2',ui.paper);
     const step=paperOrder(box,key,{button:true,support:solutionUsed(person)});
     btn(box,step.returnText,'next',()=>{
       if(saved.records[person+'/Ergänzung']?.valid)saved.complete[person]=true;
       openSection(step.nextId);
     },'primary').dataset.return=step.nextId;
+    const matrix=el(box,'details');matrix.dataset.digital='matrix';
+    el(matrix,'summary',ui.readMatrix);
+    for(const [key,value] of Object.entries(c.matrix)){el(matrix,'strong',key);paragraph(matrix,value);}
   }
   if(idx<2){
     const bar=el(root,'div',undefined,'tools');btn(bar,ui.switch,'jump',()=>go('laura',{at:0}));

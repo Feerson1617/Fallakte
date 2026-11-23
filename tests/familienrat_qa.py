@@ -187,8 +187,14 @@ def case(page,f,person,team,probe,trace,shots=False):
     expect(f.locator('aside')).to_contain_text(c['addition'])
     step=paper(f,c['recovery'][0]['id'].split('-')[0]+'-ergebnis',team,trace)
     if probe:expect(f.locator('[data-handoff]')).to_contain_text(step['support'])
+    matrix=f.locator('details[data-digital=matrix]')
+    expect(matrix.locator('summary')).to_have_text(BANK['ui']['readMatrix'])
+    assert matrix.get_attribute('open') is None
     if shots:
-        f.locator('[data-handoff]').scroll_into_view_if_needed();snap(page,person+'-Ergebnisfeld')
+        f.locator('#next').scroll_into_view_if_needed();snap(page,person+'-Ergebnisfeld')
+        matrix.locator('summary').tap()
+        for value in c['matrix'].values():expect(matrix).to_contain_text(value)
+        matrix.locator('summary').tap()
     tap(f,'next');arrived(f,step)
     return application
 
