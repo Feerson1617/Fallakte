@@ -1,0 +1,25 @@
+{
+  "commit": "b0b5d0f3dd76e444ad99de0129724da899f3efe0",
+  "html_sha256": "ad3c77e771fb452f8a3283778bb0fb8a6915eeb1af999dc011794b36031549f9",
+  "quelle": "Actions 45196390973 · ausgelieferte Fallakte.html",
+  "browser": {
+    "chromium": {
+      "version": "151.0.7922.34",
+      "leereFormulierung": "Ohne Hilfe zugeordnet",
+      "eigeneVerbindung": "Auf deinem Lernbogen\nPerson 1 · ESA\n\nMutter · Deine Gewichtung bleibt deine Entscheidung. Deine eigene Begründung vergleichst du auf dem Bogen.\n\nMutter · Kann ich nach einem Abbruch ohne Komplikationen später schwanger werden? · Ohne Hilfe zugeordnet\n\nVergleiche mit deinem eigenen Satz. Ergänze auf dem Bogen, was du jetzt genauer sagen kannst.\n\nVergleicht danach eure persönlichen Antworten. Lasst die erste Fassung lesbar.\n\nFreiwillige Vertiefungen\nGroßmutterVater",
+      "nachLoesungOhneAnwendung": {
+        "Mutter": "Freundin 1 – Nachricht lesen",
+        "Freundin": "Lauras Frage – Lesen"
+      }
+    },
+    "webkit": {
+      "version": "26.5",
+      "leereFormulierung": "Ohne Hilfe zugeordnet",
+      "eigeneVerbindung": "Auf deinem Lernbogen\nPerson 1 · ESA\n\nMutter · Deine Gewichtung bleibt deine Entscheidung. Deine eigene Begründung vergleichst du auf dem Bogen.\n\nMutter · Kann ich nach einem Abbruch ohne Komplikationen später schwanger werden? · Ohne Hilfe zugeordnet\n\nVergleiche mit deinem eigenen Satz. Ergänze auf dem Bogen, was du jetzt genauer sagen kannst.\n\nVergleicht danach eure persönlichen Antworten. Lasst die erste Fassung lesbar.\n\nFreiwillige Vertiefungen\nGroßmutterVater",
+      "nachLoesungOhneAnwendung": {
+        "Mutter": "Freundin 1 – Nachricht lesen",
+        "Freundin": "Lauras Frage – Lesen"
+      }
+    }
+  }
+}

@@ -33,6 +33,8 @@ FIELD_NAMES = {
     'ok':'Fachlich passend zur Frage','hints':'Grundfassung der fünf Hilfen','helpByLevel':'Hilfen nach Niveau (Stufe 1 bis 5)',
     'shortOptions':'Zuerst sichtbare Förderoptionen (Index ab 0)','transfer':'Weitere Anwendung nach Lösungshilfe',
     'addition':'Ergänzung für Laura','connection':'Fachlicher Bezug und Grenze','titles':'Sichtbare Abschnittstitel',
+    'advancedPrompt':'Anwendungsfrage MSA und AHR','advancedText':'Aussage MSA und AHR','advancedFeedback':'Rückmeldung MSA und AHR',
+    'crossReference':'Herkunft des belegenden Fakts bei eigener Verbindung','evidenceSentences':'Passende Originalsatznummern (ab 0)',
     'matrix':'Argumentationsmatrix','field':'Feld auf dem Bogen','first':'Persönliche Erstspur','paper':'Geprüftes Papierergebnis',
     'return':'Rückweg zum Chat','recovery':'Direkteinstiege','sectionId':'Kennung der Teilfrage','section':'Abschnitt',
     'ui':'Bedienbeschriftungen und Aufträge','levelPrompts':'Arbeitsaufträge nach Niveau',
@@ -102,7 +104,7 @@ def build():
         'Für die Produktion gilt Commit `'+bank['commit']+'`. Gestaltungsreferenz: `'+bank['design']+'`. '+
         'Abschnittstitel, Fragen und Feldnamen wörtlich übernehmen. Die Codes im Vertrag sind interne Kennungen. '+
         'Bei jeder Auswahl gehören text und feedback zusammen. ok markiert nur den Lösungsschlüssel für die Lehrkraft. '+
-        'Die persönliche Gewichtung wird auf dem eigenen Bogen begründet. Die Zuordnung am Gerät prüft nur die Bedeutung.\n\n'+
+        'Die persönliche Gewichtung wird auf dem eigenen Bogen begründet. Die Auswahl am Gerät prüft Fakt und Aussagegrenze. Eigene Begründungen bleiben offen.\n\n'+
         '## Papierweg und Ausfallweg\n\n'+bank['analog']+' '+bank['paperRecovery']+'\n\n'+
         'Die Felder „Meine erste Antwort“ und „Nach dem Prüfen“ bleiben getrennt. '+
         'Die Fälle nennen unter titles die Abschnitte und unter return den genauen Rückweg. '+

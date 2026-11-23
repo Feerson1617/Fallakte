@@ -1,5 +1,5 @@
 {
-  "version": "familienrat-1.0",
+  "version": "familienrat-1.1",
   "levels": [
     "Förder",
     "ESA",
@@ -104,7 +104,10 @@
             0,
             2
           ],
-          "sectionId": "MU-02"
+          "sectionId": "MU-02",
+          "evidenceSentences": [
+            0
+          ]
         },
         {
           "id": "Norm",
@@ -167,7 +170,10 @@
             0,
             1
           ],
-          "sectionId": "MU-03"
+          "sectionId": "MU-03",
+          "evidenceSentences": [
+            1
+          ]
         },
         {
           "id": "Folgerung",
@@ -230,7 +236,10 @@
             0,
             1
           ],
-          "sectionId": "MU-04"
+          "sectionId": "MU-04",
+          "evidenceSentences": [
+            2
+          ]
         },
         {
           "id": "Leerstelle",
@@ -366,22 +375,28 @@
       ],
       "transfer": {
         "id": "Transfer",
-        "prompt": "Jemand sagt: Bei einem Abbruch mit Medikamenten kann der Bauch nicht krampfen, weil nicht operiert wird. Stimmt das? Wähle eine Erklärung.",
+        "prompt": "Ein Abbruch mit Medikamenten ist ohne Operation möglich. Warum kann der Bauch trotzdem krampfen?",
         "answers": [
           {
-            "text": "Nein. Die Gebärmutter kann sich zusammenziehen; dabei können Krämpfe entstehen.",
-            "feedback": "Ja. Du erklärst die Beschwerden mit einem körperlichen Vorgang.",
-            "ok": true
+            "text": "Die Gebärmutter zieht sich zusammen.",
+            "ok": true,
+            "feedback": "Genau. Wenn sich die Gebärmutter zusammenzieht, können Krämpfe entstehen.",
+            "advancedText": "Kontraktionen können auch ohne Operation schmerzen. Welche Möglichkeit Laura stärker belastet, bleibt offen.",
+            "advancedFeedback": "Genau. Das Zusammenziehen der Gebärmutter erklärt mögliche Krämpfe. Ein Vergleich mit Schwangerschaft und Geburt folgt daraus nicht."
           },
           {
-            "text": "Ja. Nur Operationen können Schmerzen auslösen.",
-            "feedback": "Das stimmt nicht. Auch Zusammenziehungen der Gebärmutter können Krämpfe verursachen.",
-            "ok": false
+            "text": "Nur eine Operation kann Krämpfe auslösen.",
+            "ok": false,
+            "feedback": "Auch ohne Operation kann sich die Gebärmutter zusammenziehen. Das kann krampfen.",
+            "advancedText": "Ohne Operation fehlen die Auslöser für Krämpfe. Deshalb ist der Abbruch körperlich leichter.",
+            "advancedFeedback": "Die Medikamente können Kontraktionen der Gebärmutter auslösen. Auch ohne Operation können Krämpfe auftreten. Der Vergleich bleibt offen."
           },
           {
-            "text": "Nein, weil später Kinder möglich bleiben.",
-            "feedback": "Dein Nein passt. Der Grund betrifft aber spätere Schwangerschaften, nicht die Entstehung von Krämpfen.",
-            "ok": false
+            "text": "Krämpfe zeigen, dass Laura keine Kinder mehr bekommen kann.",
+            "ok": false,
+            "feedback": "Die Krämpfe entstehen durch das Zusammenziehen der Gebärmutter. Daraus lässt sich nichts über spätere Kinder ableiten.",
+            "advancedText": "Kontraktionen können schmerzen. Deshalb belastet eine fortgesetzte Schwangerschaft Laura weniger.",
+            "advancedFeedback": "Der erste Teil stimmt. Aus möglichen Krämpfen lässt sich keine Aussage über die Belastung bei einer fortgesetzten Schwangerschaft ableiten."
           }
         ],
         "hints": [
@@ -389,7 +404,7 @@
           "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
           "Blutungen und Schmerzen kann dir helfen.",
           "Das erklärt mögliche Beschwerden. Ob eine fortgesetzte Schwangerschaft Laura weniger belasten würde, ist damit offen.",
-          "Nein. Die Gebärmutter kann sich zusammenziehen; dabei können Krämpfe entstehen. Ja. Du erklärst die Beschwerden mit einem körperlichen Vorgang. Wähle diese Erklärung."
+          "Die Gebärmutter zieht sich zusammen. Genau. Wenn sich die Gebärmutter zusammenzieht, können Krämpfe entstehen."
         ],
         "helpByLevel": {
           "Förder": [
@@ -397,35 +412,36 @@
             "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
             "Blutungen und Schmerzen kann dir helfen.",
             "Das erklärt mögliche Beschwerden. Ob eine fortgesetzte Schwangerschaft Laura weniger belasten würde, ist damit offen.",
-            "Nein. Die Gebärmutter kann sich zusammenziehen; dabei können Krämpfe entstehen. Ja. Du erklärst die Beschwerden mit einem körperlichen Vorgang. Tippe auf die passende Antwort."
+            "Die Gebärmutter zieht sich zusammen. Genau. Wenn sich die Gebärmutter zusammenzieht, können Krämpfe entstehen."
           ],
           "ESA": [
             "Wende die Erklärung auf die neue Frage an.",
             "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
             "Blutungen und Schmerzen kann dir helfen.",
             "Das erklärt mögliche Beschwerden. Ob eine fortgesetzte Schwangerschaft Laura weniger belasten würde, ist damit offen.",
-            "Nein. Die Gebärmutter kann sich zusammenziehen; dabei können Krämpfe entstehen. Ja. Du erklärst die Beschwerden mit einem körperlichen Vorgang. Wähle diese Erklärung."
+            "Die Gebärmutter zieht sich zusammen. Genau. Wenn sich die Gebärmutter zusammenzieht, können Krämpfe entstehen."
           ],
           "MSA": [
             "Wende die Erklärung auf die neue Frage an. Formuliere deinen ersten Gedanken.",
             "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
             "Blutungen und Schmerzen kann dir helfen.",
             "Das erklärt mögliche Beschwerden. Ob eine fortgesetzte Schwangerschaft Laura weniger belasten würde, ist damit offen. Vergleiche mit deinem Satz.",
-            "Nein. Die Gebärmutter kann sich zusammenziehen; dabei können Krämpfe entstehen. Ja. Du erklärst die Beschwerden mit einem körperlichen Vorgang. Wähle diese Erklärung."
+            "Kontraktionen können auch ohne Operation schmerzen. Welche Möglichkeit Laura stärker belastet, bleibt offen. Genau. Das Zusammenziehen der Gebärmutter erklärt mögliche Krämpfe. Ein Vergleich mit Schwangerschaft und Geburt folgt daraus nicht."
           ],
           "AHR": [
             "Wende die Erklärung auf die neue Frage an. Welche Aussage kannst du am Text belegen?",
             "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
             "Blutungen und Schmerzen kann dir helfen. Was steht dort ausdrücklich?",
             "Das erklärt mögliche Beschwerden. Ob eine fortgesetzte Schwangerschaft Laura weniger belasten würde, ist damit offen. Begründe auch, warum eine andere Deutung weniger gut passt.",
-            "Nein. Die Gebärmutter kann sich zusammenziehen; dabei können Krämpfe entstehen. Ja. Du erklärst die Beschwerden mit einem körperlichen Vorgang. Wähle diese Erklärung."
+            "Kontraktionen können auch ohne Operation schmerzen. Welche Möglichkeit Laura stärker belastet, bleibt offen. Genau. Das Zusammenziehen der Gebärmutter erklärt mögliche Krämpfe. Ein Vergleich mit Schwangerschaft und Geburt folgt daraus nicht."
           ]
         },
         "shortOptions": [
           0,
           1
         ],
-        "sectionId": "MU-Transfer"
+        "sectionId": "MU-Transfer",
+        "advancedPrompt": "„Ohne Operation gibt es keine Krämpfe. Also wäre der Abbruch leichter.“ Welche Erklärung prüft beide Schlüsse?"
       },
       "addition": "Beim medikamentösen Abbruch zieht sich die Gebärmutter zusammen. Es kommt zu Blutungen. Schmerzen und Krämpfe können auftreten.",
       "connection": "Das erklärt mögliche Beschwerden. Ob eine fortgesetzte Schwangerschaft Laura weniger belasten würde, ist damit offen.",
@@ -552,7 +568,11 @@
             0,
             2
           ],
-          "sectionId": "FR-02"
+          "sectionId": "FR-02",
+          "evidenceSentences": [
+            0,
+            1
+          ]
         },
         {
           "id": "Norm",
@@ -615,7 +635,10 @@
             0,
             1
           ],
-          "sectionId": "FR-03"
+          "sectionId": "FR-03",
+          "evidenceSentences": [
+            2
+          ]
         },
         {
           "id": "Folgerung",
@@ -678,7 +701,10 @@
             1,
             0
           ],
-          "sectionId": "FR-04"
+          "sectionId": "FR-04",
+          "evidenceSentences": [
+            3
+          ]
         },
         {
           "id": "Leerstelle",
@@ -819,22 +845,28 @@
       ],
       "transfer": {
         "id": "Transfer",
-        "prompt": "Eine Information sagt: Nach einem Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich. Was kann Laura daraus erfahren?",
+        "prompt": "Nach einem Abbruch ohne Komplikationen sind später Kinder möglich. Ist eine spätere Schwangerschaft damit sicher?",
         "answers": [
           {
-            "text": "Dass ein solcher Abbruch spätere Kinder nicht grundsätzlich ausschließt.",
-            "feedback": "Das passt. Du beziehst die Information auf spätere Familienplanung.",
-            "ok": true
+            "text": "Nein. Sie ist möglich, aber nicht sicher.",
+            "ok": true,
+            "feedback": "Richtig. Laura kann später schwanger werden. Eine Garantie gibt es nicht.",
+            "advancedText": "Nach einem komplikationslosen Abbruch bleibt eine spätere Schwangerschaft möglich. Ob und wann Laura ein Kind möchte, bleibt offen.",
+            "advancedFeedback": "Genau. Eine Möglichkeit ist keine Garantie. Welches Gewicht Laura ihrer Ausbildung gibt, entscheidet sie selbst."
           },
           {
-            "text": "Dass sie später sicher schwanger wird.",
-            "feedback": "Möglich bedeutet nicht sicher. Das kann die Information nicht versprechen.",
-            "ok": false
+            "text": "Ja. Laura wird später sicher schwanger.",
+            "ok": false,
+            "feedback": "Eine Möglichkeit ist kein Versprechen. Laura kann später schwanger werden, sicher ist das nicht.",
+            "advancedText": "Wenn die Fruchtbarkeit erhalten bleibt, ist ein späteres Kind sicher. Laura kann fest damit planen.",
+            "advancedFeedback": "Erhaltene Fruchtbarkeit garantiert keine spätere Schwangerschaft. Der Fakt beschreibt eine Möglichkeit."
           },
           {
-            "text": "Dass der Abbruch sicher ohne Schmerzen abläuft.",
-            "feedback": "Die Information betrifft spätere Fruchtbarkeit. Sie sagt nichts über Schmerzen beim Abbruch.",
-            "ok": false
+            "text": "Nein. Laura kann später keine Kinder bekommen.",
+            "ok": false,
+            "feedback": "Eine spätere Schwangerschaft ist möglich. Der Abbruch ohne Komplikationen schließt sie nicht aus und garantiert sie auch nicht.",
+            "advancedText": "Spätere Kinder bleiben möglich. Deshalb ist der Abbruch jetzt die richtige Entscheidung für ihre Ausbildung.",
+            "advancedFeedback": "Eine spätere Schwangerschaft ist möglich, aber nicht garantiert. Daraus folgt keine Entscheidung über Lauras Schwangerschaft oder Ausbildung."
           }
         ],
         "hints": [
@@ -842,7 +874,7 @@
           "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
           "Später schwanger werden kann dir helfen.",
           "Das hilft bei der Frage nach späteren Kindern. Ob Laura später schwanger wird oder ihre Ausbildung abschließt, ist damit offen.",
-          "Dass ein solcher Abbruch spätere Kinder nicht grundsätzlich ausschließt. Das passt. Du beziehst die Information auf spätere Familienplanung. Wähle diese Erklärung."
+          "Nein. Sie ist möglich, aber nicht sicher. Richtig. Laura kann später schwanger werden. Eine Garantie gibt es nicht."
         ],
         "helpByLevel": {
           "Förder": [
@@ -850,35 +882,36 @@
             "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
             "Später schwanger werden kann dir helfen.",
             "Das hilft bei der Frage nach späteren Kindern. Ob Laura später schwanger wird oder ihre Ausbildung abschließt, ist damit offen.",
-            "Dass ein solcher Abbruch spätere Kinder nicht grundsätzlich ausschließt. Das passt. Du beziehst die Information auf spätere Familienplanung. Tippe auf die passende Antwort."
+            "Nein. Sie ist möglich, aber nicht sicher. Richtig. Laura kann später schwanger werden. Eine Garantie gibt es nicht."
           ],
           "ESA": [
             "Wende die Erklärung auf die neue Frage an.",
             "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
             "Später schwanger werden kann dir helfen.",
             "Das hilft bei der Frage nach späteren Kindern. Ob Laura später schwanger wird oder ihre Ausbildung abschließt, ist damit offen.",
-            "Dass ein solcher Abbruch spätere Kinder nicht grundsätzlich ausschließt. Das passt. Du beziehst die Information auf spätere Familienplanung. Wähle diese Erklärung."
+            "Nein. Sie ist möglich, aber nicht sicher. Richtig. Laura kann später schwanger werden. Eine Garantie gibt es nicht."
           ],
           "MSA": [
             "Wende die Erklärung auf die neue Frage an. Formuliere deinen ersten Gedanken.",
             "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
             "Später schwanger werden kann dir helfen.",
             "Das hilft bei der Frage nach späteren Kindern. Ob Laura später schwanger wird oder ihre Ausbildung abschließt, ist damit offen. Vergleiche mit deinem Satz.",
-            "Dass ein solcher Abbruch spätere Kinder nicht grundsätzlich ausschließt. Das passt. Du beziehst die Information auf spätere Familienplanung. Wähle diese Erklärung."
+            "Nach einem komplikationslosen Abbruch bleibt eine spätere Schwangerschaft möglich. Ob und wann Laura ein Kind möchte, bleibt offen. Genau. Eine Möglichkeit ist keine Garantie. Welches Gewicht Laura ihrer Ausbildung gibt, entscheidet sie selbst."
           ],
           "AHR": [
             "Wende die Erklärung auf die neue Frage an. Welche Aussage kannst du am Text belegen?",
             "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
             "Später schwanger werden kann dir helfen. Was steht dort ausdrücklich?",
             "Das hilft bei der Frage nach späteren Kindern. Ob Laura später schwanger wird oder ihre Ausbildung abschließt, ist damit offen. Begründe auch, warum eine andere Deutung weniger gut passt.",
-            "Dass ein solcher Abbruch spätere Kinder nicht grundsätzlich ausschließt. Das passt. Du beziehst die Information auf spätere Familienplanung. Wähle diese Erklärung."
+            "Nach einem komplikationslosen Abbruch bleibt eine spätere Schwangerschaft möglich. Ob und wann Laura ein Kind möchte, bleibt offen. Genau. Eine Möglichkeit ist keine Garantie. Welches Gewicht Laura ihrer Ausbildung gibt, entscheidet sie selbst."
           ]
         },
         "shortOptions": [
           0,
           1
         ],
-        "sectionId": "FR-Transfer"
+        "sectionId": "FR-Transfer",
+        "advancedPrompt": "Ein späteres Kind sei sicher, also passe der Abbruch zu Lauras Ausbildungsplänen. Welchen Schluss trägt die Information zur Fruchtbarkeit?"
       },
       "addition": "Nach einem medikamentösen Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich. Die spätere Fruchtbarkeit wird nach heutigem Wissen dadurch nicht beeinträchtigt.",
       "connection": "Das hilft bei der Frage nach späteren Kindern. Ob Laura später schwanger wird oder ihre Ausbildung abschließt, ist damit offen.",
@@ -1005,7 +1038,10 @@
             0,
             1
           ],
-          "sectionId": "GM-02"
+          "sectionId": "GM-02",
+          "evidenceSentences": [
+            1
+          ]
         },
         {
           "id": "Folgerung",
@@ -1068,7 +1104,10 @@
             0,
             1
           ],
-          "sectionId": "GM-03"
+          "sectionId": "GM-03",
+          "evidenceSentences": [
+            2
+          ]
         },
         {
           "id": "Leerstelle",
@@ -1385,7 +1424,10 @@
             0,
             1
           ],
-          "sectionId": "VA-02"
+          "sectionId": "VA-02",
+          "evidenceSentences": [
+            0
+          ]
         },
         {
           "id": "Folgerung",
@@ -1448,7 +1490,10 @@
             2,
             0
           ],
-          "sectionId": "VA-03"
+          "sectionId": "VA-03",
+          "evidenceSentences": [
+            2
+          ]
         },
         {
           "id": "Leerstelle",
@@ -1849,7 +1894,7 @@
     ],
     [
       "Ein richtiger Fakt wird der anderen ergänzten Nachricht zugeschrieben",
-      "Prüfe, wo ihr diese Information ergänzt habt. Du kannst die Nachricht oder deinen Beleg ändern. Wenn du eine weitere eigene Verbindung begründen möchtest, halte sie fest.“ Kein pauschales Urteil über die grundsätzliche Relevanz des Fakts für einen Wert."
+      "Der Fakt beantwortet die gewählte Frage. Er stammt aus der anderen ergänzten Nachricht. Du kannst die Auswahl ändern oder eine eigene Verbindung begründen."
     ],
     [
       "Eine andere sachlich plausible freie Begründung",
@@ -1991,12 +2036,12 @@
     "addition": "Unsere Ergänzung für Laura",
     "paper": "Auf deinem Lernbogen",
     "checked": "Bedeutung geprüft",
-    "own": "Ohne Hilfe zugeordnet",
-    "explain": "Nach einem Hinweis zugeordnet",
-    "used": "Mit Lösungshilfe zugeordnet",
+    "own": "Aussage vor einem Hinweis richtig gewählt.",
+    "explain": "Aussage nach einem Hinweis richtig gewählt.",
+    "used": "Aussage mit Lösungshilfe gewählt.",
     "compare": "Mit Aussagen vergleichen",
-    "free": "Deine Formulierung (freiwillig)",
-    "freeNote": "Dein eigener Wortlaut bleibt ungeprüft. Vergleiche die Bedeutung.",
+    "free": "Dein Gedanke in wenigen Worten",
+    "freeNote": "Eigene Worte festgehalten. Dein Wortlaut bleibt ungeprüft. Welche Aussage passt?",
     "help": "Hilfe",
     "more": "Noch ein Hinweis",
     "solution": "Erklärung mit Lösung",
@@ -2012,15 +2057,15 @@
     "theme": "Lauras Frage",
     "facts": "Ergänzungen ansehen",
     "supported": "Als Hilfe bereitgestellt",
-    "confirmed": "Im Gespräch geprüft",
-    "personal": "Deine Gewichtung bleibt deine Entscheidung. Deine eigene Begründung vergleichst du auf dem Bogen.",
+    "confirmed": "Passende Aussage gewählt",
+    "personal": "Deine Gewichtung bleibt deine Entscheidung.",
     "finish": "Persönliche Prüfung abschließen",
     "reserve": "Freiwillige Vertiefungen",
     "noPast": "Direkteinstieg. Frühere Antworten werden hier nicht vorausgesetzt.",
     "where": "Wo möchtest du wieder einsteigen?",
     "change": "Niveaus ändern",
     "source": "Kartenstelle öffnen",
-    "again": "Anderen Beleg wählen",
+    "again": "Frage oder Beleg ändern",
     "reflect": "Vergleiche mit deinem eigenen Satz. Ergänze auf dem Bogen, was du jetzt genauer sagen kannst.",
     "comparePaper": "Vergleicht danach eure persönlichen Antworten. Lasst die erste Fassung lesbar.",
     "openPersonal": "Zur eigenen Begründung",
@@ -2029,7 +2074,7 @@
     "read": "Nachricht prüfen",
     "examples": "Satzteile für meinen Bogen",
     "other": "Eigene Verbindung",
-    "otherNote": "Prüfe deinen eigenen Bezug mit der Fachkarte. Erkläre auf dem Bogen, welche Frage der Fakt beantwortet. Dein Wortlaut wird im Unterricht besprochen.",
+    "otherNote": "Der Fakt beantwortet Lauras Frage. Halte deinen eigenen Grund auch auf dem Lernbogen fest.",
     "priority": "Welche Frage gewichtest du für diese Nachricht?",
     "evidence": "Welche Fachinformation belegt deinen Bezug?",
     "questionA": "Welche Beschwerden können auftreten?",
@@ -2040,7 +2085,7 @@
     "optional": "Nach der persönlichen Bewertung",
     "returnStart": "Zur Tagesauswahl über den Pfeil in der Kopfleiste.",
     "helpTitle": "Hilfe",
-    "evidenceOK": "Der Fakt passt zu dieser Frage. Erkläre auf deinem Bogen, warum sie dir wichtig ist.",
+    "evidenceOK": "Der Fakt beantwortet diese Frage. Prüfe jetzt seine Grenze.",
     "reviewEach": "Prüft eure eigenen Belege nacheinander. Die Zuordnung hier gilt jeweils nur für die Person am Gerät.",
     "transfer": "Kurze Anwendung",
     "pair": "Gemeinsam lesen, dann selbst begründen.",
@@ -2068,7 +2113,24 @@
     "reasonB": "Warum ist Lauras Frage nach späteren Kindern für deine Einschätzung wichtig?",
     "moreOptions": "Weitere Aussagen",
     "evidenceStatus": "Geprüfter Bezug",
-    "rethink": "Du kannst deine Gewichtung noch einmal prüfen."
+    "rethink": "Du kannst deine Gewichtung noch einmal prüfen.",
+    "sourceInstead": "Oder zeige die passende Textstelle",
+    "sourceYes": "Textstelle gefunden. Welche Aussage gibt ihre Bedeutung wieder?",
+    "sourceRetry": "Lies noch einmal: Welcher Satz beantwortet die Frage oben?",
+    "applied": "Neue Frage selbst richtig beantwortet.",
+    "assisted": "Mit der Erklärung weitergearbeitet. Die eigene Anwendung ist noch offen.",
+    "pending": "Lösungshilfe genutzt. Die neue Frage ist noch offen.",
+    "openReason": "Warum hilft dieser Fakt dir, gerade diese Nachricht zu beurteilen? Wenige Worte genügen.",
+    "reasonOpen": "Deine persönliche Begründung ist noch ungeprüft.",
+    "limitChecked": "Fakt, Frage und Aussagegrenze passen zusammen.",
+    "checkLimit": "Die Auswahl prüft die Grenze des Fakts. Vergleiche deinen eigenen Grund auf dem Lernbogen.",
+    "reviewPending": "Öffne die persönliche Bewertung, um deinen Beleg zu prüfen.",
+    "transferIntro": "Probiere die Erklärung an einer neuen Frage aus.",
+    "ownReasonSaved": "Eigene Verbindung auf dem Lernbogen festhalten.",
+    "editReason": "Eigene Worte ändern",
+    "continueReason": "Aussagegrenze prüfen",
+    "mixedTransfer": "Erkläre zusätzlich, welchen Schluss der Fakt für Lauras Entscheidung offenlässt.",
+    "timeHint": "Lösungshilfe für die Bewertung angesehen."
   },
   "levelPrompts": {
     "Förder": {
@@ -2137,7 +2199,7 @@
     ]
   },
   "paperRecovery": "Markiere zuletzt bearbeiteten Abschnitt und Teilfrage. Wähle unter „Nach Neustart“ eure Niveaus, die Nachricht und denselben Abschnitt. Die frühere eigene Antwort steht auf dem Bogen.",
-  "levelsHelp": "Hilfe 1 gibt eine Denkrichtung, Hilfe 2 erklärt die Kategorie, Hilfe 3 führt zur Textstelle, Hilfe 4 grenzt ein, Hilfe 5 zeigt eine erläuterte Lösung. Die spätere Verbindung zu Lauras Frage bleibt eine eigene Handlung.",
+  "levelsHelp": "Hilfe 1 gibt eine Denkrichtung, Hilfe 2 erklärt die Kategorie, Hilfe 3 führt zur Textstelle, Hilfe 4 grenzt ein, Hilfe 5 zeigt eine erläuterte Lösung. Die spätere Verbindung zu Lauras Frage bleibt eine eigene Handlung. Nach Hilfe 5 in einem Familienfall folgt einmal die kurze Anwendung beim Festhalten. Bei Zeitdruck bleibt Lauras Frage sofort erreichbar.",
   "screens": {
     "Tagesauswahl.jpg": "Gemeinsamer Einstieg",
     "Erste-Nachricht-und-Team.jpg": "Laura und Teamwahl",
@@ -2149,15 +2211,18 @@
     "Persoenliche-Bewertung.jpg": "Zwei individuelle Papieraufträge im gemischten Team Förder/ESA",
     "Großmutter-Aufgabe.jpg": "Freiwillige Perspektive Großmutter",
     "Vater-Aufgabe.jpg": "Freiwillige Perspektive Vater",
-    "Wiedereinstieg.jpg": "Direkt in Freundin 3 auf Förder/AHR"
+    "Wiedereinstieg.jpg": "Direkt in Freundin 3 auf Förder/AHR",
+    "Eigenleistung.jpg": "AHR · Eigener Gedanke vor dem Aussagenvergleich",
+    "Anwendung.jpg": "Förder/ESA · Neue Frage nach Hilfe 5",
+    "Eigene-Verbindung.jpg": "Getrennte Rückmeldung zum Fachbeleg und zur offenen persönlichen Begründung"
   },
   "analogSteps": [
     "Ersten Gedanken auf dem persönlichen Bogen markieren, bevor das Team seine Antwort prüft.",
     "Originalnachricht lesen. Wert, Norm und Folgerung an der Nachricht untersuchen und den fehlenden Bestandteil bestimmen.",
-    "Im passenden Fachkartenabschnitt nachlesen. Aussage wählen oder selbst formulieren. Fehlerspezifische Erklärung und freiwillige Hilfen separat ausgeben.",
-    "Geprüfte Ergänzung und erhaltene Hilfe markieren. Die ursprüngliche Markierung bleibt lesbar.",
+    "Auf MSA und AHR zuerst eigene Stichworte formulieren oder die passende Originalstelle zeigen. Dann die Bedeutung anhand der Aussagen prüfen. Eigene Worte bleiben ungeprüft.",
+    "Geprüfte Ergänzung und erhaltene Hilfe markieren. Die ursprüngliche Markierung bleibt lesbar. Nach einer vollständigen Lösungshilfe die veränderte Frage zum Fall einmal bearbeiten und das Ergebnis kennzeichnen.",
     "Nach Mutter und Freundin oder zum vorgezogenen Stopp Lauras zweite Nachricht lesen. Beide schreiben einzeln ihre Antwort.",
-    "Jede Person verbindet ihr gewähltes Anliegen, einen passenden Fakt und ihre persönliche Gewichtung. Bei Gleichgewichtung beide Verbindungen erklären. Die Reichweite des Fakts prüfen. Anschließend mit der Erklärung vergleichen."
+    "Jede Person verbindet ihr gewähltes Anliegen, einen passenden Fakt und ihre persönliche Gewichtung. Bei Gleichgewichtung beide Verbindungen erklären. Die Reichweite des Fakts prüfen. Anschließend mit der Erklärung vergleichen. Bei einer eigenen Verbindung die Herkunft des Fakts benennen und den persönlichen Zusammenhang auf dem Lernbogen begründen. Nur der Fakt und seine Grenze werden am Gerät geprüft."
   ],
   "evaluationRecovery": [
     {
@@ -2209,5 +2274,9 @@
     "Stand": "23.11.2026",
     "Mutter": "BIÖG und IQWiG beschreiben das Zusammenziehen der Gebärmutter, das Ausstoßen des Gewebes, Blutungen und mögliche Krämpfe. Daraus ergibt sich kein Vergleich der Belastung mit dem Fortsetzen der Schwangerschaft.",
     "Freundin": "IQWiG beschreibt in der Regel keine Auswirkungen auf die spätere Fruchtbarkeit. Die Freundin nennt spätere Kinder ausdrücklich. Der ergänzte Fakt klärt eine Möglichkeit der Familienplanung. Er garantiert weder eine spätere Schwangerschaft noch den Abschluss der Ausbildung."
-  }
+  },
+  "crossReference": [
+    "Diesen Fakt zu Beschwerden habt ihr bei der Mutter ergänzt. Wie hilft er dir, die Nachricht der Freundin zu beurteilen?",
+    "Diesen Fakt zu späteren Kindern habt ihr bei der Freundin ergänzt. Wie hilft er dir, die Nachricht der Mutter zu beurteilen?"
+  ]
 }

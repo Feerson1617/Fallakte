@@ -15,7 +15,7 @@ from playwright.sync_api import expect, sync_playwright
 from release_abnahme import unpack
 from tagesauswahl import host, HOST
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
-from familienrat_build import OUT, REF, ROOT, DAY02, payload, sha, markdown
+from familienrat_build import OUT, REF, ROOT, DAY02, payload, sha, markdown, git
 
 QA = ROOT/'build/Familienrat-QA'
 APP = OUT/'Fallakte.html'
@@ -55,6 +55,7 @@ def hints(f,task,team):
     expect(f.locator('#help')).to_be_focused()
 
 def case(page,f,person,team,probe,shots=False):
+    application=None
     c=BANK['cases'][person]
     expect(f.locator('aside')).to_contain_text(c['original'].split('.')[0])
     tap(f,'next')
@@ -62,9 +63,30 @@ def case(page,f,person,team,probe,shots=False):
         expect(f.locator('main h2').last).to_have_text(task['prompt'])
         assert not can_continue(f)
         if f.locator('#compare').is_visible():
-            if probe:f.locator('textarea').fill(BANK['variants'][LEVELS.index(team[-1])%3] if j==0 else 'Mein eigener Satz zu dieser Textstelle.')
-            tap(f,'compare')
-            if probe:expect(f.locator('main')).to_contain_text(BANK['ui']['freeNote'])
+            expect(f.locator('#compare')).to_be_disabled()
+            expect(f.locator('#answer-0')).to_have_count(0)
+            if probe:
+                f.locator('textarea').fill('   ')
+                expect(f.locator('#compare')).to_be_disabled()
+                f.locator('textarea').fill('…')
+                expect(f.locator('#compare')).to_be_disabled()
+            if probe and team==['AHR'] and j==0 and person=='Mutter' and page.context.browser.browser_type.name=='chromium':
+                snap(page,'Eigenleistung')
+            if task.get('evidenceSentences') and (j==1 or not probe):
+                f.get_by_text(BANK['ui']['sourceInstead'],exact=True).tap()
+                indices=task['evidenceSentences']
+                if probe:
+                    tap(f,'source-'+str(next(i for i in range(3) if i not in indices)))
+                    expect(f.locator('section')).to_contain_text(BANK['ui']['sourceRetry'])
+                    expect(f.locator('#answer-0')).to_have_count(0)
+                tap(f,'source-'+str(indices[0]))
+                expect(f.locator('section')).to_contain_text(BANK['ui']['sourceYes'])
+            else:
+                thought=c['tasks'][j]['answers'][key]['text']
+                if person=='Mutter' and j==0:thought='Ihr liegt Lauras Wohlergehen am Herzen.'
+                f.locator('textarea').fill(thought);tap(f,'compare')
+                expect(f.locator('section')).to_contain_text(thought)
+                expect(f.locator('section')).to_contain_text(BANK['ui']['freeNote'])
         if shots and j==0:snap(page,person+'-Aufgabe')
         if probe:
             hints(f,task,team)
@@ -86,19 +108,47 @@ def case(page,f,person,team,probe,shots=False):
                 tap(f,'help');tap(f,'hint-next');snap(page,'Mutter-Hilfe');tap(f,'dismiss')
         tap(f,'answer-'+str(key));expect(f.locator('#response')).to_have_text(task['answers'][key]['feedback'])
         if probe:expect(f.locator('.tag').last).to_have_text(BANK['ui']['used'])
+        elif team==['ESA']:expect(f.locator('.tag').last).to_have_text(BANK['ui']['own'])
         tap(f,'next')
-    if probe and person in NAMES[:2]:
-        tap(f,'optional-transfer')
     if probe:
-        expect(f.locator('main h2').last).to_have_text(c['transfer']['prompt'])
-        hints(f,c['transfer'],team)
-        for i in range(1,len(c['transfer']['answers'])):
-            tap(f,'answer-'+str(i));expect(f.locator('#response')).to_have_text(c['transfer']['answers'][i]['feedback'])
-        tap(f,'answer-0');tap(f,'next')
+        task=c['transfer']
+        advanced=all(t in ('MSA','AHR') for t in team)
+        prompt=task.get('advancedPrompt',task['prompt']) if advanced else task['prompt']
+        expect(f.locator('section h2').first).to_have_text(prompt)
+        expect(f.locator('aside')).not_to_contain_text(c['addition'])
+        expect(f.locator('section')).not_to_contain_text(c['paper'])
+        assert not can_continue(f)
+        expect(f.locator('#jump')).to_be_visible()
+        visible_words=len(f.locator('section').inner_text().split())
+        if shots and person=='Mutter':snap(page,'Anwendung')
+        # Each result is final on this question. Use different teams for each distractor,
+        # a correct first application and correct selection after consulting a solution.
+        source=LEVELS.index(team[0])
+        selected=0 if source in (0,3) else source
+        if source==3:hints(f,task,team)
+        if selected==0 and person in ('Mutter','Freundin'):
+            # Select by the biological meaning independently of JSON order and ok flags.
+            if person=='Mutter':
+                meaning='Kontraktionen können auch ohne Operation schmerzen.' if advanced else 'Die Gebärmutter zieht sich zusammen.'
+            else:
+                meaning='Nach einem komplikationslosen Abbruch bleibt eine spätere Schwangerschaft möglich.' if advanced else 'Nein. Sie ist möglich, aber nicht sicher.'
+            f.get_by_role('button',name=meaning,exact=not advanced).tap()
+        else:tap(f,'answer-'+str(selected))
+        answer=task['answers'][selected]
+        expected=answer.get('advancedFeedback',answer['feedback']) if advanced else answer['feedback']
+        expect(f.locator('#response')).to_have_text(expected)
+        expect(f.locator('#answer-0')).to_be_disabled()
+        outcome=BANK['ui']['applied' if source==0 else 'assisted']
+        expect(f.locator('section')).to_contain_text(outcome)
+        application=dict(person=person,frage=prompt,option=selected,rueckmeldung=expected,status=outcome,
+                         woerter_vor_antwort=visible_words,hilfe_bei_anwendung=source==3)
+    else:
+        expect(f.locator('section')).not_to_contain_text(BANK['ui']['transferIntro'])
     expect(f.locator('aside')).to_contain_text('Unsere Ergänzung für Laura')
     expect(f.locator('aside')).to_contain_text(c['addition'])
     expect(f.locator('section')).to_contain_text(c['paper'])
     expect(f.locator('#next')).to_have_text(c['return']);tap(f,'next')
+    return application
 
 def judgment(page,f,team,route,probe,shots):
     expect(f.locator('aside')).to_contain_text('Entscheiden möchte ich selbst.')
@@ -175,14 +225,15 @@ def engine_run(engine,url):
             if shots:snap(page,'Erste-Nachricht-und-Team')
             if route==6:f.locator('html').evaluate("e=>e.style.fontSize='150%'")
             f.locator('body').evaluate("""e=>{window.taps=0;document.addEventListener('click',()=>window.taps++,true);
+                window.inputs=new Set();document.addEventListener('input',e=>{if(e.target.tagName==='TEXTAREA')window.inputs.add(document.querySelector('h1').dataset.section)});
                 window.views=[];new MutationObserver(()=>{let text=document.querySelector('h1')?.textContent;
                 if(text && text!==window.views.at(-1))window.views.push(text)}).observe(e,{subtree:true,childList:true});}""")
             probe=route<4 or shots
             start_time=monotonic();tap(f,'start')
-            for n in NAMES[:2]:case(page,f,n,team,probe,shots)
+            applications=[case(page,f,n,team,probe,shots) for n in NAMES[:2]]
             judgment(page,f,team,route,probe,shots)
-            stats=f.locator('body').evaluate('()=>({tipps:window.taps,ansichten:window.views})')
-            stats.update(sekunden=round(monotonic()-start_time,2),browser=engine,version=b.version,niveaus=team,
+            stats=f.locator('body').evaluate('()=>({tipps:window.taps,ansichten:window.views,schreibfelder:window.inputs.size})')
+            stats.update(anwendungen=[a for a in applications if a],sekunden=round(monotonic()-start_time,2),browser=engine,version=b.version,niveaus=team,
                          viewport=size,weg='Gegenprobe mit allen Fehlern und Hilfen' if probe else 'Regulärer Pflichtweg',
                          format='SCORM' if lms else 'Offline-HTML')
             if route<4 or shots:
@@ -196,16 +247,40 @@ def engine_run(engine,url):
                 if engine=='webkit' and route==7:snap(page,'Wiedereinstieg')
                 if route==7:
                     recover(page,f,shell,team,'Lauras Frage',2)
-                    tap(f,'weight-0');tap(f,'concern-1');tap(f,'fact-1')
-                    expect(f.locator('section')).to_contain_text(BANK['review'][8][1].split('“')[0])
-                    tap(f,'other')
-                    expect(f.locator('section')).to_contain_text(BANK['ui']['otherNote'])
+                    tap(f,'weight-0');tap(f,'concern-1');tap(f,'fact-1');tap(f,'other')
                     tap(f,'edit-weight');expect(f.locator('#weight-2')).to_be_visible()
+                    for member,(family,concern) in enumerate([(0,1),(1,0)]):
+                        tap(f,'weight-'+str(family));tap(f,'concern-'+str(concern));tap(f,'fact-'+str(concern))
+                        expect(f.locator('section')).to_contain_text(BANK['crossReference'][concern])
+                        if not member:
+                            tap(f,'rechoose');tap(f,'concern-1');tap(f,'fact-1')
+                        tap(f,'other');expect(f.locator('#check-reason')).to_be_disabled()
+                        expect(f.locator('#answer-0')).to_have_count(0)
+                        f.locator('textarea').fill(['Zur Sorge der Mutter um Laura gehört für mich auch die spätere Fruchtbarkeit.',
+                                                  'Für ihre Ausbildung ist auch wichtig, wie es Laura jetzt geht.'][member])
+                        tap(f,'check-reason');tap(f,'answer-1');assert not can_continue(f)
+                        tap(f,'answer-0');tap(f,'next')
+                    expect(f.locator('section')).to_contain_text(BANK['ui']['limitChecked'])
+                    expect(f.get_by_text(BANK['ui']['reasonOpen'],exact=True)).to_have_count(2)
+                    expect(f.locator('section')).not_to_contain_text(BANK['ui']['own'])
+                    stats['eigene_verbindungen']=f.locator('section').inner_text()
+                    if engine=='webkit':snap(page,'Eigene-Verbindung')
                 for n in [*NAMES,'Lauras Frage']:
                     recover(page,f,shell,team,n,0)
                     expect(f.locator('aside')).to_contain_text('Laura')
                 # A shortcut imports underlying facts as help without granting prior answers.
                 f.locator('aside > details > summary').tap();expect(f.locator('aside')).to_contain_text('Als Hilfe bereitgestellt')
+                # Leave the first case after a full hint on an earlier analysis question.
+                # The factual check stays available, including after a detour to Laura.
+                recover(page,f,shell,team,'Mutter',1)
+                tap(f,'help');tap(f,'hint-last');tap(f,'dismiss');tap(f,'jump')
+                f.locator('aside > details > summary').tap()
+                expect(f.locator('aside')).to_contain_text(BANK['ui']['pending'])
+                recover(page,f,shell,team,'Mutter',6)
+                expect(f.locator('#next')).to_have_count(0)
+                shell.locator('[data-action=resources]').tap();tap(f,'dismiss')
+                tap(f,'answer-0')
+                expect(f.locator('section')).to_contain_text(BANK['ui']['assisted'])
             if lms:
                 assert page.evaluate('[localStorage.length,sessionStorage.length]')==[0,0]
                 page.locator('iframe').evaluate("e=>e.src='about:blank'")
@@ -227,6 +302,13 @@ def main():
     assert markdown(BANK) in (OUT/'Work-Materialvertrag.md').read_text()
     assert all(len(t['hints'])==5 and sum(o['ok'] for o in t['answers'])==1
                for c in BANK['cases'].values() for t in c['tasks']+[c['transfer']])
+    prior=json.loads(git('show','b0b5d0f3dd76e444ad99de0129724da899f3efe0:module/familienrat/material.json'))
+    for key in ('opening','second','cards','limits','evaluation','evaluationHints','evaluationHelpByLevel','expectation'):
+        assert BANK[key]==prior[key],key
+    for person,c in BANK['cases'].items():
+        old=prior['cases'][person]
+        assert {k:v for k,v in c.items() if k not in ('tasks','transfer')}=={k:v for k,v in old.items() if k not in ('tasks','transfer')}
+        assert [{k:v for k,v in t.items() if k!='evidenceSentences'} for t in c['tasks']]==old['tasks']
     with TemporaryDirectory() as td:
         path=Path(td);unpack(OUT,'Fallakte',path);(path/'host.html').write_text(HOST)
         with host(path) as url,ThreadPoolExecutor(max_workers=2) as pool:

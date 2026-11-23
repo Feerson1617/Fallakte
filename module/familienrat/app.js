@@ -44,7 +44,20 @@ function go(type, fields={}) {
 function record(key){
   return saved.records[key] ||= {depth:0,wrong:false,valid:false,text:'',feedback:'',compared:false};
 }
-function status(r) {return r.depth===5?ui.used:r.depth||r.wrong?ui.explain:ui.own;}
+function status(r) {return r.depth===5?ui.used:r.depth||r.wrong||r.resource?ui.explain:ui.own;}
+function solutionUsed(person){
+  return bank.cases[person].tasks.some(task=>saved.records[person+'/'+task.id]?.sawSolution===true);
+}
+function applicationStatus(person){
+  const r=saved.records[person+'/Transfer'];
+  if(r?.selected===undefined)return ui.pending;
+  return r.valid && !r.depth && !r.resource?ui.applied:ui.assisted;
+}
+function markResource(r){
+  if(r && !r.valid && !r.finished)r.resource=true;
+}
+let activeRecord;
+
 function notify(){
   port?.postMessage({type:'view',active:screen==='home'?'home':screen==='picker'?'recovery':'',
     status:screen==='work'? (current.person||ui.theme)+' · '+levels().join(' / '):''});
@@ -70,7 +83,8 @@ function cards(index){
 function help(task,r){
   let tier=task.personalTier || low();
   function show(depth){
-    if(!r.valid)r.depth=Math.max(r.depth,depth);
+    if(depth===5)r.sawSolution=true;
+    if(!r.valid && !r.finished)r.depth=Math.max(r.depth,depth);
     popup(ui.helpTitle+' '+depth+' / 5',box=>{
       if(!task.personalTier && levels().length===2 && low()!==high())
         select(box,ui.helpFor,'help-tier',Array.from(new Set(levels())).map(t=>[t,t]),tier,v=>{tier=v;show(depth);});
@@ -87,9 +101,10 @@ function profile(box,name){
   const img=el(who,'img');img.src=portraits[name];img.alt='';
   el(who,'strong',name);
 }
+const sentences=text=>text.match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map(line=>line.trim()) || [text];
 function message(box,name,text){
   profile(box,name);
-  for(const line of text.match(/[^.!?]+[.!?]+|[^.!?]+$/g)||[text])paragraph(box,line.trim());
+  for(const line of sentences(text))paragraph(box,line);
 }
 function team(box){
   const row=el(box,'div',undefined,'row');
@@ -101,10 +116,11 @@ function team(box){
 }
 function tools(box,task,r,card){
   const row=el(box,'div',undefined,'tools');
+  activeRecord=r;
   const guided=['Ergänzung','Reichweite','Transfer'].includes(task.id) && !advanced(low());
   btn(row,ui.help,'help',()=>help(task,r));
-  btn(row,guided?bank.cards[card].title:ui.cards,'cards',()=>cards(guided?card:undefined));
-  btn(row,ui.terms,'terms',()=>popup(ui.terms,b=>Object.entries(bank.definitions).forEach(([k,v])=>{el(b,'strong',k);paragraph(b,v);})));
+  btn(row,guided?bank.cards[card].title:ui.cards,'cards',()=>{markResource(r);cards(guided?card:undefined);});
+  btn(row,ui.terms,'terms',()=>{markResource(r);popup(ui.terms,b=>Object.entries(bank.definitions).forEach(([k,v])=>{el(b,'strong',k);paragraph(b,v);}));});
 }
 function showHome(){
   const layout=el(root,'div',undefined,'split'), aside=el(layout,'aside',undefined,'msg');
@@ -125,7 +141,33 @@ function reserves(box){
 function caseTitle(c,at){
   return c.titles[at===0?0:at<c.tasks.length?1:at===c.tasks.length?2:3];
 }
-function options(box,task,r,onDone){
+function thought(box,label,text,save,id,buttonText,submit){
+  const input=el(el(box,'label',label),'textarea');input.value=text;
+  // Only check that there are words to compare. Their meaning is never scored.
+  const hasWords=()=>/\p{L}/u.test(input.value);
+  const confirm=btn(box,buttonText,id,()=>{if(hasWords())submit();});
+  confirm.disabled=!hasWords();
+  input.oninput=()=>{save(input.value);confirm.disabled=!hasWords();};
+}
+function draft(box,task,r,c){
+  if(r.compared){
+    if(r.text && !r.source)paragraph(box,r.text);
+    paragraph(box,r.source?ui.sourceYes:ui.freeNote,'small');
+    return;
+  }
+  const compare=()=>{r.compared=true;draw(true);};
+  thought(box,ui.free,r.text,text=>r.text=text,'compare',ui.compare,compare);
+  if(!task.evidenceSentences)return;
+  const d=el(box,'details');el(d,'summary',ui.sourceInstead);
+  const feedback=paragraph(d,'','small');feedback.setAttribute('role','status');
+  sentences(c.original).forEach((line,i)=>{
+    btn(d,line,'source-'+i,()=>{
+      if(task.evidenceSentences.includes(i)){r.source=true;compare();}
+      else{r.wrong=true;feedback.textContent=ui.sourceRetry;}
+    });
+  });
+}
+function options(box,task,r,onDone,application=false){
   const row=el(box,'div',undefined,'answers');
   // Rotate in a stable order. A pupil may return to the same choice after opening a card.
   const shift=Array.from(task.prompt).reduce((sum,c)=>sum+c.charCodeAt(0),0)%task.answers.length;
@@ -137,75 +179,83 @@ function options(box,task,r,onDone){
   }
   for(const o of arranged){
     const index=task.answers.indexOf(o);
+    const deeper=application && advanced(low()) && o.advancedText;
     const target=extra && !compact.includes(index)?extra:row;
-    const b=btn(target,o.text,'answer-'+index,()=>{
-      r.feedback=o.feedback;r.valid=o.ok;r.selected=index;if(!o.ok)r.wrong=true;
+    const b=btn(target,deeper?o.advancedText:o.text,'answer-'+index,()=>{
+      r.feedback=deeper?o.advancedFeedback:o.feedback;r.valid=o.ok;r.selected=index;if(!o.ok)r.wrong=true;
+      if(application)r.finished=true;
       draw();
       const fb=document.getElementById('response');fb.focus({preventScroll:true});fb.scrollIntoView({block:'nearest'});
     });
     if(target===extra && r.selected===index)extra.open=true;
-    b.disabled=r.valid;b.setAttribute('aria-pressed',String(r.selected===index));
+    b.disabled=r.valid||r.finished===true;b.setAttribute('aria-pressed',String(r.selected===index));
   }
   if(r.feedback){const fb=paragraph(box,r.feedback,r.valid?'feedback':'feedback retry');fb.id='response';fb.tabIndex=-1;fb.setAttribute('role','status');}
-  if(r.valid){
-    paragraph(box,status(r),'tag');
+  if(r.valid && !application){
+    paragraph(box,task.id==='Reichweite'?ui.limitChecked:status(r),'tag');
     btn(box,ui.next,'next',onDone,'primary');
   }
 }
-function originalPanel(layout,person,c){
+function originalPanel(layout,person,c,hideAddition){
   const panel=el(layout,'aside',undefined,'msg');message(panel,person,c.original);
   const r=saved.records[person+'/Ergänzung'];
-  if(r?.valid){el(panel,'h2',ui.addition);paragraph(panel,c.addition);paragraph(panel,c.connection,'small');}
+  if(r?.valid && !hideAddition){el(panel,'h2',ui.addition);paragraph(panel,c.addition);paragraph(panel,c.connection,'small');}
   return panel;
 }
 function caseView(){
   const {person,at}=current,c=bank.cases[person],idx=names.indexOf(person);
-  heading(root,current.transfer?person+' · '+ui.transfer:caseTitle(c,at)).dataset.section=current.transfer?c.transfer.sectionId:c.recovery[at].id;
-  const layout=el(root,'div',undefined,'split');originalPanel(layout,person,c);
+  const paper=at===c.tasks.length+1, transfer=paper && solutionUsed(person);
+  const application=transfer?record(person+'/Transfer'):null;
+  heading(root,caseTitle(c,at)).dataset.section=c.recovery[at].id;
+  const layout=el(root,'div',undefined,'split');originalPanel(layout,person,c,transfer && !application.finished);
   const box=el(layout,'section',undefined,'card');
   const advance=()=>go('case',{person,at:at+1});
   if(at===0){
     if(person==='Freundin')paragraph(box,ui.role);
     paragraph(box,bank.known);
     btn(box,ui.read,'next',advance,'primary');
-  }else if(at<=c.tasks.length || current.transfer){
-    const task=current.transfer?c.transfer:c.tasks[at-1],r=record(person+'/'+task.id);
+  }else if(!paper){
+    const task=c.tasks[at-1],r=record(person+'/'+task.id);
     const adding=task.id==='Ergänzung';
     if(adding)paragraph(box,c.first,'note');
     el(box,'h2',task.prompt);
     const phase=adding?'Ergänzung':'analyse';
-    if(advanced(high())&&!current.transfer){
+    if(advanced(high())){
       paragraph(box,high()+' · '+bank.levelPrompts[high()][phase],'small');
       if(adding)paragraph(box,bank.caseReflection[person]);
-      if(!r.compared){
-        const input=el(el(box,'label',ui.free),'textarea');input.value=r.text;
-        input.oninput=()=>{r.text=input.value;};
-        btn(box,ui.compare,'compare',()=>{r.compared=true;draw(true);});
-      }else if(r.text){paragraph(box,r.text);paragraph(box,ui.freeNote,'small');}
+      draft(box,task,r,c);
     }else if(adding)paragraph(box,bank.levelPrompts[low()][phase],'small');
-    if(!advanced(high())||r.compared||current.transfer)options(box,task,r,()=>{
-      if(adding&&idx>=2&&r.depth===5)go('case',{person,at:at+1,transfer:true});
-      else if(current.transfer)go('case',{person,at:c.tasks.length+1});
-      else advance();
-    });
+    if(!advanced(high())||r.compared)options(box,task,r,advance);
     tools(box,task,r,idx);
   }else{
+    if(transfer){
+      const task=c.transfer;
+      paragraph(box,ui.transferIntro,'small');
+      el(box,'h2',advanced(low()) && task.advancedPrompt?task.advancedPrompt:task.prompt);
+      if(advanced(high()) && !advanced(low()) && task.advancedPrompt)paragraph(box,high()+' · '+ui.mixedTransfer,'small');
+      options(box,task,application,null,true);
+      if(!application.finished){
+        tools(box,task,application,idx);
+        btn(box,ui.switch,'jump',()=>go('laura',{at:0}));
+        return;
+      }
+      paragraph(box,applicationStatus(person),'tag');
+    }
     el(box,'h2',ui.paper);
     if(!saved.records[person+'/Ergänzung']?.valid)paragraph(box,ui.supported+' · '+ui.noPast,'note');
     for(const [key,value] of Object.entries(c.matrix)){el(box,'strong',key);paragraph(box,value);}
     paragraph(box,c.paper,'note');
     const result=saved.records[person+'/Ergänzung'];
-    if(result?.valid)paragraph(box,status(result)+(result.depth===5?' · '+ui.supportPaper:''),'tag');paragraph(box,bank.levelPrompts[high()].Festhalten);
+    if(result?.valid)paragraph(box,status(result)+(result.depth===5?' · '+ui.supportPaper:''),'tag');
+    paragraph(box,bank.levelPrompts[high()].Festhalten);
     if(advanced(high()))paragraph(box,bank.caseReflection[person]);
-    if(idx<2 && result?.depth===5)
-      btn(box,ui.transfer,'optional-transfer',()=>go('case',{person,at,transfer:true}));
     btn(box,c.return,'next',()=>{
       if(saved.records[person+'/Ergänzung']?.valid)saved.complete[person]=true;
       if(person==='Mutter')go('case',{person:'Freundin',at:0});
       else go('laura',{at:idx>=2&&saved.completedReview?3:0});
     },'primary');
   }
-  if(!current.transfer && at<=c.tasks.length && idx<2){
+  if(idx<2){
     const bar=el(root,'div',undefined,'tools');btn(bar,ui.switch,'jump',()=>go('laura',{at:0}));
   }
 }
@@ -213,6 +263,7 @@ function facts(box){
   const d=el(box,'details');el(d,'summary',ui.facts);
   for(const n of names.slice(0,2)){
     el(d,'strong',n+' · '+(saved.records[n+'/Ergänzung']?.valid?ui.confirmed:ui.supported));
+    if(solutionUsed(n))paragraph(d,applicationStatus(n),'small');
     const original=el(d,'details');el(original,'summary',ui.family);paragraph(original,bank.cases[n].original);
     el(d,'strong',ui.addition);paragraph(d,bank.cases[n].addition);paragraph(d,bank.cases[n].connection,'small');
   }
@@ -234,7 +285,7 @@ function comparison(box,index){
   };
   if(p.choice){
     btn(box,ui.editWeight,'edit-weight',()=>{
-      p.step='choice';p.choice='';p.part=0;p.notes={};p.alternate=false;p.other=false;p.feedback='';
+      p.step='choice';p.choice='';p.part=0;p.notes={};p.reason='';p.alternate=false;p.other=false;p.feedback='';
       for(const key of Object.keys(saved.records))if(key.startsWith('Bewertung/'+index+'/'))delete saved.records[key];
       saved.completedReview=false;draw(true);
     });
@@ -252,7 +303,7 @@ function comparison(box,index){
     if(p.step==='concern'){
       paragraph(box,ui.priority);
       [ui.questionA,ui.questionB].forEach((v,i)=>btn(box,v,'concern-'+i,()=>{
-        p.concern=i;p.alternate=false;p.other=false;p.step='fact';p.feedback='';draw(true);
+        p.concern=i;p.reason='';p.alternate=false;p.other=false;p.step='fact';p.feedback='';draw(true);
       }));
     }else if(p.step==='fact'){
       paragraph(box,p.concern?ui.questionB:ui.questionA);paragraph(box,ui.evidence);
@@ -261,20 +312,31 @@ function comparison(box,index){
         p.alternate=false;
         if(i>=2)p.feedback=reviewText(i===2?6:7);
         else if(i!==p.concern)p.feedback=reviewText(p.concern===0?4:5);
-        else if(i!==num){p.feedback=reviewText(8);p.alternate=true;}
+        else if(i!==num){p.feedback=bank.crossReference[i];p.alternate=true;}
         else{p.step='limit';p.feedback='';}
         draw();
       }));
-      if(p.alternate)btn(box,ui.other,'other',()=>{p.other=true;p.step='limit';p.feedback='';draw();});
+      if(p.alternate)btn(box,ui.other,'other',()=>{p.other=true;p.step='reason';p.feedback='';draw(true);});
       btn(box,ui.again,'rechoose',()=>{p.step='concern';p.feedback='';p.alternate=false;draw();});
+    }else if(p.step==='reason'){
+      paragraph(box,ui.otherNote);
+      paragraph(box,bank.crossReference[p.concern]);
+      thought(box,ui.openReason,p.reason||'',text=>p.reason=text,'check-reason',ui.continueReason,()=>{
+        p.step='limit';draw(true);
+      });
+      btn(box,ui.again,'rechoose',()=>{p.step='concern';p.other=false;draw(true);});
     }else{
       const target=p.concern;
       const r=record('Bewertung/'+index+'/'+person+'/'+target),task=bank.limits[target];
-      paragraph(box,p.other?ui.otherNote:ui.evidenceOK);
+      paragraph(box,p.other?ui.checkLimit:ui.evidenceOK);
+      if(p.other){
+        paragraph(box,p.reason);
+        btn(box,ui.editReason,'edit-reason',()=>{p.step='reason';draw(true);});
+      }
       paragraph(box,p.concern?ui.reasonB:ui.reasonA);
       el(box,'h3',task.prompt);
       options(box,task,r,()=>{
-        p.notes[person]={concern:p.concern,comparison:status(r),open:p.other||false};
+        p.notes[person]={concern:target,reason:p.other?p.reason:'',support:r.depth===5};
         if(p.choice===ui.both&&p.part===0){p.part++;p.step='concern';p.other=false;p.alternate=false;draw(true);}
         else end();
       });
@@ -310,12 +372,19 @@ function lauraView(){
       const p=saved.personal[i];el(box,'strong',(i?ui.two:ui.one)+' · '+t);
       paragraph(box,p?.step==='done'?p.choice+' · '+ui.personal:ui.noPast);
       if(p?.notes)for(const [name,note] of Object.entries(p.notes)){
-        paragraph(box,name+' · '+(note.concern?ui.questionB:ui.questionA)+' · '+note.comparison,'small');
+        paragraph(box,name+' · '+(note.concern?ui.questionB:ui.questionA));
+        paragraph(box,ui.limitChecked+(note.support?' '+ui.used:''),'small');
+        if(note.reason){
+          paragraph(box,ui.other+' · '+note.reason);
+          paragraph(box,ui.ownReasonSaved,'small');
+        }
+        paragraph(box,ui.reasonOpen,'small');
       }
-      if(p?.depth===5||saved.records['Bewertung/Vorbereitung']?.depth===5)paragraph(box,ui.used);
+      if(p?.depth===5||saved.records['Bewertung/Vorbereitung']?.depth===5)paragraph(box,ui.timeHint);
     });
     paragraph(box,ui.reflect);paragraph(box,ui.comparePaper);
-    reserves(box);
+    if(saved.completedReview)reserves(box);
+    else btn(box,ui.reviewPending,'open-review',()=>go('laura',{at:1}),'primary');
   }
 }
 function pickerView(){
@@ -333,7 +402,7 @@ function pickerView(){
   },'primary');
 }
 function draw(focus=false){
-  root.replaceChildren();
+  activeRecord=null;root.replaceChildren();
   if(screen==='home')showHome();else if(screen==='picker')pickerView();else if(current.type==='case')caseView();else lauraView();
   notify();
   if(focus){window.scrollTo(0,0);root.querySelector('h1')?.focus({preventScroll:true});}
@@ -343,7 +412,7 @@ window.addEventListener('message',e=>{
   port?.close();port=e.ports[0];
   port.onmessage=({data})=>{
     if(dialog.open)dialog.close();
-    if(data==='resources'){cards();return;}
+    if(data==='resources'){markResource(activeRecord);cards();return;}
     if(data==='home'||data==='recovery'){screen=data==='home'?'home':'picker';draw(true);}
   };
   port.postMessage({type:'ready',actions:[{id:'home',label:ui.home,icon:'folder'},{id:'resources',label:ui.cards,icon:'book'},{id:'recovery',label:ui.recovery,icon:'restart'}]});notify();
