@@ -251,9 +251,9 @@ function caseView(){
   }else{
     if(transfer){
       const task=c.transfer;box.dataset.application=task.sectionId;
-      paragraph(box,ui.helpBeforePaper,'small');
+      if(!application.finished)paragraph(box,ui.helpBeforePaper,'small');
       el(box,'h2',advanced(low()) && task.advancedPrompt?task.advancedPrompt:task.prompt);
-      if(advanced(high()) && !advanced(low()) && task.advancedPrompt)paragraph(box,high()+' · '+ui.mixedTransfer,'small');
+      if(!application.finished && advanced(high()) && !advanced(low()) && task.advancedPrompt)paragraph(box,high()+' · '+ui.mixedTransfer,'small');
       options(box,task,application,null,true);
       if(!application.finished){
         tools(box,task,application,idx);
