@@ -21,6 +21,10 @@ def package():
         for p in sorted((ROOT/'dist/Uebungsakte').glob('*Material*')):z.write(p,'Uebung/'+p.name)
         z.write(source08,'08-12/Aufgabenbank.json')
         z.writestr('08-12/Materialbank.md',material(json.loads(source08.read_text())))
+    metadata=json.loads((TARGET/'Buildnachweis.json').read_text())
+    metadata['auslieferungs_sha256']={name:digest((TARGET/name).read_bytes()) for name in
+        ('Fallakte.html','Fallakte-SCORM12.zip','Uebungsakte.html','Uebungsakte-SCORM12.zip','Work-Material.zip')}
+    (TARGET/'Buildnachweis.json').write_text(json.dumps(metadata,indent=2)+'\n')
     with ZipFile(TARGET/'Fallakte-Sichtpruefung.zip','w',ZIP_DEFLATED) as z:
         z.write(TARGET/'Buildnachweis.json','Buildnachweis.json')
         for folder in (report02.parent,report08.parent,ROOT/'build/vertiefungen',ROOT/'dist/Uebungsakte'):
@@ -31,7 +35,7 @@ def package():
             for engine in ('chromium','webkit'):
                 selected=[p for p in shots if p.name.startswith(engine)]
                 assert selected,(folder,engine)
-                for p in selected[:2]:z.write(p,f'{folder.name}/{p.name}')
+                for p in selected:z.write(p,f'{folder.name}/{p.name}')
     metadata=json.loads((TARGET/'Buildnachweis.json').read_text())
     audit=(ROOT/'docs/vorab-abnahme.md').read_text().replace('COMMIT_DES_PAKETS','`'+metadata['commit']+'`')
     (TARGET/'Abnahme-und-Uebergabe.md').write_text(audit)

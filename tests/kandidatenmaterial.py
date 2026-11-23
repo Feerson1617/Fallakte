@@ -39,7 +39,11 @@ def verify(folder):
             if key.endswith(('Tom-Material','Celina-Material')):
                 for stage in bank['stages']:
                     assert stage['return'] in md
-                    for task in stage.get('checks',{'all':stage}).values():
+                    for key,task in stage.get('checks',{'all':stage}).items():
+                        conflict=stage.get('conflicts',{}).get(key)
+                        if conflict:
+                            assert all(v in md for v in conflict.values())
+                            continue
                         assert all(a in md for a in task['answers']+task['feedback'])
     with ZipFile(folder/'Fallakte-Sichtpruefung.zip') as z:
         assert z.testzip() is None

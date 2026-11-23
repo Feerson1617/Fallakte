@@ -1,17 +1,117 @@
 {
-  "version":"uebung-1.0",
-  "title":"Übungsakte",
-  "levels":{
-    "Foerder":"Lies die Karte. Tippe auf die passende Antwort.",
-    "ESA":"Prüfe die Aussage mit der Karte. Wähle eine Antwort mit Grund.",
-    "MSA":"Begründe dein Urteil mit der Wirkweise auf dem Laufzettel.",
-    "AHR":"Prüfe den behaupteten Zusammenhang. Erkläre auf dem Laufzettel, wie weit der Befund reicht."
+  "version": "uebung-1.1",
+  "title": "Übungsakte",
+  "levels": {
+    "Foerder": "Welche Antwort passt? Wähle den Grund.",
+    "ESA": "Wähle deine Antwort mit dem passenden Grund.",
+    "MSA": "Prüfe den biologischen Grund. Welche Antwort würdest du senden?",
+    "AHR": "Welche Antwort ist durch die Kartenstelle gedeckt? Achte auf die Grenze der Aussage."
   },
-  "return":"Kehre zum Chat zurück. Gib den Buchstaben deiner begründeten Aussage ein.",
-  "stages":[
-    {"id":"U1","title":"Kondom","ref":["K","sti"],"claim":"Ein Kondom kann das Risiko vieler sexuell übertragbarer Infektionen senken.","answers":["Nein. Es hält nur Spermien zurück.","Ja. Es verringert den Kontakt mit Körperflüssigkeiten.","Ja. Es verhindert jede Übertragung."],"code":"B","short":["A","B"],"feedback":["Das Kondom wirkt als Barriere auch für viele Krankheitserreger.","Richtig. Die Barriere senkt das Risiko vieler Infektionen. Ein Restrisiko bleibt.","Haut außerhalb des Kondoms bleibt unbedeckt. Eine Übertragung ist weiterhin möglich."]},
-    {"id":"U2","title":"Kombinationspille","ref":["P","alltag"],"claim":"Es reicht, die Kombinationspille nur vor dem Sex zu nehmen.","answers":["Nein. Die Tabletten müssen nach Einnahmeplan genommen werden.","Ja. Eine Tablette fängt Spermien ab.","Ja. Die Hormone bilden sofort eine Barriere."],"code":"A","short":["A","B"],"feedback":["Richtig korrigiert. Regelmäßige Einnahme nach Plan ist wichtig. Vergessene Tabletten können den Schutz mindern.","Die Pille fängt keine Spermien ab. Sie hemmt vor allem den Eisprung.","Hormone bilden keine mechanische Barriere. Die Einnahme folgt einem festen Plan."]},
-    {"id":"U3","title":"Kupferspirale","ref":["Cu","wirkung"],"claim":"Die Kupferspirale braucht Hormone, um zu wirken.","answers":["Ja. Sie gibt ein Hormon ab.","Nein. Sie verschließt den Eingang zur Gebärmutter.","Nein. Kupfer beeinträchtigt die Spermien."],"code":"C","short":["A","C"],"feedback":["Kupfer ist kein Hormon. Lies, was es bei Spermien verändert.","Die Kupferspirale verschließt die Gebärmutter nicht. Prüfe die Wirkung des Kupfers.","Richtig korrigiert. Kupfer beeinträchtigt Bewegung und Befruchtungsfähigkeit der Spermien."]},
-    {"id":"U4","title":"Hormonspirale","ref":["H","wirkung"],"claim":"Mit einer Hormonspirale kommen Spermien schwerer durch den Gebärmutterhals.","answers":["Nein. Die Spirale hält außen Sperma zurück.","Ja. Ein Gestagen macht den Schleim dort zäher.","Ja. Der Schleim schützt deshalb auch vor STI."],"code":"B","short":["A","B"],"feedback":["Die Hormonspirale sitzt in der Gebärmutter. Sie ist kein Kondom.","Richtig. Das Gestagen verändert den Schleim. Spermien können ihn schwerer durchdringen. Das ist kein STI-Schutz.","Der zähere Schleim erschwert Spermien den Weg. Er ist kein verlässlicher Schutz vor STI."]}
+  "return": "Kehre zum Chat zurück. Gib den Buchstaben deiner begründeten Aussage ein.",
+  "stages": [
+    {
+      "id": "U1",
+      "title": "Kondom",
+      "ref": [
+        "K",
+        "sti"
+      ],
+      "claim": "Ein Kondom kann das Risiko vieler sexuell übertragbarer Infektionen senken.",
+      "answers": [
+        "Nein. Es hält nur Spermien zurück.",
+        "Ja. Es verringert den Kontakt mit Körperflüssigkeiten.",
+        "Ja. Es verhindert jede Übertragung."
+      ],
+      "code": "B",
+      "short": [
+        "A",
+        "B"
+      ],
+      "feedback": [
+        "Das Kondom wirkt als Barriere auch für viele Krankheitserreger.",
+        "Richtig. Die Barriere senkt das Risiko vieler Infektionen. Ein Restrisiko bleibt.",
+        "Haut außerhalb des Kondoms bleibt unbedeckt. Eine Übertragung ist weiterhin möglich."
+      ],
+      "reply": "Jetzt verstehe ich, warum trotz Kondom ein Risiko bleibt."
+    },
+    {
+      "id": "U2",
+      "title": "Kombinationspille",
+      "ref": [
+        "P",
+        "alltag"
+      ],
+      "claim": "Es reicht, die Kombinationspille nur vor dem Sex zu nehmen.",
+      "answers": [
+        "Nein. Die Tabletten müssen nach Einnahmeplan genommen werden.",
+        "Ja. Eine Tablette fängt Spermien ab.",
+        "Ja. Die Hormone bilden sofort eine Barriere."
+      ],
+      "code": "A",
+      "short": [
+        "A",
+        "B"
+      ],
+      "feedback": [
+        "Richtig korrigiert. Regelmäßige Einnahme nach Plan ist wichtig. Vergessene Tabletten können den Schutz mindern.",
+        "Die Pille fängt keine Spermien ab. Sie hemmt vor allem den Eisprung.",
+        "Hormone bilden keine mechanische Barriere. Die Einnahme folgt einem festen Plan."
+      ],
+      "reply": "Dann muss man bei der Pille auf den Einnahmeplan achten."
+    },
+    {
+      "id": "U3",
+      "title": "Kupferspirale",
+      "ref": [
+        "Cu",
+        "wirkung"
+      ],
+      "claim": "Die Kupferspirale braucht Hormone, um zu wirken.",
+      "answers": [
+        "Ja. Sie gibt ein Hormon ab.",
+        "Nein. Sie verschließt den Eingang zur Gebärmutter.",
+        "Nein. Kupfer beeinträchtigt die Spermien."
+      ],
+      "code": "C",
+      "short": [
+        "A",
+        "C"
+      ],
+      "feedback": [
+        "Kupfer ist kein Hormon. Lies, was es bei Spermien verändert.",
+        "Die Kupferspirale verschließt die Gebärmutter nicht. Prüfe die Wirkung des Kupfers.",
+        "Richtig korrigiert. Kupfer beeinträchtigt Bewegung und Befruchtungsfähigkeit der Spermien."
+      ],
+      "reply": "Kupfer wirkt also auf die Spermien – ganz ohne Hormone.",
+      "paper": {
+        "MSA": "Laufzettel · U3 – Kupferspirale. Begründe deine Antwort mit der Wirkung auf Spermien.",
+        "AHR": "Laufzettel · U3 – Kupferspirale. Erkläre die Kupferwirkung und widerlege eine falsche Erklärung."
+      }
+    },
+    {
+      "id": "U4",
+      "title": "Hormonspirale",
+      "ref": [
+        "H",
+        "wirkung"
+      ],
+      "claim": "Mit einer Hormonspirale kommen Spermien schwerer durch den Gebärmutterhals.",
+      "answers": [
+        "Nein. Die Spirale hält außen Sperma zurück.",
+        "Ja. Ein Gestagen macht den Schleim dort zäher.",
+        "Ja. Der Schleim schützt deshalb auch vor STI."
+      ],
+      "code": "B",
+      "short": [
+        "A",
+        "B"
+      ],
+      "feedback": [
+        "Die Hormonspirale sitzt in der Gebärmutter. Sie ist kein Kondom.",
+        "Richtig. Das Gestagen verändert den Schleim. Spermien können ihn schwerer durchdringen. Das ist kein STI-Schutz.",
+        "Der zähere Schleim erschwert Spermien den Weg. Er ist kein verlässlicher Schutz vor STI."
+      ],
+      "reply": "Jetzt verstehe ich, warum Spermien schwerer durch den Schleim kommen."
+    }
   ]
 }

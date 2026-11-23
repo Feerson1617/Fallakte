@@ -2,7 +2,7 @@ name: Fallakte · Laura Runde 2A
 on:
   pull_request:
   push:
-    branches: [main, entwicklung/gemeinsame-tagesauswahl, entwicklung/0212-neukonzeption, integration/vorabkandidat-02-und-08]
+    branches: [main, entwicklung/gemeinsame-tagesauswahl, entwicklung/0212-neukonzeption, integration/vorabkandidat-02-und-08, korrektur/lernwege-abnahme]
   workflow_dispatch:
 permissions:
   contents: read
@@ -90,7 +90,7 @@ jobs:
           retention-days: 30
 
   vorabkandidat:
-    if: github.ref == 'refs/heads/integration/vorabkandidat-02-und-08'
+    if: github.ref == 'refs/heads/integration/vorabkandidat-02-und-08' || github.ref == 'refs/heads/korrektur/lernwege-abnahme'
     name: Gemeinsamer Vorabkandidat im Browser und simulierten LMS
     runs-on: ubuntu-24.04
     timeout-minutes: 55

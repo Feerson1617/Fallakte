@@ -2,11 +2,12 @@
 const bank=JSON.parse(document.querySelector('#bank').textContent);
 const desk=document.querySelector('#desk'),dialog=document.querySelector('dialog'),sessions=new Map();
 let port,state,tier;
+const lower=()=>tier==='Foerder' || tier==='ESA';
 const readingTrail=[];
 const stage=()=>bank.stages[state.index];
 function add(parent,tag,text=''){const e=document.createElement(tag);e.textContent=text;parent.append(e);return e;}
 function btn(parent,label,id,action){const b=add(parent,'button',label);b.id=id;b.onclick=action;return b;}
-function fresh(index,history=[]){return {index,history,choice:'',code:'',result:'',valid:false,sent:false,asked:'',help:0};}
+function fresh(index,history=[]){return {index,history,choice:'',code:'',result:'',valid:false,sent:false,asked:'',read:false,previous:''};}
 function save(next){state=next;sessions.set(tier,next);}
 function clearChoice(key){Object.assign(state,{choice:key,code:'',result:'',valid:false,asked:'',help:0});draw();}
 function resource(title,render){
@@ -21,14 +22,15 @@ function resource(title,render){
 function source(){
   const s=stage(),small=['Foerder','ESA'].includes(tier);
   if(!s.choices || !Object.keys(s.choices).length){
+    state.read=true;
     resource('Forschungsmaterial',body=>{
       if(small)add(body,'p',s.shortSource);
       const article=bank.articles[tier];
-      const more=add(body,'details');more.open=!small;add(more,'summary',article.title);
+      const more=add(body,'details');more.open=!small && state.index===1;add(more,'summary',article.title);
       article.paragraphs.forEach(p=>add(more,'p',p));
       for(const [word,meaning] of Object.entries(article.glossary))add(more,'p',word+' · '+meaning);
       for(const study of bank.studies){
-        const d=add(body,'details');add(d,'summary',study.label);
+        const d=add(body,'details');d.open=!small && state.index===2 && study===bank.studies[1];add(d,'summary',study.label);
         for(const text of [study.body,study.meaning,study.source])add(d,'p',text);
       }
     });return;
@@ -41,18 +43,33 @@ function source(){
 }
 function currentCheck(){return stage().checks?.[state.choice] || stage();}
 function inspect(code){
-  if(state.sent || state.valid)return;
+  if(state.sent || state.valid || conflict() || needsSource())return;
   const check=currentCheck();const idx='ABC'.indexOf(code);
   if(code.length!==1 || idx<0){state.result='Gib einen Buchstaben von A bis C ein.';}
   else{
     state.result=check.feedback[idx];
-    if(code===check.code){
-      const rejected=Object.keys(stage().choices).length && !stage().allowed.includes(state.choice);
-      if(rejected)state.result+=' '+stage().replies[state.choice]+' Wähle deinen Vorschlag neu.';
-      else state.valid=true;
-    }
+    state.valid=code===check.code;
   }
   draw();
+}
+function conflict(){return state.choice && stage().conflicts?.[state.choice];}
+function needsSource(){return !Object.keys(stage().choices).length && !lower() && !state.read;}
+function choices(s){
+  const entries=Object.entries(s.choices);
+  const group=(parent,set)=>{const box=add(parent,'div');box.className='choices';
+    for(const [k,v] of set)btn(box,v,'method-'+k,()=>clearChoice(k));
+  };
+  if(lower()){
+    const first=[...new Set([state.previous,...s.primary[tier]].filter(Boolean))].slice(0,3);
+    group(desk,entries.filter(([k])=>first.includes(k)));
+    const extra=add(desk,'details');extra.id='more';add(extra,'summary','Weitere Vorschläge');
+    group(extra,entries.filter(([k])=>!first.includes(k)));
+  }else{
+    for(const combo of [false,true]){
+      add(desk,'h3',combo?'Kombinationen':'Einzelmethoden');
+      group(desk,entries.filter(([k])=>k.includes('+')===combo));
+    }
+  }
 }
 function draw(){
   const s=stage(),check=currentCheck(),hasChoice=Object.keys(s.choices).length>0;
@@ -65,16 +82,17 @@ function draw(){
     add(desk,'p',state.reply);
     btn(desk,state.index+1===bank.stages.length?'Zur Fallübersicht':'Weiter im Gespräch','next',()=>{
       if(state.index+1===bank.stages.length){sessions.delete(tier);port.postMessage({type:'home'});return;}
-      save(fresh(state.index+1,state.history));draw();
+      const next=fresh(state.index+1,state.history);next.previous=state.choice;save(next);draw();
     }).className='primary';return;
   }
   if(hasChoice && !state.choice){
     add(desk,'h2','Welchen Vorschlag machst du?');
-    const box=add(desk,'div');box.className='choices';
-    for(const [key,label] of Object.entries(s.choices))btn(box,label,'method-'+key,()=>clearChoice(key));
+    choices(s);
   }else{
     if(hasChoice){add(desk,'strong',s.choices[state.choice]).id='selected';btn(desk,'Auswahl ändern','edit',()=>clearChoice(''));}
-    if(!state.valid){
+    if(!hasChoice && lower()){add(desk,'strong','Aus der Quelle');add(desk,'blockquote',s.shortSource);}
+    if(needsSource())add(desk,'p',state.index===1?'Lies den Artikel. Welche Aussage ist belegt?':'Lies Studie B. Was wurde tatsächlich untersucht?');
+    if(!state.valid && !conflict() && !needsSource()){
       add(desk,'p',s.task[tier]);
       if(['MSA','AHR'].includes(tier)){
         add(desk,'p',s.paper[tier].replace(' '+s.task[tier],''));
@@ -87,9 +105,10 @@ function draw(){
         for(const k of tier==='Foerder'?check.short:'ABC')btn(desk,check.answers['ABC'.indexOf(k)],'answer-'+k,()=>inspect(k)).className='answer';
       }
     }
-    add(desk,'p',state.result).id='feedback';document.querySelector('#feedback').setAttribute('role','status');
+    add(desk,'p',conflict()?.[lower()?'short':'full'] || state.result).id='feedback';document.querySelector('#feedback').setAttribute('role','status');
     if(state.valid)btn(desk,'Nachricht senden','send',()=>{
-      if(!state.valid || state.sent)return;state.sent=true;
+      if(!state.valid || state.sent || conflict() || needsSource())return;state.sent=true;
+      if(bank.person==='Tom' && state.index===bank.stages.length-1)port.postMessage({type:'completed',person:bank.person,tier});
       state.reply=s.replies[state.choice || 'DONE'];
       state.history.push(s.message[tier].join(' '),(s.choices[state.choice]||'')+' '+check.answers['ABC'.indexOf(check.code)],state.reply);draw();
     }).className='primary';
@@ -112,7 +131,7 @@ function leaveReading(){
 }
 document.querySelector('#back').onclick=leaveReading;
 dialog.oncancel=e=>{e.preventDefault();leaveReading();};
-dialog.onclose=()=>{readingTrail.length=0;};
+dialog.onclose=()=>{readingTrail.length=0;if(document.querySelector('#source') && !state.sent && !Object.keys(stage().choices).length && state.read){draw();document.querySelector('#source')?.focus();}};
 addEventListener('message',e=>{
   if(e.source!==parent || e.data!=='reserve0212:verbinden' || !e.ports[0])return;
   port?.close();port=e.ports[0];

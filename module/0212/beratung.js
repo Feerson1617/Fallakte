@@ -151,6 +151,7 @@ window.Beratung = (() => {
     const proposal='Mein Rat: '+bank().strategies[draft.strategy].label+'.';
     appendMessage('send','Team',reason ? proposal+' '+reason : proposal);
     appendMessage('reaction','Laura',strategy.reply);
+    if(!followingStage())window.dispatchEvent(new CustomEvent('beratung:abgeschlossen',{detail:active.tier}));
     active.chatScroll=null;
     render('beratung-reaktion',true);
   }

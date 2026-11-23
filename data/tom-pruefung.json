@@ -51,7 +51,24 @@
         "Wie ein neues Mittel wirken könnte und welche Untersuchung dann noch fehlt."
       ]
     ],
-    "shortSource": "Forschende wollen die Bildung oder Funktion von Spermien verändern. Weniger Spermien sind ein Messwert. Wie oft eine Schwangerschaft eintritt, ist eine andere Frage."
+    "shortSource": "Forschende wollen die Bildung oder Funktion von Spermien verändern. Weniger Spermien sind ein Messwert. Wie oft eine Schwangerschaft eintritt, ist eine andere Frage.",
+    "message": {
+      "Foerder": [
+        "Ich habe einen Artikel über neue Verhütungsmittel gefunden. Wie könnten die bei mir wirken?"
+      ],
+      "ESA": [
+        "Ich habe einen Artikel über neue Verhütungsmittel gefunden. Wie könnten die bei mir wirken?"
+      ],
+      "MSA": [
+        "Ich habe einen Artikel über neue Verhütungsmittel gefunden. Wie könnten die bei mir wirken?"
+      ],
+      "AHR": [
+        "Ich habe einen Artikel über neue Verhütungsmittel gefunden. Wie könnten die bei mir wirken?"
+      ]
+    },
+    "sentReplies": {
+      "DONE": "Jetzt verstehe ich, warum weniger Spermien erst einmal ein Hinweis sind."
+    }
   },
   {
     "code": "A",
@@ -81,6 +98,23 @@
       "ESA": "Was zeigt Studie B? Prüfe deine Antwort mit dem Studienkasten.",
       "MSA": "Trenne Messwert und Schlussfolgerung. Welche Untersuchung würde die offene Frage zum Schutz prüfen?",
       "AHR": "Vergleiche die Endpunkte beider Studien. Begründe, welche Daten über längere Anwendung und Schwangerschaften noch fehlen."
+    },
+    "message": {
+      "Foerder": [
+        "Ein Freund sagt, das Mittel aus Studie B schützt schon vor Schwangerschaft. Können wir das wirklich wissen?"
+      ],
+      "ESA": [
+        "Ein Freund sagt, das Mittel aus Studie B schützt schon vor Schwangerschaft. Können wir das wirklich wissen?"
+      ],
+      "MSA": [
+        "Ein Freund sagt, das Mittel aus Studie B schützt schon vor Schwangerschaft. Können wir das wirklich wissen?"
+      ],
+      "AHR": [
+        "Ein Freund sagt, das Mittel aus Studie B schützt schon vor Schwangerschaft. Können wir das wirklich wissen?"
+      ]
+    },
+    "sentReplies": {
+      "DONE": "Jetzt sehe ich den Unterschied. Ob man eine Dosis verträgt und ob sie vor einer Schwangerschaft schützt, sind zwei Fragen."
     }
   }
 ]

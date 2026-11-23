@@ -14,6 +14,7 @@ def make_bank(person):
     for original,check in zip(stages,checks,strict=True):
         record={k:original[k] for k in ('id','title','message','task','questions','replies','helpBefore')}
         record.update(check)
+        record['replies']={**original['replies'],**record.pop('sentReplies',{})}
         record['previousFacts']=[s['recap'] for s in stages[:len(records)] if s.get('recap')]
         if person=='Celina':
             record['task']={**record['task'],'Foerder':'Welcher Grund passt zu diesem Vorschlag?','ESA':'Prüfe den Vorschlag an Celinas Anliegen. Wähle den passenden Grund.'}
@@ -31,10 +32,31 @@ def make_bank(person):
             card=laura['cards'][method]
             fact=original['hints'][key][-1] if person=='Tom' else context['answers']['ABC'.index(context['code'])]
             record['hints'][key]=['Lies '+card['title']+' · '+card['sections'][section]['title']+'.',fact]
+        if record['choices']:
+            record['primary']={'Foerder':['K','Cu'],'ESA':['K','Cu','P']}
+            record['conflicts']={}
+            for key in record['choices']:
+                if key in record['allowed']:continue
+                method=key.split('+')[-1]
+                if person=='Tom':
+                    reason={'P':'Die Kombinationspille wirkt auf einen Zyklus mit Eisprung.',
+                            'Cu':'Die Kupferspirale wird in eine Gebärmutter eingesetzt.',
+                            'H':'Die Hormonspirale wird in eine Gebärmutter eingesetzt.'}[method]
+                    short=reason+' Tom kann sie nicht selbst anwenden.'
+                    if '+' in key:short+=' Nur das Kondom könnte Tom selbst benutzen.'
+                    full=short+' Welcher Vorschlag passt zu seiner Frage?'
+                elif method=='Cu':
+                    short='Kupfer schützt vor Schwangerschaft. Der Schutz vor Infektionen fehlt.'
+                    full=short+' Wie kannst du beide Anliegen berücksichtigen?'
+                else:
+                    label={'P':'Die Kombinationspille','H':'Die Hormonspirale'}[method]
+                    short=label+' enthält Hormone. Celina möchte keine zusätzlichen Hormone.'
+                    full=short+' Prüfe deinen gesamten Vorschlag an ihrer Entscheidung.'
+                record['conflicts'][key]={'short':short,'full':full}
         record['return']='Kehre zum Gespräch zurück. Gib den Buchstaben der fachlich passenden Aussage ein.'
         record['paper']={t:f"Laufzettel · {person} {len(records)+1} – {record['title']}. "+task for t,task in record['task'].items()}
         records.append(record)
-    bank={'version':person.lower()+('-1.1' if person=='Tom' else '-1.0'),'buildCommit':commit(),'person':person,'levels':laura['levels'],
+    bank={'version':person.lower()+('-1.2' if person=='Tom' else '-1.1'),'buildCommit':commit(),'person':person,'levels':laura['levels'],
           'stages':records,'cards':laura['cards']}
     if person=='Tom':
         bank.update(articles=old['tom_articles'],studies=old['research'])
@@ -66,6 +88,14 @@ def export(bank):
                 lines+=['**Kartenstelle** '+card['title']+' · '+card['sections'][section]['title']]
             else:
                 lines+=['**Materialstelle** Artikel und Studien öffnen. Siehe Lesematerial am Ende.',stage['shortSource']]
+            conflict=stage.get('conflicts',{}).get(key)
+            if conflict:
+                lines+=['**Direkt nach der Auswahl**',conflict['short'],conflict['full'],
+                        'Auswahl ändern. Für diesen Vorschlag gibt es keinen Fachcheck.',
+                        *stage['hints'][key]]
+                questions=check.get('questions',stage['questions'])
+                lines += [q+' — '+a for q,a in questions]
+                continue
             lines+=['**Förder** · Aussagen '+' und '.join(check['short']),
                     '**ESA, MSA, AHR** · Aussagen A, B und C']
             for letter,answer,feedback in zip('ABC',check['answers'],check['feedback'],strict=True):

@@ -14,6 +14,10 @@
   const sections=['start','einstieg','beratung','reserve-platz'];
   let view='start',level='',pickerTier='',pickerPerson='Laura',origin='start',reserveStatus;
   let port;
+  const available=new Set();
+  function grant(person,tier){available.add(tier+'/'+person);}
+  window.addEventListener('beratung:abgeschlossen',e=>grant('Tom',e.detail));
+  window.addEventListener('reserve0212:completed',e=>grant('Celina',e.detail));
   function control(label,callback) {
     const button=document.createElement('button');
     button.type='button';button.textContent=label;button.onclick=callback;
@@ -60,7 +64,7 @@
     $('weiterarbeiten').hidden=!saved;
     $('neu').disabled=!level;
     $('neu').classList.toggle('hauptaktion',!saved);
-    for (const b of document.querySelectorAll('[data-optional]')) b.disabled=!level;
+    for (const b of document.querySelectorAll('[data-optional]')) b.disabled=!available.has(level+'/'+b.dataset.optional);
   }
   function home() {
     show('start');drawHome();$('start-titel').focus({preventScroll:true});
@@ -74,6 +78,8 @@
   }
   function reserve(person,index) {
     if (!level)return;
+    if(index!==undefined)grant(person,level);
+    if(!available.has(level+'/'+person))return;
     reserveStatus=null;
     show('reserve-platz');
     window.Reserve0212.open(person,level,index);

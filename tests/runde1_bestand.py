@@ -108,6 +108,11 @@ def presentation(frame):
     expect(open_button).to_have_count(0)
 
 
+def restart_optional(module,person,control):
+    control.tap()
+    module.locator('#wiederfall').get_by_role('button',name=person,exact=True).tap()
+    module.locator('#abschnitte button').first.tap()
+
 def reserve_paths(browser,engine,expected,prototype):
     page=browser.new_page(viewport={'width':820,'height':1180},has_touch=True)
     errors=[]
@@ -117,7 +122,8 @@ def reserve_paths(browser,engine,expected,prototype):
     presentation(page)
     expect(page.locator('#weiterarbeiten')).to_be_hidden()
     page.locator('#level-ESA').tap()
-    page.locator('[data-optional=Tom]').tap()
+    expect(page.locator('[data-optional=Tom]')).to_be_disabled()
+    restart_optional(page,'Tom',page.locator('#abschnitt-wahl'))
     inner=page.frame_locator('#rahmen-reserve-Celina')
     tom=page.frame_locator('#rahmen-reserve-Tom')
     expect(tom.locator('#step')).to_have_text('Tom 1 von 3')
@@ -128,7 +134,8 @@ def reserve_paths(browser,engine,expected,prototype):
     expect(tom.locator('#step')).to_have_text('Tom 2 von 3')
     logged=tom.locator('#desk details').first.text_content()
     page.locator('[data-nav=home]').tap()
-    page.locator('[data-optional=Celina]').tap()
+    expect(page.locator('[data-optional=Celina]')).to_be_disabled()
+    restart_optional(page,'Celina',page.locator('#abschnitt-wahl'))
     expect(inner.locator('#step')).to_have_text('Celina 1 von 5')
     inner.locator('#method-Cu').tap()
     inner.locator('#help').tap()
@@ -210,7 +217,7 @@ def switch_days(browser,engine,first_url,lms,size):
     expect(draft).to_have_attribute('data-about-strategy',strategy)
     assert first.locator('#beratung-verlauf').inner_text()==history
     shell.locator('[data-action=home]').tap()
-    first.locator('[data-optional=Tom]').tap()
+    restart_optional(first,'Tom',shell.locator('[data-action=recovery]'))
     reserve=first.frame_locator('#rahmen-reserve-Tom')
     expect(reserve.locator('#step')).to_have_text('Tom 1 von 3')
     expect(shell.locator('#gespraechsstand')).to_have_text('Tom 1 · ESA')

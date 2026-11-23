@@ -14,6 +14,22 @@ def enter(p,person,tier,index):
     p.locator('#abschnitte button').nth(index).click()
     return p.frame_locator('#rahmen-reserve-'+person)
 
+def initial(f,tier,engine,person):
+    shown=f.locator('[id^=method-]:visible').count()
+    assert (2<=shown<=3 if tier in LEVELS[:2] else shown==7),(person,tier,shown)
+    expect(f.locator('[id^=method-]')).to_have_count(7)
+    if tier=='Foerder':f.locator('#desk').screenshot(path=QA/f'{engine}-{person}-Auswahl.jpg')
+
+def choose(f,key):
+    option=f.locator('[id="method-'+key+'"]')
+    if not option.is_visible():f.locator('#more summary').click()
+    option.click()
+
+def blocked(f):
+    expect(f.locator('#send,#code,#check,[id^=answer-]')).to_have_count(0)
+    expect(f.locator('#feedback')).not_to_be_empty()
+    expect(f.locator('#feedback')).not_to_contain_text('Das stimmt')
+
 def answer(f,tier,letter):
     if tier in LEVELS[:2]:f.locator('#answer-'+letter).click()
     else:f.locator('#code').fill(letter);f.locator('#check').click()
@@ -22,14 +38,17 @@ def tom(p,tier,engine):
     for i,(truth,wrong) in enumerate([('B','A'),('C','A'),('A','B')]):
         f=enter(p,'Tom',tier,i);expect(f.locator('#step')).to_have_text(f'Tom {i+1} von 3')
         if i==0:
+            initial(f,tier,engine,'Tom')
             for key in ('P','Cu','H','K+P','K+Cu','K+H','K'):
                 if f.locator('#edit').is_visible():f.locator('#edit').click()
-                f.locator('[id="method-'+key+'"]').click()
+                choose(f,key)
                 method=key.split('+')[-1]
                 section={'K':'Bei jedem Sex','P':'Hormone und Eisprung','Cu':'Einsetzen und Entscheidung','H':'Einsetzen und Entscheidung'}[method]
                 f.locator('#help').click();expect(f.locator('#reading')).to_contain_text(section);f.locator('#back').click()
                 f.locator('#source').click();expect(f.locator('#resource')).to_contain_text(section);f.locator('#back').click()
-                if key!='K':answer(f,tier,truth);expect(f.locator('#send')).to_have_count(0)
+                if key!='K':blocked(f)
+        elif tier in LEVELS[2:]:expect(f.locator('#code,#send')).to_have_count(0)
+        else:expect(f.locator('#desk blockquote').last).to_contain_text('Forschende' if i==1 else 'Studie B')
         f.locator('#help').click();expect(f.locator('#reading')).not_to_be_empty();f.locator('#back').click()
         f.locator('#ask').click();f.locator('#q0').click()
         f.locator('#source').click()
@@ -50,23 +69,24 @@ def celina(p,tier,engine):
     for i,truth in enumerate('BACBC'):
         f=enter(p,'Celina',tier,i)
         expect(f.locator('#step')).to_have_text(f'Celina {i+1} von 5')
+        if i==0:initial(f,tier,engine,'Celina')
         for strategy in ('P','H','K+P','K+H','Cu','K+Cu','K'):
             if f.locator('#edit').is_visible():f.locator('#edit').click()
             expect(f.locator('#send')).to_have_count(0)
-            f.locator('[id="method-'+strategy+'"]').click()
+            choose(f,strategy)
             expect(f.locator('#desk')).not_to_contain_text('Latexallergie')
             f.locator('#ask').click();f.locator('#q0').click()
             if strategy=='K':expect(f.locator('#desk')).not_to_contain_text('Ob eine Kupferspirale zu mir passt')
             f.locator('#source').click();expect(f.locator('#reading')).not_to_be_empty();f.locator('#back').click()
             f.locator('#help').click();expect(f.locator('#reading')).not_to_be_empty();f.locator('#back').click()
-            wrong=next(k for k in 'ABC' if k!=truth and (tier not in LEVELS[:2] or f.locator('#answer-'+k).count()))
-            answer(f,tier,wrong);expect(f.locator('#send')).to_have_count(0)
-            answer(f,tier,truth)
             allowed=strategy in ('K','K+Cu') or strategy=='Cu' and i<3
-            if allowed:expect(f.locator('#send')).to_be_visible()
+            if allowed:
+                wrong=next(k for k in 'ABC' if k!=truth and (tier not in LEVELS[:2] or f.locator('#answer-'+k).count()))
+                answer(f,tier,wrong);expect(f.locator('#send')).to_have_count(0)
+                answer(f,tier,truth);expect(f.locator('#send')).to_be_visible()
             else:
-                expect(f.locator('#send')).to_have_count(0)
-                expect(f.locator('#feedback')).to_contain_text('Vorschlag neu')
+                blocked(f)
+                expect(f.locator('#feedback')).to_contain_text('Infektionen' if strategy=='Cu' else 'Hormone')
             counts.append([i+1,strategy,allowed])
         if i==4 and tier=='ESA':p.screenshot(path=QA/f'{engine}-Celina-Schluss.jpg')
         f.locator('#send').click();f.locator('#next').click()

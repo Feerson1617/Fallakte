@@ -19,6 +19,7 @@ window.Reserve0212 = (() => {
     port=channel.port1;
     port.onmessage=({data})=>{
       if (data.type==='ready') {ready=true;send();return;}
+      if(data.type==='completed' && data.person==='Tom' && active===key('Tom',data.tier))window.dispatchEvent(new CustomEvent('reserve0212:completed',{detail:data.tier}));
       if (data.type==='home') {if (!slot().hidden) {hide();Runde1.home();}return;}
       if (data.type==='status') {
         progress.set(key(data.person,data.tier),data.abschnitt);

@@ -48,6 +48,18 @@ def main():
                         f.locator('#nachricht-senden').tap()
                         f.locator('#beratung-fertig' if j==4 else '#beratung-weiter').tap()
                     expect(f.locator('[data-optional]').first).to_have_text('Tom')
+                    expect(f.locator('[data-optional=Tom]')).to_be_enabled()
+                    expect(f.locator('[data-optional=Celina]')).to_be_disabled()
+                    f.locator('[data-optional=Tom]').tap()
+                    tom=f.frame_locator('#rahmen-reserve-Tom')
+                    for j,code in enumerate('BCA'):
+                        if j==0:tom.locator('#method-K').tap()
+                        if i<2:tom.locator('#answer-'+code).tap()
+                        else:
+                            if j:tom.locator('#source').tap();tom.locator('#back').tap()
+                            tom.locator('#code').fill(code);tom.locator('#check').tap()
+                        tom.locator('#send').tap();tom.locator('#next').tap()
+                    expect(f.locator('[data-optional=Celina]')).to_be_enabled()
                     if i==1:p.screenshot(path=QA/f'{engine}-Falluebersicht.jpg')
                     p.reload();shell=p.frame(name='sco');shell.locator('#erster-tag').tap()
                     f=shell.frame_locator('iframe[title^=Mittwoch]');shell.locator('[data-action=recovery]').tap()

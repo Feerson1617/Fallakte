@@ -26,7 +26,7 @@ function overview(){
   bank.stages.forEach((s,i)=>button(picker,s.id+' · '+s.title,'entry-'+s.id,()=>begin(i)));
 }
 function begin(index){
-  session={index,history:[],read:false,code:'',message:'',sent:false};
+  session={index,history:[],read:false,code:'',draft:'',message:'',sent:false};
   sessions.set(level,session);draw();
 }
 function openCard(){
@@ -36,11 +36,11 @@ function openCard(){
   card.showModal();
 }
 function submit(code){
-  if(session.sent || !session.read)return;
+  if(session.sent || session.draft || !session.read)return;
   const i='ABC'.indexOf(code);
   if(code.length!==1 || i<0){session.message='Trage einen Buchstaben von A bis C ein.';draw();return;}
   session.message=step.feedback[i];
-  if(code===step.code){session.sent=true;session.history.push([step.claim,step.answers[i],session.message]);}
+  if(code===step.code)session.draft=code;
   draw();
 }
 function draw(){
@@ -50,22 +50,33 @@ function draw(){
     const h=add(view,'details','');add(h,'summary','Gesprächsverlauf');
     for(const record of session.history)for(const text of record)add(h,'p',text);
   }
-  add(view,'blockquote',step.claim);
+  const chat=add(view,'blockquote','');add(chat,'strong','Nachricht im Übungschat');add(chat,'p',step.claim);
   if(session.sent){
-    add(view,'p',session.message).setAttribute('role','status');
+    add(view,'strong','Deine Nachricht');add(view,'p',step.answers['ABC'.indexOf(session.draft)]);
+    add(view,'blockquote',step.reply).setAttribute('role','status');
     const last=session.index===bank.stages.length-1;
     button(view,last?'Übung abschließen':'Weiter im Chat','next',()=>{
       if(last){sessions.delete(level);overview();return;}
-      Object.assign(session,{index:session.index+1,read:false,code:'',message:'',sent:false});draw();
+      Object.assign(session,{index:session.index+1,read:false,code:'',draft:'',message:'',sent:false});draw();
     });return;
   }
+  if(!session.read)add(view,'p','Was vermutest du? Prüfe deinen Gedanken mit der Karte.');
   button(view,step.cardPrompt,'source',openCard);
   if(!session.read)return;
-  add(view,'p',bank.levels[level]);
+  if(session.draft){
+    add(view,'strong','Deine Antwort');add(view,'p',step.answers['ABC'.indexOf(session.draft)]);
+    button(view,'Auswahl ändern','edit',()=>{session.draft='';session.message='';draw();});
+    button(view,'Nachricht senden','send',()=>{
+      if(session.sent || !session.draft)return;
+      session.sent=true;
+      session.history.push([step.claim,step.answers['ABC'.indexOf(session.draft)],step.reply]);
+      draw();
+    }).className='primary';return;
+  }
+  add(view,'p',step.paper?.[level] || bank.levels[level]);
   const answers=add(view,'div','');answers.className='answers';
-  const paper=['MSA','AHR'].includes(level);
+  const paper=Boolean(step.paper?.[level]);
   if(paper){
-    add(view,'p','Laufzettel · '+step.id+' – '+step.title);
     const details=add(view,'details','');add(details,'summary','Laufzettel nicht zur Hand?');
     step.answers.forEach((answer,i)=>add(details,'p','ABC'[i]+' · '+answer));
     add(view,'p',bank.return);

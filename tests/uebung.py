@@ -41,7 +41,8 @@ def run():
                         p.locator('#back').tap()
                         wrong=next(k for k in stage['short'] if k!=key)
                         for answer in (wrong,key):
-                            if i<2:p.locator('#answer-'+answer).tap()
+                            if i<2 or j!=2:
+                                expect(p.locator('#code')).to_have_count(0);p.locator('#answer-'+answer).tap()
                             else:
                                 p.locator('#code').fill(answer);p.locator('#check').tap()
                             if answer==wrong:
@@ -49,7 +50,14 @@ def run():
                                 expect(p.locator('#next')).to_have_count(0)
                                 p.locator('#home').tap();p.locator('#resume').tap()
                                 expect(p.locator('#feedback')).to_have_text(stage['feedback']['ABC'.index(answer)])
-                        expect(p.get_by_role('status')).to_have_text(stage['feedback']['ABC'.index(key)])
+                        expect(p.locator('#next')).to_have_count(0)
+                        p.locator('#source').tap();p.locator('#back').tap()
+                        expect(p.locator('#send')).to_be_visible()
+                        if j==0:
+                            p.locator('#edit').tap();expect(p.locator('#send')).to_have_count(0)
+                            p.locator('#answer-'+key).tap()
+                        p.locator('#send').tap()
+                        expect(p.get_by_role('status')).to_have_text(stage['reply'])
                         if j==1 and i in (0,3):p.screenshot(path=OUT/f'{name}-{tier}.jpg')
                         p.locator('#next').tap()
                     p.reload();p.locator('#tier-'+tier).tap();p.locator('summary').tap();p.locator('#entry-U3').tap()
@@ -58,7 +66,7 @@ def run():
                     log.append([name,tier,4,'U3']);p.close()
                 p=b.new_page();p.goto(url+'/host.html')
                 f=p.frame_locator('iframe');f.locator('#tier-ESA').click();f.locator('#start').click();f.locator('#source').click()
-                f.locator('#back').click();f.locator('#answer-B').click();f.locator('#next').click()
+                f.locator('#back').click();f.locator('#answer-B').click();f.locator('#send').click();f.locator('#next').click()
                 p.locator('iframe').evaluate("f=>f.src='about:blank'")
                 p.wait_for_function("calls.some(c=>c[0]==='LMSFinish')")
                 assert p.evaluate('calls')==[['LMSInitialize',''],['LMSFinish','']]

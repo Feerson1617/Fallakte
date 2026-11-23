@@ -12,7 +12,9 @@ Die Datei **Work-Material.zip** gehört zu dem in **Buildnachweis.json** angegeb
 
 ## Vom Papier in den Chat
 
-Für jeden Abschnitt den exakten Abschnittsnamen und den Rückkehrhinweis aus der zugehörigen Bank verwenden. Bei MSA und AHR die Aussagen A, B, C in der vorgegebenen Reihenfolge drucken. Nach der Begründung den Buchstaben im Gespräch prüfen. Bei Laura und den Vertiefungen folgt das bewusste Senden. Die Übungsakte gibt nach dem Prüfen direkt die Rückmeldung und den Wechsel zur nächsten Nachricht frei.
+Tom und Celina weisen unpassende Vorschläge schon bei der Auswahl zurück. Dafür keinen Papiercode anfordern. Bei Tom 2 und 3 steht zuerst der Quellenausschnitt beziehungsweise das Forschungsmaterial im Mittelpunkt.
+
+Für jeden Abschnitt den exakten Abschnittsnamen und den Rückkehrhinweis aus der zugehörigen Bank verwenden. Bei MSA und AHR die Aussagen A, B, C in der vorgegebenen Reihenfolge drucken. Nach der Begründung den Buchstaben im Gespräch prüfen. Bei Laura und den Vertiefungen folgt das bewusste Senden. In der Übungsakte erfolgt der Papierweg für MSA und AHR einmal bei U3. In allen vier Situationen wird die begründete Antwort bewusst gesendet. Danach reagiert die Gesprächsperson.
 
 ## Pflichtfall und gemeinsame Sicherung
 

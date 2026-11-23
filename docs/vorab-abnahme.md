@@ -1,6 +1,6 @@
 # Abnahme und Übergabe · Fallakte Klasse 8
 
-Integrationszweig `integration/vorabkandidat-02-und-08`. Abschlusscommit COMMIT_DES_PAKETS. Die gemeinsame Fassung ist ein Vorabkandidat für die unabhängige Unterrichtserprobung. Die eigenständigen Referenzzweige und der produktive Schulzugang wurden durch die Integration nicht verändert.
+Korrekturzweig `korrektur/lernwege-abnahme`, ausgehend vom Integrationsstand `23c3208`. Abschlusscommit COMMIT_DES_PAKETS. Die gemeinsame Fassung ist ein Vorabkandidat für die unabhängige Unterrichtserprobung. Die eigenständigen Referenzzweige und der produktive Schulzugang wurden durch die Integration nicht verändert.
 
 | Phase | Status, Zweig und Stand | Prüfung und Ergebnis |
 | --- | --- | --- |
@@ -10,6 +10,12 @@ Integrationszweig `integration/vorabkandidat-02-und-08`. Abschlusscommit COMMIT_
 | D · Celina | Abgeschlossen · derselbe Entwicklungszweig · 4688ad6 und f19ce57 · celina-1.0 | Pro Browser 140 Situationen. Hormone, STI-Barriere, Einlage, Zustimmung, mehrere vertretbare Ratschläge und Methodenwechsel geprüft. Der Kartenrückweg stellt eine vorher geöffnete Hilfe wieder her. Laura und Tom wurden erneut durchlaufen. |
 | E · Vorintegration | Abgeschlossen · Integrationszweig · bf79a48 · Unterrichtstag 08.12. aus 5d27cc3 | Der Tagesrahmen enthält die bytegleiche Fassung des zweiten Moduls. Beide Tageskarten, modulspezifische Navigation, getrennte Entwürfe, Reload und Wiederaufnahme sowie Start und Ende im simulierten LMS wurden im gebauten Kandidaten geprüft. |
 | F · Work | Abgeschlossen · Integrationszweig · COMMIT_DES_PAKETS | Fünf JSON-Banken aus der Auslieferung werden mit den eingebetteten Daten verglichen. Die lesbaren Fassungen benennen Aufgaben, Aussagen, Lösungen, Rückmeldungen, Quellen, Papierwege und die gemeinsame Sicherung. |
+
+## Korrekturrunde nach der unabhängigen Abnahme
+
+Die Übungsakte (uebung-1.1) übt Vermutung, Kartenprüfung, begründete Antwort, bewusstes Senden und Gesprächsreaktion. Ein korrigierter Entwurf lässt sich erneut bearbeiten. U3 ist der einzige reguläre Papierweg für MSA und AHR. Förder und ESA bleiben im Chat. Für die Vertiefungen gelten tom-1.2 und celina-1.1. Förder und ESA sehen höchstens drei Vorschläge auf einmal; weitere sind aufklappbar. Konflikte erscheinen vor dem Fachcheck. Bei Tom 2 und 3 lesen Förder und ESA einen Auszug direkt im Gespräch. MSA und AHR öffnen den Artikel oder die Studie vor dem Fachcheck. Die Freigabe Laura → Tom → Celina gilt für das gewählte Niveau in der aktuellen Sitzung. Der direkte Abschnittseinstieg ist jederzeit möglich.
+
+Die Browserprotokolle im Sichtprüfungs-ZIP gehören zum ausgelieferten Build. Der Inhaltsstand von Laura und die eingebettete Originalfassung des 08.12. wurden gegen die Referenz geprüft.
 
 ## Lieferumfang
 

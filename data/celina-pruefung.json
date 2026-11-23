@@ -215,7 +215,29 @@
     "ref": [
       "K",
       "wirkung"
-    ]
+    ],
+    "message": {
+      "Foerder": [
+        "Hi, ich bin Celina, 17. Ich möchte nicht schwanger werden und keine zusätzlichen Hormone nehmen. Was käme für mich infrage?"
+      ],
+      "ESA": [
+        "Hi, ich bin Celina, 17. Ich möchte nicht schwanger werden und keine zusätzlichen Hormone nehmen. Was käme für mich infrage?",
+        "Eine zuverlässige Methode ist mir wichtig."
+      ],
+      "MSA": [
+        "Hi, ich bin Celina, 17. Ich möchte nicht schwanger werden und keine zusätzlichen Hormone nehmen. Was käme für mich infrage?",
+        "Eine zuverlässige Methode ist mir wichtig."
+      ],
+      "AHR": [
+        "Hi, ich bin Celina, 17. Ich möchte nicht schwanger werden und keine zusätzlichen Hormone nehmen. Was käme für mich infrage?",
+        "Eine zuverlässige Methode ist mir wichtig."
+      ]
+    },
+    "sentReplies": {
+      "K": "Das könnten wir selbst ausprobieren. Dann müssen wir bei jedem Sex daran denken.",
+      "Cu": "Über eine Kupferspirale würde ich gern mehr erfahren.",
+      "K+Cu": "Beides wäre ohne zusätzliche Hormone. Ich möchte wissen, was im Alltag auf mich zukommt."
+    }
   },
   {
     "allowed": [
@@ -433,7 +455,29 @@
     "ref": [
       "K",
       "alltag"
-    ]
+    ],
+    "message": {
+      "Foerder": [
+        "Ich möchte mehrere Jahre verhüten. Später möchte ich vielleicht ein Kind. Jeden Tag an etwas denken möchte ich nicht. Kondome wären für uns möglich."
+      ],
+      "ESA": [
+        "Ich möchte mehrere Jahre verhüten. Später möchte ich vielleicht ein Kind. Jeden Tag an etwas denken möchte ich nicht. Kondome wären für uns möglich.",
+        "Was würde das im Alltag für uns bedeuten?"
+      ],
+      "MSA": [
+        "Ich möchte mehrere Jahre verhüten. Später möchte ich vielleicht ein Kind. Jeden Tag an etwas denken möchte ich nicht. Kondome wären für uns möglich.",
+        "Was würde das im Alltag für uns bedeuten?"
+      ],
+      "AHR": [
+        "Ich möchte mehrere Jahre verhüten. Später möchte ich vielleicht ein Kind. Jeden Tag an etwas denken möchte ich nicht. Kondome wären für uns möglich.",
+        "Was würde das im Alltag für uns bedeuten?"
+      ]
+    },
+    "sentReplies": {
+      "K": "Beim Sex müssten wir jedes Mal daran denken. Das kann ich mir vorstellen.",
+      "Cu": "Dass sie mehrere Jahre wirken kann, klingt interessant.",
+      "K+Cu": "Dann hätte ich länger Schutz und wir würden beim Sex ein Kondom benutzen."
+    }
   },
   {
     "allowed": [
@@ -651,7 +695,29 @@
     "ref": [
       "K",
       "alltag"
-    ]
+    ],
+    "message": {
+      "Foerder": [
+        "Das Einsetzen macht mir Sorgen. Ich habe noch nicht entschieden, ob ich eine Spirale möchte. Meine Regel tut meistens wenig weh."
+      ],
+      "ESA": [
+        "Das Einsetzen macht mir Sorgen. Ich habe noch nicht entschieden, ob ich eine Spirale möchte. Meine Regel tut meistens wenig weh.",
+        "Ob eine Spirale zu mir passt, möchte ich erst in der Praxis klären."
+      ],
+      "MSA": [
+        "Das Einsetzen macht mir Sorgen. Ich habe noch nicht entschieden, ob ich eine Spirale möchte. Meine Regel tut meistens wenig weh.",
+        "Ob eine Spirale zu mir passt, möchte ich erst in der Praxis klären."
+      ],
+      "AHR": [
+        "Das Einsetzen macht mir Sorgen. Ich habe noch nicht entschieden, ob ich eine Spirale möchte. Meine Regel tut meistens wenig weh.",
+        "Ob eine Spirale zu mir passt, möchte ich erst in der Praxis klären."
+      ]
+    },
+    "sentReplies": {
+      "K": "Das geht ohne Einlage. Das ist mir gerade wichtig.",
+      "Cu": "Vielleicht passt sie zu mir. Vor einer Einlage möchte ich mit der Ärztin oder dem Arzt sprechen.",
+      "K+Cu": "Bis ich mich entschieden habe, können wir beim Kondom bleiben."
+    }
   },
   {
     "allowed": [
@@ -868,7 +934,28 @@
     "ref": [
       "K",
       "sti"
-    ]
+    ],
+    "message": {
+      "Foerder": [
+        "Wir sind fest zusammen. Trotzdem möchte ich das Risiko von Infektionen beim Sex senken."
+      ],
+      "ESA": [
+        "Wir sind fest zusammen. Trotzdem möchte ich das Risiko von Infektionen beim Sex senken.",
+        "Was heißt das für euren Vorschlag?"
+      ],
+      "MSA": [
+        "Wir sind fest zusammen. Trotzdem möchte ich das Risiko von Infektionen beim Sex senken.",
+        "Was heißt das für euren Vorschlag?"
+      ],
+      "AHR": [
+        "Wir sind fest zusammen. Trotzdem möchte ich das Risiko von Infektionen beim Sex senken.",
+        "Was heißt das für euren Vorschlag?"
+      ]
+    },
+    "sentReplies": {
+      "K": "Das Risiko wird damit kleiner. Ganz weg ist es also nicht.",
+      "K+Cu": "Dann ist das Kondom für den Infektionsschutz wichtig. Über Kupfer entscheide ich nach der Beratung."
+    }
   },
   {
     "allowed": [
@@ -1085,6 +1172,27 @@
     "ref": [
       "K",
       "sti"
-    ]
+    ],
+    "message": {
+      "Foerder": [
+        "Was ratet ihr mir jetzt? Über eine Spirale möchte ich erst nach der Beratung entscheiden."
+      ],
+      "ESA": [
+        "Was ratet ihr mir jetzt? Über eine Spirale möchte ich erst nach der Beratung entscheiden.",
+        "Welche andere Möglichkeit hätte ich?"
+      ],
+      "MSA": [
+        "Was ratet ihr mir jetzt? Über eine Spirale möchte ich erst nach der Beratung entscheiden.",
+        "Welche andere Möglichkeit hätte ich?"
+      ],
+      "AHR": [
+        "Was ratet ihr mir jetzt? Über eine Spirale möchte ich erst nach der Beratung entscheiden.",
+        "Welche andere Möglichkeit hätte ich?"
+      ]
+    },
+    "sentReplies": {
+      "K": "Ein Kondom kann ich mir vorstellen. Wir müssten jedes Mal auf die richtige Anwendung achten.",
+      "K+Cu": "Ich verstehe, wozu das Kondom dient. Ob ich zusätzlich die Kupferspirale möchte, kläre ich in Ruhe."
+    }
   }
 ]
