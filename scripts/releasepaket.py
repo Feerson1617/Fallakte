@@ -12,7 +12,7 @@ import sys
 
 from modul_0212 import ROOT, commit
 sys.path.insert(0, str(ROOT / 'tests'))
-from kandidatenmaterial import verify
+from kandidatenmaterial import child, verify
 
 BASE = '8b8939c56c34c9c0771c2728a3c9821e6ed7f557'
 BRANCH = 'release/fallakte-0212-kandidat'
@@ -43,6 +43,33 @@ def baseline(document, head):
     return SLOT.sub(nested, document).replace(head.encode(), BASE.encode())
 
 
+def screen_instructions(folder):
+    """Bank-independent instructions in the shipped views also belong in the paper handoff."""
+    day = child((folder / 'Fallakte.html').read_bytes(), 'modul-02')
+    practice = (folder / 'Uebungsakte.html').read_bytes()
+    tom, celina = (child(day, 'reserve-' + name) for name in ('Tom', 'Celina'))
+    groups = [
+        ('Übung · vor der Karte', [practice], ['Was vermutest du? Prüfe deinen Gedanken mit der Karte.']),
+        ('Laura · Methodenwahl', [day], ['Wähle deinen vollständigen Rat für Laura.']),
+        ('Laura · nach dem Wechsel eines bereits geprüften Rats (MSA/AHR)', [day], [
+            'Passt dein notierter Grund noch zu deinem neuen Rat? Prüfe das und gib den passenden Buchstaben erneut ein.']),
+        ('Laura · nach dem Senden', [day], ['Lies Lauras Antwort.',
+            'Für die gemeinsame Sicherung nutzt du deinen Eintrag im Feld „Mein Schlussrat“.']),
+        ('Tom und Celina · Methodenwahl', [tom, celina], ['Welchen Vorschlag machst du?']),
+        ('Tom 2 · MSA/AHR', [tom], ['Lies den Artikel. Welche Aussage ist belegt?']),
+        ('Tom 3 · MSA/AHR', [tom], ['Lies Studie B. Was wurde tatsächlich untersucht?']),
+    ]
+    lines = ['## Weitere wörtliche Bildschirmaufträge',
+             'Die niveau- und abschnittsspezifischen Aufträge stehen in den jeweiligen Materialverträgen. '
+             'Diese zusätzlichen Hinweise erscheinen direkt an den Bedienelementen.']
+    for context, documents, prompts in groups:
+        lines.append('### ' + context)
+        for text in prompts:
+            assert all(text.encode() in doc for doc in documents), (context, text)
+            lines.append(text)
+    return '\n\n'.join(lines)
+
+
 def banks(folder):
     with ZipFile(folder / WORK) as archive:
         result = {}
@@ -70,6 +97,7 @@ def verify_release(folder):
     assert meta['inhaltsbanken'] == banks(folder)
     with ZipFile(folder / WORK) as z:
         assert z.read('Start hier.md') == (folder / GUIDE).read_bytes()
+        assert screen_instructions(folder) in z.read('Start hier.md').decode()
     with ZipFile(folder / SIGHT) as z:
         record = json.loads(z.read('Releasepruefung/Abnahme.json'))
         assert record['html_sha256'] == meta['html_sha256']
@@ -91,6 +119,7 @@ def package():
     status = 'Technisch bereit für die Materialproduktion'
     identity = f"Zweig `{BRANCH}` · Commit `{head}` · Build (UTC) {meta['build_utc']}"
     guide = (ROOT / 'docs/work-uebergabe.md').read_text().replace('gemeinsamen Vorabkandidaten', 'Release-Kandidaten')
+    guide += '\n' + screen_instructions(DEST) + '\n'
     guide += ('\n## Verbindlicher Stand für Work\n\n' + identity + '\n\n' +
               'Für die Materialproduktion gelten ausschließlich die fünf Banken dieser Ausgabe. Abschnittstitel, IDs, Aufträge, Kartenstellen und Codes wörtlich übernehmen. '
               'Lösungen und interne Prüfdaten bleiben im Lehrkraftmaterial. Bei einem Widerspruch Datei, Abschnitt, Niveau und betroffene Textstellen dokumentieren. '
@@ -121,6 +150,7 @@ def package():
         'Förder und ESA begründen digital, MSA und AHR üben in U3 den Papiercode. Tom 1–3 und Celina 1–5 wurden auf allen vier Niveaus geprüft, einschließlich Methodenwechsel, Quellen, Feedback und der Freigabereihenfolge.',
         'Der Tageswechsel erhielt laufende Entwürfe. Das 08.12.-Modul entspricht bytegenau der geprüften Referenz. Einzelwege, gemischte Niveaus sowie Wiedereinstieg wurden auch in der gemeinsamen Auslieferung bedient.',
         '## Befunde',
+        'P1 für die Materialübergabe: Im bisherigen Work-Export fehlten unter anderem der Vermutungsauftrag der Übung, die erneute Begründungsprüfung nach einem Methodenwechsel und die Leseaufträge zu Toms Quellen. Die Übergabe ergänzt die wörtlichen Aufträge und gleicht sie mit den ausgelieferten Modulen ab. '
         'Die frühere Auslieferung hatte acht Dateien und keine eigenständige versionierte Work-Übergabe. Nun enthält das Release neun Dateien und dokumentiert für acht Nutzdateien Größe und SHA-256. '
         'Die Prüfsumme des Buildnachweises kann separat aus der Datei berechnet werden. Die Endabnahme hat keinen offenen P0- oder P1-Befund an den geprüften Lernwegen ergeben.',
         '## Ausstehender Praxistest', boundary,
