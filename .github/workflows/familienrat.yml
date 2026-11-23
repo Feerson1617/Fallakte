@@ -1,0 +1,57 @@
+name: Fallakte · Familiennachrichten 08.12.
+on:
+  push:
+    branches: [entwicklung/0812-neukonzeption-final]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pruefen:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - suite: familienrat_bestand
+            evidence: Familienrat-Schutz
+          - suite: familienrat_qa
+            evidence: Familienrat-QA
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r tests/requirements.txt
+      - run: python -m playwright install --with-deps chromium webkit
+      - run: python scripts/familienrat_build.py
+      - run: python -u tests/${{ matrix.suite }}.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.evidence }}
+          path: build/${{ matrix.evidence }}/
+          if-no-files-found: error
+  uebergabe:
+    runs-on: ubuntu-24.04
+    needs: pruefen
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/familienrat_build.py
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: Familienrat-*
+          path: build/
+      - run: python scripts/familienrat_bericht.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Fallakte-08-12-${{ github.sha }}
+          path: dist/Familienrat/
+          if-no-files-found: error
+          retention-days: 90
