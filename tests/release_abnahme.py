@@ -114,7 +114,9 @@ def main():
             browser = getattr(pw, engine).launch(executable_path=os.getenv(engine.upper() + '_EXECUTABLE'))
             for i, tier in enumerate(LEVELS):
                 size = [(820,1180), (1180,820), (390,844), (390,844)][i]
-                context = browser.new_context(has_touch=True, offline=True)
+                # WebKit's offline flag blocks file:// itself, even a blank local page.
+                context = browser.new_context(has_touch=True, offline=engine == 'chromium', service_workers='block')
+                context.route(re.compile(r'^https?://'), lambda request: request.abort())
                 page = context.new_page()
                 errors, external = [], []
                 page.on('pageerror', lambda exc: errors.append(str(exc)))
