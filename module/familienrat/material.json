@@ -17,13 +17,13 @@
   "cards": [
     {
       "title": "Blutungen und Schmerzen",
-      "text": "Die Medikamente beenden die Schwangerschaft. Eines der Medikamente löst Zusammenziehungen der Gebärmutter aus. Es kommt zu Blutungen; Schmerzen und Krämpfe können auftreten. Medikamentöse Abbrüche sind bei fachgerechter Durchführung sichere Verfahren; schwere Komplikationen sind selten.",
-      "short": "Beim medikamentösen Abbruch zieht sich die Gebärmutter zusammen. Es kommt zu Blutungen. Schmerzen und Krämpfe können auftreten."
+      "text": "Eines der Medikamente bewirkt, dass sich die Gebärmutter zusammenzieht. Dabei wird Schwangerschaftsgewebe mit einer Blutung ausgestoßen. Schmerzen und Krämpfe können auftreten. Bei fachgerechter Durchführung sind schwere Komplikationen selten.",
+      "short": "Die Gebärmutter zieht sich zusammen. Es kommt zu Blutungen. Der Bauch kann schmerzen oder krampfen."
     },
     {
       "title": "Später schwanger werden",
       "text": "Nach einem komplikationslosen medikamentösen Abbruch bleibt eine spätere Schwangerschaft möglich. Die spätere Fruchtbarkeit wird nach heutigem Wissen dadurch nicht beeinträchtigt. Das ist keine Zusage einer späteren Schwangerschaft.",
-      "short": "Nach einem medikamentösen Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich. Die spätere Fruchtbarkeit wird nach heutigem Wissen dadurch nicht beeinträchtigt."
+      "short": "Nach einem Abbruch ohne Komplikationen kann eine Frau später wieder schwanger werden. Niemand kann ihr das sicher versprechen."
     },
     {
       "title": "Entwicklung des Embryos",
@@ -2204,5 +2204,10 @@
       4
     ]
   },
-  "intent": "Die Schülerinnen und Schüler bewerten, wie hilfreich unterschiedliche Ratschläge für Laura sind, indem sie deren Werte und Normen erschließen, fehlende biologische Fakten zum medikamentösen Schwangerschaftsabbruch ergänzen und ihre Einschätzungen anhand von Lauras Anliegen fachlich begründen."
+  "intent": "Die Schülerinnen und Schüler bewerten, wie hilfreich unterschiedliche Ratschläge für Laura sind, indem sie deren Werte und Normen erschließen, fehlende biologische Fakten zum medikamentösen Schwangerschaftsabbruch ergänzen und ihre Einschätzungen anhand von Lauras Anliegen fachlich begründen.",
+  "sourceReview": {
+    "Stand": "23.11.2026",
+    "Mutter": "BIÖG und IQWiG beschreiben das Zusammenziehen der Gebärmutter, das Ausstoßen des Gewebes, Blutungen und mögliche Krämpfe. Daraus ergibt sich kein Vergleich der Belastung mit dem Fortsetzen der Schwangerschaft.",
+    "Freundin": "IQWiG beschreibt in der Regel keine Auswirkungen auf die spätere Fruchtbarkeit. Die Freundin nennt spätere Kinder ausdrücklich. Der ergänzte Fakt klärt eine Möglichkeit der Familienplanung. Er garantiert weder eine spätere Schwangerschaft noch den Abschluss der Ausbildung."
+  }
 }

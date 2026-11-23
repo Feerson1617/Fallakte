@@ -70,6 +70,12 @@ def case(page,f,person,team,probe,shots=False):
             hints(f,task,team)
             tap(f,'cards')
             expect(f.locator('#dialog-body')).to_contain_text(c['card'])
+            if person=='Mutter' and task['id']=='Ergänzung':
+                card=f.locator('#dialog-body > details').first
+                if card.get_attribute('open') is None:card.locator('summary').first.tap()
+                if card.locator('details').count():card.locator('details summary').tap()
+                expect(card.get_by_text('Schwangerschaftsgewebe',exact=False).last).to_be_visible()
+                expect(card).to_contain_text('mit einer Blutung ausgestoßen')
             tap(f,'dismiss')
             for no,opt in enumerate(task['answers']):
                 if no==key:continue
