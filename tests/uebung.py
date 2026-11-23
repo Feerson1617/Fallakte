@@ -56,6 +56,7 @@ def run():
                         if j==0:
                             p.locator('#edit').tap();expect(p.locator('#send')).to_have_count(0)
                             p.locator('#answer-'+key).tap()
+                        if j==0 and i==0:p.screenshot(path=OUT/f'{name}-Entwurf.jpg')
                         p.locator('#send').tap()
                         expect(p.get_by_role('status')).to_have_text(stage['reply'])
                         if j==1 and i in (0,3):p.screenshot(path=OUT/f'{name}-{tier}.jpg')

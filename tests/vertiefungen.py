@@ -47,6 +47,7 @@ def tom(p,tier,engine):
                 f.locator('#help').click();expect(f.locator('#reading')).to_contain_text(section);f.locator('#back').click()
                 f.locator('#source').click();expect(f.locator('#resource')).to_contain_text(section);f.locator('#back').click()
                 if key!='K':blocked(f)
+                if key=='K+Cu' and tier=='ESA':p.screenshot(path=QA/f'{engine}-Tom-Konflikt.jpg')
         elif tier in LEVELS[2:]:expect(f.locator('#code,#send')).to_have_count(0)
         else:expect(f.locator('#desk blockquote').last).to_contain_text('Forschende' if i==1 else 'Studie B')
         f.locator('#help').click();expect(f.locator('#reading')).not_to_be_empty();f.locator('#back').click()

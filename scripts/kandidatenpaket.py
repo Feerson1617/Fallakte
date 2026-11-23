@@ -35,6 +35,7 @@ def package():
             for engine in ('chromium','webkit'):
                 selected=[p for p in shots if p.name.startswith(engine)]
                 assert selected,(folder,engine)
+                if folder.name=='Kandidat-08':selected=selected[:2]
                 for p in selected:z.write(p,f'{folder.name}/{p.name}')
     metadata=json.loads((TARGET/'Buildnachweis.json').read_text())
     audit=(ROOT/'docs/vorab-abnahme.md').read_text().replace('COMMIT_DES_PAKETS','`'+metadata['commit']+'`')

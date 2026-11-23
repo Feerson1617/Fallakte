@@ -9,7 +9,10 @@ function add(parent,tag,text=''){const e=document.createElement(tag);e.textConte
 function btn(parent,label,id,action){const b=add(parent,'button',label);b.id=id;b.onclick=action;return b;}
 function fresh(index,history=[]){return {index,history,choice:'',code:'',result:'',valid:false,sent:false,asked:'',read:false,previous:''};}
 function save(next){state=next;sessions.set(tier,next);}
-function clearChoice(key){Object.assign(state,{choice:key,code:'',result:'',valid:false,asked:'',help:0});draw();}
+function clearChoice(key){
+  if(!key && state.choice)state.previous=state.choice;
+  Object.assign(state,{choice:key,code:'',result:'',valid:false,asked:''});draw();
+}
 function resource(title,render){
   const heading=document.querySelector('#resource'),body=document.querySelector('#reading');
   if(dialog.open){

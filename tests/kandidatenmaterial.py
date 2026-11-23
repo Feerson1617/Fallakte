@@ -15,6 +15,8 @@ def verify(folder):
     app=(folder/'Fallakte.html').read_bytes()
     meta=json.loads((folder/'Buildnachweis.json').read_text())
     assert hashlib.sha256(app).hexdigest()==meta['html_sha256'] and len(app)==meta['bytes']<10_000_000
+    for name,expected in meta['auslieferungs_sha256'].items():
+        assert hashlib.sha256((folder/name).read_bytes()).hexdigest()==expected,name
     first=child(app,'modul-02');second=child(app,'modul-08')
     assert hashlib.sha256(first).hexdigest()==meta['tag02_sha256']
     assert hashlib.sha256(second).hexdigest()==meta['tag08_sha256']
