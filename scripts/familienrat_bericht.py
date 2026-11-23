@@ -33,7 +33,7 @@ def main():
         for file in sorted((REF/'dist/Uebungsakte').glob('*Material*')):z.write(file,'Referenz-02/'+file.name)
     rows=[r for engine in runs['browser'] for r in engine['wege']]
     timing=[r for r in rows if r['weg']=='Regulärer Pflichtweg']
-    assert len(rows)==16 and len(coupled['wege'])==8 and timing
+    assert len(rows)==24 and len(coupled['wege'])==8 and timing
     report=[
         '# Abnahme · Familiennachrichten am 08.12.2026',f'Entwicklungsstand `{head}` · Inhaltsbank {bank["version"]}',
         '## A · Bestandsschutz des 02.12.',
@@ -57,7 +57,7 @@ def main():
         'Hoch- und Querformat sowie 390 × 844 Pixel bei vergrößerter Schrift wurden per Touch bedient.',
         '| Browser | Team | Berührungen ab Fallstart | Besuchte Abschnittsansichten | Sekunden |\n|---|---|---:|---:|---:|\n'+'\n'.join(
             '| '+r['browser']+' '+r['version']+' | '+' + '.join(r['niveaus'])+f" | {r['tipps']} | {len(r['ansichten'])} | {r['sekunden']:.1f} |" for r in timing),
-        'Messung ab Öffnen der Mutter bis zum Angebot der Vertiefungen, einschließlich beider persönlicher Belegvergleiche bei Paararbeit. '
+        'Messung ab Öffnen der Mutter bis zum Angebot der Vertiefungen, einschließlich des persönlichen Belegvergleichs pro Person. '
         'Die Ansichten zählen aufeinanderfolgende sichtbare Abschnittstitel. Teilfragen mit gleichem Titel können mehrere Berührungen erfordern. '
         'Die Messung verwendet automatisierte Touch-Eingaben ohne Lese-, Gesprächs- und Schreibzeit.',
         '## E · Verbleibende Praxistests',

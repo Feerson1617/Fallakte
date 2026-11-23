@@ -197,6 +197,8 @@ function caseView(){
     const result=saved.records[person+'/Ergänzung'];
     if(result?.valid)paragraph(box,status(result)+(result.depth===5?' · '+ui.supportPaper:''),'tag');paragraph(box,bank.levelPrompts[high()].Festhalten);
     if(advanced(high()))paragraph(box,bank.caseReflection[person]);
+    if(idx<2 && result?.depth===5)
+      btn(box,ui.transfer,'optional-transfer',()=>go('case',{person,at,transfer:true}));
     btn(box,c.return,'next',()=>{
       if(saved.records[person+'/Ergänzung']?.valid)saved.complete[person]=true;
       if(person==='Mutter')go('case',{person:'Freundin',at:0});
@@ -211,7 +213,8 @@ function facts(box){
   const d=el(box,'details');el(d,'summary',ui.facts);
   for(const n of names.slice(0,2)){
     el(d,'strong',n+' · '+(saved.records[n+'/Ergänzung']?.valid?ui.confirmed:ui.supported));
-    paragraph(d,bank.cases[n].addition);
+    const original=el(d,'details');el(original,'summary',ui.family);paragraph(original,bank.cases[n].original);
+    el(d,'strong',ui.addition);paragraph(d,bank.cases[n].addition);paragraph(d,bank.cases[n].connection,'small');
   }
 }
 function evaluationHelp(box,r){
@@ -326,7 +329,7 @@ function pickerView(){
   }
   btn(root,ui.resumeHere,'open-entry',()=>{
     const at=Number(picker.step);
-    if(c)go('case',{person:n,at});else go('laura',{at,individual:picker.individual||0});
+    if(c)go('case',{person:n,at});else go('laura',{at,individual:members[1]?picker.individual||0:0});
   },'primary');
 }
 function draw(focus=false){

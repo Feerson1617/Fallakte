@@ -1,4 +1,21 @@
-# Gemeinsamer Vorabkandidat für den 02. und 08.12.2026
+# Fallakte · Familiennachrichten am 08.12.2026
+
+Auf diesem Zweig startet die gemeinsame Anwendung unter **dist/Familienrat/Fallakte.html**. Das Artefakt **Fallakte-08-12-&lt;Commit&gt;** enthält die beiden Offline-HTML-Dateien und SCORM-Pakete, Materialvertrag, Work-Übergabe, Screenshots, Buildnachweis und Abnahmebericht.
+
+```sh
+python scripts/familienrat_build.py
+python -m pip install -r tests/requirements.txt
+python -m playwright install --with-deps chromium webkit
+python tests/familienrat_bestand.py
+python tests/familienrat_qa.py
+python scripts/familienrat_bericht.py
+```
+
+Der Bau benötigt die Git-Historie des Repositorys. Er rekonstruiert Release `8b50305` in **build/Referenz-8b50305** und ersetzt in dessen Tagesauswahl ausschließlich das eingebettete Dokument des zweiten Unterrichtstags. Die Fachinhalte des neuen Tages stehen in **module/familienrat/material.json**. Der Export übernimmt diese Bank einschließlich der Bildschirmaufträge, Hilfen und Papierverweise.
+
+## Frühere Auslieferungen
+
+### Gemeinsamer Vorabkandidat für den 02. und 08.12.2026
 
 Das Actions-Artefakt **Fallakte-Vorabkandidat** enthält beide Offline-HTML-Dateien, beide SCORM-1.2-Pakete, die Work-Übergabe, die Sichtprüfung und den Abnahmebericht. `python scripts/vorabkandidat.py` baut beide digitalen Anwendungen aus diesem Checkout und dem festgelegten Git-Stand des zweiten Unterrichtstags. [Abnahme der Phasen](docs/vorab-abnahme.md) · [Materialübergabe](docs/work-uebergabe.md)
 

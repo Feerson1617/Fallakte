@@ -62,7 +62,7 @@ def case(page,f,person,team,probe,shots=False):
         expect(f.locator('main h2').last).to_have_text(task['prompt'])
         assert not can_continue(f)
         if f.locator('#compare').is_visible():
-            if probe:f.locator('textarea').fill('körperliche Unversehrtheit' if j==0 else 'Meine Formulierung')
+            if probe:f.locator('textarea').fill(BANK['variants'][LEVELS.index(team[-1])%3] if j==0 else 'Mein eigener Satz zu dieser Textstelle.')
             tap(f,'compare')
             if probe:expect(f.locator('main')).to_contain_text(BANK['ui']['freeNote'])
         if shots and j==0:snap(page,person+'-Aufgabe')
@@ -81,7 +81,9 @@ def case(page,f,person,team,probe,shots=False):
         tap(f,'answer-'+str(key));expect(f.locator('#response')).to_have_text(task['answers'][key]['feedback'])
         if probe:expect(f.locator('.tag').last).to_have_text(BANK['ui']['used'])
         tap(f,'next')
-    if probe and person in NAMES[2:]:
+    if probe and person in NAMES[:2]:
+        tap(f,'optional-transfer')
+    if probe:
         expect(f.locator('main h2').last).to_have_text(c['transfer']['prompt'])
         hints(f,c['transfer'],team)
         for i in range(1,len(c['transfer']['answers'])):
@@ -152,7 +154,7 @@ def engine_run(engine,url):
     with sync_playwright() as pw:
         b=getattr(pw,engine).launch(executable_path=os.getenv(engine.upper()+'_EXECUTABLE'))
         freeze=check_freeze(b,engine)
-        for route,team in enumerate(TEAMS):
+        for route,team in enumerate(TEAMS + [[t] for t in LEVELS]):
             portrait=route%2==0
             size=(390,844) if route==6 else (820,1180) if portrait else (1180,820)
             ctx=b.new_context(has_touch=True,viewport=dict(zip(('width','height'),size)),reduced_motion='reduce')
@@ -186,11 +188,18 @@ def engine_run(engine,url):
                 recover(page,f,shell,team,'Freundin',5)
                 expect(f.locator('section')).to_contain_text(BANK['cases']['Freundin']['tasks'][-1]['prompt'])
                 if engine=='webkit' and route==7:snap(page,'Wiedereinstieg')
+                if route==7:
+                    recover(page,f,shell,team,'Lauras Frage',2)
+                    tap(f,'weight-0');tap(f,'concern-1');tap(f,'fact-1')
+                    expect(f.locator('section')).to_contain_text(BANK['review'][8][1].split('“')[0])
+                    tap(f,'other')
+                    expect(f.locator('section')).to_contain_text(BANK['ui']['otherNote'])
+                    tap(f,'edit-weight');expect(f.locator('#weight-2')).to_be_visible()
                 for n in [*NAMES,'Lauras Frage']:
                     recover(page,f,shell,team,n,0)
                     expect(f.locator('aside')).to_contain_text('Laura')
                 # A shortcut imports underlying facts as help without granting prior answers.
-                f.locator('aside summary').tap();expect(f.locator('aside')).to_contain_text('Als Hilfe bereitgestellt')
+                f.locator('aside > details > summary').tap();expect(f.locator('aside')).to_contain_text('Als Hilfe bereitgestellt')
             if lms:
                 assert page.evaluate('[localStorage.length,sessionStorage.length]')==[0,0]
                 page.locator('iframe').evaluate("e=>e.src='about:blank'")
