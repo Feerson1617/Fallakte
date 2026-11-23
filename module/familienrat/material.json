@@ -1,5 +1,5 @@
 {
-  "version": "familienrat-1.1",
+  "version": "familienrat-1.2",
   "levels": [
     "Förder",
     "ESA",
@@ -459,10 +459,6 @@
         "Mutter 4 – Festhalten"
       ],
       "field": "Mutter – Fakt",
-      "first": "Markiere zuerst allein „Meine erste Antwort“ im Feld „Mutter – Fakt“. Prüft dann gemeinsam.",
-      "paper": "Halte die geprüfte Ergänzung im Feld „Mutter – Fakt“ unter „Nach dem Prüfen“ fest. Lass deine erste Antwort stehen.",
-      "destination": "Freundin 1 – Nachricht lesen",
-      "return": "Weiter im Chat · Freundin 1 – Nachricht lesen",
       "recovery": [
         {
           "section": "Mutter 1 – Nachricht lesen",
@@ -929,10 +925,6 @@
         "Freundin 4 – Festhalten"
       ],
       "field": "Freundin – Fakt",
-      "first": "Markiere zuerst allein „Meine erste Antwort“ im Feld „Freundin – Fakt“. Prüft dann gemeinsam.",
-      "paper": "Halte die geprüfte Ergänzung im Feld „Freundin – Fakt“ unter „Nach dem Prüfen“ fest. Lass deine erste Antwort stehen.",
-      "destination": "Lauras Frage – Lesen",
-      "return": "Weiter im Chat · Lauras Frage – Lesen",
       "recovery": [
         {
           "section": "Freundin 1 – Nachricht lesen",
@@ -1320,10 +1312,6 @@
         "Großmutter 4 – Festhalten"
       ],
       "field": "Großmutter – Wert",
-      "first": "Markiere zuerst allein „Meine erste Antwort“ im Feld „Großmutter – Wert“. Prüft dann gemeinsam.",
-      "paper": "Halte die geprüfte Ergänzung im Feld „Großmutter – Wert“ unter „Nach dem Prüfen“ fest. Lass deine erste Antwort stehen.",
-      "destination": "Lauras Frage – Festhalten",
-      "return": "Weiter im Chat · Lauras Frage – Festhalten",
       "recovery": [
         {
           "section": "Großmutter 1 – Nachricht lesen",
@@ -1706,10 +1694,6 @@
         "Vater 4 – Festhalten"
       ],
       "field": "Vater – Norm",
-      "first": "Markiere zuerst allein „Meine erste Antwort“ im Feld „Vater – Norm“. Prüft dann gemeinsam.",
-      "paper": "Halte die geprüfte Ergänzung im Feld „Vater – Norm“ unter „Nach dem Prüfen“ fest. Lass deine erste Antwort stehen.",
-      "destination": "Lauras Frage – Festhalten",
-      "return": "Weiter im Chat · Lauras Frage – Festhalten",
       "recovery": [
         {
           "section": "Vater 1 – Nachricht lesen",
@@ -1857,7 +1841,7 @@
     "Die Mutter und die Freundin helfen mit den Ergänzungen bei unterschiedlichen Fragen. Entscheide, welche Frage du jetzt besonders wichtig findest.",
     "Schau auf eure ergänzten Fakten und auf Lauras Wörter ‚Blutungen und Schmerzen‘ sowie ‚später schwanger werden‘.",
     "Verbinde drei Dinge: die Frage Lauras, die passende Information und deine Einschätzung. Beginne: ‚Ich finde die ergänzte Nachricht der … besonders hilfreich, weil …‘.",
-    "Eine mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Mutter besonders hilfreich. Laura hat Angst vor Beschwerden. Die Information über Blutungen und mögliche Schmerzen zeigt ihr, welche Beschwerden auftreten können. Deshalb hilft diese Nachricht bei ihrer Sorge. Ob Laura die Schwangerschaft fortsetzen möchte, entscheidet der Fakt nicht.‘ Eine andere mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Freundin besonders hilfreich. Laura fragt, ob sie später noch schwanger werden kann. Nach einem Abbruch mit Medikamenten ohne Komplikationen bleibt das möglich. Deshalb hilft die Information bei ihrer Zukunftsplanung. Sie sagt nicht, dass Laura jetzt abbrechen soll.‘ Beide Begründungen sind möglich. Entscheide selbst, welche Frage du zuerst beantworten möchtest. Halte deine Verbindung auf dem Bogen fest."
+    "Eine mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Mutter besonders hilfreich. Laura hat Angst vor Beschwerden. Die Information über Blutungen und mögliche Schmerzen zeigt ihr, welche Beschwerden auftreten können. Deshalb hilft diese Nachricht bei ihrer Sorge. Ob Laura die Schwangerschaft fortsetzen möchte, entscheidet der Fakt nicht.‘ Eine andere mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Freundin besonders hilfreich. Laura fragt, ob sie später noch schwanger werden kann. Nach einem Abbruch mit Medikamenten ohne Komplikationen bleibt das möglich. Deshalb hilft die Information bei ihrer Zukunftsplanung. Sie sagt nicht, dass Laura jetzt abbrechen soll.‘ Beide Begründungen sind möglich. Entscheide selbst, welche Frage du zuerst beantworten möchtest."
   ],
   "review": [
     [
@@ -1961,7 +1945,7 @@
     ],
     [
       "MSA",
-      "Notiere kurz den Wert und die allgemeine Regel. Nenne den konkreten Rat. Welcher Bestandteil wird nicht ausdrücklich genannt?",
+      "Bestimme Wert, Regel, konkreten Rat und Leerstelle am Gerät. Zeige dafür die passende Textstelle oder formuliere eigene Stichworte.",
       "Fachkartenabschnitt zunächst selbst finden. Die fehlende Information in einem kurzen Satz ergänzen und ihren Bezug zum Wert erklären.",
       "Inhalt und Bezug selbstständig herstellen; eigene Formulierung mit fachlichem Vergleich prüfen, ohne automatisches Schlüsselworturteil."
     ],
@@ -1997,13 +1981,6 @@
     "Lauras Frage – Festhalten"
   ],
   "design": "Fallakte_02-12-2026_Endkorrektur.zip",
-  "paperFields": [
-    "Meine erste Antwort",
-    "Nach dem Prüfen",
-    "Lauras Frage",
-    "Fakt",
-    "Meine Antwort"
-  ],
   "variants": [
     "Gesundheit",
     "körperliche Gesundheit",
@@ -2050,9 +2027,8 @@
     "choice": "Welche ergänzte Nachricht hilft Laura bei dieser Frage besonders?",
     "both": "Beide Nachrichten",
     "limit": "Prüfe die Grenze des Fakts.",
-    "write": "Meine Antwort steht auf meinem Bogen",
     "apply": "Bezug prüfen",
-    "before": "Denkt zuerst einzeln nach. Haltet eure erste Antwort auf dem eigenen Bogen fest.",
+    "before": "Lies Lauras Fragen. Im nächsten Abschnitt beginnt deine persönliche Antwort.",
     "return": "Weiter im Chat",
     "theme": "Lauras Frage",
     "facts": "Ergänzungen ansehen",
@@ -2066,22 +2042,19 @@
     "change": "Niveaus ändern",
     "source": "Kartenstelle öffnen",
     "again": "Frage oder Beleg ändern",
-    "reflect": "Vergleiche mit deinem eigenen Satz. Ergänze auf dem Bogen, was du jetzt genauer sagen kannst.",
-    "comparePaper": "Vergleicht danach eure persönlichen Antworten. Lasst die erste Fassung lesbar.",
-    "openPersonal": "Zur eigenen Begründung",
+    "openPersonal": "Lauras Frage – Meine Antwort",
     "role": "Wechselt jetzt die Rollen beim Lesen und Bedienen.",
     "result": "Geprüfte Aussagen",
     "read": "Nachricht prüfen",
     "examples": "Satzteile für meinen Bogen",
     "other": "Eigene Verbindung",
-    "otherNote": "Der Fakt beantwortet Lauras Frage. Halte deinen eigenen Grund auch auf dem Lernbogen fest.",
+    "otherNote": "Der Fakt beantwortet Lauras Frage. Formuliere deinen eigenen Bezug hier am Gerät.",
     "priority": "Welche Frage gewichtest du für diese Nachricht?",
     "evidence": "Welche Fachinformation belegt deinen Bezug?",
     "questionA": "Welche Beschwerden können auftreten?",
     "questionB": "Kann ich nach einem Abbruch ohne Komplikationen später schwanger werden?",
     "guarantee": "Eine spätere Schwangerschaft ist sicher.",
     "forced": "Die biologische Information entscheidet, was Laura tun muss.",
-    "individual": "Schreibe deine Verbindung jetzt zuerst allein auf deinen Bogen: Lauras Frage – Fakt – Meine Antwort.",
     "optional": "Nach der persönlichen Bewertung",
     "returnStart": "Zur Tagesauswahl über den Pfeil in der Kopfleiste.",
     "helpTitle": "Hilfe",
@@ -2103,7 +2076,6 @@
     "factSource": "Welche Frage beantwortet die Information?",
     "whatMissing": "Suche den nicht ausgesprochenen Bestandteil.",
     "selectSection": "Abschnitt oder Teilfrage",
-    "supportPaper": "Kennzeichne auf deinem Bogen, wenn du die Ergänzung mit einer Lösungshilfe gefunden hast.",
     "who": "Wessen Nachricht?",
     "editWeight": "Meine Gewichtung ändern",
     "paperHead": "Meine persönliche Begründung",
@@ -2123,35 +2095,34 @@
     "openReason": "Warum hilft dieser Fakt dir, gerade diese Nachricht zu beurteilen? Wenige Worte genügen.",
     "reasonOpen": "Deine persönliche Begründung ist noch ungeprüft.",
     "limitChecked": "Fakt, Frage und Aussagegrenze passen zusammen.",
-    "checkLimit": "Die Auswahl prüft die Grenze des Fakts. Vergleiche deinen eigenen Grund auf dem Lernbogen.",
+    "checkLimit": "Prüfe hier die Grenze des Fakts. Deine persönliche Begründung bleibt offen.",
     "reviewPending": "Öffne die persönliche Bewertung, um deinen Beleg zu prüfen.",
     "transferIntro": "Probiere die Erklärung an einer neuen Frage aus.",
-    "ownReasonSaved": "Eigene Verbindung auf dem Lernbogen festhalten.",
     "editReason": "Eigene Worte ändern",
     "continueReason": "Aussagegrenze prüfen",
     "mixedTransfer": "Erkläre zusätzlich, welchen Schluss der Fakt für Lauras Entscheidung offenlässt.",
-    "timeHint": "Lösungshilfe für die Bewertung angesehen."
+    "timeHint": "Lösungshilfe für die Bewertung angesehen.",
+    "digitalCheck": "Wähle am Gerät Nachricht, Anliegen und passenden Fakt. Prüfe die Grenze des Fakts.",
+    "endRecovery": "Nutze den Auftrag unten, wenn deine frühere Rückmeldung auf dem Bogen vorliegt. Fehlt sie, öffne zuerst den digitalen Fachvergleich.",
+    "sameStep": "Prüfe deinen Vorschlag hier im geöffneten Abschnitt.",
+    "helpBeforePaper": "Bleib am Gerät. Wähle die Erklärung zur neuen Frage."
   },
   "levelPrompts": {
     "Förder": {
       "analyse": "Lies den Satz. Tippe auf die passende Antwort.",
-      "Ergänzung": "Welche Aussage passt? Tipp auf die Karte, wenn du Hilfe brauchst.",
-      "Festhalten": "Markiere die Ergänzung. Sag, welche Frage sie beantwortet."
+      "Ergänzung": "Welche Aussage passt? Tipp auf die Karte, wenn du Hilfe brauchst."
     },
     "ESA": {
       "analyse": "Ordne die Aussage zu. Achte darauf, ob sie einen Wert, eine Regel oder einen Rat nennt.",
-      "Ergänzung": "Wähle den passenden Grund. Ergänze mündlich: Diese Information hilft, weil …",
-      "Festhalten": "Halte Wert und Norm kurz fest. Ergänze den Bezug mit eigenen Worten."
+      "Ergänzung": "Wähle den passenden Grund. Ergänze mündlich: Diese Information hilft, weil …"
     },
     "MSA": {
       "analyse": "Formuliere erst selbst, welche Funktion die Aussage im Text hat. Vergleiche anschließend ihre Bedeutung.",
-      "Ergänzung": "Finde die passende Fachkartenstelle. Formuliere eine Ergänzung und erkläre ihren Bezug.",
-      "Festhalten": "Notiere knapp, wie die Ergänzung die Perspektive verständlicher macht."
+      "Ergänzung": "Finde die passende Fachkartenstelle. Formuliere eine Ergänzung und erkläre ihren Bezug."
     },
     "AHR": {
       "analyse": "Erschließe die Aussage aus der Nachricht. Begründe an einer Textstelle, warum sie diese Funktion hat.",
-      "Ergänzung": "Formuliere die Ergänzung selbst. Was klärt sie, und welche Schlussfolgerung wäre zu weitgehend?",
-      "Festhalten": "Begründe eine Grenze des Rats. Welches weitere Kriterium müsste Laura selbst gewichten?"
+      "Ergänzung": "Formuliere die Ergänzung selbst. Was klärt sie, und welche Schlussfolgerung wäre zu weitgehend?"
     }
   },
   "caseReflection": {
@@ -2174,31 +2145,31 @@
       "Die Mutter und die Freundin helfen mit den Ergänzungen bei unterschiedlichen Fragen. Entscheide, welche Frage du jetzt besonders wichtig findest.",
       "Schau auf eure ergänzten Fakten und auf Lauras Wörter ‚Blutungen und Schmerzen‘ sowie ‚später schwanger werden‘.",
       "Verbinde drei Dinge: die Frage Lauras, die passende Information und deine Einschätzung. Beginne: ‚Ich finde die ergänzte Nachricht der … besonders hilfreich, weil …‘.",
-      "Eine mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Mutter besonders hilfreich. Laura hat Angst vor Beschwerden. Die Information über Blutungen und mögliche Schmerzen zeigt ihr, welche Beschwerden auftreten können. Deshalb hilft diese Nachricht bei ihrer Sorge. Ob Laura die Schwangerschaft fortsetzen möchte, entscheidet der Fakt nicht.‘ Eine andere mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Freundin besonders hilfreich. Laura fragt, ob sie später noch schwanger werden kann. Nach einem Abbruch mit Medikamenten ohne Komplikationen bleibt das möglich. Deshalb hilft die Information bei ihrer Zukunftsplanung. Sie sagt nicht, dass Laura jetzt abbrechen soll.‘ Beide Begründungen sind möglich. Entscheide selbst, welche Frage du zuerst beantworten möchtest. Halte deine Verbindung auf dem Bogen fest."
+      "Eine mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Mutter besonders hilfreich. Laura hat Angst vor Beschwerden. Die Information über Blutungen und mögliche Schmerzen zeigt ihr, welche Beschwerden auftreten können. Deshalb hilft diese Nachricht bei ihrer Sorge. Ob Laura die Schwangerschaft fortsetzen möchte, entscheidet der Fakt nicht.‘ Eine andere mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Freundin besonders hilfreich. Laura fragt, ob sie später noch schwanger werden kann. Nach einem Abbruch mit Medikamenten ohne Komplikationen bleibt das möglich. Deshalb hilft die Information bei ihrer Zukunftsplanung. Sie sagt nicht, dass Laura jetzt abbrechen soll.‘ Beide Begründungen sind möglich. Entscheide selbst, welche Frage du zuerst beantworten möchtest."
     ],
     "ESA": [
       "Welche Frage würdest du zuerst beantworten? Warum gerade diese? Ergänze: Ich finde die ergänzte Nachricht der … besonders hilfreich, weil Laura … . Die Information … hilft ihr dabei, … .",
       "Die Mutter und die Freundin helfen mit den Ergänzungen bei unterschiedlichen Fragen. Entscheide, welche Frage du jetzt besonders wichtig findest.",
       "Schau auf eure ergänzten Fakten und auf Lauras Wörter ‚Blutungen und Schmerzen‘ sowie ‚später schwanger werden‘.",
       "Verbinde drei Dinge: die Frage Lauras, die passende Information und deine Einschätzung. Beginne: ‚Ich finde die ergänzte Nachricht der … besonders hilfreich, weil …‘.",
-      "Eine mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Mutter besonders hilfreich. Laura hat Angst vor Beschwerden. Die Information über Blutungen und mögliche Schmerzen zeigt ihr, welche Beschwerden auftreten können. Deshalb hilft diese Nachricht bei ihrer Sorge. Ob Laura die Schwangerschaft fortsetzen möchte, entscheidet der Fakt nicht.‘ Eine andere mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Freundin besonders hilfreich. Laura fragt, ob sie später noch schwanger werden kann. Nach einem Abbruch mit Medikamenten ohne Komplikationen bleibt das möglich. Deshalb hilft die Information bei ihrer Zukunftsplanung. Sie sagt nicht, dass Laura jetzt abbrechen soll.‘ Beide Begründungen sind möglich. Entscheide selbst, welche Frage du zuerst beantworten möchtest. Halte deine Verbindung auf dem Bogen fest."
+      "Eine mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Mutter besonders hilfreich. Laura hat Angst vor Beschwerden. Die Information über Blutungen und mögliche Schmerzen zeigt ihr, welche Beschwerden auftreten können. Deshalb hilft diese Nachricht bei ihrer Sorge. Ob Laura die Schwangerschaft fortsetzen möchte, entscheidet der Fakt nicht.‘ Eine andere mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Freundin besonders hilfreich. Laura fragt, ob sie später noch schwanger werden kann. Nach einem Abbruch mit Medikamenten ohne Komplikationen bleibt das möglich. Deshalb hilft die Information bei ihrer Zukunftsplanung. Sie sagt nicht, dass Laura jetzt abbrechen soll.‘ Beide Begründungen sind möglich. Entscheide selbst, welche Frage du zuerst beantworten möchtest."
     ],
     "MSA": [
       "Entscheide, welche ergänzte Nachricht Laura jetzt besonders hilft. Begründe mit einer ihrer Fragen und einer biologischen Information. Zwei bis drei kurze Sätze genügen.",
       "Die Mutter und die Freundin helfen mit den Ergänzungen bei unterschiedlichen Fragen. Entscheide, welche Frage du jetzt besonders wichtig findest.",
       "Schau auf eure ergänzten Fakten und auf Lauras Wörter ‚Blutungen und Schmerzen‘ sowie ‚später schwanger werden‘.",
       "Verbinde drei Dinge: die Frage Lauras, die passende Information und deine Einschätzung. Beginne: ‚Ich finde die ergänzte Nachricht der … besonders hilfreich, weil …‘.",
-      "Eine mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Mutter besonders hilfreich. Laura hat Angst vor Beschwerden. Die Information über Blutungen und mögliche Schmerzen zeigt ihr, welche Beschwerden auftreten können. Deshalb hilft diese Nachricht bei ihrer Sorge. Ob Laura die Schwangerschaft fortsetzen möchte, entscheidet der Fakt nicht.‘ Eine andere mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Freundin besonders hilfreich. Laura fragt, ob sie später noch schwanger werden kann. Nach einem Abbruch mit Medikamenten ohne Komplikationen bleibt das möglich. Deshalb hilft die Information bei ihrer Zukunftsplanung. Sie sagt nicht, dass Laura jetzt abbrechen soll.‘ Beide Begründungen sind möglich. Entscheide selbst, welche Frage du zuerst beantworten möchtest. Halte deine Verbindung auf dem Bogen fest."
+      "Eine mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Mutter besonders hilfreich. Laura hat Angst vor Beschwerden. Die Information über Blutungen und mögliche Schmerzen zeigt ihr, welche Beschwerden auftreten können. Deshalb hilft diese Nachricht bei ihrer Sorge. Ob Laura die Schwangerschaft fortsetzen möchte, entscheidet der Fakt nicht.‘ Eine andere mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Freundin besonders hilfreich. Laura fragt, ob sie später noch schwanger werden kann. Nach einem Abbruch mit Medikamenten ohne Komplikationen bleibt das möglich. Deshalb hilft die Information bei ihrer Zukunftsplanung. Sie sagt nicht, dass Laura jetzt abbrechen soll.‘ Beide Begründungen sind möglich. Entscheide selbst, welche Frage du zuerst beantworten möchtest."
     ],
     "AHR": [
       "Vergleiche den Nutzen beider ergänzten Nachrichten für Lauras Fragen. Begründe deine Gewichtung biologisch. Nenne zusätzlich eine Grenze: Was lässt sich aus der Information nicht entscheiden?",
       "Die Mutter und die Freundin helfen mit den Ergänzungen bei unterschiedlichen Fragen. Entscheide, welche Frage du jetzt besonders wichtig findest.",
       "Schau auf eure ergänzten Fakten und auf Lauras Wörter ‚Blutungen und Schmerzen‘ sowie ‚später schwanger werden‘.",
       "Verbinde drei Dinge: die Frage Lauras, die passende Information und deine Einschätzung. Beginne: ‚Ich finde die ergänzte Nachricht der … besonders hilfreich, weil …‘.",
-      "Eine mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Mutter besonders hilfreich. Laura hat Angst vor Beschwerden. Die Information über Blutungen und mögliche Schmerzen zeigt ihr, welche Beschwerden auftreten können. Deshalb hilft diese Nachricht bei ihrer Sorge. Ob Laura die Schwangerschaft fortsetzen möchte, entscheidet der Fakt nicht.‘ Eine andere mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Freundin besonders hilfreich. Laura fragt, ob sie später noch schwanger werden kann. Nach einem Abbruch mit Medikamenten ohne Komplikationen bleibt das möglich. Deshalb hilft die Information bei ihrer Zukunftsplanung. Sie sagt nicht, dass Laura jetzt abbrechen soll.‘ Beide Begründungen sind möglich. Entscheide selbst, welche Frage du zuerst beantworten möchtest. Halte deine Verbindung auf dem Bogen fest."
+      "Eine mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Mutter besonders hilfreich. Laura hat Angst vor Beschwerden. Die Information über Blutungen und mögliche Schmerzen zeigt ihr, welche Beschwerden auftreten können. Deshalb hilft diese Nachricht bei ihrer Sorge. Ob Laura die Schwangerschaft fortsetzen möchte, entscheidet der Fakt nicht.‘ Eine andere mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Freundin besonders hilfreich. Laura fragt, ob sie später noch schwanger werden kann. Nach einem Abbruch mit Medikamenten ohne Komplikationen bleibt das möglich. Deshalb hilft die Information bei ihrer Zukunftsplanung. Sie sagt nicht, dass Laura jetzt abbrechen soll.‘ Beide Begründungen sind möglich. Entscheide selbst, welche Frage du zuerst beantworten möchtest."
     ]
   },
-  "paperRecovery": "Markiere zuletzt bearbeiteten Abschnitt und Teilfrage. Wähle unter „Nach Neustart“ eure Niveaus, die Nachricht und denselben Abschnitt. Die frühere eigene Antwort steht auf dem Bogen.",
+  "paperRecovery": "Nach einem Neustart dieselben Niveaus wählen. Benutze beim zuletzt bearbeiteten Papierfeld den angegebenen Rückkehrschritt unter „Nach Neustart“. Frühere Einträge bleiben auf deinem Bogen.",
   "levelsHelp": "Hilfe 1 gibt eine Denkrichtung, Hilfe 2 erklärt die Kategorie, Hilfe 3 führt zur Textstelle, Hilfe 4 grenzt ein, Hilfe 5 zeigt eine erläuterte Lösung. Die spätere Verbindung zu Lauras Frage bleibt eine eigene Handlung. Nach Hilfe 5 in einem Familienfall folgt einmal die kurze Anwendung beim Festhalten. Bei Zeitdruck bleibt Lauras Frage sofort erreichbar.",
   "screens": {
     "Tagesauswahl.jpg": "Gemeinsamer Einstieg",
@@ -2214,15 +2185,26 @@
     "Wiedereinstieg.jpg": "Direkt in Freundin 3 auf Förder/AHR",
     "Eigenleistung.jpg": "AHR · Eigener Gedanke vor dem Aussagenvergleich",
     "Anwendung.jpg": "Förder/ESA · Neue Frage nach Hilfe 5",
-    "Eigene-Verbindung.jpg": "Getrennte Rückmeldung zum Fachbeleg und zur offenen persönlichen Begründung"
+    "Eigene-Verbindung.jpg": "Getrennte Rückmeldung zum Fachbeleg und zur offenen persönlichen Begründung",
+    "Mutter-Erstfeld.jpg": "Erste eigene Ergänzung auf Papier · Mutter",
+    "Freundin-Erstfeld.jpg": "Erste eigene Ergänzung auf Papier · Freundin",
+    "Großmutter-Erstfeld.jpg": "Erste eigene Ergänzung auf Papier · Großmutter",
+    "Vater-Erstfeld.jpg": "Erste eigene Ergänzung auf Papier · Vater",
+    "Mutter-Ergebnisfeld.jpg": "Geprüfte Ergänzung und Rückkehrziel · Mutter",
+    "Freundin-Ergebnisfeld.jpg": "Geprüfte Ergänzung und Rückkehrziel · Freundin",
+    "Großmutter-Ergebnisfeld.jpg": "Geprüfte Ergänzung und Rückkehrziel · Großmutter",
+    "Vater-Ergebnisfeld.jpg": "Geprüfte Ergänzung und Rückkehrziel · Vater",
+    "Fachbezug-Pruefen.jpg": "Persönlicher Belegvergleich am Gerät",
+    "Lernbogen-Sicherung.jpg": "Überarbeitung im selben Feld und gemeinsame Sicherung",
+    "Reserve-Neustart.jpg": "Rückkehr nach direktem Einstieg in einen freiwilligen Fall"
   },
   "analogSteps": [
-    "Ersten Gedanken auf dem persönlichen Bogen markieren, bevor das Team seine Antwort prüft.",
+    "Bearbeite das persönliche Erstfeld der jeweiligen Ergänzung vor dem digitalen Vergleich.",
     "Originalnachricht lesen. Wert, Norm und Folgerung an der Nachricht untersuchen und den fehlenden Bestandteil bestimmen.",
     "Auf MSA und AHR zuerst eigene Stichworte formulieren oder die passende Originalstelle zeigen. Dann die Bedeutung anhand der Aussagen prüfen. Eigene Worte bleiben ungeprüft.",
-    "Geprüfte Ergänzung und erhaltene Hilfe markieren. Die ursprüngliche Markierung bleibt lesbar. Nach einer vollständigen Lösungshilfe die veränderte Frage zum Fall einmal bearbeiten und das Ergebnis kennzeichnen.",
-    "Nach Mutter und Freundin oder zum vorgezogenen Stopp Lauras zweite Nachricht lesen. Beide schreiben einzeln ihre Antwort.",
-    "Jede Person verbindet ihr gewähltes Anliegen, einen passenden Fakt und ihre persönliche Gewichtung. Bei Gleichgewichtung beide Verbindungen erklären. Die Reichweite des Fakts prüfen. Anschließend mit der Erklärung vergleichen. Bei einer eigenen Verbindung die Herkunft des Fakts benennen und den persönlichen Zusammenhang auf dem Lernbogen begründen. Nur der Fakt und seine Grenze werden am Gerät geprüft."
+    "Halte die Ergänzung im Ergebnisfeld fest. Bei Lösungshilfe dieselbe Zeile kennzeichnen. Die kurze Anwendung erfolgt vor diesem Eintrag am Gerät.",
+    "Nach den beiden Pflichtfällen oder bei Zeitdruck Lauras zweite Nachricht lesen. Jede Person begründet zuerst auf dem eigenen Bogen.",
+    "Jede Person prüft im Chat ihren Fachbeleg und dessen Reichweite. Bei gleicher Gewichtung prüft sie beide Verbindungen. Erst danach präzisiert sie im selben Papierfeld bei Bedarf ihren eigenen Grund, auch bei einem fallübergreifenden Fakt."
   ],
   "evaluationRecovery": [
     {
@@ -2278,5 +2260,38 @@
   "crossReference": [
     "Diesen Fakt zu Beschwerden habt ihr bei der Mutter ergänzt. Wie hilft er dir, die Nachricht der Freundin zu beurteilen?",
     "Diesen Fakt zu späteren Kindern habt ihr bei der Freundin ergänzt. Wie hilft er dir, die Nachricht der Mutter zu beurteilen?"
-  ]
+  ],
+  "mediaActions": {
+    "first": {
+      "Förder": "Kreuze allein deinen ersten Vorschlag an.",
+      "ESA": "Markiere deinen ersten Vorschlag.",
+      "MSA": "Notiere deinen ersten Vorschlag in Stichworten.",
+      "AHR": "Formuliere deine erste Ergänzung in wenigen Worten."
+    },
+    "checked": {
+      "Förder": "Markiere die passende Ergänzung. Lass deine erste Wahl stehen.",
+      "ESA": "Kreuze die passende Ergänzung an. Sage, wie sie zur Nachricht passt.",
+      "MSA": "Halte die Ergänzung kurz fest. Begründe in einem Satz, wie sie zur Nachricht passt.",
+      "AHR": "Halte die Ergänzung kurz fest. Begründe, was sie klärt und welche Entscheidung offenbleibt."
+    },
+    "final": {
+      "Förder": "Vergleiche deinen Fakt mit der Rückmeldung. Passe bei Bedarf einen Satzteil deiner Begründung an.",
+      "ESA": "Vergleiche deinen Fakt und deinen Grund. Ergänze bei Bedarf ein Stichwort.",
+      "MSA": "Präzisiere bei Bedarf, wie der Fakt deine Gewichtung stützt. Lass deine erste Antwort lesbar.",
+      "AHR": "Präzisiere bei Bedarf deinen Vergleich und die Grenze des Fakts. Lass deine erste Antwort lesbar."
+    },
+    "firstLabel": "Meine erste Antwort",
+    "checkedLabel": "Nach dem Prüfen",
+    "displaySupport": "Hast du die Lösung genutzt? Markiere hier „Mit Lösungshilfe“.",
+    "supportLabel": "Mit Lösungshilfe",
+    "layout": "Pro Person ein eigener Bogen. Für Lauras Anliegen, biologischen Fakt, Gewichtung mit eigenem Grund und die spätere Präzisierung einen zusammenhängenden Bereich von mindestens einer halben Seite vorsehen. Die erste Fassung bleibt lesbar. Bei gleicher Gewichtung Platz für beide Bezüge lassen.",
+    "digitalOnly": "Wert, Norm, Folgerung und Leerstelle werden am Gerät untersucht. Die Antwortmatrix, Hilfetexte und Anwendungsantworten werden nicht abgeschrieben. Nach Hilfe 5 erfolgt die kurze Anwendung am Gerät vor dem vorhandenen Ergebniseintrag.",
+    "finish": "Bleib in diesem Abschnitt. Nimm deinen Lernbogen mit in die gemeinsame Sicherung. Die Vertiefungen sind freiwillig.",
+    "personalMethod": {
+      "Förder": "Markiere die Satzteile für deinen eigenen Grund.",
+      "ESA": "Halte deinen eigenen Grund in einem kurzen Satz fest.",
+      "MSA": "Schreibe deine eigene Begründung auf.",
+      "AHR": "Schreibe deine eigene Begründung auf."
+    }
+  }
 }

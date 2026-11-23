@@ -17,6 +17,35 @@ def main():
     assert protect['referenz']==BASE and protect['html_02']==DAY02
     before=ROOT/'docs/pruefnachweise/0812-korrektur-vorher.json'
     screenshots=bank['screens']
+    media=bank['media']
+    rows=[r for engine in runs['browser'] for r in engine['wege']]
+    traces=[dict(browser=r['browser'],niveaus=r['niveaus'],format=r['format'],papierweg=r['papierweg']) for r in rows]
+    coverage={key for r in rows for key in r['alle_uebergaben']}
+    assert coverage==set(media['steps']) and len(traces)==24
+    matrix_files=['Medienwechsel-und-Papierfeldmatrix.'+ext for ext in ('md','json')]
+    assert json.loads((OUT/matrix_files[1]).read_text())==dict(commit=head,**media)
+    media_report=[
+        '# Prüfbericht · Fallakte und persönlicher Lernbogen',f'Commit `{head}` · geprüfte gemeinsame HTML-Datei `{checksum}`',
+        'Im Pflichtweg wurden vor der Auswahl die persönlichen Erstfelder geöffnet, nach der fachlichen Rückmeldung die getrennten Ergebnisfelder angezeigt. Bei Hilfe 5 erschien der Papierauftrag erst nach der digitalen Anwendung. Beide persönlichen Einträge zu Laura nutzen dieselbe Fläche.',
+        '## Wege in der gebauten Anwendung',
+        '| Niveau | Beobachtete Wegfolge | Browser |\n|---|---|---|',
+    ]
+    for tier in bank['levels']:
+        matches=[r for r in traces if r['niveaus']==[tier]]
+        browsers=sorted({r['browser'] for r in matches})
+        assert len(browsers)==2
+        path=' → '.join(s['feld']+' → '+s['rueckweg'].removeprefix('Weiter im Chat: ') for s in matches[0]['papierweg'])
+        media_report[-1]+='\n| '+tier+' | '+path+' → gemeinsame Sicherung | '+', '.join(browsers)+' |'
+    media_report.extend([
+        '## Paararbeit, Wiedereinstieg und Reserven',
+        'Für jede Person wurden Niveau, sichtbarer Wortlaut, Feld und Folgeschritt separat am Bildschirm abgeglichen. Getestete Paare waren Förder/ESA, ESA/MSA, MSA/AHR und Förder/AHR. In „Lauras Frage – Prüfen“ wurde jeder Beleg einzeln bearbeitet. Die persönliche Begründung bleibt offen.',
+        'Bei den freiwilligen Fällen wurde die Rückkehrtaste sowohl nach regulärem Abschluss als auch nach einem frischen Direkteinstieg betätigt. Nach einem Neuladen waren die Ergänzung der Freundin, die kurze Anwendung und der Belegvergleich direkt erreichbar. Die Ergebnisfelder behielten ihre Bezeichnung.',
+        f'{len(coverage)} Übergaben einschließlich bedingter Rückwege, {len(media["fields"])} Papierfelder und 24 Durchläufe. Die sichtbaren Aufträge und Rückkehrtexte stehen in 08-12/Medienwege.json. Die medizinischen Aussagen, ursprünglichen Familiennachrichten, Fachaufgaben, Antwortoptionen und Rückmeldungen wurden mit dem Ausgangsstand verglichen.',
+        '## Grenzen der Prüfung',
+        'Die Browserprüfung bediente Offline-HTML und SCORM mit simuliertem LMS im Hoch- und Querformat sowie bei großer Schrift. Geprüft wurden die Bildschirmhandlungen und der Fertigungsvertrag. Drucklayout, tatsächliche Papierbearbeitung in 25 Minuten, ein Schul-iPad und itslearning erfordern eine Erprobung mit dem von Work gesetzten Material.',
+        f'Der eingebettete Unterrichtstag vom 02.12. entspricht bytegenau der Referenz `{BASE}` mit SHA-256 `{DAY02}`. Die Browser- und Bildvergleiche sind im Abnahmebericht dokumentiert.'
+    ])
+    (OUT/'Medienfuehrung-Pruefbericht.md').write_text('\n\n'.join(media_report)+'\n')
     with ZipFile(OUT/'Fallakte-Sichtpruefung.zip','w',ZIP_DEFLATED) as z:
         for name,caption in screenshots.items():
             data=(qa/name).read_bytes()
@@ -24,16 +53,17 @@ def main():
             z.writestr(name,data)
         z.writestr('Bildverzeichnis.md','# Ansichten der getesteten Auslieferung\n\n'+'\n'.join('- '+k+' · '+v for k,v in screenshots.items()))
         z.write(qa/'Browser.json','08-12/Browser.json')
+        z.writestr('08-12/Medienwege.json',json.dumps(dict(commit=head,html_sha256=checksum,wege=traces),ensure_ascii=False,indent=2))
+        z.write(OUT/'Medienfuehrung-Pruefbericht.md','08-12/Medienfuehrung-Pruefbericht.md')
         z.write(before,'08-12/Ausgangspruefung.json')
         for name in ['Abnahme.json','Referenz.json']:z.write(shield/name,'02-12/'+name)
     with ZipFile(OUT/'Work-Uebergabe.zip','w',ZIP_DEFLATED) as z:
-        for filename in ['Work-Materialvertrag.json','Work-Materialvertrag.md','Fallakte-Sichtpruefung.zip']:z.write(OUT/filename,filename)
+        for filename in ['Work-Materialvertrag.json','Work-Materialvertrag.md',*matrix_files,'Medienfuehrung-Pruefbericht.md','Fallakte-Sichtpruefung.zip']:z.write(OUT/filename,filename)
         for person,file in bank['designFiles'].items():
             raw=(ROOT/'assets'/file).read_bytes() if person=='Laura' else git('show',OLD+':module/08-12/assets/'+file)
             z.writestr('Portraets/'+file,raw)
         for file in sorted((REF/'dist/Runde-1').glob('*Material*')):z.write(file,'Referenz-02/'+file.name)
         for file in sorted((REF/'dist/Uebungsakte').glob('*Material*')):z.write(file,'Referenz-02/'+file.name)
-    rows=[r for engine in runs['browser'] for r in engine['wege']]
     timing=[r for r in rows if r['weg']=='Regulärer Pflichtweg']
     assert len(rows)==24 and len(coupled['wege'])==8 and timing
     samples=[a for row in rows for a in row['anwendungen']]
@@ -42,7 +72,9 @@ def main():
     word_counts=[a['woerter_vor_antwort'] for a in samples]
     report=[
         '# Abnahme · Familiennachrichten am 08.12.2026',f'Entwicklungsstand `{head}` · Inhaltsbank {bank["version"]}',
-        '## Drei Befunde an der Auslieferung und ihre Korrektur',
+        '## Medienführung für Work',
+        'Die verpflichtenden Erst- und Ergebnisfelder, die persönliche Bewertungsfläche, die bedingten Rückwege und die digitale Anwendung nach Hilfe 5 sind in der Medienwechsel- und Papierfeldmatrix festgelegt. Der gesonderte Medienführungsbericht enthält die in Chromium und WebKit bedienten Wege pro Niveau.',
+        '## Frühere drei Befunde an der Auslieferung und ihre Korrektur',
         'Die lokale HTML-Datei aus Actions-Lauf 45196390973 (Commit `b0b5d0f`) wurde vor dem Eingriff in Chromium und WebKit bedient. Die wörtlichen Ergebnisse stehen in 08-12/Ausgangspruefung.json im Sichtprüfungspaket.',
         '1. AHR konnte leer vergleichen und nach einer Auswahl „Ohne Hilfe zugeordnet“ erhalten. Jetzt geben MSA und AHR einen kurzen eigenen Gedanken ein. Bei ausdrücklich genannten Werten, Regeln und Ratschlägen können sie auch einen passenden Originalsatz markieren. Erst dann folgt die Bedeutungswahl. Die App bewertet freie Formulierungen nicht.',
         '2. Bei Mutter und späterer Fruchtbarkeit bescheinigte die Schlussansicht „Ohne Hilfe zugeordnet“. Jetzt nennt die App die Herkunft des Fakts. Wer die Verbindung beibehält, begründet sie in wenigen eigenen Worten, prüft die Grenze des Fakts und hält den Grund auf dem Bogen fest. Die Ergebnisansicht trennt die geprüfte Fachauswahl und den ungeprüften persönlichen Grund für jede Person.',

@@ -46,7 +46,7 @@ function record(key){
 }
 function status(r) {return r.depth===5?ui.used:r.depth||r.wrong||r.resource?ui.explain:ui.own;}
 function solutionUsed(person){
-  return bank.cases[person].tasks.some(task=>saved.records[person+'/'+task.id]?.sawSolution===true);
+  return saved.records[person+'/Transfer']?.resumed || bank.cases[person].tasks.some(task=>saved.records[person+'/'+task.id]?.sawSolution===true);
 }
 function applicationStatus(person){
   const r=saved.records[person+'/Transfer'];
@@ -138,8 +138,29 @@ function reserves(box){
   el(box,'h2',ui.reserve,'section');
   for(const n of names.slice(2))btn(box,n,'open-'+n,()=>go('case',{person:n,at:0}));
 }
-function caseTitle(c,at){
-  return c.titles[at===0?0:at<c.tasks.length?1:at===c.tasks.length?2:3];
+function openSection(id){
+  for(const [person,c] of Object.entries(bank.cases)){
+    const at=c.recovery.findIndex(section=>section.id===id);
+    if(at>=0){go('case',{person,at});return;}
+  }
+  const at=bank.evaluationRecovery.findIndex(section=>section.id===id);
+  if(at<0)throw new Error('Unbekannter Abschnitt '+id);
+  go('laura',{at});
+}
+function paperOrder(box,key,{button=false,support=false}={}){
+  const step=bank.media.steps[key];
+  const panel=el(box,'div',undefined,'note');
+  panel.dataset.handoff=step.id;
+  const orders=levels();
+  orders.forEach((tier,i)=>{
+    if(orders.length>1)el(panel,'strong',(i?ui.two:ui.one)+' · '+tier);
+    const order=paragraph(panel,step.orders[tier].screen);
+    order.className='paper-order';order.dataset.member=String(i);order.dataset.level=tier;
+  });
+  if(support)paragraph(panel,step.support);
+  if(!button)paragraph(panel,step.returnText,'small').dataset.return=step.nextId;
+  if(step.after)paragraph(panel,step.after,'small');
+  return step;
 }
 function thought(box,label,text,save,id,buttonText,submit){
   const input=el(el(box,'label',label),'textarea');input.value=text;
@@ -206,7 +227,7 @@ function caseView(){
   const {person,at}=current,c=bank.cases[person],idx=names.indexOf(person);
   const paper=at===c.tasks.length+1, transfer=paper && solutionUsed(person);
   const application=transfer?record(person+'/Transfer'):null;
-  heading(root,caseTitle(c,at)).dataset.section=c.recovery[at].id;
+  heading(root,c.recovery[at].section).dataset.section=c.recovery[at].id;
   const layout=el(root,'div',undefined,'split');originalPanel(layout,person,c,transfer && !application.finished);
   const box=el(layout,'section',undefined,'card');
   const advance=()=>go('case',{person,at:at+1});
@@ -217,7 +238,7 @@ function caseView(){
   }else if(!paper){
     const task=c.tasks[at-1],r=record(person+'/'+task.id);
     const adding=task.id==='Ergänzung';
-    if(adding)paragraph(box,c.first,'note');
+    if(adding && r.selected===undefined && !r.compared)paperOrder(box,c.recovery[0].id.split('-')[0]+'-erst');
     el(box,'h2',task.prompt);
     const phase=adding?'Ergänzung':'analyse';
     if(advanced(high())){
@@ -229,8 +250,8 @@ function caseView(){
     tools(box,task,r,idx);
   }else{
     if(transfer){
-      const task=c.transfer;
-      paragraph(box,ui.transferIntro,'small');
+      const task=c.transfer;box.dataset.application=task.sectionId;
+      paragraph(box,ui.helpBeforePaper,'small');
       el(box,'h2',advanced(low()) && task.advancedPrompt?task.advancedPrompt:task.prompt);
       if(advanced(high()) && !advanced(low()) && task.advancedPrompt)paragraph(box,high()+' · '+ui.mixedTransfer,'small');
       options(box,task,application,null,true);
@@ -244,16 +265,15 @@ function caseView(){
     el(box,'h2',ui.paper);
     if(!saved.records[person+'/Ergänzung']?.valid)paragraph(box,ui.supported+' · '+ui.noPast,'note');
     for(const [key,value] of Object.entries(c.matrix)){el(box,'strong',key);paragraph(box,value);}
-    paragraph(box,c.paper,'note');
+    const prefix=c.recovery[0].id.split('-')[0];
+    const key=prefix+(idx>=2 && !saved.completedReview?'-einstieg':'-ergebnis');
     const result=saved.records[person+'/Ergänzung'];
-    if(result?.valid)paragraph(box,status(result)+(result.depth===5?' · '+ui.supportPaper:''),'tag');
-    paragraph(box,bank.levelPrompts[high()].Festhalten);
-    if(advanced(high()))paragraph(box,bank.caseReflection[person]);
-    btn(box,c.return,'next',()=>{
+    if(result?.valid)paragraph(box,status(result),'tag');
+    const step=paperOrder(box,key,{button:true,support:solutionUsed(person)});
+    btn(box,step.returnText,'next',()=>{
       if(saved.records[person+'/Ergänzung']?.valid)saved.complete[person]=true;
-      if(person==='Mutter')go('case',{person:'Freundin',at:0});
-      else go('laura',{at:idx>=2&&saved.completedReview?3:0});
-    },'primary');
+      openSection(step.nextId);
+    },'primary').dataset.return=step.nextId;
   }
   if(idx<2){
     const bar=el(root,'div',undefined,'tools');btn(bar,ui.switch,'jump',()=>go('laura',{at:0}));
@@ -294,6 +314,8 @@ function comparison(box,index){
     paragraph(box,ui.personal);btn(box,ui.next,'next',end,'primary');return;
   }
   if(p.step==='choice'){
+    const field=bank.media.steps['LA-eigen'].field;
+    paragraph(box,'„'+field+'“ · '+ui.digitalCheck).dataset.fieldref=field;
     paragraph(box,ui.choice);
     for(const [i,name] of [...names.slice(0,2),ui.both].entries())
       btn(box,name,'weight-'+i,()=>{p.choice=name;p.part=0;p.step='concern';p.feedback='';draw(true);});
@@ -354,16 +376,13 @@ function lauraView(){
   if(at===0){
     paragraph(box,ui.before);btn(box,ui.openPersonal,'next',()=>go('laura',{at:1}),'primary');
   }else if(at===1){
-    paragraph(box,ui.individual,'note');
-    levels().forEach((t,i)=>{
-      el(box,'strong',(i?ui.two:ui.one)+' · '+t);paragraph(box,bank.evaluation[t]);
-      if(t==='Förder'){
-        const d=el(box,'details');el(d,'summary',ui.examples);
-        for(const [field,line] of bank.stems){el(d,'strong',field);paragraph(d,line);}
-      }
-    });
+    const step=paperOrder(box,'LA-eigen',{button:true});
+    if(levels().includes('Förder')){
+      const d=el(box,'details');el(d,'summary',ui.examples);
+      for(const [field,line] of bank.stems){el(d,'strong',field);paragraph(d,line);}
+    }
     paragraph(box,ui.reviewEach);
-    btn(box,ui.write,'next',()=>go('laura',{at:2,individual:0}),'primary');
+    btn(box,step.returnText,'next',()=>openSection(step.nextId),'primary').dataset.return=step.nextId;
     evaluationHelp(box,record('Bewertung/Vorbereitung'));
   }else if(at===2)comparison(box,current.individual||0);
   else{
@@ -376,27 +395,35 @@ function lauraView(){
         paragraph(box,ui.limitChecked+(note.support?' '+ui.used:''),'small');
         if(note.reason){
           paragraph(box,ui.other+' · '+note.reason);
-          paragraph(box,ui.ownReasonSaved,'small');
         }
         paragraph(box,ui.reasonOpen,'small');
       }
       if(p?.depth===5||saved.records['Bewertung/Vorbereitung']?.depth===5)paragraph(box,ui.timeHint);
     });
-    paragraph(box,ui.reflect);paragraph(box,ui.comparePaper);
+    if(!saved.completedReview)paragraph(box,ui.endRecovery,'small');
+    paperOrder(box,'LA-abschluss');
     if(saved.completedReview)reserves(box);
-    else btn(box,ui.reviewPending,'open-review',()=>go('laura',{at:1}),'primary');
+    else btn(box,bank.evaluationSteps[2],'open-review',()=>openSection(bank.evaluationRecovery[2].id),'primary');
   }
 }
 function pickerView(){
   heading(root,ui.where);team(root);if(!members[0])return;
   select(root,ui.home,'person',[...names,ui.theme].map(k=>[k,k]),picker.person,v=>{picker={person:v,step:'0'};draw();});
   const n=picker.person,c=bank.cases[n];
-  const steps=c?[[0,c.titles[0]],...c.tasks.map((q,i)=>[i+1,caseTitle(c,i+1)+' · '+q.id]),[c.tasks.length+1,c.titles[3]]]:bank.evaluationSteps.map((v,i)=>[i,v]);
+  const steps=c?c.recovery.map((r,i)=>[i,c.recovery.filter(s=>s.section===r.section).length>1?r.section+' · '+r.part:r.section]):bank.evaluationSteps.map((v,i)=>[i,v]);
+  if(c){
+    const prefix=c.recovery[0].id.split('-')[0];
+    steps.push(['transfer',bank.media.steps[prefix+'-ergebnis'].restartApplication.label]);
+  }
   select(root,ui.selectSection,'entry',steps,picker.step,v=>{picker.step=v;draw();});
   if(!c && Number(picker.step)===2 && members[1]){
     select(root,ui.apply,'member',levels().map((v,i)=>[i,(i?ui.two:ui.one)+' · '+v]),picker.individual||0,v=>picker.individual=Number(v));
   }
   btn(root,ui.resumeHere,'open-entry',()=>{
+    if(c && picker.step==='transfer'){
+      record(n+'/Transfer').resumed=true;
+      go('case',{person:n,at:c.tasks.length+1});return;
+    }
     const at=Number(picker.step);
     if(c)go('case',{person:n,at});else go('laura',{at,individual:members[1]?picker.individual||0:0});
   },'primary');

@@ -54,7 +54,41 @@ def hints(f,task,team):
     tap(f,'dismiss')
     expect(f.locator('#help')).to_be_focused()
 
-def case(page,f,person,team,probe,shots=False):
+def paper(f,key,team,trace):
+    step=BANK['media']['steps'][key]
+    panel=f.locator('[data-handoff]')
+    expect(panel).to_have_count(1)
+    expect(panel).to_have_attribute('data-handoff',key)
+    expect(f.locator('h1')).to_have_text(step['section'])
+    expect(f.locator('h1')).to_have_attribute('data-section',step['sectionId'])
+    orders=panel.locator('[data-member]')
+    expect(orders).to_have_count(len(team))
+    texts=[]
+    for i,tier in enumerate(team):
+        order=orders.nth(i)
+        expect(order).to_have_attribute('data-level',tier)
+        expect(order).to_be_visible()
+        text=order.inner_text()
+        assert text==step['orders'][tier]['screen'] and step['field'] in text
+        texts.append(text)
+    # A repeated generic writing instruction outside the handoff would give pupils
+    # two paper assignments, even if the contract itself were internally consistent.
+    stray=f.locator('main p:not([data-handoff] p)').all_inner_texts()
+    assert not any('Halte Wert und Norm' in text or 'Schreibe deine Verbindung jetzt' in text for text in stray)
+    back=f.locator('[data-return]')
+    expect(back).to_have_count(1)
+    expect(back).to_have_text(step['returnText'])
+    expect(back).to_have_attribute('data-return',step['nextId'])
+    if step['after']:expect(panel).to_contain_text(step['after'])
+    trace.append(dict(schritt=key,abschnitt=f.locator('h1').inner_text(),feld=step['field'],
+                      auftraege=texts,rueckweg=back.inner_text(),ziel=step['nextId']))
+    return step
+
+def arrived(f,step):
+    expect(f.locator('h1')).to_have_attribute('data-section',step['nextId'])
+    expect(f.locator('h1')).to_have_text(step['returnText'].removeprefix('Weiter im Chat: '))
+
+def case(page,f,person,team,probe,trace,shots=False):
     application=None
     c=BANK['cases'][person]
     expect(f.locator('aside')).to_contain_text(c['original'].split('.')[0])
@@ -62,6 +96,11 @@ def case(page,f,person,team,probe,shots=False):
     for j,(task,key) in enumerate(zip(c['tasks'],KEYS[person],strict=True)):
         expect(f.locator('main h2').last).to_have_text(task['prompt'])
         assert not can_continue(f)
+        if task['id']=='Ergänzung':
+            step=paper(f,task['sectionId'].split('-')[0]+'-erst',team,trace)
+            arrived(f,step)
+            if shots:snap(page,person+'-Erstfeld')
+        else:expect(f.locator('[data-handoff]')).to_have_count(0)
         if f.locator('#compare').is_visible():
             expect(f.locator('#compare')).to_be_disabled()
             expect(f.locator('#answer-0')).to_have_count(0)
@@ -116,7 +155,7 @@ def case(page,f,person,team,probe,shots=False):
         prompt=task.get('advancedPrompt',task['prompt']) if advanced else task['prompt']
         expect(f.locator('section h2').first).to_have_text(prompt)
         expect(f.locator('aside')).not_to_contain_text(c['addition'])
-        expect(f.locator('section')).not_to_contain_text(c['paper'])
+        expect(f.locator('[data-handoff]')).to_have_count(0)
         assert not can_continue(f)
         expect(f.locator('#jump')).to_be_visible()
         visible_words=len(f.locator('section').inner_text().split())
@@ -143,27 +182,34 @@ def case(page,f,person,team,probe,shots=False):
         application=dict(person=person,frage=prompt,option=selected,rueckmeldung=expected,status=outcome,
                          woerter_vor_antwort=visible_words,hilfe_bei_anwendung=source==3)
     else:
-        expect(f.locator('section')).not_to_contain_text(BANK['ui']['transferIntro'])
+        expect(f.locator('section')).not_to_contain_text(BANK['ui']['helpBeforePaper'])
     expect(f.locator('aside')).to_contain_text('Unsere Ergänzung für Laura')
     expect(f.locator('aside')).to_contain_text(c['addition'])
-    expect(f.locator('section')).to_contain_text(c['paper'])
-    expect(f.locator('#next')).to_have_text(c['return']);tap(f,'next')
+    step=paper(f,c['recovery'][0]['id'].split('-')[0]+'-ergebnis',team,trace)
+    if probe:expect(f.locator('[data-handoff]')).to_contain_text(step['support'])
+    if shots:
+        f.locator('[data-handoff]').scroll_into_view_if_needed();snap(page,person+'-Ergebnisfeld')
+    tap(f,'next');arrived(f,step)
     return application
 
-def judgment(page,f,team,route,probe,shots):
+def judgment(page,f,team,route,probe,trace,shots):
     expect(f.locator('aside')).to_contain_text('Entscheiden möchte ich selbst.')
     if shots:snap(page,'Lauras-zweite-Nachricht')
     tap(f,'next')
+    step=paper(f,'LA-eigen',team,trace)
     for t in team:expect(f.locator('section')).to_contain_text(BANK['evaluation'][t])
     if shots:snap(page,'Persoenliche-Bewertung')
     assert not f.locator('#open-Vater').is_visible()
     if probe:
         tap(f,'help');tap(f,'hint-last');expect(f.locator('#dialog-body')).to_contain_text('Eine andere mögliche Antwort')
         tap(f,'dismiss')
-    tap(f,'next')
+    tap(f,'next');arrived(f,step)
     for index,t in enumerate(team):
         choice=(route+index)%3
         expect(f.locator('section h2')).to_contain_text(t)
+        expect(f.locator('[data-fieldref]')).to_have_attribute('data-fieldref',step['field'])
+        expect(f.locator('[data-handoff]')).to_have_count(0)
+        if shots and index==0:snap(page,'Fachbezug-Pruefen')
         tap(f,'weight-'+str(choice))
         for n in ([0,1] if choice==2 else [choice]):
             tap(f,'concern-'+str(n))
@@ -175,6 +221,9 @@ def judgment(page,f,team,route,probe,shots):
                 tap(f,'answer-1');expect(f.locator('#response')).to_have_text(BANK['limits'][n]['answers'][1]['feedback'])
                 tap(f,'help');tap(f,'hint-last');tap(f,'dismiss')
             tap(f,'answer-0');tap(f,'next')
+    step=paper(f,'LA-abschluss',team,trace);arrived(f,step)
+    if shots:
+        f.locator('[data-handoff]').scroll_into_view_if_needed();snap(page,'Lernbogen-Sicherung')
     expect(f.locator('#open-Großmutter')).to_be_visible()
     for i in range(len(team)):expect(f.locator('section')).to_contain_text(team[i])
 
@@ -230,20 +279,33 @@ def engine_run(engine,url):
                 if(text && text!==window.views.at(-1))window.views.push(text)}).observe(e,{subtree:true,childList:true});}""")
             probe=route<4 or shots
             start_time=monotonic();tap(f,'start')
-            applications=[case(page,f,n,team,probe,shots) for n in NAMES[:2]]
-            judgment(page,f,team,route,probe,shots)
+            trace=[]
+            applications=[case(page,f,n,team,probe,trace,shots) for n in NAMES[:2]]
+            judgment(page,f,team,route,probe,trace,shots)
             stats=f.locator('body').evaluate('()=>({tipps:window.taps,ansichten:window.views,schreibfelder:window.inputs.size})')
-            stats.update(anwendungen=[a for a in applications if a],sekunden=round(monotonic()-start_time,2),browser=engine,version=b.version,niveaus=team,
+            stats.update(papierweg=list(trace),anwendungen=[a for a in applications if a],sekunden=round(monotonic()-start_time,2),browser=engine,version=b.version,niveaus=team,
                          viewport=size,weg='Gegenprobe mit allen Fehlern und Hilfen' if probe else 'Regulärer Pflichtweg',
                          format='SCORM' if lms else 'Offline-HTML')
             if route<4 or shots:
                 for n in NAMES[2:]:
-                    tap(f,'open-'+n);case(page,f,n,team,probe,shots)
+                    tap(f,'open-'+n);case(page,f,n,team,probe,trace,shots)
             if route==0 or route==7:
                 page.reload();shell=page.frame(name='sco') if lms else page
                 shell.locator('#zweiter-tag').tap();f=shell.frame_locator('iframe[title^=Dienstag]')
                 recover(page,f,shell,team,'Freundin',5)
                 expect(f.locator('section')).to_contain_text(BANK['cases']['Freundin']['tasks'][-1]['prompt'])
+                paper(f,'FR-erst',team,[])
+                for n,prefix in [('Großmutter','GM'),('Vater','VA')]:
+                    recover(page,f,shell,team,n,5)
+                    direct=paper(f,prefix+'-einstieg',team,trace)
+                    if engine=='webkit' and route==7 and n=='Vater':snap(page,'Reserve-Neustart')
+                    tap(f,'next');arrived(f,direct)
+                recover(page,f,shell,team,'Freundin','transfer')
+                expect(f.locator('[data-application]')).to_have_attribute('data-application',BANK['media']['steps']['FR-ergebnis']['restartApplication']['id'])
+                expect(f.locator('[data-handoff]')).to_have_count(0)
+                tap(f,'answer-1');direct=paper(f,'FR-ergebnis',team,trace)
+                tap(f,'next');arrived(f,direct)
+                recover(page,f,shell,team,'Freundin',5)
                 if engine=='webkit' and route==7:snap(page,'Wiedereinstieg')
                 if route==7:
                     recover(page,f,shell,team,'Lauras Frage',2)
@@ -287,6 +349,7 @@ def engine_run(engine,url):
                 page.wait_for_function("calls.some(c=>c[0]==='LMSFinish')")
                 assert page.evaluate('calls')==[['LMSInitialize',''],['LMSFinish','']]
             assert not errors and not requests,(errors,requests)
+            stats['alle_uebergaben']=[r['schritt'] for r in trace]
             results.append(stats);ctx.close();print(engine,team,stats['tipps'],flush=True)
         p=b.new_page();p.goto(APP.as_uri())
         if engine=='webkit':snap(p,'Tagesauswahl')
@@ -303,15 +366,36 @@ def main():
     assert all(len(t['hints'])==5 and sum(o['ok'] for o in t['answers'])==1
                for c in BANK['cases'].values() for t in c['tasks']+[c['transfer']])
     prior=json.loads(git('show','b0b5d0f3dd76e444ad99de0129724da899f3efe0:module/familienrat/material.json'))
-    for key in ('opening','second','cards','limits','evaluation','evaluationHints','evaluationHelpByLevel','expectation'):
+    for key in ('opening','second','cards','limits','evaluation','expectation'):
         assert BANK[key]==prior[key],key
     for person,c in BANK['cases'].items():
-        old=prior['cases'][person]
+        old={k:v for k,v in prior['cases'][person].items() if k not in ('first','paper','return','destination')}
         assert {k:v for k,v in c.items() if k not in ('tasks','transfer')}=={k:v for k,v in old.items() if k not in ('tasks','transfer')}
         assert [{k:v for k,v in t.items() if k!='evidenceSentences'} for t in c['tasks']]==old['tasks']
+    baseline=json.loads(git('show','aee6716bad4e0729b21d52cb0459cf467ccc9d3c:module/familienrat/material.json'))
+    for name,case_data in BANK['cases'].items():
+        assert case_data['tasks']==baseline['cases'][name]['tasks'] and case_data['transfer']==baseline['cases'][name]['transfer']
+    for old,new in [(baseline['evaluationHints'],BANK['evaluationHints']),*[(baseline['evaluationHelpByLevel'][t],BANK['evaluationHelpByLevel'][t]) for t in LEVELS]]:
+        assert new[:-1]==old[:-1] and new[-1]+' Halte deine Verbindung auf dem Bogen fest.'==old[-1]
+    media=BANK['media']
+    sections={r['id']:r['section'] for c in BANK['cases'].values() for r in c['recovery']}
+    sections.update({r['id']:r['section'] for r in BANK['evaluationRecovery']})
+    assert set(media['fields'])==set(BANK['paperFields'])=={r['field'] for r in media['steps'].values()}
+    matrix=(OUT/'Medienwechsel-und-Papierfeldmatrix.md').read_text()
+    for key,r in media['steps'].items():
+        assert r['id']==key and r['section']==sections[r['sectionId']]
+        assert r['returnText']=='Weiter im Chat: '+sections[r['nextId']] and r['restart'].endswith(sections[r['nextId']])
+        assert set(r['orders'])==set(LEVELS) and r['help'] and r['kind'] and r['returnText'] in matrix
+        for level,order in r['orders'].items():
+            assert order['action'] in matrix and r['field'] in order['screen']
+            if level in LEVELS[:2]:assert 'schreibe' not in order['action'].lower() and 'notiere' not in order['action'].lower()
     with TemporaryDirectory() as td:
         path=Path(td);unpack(OUT,'Fallakte',path);(path/'host.html').write_text(HOST)
         with host(path) as url,ThreadPoolExecutor(max_workers=2) as pool:
             checks=list(pool.map(lambda name:engine_run(name,url),('chromium','webkit')))
+    for engine in checks:
+        assert {k for row in engine['wege'] for k in row['alle_uebergaben']}==set(media['steps'])
+        for row in engine['wege']:
+            assert [s['schritt'] for s in row['papierweg']]==['MU-erst','MU-ergebnis','FR-erst','FR-ergebnis','LA-eigen','LA-abschluss']
     (QA/'Browser.json').write_text(json.dumps(dict(commit=BANK['commit'],sha256=sha(raw),browser=checks),ensure_ascii=False,indent=2))
 if __name__=='__main__':main()

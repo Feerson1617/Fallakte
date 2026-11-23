@@ -8,6 +8,8 @@ from pathlib import Path
 from shutil import copy2
 from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
 
+from familienrat_medien import compile_media, media_markdown
+
 ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT/'module/familienrat'
 OUT = ROOT/'dist/Familienrat'
@@ -40,6 +42,9 @@ FIELD_NAMES = {
     'ui':'Bedienbeschriftungen und Aufträge','levelPrompts':'Arbeitsaufträge nach Niveau',
     'limits':'Prüfung der Aussagegrenze','review':'Rückmeldungen beim Vergleich','stems':'Satzbausteine',
     'evaluation':'Persönlicher Bewertungsauftrag','expectation':'Erwarteter persönlicher Beleg',
+    'media':'Verbindliche Medienführung','fields':'Papierfelder','steps':'Übergabepunkte','orders':'Aufträge nach Niveau',
+    'action':'Schülerhandlung','screen':'Sichtbarer Papierauftrag','condition':'Zeitpunkt','kind':'Ergebnisart',
+    'returnText':'Wortgleicher Rückkehrhinweis','nextId':'Nächster digitaler Schritt','restart':'Wiedereinstieg nach dem Papierauftrag',
     'screens':'Bildverzeichnis der Work-Übergabe','sourceMapping':'Quellennummern zu Fachkarten und Kompetenzen'
 }
 def markdown(data, depth=2):
@@ -69,6 +74,8 @@ def build():
     assert sha(shell)==SHELL and sha(base64.b64decode(payload(shell,b'02')))==DAY02
     bank=json.loads((SRC/'material.json').read_text())
     bank['commit']=git('rev-parse','HEAD').decode().strip()
+    bank['media']=compile_media(bank)
+    bank['paperFields']=list(bank['media']['fields'])
     css=(SRC/'style.css').read_text()
     for token,file in [('FONT_SANS','dmsans.ttf'),('FONT_SERIF','dmseriftext.ttf')]:
         css=css.replace(token,url('font/ttf',(ROOT/'assets'/file).read_bytes()))
@@ -100,6 +107,9 @@ def build():
     assert sha((OUT/practice_zip).read_bytes())=='2f47b664d7de5d48b902f810fd7a8c5a950c1a0bd9124eca3d271a99354d2d37'
     assert sha((OUT/'Uebungsakte.html').read_bytes())==PRACTICE
     (OUT/'Work-Materialvertrag.json').write_text(content+'\n')
+    matrix=media_markdown(bank['media'],bank['commit'])
+    (OUT/'Medienwechsel-und-Papierfeldmatrix.md').write_text(matrix)
+    (OUT/'Medienwechsel-und-Papierfeldmatrix.json').write_text(json.dumps(dict(commit=bank['commit'],**bank['media']),ensure_ascii=False,indent=2)+'\n')
     (OUT/'Work-Materialvertrag.md').write_text('# Work · Familiennachrichten am 08.12.2026\n\n'+
         'Für die Produktion gilt Commit `'+bank['commit']+'`. Gestaltungsreferenz: `'+bank['design']+'`. '+
         'Abschnittstitel, Fragen und Feldnamen wörtlich übernehmen. Die Codes im Vertrag sind interne Kennungen. '+
@@ -107,7 +117,7 @@ def build():
         'Die persönliche Gewichtung wird auf dem eigenen Bogen begründet. Die Auswahl am Gerät prüft Fakt und Aussagegrenze. Eigene Begründungen bleiben offen.\n\n'+
         '## Papierweg und Ausfallweg\n\n'+bank['analog']+' '+bank['paperRecovery']+'\n\n'+
         'Die Felder „Meine erste Antwort“ und „Nach dem Prüfen“ bleiben getrennt. '+
-        'Die Fälle nennen unter titles die Abschnitte und unter return den genauen Rückweg. '+
+        'Die Medienwechsel- und Papierfeldmatrix ist verbindlich für Feldnamen, Aufträge und Rückkehrziele. '+
         'Bei Lauras Frage halten beide zuerst unabhängig ihr Anliegen, den Fakt und ihre Einschätzung fest.\n\n'+markdown(bank)+'\n')
     print(OUT)
 if __name__=='__main__':build()
