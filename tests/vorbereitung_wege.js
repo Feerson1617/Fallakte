@@ -30,7 +30,15 @@
     const check=paper?'code-check':'check';
     const idx=q.options.findIndex(o=>o.correct);
     ok(element(check).disabled,'Prüfung ohne Auswahl');
-    if(paper)ok(element('send').disabled,'Vorzeitige Sendefreigabe');
+    if(paper){
+      ok(element('send').disabled,'Vorzeitige Sendefreigabe');
+      const fallback=one('#view details');
+      ok(!fallback.open && fallback.querySelector('summary').textContent.includes('Ausfallhilfe'),'Papiercheck muss auf Papier beginnen');
+      fallback.querySelector('summary').click();
+      ok(JSON.stringify([...fallback.querySelectorAll('li')].map(li=>li.textContent))===JSON.stringify(q.options.map(o=>o.text)),'Digitale Ausfallhilfe in Druckreihenfolge');
+      fallback.querySelector('summary').click();
+      ok(!fallback.open && element('send').disabled,'Ausfallhilfe schaltete Senden frei');
+    }
     else{
       ok(!one('[data-field]'),'Zu früh freigegebene Karte');
       ok(JSON.stringify(all('.answers button').map(b=>b.textContent))===JSON.stringify(q.options.map(o=>o.text)),'Antwortreihenfolge');
@@ -94,14 +102,27 @@
     else{
       ok(!one('#code'),'Unerwarteter Code');
       if(ch.id.endsWith('B')){
+        ok(element('review').textContent==='Vollständige Karte vergleichen','Rückweg zur Vollkarte');
         click('review');const card=cards.find(k=>k.method===ch.method);
         for(const section of card.sections)visible(section.completedText,'.reference');
         ok(all('.fields [data-field]').length===4,'Vollkarte');
-        visible('Karte kontrolliert');save('Kartenkontrolle');
+        visible('Karte kontrolliert');ok(element('finish').textContent==='Weiter im Chat','Rückweg nach Kartenkontrolle');save('Kartenkontrolle');
       }
       click('finish');
     }
     counts[ch.id]=clicks-start;
+    if(ch.id==='2B'){
+      visible('Ende der ersten Vorbereitungsstunde','h1');
+      visible('Du hast Kondom und Kombinationspille bearbeitet.');
+      ok(one('#checked-chapters').innerText==='1A, 1B, 2A, 2B','Fachchecks der ersten Stunde');
+      save('Zwischenansicht nach 2B');click('open','3A');
+    }
+    if(ch.id==='4B'){
+      visible('Abschluss der Vorbereitung','h1');
+      ok(one('#checked-chapters').innerText===lesson.chapters.map(c=>c.id).join(', '),'Fachchecks beider Stunden');
+      ok(all('#view [data-do="reference"]').length===4,'Vier Musterkarten am Ende');
+      save('Abschlussansicht nach 4B');click('picker');
+    }
   }
   visible(ui.picker);ok(all('.chapters small').filter(s=>s.textContent==='In dieser Sitzung bearbeitet').length===8,'Abschlussstatus');
   home();

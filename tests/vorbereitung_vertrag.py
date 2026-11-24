@@ -9,7 +9,7 @@ from zipfile import ZipFile
 from lxml import etree, html
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'vorbereitung'))
-from bauen import ROOT, OUT, PLAN, QA, contracts, json_text, revision
+from bauen import ROOT, OUT, PLAN, QA, contracts, digest, json_text, revision
 from vorbereitung_bestand import verify
 
 
@@ -23,7 +23,11 @@ def run():
     built=(OUT/'Vorbereitung.html').read_bytes()
     page=html.fromstring(built)
     assert page.xpath('//meta[@name="revision"]/@content')==[revision()]
-    bank=json.loads(page.get_element_by_id('material').text)
+    material=page.get_element_by_id('material').text
+    fingerprint=digest(material.encode())
+    # Datenblock aus der geprüften Offline-Auslieferung d89e667, Actions 45441105166.
+    assert fingerprint=='0b108ea97dab994cb9d7bd2f5df1bd443f3b25816f60dc22edd2e986fab51ee7'
+    bank=json.loads(material)
     for k in ('levels','ui','visualBriefs','title','pearlNote'):
         assert bank[k]==s[k]
     assert set(bank['graphics'])==set(s['sequence'])
@@ -107,7 +111,7 @@ def run():
                     if not o['correct']:
                         assert o['feedback'] and len(o['hints'])==5
                         nums['Fehlantworten']+=1
-    return dict(commit=revision(),Vertrag=nums,Umfang=measurements,
+    return dict(commit=revision(),Vertrag=nums,Umfang=measurements,Material_SHA256_wie_d89e667=fingerprint,
                 Bestand=verify(Path(sys.argv[1]).resolve()))
 
 

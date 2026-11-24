@@ -104,9 +104,84 @@ def navigation(page,frame,reopen,lesson,level,engine,layout,save):
     return frame
 
 
+def test_endings(page,frame,lesson,level,engine,delivery):
+    """Echte Unterbrechungen vor dem Papierende, ein direkter Start und ein vollständiger Reload."""
+    chapters={ch['id']:ch for ch in lesson['chapters']}
+    evidence={}
+    def click(command,value=None):
+        action(frame,command,value)
+    def solve(chapter_id,number):
+        q=chapters[chapter_id]['questions'][number]
+        assert q['prompt'] in frame.locator('#view h2').inner_text()
+        click('choice',next(i for i,o in enumerate(q['options']) if o['correct']))
+        click('check');click('advance')
+    def open_chapter(key):
+        click('picker');click('open',key);click('begin')
+    def end_b(key,pause=False):
+        open_chapter(key)
+        solve(key,0);solve(key,1)
+        assert frame.locator('[data-do="review"]').inner_text()=='Vollständige Karte vergleichen'
+        click('review')
+        if pause:
+            click('home');click('resume')
+        assert frame.locator('h1').inner_text()==chapters[key]['title']
+        assert frame.locator('.reference .fields li').count()==4
+        click('finish')
+        title='Ende der ersten Vorbereitungsstunde' if key=='2B' else 'Abschluss der Vorbereitung'
+        assert frame.locator('h1').inner_text()==title
+    def status(stage,expected):
+        actual=frame.locator('#checked-chapters').inner_text().split(', ')
+        assert actual==expected,(engine,delivery,level,stage,actual)
+        evidence[stage]=actual
+
+    click('level',level)
+    if (engine,delivery,level)==('chromium','Offline','Foerder'):
+        # Die Zwischenansicht genau beim Übergang fotografieren, bevor 3A beginnt.
+        click('picker');click('open','1A')
+        for key in ('1A','1B','2A','2B'):
+            click('begin');solve(key,0);solve(key,1)
+            if key.endswith('B'):click('review')
+            click('finish')
+        assert frame.locator('[data-value="3A"]').is_visible()
+        page.screenshot(path=QA/'Zwischenansicht-2B.png')
+        click('home');click('new');click('reset');click('home')
+    open_chapter('1A');solve('1A',0);click('home')
+    end_b('2B',pause=True)
+    status('2B nach unterbrochenem 1A',['2B'])
+    assert 'Du hast Kondom und Kombinationspille bearbeitet.' not in frame.locator('#view').inner_text()
+    click('home');click('resume');status('Zwischenansicht wiederaufgenommen',['2B'])
+    click('open','3A');click('begin');solve('3A',0);solve('3A',1)
+    # Förder/ESA haben jetzt beide Fachfragen gelöst, das Papierende fehlt.
+    # MSA/AHR fehlt zusätzlich der noch nicht gesendete Code des Papierchecks.
+    click('home');end_b('4B')
+    completed=['2B','4B'] if chapters['3A']['paperCheck'] else ['2B','3A','4B']
+    status('4B nach unterbrochenem 3A',completed)
+    for method in ('K','P','Cu','H'):
+        click('reference',method)
+        assert frame.locator('dialog .fields li').count()==4
+        frame.locator('#close-sheet').click()
+    status('Nach Vergleich aller vier Musterkarten',completed)
+    click('home');click('resume');status('Abschluss wiederaufgenommen',completed)
+    page.reload()
+    if delivery=='SCORM':
+        page.frame_locator('iframe').locator('#view h1').wait_for()
+        frame=page.frames[1]
+    else:
+        frame=page.main_frame
+    click('level',level)
+    assert frame.locator('[data-do=resume]').count()==0
+    end_b('4B');status('Direkt in 4B nach Neuladen',['4B'])
+    if engine=='webkit' and delivery=='Offline' and level=='AHR':
+        page.screenshot(path=QA/'Abschluss-4B-nach-Neuladen.png')
+    click('home');end_b('2B');status('Direkt in 2B ohne frühere Stunde',['2B'])
+    if engine=='webkit' and delivery=='Offline' and level=='AHR':
+        page.screenshot(path=QA/'Zwischenansicht-2B-Direkteinstieg.png')
+    return dict(Browser=engine,Ausgabe=delivery,Niveau=level,Fachchecks=evidence)
+
+
 def test():
     s,c=contracts()
-    results=[]; transcripts=[]; navigation_runs=[]
+    results=[]; transcripts=[]; navigation_runs=[]; endings=[]
     QA.mkdir(exist_ok=True,parents=True)
     with TemporaryDirectory() as folder,sync_playwright() as pw:
         with ZipFile(OUT/'Vorbereitung-SCORM12.zip') as z:z.extractall(folder)
@@ -144,6 +219,13 @@ def test():
                                         snapshots=record.pop('Auftraege')
                                         if engine=='chromium' and delivery=='Offline' and not assisted:transcripts.extend(snapshots)
                                         results.append(dict(Browser=engine,Ausgabe=delivery,**record))
+                                        if engine=='chromium' and delivery=='Offline' and level=='Foerder' and not assisted:
+                                            action(frame,'picker');action(frame,'open','4B')
+                                            page.screenshot(path=QA/'Abschluss-4B.png')
+                                            action(frame,'home')
+                            if layout=='iPad-quer':
+                                for level,lesson in s['levels'].items():
+                                    endings.append(test_endings(page,open_app(),lesson,level,engine,delivery))
                             if layout=='klein':
                                 frame.locator('html').evaluate("n=>n.style.fontSize='150%'")
                                 assert frame.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
@@ -158,7 +240,7 @@ def test():
                         print(engine,delivery,'bestanden',flush=True)
         finally:server.shutdown();server.server_close()
     (QA/'Browserpruefung.json').write_text(json_text(dict(commit=revision(),
-        HTML_SHA256=digest((OUT/'Vorbereitung.html').read_bytes()),Navigation=navigation_runs,Wege=results)))
+        HTML_SHA256=digest((OUT/'Vorbereitung.html').read_bytes()),Navigation=navigation_runs,Abschlusswege=endings,Wege=results)))
     (QA/'Bildschirmwortlaut.json').write_text(json_text(transcripts))
 
 

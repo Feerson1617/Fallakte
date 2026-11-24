@@ -23,7 +23,17 @@ Getesteter Programmstand `{head}`. Die vier Schülerfassungen und die ausgefüll
 
 Bildschirmauftraege.md enthält die in Chromium gelesenen regulären Ansichten in Unterrichtsreihenfolge. Stationsvertrag.json enthält zusätzlich den genauen Wortlaut jeder Fehlerrückmeldung, Hilfe und Anwendungsfrage. Die mitgepackte Offline-Datei zeigt auch Abschnittsauswahl, Wiederaufnahme und Ausfallweg. Kartenvertrag.json ordnet Kapitel, Papierfelder, Lösungen und Drucktexte einander zu.
 
-Je Kapitel markieren die Lernenden ihre Abschnittskennung und ergänzen nach zwei Prüfungen zwei Felder. In A markieren MSA und AHR zusätzlich eine der drei gedruckten Aussagen, begründen in Stichwörtern und kehren mit dem Buchstaben zum Chat zurück. Die Codefolge lautet B, A, C, B. In B vergleichen alle ihre vier Einträge und markieren auf Papier „Karte kontrolliert“. Die Schriftprodukte werden im Unterricht geprüft. Für Förder und ESA entfällt der Codeweg.
+## Vom Papier zurück zum Chat
+
+Je Kapitel markieren die Lernenden ihre Abschnittskennung und ergänzen nach zwei Prüfungen zwei Felder. In den A-Kapiteln markieren MSA und AHR zusätzlich auf Papier eine der drei gedruckten Aussagen und begründen in Stichwörtern. Zurück am iPad geben sie den Buchstaben ein, tippen auf „Code prüfen“, dann auf „Nachricht senden“ und anschließend auf „Weiter im Chat“. Die Codefolge lautet B, A, C, B. Die ausklappbaren digitalen Aussagen sind als Ausfallhilfe für einen fehlenden Papierbogen beschriftet. Förder und ESA kehren nach dem Vergleich der Einträge über „Weiter im Chat“ zurück.
+
+**Rückkehrhinweis für alle vier Druckfassungen in 1B, 2B, 3B und 4B**
+
+Ergänze die Felder 3 und 4 auf Papier. Tippe am iPad auf „Vollständige Karte vergleichen“. Vergleiche alle vier Felder mit der Musterkarte. Verbessere sie bei Bedarf. Markiere „Karte kontrolliert“ auf Papier. Tippe dann auf „Weiter im Chat“.
+
+Diesen Wortlaut bei der nächsten Gestaltung für den B-Rückweg verwenden. Die beigefügten Planungs-PDFs enthalten den bisherigen kürzeren Hinweis. Die tatsächlich getesteten Bildschirmtexte stehen in Bildschirmauftraege.md je Niveau und Kapitel.
+
+Nach 2B endet die erste Stunde mit der Kontrolle der beiden Karten und der Markierung des nächsten Abschnitts auf Papier. Schnelle Lernende können sofort weiterarbeiten. Nach 4B vergleichen alle ihre vier Papierkarten mit den Musterkarten, ergänzen fehlende Einträge, schneiden die Karten aus und bewahren sie für den Unterrichtsbesuch auf. Die Liste der am iPad abgeschlossenen Fachchecks bezieht sich auf das gewählte Niveau und die aktuelle Sitzung. Die analoge Kartenkontrolle übernehmen die Lernenden.
 """
     return files
 
@@ -33,6 +43,9 @@ def reports(head,qa,checks):
     assert len(runs)==32 and len(qa['Navigation'])==12
     for r in runs:
         assert len(r['Fragen'])==(21 if r['Niveau'] in ('MSA','AHR') else 17)
+    endings=qa['Abschlusswege']
+    assert {(r['Browser'],r['Ausgabe'],r['Niveau']) for r in endings}=={
+        (b,d,l) for b in ('chromium','webkit') for d in ('Offline','SCORM') for l in ('Foerder','ESA','MSA','AHR')}
     n=sum(len(r['Fragen']) for r in runs)
     errors=sum(q['Fehlantworten'] for r in runs for q in r['Fragen'])
     apps=sum(q['Anwendung'] for r in runs for q in r['Fragen'])
@@ -50,6 +63,12 @@ def reports(head,qa,checks):
     technical=f"""# Technischer Prüfbericht
 
 Stand `{head}`. Getestet wurden die lokale Einzeldatei und das aus dem SCORM-ZIP entpackte Lernobjekt innerhalb eines übergeordneten SCORM-1.2-Testfensters. Das ZIP enthält ein gegen IMS- und ADL-Schemata validiertes Manifest an der Wurzel. Die HTML-Nutzdaten der beiden Ausgaben sind bytegleich.
+
+## Änderungen seit d89e667
+
+Nach dem Kartenvergleich führt „Weiter im Chat“ in 2B zur Zwischenansicht mit Papiermarkierung und freiwilliger Fortsetzung. In 4B öffnet die Schaltfläche den Abschluss mit vier Musterkarten, Ergänzen, Ausschneiden und Aufbewahren. Die Papier-Aussagen in den A-Kapiteln sind ausdrücklich als Ausfallhilfe beschriftet. Die Work-Übergabe enthält den vollständigen B-Rückweg für die Druckgestaltung.
+
+In {len(endings)} zusätzlichen Browserwegen wurden die beiden Ansichten auf allen vier Niveaus nach Unterbrechung, Wiederaufnahme, direkter Kapitelwahl und vollständigem Neuladen geprüft. Frühere Kapitel erhalten im frischen 4B-Direkteinstieg keinen Nachweis. Die Anzeige liest die tatsächlich gelösten Fachfragen und bei MSA/AHR in A den gesendeten Papiercode. Das Öffnen von Musterkarten verändert diese Liste nicht. Der fachliche Datenblock einschließlich Abbildungen ist bytegleich zur geprüften Auslieferung d89e667 (SHA-256 `{checks['Material_SHA256_wie_d89e667']}`).
 
 ## Ausgeführte Prüfung
 
@@ -99,12 +118,22 @@ def release():
     assert qa['HTML_SHA256']==digest((OUT/'Vorbereitung.html').read_bytes())
     words=json.loads((QA/'Bildschirmwortlaut.json').read_text())
     assert {s['Niveau'] for s in words}==set(contracts()[0]['levels'])
+    # Work erhält den tatsächlichen Rückweg aus allen 16 getesteten B-Ansichten.
+    for level in contracts()[0]['levels']:
+        for key in ('1B','2B','3B','4B'):
+            path={r['Schritt']:r['Bildschirm'] for r in words if r['Niveau']==level and r['Abschnitt']==key}
+            assert 'Vollständige Karte vergleichen' in path['Papierauftrag und Rückkehr']
+            assert 'Karte kontrolliert' in path['Kartenkontrolle'] and 'Weiter im Chat' in path['Kartenkontrolle']
+            if key=='2B':assert 'Zwischenansicht nach 2B' in path
+            if key=='4B':assert 'Abschlussansicht nach 4B' in path
     docs=reports(head,qa,checks)
     for name,data in docs.items():(OUT/name).write_text(data)
     work=work_files(head,words)
     work[DID]=docs[DID]
     pack(OUT/'Work-Material-Vorbereitung.zip',work)
     evidence={p.name:p.read_bytes() for p in QA.glob('*.png')}
+    assert {'Zwischenansicht-2B.png','Abschluss-4B.png','Zwischenansicht-2B-Direkteinstieg.png',
+            'Abschluss-4B-nach-Neuladen.png'} <= evidence.keys()
     assert len(evidence)>=20 and all(b.startswith(b'\x89PNG') for b in evidence.values())
     for name in ('Vertragspruefung.json','Browserpruefung.json'):
         evidence[name]=(QA/name).read_bytes()

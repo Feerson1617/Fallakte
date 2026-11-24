@@ -117,17 +117,47 @@ function fields(c) {
 function paperCheck(q,a) {
   const checked=q.options[a.checked];
   if(a.sent) return `<p>Nachricht gesendet · ${esc(q.options[a.choice].code)}</p>${feedback(checked.feedback)}${confirmed(a)}${btn('finish',ui.next,{primary:true})}`;
-  return `<p>${esc(q.screen)}</p><details><summary>Aussagen auf dem Papier</summary><strong>${esc(q.prompt)}</strong><ol type="A">${q.options.map(o=>`<li>${esc(o.text)}</li>`).join('')}</ol></details><p>${esc(q.return)}</p>
+  return `<p>${esc(q.screen)}</p><details><summary>Ausfallhilfe · Aussagen ohne Papierbogen anzeigen</summary><strong>${esc(q.prompt)}</strong><ol type="A">${q.options.map(o=>`<li>${esc(o.text)}</li>`).join('')}</ol></details><p>${esc(q.return)}</p>
     <div class="actions"><label for="code">Buchstabe</label><input id="code" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" value="${esc(a.raw)}">
     ${btn('code-check',ui.codeCheck,{disabled:!a.raw.trim()||a.passed||a.transfer})}
     ${btn('send',ui.send,{disabled:!a.passed,primary:true})}</div>
     <div id="code-result">${a.invalid?feedback('Gib einen der Buchstaben A, B oder C ein.',true):checked?feedback(checked.feedback,!checked.correct):''}
     ${a.transfer?transfer(q,a):''}${a.passed?confirmed(a):!a.transfer?help(q,a):''}</div>`;
 }
+function digitalChecks(list) {
+  const done=list.filter(c=>{
+    const checks=session().progress[c.id]?.attempts;
+    return checks && c.questions.every(q=>checks[q.id]?.passed) &&
+      (!c.paperCheck || checks[c.paperCheck.id]?.sent);
+  });
+  return `<p class="note">In dieser Sitzung hast du alle Fachchecks für <strong id="checked-chapters">${done.map(c=>esc(c.id)).join(', ')}</strong> abgeschlossen.</p>`;
+}
+function firstHourEnd() {
+  const all=chapters(), first=all.slice(0,4);
+  const complete=first.every(c=>session().progress[c.id]?.finished);
+  const next=all.slice(4).find(c=>!session().progress[c.id]?.finished);
+  return `<h1>Ende der ersten Vorbereitungsstunde</h1>
+    <p>${complete?'Du hast Kondom und Kombinationspille bearbeitet.':'Die ersten beiden Karten gehören zu Kondom und Kombinationspille.'}</p>
+    <div class="paper"><p>Prüfe, ob beide Infokarten vollständig sind.</p>
+    <p>Markiere auf deinem Papier, wo du weiterarbeitest.</p></div>
+    <p>Öffne in der nächsten Stunde Kapitel 3A oder den nächsten offenen Abschnitt auf deinem Papier.</p>
+    ${digitalChecks(first)}
+    <div class="actions">${next?btn('open','Jetzt mit '+next.id+' weiterarbeiten',{value:next.id}):''}${btn('picker',ui.picker)}</div>`;
+}
+function preparationEnd() {
+  return `<h1>Abschluss der Vorbereitung</h1>
+    <section class="panel"><h2>Vier Infokarten kontrollieren</h2>
+    <p>Vergleiche jede Karte auf Papier mit ihrer Musterkarte. Ergänze fehlende Einträge.</p>
+    <div class="chapters">${bank.cards[level].map(c=>btn('reference',c.title,{value:c.method})).join('')}</div>
+    <p class="paper">Sind alle vier Karten vollständig? Dann schneide sie jetzt aus. Bewahre sie für den Unterrichtsbesuch auf.</p></section>
+    ${digitalChecks(chapters())}${btn('picker',ui.picker)}`;
+}
 function learning() {
   const c=chapter(), s=progress(), title=c?.title||intro().title;
   let body;
   if (s.finished) {
+    if(c?.id==='2B') return firstHourEnd();
+    if(c?.id==='4B') return preparationEnd();
     body=`<p>Du hast diesen Abschnitt bearbeitet.</p>${btn('continue',c?.nextChapter?ui.next:ui.picker,{primary:true})}`;
   } else if(s.step==='info') {
     body=`${c?`<p class="paper">Papier · Markiere <strong>${c.id}</strong> auf deinem Laufzettel.</p>`:''}<section class="panel">${material()}</section>${btn('begin','Zur Fachfrage',{primary:true})}`;
@@ -216,7 +246,8 @@ document.addEventListener('click',event=>{
     case 'finish':
       if(chapter().paperCheck&&!attempt().sent) return;
       progress().finished=true;
-    // Advance immediately after the deliberate paper return.
+      if(s.id==='2B'||s.id==='4B') break;
+    // Other chapters continue directly after the paper return.
     case 'continue':
       if(chapter()?.nextChapter) selectChapter(chapter().nextChapter);
       else screen='picker';
