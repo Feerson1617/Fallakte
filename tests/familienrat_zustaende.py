@@ -52,10 +52,13 @@ def check(engine):
                 if source!=concern:
                     click('other')
                     free('check-reason','Spätere Kinder können auch eine Sorge um die Gesundheit sein.' if concern else 'Beschwerden könnten Lauras Ausbildungsalltag betreffen.')
-                    if edit:
-                        click('edit-reason');free('check-reason','Meine Gewichtung hängt von Lauras eigenen Fragen ab.')
                 click('answer-1');expect(f.locator('#next')).to_have_count(0)
-                click('answer-0');click('next')
+                click('answer-0')
+                if source!=concern and edit:
+                    click('edit-reason');free('check-reason','Meine Gewichtung hängt von Lauras eigenen Fragen ab.')
+                    expect(f.locator('section')).to_contain_text(BANK['ui']['checkLimit'])
+                    expect(f.locator('#answer-0')).to_be_disabled()
+                click('next')
         # The two ordered members have distinct assessments even if both use one level.
         for i,team in enumerate(itertools.product(LEVELS,repeat=2)):
             new(team);click('next');click('help')
@@ -116,6 +119,18 @@ def check(engine):
             entry(person,'transfer');click('answer-1');click('answer-0')
             expect(f.locator('section')).to_contain_text(BANK['ui']['assisted'])
             evidence.append(dict(anwendung=person,ausloesung='Getrennte Denkhandlungen, späte Hilfe, unterbrochen, zwei Fehlversuche, korrigiert'))
+        # A reply may disclose the target even when no help button was pressed.
+        for person,task_id,wrong,transfer in [('Mutter','Ergänzung',2,True),('Freundin','Ergänzung',1,True),
+                ('Großmutter','Ergänzung',2,True),('Freundin','Leerstelle',1,False),('Vater','Folgerung',0,False)]:
+            new(['ESA'])
+            tasks=BANK['cases'][person]['tasks']
+            at=next(i+1 for i,t in enumerate(tasks) if t['id']==task_id)
+            entry(person,at);click('answer-'+str(wrong))
+            click('answer-'+('2' if person=='Vater' else '0'))
+            expect(f.locator('.tag')).to_have_text(BANK['ui']['used'])
+            entry(person,len(tasks)+1)
+            expect(f.locator('[data-application]')).to_have_count(int(transfer))
+            evidence.append(dict(person=person,aufgedeckt_durch_rueckmeldung=task_id,passende_anwendung=transfer))
         for at,location in enumerate(BANK['evaluationRecovery']):
             entry('Lauras Frage',at)
             expect(f.locator('h1')).to_have_attribute('data-section',location['id'])

@@ -111,10 +111,13 @@ def case(page,f,person,team,probe,trace,shots=False):
             expect(f.locator('#compare')).to_be_disabled()
             expect(f.locator('#answer-0')).to_have_count(0)
             if probe:
-                f.locator('textarea').fill('   ')
-                expect(f.locator('#compare')).to_be_disabled()
-                f.locator('textarea').fill('…')
-                expect(f.locator('#compare')).to_be_disabled()
+                for placeholder in ['   ','…','x','xxx','test','123']:
+                    f.locator('textarea').fill(placeholder)
+                    expect(f.locator('#compare')).to_be_disabled()
+                for word in ['OP','gesunt']:
+                    f.locator('textarea').fill(word)
+                    expect(f.locator('#compare')).to_be_enabled()
+                f.locator('textarea').fill('')
             if probe and team==['AHR'] and j==0 and person=='Mutter' and page.context.browser.browser_type.name=='chromium':
                 snap(page,'Eigenleistung')
             if task.get('evidenceSentences') and (j==1 or not probe):

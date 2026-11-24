@@ -720,7 +720,8 @@
             {
               "text": "Wert",
               "feedback": "Den Wert nennt sie mit „Mir ist wichtig“. Prüfe, welche Sachinformation fehlt.",
-              "ok": false
+              "ok": false,
+              "revealsSolution": true
             },
             {
               "text": "Norm",
@@ -1196,7 +1197,8 @@
             {
               "text": "Mir sind Lauras Ausbildung und ihre berufliche Zukunft wichtig.",
               "feedback": "Auch das können wichtige Werte sein. Die Großmutter spricht hier aber über den Schutz ungeborenen Lebens.",
-              "ok": false
+              "ok": false,
+              "revealsSolution": true
             }
           ],
           "hints": [
