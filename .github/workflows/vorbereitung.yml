@@ -1,0 +1,44 @@
+name: Fallakte · Lernstationen zur Vorbereitung
+on:
+  push:
+    branches: [entwicklung/vorbereitung-0212-stationen]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lernstationen:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    container: mcr.microsoft.com/playwright/python:v1.62.0-noble
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Prüfwerkzeuge
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          python -m pip install -r tests/requirements.txt
+          if ! command -v pdftotext >/dev/null; then
+            apt-get update -qq
+            apt-get install -y --no-install-recommends poppler-utils
+          fi
+      - name: Geschützte Auslieferung am eingefrorenen Commit erzeugen
+        run: |
+          git clone --shared . "$RUNNER_TEMP/ub-referenz"
+          git -C "$RUNNER_TEMP/ub-referenz" checkout --detach d24308f4a0eca8ed39f0f75b04b890b78bcc8332
+          cd "$RUNNER_TEMP/ub-referenz"
+          python scripts/familienrat_build.py
+      - name: Einzeldatei, Manifest, Verträge und UB-Referenzen prüfen
+        run: |
+          python vorbereitung/bauen.py
+          python tests/vorbereitung_vertrag.py "$RUNNER_TEMP/ub-referenz/dist/Familienrat"
+      - name: Vollständige Lernwege, Hilfen und Wiederaufnahme in Chromium und WebKit
+        run: python -u tests/vorbereitung_browser.py
+      - name: Work-Material und geprüfte Ausgaben packen
+        run: python vorbereitung/uebergabe.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Vorbereitung-${{ github.sha }}
+          path: dist/Vorbereitung/
+          if-no-files-found: error
+          retention-days: 90
