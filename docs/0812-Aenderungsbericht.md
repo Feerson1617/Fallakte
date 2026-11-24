@@ -19,6 +19,12 @@ Ausgangsstand `ecab26f44d6fcbf524f8033c43ccf11f96f10234`. Prüfkandidat `RELEASE
 
 Beim zusätzlichen unterbrochenen Vater-Weg war der offene Status nach dem Wechsel zu Laura nur intern gespeichert. Die ausklappbare Übersicht zeigt jetzt den Status einer tatsächlich begonnenen und unterbrochenen oder abgeschlossenen Reserve. Unbearbeitete Reserven werden dadurch nicht offengelegt. Die Zustandsprüfung kontrolliert den sichtbaren Namen und Status beider Reserven.
 
+## Statuskorrektur gegenüber a5357a5
+
+In der gebauten Ausgangsfassung erschien in Chromium und WebKit „Aussage nach einem Hinweis richtig gewählt“, sowohl nach einer selbst gewählten Originaltextstelle bei der Mutter auf AHR als auch nach dem Lesen der Fachkarte „Blutungen und Schmerzen“ auf ESA. Die Anwendung zählt reguläre Quellenarbeit jetzt zur selbstständigen Bearbeitung. Ein falscher Quellenversuch, eine tatsächlich geöffnete gestufte Hilfe oder eine vorab offengelegte Lösung behält ihre jeweilige Kennzeichnung. Frei formulierte Gründe bleiben fachlich ungeprüft.
+
+Zur eigenen Gegenprobe unter AHR die Nachricht der Mutter öffnen, im Argumenten-Check den ersten Originalsatz wählen, seine Bedeutung in eigenen Worten erklären und „Lauras körperliche Gesundheit“ wählen. Für die zweite Probe unter ESA über „Nach Neustart“ bei „Mutter 3 – Fakt ergänzen“ einsteigen, die Fachkarte lesen und die passende Aussage wählen. Erwartet wird bei beiden „Aussage vor einem Hinweis richtig gewählt.“ Die beobachteten Statusmeldungen beider Browser stehen im Sichtprüfungspaket unter `08-12/Zustaende.json` im Feld `quellenarbeit`. Die früheren Meldungen stehen in `08-12/Quellenarbeit-Ausgangsstand.json`.
+
 ## Bedeutung der Protokolle
 
 Browser.json verknüpft den vollständigen regulären und unterstützten Pflichtweg mit Browserfassung, Ansichten, Medienübergaben und Fachrückmeldungen. Zustaende.json prüft zusätzlich die endlichen fachlichen Entscheidungszweige beider Personen mit allen drei Gewichtungen, beiden Anliegen je Nachricht, beiden falschen Fakten, sachlich zutreffendem Fremdbeleg, passenden und unpassenden Grenzen sowie einer geänderten freien Verbindung. Die 16 geordneten Niveaupaare durchlaufen diese Szenarien in beiden Browsern. Beliebig lange Wiederholungen und beliebige freie Texte sind kein endlicher Testbereich. Lernwege.json protokolliert acht separat über sichtbare Aussagen bediente Wege. Das interaktive Bedienprotokoll ist zusätzlich als Entwicklungsbeobachtung gekennzeichnet.

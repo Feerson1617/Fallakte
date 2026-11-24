@@ -66,11 +66,17 @@ def main():
             data=(qa/name).read_bytes()
             assert data.startswith(b'\xff\xd8\xff') and len(data)>3000,(name,caption)
             z.writestr(name,data)
-        z.writestr('Bildverzeichnis.md','# Ansichten der getesteten Auslieferung\n\n'+'\n'.join('- '+k+' · '+v for k,v in screenshots.items()))
+        source_dir=states.parent
+        for name in ('Quellenarbeit-Originalsatz.jpg','Quellenarbeit-Fachkarte.jpg'):
+            z.write(source_dir/name,'08-12/'+name)
+        z.writestr('Bildverzeichnis.md','# Ansichten der getesteten Auslieferung\n\n'+'\n'.join('- '+k+' · '+v for k,v in screenshots.items())+
+                   '\n- 08-12/Quellenarbeit-Originalsatz.jpg · AHR nach selbst gewählter Originaltextstelle und eigener Erklärung'+
+                   '\n- 08-12/Quellenarbeit-Fachkarte.jpg · ESA nach selbstständiger Fachkartennutzung\n')
         z.write(qa/'Browser.json','08-12/Browser.json')
         z.writestr('08-12/Medienwege.json',json.dumps(dict(commit=head,html_sha256=checksum,wege=traces),ensure_ascii=False,indent=2))
         z.write(OUT/'Medienfuehrung-Pruefbericht.md','08-12/Medienfuehrung-Pruefbericht.md')
         z.write(before,'08-12/Ausgangspruefung.json')
+        z.write(proof/'0812-quellenarbeit-vorher.json','08-12/Quellenarbeit-Ausgangsstand.json')
         for file in (states,learning):z.write(file,'08-12/'+file.name)
         for name in ('0812-ecab26f-browser.json','0812-quellenstand.json','0812-bedienprotokoll.json'):
             z.write(proof/name,'08-12/'+name)

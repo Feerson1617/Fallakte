@@ -47,7 +47,7 @@ function record(key){
 function status(r){
   if(!r?.valid)return ui.unchecked;
   if(r.depth===5||r.solutionShown)return ui.used;
-  if(r.depth||r.resource)return ui.explain;
+  if(r.depth)return ui.explain;
   return r.wrong?ui.corrected:ui.own;
 }
 function solutionUsed(person){
@@ -61,12 +61,8 @@ function applicationStatus(person){
   const r=saved.records[person+'/Transfer'];
   if(!r?.valid)return r?.skipped?ui.skipped:ui.pending;
   if(r.depth===5)return ui.appliedSolution;
-  return r.wrong||r.depth||r.resource?ui.assisted:ui.applied;
+  return r.wrong||r.depth?ui.assisted:ui.applied;
 }
-function markResource(r){
-  if(r && !r.valid && !r.finished)r.resource=true;
-}
-let activeRecord;
 
 function notify(){
   port?.postMessage({type:'view',active:screen==='home'?'home':screen==='picker'?'recovery':'',
@@ -126,11 +122,10 @@ function team(box){
 }
 function tools(box,task,r,card){
   const row=el(box,'div',undefined,'tools');
-  activeRecord=r;
   const guided=['Ergänzung','Reichweite','Transfer'].includes(task.id) && !advanced(low());
   btn(row,ui.help,'help',()=>help(task,r));
-  btn(row,guided?bank.cards[card].title:ui.cards,'cards',()=>{markResource(r);cards(guided?card:undefined);});
-  btn(row,ui.terms,'terms',()=>{markResource(r);popup(ui.terms,b=>Object.entries(bank.definitions).forEach(([k,v])=>{el(b,'strong',k);paragraph(b,v);}));});
+  btn(row,guided?bank.cards[card].title:ui.cards,'cards',()=>cards(guided?card:undefined));
+  btn(row,ui.terms,'terms',()=>popup(ui.terms,b=>Object.entries(bank.definitions).forEach(([k,v])=>{el(b,'strong',k);paragraph(b,v);})));
 }
 function showHome(){
   const layout=el(root,'div',undefined,'split'), aside=el(layout,'aside',undefined,'msg');
@@ -211,7 +206,7 @@ function draft(box,task,r,c){
   const feedback=paragraph(d,'','small');feedback.setAttribute('role','status');
   sentences(c.original).forEach((line,i)=>{
     btn(d,line,'source-'+i,()=>{
-      if(task.evidenceSentences.includes(i)){r.source=i;markResource(r);draw();root.querySelector('textarea').focus();}
+      if(task.evidenceSentences.includes(i)){r.source=i;draw();root.querySelector('textarea').focus();}
       else{r.wrong=true;feedback.textContent=ui.sourceRetry;}
     });
   });
@@ -477,7 +472,7 @@ function pickerView(){
   },'primary');
 }
 function draw(focus=false){
-  activeRecord=null;root.replaceChildren();
+  root.replaceChildren();
   if(screen==='home')showHome();else if(screen==='picker')pickerView();else if(current.type==='case')caseView();else lauraView();
   notify();
   if(focus){window.scrollTo(0,0);root.querySelector('h1')?.focus({preventScroll:true});}
@@ -487,7 +482,7 @@ window.addEventListener('message',e=>{
   port?.close();port=e.ports[0];
   port.onmessage=({data})=>{
     if(dialog.open)dialog.close();
-    if(data==='resources'){markResource(activeRecord);cards();return;}
+    if(data==='resources'){cards();return;}
     if(data==='home'||data==='recovery'){screen=data==='home'?'home':'picker';draw(true);}
   };
   port.postMessage({type:'ready',actions:[{id:'home',label:ui.home,icon:'folder'},{id:'resources',label:ui.cards,icon:'book'},{id:'recovery',label:ui.recovery,icon:'restart'}]});notify();

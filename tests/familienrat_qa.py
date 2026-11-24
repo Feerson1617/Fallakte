@@ -359,7 +359,7 @@ def engine_run(engine,url):
                 recover(page,f,shell,team,'Mutter','transfer')
                 shell.locator('[data-action=resources]').tap();tap(f,'dismiss')
                 tap(f,'answer-0')
-                expect(f.locator('section')).to_contain_text(BANK['ui']['assisted'])
+                expect(f.locator('section')).to_contain_text(BANK['ui']['applied'])
             if lms:
                 assert page.evaluate('[localStorage.length,sessionStorage.length]')==[0,0]
                 page.locator('iframe').evaluate("e=>e.src='about:blank'")

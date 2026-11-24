@@ -1,0 +1,42 @@
+{
+  "commit": "a5357a59828d4927d7f06df16ae5fc174b3c1c10",
+  "html_sha256": "de5f315f2c09f37cd5c9ad9f4d8cb9613b562b59f2dfe534db839c9eabfd62fe",
+  "browser": [
+    {
+      "browser": "chromium",
+      "version": "151.0.7922.34",
+      "beobachtungen": [
+        {
+          "niveau": "AHR",
+          "handlung": "Selbst gewählter Originalsatz und eigene Erklärung",
+          "abschnitt": "Mutter 2 – Argumenten-Check",
+          "anzeige": "Aussage nach einem Hinweis richtig gewählt."
+        },
+        {
+          "niveau": "ESA",
+          "handlung": "Selbst geöffnete Fachkarte Blutungen und Schmerzen",
+          "abschnitt": "Mutter 3 – Fakt ergänzen",
+          "anzeige": "Aussage nach einem Hinweis richtig gewählt."
+        }
+      ]
+    },
+    {
+      "browser": "webkit",
+      "version": "26.5",
+      "beobachtungen": [
+        {
+          "niveau": "AHR",
+          "handlung": "Selbst gewählter Originalsatz und eigene Erklärung",
+          "abschnitt": "Mutter 2 – Argumenten-Check",
+          "anzeige": "Aussage nach einem Hinweis richtig gewählt."
+        },
+        {
+          "niveau": "ESA",
+          "handlung": "Selbst geöffnete Fachkarte Blutungen und Schmerzen",
+          "abschnitt": "Mutter 3 – Fakt ergänzen",
+          "anzeige": "Aussage nach einem Hinweis richtig gewählt."
+        }
+      ]
+    }
+  ]
+}

@@ -9,6 +9,79 @@ from familienrat_qa import APP, BANK, LEVELS, QA, ROOT, set_team, start, sha
 OUT = ROOT/'build/Familienrat-Zustaende'
 
 
+def check_sources(page,engine):
+    observations=[]
+    ui=BANK['ui']
+    def open_task(tier,entry):
+        shell,f=start(page,APP.as_uri())
+        set_team(f,[tier])
+        if entry=='Wert':
+            f.locator('#start').click();f.locator('#next').click()
+        else:
+            shell.locator('[data-action=recovery]').click()
+            f.locator('#entry').select_option(entry);f.locator('#open-entry').click()
+        return shell,f
+
+    def observe(f,case,expected):
+        tag=f.locator('section .tag').first
+        expect(tag).to_have_text(ui[expected])
+        observations.append(dict(weg=case,abschnitt=f.locator('h1').inner_text(),anzeige=tag.inner_text()))
+
+    for wrong in (False,True):
+        shell,f=open_task('AHR','Wert')
+        f.get_by_text(ui['sourceInstead'],exact=True).click()
+        if wrong:
+            f.locator('#source-1').click()
+            expect(f.locator('section')).to_contain_text(ui['sourceRetry'])
+        f.locator('#source-0').click()
+        expect(f.locator('section')).to_contain_text(ui['sourceYes'])
+        expect(f.locator('#compare')).to_be_disabled()
+        f.locator('textarea').fill('Der Mutter ist wichtig, wie es Laura körperlich geht.')
+        f.locator('#compare').click();f.locator('#answer-0').click()
+        expect(f.locator('section')).to_contain_text(ui['freeNote'])
+        expected='corrected' if wrong else 'own'
+        label='Originaltextstelle korrigiert' if wrong else 'Originaltextstelle selbstständig gewählt'
+        observe(f,label,expected)
+        if engine=='chromium' and not wrong:
+            page.screenshot(path=OUT/'Quellenarbeit-Originalsatz.jpg',quality=65)
+        # Reopen the task so that the tag is recomputed after the late solution.
+        f.locator('#help').click();f.locator('#hint-last').click();f.locator('#dismiss').click()
+        shell.locator('[data-action=home]').click();f.locator('#resume').click()
+        observe(f,label+' · nachträgliche Hilfe 5',expected)
+
+    for entry,hint,wrong,expected in [
+        ('5',0,False,'own'),('5',1,False,'explain'),('5',5,False,'used'),
+        ('transfer',0,False,'applied'),('transfer',0,True,'assisted'),
+        ('transfer',1,False,'assisted'),('transfer',5,False,'appliedSolution'),
+    ]:
+        shell,f=open_task('ESA',entry)
+        if entry=='transfer':
+            shell.locator('[data-action=resources]').click()
+            f.locator('#dialog-body > details').first.locator('summary').first.click()
+        else:
+            f.locator('#cards').click()
+        expect(f.locator('#dialog-body details[open]').first).to_contain_text('Gebärmutter')
+        f.locator('#dismiss').click()
+        if wrong:f.locator('#answer-1').click()
+        if hint:
+            f.locator('#help').click()
+            if hint==5:f.locator('#hint-last').click()
+            f.locator('#dismiss').click()
+        f.locator('#answer-0').click()
+        task='Anwendung' if entry=='transfer' else 'Ergänzung'
+        support=f'Hilfe {hint}' if hint else 'ohne gestufte Hilfe'
+        attempt='nach Fehlversuch' if wrong else 'erster Versuch'
+        observe(f,f'Fachkarte · {task} · {support} · {attempt}',expected)
+        if entry=='5' and not hint:
+            if engine=='chromium':page.screenshot(path=OUT/'Quellenarbeit-Fachkarte.jpg',quality=65)
+            f.locator('#terms').click();f.locator('#dismiss').click()
+            f.locator('#help').click();f.locator('#hint-last').click();f.locator('#dismiss').click()
+            f.locator('#next').click()
+            expect(f.locator('[data-application]')).to_have_count(0)
+            observe(f,'Fachkarte · nachträgliches Glossar und Hilfe 5','own')
+    return observations
+
+
 def check(engine):
     evidence = []
     with sync_playwright() as pw:
@@ -141,8 +214,9 @@ def check(engine):
         f.locator('#level-1').select_option('AHR');expect(f.locator('#start')).to_have_count(0)
         set_team(f,['ESA']);expect(f.locator('#resume')).to_have_count(0)
         assert page.evaluate('[localStorage.length,sessionStorage.length]')==[0,0]
+        sources=check_sources(page,engine)
         version=browser.version;browser.close()
-    return dict(browser=engine,version=version,pruefungen=evidence)
+    return dict(browser=engine,version=version,pruefungen=evidence,quellenarbeit=sources)
 
 
 if __name__=='__main__':
