@@ -181,5 +181,1117 @@
       "Lauras Frage – Prüfen",
       "Weiter"
     ]
-  ]
+  ],
+  "weitere_durchsicht": {
+    "stand": "e3f18afa682f926a4ccf00a6576eef50886d25a8",
+    "browser": "WebKit",
+    "arbeitsfenster": [
+      1180,
+      820
+    ],
+    "bedienung": "Interaktive Sitzungen. Abschnittsfolgen und inhaltlich gewählte Antworten über Browsersteuerung eingegeben. Kein Zugriff auf Lösungsschlüssel oder interne Zustände. Kein Test mit Kindern.",
+    "wege": [
+      {
+        "niveau": "ESA",
+        "weg": "Regulär",
+        "abschnitte": [
+          {
+            "Eine Nachricht von Laura": [
+              "Mutter – Nachricht öffnen"
+            ]
+          },
+          {
+            "Mutter 1 – Nachricht lesen": [
+              "Nachricht prüfen"
+            ]
+          },
+          {
+            "Mutter 2 – Argumenten-Check": [
+              "Lauras körperliche Gesundheit.",
+              "Weiter",
+              "Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen.",
+              "Weiter",
+              "Die Schwangerschaft fortsetzen.",
+              "Weiter",
+              "Fakt",
+              "Weiter"
+            ]
+          },
+          {
+            "Mutter 3 – Fakt ergänzen": [
+              "Es kommt zu Blutungen. Schmerzen und Krämpfe können auftreten.",
+              "Weiter"
+            ]
+          },
+          {
+            "Mutter 4 – Festhalten": [
+              "Weiter im Chat: Freundin 1 – Nachricht lesen"
+            ]
+          },
+          {
+            "Freundin 1 – Nachricht lesen": [
+              "Nachricht prüfen"
+            ]
+          },
+          {
+            "Freundin 2 – Argumenten-Check": [
+              "Lauras Ausbildung und ihre Pläne für später.",
+              "Weiter",
+              "Man sollte überlegen, wann Kinder zu den eigenen Lebensplänen passen.",
+              "Weiter",
+              "Einen Abbruch mit Medikamenten vornehmen lassen.",
+              "Weiter",
+              "Fakt",
+              "Weiter"
+            ]
+          },
+          {
+            "Freundin 3 – Fakt ergänzen": [
+              "Ja. Eine spätere Schwangerschaft bleibt möglich.",
+              "Weiter"
+            ]
+          },
+          {
+            "Freundin 4 – Festhalten": [
+              "Weiter im Chat: Lauras Frage – Lesen"
+            ]
+          },
+          {
+            "Lauras Frage – Lesen": [
+              "Lauras Frage – Meine Antwort"
+            ]
+          },
+          {
+            "Lauras Frage – Meine Antwort": [
+              "Weiter im Chat: Lauras Frage – Prüfen"
+            ]
+          },
+          {
+            "Lauras Frage – Prüfen": [
+              "Freundin",
+              "Kann ich nach einem Abbruch ohne Komplikationen später schwanger werden?",
+              "Nach einem medikamentösen Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich. Die spätere Fruchtbarkeit wird nach heutigem Wissen dadurch nicht beeinträchtigt.",
+              "Nein. Sie beantwortet eine Frage zu späteren Kindern. Die jetzige Entscheidung bleibt offen.",
+              "Weiter"
+            ]
+          }
+        ],
+        "ziel": "Lauras Frage – Festhalten · analoger Abschluss am Bildschirm gesehen"
+      },
+      {
+        "niveau": "AHR",
+        "weg": "Regulär",
+        "abschnitte": [
+          {
+            "Eine Nachricht von Laura": [
+              "Mutter – Nachricht öffnen"
+            ]
+          },
+          {
+            "Mutter 1 – Nachricht lesen": [
+              "Nachricht prüfen"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Ihr liegt Lauras Gesundheit am Herzen."
+            ]
+          },
+          {
+            "Mutter 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Lauras körperliche Gesundheit.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Sie will, dass Beschwerden bei solchen Entscheidungen zählen."
+            ]
+          },
+          {
+            "Mutter 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Sie rät zum Austragen."
+            ]
+          },
+          {
+            "Mutter 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Die Schwangerschaft fortsetzen.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Die Begründung enthält noch keine Erklärung des körperlichen Vorgangs."
+            ]
+          },
+          {
+            "Mutter 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Fakt",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Die Gebärmutter zieht sich zusammen. Ein Vergleich mit dem Austragen fehlt."
+            ]
+          },
+          {
+            "Mutter 3 – Fakt ergänzen": [
+              "Mit Aussagen vergleichen",
+              "Es kommt zu Blutungen. Schmerzen und Krämpfe können auftreten.",
+              "Weiter"
+            ]
+          },
+          {
+            "Mutter 4 – Festhalten": [
+              "Weiter im Chat: Freundin 1 – Nachricht lesen"
+            ]
+          },
+          {
+            "Freundin 1 – Nachricht lesen": [
+              "Nachricht prüfen"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Sie möchte, dass Laura selbst planen kann."
+            ]
+          },
+          {
+            "Freundin 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Lauras Ausbildung und ihre Pläne für später.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Ein allgemeiner Grundsatz zur Lebensplanung."
+            ]
+          },
+          {
+            "Freundin 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Man sollte überlegen, wann Kinder zu den eigenen Lebensplänen passen.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Sie rät zum Abbruch."
+            ]
+          },
+          {
+            "Freundin 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Einen Abbruch mit Medikamenten vornehmen lassen.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Wünsche kennen wir. Einen biologischen Beleg liefert das noch nicht."
+            ]
+          },
+          {
+            "Freundin 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Fakt",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Laura kann später schwanger werden. Eine Garantie gibt es nicht."
+            ]
+          },
+          {
+            "Freundin 3 – Fakt ergänzen": [
+              "Mit Aussagen vergleichen",
+              "Ja. Eine spätere Schwangerschaft bleibt möglich.",
+              "Weiter"
+            ]
+          },
+          {
+            "Freundin 4 – Festhalten": [
+              "Weiter im Chat: Lauras Frage – Lesen"
+            ]
+          },
+          {
+            "Lauras Frage – Lesen": [
+              "Lauras Frage – Meine Antwort"
+            ]
+          },
+          {
+            "Lauras Frage – Meine Antwort": [
+              "Weiter im Chat: Lauras Frage – Prüfen"
+            ]
+          },
+          {
+            "Lauras Frage – Prüfen": [
+              "Beide Nachrichten",
+              "Welche Beschwerden können auftreten?",
+              "Beim medikamentösen Abbruch zieht sich die Gebärmutter zusammen. Es kommt zu Blutungen. Schmerzen und Krämpfe können auftreten.",
+              "Nein. Sie erklärt mögliche Beschwerden. Für die Entscheidung braucht Laura weitere Informationen und ihre eigenen Wünsche.",
+              "Weiter",
+              "Kann ich nach einem Abbruch ohne Komplikationen später schwanger werden?",
+              "Nach einem medikamentösen Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich. Die spätere Fruchtbarkeit wird nach heutigem Wissen dadurch nicht beeinträchtigt.",
+              "Nein. Sie beantwortet eine Frage zu späteren Kindern. Die jetzige Entscheidung bleibt offen.",
+              "Weiter"
+            ]
+          }
+        ],
+        "ziel": "Lauras Frage – Festhalten · analoger Abschluss am Bildschirm gesehen"
+      },
+      {
+        "niveau": "MSA",
+        "weg": "Regulär",
+        "abschnitte": [
+          {
+            "Eine Nachricht von Laura": [
+              "Mutter – Nachricht öffnen"
+            ]
+          },
+          {
+            "Mutter 1 – Nachricht lesen": [
+              "Nachricht prüfen"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Ihr liegt Lauras Gesundheit am Herzen."
+            ]
+          },
+          {
+            "Mutter 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Lauras körperliche Gesundheit.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Sie will, dass Beschwerden bei solchen Entscheidungen zählen."
+            ]
+          },
+          {
+            "Mutter 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Sie rät zum Austragen."
+            ]
+          },
+          {
+            "Mutter 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Die Schwangerschaft fortsetzen.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Die Begründung enthält noch keine Erklärung des körperlichen Vorgangs."
+            ]
+          },
+          {
+            "Mutter 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Fakt",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Die Gebärmutter zieht sich zusammen. Ein Vergleich mit dem Austragen fehlt."
+            ]
+          },
+          {
+            "Mutter 3 – Fakt ergänzen": [
+              "Mit Aussagen vergleichen",
+              "Es kommt zu Blutungen. Schmerzen und Krämpfe können auftreten.",
+              "Weiter"
+            ]
+          },
+          {
+            "Mutter 4 – Festhalten": [
+              "Weiter im Chat: Freundin 1 – Nachricht lesen"
+            ]
+          },
+          {
+            "Freundin 1 – Nachricht lesen": [
+              "Nachricht prüfen"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Sie möchte, dass Laura selbst planen kann."
+            ]
+          },
+          {
+            "Freundin 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Lauras Ausbildung und ihre Pläne für später.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Ein allgemeiner Grundsatz zur Lebensplanung."
+            ]
+          },
+          {
+            "Freundin 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Man sollte überlegen, wann Kinder zu den eigenen Lebensplänen passen.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Sie rät zum Abbruch."
+            ]
+          },
+          {
+            "Freundin 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Einen Abbruch mit Medikamenten vornehmen lassen.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Wünsche kennen wir. Einen biologischen Beleg liefert das noch nicht."
+            ]
+          },
+          {
+            "Freundin 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Fakt",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Laura kann später schwanger werden. Eine Garantie gibt es nicht."
+            ]
+          },
+          {
+            "Freundin 3 – Fakt ergänzen": [
+              "Mit Aussagen vergleichen",
+              "Ja. Eine spätere Schwangerschaft bleibt möglich.",
+              "Weiter"
+            ]
+          },
+          {
+            "Freundin 4 – Festhalten": [
+              "Weiter im Chat: Lauras Frage – Lesen"
+            ]
+          },
+          {
+            "Lauras Frage – Lesen": [
+              "Lauras Frage – Meine Antwort"
+            ]
+          },
+          {
+            "Lauras Frage – Meine Antwort": [
+              "Weiter im Chat: Lauras Frage – Prüfen"
+            ]
+          },
+          {
+            "Lauras Frage – Prüfen": [
+              "Mutter",
+              "Welche Beschwerden können auftreten?",
+              "Beim medikamentösen Abbruch zieht sich die Gebärmutter zusammen. Es kommt zu Blutungen. Schmerzen und Krämpfe können auftreten.",
+              "Nein. Sie erklärt mögliche Beschwerden. Für die Entscheidung braucht Laura weitere Informationen und ihre eigenen Wünsche.",
+              "Weiter"
+            ]
+          }
+        ],
+        "ziel": "Lauras Frage – Festhalten · analoger Abschluss am Bildschirm gesehen"
+      },
+      {
+        "niveau": "Förder",
+        "weg": "Regulär",
+        "abschnitte": [
+          {
+            "Eine Nachricht von Laura": [
+              "Mutter – Nachricht öffnen"
+            ]
+          },
+          {
+            "Mutter 1 – Nachricht lesen": [
+              "Nachricht prüfen"
+            ]
+          },
+          {
+            "Mutter 2 – Argumenten-Check": [
+              "Lauras körperliche Gesundheit.",
+              "Weiter",
+              "Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen.",
+              "Weiter",
+              "Die Schwangerschaft fortsetzen.",
+              "Weiter",
+              "Fakt",
+              "Weiter"
+            ]
+          },
+          {
+            "Mutter 3 – Fakt ergänzen": [
+              "Es kommt zu Blutungen. Schmerzen und Krämpfe können auftreten.",
+              "Weiter"
+            ]
+          },
+          {
+            "Mutter 4 – Festhalten": [
+              "Weiter im Chat: Freundin 1 – Nachricht lesen"
+            ]
+          },
+          {
+            "Freundin 1 – Nachricht lesen": [
+              "Nachricht prüfen"
+            ]
+          },
+          {
+            "Freundin 2 – Argumenten-Check": [
+              "Lauras Ausbildung und ihre Pläne für später.",
+              "Weiter",
+              "Man sollte überlegen, wann Kinder zu den eigenen Lebensplänen passen.",
+              "Weiter",
+              "Einen Abbruch mit Medikamenten vornehmen lassen.",
+              "Weiter",
+              "Fakt",
+              "Weiter"
+            ]
+          },
+          {
+            "Freundin 3 – Fakt ergänzen": [
+              "Ja. Eine spätere Schwangerschaft bleibt möglich.",
+              "Weiter"
+            ]
+          },
+          {
+            "Freundin 4 – Festhalten": [
+              "Weiter im Chat: Lauras Frage – Lesen"
+            ]
+          },
+          {
+            "Lauras Frage – Lesen": [
+              "Lauras Frage – Meine Antwort"
+            ]
+          },
+          {
+            "Lauras Frage – Meine Antwort": [
+              "Weiter im Chat: Lauras Frage – Prüfen"
+            ]
+          },
+          {
+            "Lauras Frage – Prüfen": [
+              "Freundin",
+              "Kann ich nach einem Abbruch ohne Komplikationen später schwanger werden?",
+              "Nach einem medikamentösen Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich. Die spätere Fruchtbarkeit wird nach heutigem Wissen dadurch nicht beeinträchtigt.",
+              "Nein. Sie beantwortet eine Frage zu späteren Kindern. Die jetzige Entscheidung bleibt offen.",
+              "Weiter"
+            ]
+          }
+        ],
+        "ziel": "Lauras Frage – Festhalten · analoger Abschluss am Bildschirm gesehen"
+      },
+      {
+        "niveau": "Förder",
+        "weg": "Mit Fehlversuchen und Hilfe",
+        "abschnitte": [
+          {
+            "Eine Nachricht von Laura": [
+              "Mutter – Nachricht öffnen"
+            ]
+          },
+          {
+            "Mutter 1 – Nachricht lesen": [
+              "Nachricht prüfen"
+            ]
+          },
+          {
+            "Mutter 2 – Argumenten-Check": [
+              "Man sollte mögliche Beschwerden ernst nehmen.",
+              "Lauras körperliche Gesundheit.",
+              "Weiter",
+              "Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen.",
+              "Weiter",
+              "Die Schwangerschaft fortsetzen.",
+              "Weiter",
+              "Fakt",
+              "Weiter"
+            ]
+          },
+          {
+            "Mutter 3 – Fakt ergänzen": [
+              "Weil Medikamente eingesetzt werden, können keine Schmerzen auftreten.",
+              "Hilfe",
+              "Erklärung mit Lösung",
+              "Zurück zum Gespräch",
+              "Es kommt zu Blutungen. Schmerzen und Krämpfe können auftreten.",
+              "Weiter"
+            ]
+          },
+          {
+            "Mutter 4 – Festhalten": [
+              "Krämpfe zeigen, dass Laura keine Kinder mehr bekommen kann.",
+              "Die Gebärmutter zieht sich zusammen.",
+              "Weiter im Chat: Freundin 1 – Nachricht lesen"
+            ]
+          },
+          {
+            "Freundin 1 – Nachricht lesen": [
+              "Nachricht prüfen"
+            ]
+          },
+          {
+            "Freundin 2 – Argumenten-Check": [
+              "Lauras Ausbildung und ihre Pläne für später.",
+              "Weiter",
+              "Man sollte überlegen, wann Kinder zu den eigenen Lebensplänen passen.",
+              "Weiter",
+              "Einen Abbruch mit Medikamenten vornehmen lassen.",
+              "Weiter",
+              "Fakt",
+              "Weiter"
+            ]
+          },
+          {
+            "Freundin 3 – Fakt ergänzen": [
+              "Ja. Eine spätere Schwangerschaft ist garantiert.",
+              "Hilfe",
+              "Erklärung mit Lösung",
+              "Zurück zum Gespräch",
+              "Ja. Eine spätere Schwangerschaft bleibt möglich.",
+              "Weiter"
+            ]
+          },
+          {
+            "Freundin 4 – Festhalten": [
+              "Ja. Laura wird später sicher schwanger.",
+              "Nein. Sie ist möglich, aber nicht sicher.",
+              "Weiter im Chat: Lauras Frage – Lesen"
+            ]
+          },
+          {
+            "Lauras Frage – Lesen": [
+              "Lauras Frage – Meine Antwort"
+            ]
+          },
+          {
+            "Lauras Frage – Meine Antwort": [
+              "Weiter im Chat: Lauras Frage – Prüfen"
+            ]
+          },
+          {
+            "Lauras Frage – Prüfen": [
+              "Mutter",
+              "Welche Beschwerden können auftreten?",
+              "Eine spätere Schwangerschaft ist sicher.",
+              "Beim medikamentösen Abbruch zieht sich die Gebärmutter zusammen. Es kommt zu Blutungen. Schmerzen und Krämpfe können auftreten.",
+              "Ja. Wer mögliche Schmerzen kennt, muss die Schwangerschaft fortsetzen.",
+              "Nein. Sie erklärt mögliche Beschwerden. Für die Entscheidung braucht Laura weitere Informationen und ihre eigenen Wünsche.",
+              "Weiter"
+            ]
+          }
+        ],
+        "ziel": "Lauras Frage – Festhalten · analoger Abschluss am Bildschirm gesehen"
+      },
+      {
+        "niveau": "ESA",
+        "weg": "Mit Fehlversuchen und Hilfe",
+        "abschnitte": [
+          {
+            "Eine Nachricht von Laura": [
+              "Mutter – Nachricht öffnen"
+            ]
+          },
+          {
+            "Mutter 1 – Nachricht lesen": [
+              "Nachricht prüfen"
+            ]
+          },
+          {
+            "Mutter 2 – Argumenten-Check": [
+              "Lauras Ausbildung und Zukunftspläne.",
+              "Lauras körperliche Gesundheit.",
+              "Weiter",
+              "Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen.",
+              "Weiter",
+              "Die Schwangerschaft fortsetzen.",
+              "Weiter",
+              "Fakt",
+              "Weiter"
+            ]
+          },
+          {
+            "Mutter 3 – Fakt ergänzen": [
+              "Beim medikamentösen Abbruch werden Medikamente eingesetzt.",
+              "Hilfe",
+              "Erklärung mit Lösung",
+              "Zurück zum Gespräch",
+              "Es kommt zu Blutungen. Schmerzen und Krämpfe können auftreten.",
+              "Weiter"
+            ]
+          },
+          {
+            "Mutter 4 – Festhalten": [
+              "Nur eine Operation kann Krämpfe auslösen.",
+              "Die Gebärmutter zieht sich zusammen.",
+              "Weiter im Chat: Freundin 1 – Nachricht lesen"
+            ]
+          },
+          {
+            "Freundin 1 – Nachricht lesen": [
+              "Nachricht prüfen"
+            ]
+          },
+          {
+            "Freundin 2 – Argumenten-Check": [
+              "Lauras Ausbildung und ihre Pläne für später.",
+              "Weiter",
+              "Man sollte überlegen, wann Kinder zu den eigenen Lebensplänen passen.",
+              "Weiter",
+              "Einen Abbruch mit Medikamenten vornehmen lassen.",
+              "Weiter",
+              "Fakt",
+              "Weiter"
+            ]
+          },
+          {
+            "Freundin 3 – Fakt ergänzen": [
+              "Ja. Eine spätere Schwangerschaft ist garantiert.",
+              "Hilfe",
+              "Erklärung mit Lösung",
+              "Zurück zum Gespräch",
+              "Ja. Eine spätere Schwangerschaft bleibt möglich.",
+              "Weiter"
+            ]
+          },
+          {
+            "Freundin 4 – Festhalten": [
+              "Nein. Laura kann später keine Kinder bekommen.",
+              "Nein. Sie ist möglich, aber nicht sicher.",
+              "Weiter im Chat: Lauras Frage – Lesen"
+            ]
+          },
+          {
+            "Lauras Frage – Lesen": [
+              "Lauras Frage – Meine Antwort"
+            ]
+          },
+          {
+            "Lauras Frage – Meine Antwort": [
+              "Weiter im Chat: Lauras Frage – Prüfen"
+            ]
+          },
+          {
+            "Lauras Frage – Prüfen": [
+              "Beide Nachrichten",
+              "Welche Beschwerden können auftreten?",
+              "Beim medikamentösen Abbruch zieht sich die Gebärmutter zusammen. Es kommt zu Blutungen. Schmerzen und Krämpfe können auftreten.",
+              "Ja. Wer mögliche Schmerzen kennt, muss die Schwangerschaft fortsetzen.",
+              "Nein. Sie erklärt mögliche Beschwerden. Für die Entscheidung braucht Laura weitere Informationen und ihre eigenen Wünsche.",
+              "Weiter",
+              "Kann ich nach einem Abbruch ohne Komplikationen später schwanger werden?",
+              "Nach einem medikamentösen Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich. Die spätere Fruchtbarkeit wird nach heutigem Wissen dadurch nicht beeinträchtigt.",
+              "Nein. Sie beantwortet eine Frage zu späteren Kindern. Die jetzige Entscheidung bleibt offen.",
+              "Weiter"
+            ]
+          }
+        ],
+        "ziel": "Lauras Frage – Festhalten · analoger Abschluss am Bildschirm gesehen"
+      },
+      {
+        "niveau": "MSA",
+        "weg": "Mit Fehlversuchen und Hilfe",
+        "abschnitte": [
+          {
+            "Eine Nachricht von Laura": [
+              "Mutter – Nachricht öffnen"
+            ]
+          },
+          {
+            "Mutter 1 – Nachricht lesen": [
+              "Nachricht prüfen"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Ihr liegt Lauras Gesundheit am Herzen."
+            ]
+          },
+          {
+            "Mutter 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Man sollte mögliche Beschwerden ernst nehmen.",
+              "Lauras körperliche Gesundheit.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Sie will, dass Beschwerden bei solchen Entscheidungen zählen."
+            ]
+          },
+          {
+            "Mutter 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Sie rät zum Austragen."
+            ]
+          },
+          {
+            "Mutter 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Die Schwangerschaft fortsetzen.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Die Begründung enthält noch keine Erklärung des körperlichen Vorgangs."
+            ]
+          },
+          {
+            "Mutter 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Fakt",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Die Gebärmutter zieht sich zusammen. Ein Vergleich mit dem Austragen fehlt."
+            ]
+          },
+          {
+            "Mutter 3 – Fakt ergänzen": [
+              "Mit Aussagen vergleichen",
+              "Beim medikamentösen Abbruch werden Medikamente eingesetzt.",
+              "Hilfe",
+              "Erklärung mit Lösung",
+              "Zurück zum Gespräch",
+              "Es kommt zu Blutungen. Schmerzen und Krämpfe können auftreten.",
+              "Weiter"
+            ]
+          },
+          {
+            "Mutter 4 – Festhalten": [
+              "Ohne Operation fehlen die Auslöser für Krämpfe. Deshalb ist der Abbruch körperlich leichter.",
+              "Kontraktionen können auch ohne Operation schmerzen. Welche Möglichkeit Laura stärker belastet, bleibt offen.",
+              "Weiter im Chat: Freundin 1 – Nachricht lesen"
+            ]
+          },
+          {
+            "Freundin 1 – Nachricht lesen": [
+              "Nachricht prüfen"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Sie möchte, dass Laura selbst planen kann."
+            ]
+          },
+          {
+            "Freundin 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Lauras Ausbildung und ihre Pläne für später.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Ein allgemeiner Grundsatz zur Lebensplanung."
+            ]
+          },
+          {
+            "Freundin 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Man sollte überlegen, wann Kinder zu den eigenen Lebensplänen passen.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Sie rät zum Abbruch."
+            ]
+          },
+          {
+            "Freundin 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Einen Abbruch mit Medikamenten vornehmen lassen.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Wünsche kennen wir. Einen biologischen Beleg liefert das noch nicht."
+            ]
+          },
+          {
+            "Freundin 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Fakt",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Laura kann später schwanger werden. Eine Garantie gibt es nicht."
+            ]
+          },
+          {
+            "Freundin 3 – Fakt ergänzen": [
+              "Mit Aussagen vergleichen",
+              "Ja. Eine spätere Schwangerschaft ist garantiert.",
+              "Hilfe",
+              "Erklärung mit Lösung",
+              "Zurück zum Gespräch",
+              "Ja. Eine spätere Schwangerschaft bleibt möglich.",
+              "Weiter"
+            ]
+          },
+          {
+            "Freundin 4 – Festhalten": [
+              "Wenn die Fruchtbarkeit erhalten bleibt, ist ein späteres Kind sicher. Laura kann fest damit planen.",
+              "Nach einem komplikationslosen Abbruch bleibt eine spätere Schwangerschaft möglich. Ob und wann Laura ein Kind möchte, bleibt offen.",
+              "Weiter im Chat: Lauras Frage – Lesen"
+            ]
+          },
+          {
+            "Lauras Frage – Lesen": [
+              "Lauras Frage – Meine Antwort"
+            ]
+          },
+          {
+            "Lauras Frage – Meine Antwort": [
+              "Weiter im Chat: Lauras Frage – Prüfen"
+            ]
+          },
+          {
+            "Lauras Frage – Prüfen": [
+              "Freundin",
+              "Kann ich nach einem Abbruch ohne Komplikationen später schwanger werden?",
+              "Beim medikamentösen Abbruch zieht sich die Gebärmutter zusammen. Es kommt zu Blutungen. Schmerzen und Krämpfe können auftreten.",
+              "Nach einem medikamentösen Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich. Die spätere Fruchtbarkeit wird nach heutigem Wissen dadurch nicht beeinträchtigt.",
+              "Nein. Sie beantwortet eine Frage zu späteren Kindern. Die jetzige Entscheidung bleibt offen.",
+              "Weiter"
+            ]
+          }
+        ],
+        "ziel": "Lauras Frage – Festhalten · analoger Abschluss am Bildschirm gesehen"
+      },
+      {
+        "niveau": "AHR",
+        "weg": "Mit Fehlversuchen und Hilfe",
+        "abschnitte": [
+          {
+            "Eine Nachricht von Laura": [
+              "Mutter – Nachricht öffnen"
+            ]
+          },
+          {
+            "Mutter 1 – Nachricht lesen": [
+              "Nachricht prüfen"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Ihr liegt Lauras Gesundheit am Herzen."
+            ]
+          },
+          {
+            "Mutter 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Man sollte mögliche Beschwerden ernst nehmen.",
+              "Lauras körperliche Gesundheit.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Sie will, dass Beschwerden bei solchen Entscheidungen zählen."
+            ]
+          },
+          {
+            "Mutter 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Sie rät zum Austragen."
+            ]
+          },
+          {
+            "Mutter 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Die Schwangerschaft fortsetzen.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Die Begründung enthält noch keine Erklärung des körperlichen Vorgangs."
+            ]
+          },
+          {
+            "Mutter 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Fakt",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Die Gebärmutter zieht sich zusammen. Ein Vergleich mit dem Austragen fehlt."
+            ]
+          },
+          {
+            "Mutter 3 – Fakt ergänzen": [
+              "Mit Aussagen vergleichen",
+              "Weil Medikamente eingesetzt werden, können keine Schmerzen auftreten.",
+              "Hilfe",
+              "Erklärung mit Lösung",
+              "Zurück zum Gespräch",
+              "Es kommt zu Blutungen. Schmerzen und Krämpfe können auftreten.",
+              "Weiter"
+            ]
+          },
+          {
+            "Mutter 4 – Festhalten": [
+              "Kontraktionen können schmerzen. Deshalb belastet eine fortgesetzte Schwangerschaft Laura weniger.",
+              "Kontraktionen können auch ohne Operation schmerzen. Welche Möglichkeit Laura stärker belastet, bleibt offen.",
+              "Weiter im Chat: Freundin 1 – Nachricht lesen"
+            ]
+          },
+          {
+            "Freundin 1 – Nachricht lesen": [
+              "Nachricht prüfen"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Sie möchte, dass Laura selbst planen kann."
+            ]
+          },
+          {
+            "Freundin 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Lauras Ausbildung und ihre Pläne für später.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Ein allgemeiner Grundsatz zur Lebensplanung."
+            ]
+          },
+          {
+            "Freundin 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Man sollte überlegen, wann Kinder zu den eigenen Lebensplänen passen.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Sie rät zum Abbruch."
+            ]
+          },
+          {
+            "Freundin 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Einen Abbruch mit Medikamenten vornehmen lassen.",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Wünsche kennen wir. Einen biologischen Beleg liefert das noch nicht."
+            ]
+          },
+          {
+            "Freundin 2 – Argumenten-Check": [
+              "Mit Aussagen vergleichen",
+              "Fakt",
+              "Weiter"
+            ]
+          },
+          {
+            "Eigener Gedanke": [
+              "Laura kann später schwanger werden. Eine Garantie gibt es nicht."
+            ]
+          },
+          {
+            "Freundin 3 – Fakt ergänzen": [
+              "Mit Aussagen vergleichen",
+              "Ja. Eine spätere Schwangerschaft ist garantiert.",
+              "Hilfe",
+              "Erklärung mit Lösung",
+              "Zurück zum Gespräch",
+              "Ja. Eine spätere Schwangerschaft bleibt möglich.",
+              "Weiter"
+            ]
+          },
+          {
+            "Freundin 4 – Festhalten": [
+              "Spätere Kinder bleiben möglich. Deshalb ist der Abbruch jetzt die richtige Entscheidung für ihre Ausbildung.",
+              "Nach einem komplikationslosen Abbruch bleibt eine spätere Schwangerschaft möglich. Ob und wann Laura ein Kind möchte, bleibt offen.",
+              "Weiter im Chat: Lauras Frage – Lesen"
+            ]
+          },
+          {
+            "Lauras Frage – Lesen": [
+              "Lauras Frage – Meine Antwort"
+            ]
+          },
+          {
+            "Lauras Frage – Meine Antwort": [
+              "Weiter im Chat: Lauras Frage – Prüfen"
+            ]
+          },
+          {
+            "Lauras Frage – Prüfen": [
+              "Beide Nachrichten",
+              "Welche Beschwerden können auftreten?",
+              "Beim medikamentösen Abbruch zieht sich die Gebärmutter zusammen. Es kommt zu Blutungen. Schmerzen und Krämpfe können auftreten.",
+              "Ja. Wer mögliche Schmerzen kennt, muss die Schwangerschaft fortsetzen.",
+              "Nein. Sie erklärt mögliche Beschwerden. Für die Entscheidung braucht Laura weitere Informationen und ihre eigenen Wünsche.",
+              "Weiter",
+              "Kann ich nach einem Abbruch ohne Komplikationen später schwanger werden?",
+              "Nach einem medikamentösen Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich. Die spätere Fruchtbarkeit wird nach heutigem Wissen dadurch nicht beeinträchtigt.",
+              "Nein. Sie beantwortet eine Frage zu späteren Kindern. Die jetzige Entscheidung bleibt offen.",
+              "Weiter"
+            ]
+          }
+        ],
+        "ziel": "Lauras Frage – Festhalten · analoger Abschluss am Bildschirm gesehen"
+      }
+    ]
+  }
 }

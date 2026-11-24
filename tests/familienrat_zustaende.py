@@ -109,9 +109,10 @@ def check(engine):
             entry(person,'transfer');click('answer-2')
             expect(f.locator('#answer-0')).to_be_enabled();outer('home');click('resume')
             expect(f.locator('#response')).to_be_visible();click('jump')
-            if person in ('Mutter','Freundin'):
-                f.locator('aside > details > summary').click()
-                expect(f.locator('aside')).to_contain_text(BANK['ui']['skipped'])
+            f.locator('aside > details > summary').click()
+            status_text=BANK['ui']['skipped']
+            if person in ('Großmutter','Vater'):status_text=person+' · '+status_text
+            expect(f.locator('aside')).to_contain_text(status_text)
             entry(person,'transfer');click('answer-1');click('answer-0')
             expect(f.locator('section')).to_contain_text(BANK['ui']['assisted'])
             evidence.append(dict(anwendung=person,ausloesung='Getrennte Denkhandlungen, späte Hilfe, unterbrochen, zwei Fehlversuche, korrigiert'))

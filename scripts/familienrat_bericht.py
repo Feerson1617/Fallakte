@@ -95,7 +95,7 @@ def main():
         'Die verpflichtenden Erst- und Ergebnisfelder, die persönliche Bewertungsfläche, die bedingten Rückwege und die digitale Anwendung nach Hilfe 5 sind in der Medienwechsel- und Papierfeldmatrix festgelegt. Der gesonderte Medienführungsbericht enthält die in Chromium und WebKit bedienten Wege pro Niveau.',
         '## Korrekturstand und belastbare Nachweise',
         'Ausgangsstand ecab26f. Der Änderungsbericht ordnet jedem Befund den zugehörigen Browser- oder Dateinachweis zu. Das Fachgutachten dokumentiert die medizinische und curriculare Prüfung sowie die offene praktische Abnahme.',
-        'Für beide Browser liegen alle 16 geordneten Niveaupaare vor. Der gesonderte Test der Schülerwege bedient acht vollständige Wege anhand sichtbarer Antworttexte mit eigenen Formulierungen. Das Protokoll der interaktiven Durchsicht dokumentiert die gesonderte Bedienung aus Förder-Perspektive.',
+        'Für beide Browser liegen alle 16 geordneten Niveaupaare vor. Der gesonderte Test der Schülerwege bedient acht vollständige Wege anhand sichtbarer Antworttexte mit eigenen Formulierungen. Das Protokoll der interaktiven Durchsicht dokumentiert die gesonderte Bedienung aus Förder-Perspektive sowie je Niveau zwei interaktive WebKit-Durchläufe.',
         '## A · Bestandsschutz des 02.12.',
         f'Das eingebettete Dezember-02-Modul hat die SHA-256-Prüfsumme `{DAY02}` des Release-Commits `{BASE}`. Auch Übungs-HTML und Übungs-SCORM stimmen mit der Veröffentlichung überein. '
         f'{protect["wege_laura"]} vollständige Laura-Wege liefen in der identischen Referenz. Geprüft wurden Kartenrückkehr, fünf Hilfen, individuelle Begründungen, Sicherung, Tom, Celina, Übung und Wiedereinstieg. '

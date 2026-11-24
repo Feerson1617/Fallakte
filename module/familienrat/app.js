@@ -321,6 +321,10 @@ function facts(box){
     const original=el(d,'details');el(original,'summary',ui.family);paragraph(original,bank.cases[n].original);
     el(d,'strong',ui.addition);paragraph(d,bank.cases[n].addition);paragraph(d,bank.cases[n].connection,'small');
   }
+  for(const n of names.slice(2)){
+    const r=saved.records[n+'/Transfer'];
+    if(r?.skipped || r?.valid)paragraph(d,n+' · '+applicationStatus(n),'small');
+  }
 }
 function evaluationHelp(box,r){
   btn(box,ui.help,'help',()=>help({hints:bank.evaluationHints,helpByLevel:bank.evaluationHelpByLevel,personalTier:current.at===2?members[current.individual||0]:null},r));
