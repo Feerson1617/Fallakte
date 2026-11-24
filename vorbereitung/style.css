@@ -25,3 +25,4 @@ dialog{width:min(55rem,94vw);max-height:88vh;color:var(--ink);overflow:auto}dial
 @media(max-height:560px){main{padding-top:.75rem}.bar{min-height:2.8rem}.home{margin:0 auto}}
 @media(min-width:43.01rem) and (max-width:50rem){.grid{grid-template-columns:1fr}.figure{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);column-gap:1.2rem;align-items:center}.figure h3{grid-column:1/-1}.figure figcaption{border-top:0;border-left:1px solid var(--line);padding:.6rem;margin:0}}
 main,dialog{hyphens:auto;overflow-wrap:anywhere}.grid>*{min-width:0}.answers{grid-template-columns:minmax(0,1fr)}
+.bar{flex-wrap:wrap}
