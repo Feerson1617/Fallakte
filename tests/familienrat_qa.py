@@ -25,6 +25,12 @@ NAMES = list(BANK['cases'])
 # From the four messages and the two different questions about biology.
 KEYS = {'Mutter':[0,0,0,0,0],'Freundin':[0,0,1,0,0],
         'Großmutter':[0,0,1,0],'Vater':[0,2,2,0]}
+THOUGHTS = {
+    'Mutter':['Ihr liegt Lauras Wohlergehen am Herzen.', 'Vorher an mögliche Schmerzen denken.', 'Sie rät zum Austragen.', 'Es fehlt, was im Körper passiert.', 'Krämpfe durch Muskeltätigkeit. Kein Vergleich mit einer Geburt.'],
+    'Freundin':['Laura soll ihre Zukunft planen können.', 'Bei der Planung eigene Wünsche berücksichtigen.', 'Sie rät zum medikamentösen Abbruch.', 'Ein Wunsch ist noch kein biologischer Beleg.', 'Später Kinder zu bekommen bleibt möglich. Das legt heute nichts fest.'],
+    'Großmutter':['Ihre Regel schützt ungeborenes Leben.', 'Sie rät zur Fortsetzung.', 'Was ihr persönlich wichtig ist, bleibt indirekt.', 'Ungeborenes Leben ist ihr wichtig. Aus Biologie allein folgt keine Pflicht.'],
+    'Vater':['Selbst entscheiden und Bescheid wissen.', 'Sich in der Praxis beraten lassen.', 'Die Regel hinter dem Rat fehlt.', 'Erst informieren. Auch nach Beratung entscheidet Laura selbst.'],
+}
 TEAMS = [[l] for l in LEVELS]+[['Förder','ESA'],['ESA','MSA'],['MSA','AHR'],['Förder','AHR']]
 def snap(page,name):
     page.screenshot(path=QA/(name+'.jpg'),quality=62,animations='disabled')
@@ -75,18 +81,18 @@ def paper(f,key,team,trace):
     # two paper assignments, even if the contract itself were internally consistent.
     stray=f.locator('main p:not([data-handoff] p)').all_inner_texts()
     assert not any('Halte Wert und Norm' in text or 'Schreibe deine Verbindung jetzt' in text for text in stray)
-    back=f.locator('[data-return]')
+    back=f.locator('[data-return]' if step['nextId'] else '[data-terminal=paper]')
     expect(back).to_have_count(1)
     expect(back).to_have_text(step['returnText'])
-    expect(back).to_have_attribute('data-return',step['nextId'])
+    if step['nextId']:expect(back).to_have_attribute('data-return',step['nextId'])
     if step['after']:expect(panel).to_contain_text(step['after'])
     trace.append(dict(schritt=key,abschnitt=f.locator('h1').inner_text(),feld=step['field'],
                       auftraege=texts,rueckweg=back.inner_text(),ziel=step['nextId']))
     return step
 
 def arrived(f,step):
-    expect(f.locator('h1')).to_have_attribute('data-section',step['nextId'])
-    expect(f.locator('h1')).to_have_text(step['returnText'].removeprefix('Weiter im Chat: '))
+    expect(f.locator('h1')).to_have_attribute('data-section',step['restartId'])
+    if step['mode']=='Abschnittswechsel':expect(f.locator('h1')).to_have_text(step['returnText'].removeprefix('Weiter im Chat: '))
 
 def case(page,f,person,team,probe,trace,shots=False):
     application=None
@@ -120,12 +126,13 @@ def case(page,f,person,team,probe,trace,shots=False):
                     expect(f.locator('#answer-0')).to_have_count(0)
                 tap(f,'source-'+str(indices[0]))
                 expect(f.locator('section')).to_contain_text(BANK['ui']['sourceYes'])
-            else:
-                thought=c['tasks'][j]['answers'][key]['text']
-                if person=='Mutter' and j==0:thought='Ihr liegt Lauras Wohlergehen am Herzen.'
-                f.locator('textarea').fill(thought);tap(f,'compare')
-                expect(f.locator('section')).to_contain_text(thought)
-                expect(f.locator('section')).to_contain_text(BANK['ui']['freeNote'])
+                expect(f.locator('#compare')).to_be_disabled()
+                expect(f.locator('#answer-0')).to_have_count(0)
+            thought=THOUGHTS[person][j]
+            f.locator('textarea').fill(thought);tap(f,'compare')
+            expect(f.locator('section')).to_contain_text(thought)
+            expect(f.locator('section')).to_contain_text(BANK['ui']['freeNote'])
+        if page.context.browser.browser_type.name=='chromium' and probe and len(team)==1 and person=='Mutter' and j==0:snap(page,'Lernweg-'+team[0])
         if shots and j==0:snap(page,person+'-Aufgabe')
         if probe:
             hints(f,task,team)
@@ -160,26 +167,24 @@ def case(page,f,person,team,probe,trace,shots=False):
         expect(f.locator('#jump')).to_be_visible()
         visible_words=len(f.locator('section').inner_text().split())
         if shots and person=='Mutter':snap(page,'Anwendung')
-        # Each result is final on this question. Use different teams for each distractor,
-        # a correct first application and correct selection after consulting a solution.
         source=LEVELS.index(team[0])
-        selected=0 if source in (0,3) else source
+        selected=0
+        if source in (1,2):
+            for wrong in (1,2,1):
+                tap(f,'answer-'+str(wrong))
+                opt=task['answers'][wrong]
+                expect(f.locator('#response')).to_have_text(opt.get('advancedFeedback',opt['feedback']) if advanced else opt['feedback'])
+                expect(f.locator('#answer-0')).to_be_enabled()
+                expect(f.locator('[data-handoff]')).to_have_count(0)
         if source==3:hints(f,task,team)
-        if selected==0 and person in ('Mutter','Freundin'):
-            # Select by the biological meaning independently of JSON order and ok flags.
-            if person=='Mutter':
-                meaning='Kontraktionen können auch ohne Operation schmerzen.' if advanced else 'Die Gebärmutter zieht sich zusammen.'
-            else:
-                meaning='Nach einem komplikationslosen Abbruch bleibt eine spätere Schwangerschaft möglich.' if advanced else 'Nein. Sie ist möglich, aber nicht sicher.'
-            f.get_by_role('button',name=meaning,exact=not advanced).tap()
-        else:tap(f,'answer-'+str(selected))
-        answer=task['answers'][selected]
+        tap(f,'answer-0')
+        answer=task['answers'][0]
         expected=answer.get('advancedFeedback',answer['feedback']) if advanced else answer['feedback']
         expect(f.locator('#response')).to_have_text(expected)
         expect(f.locator('#answer-0')).to_be_disabled()
         expect(f.locator('section')).not_to_contain_text(BANK['ui']['helpBeforePaper'])
         expect(f.locator('section')).not_to_contain_text(BANK['ui']['mixedTransfer'])
-        outcome=BANK['ui']['applied' if source==0 else 'assisted']
+        outcome=BANK['ui'][['applied','assisted','assisted','appliedSolution'][source]]
         expect(f.locator('section')).to_contain_text(outcome)
         application=dict(person=person,frage=prompt,option=selected,rueckmeldung=expected,status=outcome,
                          woerter_vor_antwort=visible_words,hilfe_bei_anwendung=source==3)
@@ -209,7 +214,7 @@ def judgment(page,f,team,route,probe,trace,shots):
     if shots:snap(page,'Persoenliche-Bewertung')
     assert not f.locator('#open-Vater').is_visible()
     if probe:
-        tap(f,'help');tap(f,'hint-last');expect(f.locator('#dialog-body')).to_contain_text('Eine andere mögliche Antwort')
+        tap(f,'help');tap(f,'hint-last');expect(f.locator('#dialog-body')).to_contain_text(BANK['evaluationHelpByLevel'][team[0]][4])
         tap(f,'dismiss')
     tap(f,'next');arrived(f,step)
     for index,t in enumerate(team):
@@ -311,7 +316,7 @@ def engine_run(engine,url):
                 recover(page,f,shell,team,'Freundin','transfer')
                 expect(f.locator('[data-application]')).to_have_attribute('data-application',BANK['media']['steps']['FR-ergebnis']['restartApplication']['id'])
                 expect(f.locator('[data-handoff]')).to_have_count(0)
-                tap(f,'answer-1');direct=paper(f,'FR-ergebnis',team,trace)
+                tap(f,'answer-1');expect(f.locator('[data-handoff]')).to_have_count(0);tap(f,'answer-0');direct=paper(f,'FR-ergebnis',team,trace)
                 tap(f,'next');arrived(f,direct)
                 recover(page,f,shell,team,'Freundin',5)
                 if engine=='webkit' and route==7:snap(page,'Wiedereinstieg')
@@ -345,9 +350,10 @@ def engine_run(engine,url):
                 recover(page,f,shell,team,'Mutter',1)
                 tap(f,'help');tap(f,'hint-last');tap(f,'dismiss');tap(f,'jump')
                 f.locator('aside > details > summary').tap()
-                expect(f.locator('aside')).to_contain_text(BANK['ui']['pending'])
+                expect(f.locator('aside')).not_to_contain_text(BANK['ui']['pending'])
                 recover(page,f,shell,team,'Mutter',6)
-                expect(f.locator('#next')).to_have_count(0)
+                expect(f.locator('#next')).to_be_visible()
+                recover(page,f,shell,team,'Mutter','transfer')
                 shell.locator('[data-action=resources]').tap();tap(f,'dismiss')
                 tap(f,'answer-0')
                 expect(f.locator('section')).to_contain_text(BANK['ui']['assisted'])
@@ -373,26 +379,31 @@ def main():
     assert markdown(BANK) in (OUT/'Work-Materialvertrag.md').read_text()
     assert all(len(t['hints'])==5 and sum(o['ok'] for o in t['answers'])==1
                for c in BANK['cases'].values() for t in c['tasks']+[c['transfer']])
-    prior=json.loads(git('show','b0b5d0f3dd76e444ad99de0129724da899f3efe0:module/familienrat/material.json'))
-    for key in ('opening','second','cards','limits','evaluation','expectation'):
+    prior=json.loads(git('show','ecab26f:module/familienrat/material.json'))
+    for key in ('opening','second','cards','evaluation','expectation','evaluationRecovery'):
         assert BANK[key]==prior[key],key
     for person,c in BANK['cases'].items():
-        old={k:v for k,v in prior['cases'][person].items() if k not in ('first','paper','return','destination')}
+        old=prior['cases'][person]
         assert {k:v for k,v in c.items() if k not in ('tasks','transfer')}=={k:v for k,v in old.items() if k not in ('tasks','transfer')}
-        assert [{k:v for k,v in t.items() if k!='evidenceSentences'} for t in c['tasks']]==old['tasks']
-    baseline=json.loads(git('show','aee6716bad4e0729b21d52cb0459cf467ccc9d3c:module/familienrat/material.json'))
-    for name,case_data in BANK['cases'].items():
-        assert case_data['tasks']==baseline['cases'][name]['tasks'] and case_data['transfer']==baseline['cases'][name]['transfer']
-    for old,new in [(baseline['evaluationHints'],BANK['evaluationHints']),*[(baseline['evaluationHelpByLevel'][t],BANK['evaluationHelpByLevel'][t]) for t in LEVELS]]:
-        assert new[:-1]==old[:-1] and new[-1]+' Halte deine Verbindung auf dem Bogen fest.'==old[-1]
+        for t,o in zip([*c['tasks'],c['transfer']], [*old['tasks'],old['transfer']],strict=True):
+            assert t['id']==o['id'] and t['sectionId']==o['sectionId']
+            for current,previous in zip(t['answers'],o['answers'],strict=True):
+                for key in previous:
+                    if key=='feedback' and person=='Freundin' and t['id']=='Leerstelle' and current['ok']:continue
+                    assert current[key]==previous[key],(person,t['id'],key)
     media=BANK['media']
+    # Nine paper fields in the Work delivery from Actions 45223449898 (ecab26f).
+    assert sha(json.dumps(media['fields'],ensure_ascii=False,sort_keys=True).encode())=='d77445ef9b3ed5b8066b6f32083e6011b3b952af1418fc66f665dc4656441fbc'
     sections={r['id']:r['section'] for c in BANK['cases'].values() for r in c['recovery']}
     sections.update({r['id']:r['section'] for r in BANK['evaluationRecovery']})
     assert set(media['fields'])==set(BANK['paperFields'])=={r['field'] for r in media['steps'].values()}
     matrix=(OUT/'Medienwechsel-und-Papierfeldmatrix.md').read_text()
     for key,r in media['steps'].items():
         assert r['id']==key and r['section']==sections[r['sectionId']]
-        assert r['returnText']=='Weiter im Chat: '+sections[r['nextId']] and r['restart'].endswith(sections[r['nextId']])
+        assert r['restart'].endswith(sections[r['restartId']])
+        if r['mode']=='Abschnittswechsel':assert r['returnText']=='Weiter im Chat: '+sections[r['nextId']]
+        elif r['mode']=='Sicherung':assert key=='LA-abschluss' and r['nextId'] is None and 'Sicherung' in r['returnText']
+        else:assert r['sectionId']==r['nextId'] and 'Bleib' in r['returnText']
         assert set(r['orders'])==set(LEVELS) and r['help'] and r['kind'] and r['returnText'] in matrix
         for level,order in r['orders'].items():
             assert order['action'] in matrix and r['field'] in order['screen']

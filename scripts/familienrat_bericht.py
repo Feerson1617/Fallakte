@@ -1,4 +1,5 @@
 """Package only browser evidence for the two modules embedded in this specific build."""
+import io
 import json
 from pathlib import Path
 from zipfile import ZipFile, ZIP_DEFLATED
@@ -22,11 +23,25 @@ def main():
     traces=[dict(browser=r['browser'],niveaus=r['niveaus'],format=r['format'],papierweg=r['papierweg']) for r in rows]
     coverage={key for r in rows for key in r['alle_uebergaben']}
     assert coverage==set(media['steps']) and len(traces)==24
+    states=ROOT/'build/Familienrat-Zustaende/Zustaende.json'
+    learning=ROOT/'build/Familienrat-Lernwege/Lernwege.json'
+    proof=ROOT/'docs/pruefnachweise'
+    for file in (states,learning):
+        log=json.loads(file.read_text())
+        assert log['commit']==head and log['html_sha256']==checksum
+    assert len(json.loads(learning.read_text())['wege'])==8
+    assert all(sum('team' in case for case in engine['pruefungen'])==16 for engine in json.loads(states.read_text())['browser'])
+    freeze=json.loads((shield/'Dateivergleich.json').read_text())
+    assert freeze['commit']==head and freeze['referenz']==BASE
+    reports=['Fachgutachten.md','Aenderungsbericht.md']
+    for name in reports:
+        content=(ROOT/'docs'/('0812-'+name)).read_text()
+        (OUT/name).write_text(content.replace('RELEASE_COMMIT',head))
     matrix_files=['Medienwechsel-und-Papierfeldmatrix.'+ext for ext in ('md','json')]
     assert json.loads((OUT/matrix_files[1]).read_text())==dict(commit=head,**media)
     media_report=[
         '# Prüfbericht · Fallakte und persönlicher Lernbogen',f'Commit `{head}` · geprüfte gemeinsame HTML-Datei `{checksum}`',
-        'Im Pflichtweg wurden vor der Auswahl die persönlichen Erstfelder geöffnet, nach der fachlichen Rückmeldung die getrennten Ergebnisfelder angezeigt. Bei Hilfe 5 erschien der Papierauftrag erst nach der digitalen Anwendung. Beide persönlichen Einträge zu Laura nutzen dieselbe Fläche.',
+        'Im Pflichtweg wurden vor der Auswahl die persönlichen Erstfelder geöffnet, nach der fachlichen Rückmeldung die getrennten Ergebnisfelder angezeigt. Nach vorab offengelegter Ergänzung erschien der Ergebnisauftrag nach erfolgreicher Anwendung. Eine Hilfenutzung bei anderen Denkhandlungen löste diesen Zwischenschritt nicht aus. Beide persönlichen Einträge zu Laura nutzen dieselbe Fläche.',
         '## Wege in der gebauten Anwendung',
         '| Niveau | Beobachtete Wegfolge | Browser |\n|---|---|---|',
     ]
@@ -40,7 +55,7 @@ def main():
         '## Paararbeit, Wiedereinstieg und Reserven',
         'Für jede Person wurden Niveau, sichtbarer Wortlaut, Feld und Folgeschritt separat am Bildschirm abgeglichen. Getestete Paare waren Förder/ESA, ESA/MSA, MSA/AHR und Förder/AHR. In „Lauras Frage – Prüfen“ wurde jeder Beleg einzeln bearbeitet. Die persönliche Begründung bleibt offen.',
         'Bei den freiwilligen Fällen wurde die Rückkehrtaste sowohl nach regulärem Abschluss als auch nach einem frischen Direkteinstieg betätigt. Nach einem Neuladen waren die Ergänzung der Freundin, die kurze Anwendung und der Belegvergleich direkt erreichbar. Die Ergebnisfelder behielten ihre Bezeichnung.',
-        f'{len(coverage)} Übergaben einschließlich bedingter Rückwege, {len(media["fields"])} Papierfelder und 24 Durchläufe. Die sichtbaren Aufträge und Rückkehrtexte stehen in 08-12/Medienwege.json. Die medizinischen Aussagen, ursprünglichen Familiennachrichten, Fachaufgaben, Antwortoptionen und Rückmeldungen wurden mit dem Ausgangsstand verglichen.',
+        f'{len(coverage)} Übergaben einschließlich bedingter Rückwege, {len(media["fields"])} Papierfelder und 24 Durchläufe. Die sichtbaren Aufträge und Rückkehrtexte stehen in 08-12/Medienwege.json. Die zwölf Übergabepunkte beziehen sich auf neun bereits vereinbarte Papierfelder. Die Erstspur bleibt im Abschnitt. Der Abschluss führt in die analoge Sicherung.',
         '## Grenzen der Prüfung',
         'Die Browserprüfung bediente Offline-HTML und SCORM mit simuliertem LMS im Hoch- und Querformat sowie bei großer Schrift. Geprüft wurden die Bildschirmhandlungen und der Fertigungsvertrag. Drucklayout, tatsächliche Papierbearbeitung in 25 Minuten, ein Schul-iPad und itslearning erfordern eine Erprobung mit dem von Work gesetzten Material.',
         f'Der eingebettete Unterrichtstag vom 02.12. entspricht bytegenau der Referenz `{BASE}` mit SHA-256 `{DAY02}`. Die Browser- und Bildvergleiche sind im Abnahmebericht dokumentiert.'
@@ -56,9 +71,13 @@ def main():
         z.writestr('08-12/Medienwege.json',json.dumps(dict(commit=head,html_sha256=checksum,wege=traces),ensure_ascii=False,indent=2))
         z.write(OUT/'Medienfuehrung-Pruefbericht.md','08-12/Medienfuehrung-Pruefbericht.md')
         z.write(before,'08-12/Ausgangspruefung.json')
-        for name in ['Abnahme.json','Referenz.json']:z.write(shield/name,'02-12/'+name)
+        for file in (states,learning):z.write(file,'08-12/'+file.name)
+        for name in ('0812-ecab26f-browser.json','0812-quellenstand.json','0812-bedienprotokoll.json'):
+            z.write(proof/name,'08-12/'+name)
+        for name in reports:z.write(OUT/name,name)
+        for name in ['Dateivergleich.json','Abnahme.json','Referenz.json']:z.write(shield/name,'02-12/'+name)
     with ZipFile(OUT/'Work-Uebergabe.zip','w',ZIP_DEFLATED) as z:
-        for filename in ['Work-Materialvertrag.json','Work-Materialvertrag.md',*matrix_files,'Medienfuehrung-Pruefbericht.md','Fallakte-Sichtpruefung.zip']:z.write(OUT/filename,filename)
+        for filename in ['Work-Materialvertrag.json','Work-Materialvertrag.md',*matrix_files,'Medienfuehrung-Pruefbericht.md','Fallakte-Sichtpruefung.zip',*reports]:z.write(OUT/filename,filename)
         for person,file in bank['designFiles'].items():
             raw=(ROOT/'assets'/file).read_bytes() if person=='Laura' else git('show',OLD+':module/08-12/assets/'+file)
             z.writestr('Portraets/'+file,raw)
@@ -74,11 +93,9 @@ def main():
         '# Abnahme · Familiennachrichten am 08.12.2026',f'Entwicklungsstand `{head}` · Inhaltsbank {bank["version"]}',
         '## Medienführung für Work',
         'Die verpflichtenden Erst- und Ergebnisfelder, die persönliche Bewertungsfläche, die bedingten Rückwege und die digitale Anwendung nach Hilfe 5 sind in der Medienwechsel- und Papierfeldmatrix festgelegt. Der gesonderte Medienführungsbericht enthält die in Chromium und WebKit bedienten Wege pro Niveau.',
-        '## Frühere drei Befunde an der Auslieferung und ihre Korrektur',
-        'Die lokale HTML-Datei aus Actions-Lauf 45196390973 (Commit `b0b5d0f`) wurde vor dem Eingriff in Chromium und WebKit bedient. Die wörtlichen Ergebnisse stehen in 08-12/Ausgangspruefung.json im Sichtprüfungspaket.',
-        '1. AHR konnte leer vergleichen und nach einer Auswahl „Ohne Hilfe zugeordnet“ erhalten. Jetzt geben MSA und AHR einen kurzen eigenen Gedanken ein. Bei ausdrücklich genannten Werten, Regeln und Ratschlägen können sie auch einen passenden Originalsatz markieren. Erst dann folgt die Bedeutungswahl. Die App bewertet freie Formulierungen nicht.',
-        '2. Bei Mutter und späterer Fruchtbarkeit bescheinigte die Schlussansicht „Ohne Hilfe zugeordnet“. Jetzt nennt die App die Herkunft des Fakts. Wer die Verbindung beibehält, begründet sie in wenigen eigenen Worten, prüft die Grenze des Fakts und hält den Grund auf dem Bogen fest. Die Ergebnisansicht trennt die geprüfte Fachauswahl und den ungeprüften persönlichen Grund für jede Person.',
-        '3. Nach Hilfe 5 kam man bei Mutter direkt zur Freundin und bei der Freundin direkt zu Laura. Jetzt erscheint beim Festhalten einmal eine veränderte Frage. Die ergänzte Lösung bleibt dabei verdeckt. Eine falsche Antwort erhält eine konkrete Erklärung und lässt den Weg offen. Hilfe während dieser neuen Frage und eine noch ausstehende Anwendung werden eigens gekennzeichnet.',
+        '## Korrekturstand und belastbare Nachweise',
+        'Ausgangsstand ecab26f. Der Änderungsbericht ordnet jedem Befund den zugehörigen Browser- oder Dateinachweis zu. Das Fachgutachten dokumentiert die medizinische und curriculare Prüfung sowie die offene praktische Abnahme.',
+        'Für beide Browser liegen alle 16 geordneten Niveaupaare vor. Der gesonderte Test der Schülerwege bedient acht vollständige Wege anhand sichtbarer Antworttexte mit eigenen Formulierungen. Das Protokoll der interaktiven Durchsicht dokumentiert die gesonderte Bedienung aus Förder-Perspektive.',
         '## A · Bestandsschutz des 02.12.',
         f'Das eingebettete Dezember-02-Modul hat die SHA-256-Prüfsumme `{DAY02}` des Release-Commits `{BASE}`. Auch Übungs-HTML und Übungs-SCORM stimmen mit der Veröffentlichung überein. '
         f'{protect["wege_laura"]} vollständige Laura-Wege liefen in der identischen Referenz. Geprüft wurden Kartenrückkehr, fünf Hilfen, individuelle Begründungen, Sicherung, Tom, Celina, Übung und Wiedereinstieg. '
@@ -98,13 +115,13 @@ def main():
         'Getestet wurden die lokale HTML-Datei und der entpackte SCORM-Einstieg mit simulierten LMS-Aufrufen. Das Manifest ist schemavalidiert. '
         'Beim SCO-Test wurden nur Initialisierung und Beendigung beobachtet. Die Anwendung hält die eigenen Antworten im Arbeitsspeicher. '
         'Hoch- und Querformat sowie 390 × 844 Pixel bei vergrößerter Schrift wurden per Touch bedient.',
-        f'Ohne vollständige Lösungshilfe gibt es keinen neuen Anwendungsabschnitt. Nach Hilfe 5 kommt je betroffenem Fall im vorhandenen Abschnitt „Festhalten“ eine Auswahl hinzu. Die gemessene Frage einschließlich sichtbarer Optionen und Bedienbeschriftungen umfasst vor der Antwort {min(word_counts)} bis {max(word_counts)} Wörter. Bei einem fallübergreifenden Beleg kommen ein kurzer Grund und eine Bestätigung im bestehenden Bewertungsabschnitt hinzu. Auf MSA/AHR lässt sich für sechs der zehn Teilfragen eine Textstelle zeigen. In den übrigen vier Feldern genügen Stichworte.',
+        f'Ohne vollständige Lösungshilfe gibt es keinen neuen Anwendungsabschnitt. Nach einer offengelegten Ergänzung kommt im betroffenen Fall im vorhandenen Abschnitt „Festhalten“ eine Auswahl hinzu. Die gemessene Frage einschließlich sichtbarer Optionen und Bedienbeschriftungen umfasst vor der Antwort {min(word_counts)} bis {max(word_counts)} Wörter. Bei einem fallübergreifenden Beleg kommen ein kurzer Grund und eine Bestätigung im bestehenden Bewertungsabschnitt hinzu. Auf MSA und AHR gehören eigene Worte vor den Vergleich. Bei den ausdrücklich genannten Bestandteilen kann ein Originalsatz als zusätzlicher Beleg dienen.',
         '| Browser | Team | Berührungen ab Fallstart | Abschnittsansichten | Digitale Schreibfelder | Sekunden |\n|---|---|---:|---:|---:|---:|\n'+'\n'.join(
             '| '+r['browser']+' '+r['version']+' | '+' + '.join(r['niveaus'])+f" | {r['tipps']} | {len(r['ansichten'])} | {r['schreibfelder']} | {r['sekunden']:.1f} |" for r in timing),
         'Messung ab Öffnen der Mutter bis zum Angebot der Vertiefungen, einschließlich des persönlichen Belegvergleichs pro Person. '
         'Die Ansichten zählen aufeinanderfolgende sichtbare Abschnittstitel. Teilfragen mit gleichem Titel können mehrere Berührungen erfordern. '
         'Die Messung verwendet automatisierte Touch-Eingaben ohne Lese-, Gesprächs- und Schreibzeit.',
-        'Die im gebauten Offline-Modul eingebettete Aufgabenbank wurde vollständig gegen den JSON-Vertrag geprüft, alle Werte auch gegen die Markdown-Fassung. Der Startinhalt im SCORM-Paket ist bytegleich zur Offline-Datei. Pflichtaufgaben, Antwortmatrix, Fallnachrichten, Fachkarten und persönliche Bewertungsaufträge wurden zusätzlich mit dem geprüften Stand b0b5d0f verglichen.',
+        'Die im gebauten Offline-Modul eingebettete Aufgabenbank wurde vollständig gegen den JSON-Vertrag geprüft, alle Werte auch gegen die Markdown-Fassung. Der Startinhalt im SCORM-Paket ist bytegleich zur Offline-Datei. Pflichtaufgaben, Antwortmatrix, Fallnachrichten, Fachkarten und persönliche Bewertungsaufträge wurden mit ecab26f abgeglichen. Die freigegebenen fachsprachlichen Präzisierungen sind im Änderungsbericht ausgewiesen.',
         '## E · Verbleibende Praxistests',
         'Automatisierte Bedienzeiten sind keine Schülerbearbeitungszeiten. Ob 25 Minuten einschließlich individueller Papierarbeit ausreichen, muss die Lerngruppe zeigen. '
         'Auf einem echten Schul-iPad im itslearning-Testkurs das SCO starten, in einem gemischten Team eine Karte öffnen und zurückkehren, '
@@ -114,6 +131,18 @@ def main():
     (OUT/'Abnahmebericht.md').write_text('\n\n'.join(report)+'\n')
     changed=git('diff','--name-status',BASE,head).decode()
     (OUT/'Dateiuebersicht.md').write_text('# Änderungen am Entwicklungszweig\n\nBasis `'+BASE+'`\n\n```text\n'+changed+'```\n')
+    with ZipFile(OUT/'Fallakte-HTML-Pruefpaket.zip','w',ZIP_DEFLATED) as z:
+        z.write(OUT/'Fallakte.html','Fallakte.html')
+        z.writestr('Liesmich.txt','Stand '+head+'\nEntpacke das Paket. Öffne Fallakte.html lokal im Browser. Wähle den 08.12. und ein Niveau. Das Gerät benötigt keine Internetverbindung. Persönliche Einträge auf dem Lernbogen sichern.\n')
+    with ZipFile(OUT/'Fallakte-Pruefquellen.zip','w',ZIP_DEFLATED) as z:
+        with ZipFile(io.BytesIO(git('archive','--format=zip',head))) as tree:
+            for path in tree.namelist():
+                if not path.endswith('/'):z.writestr('Repository/'+path,tree.read(path))
+        z.write(OUT/'Work-Materialvertrag.json','Gebaut/Inhaltsdatenbank.json')
+        z.write(REF/'dist/Vorabkandidat/Fallakte.html','Referenz/Unveraenderter-Rahmen.html')
+        for name,file in bank['designFiles'].items():
+            if name!='Laura':z.writestr('Referenz/Portraets/'+file,git('show',OLD+':module/08-12/assets/'+file))
+        z.writestr('Stand.txt',head+'\nFür die automatisierte Reproduktion im Git-Checkout mit vollen Objekten: python scripts/familienrat_build.py\n')
     files={}
     for p in sorted(OUT.iterdir()):
         if p.name=='Buildnachweis.json':continue

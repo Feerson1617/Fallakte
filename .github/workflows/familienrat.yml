@@ -17,6 +17,10 @@ jobs:
             evidence: Familienrat-Schutz
           - suite: familienrat_qa
             evidence: Familienrat-QA
+          - suite: familienrat_zustaende
+            evidence: Familienrat-Zustaende
+          - suite: familienrat_lernwege
+            evidence: Familienrat-Lernwege
     steps:
       - uses: actions/checkout@v4
         with:

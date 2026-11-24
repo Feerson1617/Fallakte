@@ -1,5 +1,5 @@
 {
-  "version": "familienrat-1.2",
+  "version": "familienrat-1.3",
   "levels": [
     "Förder",
     "ESA",
@@ -7,7 +7,7 @@
     "AHR"
   ],
   "definitions": {
-    "Fakt": "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
+    "Fakt": "Eine überprüfbare Aussage. Beim Argumenten-Check suchst du den biologischen Fachfakt: Was ist über den Körper oder einen medizinischen Vorgang bekannt?",
     "Wert": "Was einer Person wichtig ist.",
     "Norm": "Eine allgemeine Regel dafür, wie man handeln sollte.",
     "Folgerung": "Der konkrete Ratschlag, den die Person Laura gibt."
@@ -55,7 +55,8 @@
             {
               "text": "Lauras Ausbildung und Zukunftspläne.",
               "feedback": "Auch das kann wichtig sein. In dieser Nachricht nennt die Mutter aber Lauras körperliche Gesundheit. Ausbildung und Zukunftspläne stehen bei der Freundin im Mittelpunkt.",
-              "ok": false
+              "ok": false,
+              "revealsSolution": true
             },
             {
               "text": "Man sollte mögliche Beschwerden ernst nehmen.",
@@ -187,7 +188,8 @@
             {
               "text": "Einen Abbruch mit Medikamenten vornehmen lassen.",
               "feedback": "Dazu rät die Freundin. Die Mutter empfiehlt hier, die Schwangerschaft fortzusetzen.",
-              "ok": false
+              "ok": false,
+              "revealsSolution": true
             },
             {
               "text": "Die medizinischen Möglichkeiten in einer Arztpraxis klären lassen.",
@@ -243,7 +245,7 @@
         },
         {
           "id": "Leerstelle",
-          "prompt": "Welcher Bestandteil wird nicht ausdrücklich genannt?",
+          "prompt": "Welcher Bestandteil des Arguments bleibt unausgesprochen?",
           "answers": [
             {
               "text": "Fakt",
@@ -271,7 +273,7 @@
             "Welche drei findest du in der Nachricht?",
             "Lies die Nachricht Satz für Satz. Nutze die Begriffshilfe.",
             "Suche eine biologische Information.",
-            "Fakt fehlt als eigene Aussage. Wähle diesen Begriff und ergänze ihn im nächsten Schritt."
+            "Der biologische Fachfakt fehlt als eigener Beleg. Wähle diesen Begriff und ergänze ihn im nächsten Schritt."
           ],
           "helpByLevel": {
             "Förder": [
@@ -286,21 +288,21 @@
               "Welche drei findest du in der Nachricht?",
               "Lies die Nachricht Satz für Satz. Nutze die Begriffshilfe.",
               "Suche eine biologische Information.",
-              "Fakt fehlt als eigene Aussage. Wähle diesen Begriff und ergänze ihn im nächsten Schritt."
+              "Der biologische Fachfakt fehlt als eigener Beleg. Wähle diesen Begriff und ergänze ihn im nächsten Schritt."
             ],
             "MSA": [
               "Prüfe Fakt, Wert, Norm und Folgerung. Formuliere deinen ersten Gedanken.",
               "Welche drei findest du in der Nachricht?",
               "Lies die Nachricht Satz für Satz. Nutze die Begriffshilfe.",
               "Suche eine biologische Information. Vergleiche mit deinem Satz.",
-              "Fakt fehlt als eigene Aussage. Wähle diesen Begriff und ergänze ihn im nächsten Schritt."
+              "Der biologische Fachfakt fehlt als eigener Beleg. Wähle diesen Begriff und ergänze ihn im nächsten Schritt."
             ],
             "AHR": [
               "Prüfe Fakt, Wert, Norm und Folgerung. Welche Aussage kannst du am Text belegen?",
               "Welche drei findest du in der Nachricht?",
               "Lies die Nachricht Satz für Satz. Nutze die Begriffshilfe. Was steht dort ausdrücklich?",
               "Suche eine biologische Information. Begründe auch, warum eine andere Deutung weniger gut passt.",
-              "Fakt fehlt als eigene Aussage. Wähle diesen Begriff und ergänze ihn im nächsten Schritt."
+              "Der biologische Fachfakt fehlt als eigener Beleg. Wähle diesen Begriff und ergänze ihn im nächsten Schritt."
             ]
           },
           "shortOptions": [
@@ -321,12 +323,14 @@
             {
               "text": "Beim medikamentösen Abbruch werden Medikamente eingesetzt.",
               "feedback": "Das ist richtig. Es erklärt aber noch nicht, welche Beschwerden auftreten können. Gesucht ist hier eine Information über Blutungen, Schmerzen oder Krämpfe.",
-              "ok": false
+              "ok": false,
+              "revealsSolution": true
             },
             {
               "text": "Weil Medikamente eingesetzt werden, können keine Schmerzen auftreten.",
               "feedback": "Das stimmt nicht. Auch Medikamente können Vorgänge auslösen, die schmerzen. Beim medikamentösen Abbruch zieht sich die Gebärmutter zusammen; Krämpfe können auftreten.",
-              "ok": false
+              "ok": false,
+              "revealsSolution": true
             }
           ],
           "hints": [
@@ -400,39 +404,39 @@
           }
         ],
         "hints": [
-          "Wende die Erklärung auf die neue Frage an.",
-          "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
-          "Blutungen und Schmerzen kann dir helfen.",
-          "Das erklärt mögliche Beschwerden. Ob eine fortgesetzte Schwangerschaft Laura weniger belasten würde, ist damit offen.",
+          "Was passiert im Körper bei einem Krampf?",
+          "Ein Muskel kann auch ohne Operation arbeiten.",
+          "Lies auf der Karte „Blutungen und Schmerzen“ den Satz zur Gebärmutter.",
+          "Welcher Vorgang kann die Krämpfe erklären?",
           "Die Gebärmutter zieht sich zusammen. Genau. Wenn sich die Gebärmutter zusammenzieht, können Krämpfe entstehen."
         ],
         "helpByLevel": {
           "Förder": [
-            "Wende die Erklärung auf die neue Frage an.",
-            "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
-            "Blutungen und Schmerzen kann dir helfen.",
-            "Das erklärt mögliche Beschwerden. Ob eine fortgesetzte Schwangerschaft Laura weniger belasten würde, ist damit offen.",
+            "Was passiert im Körper bei einem Krampf?",
+            "Ein Muskel kann auch ohne Operation arbeiten.",
+            "Lies auf der Karte „Blutungen und Schmerzen“ den Satz zur Gebärmutter.",
+            "Welcher Vorgang kann die Krämpfe erklären?",
             "Die Gebärmutter zieht sich zusammen. Genau. Wenn sich die Gebärmutter zusammenzieht, können Krämpfe entstehen."
           ],
           "ESA": [
-            "Wende die Erklärung auf die neue Frage an.",
-            "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
-            "Blutungen und Schmerzen kann dir helfen.",
-            "Das erklärt mögliche Beschwerden. Ob eine fortgesetzte Schwangerschaft Laura weniger belasten würde, ist damit offen.",
+            "Was passiert im Körper bei einem Krampf?",
+            "Ein Muskel kann auch ohne Operation arbeiten.",
+            "Lies auf der Karte „Blutungen und Schmerzen“ den Satz zur Gebärmutter.",
+            "Welcher Vorgang kann die Krämpfe erklären?",
             "Die Gebärmutter zieht sich zusammen. Genau. Wenn sich die Gebärmutter zusammenzieht, können Krämpfe entstehen."
           ],
           "MSA": [
-            "Wende die Erklärung auf die neue Frage an. Formuliere deinen ersten Gedanken.",
-            "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
-            "Blutungen und Schmerzen kann dir helfen.",
-            "Das erklärt mögliche Beschwerden. Ob eine fortgesetzte Schwangerschaft Laura weniger belasten würde, ist damit offen. Vergleiche mit deinem Satz.",
+            "Was passiert im Körper bei einem Krampf?",
+            "Ein Muskel kann auch ohne Operation arbeiten.",
+            "Lies auf der Karte „Blutungen und Schmerzen“ den Satz zur Gebärmutter.",
+            "Welcher Vorgang kann die Krämpfe erklären?",
             "Kontraktionen können auch ohne Operation schmerzen. Welche Möglichkeit Laura stärker belastet, bleibt offen. Genau. Das Zusammenziehen der Gebärmutter erklärt mögliche Krämpfe. Ein Vergleich mit Schwangerschaft und Geburt folgt daraus nicht."
           ],
           "AHR": [
-            "Wende die Erklärung auf die neue Frage an. Welche Aussage kannst du am Text belegen?",
-            "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
-            "Blutungen und Schmerzen kann dir helfen. Was steht dort ausdrücklich?",
-            "Das erklärt mögliche Beschwerden. Ob eine fortgesetzte Schwangerschaft Laura weniger belasten würde, ist damit offen. Begründe auch, warum eine andere Deutung weniger gut passt.",
+            "Was passiert im Körper bei einem Krampf?",
+            "Ein Muskel kann auch ohne Operation arbeiten.",
+            "Lies auf der Karte „Blutungen und Schmerzen“ den Satz zur Gebärmutter.",
+            "Welcher Vorgang kann die Krämpfe erklären?",
             "Kontraktionen können auch ohne Operation schmerzen. Welche Möglichkeit Laura stärker belastet, bleibt offen. Genau. Das Zusammenziehen der Gebärmutter erklärt mögliche Krämpfe. Ein Vergleich mit Schwangerschaft und Geburt folgt daraus nicht."
           ]
         },
@@ -515,7 +519,8 @@
             {
               "text": "Schutz ungeborenen Lebens.",
               "feedback": "Das ist ein Wert, der in einer anderen Perspektive wichtig sein kann. Diese Freundin spricht hier ausdrücklich über Ausbildung und Zukunftspläne.",
-              "ok": false
+              "ok": false,
+              "revealsSolution": true
             },
             {
               "text": "Man sollte überlegen, wann Kinder zu den eigenen Lebensplänen passen.",
@@ -643,7 +648,8 @@
             {
               "text": "Die Schwangerschaft fortsetzen.",
               "feedback": "Dazu rät die Mutter. Die Freundin empfiehlt hier einen Abbruch mit Medikamenten.",
-              "ok": false
+              "ok": false,
+              "revealsSolution": true
             },
             {
               "text": "Einen Abbruch mit Medikamenten vornehmen lassen.",
@@ -704,11 +710,11 @@
         },
         {
           "id": "Leerstelle",
-          "prompt": "Welcher Bestandteil wird nicht ausdrücklich genannt?",
+          "prompt": "Welcher Bestandteil des Arguments bleibt unausgesprochen?",
           "answers": [
             {
               "text": "Fakt",
-              "feedback": "Das passt. Die Person nennt, was ihr wichtig ist, eine Regel und ihren Rat. Eine biologische Information wird noch nicht genannt.",
+              "feedback": "Richtig. Laura hat Pläne für ihre Ausbildung und spätere Kinder. Das sind Fallinformationen. Ein biologischer Beleg für den Rat fehlt noch.",
               "ok": true
             },
             {
@@ -732,7 +738,7 @@
             "Welche drei findest du in der Nachricht?",
             "Lies die Nachricht Satz für Satz. Nutze die Begriffshilfe.",
             "Suche eine biologische Information.",
-            "Fakt fehlt als eigene Aussage. Wähle diesen Begriff und ergänze ihn im nächsten Schritt."
+            "Der biologische Fachfakt fehlt als eigener Beleg. Wähle diesen Begriff und ergänze ihn im nächsten Schritt."
           ],
           "helpByLevel": {
             "Förder": [
@@ -747,21 +753,21 @@
               "Welche drei findest du in der Nachricht?",
               "Lies die Nachricht Satz für Satz. Nutze die Begriffshilfe.",
               "Suche eine biologische Information.",
-              "Fakt fehlt als eigene Aussage. Wähle diesen Begriff und ergänze ihn im nächsten Schritt."
+              "Der biologische Fachfakt fehlt als eigener Beleg. Wähle diesen Begriff und ergänze ihn im nächsten Schritt."
             ],
             "MSA": [
               "Prüfe Fakt, Wert, Norm und Folgerung. Formuliere deinen ersten Gedanken.",
               "Welche drei findest du in der Nachricht?",
               "Lies die Nachricht Satz für Satz. Nutze die Begriffshilfe.",
               "Suche eine biologische Information. Vergleiche mit deinem Satz.",
-              "Fakt fehlt als eigene Aussage. Wähle diesen Begriff und ergänze ihn im nächsten Schritt."
+              "Der biologische Fachfakt fehlt als eigener Beleg. Wähle diesen Begriff und ergänze ihn im nächsten Schritt."
             ],
             "AHR": [
               "Prüfe Fakt, Wert, Norm und Folgerung. Welche Aussage kannst du am Text belegen?",
               "Welche drei findest du in der Nachricht?",
               "Lies die Nachricht Satz für Satz. Nutze die Begriffshilfe. Was steht dort ausdrücklich?",
               "Suche eine biologische Information. Begründe auch, warum eine andere Deutung weniger gut passt.",
-              "Fakt fehlt als eigene Aussage. Wähle diesen Begriff und ergänze ihn im nächsten Schritt."
+              "Der biologische Fachfakt fehlt als eigener Beleg. Wähle diesen Begriff und ergänze ihn im nächsten Schritt."
             ]
           },
           "shortOptions": [
@@ -782,7 +788,8 @@
             {
               "text": "Nein. Nach einem Abbruch mit Medikamenten ist eine spätere Schwangerschaft nie mehr möglich.",
               "feedback": "Das stimmt nicht. Ein komplikationsloser medikamentöser Abbruch beeinträchtigt nach heutigem Wissen die spätere Fruchtbarkeit nicht.",
-              "ok": false
+              "ok": false,
+              "revealsSolution": true
             },
             {
               "text": "Bei einem Abbruch können Blutungen und Krämpfe auftreten.",
@@ -792,7 +799,8 @@
             {
               "text": "Ja. Eine spätere Schwangerschaft ist garantiert.",
               "feedback": "Möglich heißt nicht sicher. Auch nach einem komplikationslosen Abbruch kann niemand eine spätere Schwangerschaft garantieren.",
-              "ok": false
+              "ok": false,
+              "revealsSolution": true
             }
           ],
           "hints": [
@@ -866,39 +874,39 @@
           }
         ],
         "hints": [
-          "Wende die Erklärung auf die neue Frage an.",
-          "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
-          "Später schwanger werden kann dir helfen.",
-          "Das hilft bei der Frage nach späteren Kindern. Ob Laura später schwanger wird oder ihre Ausbildung abschließt, ist damit offen.",
+          "Was bedeutet „möglich“?",
+          "Denke an etwas, das passieren kann. Muss es passieren?",
+          "Lies auf der Karte „Später schwanger werden“ den Satz zur Fruchtbarkeit.",
+          "Vergleiche „kann“ und „wird sicher“.",
           "Nein. Sie ist möglich, aber nicht sicher. Richtig. Laura kann später schwanger werden. Eine Garantie gibt es nicht."
         ],
         "helpByLevel": {
           "Förder": [
-            "Wende die Erklärung auf die neue Frage an.",
-            "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
-            "Später schwanger werden kann dir helfen.",
-            "Das hilft bei der Frage nach späteren Kindern. Ob Laura später schwanger wird oder ihre Ausbildung abschließt, ist damit offen.",
+            "Was bedeutet „möglich“?",
+            "Denke an etwas, das passieren kann. Muss es passieren?",
+            "Lies auf der Karte „Später schwanger werden“ den Satz zur Fruchtbarkeit.",
+            "Vergleiche „kann“ und „wird sicher“.",
             "Nein. Sie ist möglich, aber nicht sicher. Richtig. Laura kann später schwanger werden. Eine Garantie gibt es nicht."
           ],
           "ESA": [
-            "Wende die Erklärung auf die neue Frage an.",
-            "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
-            "Später schwanger werden kann dir helfen.",
-            "Das hilft bei der Frage nach späteren Kindern. Ob Laura später schwanger wird oder ihre Ausbildung abschließt, ist damit offen.",
+            "Was bedeutet „möglich“?",
+            "Denke an etwas, das passieren kann. Muss es passieren?",
+            "Lies auf der Karte „Später schwanger werden“ den Satz zur Fruchtbarkeit.",
+            "Vergleiche „kann“ und „wird sicher“.",
             "Nein. Sie ist möglich, aber nicht sicher. Richtig. Laura kann später schwanger werden. Eine Garantie gibt es nicht."
           ],
           "MSA": [
-            "Wende die Erklärung auf die neue Frage an. Formuliere deinen ersten Gedanken.",
-            "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
-            "Später schwanger werden kann dir helfen.",
-            "Das hilft bei der Frage nach späteren Kindern. Ob Laura später schwanger wird oder ihre Ausbildung abschließt, ist damit offen. Vergleiche mit deinem Satz.",
+            "Was bedeutet „möglich“?",
+            "Denke an etwas, das passieren kann. Muss es passieren?",
+            "Lies auf der Karte „Später schwanger werden“ den Satz zur Fruchtbarkeit.",
+            "Vergleiche „kann“ und „wird sicher“.",
             "Nach einem komplikationslosen Abbruch bleibt eine spätere Schwangerschaft möglich. Ob und wann Laura ein Kind möchte, bleibt offen. Genau. Eine Möglichkeit ist keine Garantie. Welches Gewicht Laura ihrer Ausbildung gibt, entscheidet sie selbst."
           ],
           "AHR": [
-            "Wende die Erklärung auf die neue Frage an. Welche Aussage kannst du am Text belegen?",
-            "Eine überprüfbare Information darüber, wie etwas ist oder abläuft.",
-            "Später schwanger werden kann dir helfen. Was steht dort ausdrücklich?",
-            "Das hilft bei der Frage nach späteren Kindern. Ob Laura später schwanger wird oder ihre Ausbildung abschließt, ist damit offen. Begründe auch, warum eine andere Deutung weniger gut passt.",
+            "Was bedeutet „möglich“?",
+            "Denke an etwas, das passieren kann. Muss es passieren?",
+            "Lies auf der Karte „Später schwanger werden“ den Satz zur Fruchtbarkeit.",
+            "Vergleiche „kann“ und „wird sicher“.",
             "Nach einem komplikationslosen Abbruch bleibt eine spätere Schwangerschaft möglich. Ob und wann Laura ein Kind möchte, bleibt offen. Genau. Eine Möglichkeit ist keine Garantie. Welches Gewicht Laura ihrer Ausbildung gibt, entscheidet sie selbst."
           ]
         },
@@ -1047,12 +1055,14 @@
             {
               "text": "Einen Abbruch mit Medikamenten vornehmen lassen.",
               "feedback": "Lies den letzten Satz. Dort steht der Rat an Laura: Die Person rät Laura, die Schwangerschaft fortzusetzen.",
-              "ok": false
+              "ok": false,
+              "revealsSolution": true
             },
             {
               "text": "Die medizinischen Möglichkeiten in einer Arztpraxis klären lassen.",
               "feedback": "Lies den letzten Satz. Dort steht der Rat an Laura: Die Person rät Laura, die Schwangerschaft fortzusetzen.",
-              "ok": false
+              "ok": false,
+              "revealsSolution": true
             }
           ],
           "hints": [
@@ -1103,7 +1113,7 @@
         },
         {
           "id": "Leerstelle",
-          "prompt": "Welcher Bestandteil wird nicht ausdrücklich genannt?",
+          "prompt": "Welcher Bestandteil des Arguments bleibt unausgesprochen?",
           "answers": [
             {
               "text": "Fakt",
@@ -1254,39 +1264,39 @@
           }
         ],
         "hints": [
-          "Wende die Erklärung auf die neue Frage an.",
-          "Was einer Person wichtig ist.",
-          "Entwicklung des Embryos kann dir helfen.",
-          "So wird der Wert hinter ihrer Schutzregel sichtbar. Die biologische Beschreibung allein begründet keine moralische Pflicht.",
+          "Welche Sache ist der Person so wichtig, dass sie den Körper schützen will?",
+          "Der Wert beschreibt, was jemandem wichtig ist.",
+          "Achte im Beispielsatz auf „Körper“ und „Schäden“.",
+          "Wie heißt das Gut, das vor Schäden geschützt werden soll?",
           "Körperliche Gesundheit. Das passt. Die Regel betrifft den Schutz des Körpers. Wähle diese Erklärung."
         ],
         "helpByLevel": {
           "Förder": [
-            "Wende die Erklärung auf die neue Frage an.",
-            "Was einer Person wichtig ist.",
-            "Entwicklung des Embryos kann dir helfen.",
-            "So wird der Wert hinter ihrer Schutzregel sichtbar. Die biologische Beschreibung allein begründet keine moralische Pflicht.",
+            "Welche Sache ist der Person so wichtig, dass sie den Körper schützen will?",
+            "Der Wert beschreibt, was jemandem wichtig ist.",
+            "Achte im Beispielsatz auf „Körper“ und „Schäden“.",
+            "Wie heißt das Gut, das vor Schäden geschützt werden soll?",
             "Körperliche Gesundheit. Das passt. Die Regel betrifft den Schutz des Körpers. Tippe auf die passende Antwort."
           ],
           "ESA": [
-            "Wende die Erklärung auf die neue Frage an.",
-            "Was einer Person wichtig ist.",
-            "Entwicklung des Embryos kann dir helfen.",
-            "So wird der Wert hinter ihrer Schutzregel sichtbar. Die biologische Beschreibung allein begründet keine moralische Pflicht.",
+            "Welche Sache ist der Person so wichtig, dass sie den Körper schützen will?",
+            "Der Wert beschreibt, was jemandem wichtig ist.",
+            "Achte im Beispielsatz auf „Körper“ und „Schäden“.",
+            "Wie heißt das Gut, das vor Schäden geschützt werden soll?",
             "Körperliche Gesundheit. Das passt. Die Regel betrifft den Schutz des Körpers. Wähle diese Erklärung."
           ],
           "MSA": [
-            "Wende die Erklärung auf die neue Frage an. Formuliere deinen ersten Gedanken.",
-            "Was einer Person wichtig ist.",
-            "Entwicklung des Embryos kann dir helfen.",
-            "So wird der Wert hinter ihrer Schutzregel sichtbar. Die biologische Beschreibung allein begründet keine moralische Pflicht. Vergleiche mit deinem Satz.",
+            "Welche Sache ist der Person so wichtig, dass sie den Körper schützen will?",
+            "Der Wert beschreibt, was jemandem wichtig ist.",
+            "Achte im Beispielsatz auf „Körper“ und „Schäden“.",
+            "Wie heißt das Gut, das vor Schäden geschützt werden soll?",
             "Körperliche Gesundheit. Das passt. Die Regel betrifft den Schutz des Körpers. Wähle diese Erklärung."
           ],
           "AHR": [
-            "Wende die Erklärung auf die neue Frage an. Welche Aussage kannst du am Text belegen?",
-            "Was einer Person wichtig ist.",
-            "Entwicklung des Embryos kann dir helfen. Was steht dort ausdrücklich?",
-            "So wird der Wert hinter ihrer Schutzregel sichtbar. Die biologische Beschreibung allein begründet keine moralische Pflicht. Begründe auch, warum eine andere Deutung weniger gut passt.",
+            "Welche Sache ist der Person so wichtig, dass sie den Körper schützen will?",
+            "Der Wert beschreibt, was jemandem wichtig ist.",
+            "Achte im Beispielsatz auf „Körper“ und „Schäden“.",
+            "Wie heißt das Gut, das vor Schäden geschützt werden soll?",
             "Körperliche Gesundheit. Das passt. Die Regel betrifft den Schutz des Körpers. Wähle diese Erklärung."
           ]
         },
@@ -1424,12 +1434,14 @@
             {
               "text": "Die Schwangerschaft fortsetzen.",
               "feedback": "Das ist nicht sein konkreter Rat. Lies den letzten Satz: Er rät Laura, ihre medizinischen Möglichkeiten ärztlich klären zu lassen.",
-              "ok": false
+              "ok": false,
+              "revealsSolution": true
             },
             {
               "text": "Einen Abbruch mit Medikamenten vornehmen lassen.",
               "feedback": "Das ist nicht sein konkreter Rat. Lies den letzten Satz: Er rät Laura, ihre medizinischen Möglichkeiten ärztlich klären zu lassen.",
-              "ok": false
+              "ok": false,
+              "revealsSolution": true
             },
             {
               "text": "Die medizinischen Möglichkeiten in einer Arztpraxis klären lassen.",
@@ -1485,7 +1497,7 @@
         },
         {
           "id": "Leerstelle",
-          "prompt": "Welcher Bestandteil wird nicht ausdrücklich genannt?",
+          "prompt": "Welcher Bestandteil des Arguments bleibt unausgesprochen?",
           "answers": [
             {
               "text": "Fakt",
@@ -1636,39 +1648,39 @@
           }
         ],
         "hints": [
-          "Wende die Erklärung auf die neue Frage an.",
-          "Eine allgemeine Regel dafür, wie man handeln sollte.",
-          "Medizinische Voraussetzungen kann dir helfen.",
-          "Verlässliche Informationen helfen Laura, selbst zu entscheiden. Die Entscheidung bleibt bei ihr.",
+          "Welche Regel gilt auch für eine andere Person?",
+          "Der einzelne Rat nennt Mila. Die Norm gilt allgemein.",
+          "Achte auf den Unterschied zwischen „Mila“ und „jede Person“.",
+          "Formuliere die Regel für Entscheidungen vor einer Behandlung.",
           "Jede Person sollte vor einer Behandlung deren Vor- und Nachteile kennen. Das passt. Die Regel gilt allgemein. Wähle diese Erklärung."
         ],
         "helpByLevel": {
           "Förder": [
-            "Wende die Erklärung auf die neue Frage an.",
-            "Eine allgemeine Regel dafür, wie man handeln sollte.",
-            "Medizinische Voraussetzungen kann dir helfen.",
-            "Verlässliche Informationen helfen Laura, selbst zu entscheiden. Die Entscheidung bleibt bei ihr.",
+            "Welche Regel gilt auch für eine andere Person?",
+            "Der einzelne Rat nennt Mila. Die Norm gilt allgemein.",
+            "Achte auf den Unterschied zwischen „Mila“ und „jede Person“.",
+            "Formuliere die Regel für Entscheidungen vor einer Behandlung.",
             "Jede Person sollte vor einer Behandlung deren Vor- und Nachteile kennen. Das passt. Die Regel gilt allgemein. Tippe auf die passende Antwort."
           ],
           "ESA": [
-            "Wende die Erklärung auf die neue Frage an.",
-            "Eine allgemeine Regel dafür, wie man handeln sollte.",
-            "Medizinische Voraussetzungen kann dir helfen.",
-            "Verlässliche Informationen helfen Laura, selbst zu entscheiden. Die Entscheidung bleibt bei ihr.",
+            "Welche Regel gilt auch für eine andere Person?",
+            "Der einzelne Rat nennt Mila. Die Norm gilt allgemein.",
+            "Achte auf den Unterschied zwischen „Mila“ und „jede Person“.",
+            "Formuliere die Regel für Entscheidungen vor einer Behandlung.",
             "Jede Person sollte vor einer Behandlung deren Vor- und Nachteile kennen. Das passt. Die Regel gilt allgemein. Wähle diese Erklärung."
           ],
           "MSA": [
-            "Wende die Erklärung auf die neue Frage an. Formuliere deinen ersten Gedanken.",
-            "Eine allgemeine Regel dafür, wie man handeln sollte.",
-            "Medizinische Voraussetzungen kann dir helfen.",
-            "Verlässliche Informationen helfen Laura, selbst zu entscheiden. Die Entscheidung bleibt bei ihr. Vergleiche mit deinem Satz.",
+            "Welche Regel gilt auch für eine andere Person?",
+            "Der einzelne Rat nennt Mila. Die Norm gilt allgemein.",
+            "Achte auf den Unterschied zwischen „Mila“ und „jede Person“.",
+            "Formuliere die Regel für Entscheidungen vor einer Behandlung.",
             "Jede Person sollte vor einer Behandlung deren Vor- und Nachteile kennen. Das passt. Die Regel gilt allgemein. Wähle diese Erklärung."
           ],
           "AHR": [
-            "Wende die Erklärung auf die neue Frage an. Welche Aussage kannst du am Text belegen?",
-            "Eine allgemeine Regel dafür, wie man handeln sollte.",
-            "Medizinische Voraussetzungen kann dir helfen. Was steht dort ausdrücklich?",
-            "Verlässliche Informationen helfen Laura, selbst zu entscheiden. Die Entscheidung bleibt bei ihr. Begründe auch, warum eine andere Deutung weniger gut passt.",
+            "Welche Regel gilt auch für eine andere Person?",
+            "Der einzelne Rat nennt Mila. Die Norm gilt allgemein.",
+            "Achte auf den Unterschied zwischen „Mila“ und „jede Person“.",
+            "Formuliere die Regel für Entscheidungen vor einer Behandlung.",
             "Jede Person sollte vor einer Behandlung deren Vor- und Nachteile kennen. Das passt. Die Regel gilt allgemein. Wähle diese Erklärung."
           ]
         },
@@ -1747,7 +1759,7 @@
       "hints": [
         "Was erklärt der Fakt?",
         "Eine Sachinformation beantwortet eine Frage zum Körper.",
-        "Blutungen und Schmerzen hilft beim Vergleich.",
+        "Welche zwei Verläufe müsstest du vergleichen, um zu sagen, was weniger belastet?",
         "Das erklärt mögliche Beschwerden. Ob eine fortgesetzte Schwangerschaft Laura weniger belasten würde, ist damit offen.",
         "Nein. Sie erklärt mögliche Beschwerden. Für die Entscheidung braucht Laura weitere Informationen und ihre eigenen Wünsche. Wähle die Erklärung."
       ],
@@ -1755,28 +1767,28 @@
         "Förder": [
           "Was erklärt der Fakt?",
           "Eine Sachinformation beantwortet eine Frage zum Körper.",
-          "Blutungen und Schmerzen hilft beim Vergleich.",
+          "Welche zwei Verläufe müsstest du vergleichen, um zu sagen, was weniger belastet?",
           "Das erklärt mögliche Beschwerden. Ob eine fortgesetzte Schwangerschaft Laura weniger belasten würde, ist damit offen.",
           "Nein. Sie erklärt mögliche Beschwerden. Für die Entscheidung braucht Laura weitere Informationen und ihre eigenen Wünsche. Das passt. Die Information hilft bei einer Frage. Sie entscheidet nicht allein darüber, ob Laura die Schwangerschaft fortsetzen soll. Tippe auf die passende Antwort."
         ],
         "ESA": [
           "Was erklärt der Fakt?",
           "Eine Sachinformation beantwortet eine Frage zum Körper.",
-          "Blutungen und Schmerzen hilft beim Vergleich.",
+          "Welche zwei Verläufe müsstest du vergleichen, um zu sagen, was weniger belastet?",
           "Das erklärt mögliche Beschwerden. Ob eine fortgesetzte Schwangerschaft Laura weniger belasten würde, ist damit offen.",
           "Nein. Sie erklärt mögliche Beschwerden. Für die Entscheidung braucht Laura weitere Informationen und ihre eigenen Wünsche. Wähle die Erklärung."
         ],
         "MSA": [
           "Was erklärt der Fakt? Formuliere deinen ersten Gedanken.",
           "Eine Sachinformation beantwortet eine Frage zum Körper.",
-          "Blutungen und Schmerzen hilft beim Vergleich.",
+          "Welche zwei Verläufe müsstest du vergleichen, um zu sagen, was weniger belastet?",
           "Das erklärt mögliche Beschwerden. Ob eine fortgesetzte Schwangerschaft Laura weniger belasten würde, ist damit offen. Vergleiche mit deinem Satz.",
           "Nein. Sie erklärt mögliche Beschwerden. Für die Entscheidung braucht Laura weitere Informationen und ihre eigenen Wünsche. Wähle die Erklärung."
         ],
         "AHR": [
           "Was erklärt der Fakt? Welche Aussage kannst du am Text belegen?",
           "Eine Sachinformation beantwortet eine Frage zum Körper.",
-          "Blutungen und Schmerzen hilft beim Vergleich. Was steht dort ausdrücklich?",
+          "Welche zwei Verläufe müsstest du vergleichen, um zu sagen, was weniger belastet?",
           "Das erklärt mögliche Beschwerden. Ob eine fortgesetzte Schwangerschaft Laura weniger belasten würde, ist damit offen. Begründe auch, warum eine andere Deutung weniger gut passt.",
           "Nein. Sie erklärt mögliche Beschwerden. Für die Entscheidung braucht Laura weitere Informationen und ihre eigenen Wünsche. Wähle die Erklärung."
         ]
@@ -1800,7 +1812,7 @@
       "hints": [
         "Was erklärt der Fakt?",
         "Eine Sachinformation beantwortet eine Frage zum Körper.",
-        "Später schwanger werden hilft beim Vergleich.",
+        "Was erfährst du über später? Was weißt du über Lauras Wünsche jetzt?",
         "Das hilft bei der Frage nach späteren Kindern. Ob Laura später schwanger wird oder ihre Ausbildung abschließt, ist damit offen.",
         "Nein. Sie beantwortet eine Frage zu späteren Kindern. Die jetzige Entscheidung bleibt offen. Wähle die Erklärung."
       ],
@@ -1808,28 +1820,28 @@
         "Förder": [
           "Was erklärt der Fakt?",
           "Eine Sachinformation beantwortet eine Frage zum Körper.",
-          "Später schwanger werden hilft beim Vergleich.",
+          "Was erfährst du über später? Was weißt du über Lauras Wünsche jetzt?",
           "Das hilft bei der Frage nach späteren Kindern. Ob Laura später schwanger wird oder ihre Ausbildung abschließt, ist damit offen.",
           "Nein. Sie beantwortet eine Frage zu späteren Kindern. Die jetzige Entscheidung bleibt offen. Das passt. Eine spätere Möglichkeit ist ein Gesichtspunkt. Sie bestimmt nicht, was Laura jetzt möchte. Tippe auf die passende Antwort."
         ],
         "ESA": [
           "Was erklärt der Fakt?",
           "Eine Sachinformation beantwortet eine Frage zum Körper.",
-          "Später schwanger werden hilft beim Vergleich.",
+          "Was erfährst du über später? Was weißt du über Lauras Wünsche jetzt?",
           "Das hilft bei der Frage nach späteren Kindern. Ob Laura später schwanger wird oder ihre Ausbildung abschließt, ist damit offen.",
           "Nein. Sie beantwortet eine Frage zu späteren Kindern. Die jetzige Entscheidung bleibt offen. Wähle die Erklärung."
         ],
         "MSA": [
           "Was erklärt der Fakt? Formuliere deinen ersten Gedanken.",
           "Eine Sachinformation beantwortet eine Frage zum Körper.",
-          "Später schwanger werden hilft beim Vergleich.",
+          "Was erfährst du über später? Was weißt du über Lauras Wünsche jetzt?",
           "Das hilft bei der Frage nach späteren Kindern. Ob Laura später schwanger wird oder ihre Ausbildung abschließt, ist damit offen. Vergleiche mit deinem Satz.",
           "Nein. Sie beantwortet eine Frage zu späteren Kindern. Die jetzige Entscheidung bleibt offen. Wähle die Erklärung."
         ],
         "AHR": [
           "Was erklärt der Fakt? Welche Aussage kannst du am Text belegen?",
           "Eine Sachinformation beantwortet eine Frage zum Körper.",
-          "Später schwanger werden hilft beim Vergleich. Was steht dort ausdrücklich?",
+          "Was erfährst du über später? Was weißt du über Lauras Wünsche jetzt?",
           "Das hilft bei der Frage nach späteren Kindern. Ob Laura später schwanger wird oder ihre Ausbildung abschließt, ist damit offen. Begründe auch, warum eine andere Deutung weniger gut passt.",
           "Nein. Sie beantwortet eine Frage zu späteren Kindern. Die jetzige Entscheidung bleibt offen. Wähle die Erklärung."
         ]
@@ -1837,11 +1849,11 @@
     }
   ],
   "evaluationHints": [
-    "Lies Lauras neue Fragen. Welche davon möchtest du mit einer Nachricht beantworten?",
-    "Die Mutter und die Freundin helfen mit den Ergänzungen bei unterschiedlichen Fragen. Entscheide, welche Frage du jetzt besonders wichtig findest.",
-    "Schau auf eure ergänzten Fakten und auf Lauras Wörter ‚Blutungen und Schmerzen‘ sowie ‚später schwanger werden‘.",
-    "Verbinde drei Dinge: die Frage Lauras, die passende Information und deine Einschätzung. Beginne: ‚Ich finde die ergänzte Nachricht der … besonders hilfreich, weil …‘.",
-    "Eine mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Mutter besonders hilfreich. Laura hat Angst vor Beschwerden. Die Information über Blutungen und mögliche Schmerzen zeigt ihr, welche Beschwerden auftreten können. Deshalb hilft diese Nachricht bei ihrer Sorge. Ob Laura die Schwangerschaft fortsetzen möchte, entscheidet der Fakt nicht.‘ Eine andere mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Freundin besonders hilfreich. Laura fragt, ob sie später noch schwanger werden kann. Nach einem Abbruch mit Medikamenten ohne Komplikationen bleibt das möglich. Deshalb hilft die Information bei ihrer Zukunftsplanung. Sie sagt nicht, dass Laura jetzt abbrechen soll.‘ Beide Begründungen sind möglich. Entscheide selbst, welche Frage du zuerst beantworten möchtest."
+    "Welche von Lauras Fragen würdest du zuerst klären? Warum?",
+    "Achte auf ihre Sorge um den Körper und auf ihre Pläne für später.",
+    "Verbinde deine Wahl mit einem passenden Fakt. Welche Frage beantwortet er? Was bleibt offen?",
+    "Beginne: „Ich gewichte …, weil … . Der Fakt erklärt … . Laura entscheidet selbst über … .“",
+    "Wähle Beschwerden, spätere Kinder oder beide Anliegen. Nutze die passende Ergänzung. Vervollständige selbst: „Für Laura finde ich das besonders wichtig, weil … .“"
   ],
   "review": [
     [
@@ -1888,27 +1900,27 @@
   "stems": [
     [
       "Lauras Frage",
-      "Welche Blutungen und Schmerzen können auftreten?“ / „Kann ich später noch schwanger werden?"
+      "Welche Blutungen und Schmerzen können auftreten? / Kann ich später noch schwanger werden?"
     ],
     [
       "Meine Gewichtung",
-      "Ich würde zuerst ihre Sorge vor Beschwerden klären.“ / „Ich würde zuerst ihre Frage nach späteren Kindern klären.“ / „Ich finde beide Fragen gleich wichtig."
+      "Ich würde zuerst ihre Sorge vor Beschwerden klären. / Ich würde zuerst ihre Frage nach späteren Kindern klären. / Ich finde beide Fragen gleich wichtig."
     ],
     [
       "Darum finde ich diese Frage wichtig",
-      "Weil Lauras Angst vor Beschwerden jetzt ernst genommen werden sollte.“ / „Weil Laura wissen sollte, welche Möglichkeiten für ihre spätere Familienplanung bleiben.“ / „Weil sowohl ihre jetzige Sorge als auch ihre Zukunftspläne ernst genommen werden sollten.“ Eine eigene passende Begründung ist ebenfalls möglich."
+      "Ich gewichte diese Frage so, weil … . Für Laura ist daran wichtig, dass … ."
     ],
     [
       "Fakt",
-      "Beim Abbruch mit Medikamenten kommt es zu Blutungen; Schmerzen und Krämpfe können auftreten.“ / „Nach einem Abbruch mit Medikamenten ohne Komplikationen bleibt eine spätere Schwangerschaft möglich."
+      "Beim Abbruch mit Medikamenten kommt es zu Blutungen; Schmerzen und Krämpfe können auftreten. / Nach einem Abbruch mit Medikamenten ohne Komplikationen bleibt eine spätere Schwangerschaft möglich."
     ],
     [
       "Meine Antwort",
-      "Deshalb finde ich die ergänzte Nachricht der Mutter jetzt besonders hilfreich.“ / „Deshalb finde ich die ergänzte Nachricht der Freundin jetzt besonders hilfreich.“ / „Deshalb finde ich beide ergänzten Nachrichten wichtig, jeweils für eine andere Frage."
+      "Deshalb finde ich die ergänzte Nachricht der Mutter jetzt besonders hilfreich. / Deshalb finde ich die ergänzte Nachricht der Freundin jetzt besonders hilfreich. / Deshalb finde ich beide ergänzten Nachrichten wichtig, jeweils für eine andere Frage."
     ],
     [
       "Der Grund für die Verbindung",
-      "So erfährt Laura, welche körperlichen Beschwerden auftreten können.“ / „So erfährt Laura, dass spätere Kinder nach einem komplikationslosen Abbruch möglich bleiben."
+      "So erfährt Laura, welche körperlichen Beschwerden auftreten können. / So erfährt Laura, dass spätere Kinder nach einem komplikationslosen Abbruch möglich bleiben."
     ]
   ],
   "evaluation": {
@@ -1928,7 +1940,9 @@
     "https://www.gesundheitsinformation.de/medikamentoeser-schwangerschaftsabbruch.html",
     "https://www.gesundheitsinformation.de/nach-einem-schwangerschaftsabbruch.html",
     "https://fachportal.lernnetz.de/sh/fachanforderungen/biologie.html?cid=29751&file=files%2FFachanforderungen+und+Leitf%C3%A4den%2FSekundarstufe%2FFachanforderungen%2FFachanforderungen+Biologie+Sekundarstufe+%282023%2C+barrierearm%29.pdf",
-    "https://register.awmf.org/assets/guidelines/015-094l_S3_Schwangerschaftsabbruch-im-ersten-Trimenon_2026-09.pdf"
+    "https://register.awmf.org/assets/guidelines/015-094l_S3_Schwangerschaftsabbruch-im-ersten-Trimenon_2026-09.pdf",
+    "https://fachportal.lernnetz.de/sh/fachanforderungen/biologie.html",
+    "https://ets-toenning.de/wp-content/uploads/2025/07/Schulinternes-Fachcurriculum-Biologie-SJ-2025-26.pdf"
   ],
   "differentiation": [
     [
@@ -1945,7 +1959,7 @@
     ],
     [
       "MSA",
-      "Bestimme Wert, Regel, konkreten Rat und Leerstelle am Gerät. Zeige dafür die passende Textstelle oder formuliere eigene Stichworte.",
+      "Benenne Wert, Regel, konkreten Rat und Leerstelle in eigenen Worten. Eine markierte Textstelle dient als Beleg für deine Erklärung.",
       "Fachkartenabschnitt zunächst selbst finden. Die fehlende Information in einem kurzen Satz ergänzen und ihren Bezug zum Wert erklären.",
       "Inhalt und Bezug selbstständig herstellen; eigene Formulierung mit fachlichem Vergleich prüfen, ohne automatisches Schlüsselworturteil."
     ],
@@ -2007,7 +2021,7 @@
     "close": "Zurück zum Gespräch",
     "next": "Weiter",
     "overview": "Zur Nachrichtenübersicht",
-    "resume": "Weiterarbeiten",
+    "resume": "Verlauf dieser Niveauwahl fortsetzen",
     "switch": "Lauras Frage",
     "family": "Originalnachricht",
     "addition": "Unsere Ergänzung für Laura",
@@ -2015,10 +2029,10 @@
     "checked": "Bedeutung geprüft",
     "own": "Aussage vor einem Hinweis richtig gewählt.",
     "explain": "Aussage nach einem Hinweis richtig gewählt.",
-    "used": "Aussage mit Lösungshilfe gewählt.",
+    "used": "Passende Aussage nach gezeigter Lösung gewählt.",
     "compare": "Mit Aussagen vergleichen",
-    "free": "Dein Gedanke in wenigen Worten",
-    "freeNote": "Eigene Worte festgehalten. Dein Wortlaut bleibt ungeprüft. Welche Aussage passt?",
+    "free": "Dein Gedanke in eigenen Worten",
+    "freeNote": "Eigener Gedanke festgehalten. Dein Wortlaut bleibt ungeprüft. Vergleiche die Bedeutung.",
     "help": "Hilfe",
     "more": "Noch ein Hinweis",
     "solution": "Erklärung mit Lösung",
@@ -2037,7 +2051,7 @@
     "personal": "Deine Gewichtung bleibt deine Entscheidung.",
     "finish": "Persönliche Prüfung abschließen",
     "reserve": "Freiwillige Vertiefungen",
-    "noPast": "Direkteinstieg. Frühere Antworten werden hier nicht vorausgesetzt.",
+    "noPast": "Frühere Antworten sind hier nicht als bearbeitet belegt.",
     "where": "Wo möchtest du wieder einsteigen?",
     "change": "Niveaus ändern",
     "source": "Kartenstelle öffnen",
@@ -2086,12 +2100,12 @@
     "moreOptions": "Weitere Aussagen",
     "evidenceStatus": "Geprüfter Bezug",
     "rethink": "Du kannst deine Gewichtung noch einmal prüfen.",
-    "sourceInstead": "Oder zeige die passende Textstelle",
-    "sourceYes": "Textstelle gefunden. Welche Aussage gibt ihre Bedeutung wieder?",
+    "sourceInstead": "Eine Textstelle als Beleg suchen",
+    "sourceYes": "Dein Textbeleg. Erkläre seine Bedeutung in eigenen Worten.",
     "sourceRetry": "Lies noch einmal: Welcher Satz beantwortet die Frage oben?",
     "applied": "Neue Frage selbst richtig beantwortet.",
-    "assisted": "Mit der Erklärung weitergearbeitet. Die eigene Anwendung ist noch offen.",
-    "pending": "Lösungshilfe genutzt. Die neue Frage ist noch offen.",
+    "assisted": "Neue Frage nach Korrektur oder Hinweis richtig beantwortet.",
+    "pending": "Kurze Anwendung noch offen.",
     "openReason": "Warum hilft dieser Fakt dir, gerade diese Nachricht zu beurteilen? Wenige Worte genügen.",
     "reasonOpen": "Deine persönliche Begründung ist noch ungeprüft.",
     "limitChecked": "Fakt, Frage und Aussagegrenze passen zusammen.",
@@ -2101,12 +2115,22 @@
     "editReason": "Eigene Worte ändern",
     "continueReason": "Aussagegrenze prüfen",
     "mixedTransfer": "Erkläre zusätzlich, welchen Schluss der Fakt für Lauras Entscheidung offenlässt.",
-    "timeHint": "Lösungshilfe für die Bewertung angesehen.",
+    "timeHint": "Formulierungshilfe zur persönlichen Bewertung genutzt.",
     "digitalCheck": "Wähle am Gerät Nachricht, Anliegen und passenden Fakt. Prüfe die Grenze des Fakts.",
-    "endRecovery": "Nutze den Auftrag unten, wenn deine frühere Rückmeldung auf dem Bogen vorliegt. Fehlt sie, öffne zuerst den digitalen Fachvergleich.",
-    "sameStep": "Prüfe deinen Vorschlag hier im geöffneten Abschnitt.",
+    "endRecovery": "Fehlt der geprüfte Beleg auf deinem Bogen? Öffne den Fachvergleich. Liegt er schon vor, kannst du mit dem Bogen zur Sicherung gehen.",
+    "sameStep": "Bleib in diesem Abschnitt. Prüfe deinen Vorschlag jetzt am Gerät.",
     "helpBeforePaper": "Bleib am Gerät. Wähle die Erklärung zur neuen Frage.",
-    "readMatrix": "Am Gerät nachlesen: die Argumente der Nachricht"
+    "readMatrix": "Am Gerät nachlesen: die Argumente der Nachricht",
+    "corrected": "Nach einem Fehlversuch richtig zugeordnet.",
+    "unchecked": "Noch offen.",
+    "skipped": "Für Lauras Frage unterbrochen. Die Anwendung ist noch offen.",
+    "appliedSolution": "Neue Frage mit Lösungshilfe richtig beantwortet.",
+    "fresh": "Neues Gespräch beginnen",
+    "replaceTeam": "Für diese Niveauwahl gibt es schon einen Verlauf. Ein neues Gespräch ersetzt diesen Verlauf. Über „Zurück zum Gespräch“ kannst du ihn behalten.",
+    "inSession": "Für diese Niveauwahl ist ein Verlauf geöffnet. Beim Wiedereinstieg bleiben die bisherigen Antworten dieses Teams erhalten.",
+    "thoughtHint": "Kurze eigene Worte reichen. Dein Wortlaut bleibt ungeprüft.",
+    "paperReady": "Der geprüfte Beleg steht bereits auf meinem Bogen.",
+    "reviewSolo": "Prüfe jetzt den Beleg für deine eigene Antwort."
   },
   "levelPrompts": {
     "Förder": {
@@ -2118,21 +2142,21 @@
       "Ergänzung": "Wähle den passenden Grund. Ergänze mündlich: Diese Information hilft, weil …"
     },
     "MSA": {
-      "analyse": "Formuliere erst selbst, welche Funktion die Aussage im Text hat. Vergleiche anschließend ihre Bedeutung.",
+      "analyse": "Benenne den Bestandteil mit eigenen Worten. Was bedeutet er für diesen Rat? Stichworte reichen.",
       "Ergänzung": "Finde die passende Fachkartenstelle. Formuliere eine Ergänzung und erkläre ihren Bezug."
     },
     "AHR": {
-      "analyse": "Erschließe die Aussage aus der Nachricht. Begründe an einer Textstelle, warum sie diese Funktion hat.",
+      "analyse": "Zeige an wenigen Worten aus der Nachricht, welche Funktion die Aussage für den Rat hat.",
       "Ergänzung": "Formuliere die Ergänzung selbst. Was klärt sie, und welche Schlussfolgerung wäre zu weitgehend?"
     }
   },
   "caseReflection": {
-    "Mutter": "Erkläre, wie Zusammenziehungen der Gebärmutter mit möglichen Krämpfen zusammenhängen. Kannst du daraus die Belastung einer fortgesetzten Schwangerschaft ableiten?",
+    "Mutter": "Welcher Vorgang kann Beschwerden erklären? Was kannst du daraus über die Belastung einer fortgesetzten Schwangerschaft ableiten?",
     "Freundin": "Warum ist die Information für spätere Kinder relevant? Erkläre den Unterschied zwischen einer Möglichkeit und einer Garantie.",
     "Großmutter": "Begründet das Ende der Embryonalentwicklung allein eine moralische Verpflichtung? Unterscheide Sachverhalt und persönliche Überzeugung.",
     "Vater": "Wie unterstützt die ärztliche Klärung eine selbstbestimmte Entscheidung? Wer gewichtet die Möglichkeiten?"
   },
-  "known": "Die vier Begriffe beschreiben Bestandteile einer Argumentation. Ein Ratschlag kann einen Bestandteil unausgesprochen lassen.",
+  "known": "Prüfe vier Bestandteile: Fakt, Wert, Norm und Folgerung. Hier meint „Fakt“ einen biologischen Beleg. Auch Lauras Pläne sind wichtige Fallinformationen. Prüfe bei jeder Nachricht selbst, was ausdrücklich gesagt wird.",
   "designFiles": {
     "Laura": "laura.webp",
     "Mutter": "mutter.webp",
@@ -2142,36 +2166,36 @@
   },
   "evaluationHelpByLevel": {
     "Förder": [
-      "Wähle eine Frage von Laura. Warum findest du diese Frage gerade wichtig? Wähle die passende Information. Zeige mit den Satzteilen, welche Nachricht Laura deshalb besonders hilft.",
-      "Die Mutter und die Freundin helfen mit den Ergänzungen bei unterschiedlichen Fragen. Entscheide, welche Frage du jetzt besonders wichtig findest.",
-      "Schau auf eure ergänzten Fakten und auf Lauras Wörter ‚Blutungen und Schmerzen‘ sowie ‚später schwanger werden‘.",
-      "Verbinde drei Dinge: die Frage Lauras, die passende Information und deine Einschätzung. Beginne: ‚Ich finde die ergänzte Nachricht der … besonders hilfreich, weil …‘.",
-      "Eine mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Mutter besonders hilfreich. Laura hat Angst vor Beschwerden. Die Information über Blutungen und mögliche Schmerzen zeigt ihr, welche Beschwerden auftreten können. Deshalb hilft diese Nachricht bei ihrer Sorge. Ob Laura die Schwangerschaft fortsetzen möchte, entscheidet der Fakt nicht.‘ Eine andere mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Freundin besonders hilfreich. Laura fragt, ob sie später noch schwanger werden kann. Nach einem Abbruch mit Medikamenten ohne Komplikationen bleibt das möglich. Deshalb hilft die Information bei ihrer Zukunftsplanung. Sie sagt nicht, dass Laura jetzt abbrechen soll.‘ Beide Begründungen sind möglich. Entscheide selbst, welche Frage du zuerst beantworten möchtest."
+      "Was möchte Laura wissen?",
+      "Was ist für Laura jetzt wichtig: Schmerzen, spätere Kinder oder beides?",
+      "Suche den Fakt, der ihre Frage beantwortet.",
+      "Beginne: „Ich finde … wichtig, weil … .“",
+      "Die Mutter spricht über Beschwerden. Die Freundin über spätere Kinder. Wähle eine oder beide. Was hilft Laura daran? Gib deinen eigenen Grund."
     ],
     "ESA": [
-      "Welche Frage würdest du zuerst beantworten? Warum gerade diese? Ergänze: Ich finde die ergänzte Nachricht der … besonders hilfreich, weil Laura … . Die Information … hilft ihr dabei, … .",
-      "Die Mutter und die Freundin helfen mit den Ergänzungen bei unterschiedlichen Fragen. Entscheide, welche Frage du jetzt besonders wichtig findest.",
-      "Schau auf eure ergänzten Fakten und auf Lauras Wörter ‚Blutungen und Schmerzen‘ sowie ‚später schwanger werden‘.",
-      "Verbinde drei Dinge: die Frage Lauras, die passende Information und deine Einschätzung. Beginne: ‚Ich finde die ergänzte Nachricht der … besonders hilfreich, weil …‘.",
-      "Eine mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Mutter besonders hilfreich. Laura hat Angst vor Beschwerden. Die Information über Blutungen und mögliche Schmerzen zeigt ihr, welche Beschwerden auftreten können. Deshalb hilft diese Nachricht bei ihrer Sorge. Ob Laura die Schwangerschaft fortsetzen möchte, entscheidet der Fakt nicht.‘ Eine andere mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Freundin besonders hilfreich. Laura fragt, ob sie später noch schwanger werden kann. Nach einem Abbruch mit Medikamenten ohne Komplikationen bleibt das möglich. Deshalb hilft die Information bei ihrer Zukunftsplanung. Sie sagt nicht, dass Laura jetzt abbrechen soll.‘ Beide Begründungen sind möglich. Entscheide selbst, welche Frage du zuerst beantworten möchtest."
+      "Welche von Lauras Fragen würdest du zuerst klären? Warum?",
+      "Achte auf ihre Sorge um den Körper und auf ihre Pläne für später.",
+      "Verbinde deine Wahl mit einem passenden Fakt. Welche Frage beantwortet er? Was bleibt offen?",
+      "Beginne: „Ich gewichte …, weil … . Der Fakt erklärt … . Laura entscheidet selbst über … .“",
+      "Wähle Beschwerden, spätere Kinder oder beide Anliegen. Nutze die passende Ergänzung. Vervollständige selbst: „Für Laura finde ich das besonders wichtig, weil … .“"
     ],
     "MSA": [
-      "Entscheide, welche ergänzte Nachricht Laura jetzt besonders hilft. Begründe mit einer ihrer Fragen und einer biologischen Information. Zwei bis drei kurze Sätze genügen.",
-      "Die Mutter und die Freundin helfen mit den Ergänzungen bei unterschiedlichen Fragen. Entscheide, welche Frage du jetzt besonders wichtig findest.",
-      "Schau auf eure ergänzten Fakten und auf Lauras Wörter ‚Blutungen und Schmerzen‘ sowie ‚später schwanger werden‘.",
-      "Verbinde drei Dinge: die Frage Lauras, die passende Information und deine Einschätzung. Beginne: ‚Ich finde die ergänzte Nachricht der … besonders hilfreich, weil …‘.",
-      "Eine mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Mutter besonders hilfreich. Laura hat Angst vor Beschwerden. Die Information über Blutungen und mögliche Schmerzen zeigt ihr, welche Beschwerden auftreten können. Deshalb hilft diese Nachricht bei ihrer Sorge. Ob Laura die Schwangerschaft fortsetzen möchte, entscheidet der Fakt nicht.‘ Eine andere mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Freundin besonders hilfreich. Laura fragt, ob sie später noch schwanger werden kann. Nach einem Abbruch mit Medikamenten ohne Komplikationen bleibt das möglich. Deshalb hilft die Information bei ihrer Zukunftsplanung. Sie sagt nicht, dass Laura jetzt abbrechen soll.‘ Beide Begründungen sind möglich. Entscheide selbst, welche Frage du zuerst beantworten möchtest."
+      "Welche von Lauras Fragen würdest du zuerst klären? Warum?",
+      "Achte auf ihre Sorge um den Körper und auf ihre Pläne für später.",
+      "Verbinde deine Wahl mit einem passenden Fakt. Welche Frage beantwortet er? Was bleibt offen?",
+      "Beginne: „Ich gewichte …, weil … . Der Fakt erklärt … . Laura entscheidet selbst über … .“",
+      "Wähle Beschwerden, spätere Kinder oder beide Anliegen. Nutze die passende Ergänzung. Vervollständige selbst: „Für Laura finde ich das besonders wichtig, weil … .“"
     ],
     "AHR": [
-      "Vergleiche den Nutzen beider ergänzten Nachrichten für Lauras Fragen. Begründe deine Gewichtung biologisch. Nenne zusätzlich eine Grenze: Was lässt sich aus der Information nicht entscheiden?",
-      "Die Mutter und die Freundin helfen mit den Ergänzungen bei unterschiedlichen Fragen. Entscheide, welche Frage du jetzt besonders wichtig findest.",
-      "Schau auf eure ergänzten Fakten und auf Lauras Wörter ‚Blutungen und Schmerzen‘ sowie ‚später schwanger werden‘.",
-      "Verbinde drei Dinge: die Frage Lauras, die passende Information und deine Einschätzung. Beginne: ‚Ich finde die ergänzte Nachricht der … besonders hilfreich, weil …‘.",
-      "Eine mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Mutter besonders hilfreich. Laura hat Angst vor Beschwerden. Die Information über Blutungen und mögliche Schmerzen zeigt ihr, welche Beschwerden auftreten können. Deshalb hilft diese Nachricht bei ihrer Sorge. Ob Laura die Schwangerschaft fortsetzen möchte, entscheidet der Fakt nicht.‘ Eine andere mögliche Antwort lautet: ‚Ich finde die ergänzte Nachricht der Freundin besonders hilfreich. Laura fragt, ob sie später noch schwanger werden kann. Nach einem Abbruch mit Medikamenten ohne Komplikationen bleibt das möglich. Deshalb hilft die Information bei ihrer Zukunftsplanung. Sie sagt nicht, dass Laura jetzt abbrechen soll.‘ Beide Begründungen sind möglich. Entscheide selbst, welche Frage du zuerst beantworten möchtest."
+      "Welche von Lauras Fragen würdest du zuerst klären? Warum?",
+      "Achte auf ihre Sorge um den Körper und auf ihre Pläne für später.",
+      "Verbinde deine Wahl mit einem passenden Fakt. Welche Frage beantwortet er? Was bleibt offen?",
+      "Beginne: „Ich gewichte …, weil … . Der Fakt erklärt … . Laura entscheidet selbst über … .“",
+      "Stelle beide Bezüge gegenüber: Beschwerden heute, Familienplanung später. Gewichte selbst, welcher Bezug in Lauras Situation mehr trägt oder ob beide gleich wichtig sind. Begründe, welche Aussagegrenze dabei zählt."
     ]
   },
   "paperRecovery": "Nach einem Neustart dieselben Niveaus wählen. Benutze beim zuletzt bearbeiteten Papierfeld den angegebenen Rückkehrschritt unter „Nach Neustart“. Frühere Einträge bleiben auf deinem Bogen.",
-  "levelsHelp": "Hilfe 1 gibt eine Denkrichtung, Hilfe 2 erklärt die Kategorie, Hilfe 3 führt zur Textstelle, Hilfe 4 grenzt ein, Hilfe 5 zeigt eine erläuterte Lösung. Die spätere Verbindung zu Lauras Frage bleibt eine eigene Handlung. Nach Hilfe 5 in einem Familienfall folgt einmal die kurze Anwendung beim Festhalten. Bei Zeitdruck bleibt Lauras Frage sofort erreichbar.",
+  "levelsHelp": "Hilfe 1 gibt eine Denkrichtung, Hilfe 2 lenkt den Blick, Hilfe 3 erschließt die Textstelle, Hilfe 4 strukturiert und Hilfe 5 unterstützt beim Vergleich. Nur eine vor dem Lösen gezeigte Lösung zur Ergänzung führt zur zugehörigen kurzen Anwendung. Die Bewertungshilfe lässt die eigene Gewichtung offen.",
   "screens": {
     "Tagesauswahl.jpg": "Gemeinsamer Einstieg",
     "Erste-Nachricht-und-Team.jpg": "Laura und Teamwahl",
@@ -2197,13 +2221,17 @@
     "Vater-Ergebnisfeld.jpg": "Geprüfte Ergänzung und Rückkehrziel · Vater",
     "Fachbezug-Pruefen.jpg": "Persönlicher Belegvergleich am Gerät",
     "Lernbogen-Sicherung.jpg": "Überarbeitung im selben Feld und gemeinsame Sicherung",
-    "Reserve-Neustart.jpg": "Rückkehr nach direktem Einstieg in einen freiwilligen Fall"
+    "Reserve-Neustart.jpg": "Rückkehr nach direktem Einstieg in einen freiwilligen Fall",
+    "Lernweg-Förder.jpg": "Eigene Bearbeitung · Förder",
+    "Lernweg-ESA.jpg": "Eigene Bearbeitung · ESA",
+    "Lernweg-MSA.jpg": "Eigene Bearbeitung · MSA",
+    "Lernweg-AHR.jpg": "Eigene Bearbeitung · AHR"
   },
   "analogSteps": [
     "Bearbeite das persönliche Erstfeld der jeweiligen Ergänzung vor dem digitalen Vergleich.",
     "Originalnachricht lesen. Wert, Norm und Folgerung an der Nachricht untersuchen und den fehlenden Bestandteil bestimmen.",
-    "Auf MSA und AHR zuerst eigene Stichworte formulieren oder die passende Originalstelle zeigen. Dann die Bedeutung anhand der Aussagen prüfen. Eigene Worte bleiben ungeprüft.",
-    "Halte die Ergänzung im Ergebnisfeld fest. Bei Lösungshilfe dieselbe Zeile kennzeichnen. Die kurze Anwendung erfolgt vor diesem Eintrag am Gerät.",
+    "MSA und AHR formulieren kurze eigene Worte. Eine Textstelle kann den Gedanken stützen. Die Auswahl prüft anschließend die Bedeutung.",
+    "Halte die Ergänzung im Ergebnisfeld fest. Kennzeichne die genutzte Lösung zur Ergänzung. Die zugehörige kurze Anwendung kann nach Rückmeldung erneut versucht werden.",
     "Nach den beiden Pflichtfällen oder bei Zeitdruck Lauras zweite Nachricht lesen. Jede Person begründet zuerst auf dem eigenen Bogen.",
     "Jede Person prüft im Chat ihren Fachbeleg und dessen Reichweite. Bei gleicher Gewichtung prüft sie beide Verbindungen. Erst danach präzisiert sie im selben Papierfeld bei Bedarf ihren eigenen Grund, auch bei einem fallübergreifenden Fakt."
   ],
@@ -2230,7 +2258,9 @@
     "IQWiG · Medikamentöser Schwangerschaftsabbruch",
     "IQWiG · Nach einem Schwangerschaftsabbruch",
     "Schleswig-Holstein · Fachanforderungen Biologie 2023, S. 16, 17 und 22",
-    "AWMF · S3-Leitlinie Schwangerschaftsabbruch im ersten Trimenon"
+    "AWMF · S3-Leitlinie Schwangerschaftsabbruch im ersten Trimenon",
+    "Fachportal Schleswig-Holstein · aufwachsende Einführung 2026/27",
+    "Eider-Treene-Schule · Fachcurriculum Biologie ab 2025/26, S. 1 und 12"
   ],
   "sourceMapping": {
     "Blutungen und Schmerzen": [
@@ -2249,12 +2279,19 @@
       5
     ],
     "Bw1 und Kk3": [
-      4
+      4,
+      6,
+      7
+    ],
+    "Entwicklung des Embryos": [
+      1,
+      2,
+      5
     ]
   },
   "intent": "Die Schülerinnen und Schüler bewerten, wie hilfreich unterschiedliche Ratschläge für Laura sind, indem sie deren Werte und Normen erschließen, fehlende biologische Fakten zum medikamentösen Schwangerschaftsabbruch ergänzen und ihre Einschätzungen anhand von Lauras Anliegen fachlich begründen.",
   "sourceReview": {
-    "Stand": "23.11.2026",
+    "Stand": "24.11.2026",
     "Mutter": "BIÖG und IQWiG beschreiben das Zusammenziehen der Gebärmutter, das Ausstoßen des Gewebes, Blutungen und mögliche Krämpfe. Daraus ergibt sich kein Vergleich der Belastung mit dem Fortsetzen der Schwangerschaft.",
     "Freundin": "IQWiG beschreibt in der Regel keine Auswirkungen auf die spätere Fruchtbarkeit. Die Freundin nennt spätere Kinder ausdrücklich. Der ergänzte Fakt klärt eine Möglichkeit der Familienplanung. Er garantiert weder eine spätere Schwangerschaft noch den Abschluss der Ausbildung."
   },
@@ -2270,8 +2307,8 @@
       "AHR": "Formuliere deine erste Ergänzung in wenigen Worten."
     },
     "checked": {
-      "Förder": "Markiere die passende Ergänzung. Lass deine erste Wahl stehen.",
-      "ESA": "Kreuze die passende Ergänzung an. Sage, wie sie zur Nachricht passt.",
+      "Förder": "Markiere die passende Ergänzung. Sage, was sie erklärt und wer am Ende entscheidet.",
+      "ESA": "Kreuze die Ergänzung an. Erkläre mündlich: Sie hilft bei … . Ob Laura …, bleibt offen.",
       "MSA": "Halte die Ergänzung kurz fest. Begründe in einem Satz, wie sie zur Nachricht passt.",
       "AHR": "Halte die Ergänzung kurz fest. Begründe, was sie klärt und welche Entscheidung offenbleibt."
     },
@@ -2286,8 +2323,8 @@
     "displaySupport": "Hast du die Lösung genutzt? Markiere hier „Mit Lösungshilfe“.",
     "supportLabel": "Mit Lösungshilfe",
     "layout": "Pro Person ein eigener Bogen. Für Lauras Anliegen, biologischen Fakt, Gewichtung mit eigenem Grund und die spätere Präzisierung einen zusammenhängenden Bereich von mindestens einer halben Seite vorsehen. Die erste Fassung bleibt lesbar. Bei gleicher Gewichtung Platz für beide Bezüge lassen.",
-    "digitalOnly": "Wert, Norm, Folgerung und Leerstelle werden am Gerät untersucht. Die Antwortmatrix, Hilfetexte und Anwendungsantworten werden nicht abgeschrieben. Nach Hilfe 5 erfolgt die kurze Anwendung am Gerät vor dem vorhandenen Ergebniseintrag.",
-    "finish": "Bleib in diesem Abschnitt. Nimm deinen Lernbogen mit in die gemeinsame Sicherung. Die Vertiefungen sind freiwillig.",
+    "digitalOnly": "Wert, Norm, Folgerung und Leerstelle werden am Gerät untersucht. Die Antwortmatrix, Hilfetexte und Anwendungsantworten werden nicht abgeschrieben. Nach einer gezeigten Lösung zur Ergänzung folgt am Gerät eine kurze Anwendung desselben Zusammenhangs.",
+    "finish": "Nimm deinen persönlichen Lernbogen zur gemeinsamen Sicherung mit.",
     "personalMethod": {
       "Förder": "Markiere die Satzteile für deinen eigenen Grund.",
       "ESA": "Halte deinen eigenen Grund in einem kurzen Satz fest.",

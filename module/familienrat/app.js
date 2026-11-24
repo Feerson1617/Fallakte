@@ -44,14 +44,24 @@ function go(type, fields={}) {
 function record(key){
   return saved.records[key] ||= {depth:0,wrong:false,valid:false,text:'',feedback:'',compared:false};
 }
-function status(r) {return r.depth===5?ui.used:r.depth||r.wrong||r.resource?ui.explain:ui.own;}
+function status(r){
+  if(!r?.valid)return ui.unchecked;
+  if(r.depth===5||r.solutionShown)return ui.used;
+  if(r.depth||r.resource)return ui.explain;
+  return r.wrong?ui.corrected:ui.own;
+}
 function solutionUsed(person){
-  return saved.records[person+'/Transfer']?.resumed || bank.cases[person].tasks.some(task=>saved.records[person+'/'+task.id]?.sawSolution===true);
+  const addition=saved.records[person+'/Ergänzung'];
+  return addition?.depth===5 || addition?.solutionShown===true;
+}
+function hasApplication(person){
+  return solutionUsed(person)||saved.records[person+'/Transfer']?.resumed;
 }
 function applicationStatus(person){
   const r=saved.records[person+'/Transfer'];
-  if(r?.selected===undefined)return ui.pending;
-  return r.valid && !r.depth && !r.resource?ui.applied:ui.assisted;
+  if(!r?.valid)return r?.skipped?ui.skipped:ui.pending;
+  if(r.depth===5)return ui.appliedSolution;
+  return r.wrong||r.depth||r.resource?ui.assisted:ui.applied;
 }
 function markResource(r){
   if(r && !r.valid && !r.finished)r.resource=true;
@@ -83,8 +93,8 @@ function cards(index){
 function help(task,r){
   let tier=task.personalTier || low();
   function show(depth){
-    if(depth===5)r.sawSolution=true;
-    if(!r.valid && !r.finished)r.depth=Math.max(r.depth,depth);
+    if(!r.valid && r.step!=='done')r.depth=Math.max(r.depth,depth);
+    else r.laterDepth=Math.max(r.laterDepth||0,depth);
     popup(ui.helpTitle+' '+depth+' / 5',box=>{
       if(!task.personalTier && levels().length===2 && low()!==high())
         select(box,ui.helpFor,'help-tier',Array.from(new Set(levels())).map(t=>[t,t]),tier,v=>{tier=v;show(depth);});
@@ -129,7 +139,15 @@ function showHome(){
   heading(box,ui.openingTitle);team(box);
   if(!members[0])return;
   if(saved.last)btn(box,ui.resume,'resume',()=>{current=saved.last;screen='work';draw(true);},'primary');
-  btn(box,ui.start,'start',()=>go('case',{person:'Mutter',at:0}),saved.last?'':'primary');
+  btn(box,saved.last?ui.fresh:ui.start,'start',()=>{
+    if(!saved.last){go('case',{person:'Mutter',at:0});return;}
+    popup(ui.fresh,content=>{
+      paragraph(content,ui.replaceTeam);
+      btn(content,ui.fresh,'confirm-start',()=>{
+        dialog.close();teams.delete(JSON.stringify(members));activate();go('case',{person:'Mutter',at:0});
+      });
+    });
+  },saved.last?'':'primary');
   if(saved.complete.Mutter)btn(box,bank.cases.Freundin.titles[0],'friend',()=>go('case',{person:'Freundin',at:0}));
   btn(box,ui.switch,'jump',()=>go('laura',{at:0}));
   if(saved.completedReview)reserves(box);
@@ -158,32 +176,42 @@ function paperOrder(box,key,{button=false,support=false}={}){
     order.className='paper-order';order.dataset.member=String(i);order.dataset.level=tier;
   });
   if(support)paragraph(panel,step.support);
-  if(!button)paragraph(panel,step.returnText,'small').dataset.return=step.nextId;
+  if(!button){
+    const handoff=paragraph(panel,step.returnText,'small');
+    if(step.nextId)handoff.dataset.return=step.nextId;
+    else handoff.dataset.terminal='paper';
+  }
   if(step.after)paragraph(panel,step.after,'small');
   return step;
 }
 function thought(box,label,text,save,id,buttonText,submit){
   const input=el(el(box,'label',label),'textarea');input.value=text;
-  // Only check that there are words to compare. Their meaning is never scored.
-  const hasWords=()=>/\p{L}/u.test(input.value);
-  const confirm=btn(box,buttonText,id,()=>{if(hasWords())submit();});
-  confirm.disabled=!hasWords();
-  input.oninput=()=>{save(input.value);confirm.disabled=!hasWords();};
+  // This is a form check, never a judgement about a pupil's argument or spelling.
+  const usable=()=>{
+    const letters=input.value.normalize('NFKC').toLowerCase().match(/\p{L}/gu)||[];
+    const word=letters.join('');
+    return new Set(letters).size>=2 && !/^(?:test|testtext|platzhalter|asdf|qwertz|qwerty|xyz|abc|bla|blabla|loremipsum)$/.test(word);
+  };
+  const note=paragraph(box,ui.thoughtHint,'small');note.id=id+'-hint';
+  input.setAttribute('aria-describedby',note.id);
+  const confirm=btn(box,buttonText,id,()=>{if(usable())submit();});
+  confirm.disabled=!usable();
+  input.oninput=()=>{save(input.value);confirm.disabled=!usable();};
 }
 function draft(box,task,r,c){
   if(r.compared){
-    if(r.text && !r.source)paragraph(box,r.text);
-    paragraph(box,r.source?ui.sourceYes:ui.freeNote,'small');
+    paragraph(box,r.text);
+    paragraph(box,ui.freeNote,'small');
     return;
   }
-  const compare=()=>{r.compared=true;draw(true);};
-  thought(box,ui.free,r.text,text=>r.text=text,'compare',ui.compare,compare);
+  if(r.source!==undefined)paragraph(box,ui.sourceYes+' '+sentences(c.original)[r.source],'small');
+  thought(box,ui.free,r.text,text=>r.text=text,'compare',ui.compare,()=>{r.compared=true;draw(true);});
   if(!task.evidenceSentences)return;
   const d=el(box,'details');el(d,'summary',ui.sourceInstead);
   const feedback=paragraph(d,'','small');feedback.setAttribute('role','status');
   sentences(c.original).forEach((line,i)=>{
     btn(d,line,'source-'+i,()=>{
-      if(task.evidenceSentences.includes(i)){r.source=true;compare();}
+      if(task.evidenceSentences.includes(i)){r.source=i;markResource(r);draw();root.querySelector('textarea').focus();}
       else{r.wrong=true;feedback.textContent=ui.sourceRetry;}
     });
   });
@@ -204,7 +232,8 @@ function options(box,task,r,onDone,application=false){
     const target=extra && !compact.includes(index)?extra:row;
     const b=btn(target,deeper?o.advancedText:o.text,'answer-'+index,()=>{
       r.feedback=deeper?o.advancedFeedback:o.feedback;r.valid=o.ok;r.selected=index;if(!o.ok)r.wrong=true;
-      if(application)r.finished=true;
+      if(o.revealsSolution)r.solutionShown=true;
+      if(application){r.finished=o.ok;r.skipped=false;}
       draw();
       const fb=document.getElementById('response');fb.focus({preventScroll:true});fb.scrollIntoView({block:'nearest'});
     });
@@ -213,7 +242,7 @@ function options(box,task,r,onDone,application=false){
   }
   if(r.feedback){const fb=paragraph(box,r.feedback,r.valid?'feedback':'feedback retry');fb.id='response';fb.tabIndex=-1;fb.setAttribute('role','status');}
   if(r.valid && !application){
-    paragraph(box,task.id==='Reichweite'?ui.limitChecked:status(r),'tag');
+    paragraph(box,task.id==='Reichweite'?ui.limitChecked+' '+status(r):status(r),'tag');
     btn(box,ui.next,'next',onDone,'primary');
   }
 }
@@ -225,14 +254,14 @@ function originalPanel(layout,person,c,hideAddition){
 }
 function caseView(){
   const {person,at}=current,c=bank.cases[person],idx=names.indexOf(person);
-  const paper=at===c.tasks.length+1, transfer=paper && solutionUsed(person);
+  const paper=at===c.tasks.length+1, transfer=paper && hasApplication(person);
   const application=transfer?record(person+'/Transfer'):null;
   heading(root,c.recovery[at].section).dataset.section=c.recovery[at].id;
   const layout=el(root,'div',undefined,'split');originalPanel(layout,person,c,transfer && !application.finished);
   const box=el(layout,'section',undefined,'card');
   const advance=()=>go('case',{person,at:at+1});
   if(at===0){
-    if(person==='Freundin')paragraph(box,ui.role);
+    if(person==='Freundin' && levels().length===2)paragraph(box,ui.role);
     paragraph(box,bank.known);
     btn(box,ui.read,'next',advance,'primary');
   }else if(!paper){
@@ -257,7 +286,7 @@ function caseView(){
       options(box,task,application,null,true);
       if(!application.finished){
         tools(box,task,application,idx);
-        btn(box,ui.switch,'jump',()=>go('laura',{at:0}));
+        btn(box,ui.switch,'jump',()=>{application.skipped=true;go('laura',{at:0});});
         return;
       }
       paragraph(box,applicationStatus(person),'tag');
@@ -288,7 +317,7 @@ function facts(box){
   const d=el(box,'details');el(d,'summary',ui.facts);
   for(const n of names.slice(0,2)){
     el(d,'strong',n+' · '+(saved.records[n+'/Ergänzung']?.valid?ui.confirmed:ui.supported));
-    if(solutionUsed(n))paragraph(d,applicationStatus(n),'small');
+    if(hasApplication(n))paragraph(d,applicationStatus(n),'small');
     const original=el(d,'details');el(original,'summary',ui.family);paragraph(original,bank.cases[n].original);
     el(d,'strong',ui.addition);paragraph(d,bank.cases[n].addition);paragraph(d,bank.cases[n].connection,'small');
   }
@@ -305,13 +334,18 @@ function comparison(box,index){
   el(box,'h2',(index?ui.two:ui.one)+' · '+members[index]);
   const end=()=>{
     p.step='done';
-    if(index+1<levels().length)go('laura',{at:2,individual:index+1});
-    else{saved.completedReview=levels().every((t,i)=>saved.personal[i]?.step==='done');go('laura',{at:3});}
+    const missing=levels().findIndex((_,i)=>saved.personal[i]?.step!=='done');
+    saved.completedReview=missing<0;
+    if(saved.completedReview)go('laura',{at:3});
+    else go('laura',{at:2,individual:missing});
   };
   if(p.choice){
     btn(box,ui.editWeight,'edit-weight',()=>{
-      p.step='choice';p.choice='';p.part=0;p.notes={};p.reason='';p.alternate=false;p.other=false;p.feedback='';
-      for(const key of Object.keys(saved.records))if(key.startsWith('Bewertung/'+index+'/'))delete saved.records[key];
+      p.step='choice';saved.paperRecovery=false;p.choice='';p.part=0;p.notes={};p.reason='';p.alternate=false;p.other=false;p.feedback='';
+      // Recheck the selection while keeping any support this person already received.
+      for(const [key,r] of Object.entries(saved.records)){
+        if(key.startsWith('Bewertung/'+index+'/'))Object.assign(r,{valid:false,selected:undefined,feedback:''});
+      }
       saved.completedReview=false;draw(true);
     });
   }
@@ -337,6 +371,7 @@ function comparison(box,index){
       const values=[bank.cases.Mutter.addition,bank.cases.Freundin.addition,ui.guarantee,ui.forced];
       values.forEach((v,i)=>btn(box,v,'fact-'+i,()=>{
         p.alternate=false;
+        if(i!==p.concern)record('Bewertung/'+index+'/'+person+'/'+p.concern).wrong=true;
         if(i>=2)p.feedback=reviewText(i===2?6:7);
         else if(i!==p.concern)p.feedback=reviewText(p.concern===0?4:5);
         else if(i!==num){p.feedback=bank.crossReference[i];p.alternate=true;}
@@ -363,7 +398,7 @@ function comparison(box,index){
       paragraph(box,p.concern?ui.reasonB:ui.reasonA);
       el(box,'h3',task.prompt);
       options(box,task,r,()=>{
-        p.notes[person]={concern:target,reason:p.other?p.reason:'',support:r.depth===5};
+        p.notes[person]={concern:target,reason:p.other?p.reason:'',outcome:status(r)};
         if(p.choice===ui.both&&p.part===0){p.part++;p.step='concern';p.other=false;p.alternate=false;draw(true);}
         else end();
       });
@@ -386,7 +421,7 @@ function lauraView(){
       const d=el(box,'details');el(d,'summary',ui.examples);
       for(const [field,line] of bank.stems){el(d,'strong',field);paragraph(d,line);}
     }
-    paragraph(box,ui.reviewEach);
+    paragraph(box,levels().length===2?ui.reviewEach:ui.reviewSolo);
     btn(box,step.returnText,'next',()=>openSection(step.nextId),'primary').dataset.return=step.nextId;
     evaluationHelp(box,record('Bewertung/Vorbereitung'));
   }else if(at===2)comparison(box,current.individual||0);
@@ -397,7 +432,7 @@ function lauraView(){
       paragraph(box,p?.step==='done'?p.choice+' · '+ui.personal:ui.noPast);
       if(p?.notes)for(const [name,note] of Object.entries(p.notes)){
         paragraph(box,name+' · '+(note.concern?ui.questionB:ui.questionA));
-        paragraph(box,ui.limitChecked+(note.support?' '+ui.used:''),'small');
+        paragraph(box,ui.limitChecked+' '+note.outcome,'small');
         if(note.reason){
           paragraph(box,ui.other+' · '+note.reason);
         }
@@ -405,14 +440,18 @@ function lauraView(){
       }
       if(p?.depth===5||saved.records['Bewertung/Vorbereitung']?.depth===5)paragraph(box,ui.timeHint);
     });
-    if(!saved.completedReview)paragraph(box,ui.endRecovery,'small');
-    paperOrder(box,'LA-abschluss');
+    if(saved.completedReview || saved.paperRecovery)paperOrder(box,'LA-abschluss');
     if(saved.completedReview)reserves(box);
-    else btn(box,bank.evaluationSteps[2],'open-review',()=>openSection(bank.evaluationRecovery[2].id),'primary');
+    else{
+      paragraph(box,ui.endRecovery,'small');
+      btn(box,bank.evaluationSteps[2],'open-review',()=>openSection(bank.evaluationRecovery[2].id),'primary');
+      if(!saved.paperRecovery)btn(box,ui.paperReady,'paper-ready',()=>{saved.paperRecovery=true;draw(true);});
+    }
   }
 }
 function pickerView(){
   heading(root,ui.where);team(root);if(!members[0])return;
+  if(saved.last)paragraph(root,ui.inSession,'small');
   select(root,ui.home,'person',[...names,ui.theme].map(k=>[k,k]),picker.person,v=>{picker={person:v,step:'0'};draw();});
   const n=picker.person,c=bank.cases[n];
   const steps=c?c.recovery.map((r,i)=>[i,c.recovery.filter(s=>s.section===r.section).length>1?r.section+' · '+r.part:r.section]):bank.evaluationSteps.map((v,i)=>[i,v]);
