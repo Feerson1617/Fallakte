@@ -1,4 +1,4 @@
-(function ({lesson,cards,ui,level,assisted}) {
+(function ({lesson,cards,ui,level,assisted,embedded=false}) {
   const logs=[],screens=[],home=()=>click('home');
   let clicks=0,where=level;
   const one=sel=>document.querySelector(sel);
@@ -125,6 +125,7 @@
     }
   }
   visible(ui.picker);ok(all('.chapters small').filter(s=>s.textContent==='In dieser Sitzung bearbeitet').length===8,'Abschlussstatus');
-  home();
+  // In der Tagesauswahl bedient der Browser-Test die gemeinsame Übersicht.
+  if(!embedded) home();
   return {Niveau:level,Loesungshilfe:assisted,Fragen:logs,Interaktionen:counts,Auftraege:screens};
 })

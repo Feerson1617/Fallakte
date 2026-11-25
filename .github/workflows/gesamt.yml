@@ -1,0 +1,39 @@
+name: Fallakte · Drei Unterrichtsmodule
+on:
+  push:
+    branches: [integration/drei-unterrichtsmodule]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  integration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 65
+    container: mcr.microsoft.com/playwright/python:v1.62.0-noble
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Prüfwerkzeuge
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          python -m pip install -r tests/requirements.txt
+          if ! command -v pdftotext >/dev/null; then
+            apt-get update -qq
+            apt-get install -y --no-install-recommends poppler-utils
+          fi
+      - run: python gesamt/auslieferung.py
+      - run: python -u gesamt/pruefen.py
+      - run: python -u gesamt/unterricht.py
+      - name: Abnahme aller drei Referenzstände nachweisen
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python -u gesamt/nachweis.py
+      - run: python gesamt/bericht.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Fallakte-Gesamt-${{ github.sha }}
+          path: dist/Gesamt/
+          if-no-files-found: error
+          retention-days: 90
