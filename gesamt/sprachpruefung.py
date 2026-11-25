@@ -49,7 +49,8 @@ def pruefen(reference):
         assert a.keys()<=b.keys()
         for path in sorted(a.keys()|b.keys()):
             if path in a and a[path]==b[path]:continue
-            assert re.fullmatch(pattern,path),(k,path)
+            specific=k=='PREP' and re.fullmatch(r'levels/(MSA|AHR)/chapters/4/questions/1/afterSolutionCheck/prompt',path)
+            assert specific or re.fullmatch(pattern,path),(k,path)
             assert isinstance(b[path],str) or (path.endswith('/buttonText') and b[path] is None),(k,path)
             changes.append({'modul':k,'stelle':path,'alt':a.get(path),'neu':b[path]})
         proof[k]=dict(referenz=old[k][1],kandidat=new[k][1],werte=len(a),geaendert=sum(x['modul']==k for x in changes))

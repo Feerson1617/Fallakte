@@ -59,6 +59,9 @@ def redigieren(bank):
             c['paperPrompt']=f'Infokarte „{method}“: Trage die Wörter unten in die Felder {nums} ein.'
             c['backToChat']='Tippe auf „Vollständige Karte vergleichen“.' if code.endswith('B') else ('Beantworte jetzt die Frage auf dem Laufzettel.' if c.get('paperCheck') else 'Tippe auf „Weiter im Chat“.')
             for i,q in enumerate(c['questions']):
+                if q['id'] in ('3A-Q2-MSA','3A-Q2-AHR'):
+                    application=q['afterSolutionCheck']
+                    application['prompt']='Die Untersuchung zeigt, dass Kupfer die Beweglichkeit von Spermien vermindert. Welche Schutzwirkung wurde dabei nicht untersucht?'
                 titles=[section['title'] for section in c['information'] if section['sectionId'] in q['informationSections']]
                 assert titles,(code,q['id'])
                 frage(q,'unter „'+'“ und „'.join(titles)+'“',IMPULSE[code][i])

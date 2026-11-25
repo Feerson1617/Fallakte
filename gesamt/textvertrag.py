@@ -75,11 +75,51 @@ def report(ref):
     tokens={m:js_changes(js(old[m][0]),js(v[0])) for m,v in new.items()}
     rows=[];counts=Counter()
     matrix=media(new)
+    def match_matrix(mod,tier,path):
+        for x in matrix:
+            if x['modul']!=mod or x['niveau']!=tier:continue
+            prefix=None
+            if mod=='PREP' and '/chapters/' in path:
+                index=int(path.split('/chapters/')[1].split('/')[0])
+                if x['abschnitt']!=str(index//2+1)+'AB'[index%2]:continue
+                if path.endswith('paperPrompt') and x['zustand']=='Wörter freigegeben':return x
+                if '/paperCheck/' in path and x['zustand']=='A mit Papierfrage':return x
+            if mod=='UB08' and '/steps/'+x['zustand']+'/' in path:return x
+            if mod=='UB02' and x['abschnitt'] in path.split('/') and path.endswith(('paperPrompt','returnPrompt')):return x
+        return {}
+    changed_by_place={(x['modul'],x['stelle']) for x in changes}
+    scope_summary=Counter()
     def add(m,t,section,state,source,place,alt,neu,reason,typ):
         observed=bool(neu and neu in texts[m])
-        rows.append(dict(modul=m,niveau=t,abschnitt=section,zustand=state,quelle=source,stelle=place,alttext=alt,neutext=neu,grund=reason,typ=typ,
-                         sichtbeleg='exakter Text im Browserprotokoll' if observed else '',einzelabnahme='offen'))
-        counts[m,t,typ,'geändert' if alt!=neu else 'unverändert',observed]+=1
+        handoff=match_matrix(m,t,place)
+        status='Einzelprüfung offen';kind='Text oder Metadatum'
+        if source.startswith('JSON:') or source=='JSON':
+            keys=place.split('/')
+            if any(k in ('id','sectionId','taskId','fieldId','sectionIds','informationSections','previousSection','requiresAny','knownFacts','nextChapter','visualRef','shortOptions','restartId','nextId','version','designFiles','buildCommit','baseCommit') for k in keys) or keys[-1] in ('correct','ok','code','method','target'):
+                status='technische Funktion anhand des Datenfelds bestimmt';kind='Technik'
+            elif m=='PREP' and (keys[0]=='cards' or 'cardEntries' in keys) and (QA/'Kartenpruefung.json').exists():
+                status='Kartenvertrag gegen gedruckte und gerenderte Karten geprüft';kind='geschützte Kartendaten'
+            elif handoff and m=='UB08' and (QA/'Work-Gegenprobe.json').exists() and place.endswith(('/action','/screen')) and t in ('Förder','ESA') and place.split('/')[2] in ('MU-erst','MU-ergebnis','FR-erst','FR-ergebnis','LA-eigen','LA-abschluss'):
+                status='Work-Auftrag, PDF-Seite und Bildschirm verglichen';kind='Papierauftrag'
+            elif m=='PREP' and place.endswith('/feedback') and (m,place) in changed_by_place and '/afterSolutionCheck/' not in place and '/questions/' in place and (QA/'Browserpruefung.json').exists():
+                status='Rückmeldung zur konkreten Fehloption redigiert und im Frageweg geprüft';kind='Rückmeldung'
+            elif m=='UB02' and '/hints/' in place and (m,place) in changed_by_place and (QA/'Empfehlungen.json').exists():
+                status='Hinweis im Entscheidungsweg und in seiner Stufenfolge geprüft';kind='Hilfe'
+        elif typ=='JS-Template':kind='Laufzeitvorlage'
+        elif typ=='SVG':kind='Bildtext'
+        elif typ=='HTML':kind='HTML oder zugängliche Beschriftung'
+        elif typ=='JS-Literal' and (not neu or re.fullmatch(r'#[a-z][\w-]*|aria-[a-z-]+|data-[a-z-]+',str(neu))):
+            status='technische Zeichenkette im Skript';kind='Technik'
+        if handoff and alt!=neu:reason='Papierort und Rückweg für den konkreten Zustand überarbeitet'
+        elif kind=='Hilfe' and alt!=neu:reason='Kartenstelle, Denkfrage oder Lösung an Abschnitt und gewählte Methode gebunden'
+        elif kind=='Rückmeldung':reason='Biologischer Unterschied zur gewählten falschen Aussage erklärt'
+        elif (m,place) in changed_by_place:reason='Wortlaut in der ausgelieferten Datenbank geändert; Adresse und Schlüssel verglichen'
+        rev='geändert' if alt!=neu else 'unverändert'
+        scope_summary[(m,status)]+=1
+        rows.append(dict(modul=m,niveau=t,abschnitt=section,zustand=state,quelle=source,stelle=place,alttext=alt,neutext=neu,grund=reason,typ=typ,art=kind,
+                         papierfeld=handoff.get('papierfeld',''),rueckkehr=handoff.get('rueckkehr',''),ziel=handoff.get('ziel',''),
+                         sichtbeleg='gleicher Wortlaut im Modul beobachtet' if observed else '',einzelabnahme=status))
+        counts[m,t,typ,rev,observed,status]+=1
     for r in inventory:
         m,t,k,src,txt=r['modul'],r['niveau'],r['stelle'],r['quelle'],r['text'];reason='Wortlaut im Ausgangsscan';value=txt
         if src.startswith('JSON:'):
@@ -98,18 +138,48 @@ def report(ref):
                 j=a.index(txt);prev=next((s for s in reversed(a[:j]) if s and s in b),None)
                 cand=[s for s in b[(b.index(prev)+1 if prev else 0):] if s and s not in a]
                 value=cand[0] if cand else '';reason='HTML-Element neu beschriftet'
+        for tier in ('Foerder','Förder','ESA','MSA','AHR'):
+            if tier in k.split('/'):t=tier;break
         sec=re.search(r'(?:chapters|stages|steps|cases)/([^/]+)',k)
         add(m,t,sec[1] if sec else '',r['hinweise'],src,k,txt,value,reason,r['typ'])
     for m,(lookup,extra) in tokens.items():
         for i,x in extra:add(m,'übergreifend','','neu','JS script['+i+']',x['stelle'],'',x['text'],'neues Literal oder neue Vorlage',x['typ'])
     for x in changes:
         if x['alt'] is None and x['neu']:add(x['modul'],'übergreifend','','neu','JSON',x['stelle'],'',x['neu'],'zusätzliche Beschriftung','Daten')
-    archive={'Fundstellen.csv':csvdata(rows),'Medienwechselmatrix.csv':csvdata(matrix),
-             'Umfang.csv':csvdata([dict(modul=k[0],niveau=k[1],typ=k[2],abgleich=k[3],im_browser=k[4],anzahl=v) for k,v in sorted(counts.items())]),
-             'Bildschirmzustaende.jsonl':'\n'.join(json.dumps(r,ensure_ascii=False) for r in states)}
+    physical=json.loads((QA/'Work-Gegenprobe.json').read_text())
+    pairs=defaultdict(dict)
+    for r in physical:pairs[tuple(r['team']),r['person'],r['zustand']][r['version']]=r
+    screens=[]
+    for n,r in enumerate(states,1):
+        screens.append(dict(id=n,quelle='Browser · '+r['lauf'],modul=r['modul'],niveau=r['niveau'],abschnitt=r['abschnitt'],zustand=r['aktion'],neutext=r['text'],bedienelemente=r['bedienung']))
+    archive={'Work-Bildschirmvergleich.csv':csvdata([dict(team=' / '.join(k[0]),person=k[1],zustand=k[2],alt=v['vorher']['anzeige'],neu=v['nachher']['anzeige'],rueckweg_alt=v['vorher']['rueckweg'],rueckweg_neu=v['nachher']['rueckweg']) for k,v in pairs.items()]),
+             'Fundstellen.csv':csvdata(rows),'Medienwechselmatrix.csv':csvdata(matrix),
+             'Umfang.csv':csvdata([dict(modul=k[0],niveau=k[1],typ=k[2],abgleich=k[3],im_browser=k[4],einzelabnahme=k[5],anzahl=v) for k,v in sorted(counts.items())]),
+             'Bildschirmzustaende.jsonl':'\n'.join(json.dumps(r,ensure_ascii=False) for r in screens)}
+    compared=0
+    for name in ('PREP','UB02','UB08','Zusatz'):
+        path=QA/('Paarvergleich-'+name+'.ndjson.gz')
+        with gzip.open(path,'rt') as f:
+            raw=f.read()
+        count=json.loads((QA/('Paarvergleich-'+name+'.json')).read_text())['zustaende']
+        assert len(raw.splitlines())==count
+        compared+=count
+        archive['Laufzeitvergleich/'+name+'.jsonl']=raw
+    archive['Hinweise.md']='''# Softwarevertrag zur Prüfung
+
+Fundstellen.csv verknüpft die Angaben aus dem Sprachaudit mit den neu gebauten Dokumenten. Derselbe Wortlaut kann in verschiedenen Situationen unterschiedliche Aufgaben erfüllen. Die Zuordnung zum Papierauftrag ist dort eingetragen, wo die Fundstelle einen konkreten Medienwechsel beschreibt. Den produktiven Zustand und seine erlaubten Bedienhandlungen zeigen die Browserprotokolle.
+
+Die Dateien unter Laufzeitvergleich stellen die sichtbare alte und neue Ansicht nach derselben Aktion gegenüber. Der Weg enthält Niveau und Abschnitt beziehungsweise Methode. Bei Hilfen, falschen Antworten und nachträglichen Änderungen unterscheiden die laufende Schrittnummer und die betätigte Schaltfläche die Zustände. Die Eingaben sind simuliert. Bildschirmzustaende.jsonl umfasst zusätzliche echte Ansichten aus den Regressionstests. Eine Beobachtung beweist, welcher Wortlaut erschien. Sie ersetzt keine pädagogische Einzelabnahme.
+
+## Blattzuordnung für Work
+
+Vorbereitung: Kartenblatt doppelseitig, vier Methodenflächen auf zwei Karten. Ein Schnitt an der Mittellinie. Den separaten Laufzettel nach den vorhandenen Kapitelkennungen beschriften. Für UB02 die Titel „Laura 1“ bis „Laura 5“ und „Mein Schlussrat“ als Feldnamen nutzen. Keine individuelle Aufgabe zum Empfehlungsrad anlegen. Familienrat: In den tatsächlich beigefügten Förder-/ESA-Pflichtbögen belegt Mutter Seite 2, Freundin Seite 3 und die persönliche Antwort Seite 4. Die Einträge „digital geprüft“, „analog geprüft“ und „noch offen“ beziehen sich auf den Fachbeleg. Die Schüler entscheiden selbst, was sie Laura raten. Für andere Bögen sind die Feldüberschriften maßgeblich. Eine Seitennummer ist dort erst beim späteren Satz des Druckmaterials festzulegen.
+
+Der Arbeitsstand wird bis zur vollständigen Einzelabnahme separat aufbewahrt.
+'''
     pack(OUT/'Fallakte-Textvertrag-Prueffassung.zip',archive)
-    (QA/'Sprachumfang.json').write_text(json_text(dict(fundstellen_alt=len(inventory),fundstellen_export=len(rows),medienwechsel=len(matrix),beobachtungen=len(states),
-        nach_modul={m:dict(fundstellen=sum(x['modul']==m for x in rows),geaendert=sum(x['modul']==m and x['alttext']!=x['neutext'] for x in rows),zustandsbeobachtungen=sum(s['modul']==m for s in states)) for m in new})))
+    (QA/'Sprachumfang.json').write_text(json_text(dict(fundstellen_alt=len(inventory),fundstellen_export=len(rows),medienwechsel=len(matrix),beobachtungen=len(states),paarweise=compared,offen=sum(v for (m,st),v in scope_summary.items() if st=='Einzelprüfung offen'),
+        nach_modul={m:dict(fundstellen=sum(x['modul']==m for x in rows),geaendert=sum(x['modul']==m and x['alttext']!=x['neutext'] for x in rows),offen=scope_summary[m,'Einzelprüfung offen'],zustandsbeobachtungen=sum(s['modul']==m for s in states)) for m in new})))
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--referenz',type=Path);a=parser.parse_args()
     report(a.referenz or rebuild(BASE,'gesamt/auslieferung.py','Gesamt')/'Fallakte-Gesamt.html')

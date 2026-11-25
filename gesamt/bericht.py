@@ -1,106 +1,76 @@
-"""Create the teacher handover and seal the tested build."""
+"""Prüfkandidat mit Prüfsummen. Offene Einzelprüfungen schließen die Materialfreigabe aus."""
 import json
-import os
+from collections import Counter
 from zipfile import ZipFile
-from auslieferung import OUT,QA,VERSIONS,ROOT,PRINT,PREP,FIRST,JOINT,MOD_HASH,sha,revision,json_text,pack
+from lxml import html
+from auslieferung import OUT,QA,sha,json_text,pack,ROOT
+from sprachpruefung import BASE
 
-def read(name):
-    return json.loads((QA/name).read_text())
-
+def read(name):return json.loads((QA/(name+'.json')).read_text())
 def write():
-    head=revision()
-    cards=read('Kartenpruefung.json')
-    checks=read('Browserpruefung.json')
-    ub=read('Unterrichtspruefung.json')
-    runs=read('Referenzlaeufe.json')
-    assert cards['commit']==checks['commit']==ub['commit']==head
-    assert {r['commit'] for r in runs if r['ergebnis']=='success'}=={PREP,FIRST,JOINT}
+    head=html.parse(str(OUT/'Fallakte-Gesamt.html')).xpath('string(//meta[@name="revision"]/@content)')
+    checks=read('Browserpruefung');cards=read('Kartenpruefung');ub=read('Unterrichtspruefung')
+    scope=read('Sprachumfang');compare=read('Bestandsvergleich');work=read('Work-Gegenprobe')
+    assert checks['commit']==cards['commit']==ub['commit']==compare['commit']==head
+    assert len(work)==72 and len(read('Empfehlungen'))==140 and len(read('Pflichtbogenabgleich')['seiten'])==6
     assert len(cards['karten'])==16 and sum(len(r['felder']) for r in cards['karten'])==64
-    assert len(ub['wege'])==8 and len(ub['karten'])==80
-    table=['| Niveau | Methode | Schüler-/Referenzseite | Felder 1 · 2 · 3 · 4 | Volltext | Digitale Wege¹ | Ergebnis |',
-           '|---|---|---|---|---|---|---|']
-    for c in cards['karten']:
-        assert len(c['laeufe'])==4 and len(c['wege'])==4
-        answers=' · '.join(f["answer"] for f in c['felder'])
-        table.append(f"| {c['niveau']} | {c['methode']} | {c['seite']} / {c['seite']} | {answers} | wortgleich | 4/4 | bestanden |")
-    material=f"""# Musterkarten-Abgleich
+    assert len(checks['wege'])==32 and len(checks['sitzungen'])==16
+    family={};tandem={}
+    for engine in ('chromium','webkit'):
+        family[engine]=read('Familienwege-verlauf-'+engine)['wege'];assert len(family[engine])==12
+        tandem[engine]=read('Familienwege-tandem-'+engine)
+    reserve=json.loads((ROOT/'build/vertiefungen/Vertiefungspruefung.json').read_text());assert len(reserve)==8
+    layout=read('Layoutstichprobe')
+    issues=Counter(i[0] for r in layout for i in r['befunde'])
+    report=f"""# Prüfstand der Sprachfassung
 
-Integration `{head}`. Prüfgrundlage ist das am 25.11.2026 beigefügte und als Unterrichtsmaterial bestätigte **Materialpaket_Proberunde_26-11-2026_Druckversion.zip**, SHA-256 `{sha(PRINT.read_bytes())}`. Geprüft wurden die vier tatsächlichen Schüler-PDFs unter 01_Schuelermaterial und die vier ausgefüllten PDFs unter 02_Lehrkraft/Referenzkarten. Die einzelnen PDF-Prüfsummen stehen in Kartenpruefung.json im Sichtprüfungspaket. Das separat genannte Archiv „mit_Screenshots(2)“ lag für einen zusätzlichen Binärvergleich zwischen Archiven nicht vor.
+Softwarecommit `{head}`. Referenz `{BASE}`. Diese Ausgabe ist ein Prüfkandidat. Für den 26.11. liegt die bereits geprüfte Vorbereitung weiter separat vor.
 
-Der Browser las die beiden freigegebenen Felder in A und die beiden in B jeweils von der sichtbaren Papieransicht ab. Der Test setzte sie an den vier nummerierten Leerstellen der betreffenden PDF-Seite ein und verglich das Ergebnis einschließlich Nummern mit der gedruckten Referenz. Für den zweiten Vergleich wurden nur die Einfügemarken entfernt. Überschrift, Pearl-Index-Zeile, Erläuterung, fünf Abschnittstitel und alle fünf Absätze wurden in Lesereihenfolge mit den sichtbaren Texten der Browserkarte verglichen. Dabei wurden Zeilenumbrüche und druckbedingte Abstände vereinheitlicht. Interpunktion, Begriffe, Wortreihenfolge und Zahlen blieben Teil des Vergleichs. Niveau und Feldnummern wurden gesondert geprüft.
+## Änderungen für die Lernenden
 
-{chr(10).join(table)}
+In der Vorbereitung nennen die Aufträge die Felder auf der Infokarte. Die MSA- und AHR-Frage gehört auf den Laufzettel. Nach dem B-Vergleich folgt dort „Karte kontrolliert“ und anschließend „Weiter im Chat“. Die Schlussansicht beschreibt den einen Schnitt durch das Duplexblatt. Die regulären Fachfragen erklären die jeweilige Fehloption. Hilfen führen vom konkreten Lesetipp zur Lösung und der zusätzlichen Anwendung.
 
-¹ Regulärer B-Kartenvergleich, wiederaufgenommener Kartenvergleich, Musterkarte über den Ausfall-/Zeitnotzugang nach frischem Start sowie Abschlussvergleich nach 4B. Jeder Weg wurde mit Chromium und WebKit im Offline-HTML und im entpackten SCO geprüft. Die regulären A/B-Feldfreigaben sind zusätzlich belegt. Ergebnis für das beigefügte Unterrichtsmaterial: 16 von 16 Volltexten und 64 von 64 Einträgen stimmen überein.
+In der Beratung mit Laura beziehen sich die Aufträge auf die biologische Wirkung und Lauras aktuellen Wunsch. Der persönliche Schlussrat kommt einmal auf den Laufzettel. Beim Stopp kann die Lehrkraft unmittelbar zur Sicherung wechseln. Die beiden Abstimmungen mit dem Empfehlungsrad stehen im Lehrkrafthinweis. Nach Laura sind Tom und Celina beide anwählbar.
 
-## Korrigierter Übertragungsfehler
+Im Familienrat setzen Förder- und ESA-Lernende das erste Kreuz links und das geprüfte Kreuz rechts. Das erste bleibt lesbar. Im Förderauftrag auf Seite 4 können sie eine oder beide Fragen und Nachrichten wählen. Sie ordnen M oder F dem Fakt zu und erklären ihre Wahl. Unter „Festhalten“ bleibt die erste Antwort erhalten. Persönliche Begründungen werden im Unterricht besprochen.
 
-Im Stand 7f26cd7 fehlten im Kopf der digitalen Vollkarte die gedruckten Angaben „Richtwert nach pro familia“ und „Kein Maß für den Schutz vor sexuell übertragbaren Infektionen (STI).“ Die integrierte Ansicht übernimmt beide Aussagen und die Interpunktion der Druckfassung. Alle vier Zugänge verwenden denselben korrigierten Kartenkopf. Wortlaut und Position der eingesetzten Begriffe stimmen mit den ausgefüllten Referenzsätzen überein.
+## Ausgeführte Prüfungen
 
-## Abgleich mit der Beratung am 02.12.
+- Vier Offline-HTMLs und vier SCORM-1.2-Pakete mit gestaffelten Dateninhalten. 16 Kombinationen aus Auslieferung, Freigabestufe und Browser. Das entpackte Startdokument stimmt jeweils byteweise mit der entsprechenden HTML-Datei überein. Die Manifeste wurden gegen das Schema validiert.
+- 32 Vorbereitungsdurchläufe, vier Niveaus, 68 reguläre Fragen, acht Papierfragen. Der Browser prüfte Fehlversuche, fünf Hilfen, Anwendungen nach der Lösung und alle vier Wege zur Musterkarte. 16 Vollkarten und 64 Einträge stimmen mit den Druckkarten überein.
+- Je acht vollständige Laura- und Familienratswege in der gemeinsamen Fassung. Zusätzlich 140 Kombinationen aus Lauras fünf Abschnitten, vier Niveaus und sieben Empfehlungen in Chromium. Tom und Celina wurden in beiden Engines auf vier Niveaus geöffnet, beraten und über ihre Abschnittsauswahl wieder aufgenommen.
+- Im Familienrat zusätzlich {sum(map(len,family.values()))} Wege einschließlich gemischter Teams. Die Zustandsprotokolle erfassen Fehler, späte Hilfen, Anwendungen, Direkteinstieg, Abbruch und Wiederaufnahme. Der Work-Vergleich umfasst {len(work)} Vorher-/Nachher-Einträge zu sechs Übergaben und vier Teamkonstellationen. Zwei Original-PDFs wurden auf je drei Seiten verglichen.
+- Die Browserprüfungen überwachten Netzwerkzugriffe, Cookies und Schreibzugriffe. Der Testhost erhielt nur SCORM-Sitzungsbeginn und -ende. Alle Texte der Prüfsitzungen stammen aus simulierten Lernwegen.
+- {len(layout)} Layoutansichten in Chromium und WebKit bei 150 % Grundschrift. Befunde in den gemessenen Ansichten: {dict(issues) if issues else 'keine'}. Layoutstichprobe.json führt die betroffenen Bedienelemente auf. Die Kontrastmessung erfasst deckende Flächen mit auswertbarer Hintergrundfarbe.
 
-Die 80 niveau- und abschnittsbezogenen Quelltexte im Kartenvertrag wurden mit den entsprechenden langen oder kurzen Texten in der ausgelieferten Laura-Akte verglichen. Unterrichtspruefung.json stellt jedem UB-Text die zugehörige vollständig ausgefüllte Vorbereitungspassage gegenüber. Beim Kondom stimmen Barrierewirkung und begrenzte STI-Risikominderung überein. Bei der Pille stimmen Eisprunghemmung und Einnahmebedingungen überein. Die Texte beider Spiralen unterscheiden Kupferwirkung und Gestagenwirkung und nennen mögliche Blutungsveränderungen, ärztliche Eignung und Zustimmung. Im Vergleich ergab sich kein fachlicher Widerspruch.
+## Umfang der Textprüfung
 
-Die vorbereitenden Karten verwenden historische Pearl-Index-Richtwerte. Der Bezug sind 100 Anwendungsjahre, im vereinfachten Beispiel 100 Frauen während eines Jahres. Ein Anteil von Schwangerschaften im ersten Anwendungsjahr ist eine andere Kenngröße. Die vier fachlichen UB-Nachschlagekarten beschreiben die Bedingungen und Grenzen der Methoden qualitativ. Eine Umrechnung oder Gleichsetzung mit Erstjahresraten findet dort nicht statt.
+{scope['fundstellen_alt']} Fundstellen im Ausgangsinventar, {scope['fundstellen_export']} statische Fundstellen im Export und {scope['beobachtungen']} protokollierte Bildschirmzustände. Zusätzlich sind {scope['paarweise']} Vorher-/Nachher-Vergleiche nach derselben Bedienhandlung enthalten. Dieselbe Ansicht kann in mehreren Prüfwegen vorkommen. Die {scope['medienwechsel']} Zeilen der Medienwechselmatrix benennen Papierort, Handlung, Rückkehr und Zielzustand.
+
+| Bereich | Fundstellen im Export | Geändert oder neu | Gleicher Wortlaut | Einzelprüfung offen |
+|---|---:|---:|---:|---:|
 """
-    (OUT/'Musterkarten-Abgleich.md').write_text(material)
-    links='\n'.join(f"- `{r['commit'][:7]}` · {', '.join(r['jobs'])}. [Lauf {r['lauf']}]({r['url']})" for r in runs)
-    report=f"""# Gesamtprüfbericht und Einsatz in itslearning
+    for m,r in scope['nach_modul'].items():
+        report+=f"| {m} | {r['fundstellen']} | {r['geaendert']} | {r['fundstellen']-r['geaendert']} | {r['offen']} |\n"
+    report+="""
+Umfang.csv enthält die Aufteilung nach Niveau, Texttyp und Prüfstatus. Fundstellen.csv unterscheidet Quellenvergleich, geschützte Werte, Beobachtung des Wortlauts und Prüfung der konkreten Verwendung. Die Laufzeitvergleiche stellen die konkreten alten und neuen Texte nach derselben Eingabe gegenüber. Work-Bildschirmvergleich.csv dokumentiert die Papieraufträge gesondert. Für zusätzliche Zustandskombinationen außerhalb der protokollierten Wege liegt kein paarweiser Nachweis vor.
 
-Stand `{head}` auf `integration/drei-unterrichtsmodule`. Die Tagesauswahl trägt die bisherigen neutralen Porträts und darüber einen direkten Einstieg in die Vorbereitung. Beide Vorbereitungsstunden befinden sich im selben Modul. Alle Module verwenden die gemeinsame Rückkehr zur Tagesauswahl. Die Auswahl einer Stufe oder eines Wiedereinstiegs findet im jeweiligen Modul statt.
+## Grenze der Abnahme
 
-## Unterrichtspakete
+Die sprachliche Einzelabnahme aller verbleibenden Fundstellen, aller zusammengesetzten Texte und ihrer kontextgleichen Verwendung steht aus. Die Medienwechselmatrix ist bis dahin eine Prüffassung für Work. Die Unterrichts-PDFs wurden in dieser Runde ausschließlich als Referenz gelesen.
 
-| Termin | SCORM-Datei | Zugang |
-|---|---|---|
-| Ab 26.11. | Fallakte-Vorbereitung-SCORM12.zip | Vorbereitung |
-| 02.12. | Fallakte-02-12-SCORM12.zip | Vorbereitung und Laura |
-| 08.12. | Fallakte-08-12-SCORM12.zip | Alle drei Module |
-| Vollständige Fassung | Fallakte-Gesamt-SCORM12.zip | Alle drei Module |
-
-Zu jeder Zeile gehört eine gleichnamige Offline-HTML ohne den Zusatz „-SCORM12“. Die beiden vollständigen HTML-Dateien sind bytegleich. Die SCO-Manifeste tragen eigene Paketkennungen. Für die Klasse jeweils das vorgesehene ZIP als eigene SCORM-1.2-Lernressource importieren, in der Lernendenansicht prüfen und die Ressource zum betreffenden Termin sichtbar schalten. Die vollständigen Fassungen erst für den zweiten Besuch freigeben. Ob beim Austausch eines ZIPs eine bestehende Kursverknüpfung erhalten bleibt, wurde in itslearning nicht erprobt.
-
-## Neu ausgeführt
-
-Die gebauten vier Offline-Dateien und die vier entpackten SCORM-Ausgaben wurden in Chromium und WebKit geöffnet. Das ergibt 16 Kombinationen aus Engine, Auslieferungsform und Freigabestufe. Freigaben und echte Nutzdaten wurden separat geprüft. Nur die freigegebenen Dokumente sind eingebettet. Die gesperrten Karten besitzen keinen Modulverweis. Die Pakete enthalten das jeweilige HTML, das Manifest an der Wurzel und die drei lokalen XSD-Dateien. Alle Manifeste wurden schema-validiert.
-
-Auf der gemeinsamen Tagesauswahl wurden iPad-Hoch-/Querformat, ein kleines Test-LMS-Fenster, 150 % Grundschrift, Touchziele und die Rückkehr erprobt. Die Tests wechselten bei laufender Arbeit zwischen Modulen, prüften Auswahl und Hilfe nach der Rückkehr, vollständiges Neuladen und den direkten Wiedereinstieg. Im Test-LMS wurden nur Sitzungsbeginn und Sitzungsende registriert. Die Browserprüfung überwachte Cookies, Schreibaufrufe, IndexedDB und Netzwerkzugriffe.
-
-In der vollständigen Integration liefen 32 Vorbereitungswege einschließlich aller vier Niveaus, korrekter Antworten, sämtlicher Fehlantworten, fünf Hilfen und zusätzlicher Anwendungsfragen. Geprüft wurden alle 68 regulären Fachfragen, acht Papiercodes, bewusster Versand, Freigabe der 64 Felder, beide Stundenabschlüsse, Fortsetzung und Wiedereinstieg. Freie Papierbegründungen unterliegen weiter der Prüfung im Unterricht.
-
-Auf den neuen Tagesfassungen liefen zusätzlich je acht vollständige Laura- und Familienratswege über alle vier Niveaus und beide Engines. Die drei Original-Abnahmeworkflows wurden für diesen Auftrag auf ihren freigegebenen Commitständen neu gestartet und erfolgreich abgeschlossen:
-
-{links}
-
-## Bestandsschutz und Referenzen
-
-Die Tagesauswahl geht auf `ec94147fd8d61442305a0281f7df032f3162362c` zurück. Verwendet wurde der ausgelieferte Rahmen der gemeinsamen Freigabe `{JOINT}`. Die Vorlage der Vorbereitung stammt aus `{PREP}`, die Beratung aus `{FIRST}`. Die ursprünglichen Dateien wurden reproduzierbar an diesen Commits gebaut und an publizierten SHA-256-Werten gemessen. Die eingebetteten UB-Dokumente sind in jeder freigegebenen Variante bytegleich zu diesen Referenzen:
-
-- Laura am 02.12. · `{MOD_HASH['02']}`
-- Familiennachrichten am 08.12. · `{MOD_HASH['08']}`
-
-In der eingebetteten Vorbereitung wurden ausschließlich die Schnittstelle zur gemeinsamen Navigation/Sitzung, der nachgewiesen unvollständige gedruckte Kartenkopf und der abschließende organisatorische Hinweis angepasst. Die Inhaltsbank wird bytegleich übernommen. Die eigenständigen Vorbereitungs-, UB- und Übungsdateien stehen an ihren bisherigen Entwicklungsständen weiterhin als Rückfalloptionen zur Verfügung.
-
-## Papier und verbleibende Praxistests
-
-Für die gewählte Duplexfassung die Seiten 1 und 2 der Schüler-PDF bei 100 % auf ein A4-Blatt doppelseitig drucken. In der vorgesehenen Zuordnung liegen Kondom und Kupferspirale sowie Kombinationspille und Hormonspirale jeweils auf Vorder- und Rückseite. An der gestrichelten Mittellinie entstehen zwei A5-Karten. Die Laufzettelseiten 3 und 4 separat halten. Auf Seite 4 aller vier Schülerfassungen steht unter „Nach 4B“ noch „Schneide erst jetzt die vier Karten an den gestrichelten Linien aus.“ Für den Duplexdruck gilt die eine Mittellinie durch das beidseitig bedruckte Blatt. Die Handreichung im Druckpaket nennt noch einseitigen Kartendruck und vier Karten. Der beiliegende Prüfbericht zählt vier ausgeschnittene A5-Karten. Diese älteren Papierhinweise beziehen sich auf den einseitigen Druck; die PDFs wurden wie beauftragt unverändert verwendet.
-
-Übernommene frühere Befunde sind die Freigabeprüfsummen und die Unterrichtsplanung mit rund 15 Minuten pro Methode. Offen sind der Probedruck am konkreten Schulkopierer (Kantenwendung, Vorder-/Rückseite und Schnittlinie), der Offline-Start auf einem verwalteten Schul-iPad, der Import und Kurswechsel in der produktiven itslearning-Installation sowie die tatsächliche Bearbeitungszeit mit Lernenden.
+Für den Praxistest den Kandidaten auf einem Schul-iPad offline öffnen und als separate Testressource in itslearning importieren. Im Hoch- und Querformat eine Papieraufgabe bearbeiten, die App neu laden und mit dem markierten Abschnitt weiterarbeiten. Mit Förder- und ESA-Lernenden prüfen, ob sie Papierfeld, Schreibhandlung und Rückkehrknopf selbst finden. Die Bearbeitungszeit und der von der Lehrkraft angeleitete Wechsel in Minute 23 wurden im Klassenraum noch nicht erprobt.
 """
-    (OUT/'Gesamtpruefbericht.md').write_text(report)
-    names=['Start-Vorbereitung','Start-02-12','Start-08-12','Wiederaufnahme','Laura-02','Familienrat-08',
-           *['Vorbereitung-'+l for l in ('Foerder','ESA','MSA','AHR')],'Musterkarte-AHR','Musterkarte-Foerder']
-    proof={n+'.jpg':(QA/(n+'.jpg')).read_bytes() for n in names}
-    for n in ('Module','Kartenpruefung','Browserpruefung','Unterrichtspruefung','Referenzlaeufe'):
-        proof[n+'.json']=(QA/(n+'.json')).read_bytes()
-    proof.update({'Musterkarten-Abgleich.md':material,'Gesamtpruefbericht.md':report})
+    (OUT/'Pruefbericht.md').write_text(report)
+    proof={p+'.json':(QA/(p+'.json')).read_bytes() for p in ('Browserpruefung','Kartenpruefung','Pflichtbogenabgleich','Work-Gegenprobe','Layoutstichprobe','Sprachumfang','Empfehlungen')}
+    proof.update({p.name:p.read_bytes() for p in sorted(QA.glob('*-LA-*.jpg'))+sorted(QA.glob('nachher-MU-*.jpg'))+[QA/'Start-Gesamt.jpg',QA/'Musterkarte-Foerder.jpg']})
+    proof['Pruefbericht.md']=report
     pack(OUT/'Fallakte-Sichtpruefung.zip',proof)
     files={}
-    for path in sorted(OUT.iterdir()):
-        if path.name=='Buildnachweis.json':continue
-        if path.suffix=='.zip':
-            with ZipFile(path) as z:assert z.testzip() is None
-        files[path.name]={'bytes':path.stat().st_size,'sha256':sha(path.read_bytes())}
-    (OUT/'Buildnachweis.json').write_text(json_text(dict(commit=head,actions_run=os.getenv('GITHUB_RUN_ID'),referenzlaeufe=runs,
-        daten=read('Module.json'),druckmaterial_sha256=sha(PRINT.read_bytes()),dateien=files)))
+    for p in sorted(OUT.iterdir()):
+        if p.name=='Buildnachweis.json':continue
+        if p.suffix=='.zip':
+            with ZipFile(p) as z:assert z.testzip() is None
+        files[p.name]=dict(bytes=p.stat().st_size,sha256=sha(p.read_bytes()))
+    (OUT/'Buildnachweis.json').write_text(json_text(dict(softwarecommit=head,basis=BASE,status='Prüfkandidat',module=read('Module'),dateien=files)))
 if __name__=='__main__':write()

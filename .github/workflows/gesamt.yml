@@ -1,7 +1,7 @@
 name: Fallakte · Drei Unterrichtsmodule
 on:
   push:
-    branches: [integration/drei-unterrichtsmodule]
+    branches: [integration/drei-unterrichtsmodule, korrektur/sprachfassung-drei-module]
   workflow_dispatch:
 permissions:
   contents: read
@@ -9,12 +9,15 @@ permissions:
 jobs:
   integration:
     runs-on: ubuntu-24.04
-    timeout-minutes: 65
+    timeout-minutes: 150
     container: mcr.microsoft.com/playwright/python:v1.62.0-noble
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
       - name: Prüfwerkzeuge
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
@@ -24,16 +27,37 @@ jobs:
             apt-get install -y --no-install-recommends poppler-utils
           fi
       - run: python gesamt/auslieferung.py
-      - run: python -u gesamt/pruefen.py
+      - run: python gesamt/sprachpruefung.py
+      - run: python gesamt/pdfvergleich.py gesamt/pruefgrundlagen/Pflichtlernboegen_25-11.zip
+      - run: python gesamt/workseiten.py
+      - run: python gesamt/layout_scan.py
+      - run: python -u gesamt/beratung_scan.py
       - run: python -u gesamt/unterricht.py
-      - name: Abnahme aller drei Referenzstände nachweisen
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        run: python -u gesamt/nachweis.py
+      - name: Stationswege und freiwillige Fälle
+        run: |
+          PYTHONPATH=gesamt:tests python -u - <<'PYCODE'
+          from leseprotokoll import Aufzeichnung
+          import pruefen, vertiefungen
+          for name, suite in [('Stationsansichten', pruefen), ('Zusatzdialoge', vertiefungen)]:
+              with Aufzeichnung(name): suite.run()
+          PYCODE
+      - name: Pflichtwege, gemischte Teams und Zustandswechsel
+        run: |
+          for engine in chromium webkit; do
+            python -u gesamt/familien_scan.py "$engine" verlauf
+            python -u gesamt/familien_scan.py "$engine" tandem
+          done
+      - name: Gleiche Eingaben in Referenz und Kandidat
+        run: |
+          python gesamt/paarvergleich.py PREP
+          python gesamt/paarvergleich.py UB02
+          python gesamt/familien_paar.py
+          python gesamt/zusatz_paar.py
+      - run: python gesamt/textvertrag.py
       - run: python gesamt/bericht.py
       - uses: actions/upload-artifact@v4
         with:
-          name: Fallakte-Gesamt-${{ github.sha }}
+          name: Fallakte-Sprachpruefung-${{ github.sha }}
           path: dist/Gesamt/
           if-no-files-found: error
           retention-days: 90

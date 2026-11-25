@@ -45,6 +45,12 @@ def embedded_preparation(raw):
     page=single_replace(page,'<script>'+adapter+'</script>','<script>'+(SRC/'navigation.js').read_text()+'</script>')
     return page.encode()
 
+def source_revision(paths):
+    # Each day's embedded revision identifies its own sources; the shell records the delivery HEAD.
+    if subprocess.run(['git','diff','--quiet','HEAD','--',*paths],cwd=ROOT).returncode:
+        return revision()
+    return subprocess.check_output(['git','log','-1','--format=%H','--',*paths],cwd=ROOT,text=True).strip()
+
 def build(joint):
     from bauen import build as preparation_build, OUT as preparation_output
     from modul_0212 import build as first_build
@@ -57,9 +63,22 @@ def build(joint):
     # The old downloads stay usable. Only the shell of the verified joint release is reused.
     preparation_build()
     modules['vor']=embedded_preparation((preparation_output/'Vorbereitung.html').read_bytes())
-    modules['02']=first_build().read_bytes()
-    _,second=module_document()
-    modules['08']=second.encode()
+    first_ref=source_revision(['02-12.html','assets','data','module/0212','module/vertiefung',
+                               'scripts/vertiefung.py','scripts/modul_0212.py'])
+    second_ref=source_revision(['assets','module/familienrat','scripts/familienrat_build.py','scripts/familienrat_medien.py'])
+    if first_ref==revision():
+        modules['02']=first_build().read_bytes()
+    else:
+        modules['02']=(rebuild(first_ref,'scripts/modul_0212.py','Runde-1')/'Fallakte.html').read_bytes()
+    if second_ref==revision():
+        _,second=module_document()
+        modules['08']=second.encode()
+    else:
+        rebuilt=rebuild(second_ref,'scripts/familienrat_build.py','Familienrat')
+        matched=dict(re.findall(PAYLOAD,(rebuilt/'Fallakte.html').read_text()))
+        modules['08']=base64.b64decode(matched['08'],validate=True)
+    QA.mkdir(exist_ok=True,parents=True)
+    (QA/'Modulquellen.json').write_text(json_text({'02':first_ref,'08':second_ref,'vor':revision()}))
     shell=single_replace(shell,'Wähle deinen Unterrichtstag.','Was bearbeitest du heute?')
     shell=re.sub(PAYLOAD,'',shell)
     shell=single_replace(shell,'<div class="tage">','''<div class="tage">
