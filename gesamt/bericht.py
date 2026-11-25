@@ -66,10 +66,15 @@ Für den Praxistest den Kandidaten auf einem Schul-iPad offline öffnen und als 
 """
     if herkunft:
         report+=f"\nDie in Pruefherkunft.json aufgeführten Detailprotokolle für {', '.join({'vor':'Vorbereitung','02':'UB02','08':'UB08'}[m] for m in herkunft['module'])} aus dem Prüflauf `{herkunft['quelle']}` wurden anhand der SHA-256-Werte der tatsächlich eingebetteten Module und der verglichenen Navigationshülle übernommen. Paketprüfung und Gesamtlernwege liefen auf dem oben genannten Softwarecommit.\n"
+    if (QA/'Reproduzierbarer-Bau.json').exists():
+        zweit=read('Reproduzierbarer-Bau')
+        assert zweit['commit']==head and len(zweit['dateien'])==8
+        for name,digest in zweit['dateien'].items():assert sha((OUT/name).read_bytes())==digest
+        report+='\nEin zweiter Bau aus einem neuen Git-Checkout mit den festgelegten Referenzständen ergab vier bytegleiche HTML-Dateien und vier byteweise identische SCORM-Pakete.\n'
     (OUT/'Pruefbericht.md').write_text(report)
     proof={p+'.json':(QA/(p+'.json')).read_bytes() for p in ('Browserpruefung','Kartenpruefung','Hilfenvergleich','Pflichtbogenabgleich','Work-Gegenprobe','Layoutstichprobe','Sprachumfang','Empfehlungen')}
     proof.update({p.name:p.read_bytes() for p in sorted(QA.glob('*-LA-*.jpg'))+sorted(QA.glob('nachher-MU-*.jpg'))+[QA/'Start-Gesamt.jpg',QA/'Musterkarte-Foerder.jpg']})
-    for p in ['Modulquellen.json','Bestandsvergleich.json','Unterrichtspruefung.json','Pruefherkunft.json']:
+    for p in ['Modulquellen.json','Bestandsvergleich.json','Unterrichtspruefung.json','Pruefherkunft.json','Reproduzierbarer-Bau.json']:
         if (QA/p).exists():proof[p]=(QA/p).read_bytes()
     for p in QA.glob('Familienwege-*.json'):
         proof[p.name]=p.read_bytes()
