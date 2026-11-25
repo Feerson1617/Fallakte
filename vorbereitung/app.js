@@ -140,7 +140,7 @@ function firstHourEnd() {
     <p>${complete?'Du hast Kondom und Kombinationspille bearbeitet.':'In den Kapiteln 1A bis 2B geht es um Kondom und Kombinationspille.'}</p>
     <div class="paper"><p>Infokarten „Kondom“ und „Kombinationspille“: Prüfe die Felder 1 bis 4 auf beiden Kartenflächen.</p>
     <p>Laufzettel: Markiere das Kapitel, mit dem du weiterarbeitest.</p></div>
-    <p>Öffne in der nächsten Stunde Kapitel 3A oder den nächsten offenen Abschnitt auf deinem Papier.</p>
+    <p>Öffne am iPad in der nächsten Stunde das Kapitel, das du auf dem Laufzettel markiert hast. Nach 2B kommt 3A.</p>
     ${digitalChecks(first)}
     <div class="actions">${next?btn('open','Jetzt mit '+next.id+' weiterarbeiten',{value:next.id}):''}${btn('picker',ui.picker)}</div>`;
 }

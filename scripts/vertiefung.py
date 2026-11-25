@@ -60,6 +60,7 @@ def make_bank(person):
                     4:'Was würde deinen Rat ändern, wenn Celina einen anderen Wunsch wichtiger findet oder eine Einlage ablehnt?'}[len(records)]
             record['task']['ESA']='Lies Celinas Nachricht. Welche Aussage erklärt, ob die Methode zu ihrem Wunsch oder ihrer Sorge passt?'
         elif not records:
+            record['questions'][1][0]='Wenn ihr gemeinsam über Verhütung sprecht: Wer entscheidet über den eigenen Körper?'
             record['task']['Foerder']='Welche Verhütung kann Tom selbst benutzen? Wähle die Aussage, die erklärt, warum.'
             record['task']['AHR']='Erkläre, an wessen Körper die Methode angewendet wird und wer darüber entscheidet.'
         elif len(records)==1:

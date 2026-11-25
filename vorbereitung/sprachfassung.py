@@ -73,6 +73,17 @@ def redigieren(bank):
                 titles=[section['title'] for section in c['information'] if section['sectionId'] in q['informationSections']]
                 assert titles,(code,q['id'])
                 frage(q,'unter „'+'“ und „'.join(titles)+'“',IMPULSE[code][i])
+                if q['id'] in ('3A-Q2-ESA','4B-Q2-ESA'):
+                    right=next(o for o in q['options'] if o['correct'])
+                    text={'3A-Q2-ESA':'Wenn Spermien eine Eizelle schlechter befruchten können, schützt das nicht vor Krankheitserregern.',
+                          '4B-Q2-ESA':'Auch wenn Schmerzen schwächer werden können, sollte eine Ärztin oder ein Arzt die Ursache starker, ungeklärter Schmerzen untersuchen.'}[q['id']]
+                    old=q['solutionExplanation']
+                    right['feedback']=q['solutionExplanation']=text
+                    for hints in [q['hintsBeforeChoice'],*(o['hints'] for o in q['options'] if 'hints' in o)]:
+                        hints[4]=hints[4].replace(old,text)
+                if q['id']=='2A-Q2-AHR':
+                    for hints in [q['hintsBeforeChoice'],*(o['hints'] for o in q['options'] if 'hints' in o)]:
+                        hints[4]=hints[4].replace('Passende Aussage:', 'Diese Behauptung kannst du widerlegen:')
                 erkläre_fehler(q)
             if c.get('paperCheck'):
                 q=c['paperCheck']

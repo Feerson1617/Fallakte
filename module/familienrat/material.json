@@ -1854,7 +1854,7 @@
     "Welche von Lauras Fragen würdest du zuerst klären? Warum?",
     "Achte auf ihre Sorge um den Körper und auf ihre Pläne für später.",
     "Wähle eine biologische Information zu deiner Nachricht. Welche Frage von Laura beantwortet sie? Was kannst du damit nicht entscheiden?",
-    "Beginne: „Ich gewichte …, weil … . Der Fakt erklärt … . Laura entscheidet selbst über … .“",
+    "Beginne so: „Für Laura finde ich … wichtig, weil … . Die Information erklärt … . Laura entscheidet selbst über … .“",
     "Wähle Lauras Frage nach Beschwerden, nach späteren Kindern oder beide Fragen. Lies die biologische Information dazu. Schreibe selbst: „Das ist für Laura wichtig, weil …“"
   ],
   "review": [
@@ -2179,22 +2179,22 @@
     "ESA": [
       "Welche von Lauras Fragen würdest du zuerst klären? Warum?",
       "Achte auf ihre Sorge um den Körper und auf ihre Pläne für später.",
-      "Verbinde deine Wahl mit einem passenden Fakt. Welche Frage beantwortet er? Was bleibt offen?",
-      "Beginne: „Ich gewichte …, weil … . Der Fakt erklärt … . Laura entscheidet selbst über … .“",
-      "Wähle Beschwerden, spätere Kinder oder beide Anliegen. Nutze die passende Ergänzung. Vervollständige selbst: „Für Laura finde ich das besonders wichtig, weil … .“"
+      "Welche biologische Information beantwortet Lauras Frage? Was kannst du daraus für Laura noch nicht entscheiden?",
+      "Beginne so: „Für Laura finde ich … wichtig, weil … . Die Information erklärt … . Laura entscheidet selbst über … .“",
+      "Wähle Lauras Frage nach Beschwerden, nach späteren Kindern oder beide Fragen. Lies die biologische Information zu deiner Wahl. Begründe selbst: „Für Laura ist das wichtig, weil … .“"
     ],
     "MSA": [
       "Welche von Lauras Fragen würdest du zuerst klären? Warum?",
       "Achte auf ihre Sorge um den Körper und auf ihre Pläne für später.",
-      "Verbinde deine Wahl mit einem passenden Fakt. Welche Frage beantwortet er? Was bleibt offen?",
-      "Beginne: „Ich gewichte …, weil … . Der Fakt erklärt … . Laura entscheidet selbst über … .“",
-      "Wähle Beschwerden, spätere Kinder oder beide Anliegen. Nutze die passende Ergänzung. Vervollständige selbst: „Für Laura finde ich das besonders wichtig, weil … .“"
+      "Welche biologische Information beantwortet Lauras Frage? Was kannst du daraus für Laura noch nicht entscheiden?",
+      "Beginne so: „Für Laura finde ich … wichtig, weil … . Die Information erklärt … . Laura entscheidet selbst über … .“",
+      "Wähle Lauras Frage nach Beschwerden, nach späteren Kindern oder beide Fragen. Lies die biologische Information zu deiner Wahl. Begründe selbst: „Für Laura ist das wichtig, weil … .“"
     ],
     "AHR": [
       "Welche von Lauras Fragen würdest du zuerst klären? Warum?",
       "Achte auf ihre Sorge um den Körper und auf ihre Pläne für später.",
-      "Verbinde deine Wahl mit einem passenden Fakt. Welche Frage beantwortet er? Was bleibt offen?",
-      "Beginne: „Ich gewichte …, weil … . Der Fakt erklärt … . Laura entscheidet selbst über … .“",
+      "Welche biologische Information beantwortet Lauras Frage? Was kannst du daraus für Laura noch nicht entscheiden?",
+      "Beginne so: „Für Laura finde ich … wichtig, weil … . Die Information erklärt … . Laura entscheidet selbst über … .“",
       "Vergleiche Beschwerden heute und die Möglichkeit, später Kinder zu bekommen. Welche Frage ist dir für Laura wichtiger? Du kannst beide gleich wichtig finden. Begründe, was die Fakten erklären und was Laura selbst entscheiden muss."
     ]
   },
