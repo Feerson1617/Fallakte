@@ -28,7 +28,7 @@ def run(archiv):
                     assert abs(float(left.get('yMin'))-float(right.get('yMin')))<1
                     layout=dict(erste_antwort_x=float(left.get('xMin')),nach_dem_pruefen_x=float(right.get('xMin')),kopfzeile_y=float(left.get('yMin')),einheit='PDF-Punkt')
                     assert 'Meine erste' in flat and 'Nach dem' in flat and 'rechts erneut ankreuzen. Erstes Kreuz bleibt' in flat
-                    assert 'links an: Meine erste Antwort' in screens[0] and 'rechts an: Nach dem Prüfen. Dein erstes Kreuz bleibt.' in screens[1]
+                    assert 'links in „Meine erste Antwort“' in screens[0] and 'rechts in „Nach dem Prüfen“. Dein erstes Kreuz bleibt.' in screens[1]
                     field=b['cases']['Mutter' if key=='MU' else 'Freundin']['field']
                     opt=b['media']['fields'][field+' / Meine erste Antwort']
                     labels=opt['foerder' if level=='Förder' else 'options']

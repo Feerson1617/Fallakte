@@ -1,6 +1,6 @@
 """Stichprobe an den neuen Arbeitsaufträgen mit vergrößerter Schrift in beiden iPad-Lagen."""
 import os,json
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright,expect
 from auslieferung import OUT,QA,json_text
 from pruefen import enter,button
 SAMPLE="""() => {
@@ -42,7 +42,7 @@ def run():
                         if module=='02':
                             f.locator('#level-MSA').click();f.locator('#neu').click();f.locator('[data-strategy=K]').click();check('L01 Papier und Code')
                         if module=='08':
-                            f.locator('#level-0').select_option('Förder');f.locator('#level-1').select_option('AHR');f.locator('#jump').click();f.locator('#next').click();check('LA-02 im gemischten Tandem')
+                            f.locator('#level-0').select_option('Förder');expect(f.locator('#level-1')).to_have_count(0);f.locator('#jump').click();f.locator('#next').click();check('LA-02 · persönlicher Auftrag')
                         if module!='START':p.locator('#zurueck').click()
                     p.close()
     (QA/'Layoutstichprobe.json').write_text(json_text(rows))

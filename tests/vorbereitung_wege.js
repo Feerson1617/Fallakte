@@ -86,7 +86,8 @@
   const counts={};
   for(const ch of lesson.chapters){
     where=ch.id;const start=clicks;
-    visible(ch.title);visible(ch.id+' auf deinem Laufzettel.','p.paper');
+    visible(ch.title);visible(ch.id+' auf deinem Laufzettel','p.paper');
+    if(ch.paperPrompt.startsWith('Kartenblatt')) visible('Seite '+(Number(ch.id[0])<=2?3:4),'p.paper');
     for(const info of ch.information)visible(info.text,'.material');
     if(ch.supportingInfo)visible(ch.supportingInfo);
     ok(one('figure svg')&&!one('[data-field]'),'Orientierung und Grafik');

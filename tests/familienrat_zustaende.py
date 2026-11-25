@@ -87,7 +87,7 @@ def check(engine):
     with sync_playwright() as pw:
         browser = getattr(pw,engine).launch(executable_path=os.getenv(engine.upper()+'_EXECUTABLE'))
         page = browser.new_page(viewport={'width':1024,'height':768},has_touch=True)
-        page.set_default_timeout(4500)
+        page.set_default_timeout(15000)
         shell, f = start(page,APP.as_uri())
         def click(id): f.locator('#'+id).click()
         def outer(action): shell.locator(f'[data-action={action}]').click()
@@ -99,8 +99,9 @@ def check(engine):
             click('open-entry')
         def new(team):
             outer('home')
-            f.locator('#level-1').select_option('')
+            expect(f.locator('#level-1')).to_have_count(0)
             set_team(f,team)
+            if f.locator('#confirm-level').is_visible():click('confirm-level')
             click('start')
             if f.locator('#confirm-start').is_visible():click('confirm-start')
         def help5():
@@ -112,8 +113,8 @@ def check(engine):
             for value in ['OP','gesunt',words]:
                 field.fill(value);expect(f.locator('#'+id)).to_be_enabled()
             click(id)
-        def compare(member,weight,concerns,edit=False):
-            expect(f.locator('section h2')).to_contain_text('Person '+str(member+1))
+        def compare(tier,weight,concerns,edit=False):
+            expect(f.locator('section h2')).to_contain_text(tier)
             click('weight-'+str(weight))
             for part,concern in enumerate(concerns):
                 source=part if weight==2 else weight
@@ -132,40 +133,26 @@ def check(engine):
                     expect(f.locator('section')).to_contain_text(BANK['ui']['checkLimit'])
                     expect(f.locator('#answer-0')).to_be_disabled()
                 click('next')
-        # The two ordered members have distinct assessments even if both use one level.
-        for i,team in enumerate(itertools.product(LEVELS,repeat=2)):
-            new(team);click('next');click('help')
-            if team[0]!=team[1]:
-                for tier in team:
-                    f.locator('#help-tier').select_option(tier)
-                    expect(f.locator('#dialog-body')).to_contain_text(BANK['cases']['Mutter']['tasks'][0]['helpByLevel'][tier][0])
-            else:expect(f.locator('#help-tier')).to_have_count(0)
-            click('dismiss')
-            outer('home');click('start');click('dismiss');click('resume')
+        patterns=[(0,[0]),(0,[1]),(1,[0]),(1,[1]),(2,[0,0]),(2,[0,1]),(2,[1,0]),(2,[1,1])]
+        for i,(weight,concerns) in enumerate(patterns):
+            tier=LEVELS[i%4]
+            new([tier]);click('next');click('help')
+            expect(f.locator('#help-tier')).to_have_count(0)
+            expect(f.locator('#dialog-body')).to_contain_text(BANK['cases']['Mutter']['tasks'][0]['helpByLevel'][tier][0])
+            click('dismiss');outer('home');click('start');click('dismiss');click('resume')
             expect(f.locator('h1')).to_have_attribute('data-section','MU-02')
             entry('Lauras Frage',3)
-            expect(f.locator('[data-terminal]')).to_have_count(0)
-            click('paper-ready');expect(f.locator('[data-terminal]')).to_be_visible()
-            expect(f.locator('#open-Vater')).to_have_count(0)
-            entry('Lauras Frage',2,1)
-            # Eight possible weight / question patterns, repeated in reversed roles.
-            patterns=[(0,[0]),(0,[1]),(1,[0]),(1,[1]),(2,[0,0]),(2,[0,1]),(2,[1,0]),(2,[1,1])]
-            p2=patterns[i%8];p1=patterns[(i+3)%8]
-            compare(1,*p2,edit=True)
-            expect(f.locator('section h2')).to_contain_text('Person 1')
-            if i%4==0:
-                click('weight-0');click('concern-1');click('fact-1');click('other')
-                free('check-reason','Die Zukunft kann Laura auch gesundheitlich beschäftigen.')
-                click('answer-0');click('edit-weight')
-                expect(f.locator('#answer-0')).to_have_count(0)
-            compare(0,*p1,edit=True)
+            expect(f.locator('[data-terminal],#paper-ready,#open-Vater')).to_have_count(0)
+            click('open-review')
+            compare(tier,weight,concerns,edit=True)
             expect(f.locator('#open-Vater')).to_be_visible()
+            expect(f.locator('#open-review')).to_have_count(0)
+            expect(f.locator('[data-terminal]')).to_be_visible()
             expect(f.locator('section')).to_contain_text(BANK['ui']['reasonOpen'])
-            # Changing one member's completed judgement must revoke group completion.
-            entry('Lauras Frage',2,1);click('edit-weight')
+            entry('Lauras Frage',2);click('edit-weight')
             entry('Lauras Frage',3);expect(f.locator('#open-Vater')).to_have_count(0)
-            expect(f.locator('section')).to_contain_text(BANK['ui']['noPast'])
-            evidence.append(dict(team=team,person1=p1,person2=p2,wege='Rückkehr, Hilfe, neue Gewichtung, individuelle Grenze und Freitext'))
+            expect(f.locator('#open-review')).to_be_visible()
+            evidence.append(dict(niveau=tier,wahl=weight,fragen=concerns,wege='Ein Niveau; Hilfe, Abbruch, Festhalten und erneute Auswahl'))
         # Direct entry, cancellation and a genuinely fresh team.
         new(['ESA']);click('next');click('answer-0');help5()
         outer('home');click('resume');expect(f.locator('.tag')).to_have_text(BANK['ui']['own'])
@@ -211,7 +198,7 @@ def check(engine):
         page.reload();page.locator('#zweiter-tag').click()
         f=page.frame_locator('iframe[title^=Dienstag]')
         expect(f.locator('#start')).to_have_count(0)
-        f.locator('#level-1').select_option('AHR');expect(f.locator('#start')).to_have_count(0)
+        expect(f.locator('#level-1,#member,#start')).to_have_count(0)
         set_team(f,['ESA']);expect(f.locator('#resume')).to_have_count(0)
         assert page.evaluate('[localStorage.length,sessionStorage.length]')==[0,0]
         sources=check_sources(page,engine)

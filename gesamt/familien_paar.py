@@ -6,7 +6,7 @@ from zipfile import ZipFile
 from playwright.sync_api import sync_playwright
 from auslieferung import QA,OUT,SRC,json_text
 from paarvergleich import start,pair
-from sprachpruefung import BASE,rebuild
+from endvergleich import REFERENZ as BASE,rebuild
 def run(ref):
     count=0
     with TemporaryDirectory() as tmp,sync_playwright() as pw,pw.chromium.launch() as b,gzip.open(QA/'Paarvergleich-UB08.ndjson.gz','wt') as out:
@@ -16,7 +16,7 @@ def run(ref):
             with ZipFile(z) as archive:archive.extractall(site)
             paths.append(site/'index.html')
         pages=[b.new_page(has_touch=True) for _ in paths]
-        for route,team in enumerate([['Förder'],['ESA'],['MSA'],['AHR'],['Förder','AHR'],['ESA','MSA']]):
+        for route,team in enumerate([['Förder'],['ESA'],['MSA'],['AHR']]):
             frames=[start(p,path,'08') for p,path in zip(pages,paths)]
             for person in ['Mutter','Freundin','Großmutter','Vater','Lauras Frage']:
                 for p,f in zip(pages,frames):

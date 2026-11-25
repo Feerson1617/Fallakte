@@ -1,4 +1,4 @@
-"""Ausgelieferten Familienrat über Pflicht-, Wahl-, Fehler-, Hilfe- und Tandemwege bedienen."""
+"""Ausgelieferten Familienrat über Pflicht-, Wahl-, Fehler-, Hilfe- und persönliche Prüfwege bedienen."""
 import argparse,os,sys
 from pathlib import Path
 from tempfile import TemporaryDirectory

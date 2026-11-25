@@ -7,7 +7,7 @@ from playwright.sync_api import sync_playwright,expect
 from auslieferung import QA,OUT,json_text
 from pruefen import enter
 from paarvergleich import RECORDER,pair
-from sprachpruefung import BASE,rebuild
+from endvergleich import REFERENZ as BASE,rebuild
 
 FLOW="""async ({index,key,tier})=>{
  const $=id=>document.getElementById(id),c=JSON.parse($('bank').textContent).stages[index];

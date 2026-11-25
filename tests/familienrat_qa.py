@@ -31,7 +31,7 @@ THOUGHTS = {
     'Großmutter':['Ihre Regel schützt ungeborenes Leben.', 'Sie rät zur Fortsetzung.', 'Was ihr persönlich wichtig ist, bleibt indirekt.', 'Ungeborenes Leben ist ihr wichtig. Aus Biologie allein folgt keine Pflicht.'],
     'Vater':['Selbst entscheiden und Bescheid wissen.', 'Sich in der Praxis beraten lassen.', 'Die Regel hinter dem Rat fehlt.', 'Erst informieren. Auch nach Beratung entscheidet Laura selbst.'],
 }
-TEAMS = [[l] for l in LEVELS]+[['Förder','ESA'],['ESA','MSA'],['MSA','AHR'],['Förder','AHR']]
+TEAMS = [[l] for l in LEVELS]
 def snap(page,name):
     page.screenshot(path=QA/(name+'.jpg'),quality=62,animations='disabled')
 def tap(frame,id):
@@ -45,7 +45,10 @@ def start(page,url,lms=False):
     shell.locator('#zweiter-tag').tap()
     return shell,shell.frame_locator('iframe[title^=Dienstag]')
 def set_team(f,team):
-    for i,t in enumerate(team):f.locator('#level-'+str(i)).select_option(t)
+    assert len(team)==1
+    expect(f.locator('#level-1,#member')).to_have_count(0)
+    field=f.locator('#level-0')
+    if field.input_value()!=team[0]:field.select_option(team[0])
 def can_continue(f):
     return f.locator('#next').is_visible()
 def hints(f,task,team):
@@ -67,7 +70,7 @@ def paper(f,key,team,trace):
     expect(panel).to_have_attribute('data-handoff',key)
     expect(f.locator('h1')).to_have_text(step['section'])
     expect(f.locator('h1')).to_have_attribute('data-section',step['sectionId'])
-    orders=panel.locator('[data-member]')
+    orders=panel.locator('[data-level]')
     expect(orders).to_have_count(len(team))
     texts=[]
     for i,tier in enumerate(team):
@@ -191,7 +194,7 @@ def case(page,f,person,team,probe,trace,shots=False):
         expect(f.locator('#response')).to_have_text(expected)
         expect(f.locator('#answer-0')).to_be_disabled()
         expect(f.locator('section')).not_to_contain_text(BANK['ui']['helpBeforePaper'])
-        expect(f.locator('section')).not_to_contain_text(BANK['ui']['mixedTransfer'])
+        expect(f.locator('#help-tier,#member')).to_have_count(0)
         outcome=BANK['ui'][['applied','assisted','assisted','appliedSolution'][source]]
         expect(f.locator('section')).to_contain_text(outcome)
         application=dict(person=person,frage=prompt,option=selected,rueckmeldung=expected,status=outcome,
@@ -275,12 +278,13 @@ def recover(page,f,shell,team,person,step):
     f.locator('#person').select_option(person);f.locator('#entry').select_option(str(step))
     tap(f,'open-entry')
 
-def engine_run(engine,url,reference=None):
+def engine_run(engine,url,reference=None,routes=None):
     results=[]
     with sync_playwright() as pw:
         b=getattr(pw,engine).launch(executable_path=os.getenv(engine.upper()+'_EXECUTABLE'))
         freeze=check_freeze(b,engine,reference)
         for route,team in enumerate(TEAMS + [[t] for t in LEVELS]):
+            if routes is not None and route not in routes:continue
             portrait=route%2==0
             size=(390,844) if route==6 else (820,1180) if portrait else (1180,820)
             ctx=b.new_context(has_touch=True,viewport=dict(zip(('width','height'),size)),reduced_motion='reduce')
@@ -292,7 +296,7 @@ def engine_run(engine,url,reference=None):
             shell,f=start(page,url+'/host.html' if lms else APP.as_uri(),lms)
             set_team(f,team)
             shots=engine=='chromium' and route==4
-            if shots:snap(page,'Erste-Nachricht-und-Team')
+            if shots:snap(page,'Erste-Nachricht-und-Niveau')
             if route==6:f.locator('html').evaluate("e=>e.style.fontSize='150%'")
             f.locator('body').evaluate("""e=>{window.taps=0;document.addEventListener('click',()=>window.taps++,true);
                 window.inputs=new Set();document.addEventListener('input',e=>{if(e.target.tagName==='TEXTAREA')window.inputs.add(document.querySelector('h1').dataset.section)});
@@ -332,8 +336,9 @@ def engine_run(engine,url,reference=None):
                     recover(page,f,shell,team,'Lauras Frage',2)
                     tap(f,'weight-0');tap(f,'concern-1');tap(f,'fact-1');tap(f,'other')
                     tap(f,'edit-weight');expect(f.locator('#weight-2')).to_be_visible()
-                    for member,(family,concern) in enumerate([(0,1),(1,0)]):
-                        tap(f,'weight-'+str(family));tap(f,'concern-'+str(concern));tap(f,'fact-'+str(concern))
+                    tap(f,'weight-2')
+                    for member,concern in enumerate([1,0]):
+                        tap(f,'concern-'+str(concern));tap(f,'fact-'+str(concern))
                         expect(f.locator('section')).to_contain_text(BANK['crossReference'][concern])
                         if not member:
                             tap(f,'rechoose');tap(f,'concern-1');tap(f,'fact-1')

@@ -6,20 +6,21 @@ from zipfile import ZipFile
 from playwright.sync_api import sync_playwright
 from auslieferung import QA,OUT,SRC,ROOT,json_text
 from pruefen import enter,STEPS
-from sprachpruefung import BASE,rebuild
+from endvergleich import REFERENZ as BASE,rebuild
 
 # Die Beobachtung läuft nur im Test. Klick und Eingabe gehen über die öffentliche UI.
 RECORDER="""() => {
   window.pairs=[];
+  const screenText = (SCREEN_READER);
   const save=e=>{
     const root=document.querySelector('dialog[open]')||document.querySelector('#view,#beratung:not([hidden]),#app,#desk')||document.body;
     const c=e.target.closest('button,summary,select,input,textarea');
     if(!c)return;
     window.pairs.push({aktion:c.id||c.dataset.do||c.tagName,wert:c.dataset.value||c.dataset.option||'',
-      ansicht:root.innerText,knopf:[...root.querySelectorAll('button')].filter(x=>x.getClientRects().length&&!x.disabled).map(x=>x.textContent)});
+      ansicht:root.innerText,gesamt:screenText(),knopf:[...root.querySelectorAll('button')].filter(x=>x.getClientRects().length&&!x.disabled).map(x=>x.textContent)});
   };
   for(const type of ['click','change'])window.addEventListener(type,save);
-}"""
+}""".replace("SCREEN_READER",(SRC/"bildschirmwortlaut.js").read_text())
 def start(p,path,kind):
     p.goto(path.as_uri());f=enter(p,kind);f.evaluate(RECORDER);return f
 def pair(out,module,tier,route,frames):
@@ -28,7 +29,7 @@ def pair(out,module,tier,route,frames):
     for i,(a,b) in enumerate(zip(*snapshots)):
         assert (a['aktion'],a['wert'])==(b['aktion'],b['wert']),(module,route,i,a['aktion'],b['aktion'])
         row=dict(modul=module,niveau=tier,weg=route,schritt=i,aktion=b['aktion'],auswahl=b['wert'],
-                 alttext=a['ansicht'],neutext=b['ansicht'],bedienung=b['knopf'],grund='Zustand nach derselben Bedienhandlung auf beiden SCOs')
+                 alttext=a['ansicht'],neutext=b['ansicht'],ganzer_bildschirm=b['gesamt'],bedienung=b['knopf'],grund='Zustand nach derselben Bedienhandlung auf beiden SCOs')
         out.write(json.dumps(row,ensure_ascii=False,separators=(',',':'))+'\n')
     return len(snapshots[0])
 def run(ref,kind):

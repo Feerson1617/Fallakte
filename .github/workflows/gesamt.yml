@@ -1,7 +1,7 @@
 name: Fallakte · Drei Unterrichtsmodule
 on:
   push:
-    branches: [integration/drei-unterrichtsmodule, korrektur/sprachfassung-drei-module]
+    branches: [integration/drei-unterrichtsmodule, korrektur/sprachfassung-drei-module, korrektur/persoenlicher-lernweg]
   workflow_dispatch:
 permissions:
   contents: read
@@ -27,10 +27,11 @@ jobs:
             apt-get install -y --no-install-recommends poppler-utils
           fi
       - run: python gesamt/auslieferung.py
-      - run: python gesamt/sprachpruefung.py
+      - run: python gesamt/endvergleich.py
       - run: python gesamt/pdfvergleich.py gesamt/pruefgrundlagen/Pflichtlernboegen_25-11.zip
       - run: python gesamt/hilfenvergleich.py
       - run: python gesamt/workseiten.py
+      - run: python gesamt/papierwege.py
       - run: python gesamt/layout_scan.py
       - run: python gesamt/bildtexte.py
       - run: python -u gesamt/beratung_scan.py
@@ -43,7 +44,7 @@ jobs:
           for name, suite in [('Stationsansichten', pruefen), ('Zusatzdialoge', vertiefungen)]:
               with Aufzeichnung(name): suite.run()
           PYCODE
-      - name: Pflichtwege, gemischte Teams und Zustandswechsel
+      - name: Pflichtwege, persönliche Prüfung und Wiederaufnahme
         run: |
           for engine in chromium webkit; do
             python -u gesamt/familien_scan.py "$engine" verlauf
@@ -55,8 +56,9 @@ jobs:
           python gesamt/paarvergleich.py UB02
           python gesamt/familien_paar.py
           python gesamt/zusatz_paar.py
-      - run: python gesamt/textvertrag.py
-      - run: python gesamt/bericht.py
+      - run: python gesamt/endvertrag.py
+      - run: python gesamt/rueckfall.py
+      - run: python gesamt/endbericht.py
       - uses: actions/upload-artifact@v4
         with:
           name: Fallakte-Sprachpruefung-${{ github.sha }}
