@@ -101,7 +101,7 @@ def route(page, engine, tier, file, size):
             day.locator('#beratung-weiter').tap()
     day.locator('#beratung-fertig').tap()
     expect(day.locator('[data-optional=Tom]')).to_be_enabled()
-    expect(day.locator('[data-optional=Celina]')).to_be_disabled()
+    expect(day.locator('[data-optional=Celina]')).to_be_enabled()
 
 
 def main():

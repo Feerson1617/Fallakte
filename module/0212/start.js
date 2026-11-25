@@ -16,8 +16,10 @@
   let port;
   const available=new Set();
   function grant(person,tier){available.add(tier+'/'+person);}
-  window.addEventListener('beratung:abgeschlossen',e=>grant('Tom',e.detail));
-  window.addEventListener('reserve0212:completed',e=>grant('Celina',e.detail));
+  window.addEventListener('beratung:abgeschlossen',e=>{
+    grant('Tom',e.detail);
+    grant('Celina',e.detail);
+  });
   function control(label,callback) {
     const button=document.createElement('button');
     button.type='button';button.textContent=label;button.onclick=callback;

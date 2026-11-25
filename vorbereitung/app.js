@@ -39,7 +39,7 @@ function home() {
     ${level?btn('references',ui.reference):''}</article>`;
 }
 function picker() {
-  return `<h1>${ui.picker}</h1><p>Schau auf dein Papier. Wähle den zuletzt markierten oder den nächsten offenen Abschnitt.</p><div class="chapters">${chapters().map(c=>{
+  return `<h1>${ui.picker}</h1><p>Laufzettel: Suche das zuletzt markierte Kapitel. Wähle es hier oder öffne das nächste Kapitel.</p><div class="chapters">${chapters().map(c=>{
     const p=session().progress[c.id];
     return `<button data-do="open" data-value="${c.id}">${esc(c.title)}${p?`<small>${p.finished?'In dieser Sitzung bearbeitet':'Begonnen'}</small>`:''}</button>`;
   }).join('')}</div>`;
@@ -61,7 +61,7 @@ function material() {
     <figure class="figure"><h3>${esc(v.title)}</h3>${bank.graphics[c.visualRef]}<figcaption>${esc(c.observationPrompt)}</figcaption></figure></div><details><summary>${esc(intro().title)}</summary>${pearl()}</details>`;
 }
 function fullCard(card) {
-  return `<article class="reference"><h2>${esc(card.title)}</h2><p><strong>Pearl-Index · ${esc(card.pearlIndex)}</strong> ${esc(card.pearlExplanation)}</p>
+  return `<article class="reference"><h2>${esc(card.title)}</h2><p><strong>Pearl-Index: ${esc(card.pearlIndex)} · Richtwert nach pro familia</strong> ${esc(card.pearlExplanation)} Kein Maß für den Schutz vor sexuell übertragbaren Infektionen (STI).</p>
     ${card.sections.map(s=>`<h3>${esc(s.title)}</h3><p>${esc(s.completedText)}</p>`).join('')}<ul class="fields">${card.fields.map(f=>`<li data-field="${f.id}">Feld ${f.number} <b>${esc(f.answer)}</b></li>`).join('')}</ul></article>`;
 }
 function dialog(title,html) {
@@ -71,7 +71,7 @@ function dialog(title,html) {
   sheet.scrollTop=0;
 }
 function showReferences() {
-  dialog('Musterkarten',`<p>Nutze eine Musterkarte für fehlende Einträge. Vergleiche und ergänze auf Papier. Der Fachcheck bleibt offen.</p><div class="chapters">${bank.cards[level].map(c=>btn('reference',c.title,{value:c.method})).join('')}</div>`);
+  dialog('Musterkarten',`<p>Infokarte: Wähle am iPad die Methode, zu der dir Wörter fehlen. Ergänze die nummerierten Felder. Die Fragen im Chat bleiben offen.</p><div class="chapters">${bank.cards[level].map(c=>btn('reference',c.title,{value:c.method})).join('')}</div>`);
 }
 function status(a) {
   const wasModel=session().models.has(chapter()?.method);
@@ -112,7 +112,7 @@ function question(q,a) {
     ${a.passed?confirmed(a)+btn('advance',ui.next,{primary:true}):!a.transfer?help(q,a):''}</article>`;
 }
 function fields(c) {
-  return `<div class="paper"><h2>Infokarte ergänzen</h2><p>${esc(c.paperPrompt)}</p><ul class="fields">${c.cardEntries.map(f=>`<li data-field="${f.fieldId}">Feld ${f.number} · ${esc(f.sectionTitle)} <b>${esc(f.exactEntry)}</b></li>`).join('')}</ul><p>Schon ausgefüllt? Vergleiche deine Einträge.</p></div>`;
+  return `<div class="paper"><h2>Infokarte ergänzen</h2><p>${esc(c.paperPrompt)}</p><ul class="fields">${c.cardEntries.map(f=>`<li data-field="${f.fieldId}">Feld ${f.number} · ${esc(f.sectionTitle)} <b>${esc(f.exactEntry)}</b></li>`).join('')}</ul></div>`;
 }
 function paperCheck(q,a) {
   const checked=q.options[a.checked];
@@ -137,19 +137,19 @@ function firstHourEnd() {
   const complete=first.every(c=>session().progress[c.id]?.finished);
   const next=all.slice(4).find(c=>!session().progress[c.id]?.finished);
   return `<h1>Ende der ersten Vorbereitungsstunde</h1>
-    <p>${complete?'Du hast Kondom und Kombinationspille bearbeitet.':'Die ersten beiden Karten gehören zu Kondom und Kombinationspille.'}</p>
-    <div class="paper"><p>Prüfe, ob beide Infokarten vollständig sind.</p>
-    <p>Markiere auf deinem Papier, wo du weiterarbeitest.</p></div>
+    <p>${complete?'Du hast Kondom und Kombinationspille bearbeitet.':'In den Kapiteln 1A bis 2B geht es um Kondom und Kombinationspille.'}</p>
+    <div class="paper"><p>Infokarten „Kondom“ und „Kombinationspille“: Prüfe die Felder 1 bis 4 auf beiden Kartenflächen.</p>
+    <p>Laufzettel: Markiere das Kapitel, mit dem du weiterarbeitest.</p></div>
     <p>Öffne in der nächsten Stunde Kapitel 3A oder den nächsten offenen Abschnitt auf deinem Papier.</p>
     ${digitalChecks(first)}
     <div class="actions">${next?btn('open','Jetzt mit '+next.id+' weiterarbeiten',{value:next.id}):''}${btn('picker',ui.picker)}</div>`;
 }
 function preparationEnd() {
   return `<h1>Abschluss der Vorbereitung</h1>
-    <section class="panel"><h2>Vier Infokarten kontrollieren</h2>
-    <p>Vergleiche jede Karte auf Papier mit ihrer Musterkarte. Ergänze fehlende Einträge.</p>
+    <section class="panel"><h2>Zwei doppelseitige Infokarten kontrollieren</h2>
+    <p>Vergleiche für jede der vier Methoden die Felder 1 bis 4 mit der Musterkarte am iPad. Ergänze fehlende Wörter auf deiner Infokarte.</p>
     <div class="chapters">${bank.cards[level].map(c=>btn('reference',c.title,{value:c.method})).join('')}</div>
-    <p class="paper">Sind alle vier Karten vollständig? Dann schneide sie jetzt aus. Bewahre sie für den Unterrichtsbesuch auf.</p></section>
+    <p class="paper">Schneide das beidseitig bedruckte Blatt einmal an der gestrichelten Linie durch. Bewahre beide Karten für den Unterrichtsbesuch auf.</p></section>
     ${digitalChecks(chapters())}${btn('picker',ui.picker)}`;
 }
 function learning() {
@@ -168,7 +168,7 @@ function learning() {
     body+=c.paperCheck?paperCheck(c.paperCheck,attempt()):btn(c.id.endsWith('B')?'review':'finish',c.id.endsWith('B')?'Vollständige Karte vergleichen':ui.next,{primary:true});
   } else {
     const card=bank.cards[level].find(card=>card.method===c.method);
-    body=`<p class="paper">Vergleiche alle vier Felder. Verbessere bei Bedarf. Markiere auf Papier „${ui.cardReview}“.</p>${fullCard(card)}<p>${esc(c.backToChat)}</p>${btn('finish',ui.next,{primary:true})}`;
+    body=`<p class="paper">Infokarte „${esc(card.title)}“: Vergleiche die Felder 1 bis 4 mit der Musterkarte. Ergänze fehlende Wörter. Laufzettel „${esc(c.id)}“: Kreuze „${ui.cardReview}“ an.</p>${fullCard(card)}<p>Tippe auf „${ui.next}“.</p>${btn('finish',ui.next,{primary:true})}`;
   }
   return `<h1>${esc(title)}</h1>${body}`;
 }

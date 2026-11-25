@@ -280,11 +280,11 @@ window.Beratung = (() => {
     details.id='papier-ersatz';
     details.open=draft.anchorsOpen;
     details.ontoggle=()=>{if (details.isConnected) draft.anchorsOpen=details.open;};
-    if (draft.recheck) section.append(element('p','','Passt dein notierter Grund noch zu deinem neuen Rat? Prüfe das und gib den passenden Buchstaben erneut ein.'));
-    else section.append(element('p','',task().paperPrompt));
+    if (draft.recheck) section.append(element('p','','Laufzettel „'+stage().title+'“: Lies deine Begründung. Passt sie zur neuen Empfehlung? Ergänze sie bei Bedarf. Gib den Buchstaben erneut ein.'));
+    else section.append(element('p','',task().task),element('p','',task().paperPrompt));
     details.append(element('summary','',task().paperFallback),element('p','',task().task));
     for (const [letter,text] of Object.entries(stage().anchors)) details.append(element('p','',letter+' · '+text));
-    details.append(element('p','',bank().paperFallbackInstruction),element('p','rueckkehr',task().returnPrompt));
+    details.append(element('p','',bank().paperFallbackInstruction));
     const form=element('form','code-form');
     const label=element('label','','Prüfcode vom Laufzettel');
     label.htmlFor='pruefcode';
@@ -312,7 +312,7 @@ window.Beratung = (() => {
     const verify=control('fachcheck-pruefen','Code prüfen',()=>check(null),'pruefen');
     form.onsubmit=event=>{event.preventDefault();verify.click();};
     form.append(label,input,verify);
-    section.append(form,details);
+    section.append(element('p','rueckkehr',task().returnPrompt),form,details);
     return section;
   }
   function closedCheck() {
@@ -402,7 +402,7 @@ window.Beratung = (() => {
       const following=followingStage();
       const end=!following?.playable;
       area.append(element('h2','',end?'Schlussrat gesendet':'Lies Lauras Antwort.'));
-      if (end) area.append(element('p','','Für die gemeinsame Sicherung nutzt du deinen Eintrag im Feld „Mein Schlussrat“.'));
+      if (end) area.append(element('p','','Laufzettel „Mein Schlussrat“: Lass deine Antwort für das Unterrichtsgespräch offen.'));
       area.append(end ? control('beratung-fertig','Zur Fallübersicht',()=>window.Runde1.home(),'senden') :
         control('beratung-weiter',following.title.split(' – ')[0]+' öffnen',next,'senden'));
       return area;
@@ -445,7 +445,7 @@ window.Beratung = (() => {
     submit.hidden=submit.disabled;
     area.append(submit);
     if (step==='senden' || step==='korrektur') {
-      area.append(control('grund-bearbeiten','Fachcheck bearbeiten',editReason,'textaktion'));
+      area.append(control('grund-bearbeiten','Antwort erneut prüfen',editReason,'textaktion'));
     }
     area.append(materialTools());
     return area;

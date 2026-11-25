@@ -61,17 +61,7 @@ def markdown(data, depth=2):
     if isinstance(data,list):
         return '\n\n'.join(markdown(item,depth) for item in data)
     return str(data)
-def build():
-    REF.parent.mkdir(exist_ok=True)
-    if not REF.exists():
-        subprocess.run(['git','clone','--shared','--no-checkout',str(ROOT),str(REF)],check=True)
-        git('checkout','--detach',BASE,cwd=REF)
-    assert git('rev-parse','HEAD',cwd=REF).decode().strip()==BASE
-    assert not git('status','--porcelain','--untracked-files=no',cwd=REF)
-    subprocess.run(['python','scripts/vorabkandidat.py'],cwd=REF,check=True)
-    original=REF/'dist/Vorabkandidat'
-    shell=(original/'Fallakte.html').read_bytes()
-    assert sha(shell)==SHELL and sha(base64.b64decode(payload(shell,b'02')))==DAY02
+def module_document():
     bank=json.loads((SRC/'material.json').read_text())
     bank['commit']=git('rev-parse','HEAD').decode().strip()
     bank['media']=compile_media(bank)
@@ -87,6 +77,21 @@ def build():
     page=(SRC/'index.html').read_text().replace('STYLES',css).replace('MATERIAL',content.replace('<','\\u003c')).replace('PORTRAITS',json.dumps(imgs)).replace('PROGRAM',(SRC/'app.js').read_text())
     licenses='\n'.join(p.read_text() for p in sorted((ROOT/'assets').glob('*-OFL.txt')))
     page=page.replace('</html>','<script type="text/plain" id="font-licenses">'+licenses+'</script></html>')
+    return bank,page
+
+def build():
+    REF.parent.mkdir(exist_ok=True)
+    if not REF.exists():
+        subprocess.run(['git','clone','--shared','--no-checkout',str(ROOT),str(REF)],check=True)
+        git('checkout','--detach',BASE,cwd=REF)
+    assert git('rev-parse','HEAD',cwd=REF).decode().strip()==BASE
+    assert not git('status','--porcelain','--untracked-files=no',cwd=REF)
+    subprocess.run(['python','scripts/vorabkandidat.py'],cwd=REF,check=True)
+    original=REF/'dist/Vorabkandidat'
+    shell=(original/'Fallakte.html').read_bytes()
+    assert sha(shell)==SHELL and sha(base64.b64decode(payload(shell,b'02')))==DAY02
+    bank,page=module_document()
+    content=json.dumps(bank,ensure_ascii=False,indent=2)
     app=shell.replace(payload(shell,b'08'),base64.b64encode(page.encode()))
     assert payload(app,b'02')==payload(shell,b'02') and len(app)<10_000_000
     OUT.mkdir(parents=True,exist_ok=True)

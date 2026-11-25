@@ -53,7 +53,15 @@ def make_bank(person):
                     short=label+' enthält Hormone. Celina möchte keine zusätzlichen Hormone.'
                     full=short+' Prüfe deinen gesamten Vorschlag an ihrer Entscheidung.'
                 record['conflicts'][key]={'short':short,'full':full}
-        record['return']='Kehre zum Gespräch zurück. Gib den Buchstaben der fachlich passenden Aussage ein.'
+        if person=='Celina':
+            record['task']['Foerder']='Welche Aussage erklärt, ob dein Vorschlag zu Celinas Wunsch passt?'
+            record['task']['ESA']='Lies Celinas Nachricht. Welche Aussage erklärt, ob die Methode zu ihrem Wunsch oder ihrer Sorge passt?'
+        elif not records:
+            record['task']['Foerder']='Welche Verhütung kann Tom selbst benutzen? Wähle die Aussage, die erklärt, warum.'
+            record['task']['AHR']='Erkläre, an wessen Körper die Methode angewendet wird und wer darüber entscheidet.'
+        elif len(records)==1:
+            record['task']['Foerder']='Lies den Artikel. Erkläre mündlich, warum die Forschung Zeit braucht.'
+        record['return']='Gib A, B oder C am iPad ein. Tippe auf „Code prüfen“. Nach der richtigen Auswahl erscheint „Nachricht senden“.'
         record['paper']={t:f"Laufzettel · {person} {len(records)+1} – {record['title']}. "+task for t,task in record['task'].items()}
         records.append(record)
     bank={'version':person.lower()+('-1.2' if person=='Tom' else '-1.1'),'buildCommit':commit(),'person':person,'levels':laura['levels'],

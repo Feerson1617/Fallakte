@@ -18,8 +18,8 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
 from familienrat_build import OUT, REF, ROOT, DAY02, payload, sha, markdown, git
 
 QA = ROOT/'build/Familienrat-QA'
-APP = OUT/'Fallakte.html'
-BANK = json.loads((OUT/'Work-Materialvertrag.json').read_text())
+APP = Path(os.environ.get('FALLAKTE_FAMILIEN_HTML', OUT/'Fallakte.html'))
+BANK = json.loads(fromstring(base64.b64decode(payload(APP.read_bytes(),b'08'))).get_element_by_id('material').text)
 LEVELS = BANK['levels']
 NAMES = list(BANK['cases'])
 # From the four messages and the two different questions about biology.
@@ -83,7 +83,10 @@ def paper(f,key,team,trace):
     assert not any('Halte Wert und Norm' in text or 'Schreibe deine Verbindung jetzt' in text for text in stray)
     back=f.locator('[data-return]' if step['nextId'] else '[data-terminal=paper]')
     expect(back).to_have_count(1)
-    expect(back).to_have_text(step['returnText'])
+    label=step.get('buttonText') or step['returnText']
+    if step['mode']=='gleicher Abschnitt' and any(t in ('MSA','AHR') for t in team):
+        label='Schreibe deine Erklärung am iPad. Tippe auf „'+BANK['ui']['compare']+'“.'
+    expect(back).to_have_text(label)
     if step['nextId']:expect(back).to_have_attribute('data-return',step['nextId'])
     if step['after']:expect(panel).to_contain_text(step['after'])
     trace.append(dict(schritt=key,abschnitt=f.locator('h1').inner_text(),feld=step['field'],
@@ -92,7 +95,9 @@ def paper(f,key,team,trace):
 
 def arrived(f,step):
     expect(f.locator('h1')).to_have_attribute('data-section',step['restartId'])
-    if step['mode']=='Abschnittswechsel':expect(f.locator('h1')).to_have_text(step['returnText'].removeprefix('Weiter im Chat: '))
+    if step['mode']=='Abschnittswechsel':
+        sections=[r for c in BANK['cases'].values() for r in c['recovery']]+BANK['evaluationRecovery']
+        expect(f.locator('h1')).to_have_text(next(r['section'] for r in sections if r['id']==step['nextId']))
 
 def case(page,f,person,team,probe,trace,shots=False):
     application=None
@@ -193,7 +198,7 @@ def case(page,f,person,team,probe,trace,shots=False):
                          woerter_vor_antwort=visible_words,hilfe_bei_anwendung=source==3)
     else:
         expect(f.locator('section')).not_to_contain_text(BANK['ui']['helpBeforePaper'])
-    expect(f.locator('aside')).to_contain_text('Unsere Ergänzung für Laura')
+    expect(f.locator('aside')).to_contain_text(BANK['ui']['addition'])
     expect(f.locator('aside')).to_contain_text(c['addition'])
     step=paper(f,c['recovery'][0]['id'].split('-')[0]+'-ergebnis',team,trace)
     if probe:expect(f.locator('[data-handoff]')).to_contain_text(step['support'])
@@ -243,9 +248,9 @@ def judgment(page,f,team,route,probe,trace,shots):
     expect(f.locator('#open-Großmutter')).to_be_visible()
     for i in range(len(team)):expect(f.locator('section')).to_contain_text(team[i])
 
-def check_freeze(browser,engine):
+def check_freeze(browser,engine,reference=None):
     shots=[]
-    for path in (REF/'dist/Vorabkandidat/Fallakte.html',APP):
+    for path in (reference or REF/'dist/Vorabkandidat/Fallakte.html',APP):
         p=browser.new_page(viewport={'width':820,'height':1180},has_touch=True)
         p.goto(path.as_uri());p.locator('#erster-tag').tap()
         f=p.frame_locator('iframe[title^=Mittwoch]')
@@ -270,11 +275,11 @@ def recover(page,f,shell,team,person,step):
     f.locator('#person').select_option(person);f.locator('#entry').select_option(str(step))
     tap(f,'open-entry')
 
-def engine_run(engine,url):
+def engine_run(engine,url,reference=None):
     results=[]
     with sync_playwright() as pw:
         b=getattr(pw,engine).launch(executable_path=os.getenv(engine.upper()+'_EXECUTABLE'))
-        freeze=check_freeze(b,engine)
+        freeze=check_freeze(b,engine,reference)
         for route,team in enumerate(TEAMS + [[t] for t in LEVELS]):
             portrait=route%2==0
             size=(390,844) if route==6 else (820,1180) if portrait else (1180,820)
@@ -347,7 +352,7 @@ def engine_run(engine,url):
                     recover(page,f,shell,team,n,0)
                     expect(f.locator('aside')).to_contain_text('Laura')
                 # A shortcut imports underlying facts as help without granting prior answers.
-                f.locator('aside > details > summary').tap();expect(f.locator('aside')).to_contain_text('Als Hilfe bereitgestellt')
+                f.locator('aside > details > summary').tap();expect(f.locator('aside')).to_contain_text(BANK['ui']['supported'])
                 # Leave the first case after a full hint on an earlier analysis question.
                 # The factual check stays available, including after a detour to Laura.
                 recover(page,f,shell,team,'Mutter',1)

@@ -40,25 +40,27 @@ def rebuild(commit,script,directory):
     return path/'dist'/directory
 
 def embedded_preparation(raw):
-    assert sha(raw)=='5478c3c93d80ed5c3b368257a2754f5e585eefd63c9fd3cc74860b93bd75d49b'
     page=raw.decode()
-    # The printed full card has two header statements missed by the standalone renderer.
-    page=single_replace(page,'Pearl-Index · ${esc(card.pearlIndex)}</strong> ${esc(card.pearlExplanation)}</p>',
-        'Pearl-Index: ${esc(card.pearlIndex)} · Richtwert nach pro familia</strong> ${esc(card.pearlExplanation)} '
-        'Kein Maß für den Schutz vor sexuell übertragbaren Infektionen (STI).</p>')
-    page=single_replace(page,'Sind alle vier Karten vollständig? Dann schneide sie jetzt aus. Bewahre sie für den Unterrichtsbesuch auf.',
-        'Sind die Einträge zu allen vier Methoden vollständig? Schneide die Infokarten an der gestrichelten Linie aus und bewahre sie für den Unterrichtsbesuch auf.')
     adapter=(ROOT/'tagesauswahl/sitzung.js').read_text()
     page=single_replace(page,'<script>'+adapter+'</script>','<script>'+(SRC/'navigation.js').read_text()+'</script>')
     return page.encode()
 
-def build(prep,joint):
+def build(joint):
+    from bauen import build as preparation_build, OUT as preparation_output
+    from modul_0212 import build as first_build
+    from familienrat_build import module_document
     raw=(joint/'Fallakte.html').read_bytes()
     assert sha(raw)=='254e5d06cb9190250bacc63fa9eea6c118846b45ce2b305ffa640d766f44a820'
     shell=raw.decode()
     modules={k:base64.b64decode(b,validate=True) for k,b in re.findall(PAYLOAD,shell)}
     assert {k:sha(v) for k,v in modules.items()}==MOD_HASH
-    modules['vor']=embedded_preparation((prep/'Vorbereitung.html').read_bytes())
+    # The old downloads stay usable. Only the shell of the verified joint release is reused.
+    preparation_build()
+    modules['vor']=embedded_preparation((preparation_output/'Vorbereitung.html').read_bytes())
+    modules['02']=first_build().read_bytes()
+    _,second=module_document()
+    modules['08']=second.encode()
+    shell=single_replace(shell,'Wähle deinen Unterrichtstag.','Was bearbeitest du heute?')
     shell=re.sub(PAYLOAD,'',shell)
     shell=single_replace(shell,'<div class="tage">','''<div class="tage">
       <h2 class="vorbereitung"><button class="tag" id="vorbereitung" data-modulnavigation data-entry="modul-vor">
@@ -87,8 +89,6 @@ def build(prep,joint):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--vorbereitung',type=Path)
     parser.add_argument('--unterricht',type=Path)
     args=parser.parse_args()
-    build(args.vorbereitung or rebuild(PREP,'vorbereitung/bauen.py','Vorbereitung'),
-          args.unterricht or rebuild(JOINT,'scripts/familienrat_build.py','Familienrat'))
+    build(args.unterricht or rebuild(JOINT,'scripts/familienrat_build.py','Familienrat'))

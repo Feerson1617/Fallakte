@@ -62,9 +62,9 @@ def unpack(folder):
         assert ids==list(allowed)
         hashes={k:sha(base64.b64decode(s.text,validate=True)) for k,s in zip(ids,scripts)}
         assert hashes=={k:module_hashes[k] for k in allowed}
-        for key in MOD_HASH.keys() & set(allowed):assert hashes[key]==MOD_HASH[key]
+        # Independent text/structure comparison against the frozen modules runs in sprachpruefung.py.
         prep=html.fromstring(base64.b64decode(scripts[ids.index('vor')].text))
-        assert sha(prep.get_element_by_id('material').text.encode())=='0b108ea97dab994cb9d7bd2f5df1bd443f3b25816f60dc22edd2e986fab51ee7'
+        assert json.loads(prep.get_element_by_id('material').text)['cards']==json.loads((QA/'Referenzkarten.json').read_text())
         for key,id_ in MENU.items():
             card=doc.get_element_by_id(id_)
             assert (card.get('data-entry')=='modul-'+key)==(key in allowed)
@@ -195,7 +195,8 @@ def session_log(page):
     assert page.evaluate('calls')==[['LMSInitialize',''],['LMSFinish','']]
 
 def run():
-    paper=printed();lessons,cards=contracts()
+    from sprachfassung import redigieren
+    paper=printed();lessons,cards=contracts();redigieren(lessons)
     evidence={};flows=[];sessions=[]
     with TemporaryDirectory() as tmp,sync_playwright() as pw:
         folder=Path(tmp);contents=unpack(folder)

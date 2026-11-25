@@ -1,7 +1,7 @@
 """Compile paper handoffs against the real recovery sections of the December 8 module."""
 
 def compile_media(bank):
-    actions=bank.pop('mediaActions')
+    actions=bank['mediaActions']
     levels=bank['levels']
     cases=bank['cases']
     laura=bank['evaluationRecovery']
@@ -11,6 +11,21 @@ def compile_media(bank):
         orders={}
         for level in levels:
             action=by_level[level]
+            if key.startswith(('MU-', 'FR-')) and level in ('Förder','ESA'):
+                if key.endswith('-erst'):
+                    action='Kreuze allein links an: Meine erste Antwort.'
+                else:
+                    oral='Sage, was sie erklärt und wer am Ende entscheidet.' if level=='Förder' else 'Erkläre mündlich: Sie hilft bei … . Ob Laura …, bleibt offen.'
+                    action='Kreuze rechts an: Nach dem Prüfen. Dein erstes Kreuz bleibt. '+oral
+            elif key[:3] in ('MU-','FR-','GM-','VA-'):
+                subject={'MU':'der biologische Fakt','FR':'der biologische Fakt','GM':'der Wert','VA':'die Regel'}[key[:2]]
+                if key.endswith('-erst'):
+                    action='Kreuze allein deine erste Vermutung an.' if level in ('Förder','ESA') else 'Schreibe in das Feld „Meine erste Antwort“, wie '+subject+' lauten könnte.'
+                else:
+                    action=({'Förder':'Kreuze die geprüfte Aussage an. Sage, was sie erklärt und wer entscheidet.',
+                             'ESA':'Kreuze die geprüfte Aussage an. Erkläre mündlich, was sie erklärt und was für Laura offenbleibt.',
+                             'MSA':'Schreibe die geprüfte Aussage unter „Nach dem Prüfen“. Erkläre, warum sie zur Nachricht passt.',
+                             'AHR':'Schreibe die geprüfte Aussage unter „Nach dem Prüfen“. Erkläre, was sie klärt und was Laura selbst entscheidet.'}[level]+' Lass deine erste Antwort stehen.')
             orders[level]={'action':action,'screen':f'Dein Lernbogen · {field}\n{action}'}
         person=next((name for name,c in cases.items() if target in c['recovery']),bank['ui']['theme'])
         terminal=target is None
@@ -19,7 +34,8 @@ def compile_media(bank):
         resume=source if terminal else target
         steps[key]=dict(id=key,sectionId=source['id'],section=source['section'],levels=levels,
                         field=field,kind=kind,orders=orders,condition=when,help=help_text,
-                        returnText=(actions['finish'] if terminal else bank['ui']['sameStep'] if staying else 'Weiter im Chat: '+destination),
+                        returnText=(actions['finish'] if terminal else bank['ui']['sameStep'] if staying else 'Öffne „'+destination+'“.'),
+                        buttonText=None if terminal or staying else ('Meine Antwort prüfen' if key=='LA-eigen' else 'Weiter im Chat'),
                         nextId=None if terminal else target['id'],mode='Sicherung' if terminal else 'gleicher Abschnitt' if staying else 'Abschnittswechsel',
                         restartId=resume['id'],
                         restart='Nach Neustart → Niveau wählen → '+person+' → '+resume['section'],
@@ -52,12 +68,13 @@ def compile_media(bank):
     personal=laura[1]['section']
     fields[personal]=dict(group=personal,design=actions['layout'],parts=[x[0] for x in bank['stems']])
     add('LA-eigen',laura[1],laura[2],personal,'eigene Begründung',
-        {t:actions['personalMethod'][t]+' '+bank['evaluation'][t] for t in levels},
+        bank['evaluation'],
         'Fünf Hilfen. Auf Förder zusätzlich die aufklappbaren Satzteile.',
         'Jede Person arbeitet zuerst allein auf ihrem eigenen Bogen.')
     add('LA-abschluss',laura[3],None,personal,'eigene Begründung',actions['final'],
         'Die persönlichen Belege und die beiden Ergänzungen lassen sich im selben Abschnitt vergleichen.',
         'Nach dem persönlichen Fachvergleich. Bei Neustart mit bereits vorliegendem Papierergebnis.')
+    del bank['mediaActions']
     return dict(layout=actions['layout'],digitalOnly=actions['digitalOnly'],fields=fields,steps=steps)
 
 

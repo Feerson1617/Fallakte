@@ -9,6 +9,7 @@ from pathlib import Path
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 from abbildungen import render_visuals
+from sprachfassung import redigieren
 
 SRC = Path(__file__).resolve().parent
 ROOT = SRC.parent
@@ -55,6 +56,7 @@ def build():
                    {'sections':[{k:section[k] for k in ('title','completedText')} for section in card['sections']]}
                    for card in methods] for level,methods in c['levels'].items()}
     material={k:s[k] for k in ('title','levels','ui','visualBriefs','pearlNote')}
+    redigieren(material)
     material.update(cards=cards,graphics=render_visuals(s['visualBriefs']))
     css=(SRC/'style.css').read_text()
     for token,name in [('FONT_SANS','dmsans.ttf'),('FONT_SERIF','dmseriftext.ttf')]:
