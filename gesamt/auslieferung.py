@@ -61,7 +61,11 @@ def build(joint):
     modules={k:base64.b64decode(b,validate=True) for k,b in re.findall(PAYLOAD,shell)}
     assert {k:sha(v) for k,v in modules.items()}==MOD_HASH
     # The old downloads stay usable. Only the shell of the verified joint release is reused.
-    preparation_build()
+    prep_ref=source_revision(['vorbereitung','assets','tagesauswahl/sitzung.js','gesamt/navigation.js'])
+    if prep_ref==revision():
+        preparation_build()
+    else:
+        preparation_output=rebuild(prep_ref,'vorbereitung/bauen.py','Vorbereitung')
     modules['vor']=embedded_preparation((preparation_output/'Vorbereitung.html').read_bytes())
     first_ref=source_revision(['02-12.html','assets','data','module/0212','module/vertiefung',
                                'scripts/vertiefung.py','scripts/modul_0212.py'])
@@ -78,7 +82,7 @@ def build(joint):
         matched=dict(re.findall(PAYLOAD,(rebuilt/'Fallakte.html').read_text()))
         modules['08']=base64.b64decode(matched['08'],validate=True)
     QA.mkdir(exist_ok=True,parents=True)
-    (QA/'Modulquellen.json').write_text(json_text({'02':first_ref,'08':second_ref,'vor':revision()}))
+    (QA/'Modulquellen.json').write_text(json_text({'02':first_ref,'08':second_ref,'vor':prep_ref}))
     shell=single_replace(shell,'Wähle deinen Unterrichtstag.','Was bearbeitest du heute?')
     shell=re.sub(PAYLOAD,'',shell)
     shell=single_replace(shell,'<div class="tage">','''<div class="tage">

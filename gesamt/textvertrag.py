@@ -6,6 +6,7 @@ from pathlib import Path
 from auslieferung import OUT,QA,SRC,json_text,pack
 from sprachpruefung import BASE,rebuild,pruefen,bank,leaves
 from fundstellenbeleg import Lernwege
+from redaktion import nachweise
 
 def js(doc):
     sources={str(i):n.text or '' for i,n in enumerate(doc.xpath('//script')) if not n.get('type') or n.get('type')=='text/javascript'}
@@ -88,6 +89,8 @@ def report(ref):
     compiled={m:dict(leaves(bank(v[0]))) for m,v in new.items()}
     tokens={m:js_changes(js(old[m][0]),js(v[0])) for m,v in new.items()}
     wege=Lernwege(QA)
+    lesarten=nachweise(new)
+    astrollen={}
     rows=[];counts=Counter()
     matrix=media(new)
     def match_matrix(mod,tier,path):
@@ -128,13 +131,26 @@ def report(ref):
         elif typ=='HTML':kind='HTML oder zugängliche Beschriftung'
         elif typ=='JS-Literal' and (neu and re.fullmatch(r'#[a-z][\w-]*|aria-[a-z-]+|data-[a-z-]+',str(neu))):
             status='technische Zeichenkette im Skript';kind='Technik'
+        interpretation=lesarten.get((m,place),'')
+        if interpretation and status=='Einzelprüfung offen' and beleg:
+            kind='Lerntext'
+            status='Wortlaut mit fachlichem Kontext und zugehöriger Browseransicht geprüft'
+        if m=='START' and typ=='HTML':
+            kind='Navigation oder Bildbeschreibung'
+            status='Tagesauswahl, Beschriftungen und Alternativtexte im gebauten Startdokument geprüft'
+        if source.startswith('JS ') and (m=='START' or astrollen.get((m,source,place))):
+            status='Funktion im JavaScript-Syntaxbaum bestimmt'
+            kind='Technik'
+            reason=astrollen.get((m,source,place)) or 'Startseitensteuerung: Sitzungsereignis, Kennung, Symbolpfad oder Protokollwert'
+        if kind=='Technik' and observed and source.startswith('JSON'):
+            kind='Schlüssel oder Verweis mit beobachtetem Anzeigewortlaut'
         if handoff and alt!=neu:reason='Papierort und Rückweg für den konkreten Zustand überarbeitet'
         elif kind=='Hilfe' and alt!=neu:reason='Kartenstelle, Denkfrage oder Lösung an Abschnitt und gewählte Methode gebunden'
         elif kind=='Rückmeldung':reason='Biologischer Unterschied zur gewählten falschen Aussage erklärt'
         elif (m,place) in changed_by_place:reason='Wortlaut in der ausgelieferten Datenbank geändert; Adresse und Schlüssel verglichen'
         rev='geändert' if alt!=neu else 'unverändert'
         scope_summary[(m,status)]+=1
-        rows.append(dict(modul=m,niveau=t,abschnitt=section,zustand=state,quelle=source,stelle=place,alttext=alt,neutext=neu,grund=reason,typ=typ,art=kind,
+        rows.append(dict(modul=m,niveau=t,abschnitt=section,zustand=state,quelle=source,stelle=place,alttext=alt,neutext=neu,grund=reason,kontextpruefung=interpretation,typ=typ,art=kind,
                          papierfeld=handoff.get('papierfeld',''),rueckkehr=handoff.get('rueckkehr',''),ziel=handoff.get('ziel',''),
                          sichtbeleg='Wortlaut im zugeordneten Lernweg beobachtet' if beleg else 'gleicher Wortlaut im Modul beobachtet' if observed else '',laufzeitstelle=beleg,einzelabnahme=status))
         counts[m,t,typ,rev,observed,status]+=1
@@ -149,7 +165,9 @@ def report(ref):
         elif src.startswith('JS '):
             i=re.search(r'\[(\d+)\]',src)[1];entry=tokens[m][0].get((i,k,txt),{})
             if entry is None:value='';reason='Literal oder Vorlage im neuen Skript ersetzt; neue Fundstelle separat erfasst'
-            elif entry:value=entry['text'];reason='JavaScript-Syntaxbaum beider gebauten Dokumente verglichen'
+            elif entry:
+                value=entry['text'];reason='JavaScript-Syntaxbaum beider gebauten Dokumente verglichen'
+                astrollen[m,src,k]=entry['rolle']
             else:reason='Quellposition aus Fremdscan ohne eindeutige AST-Zuordnung'
         elif src=='HTML':
             hits=[path for path,(label,text) in html_old[m].items() if label==k and text==txt]
@@ -178,7 +196,10 @@ def report(ref):
             if neu and path not in html_used[m] and path not in html_old[m]:
                 add(m,'übergreifend','','neu','HTML',path,'',neu,'zusätzlicher Textknoten oder zugängliche Beschriftung','HTML')
     for m,(lookup,extra) in tokens.items():
-        for i,x in extra:add(m,'übergreifend','','neu','JS script['+i+']',x['stelle'],'',x['text'],'neues Literal oder neue Vorlage',x['typ'])
+        for i,x in extra:
+            source='JS script['+i+']'
+            astrollen[m,source,x['stelle']]=x['rolle']
+            add(m,'übergreifend','','neu',source,x['stelle'],'',x['text'],'neues Literal oder neue Vorlage',x['typ'])
     for x in changes:
         if x['alt'] is None and x['neu']:add(x['modul'],'übergreifend','','neu','JSON',x['stelle'],'',x['neu'],'zusätzliche Beschriftung','Daten')
     physical=json.loads((QA/'Work-Gegenprobe.json').read_text())
@@ -187,7 +208,8 @@ def report(ref):
     screens=[]
     for n,r in enumerate(states,1):
         screens.append(dict(id=n,quelle='Browser · '+r['lauf'],modul=r['modul'],niveau=r['niveau'],abschnitt=r['abschnitt'],zustand=r['aktion'],neutext=r['text'],bedienelemente=r['bedienung']))
-    archive={'Work-Bildschirmvergleich.csv':csvdata([dict(team=' / '.join(k[0]),person=k[1],zustand=k[2],alt=v['vorher']['anzeige'],neu=v['nachher']['anzeige'],rueckweg_alt=v['vorher']['rueckweg'],rueckweg_neu=v['nachher']['rueckweg']) for k,v in pairs.items()]),
+    archive={'Offene-Einzelpruefungen.csv':csvdata([r for r in rows if r['einzelabnahme']=='Einzelprüfung offen']),
+             'Work-Bildschirmvergleich.csv':csvdata([dict(team=' / '.join(k[0]),person=k[1],zustand=k[2],alt=v['vorher']['anzeige'],neu=v['nachher']['anzeige'],rueckweg_alt=v['vorher']['rueckweg'],rueckweg_neu=v['nachher']['rueckweg']) for k,v in pairs.items()]),
              'Fundstellen.csv':csvdata(rows),'HTML-Elemente.csv':csvdata(domrows),'Sprachscan-Vorschlaege.csv':csvdata(vorschlaege),'Medienwechselmatrix.csv':csvdata(matrix),
              'Umfang.csv':csvdata([dict(modul=k[0],niveau=k[1],typ=k[2],abgleich=k[3],im_browser=k[4],einzelabnahme=k[5],anzahl=v) for k,v in sorted(counts.items())]),
              'Bildschirmzustaende.jsonl':'\n'.join(json.dumps(r,ensure_ascii=False) for r in screens)}
