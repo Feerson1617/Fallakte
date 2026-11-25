@@ -72,6 +72,24 @@ def media(docs):
             back=step.get('buttonText') or ('Mit den Aussagen vergleichen' if t in ('MSA','AHR') else 'gewählte Antwort antippen') if step['nextId'] else 'kein Knopf'
             if step['mode']=='gleicher Abschnitt':back+='; bei gemischtem Team zuerst Freitext und „Mit den Aussagen vergleichen“'
             add('UB08',t,step['sectionId'],id,'Lernbogen „'+step['field']+'“',v['screen'],back,step['nextId'] or 'Sicherung im Unterricht')
+    for t in family['levels']:
+        add('UB08',t,'LA-04','Wiedereinstieg mit analog geprüftem Beleg','Lernbogen „Lauras Frage – Festhalten“',
+            family['ui']['endRecovery'],family['ui']['paperReady'],'LA-04 · Papierauftrag zur Sicherung')
+    work=json.loads((QA/'Work-Gegenprobe.json').read_text())
+    for r in rows:
+        rowid=r['zustand']
+        r['papierseite']=''
+        r['rueckweg_auf_dem_bildschirm']=''
+        if r['modul']=='UB08':
+            if r['niveau'] in ('Förder','ESA'):
+                prefix=r['abschnitt'].split('-')[0]
+                r['papierseite']={'MU':'2','FR':'3','LA':'4'}.get(prefix,'')
+            actual=[]
+            for w in work:
+                if w['version']=='nachher' and w['zustand']==rowid and w['niveau']==r['niveau']:
+                    actual.append(' / '.join(w['team'])+' · Person '+str(w['person'])+' · '+w['rueckweg'])
+            r['rueckweg_auf_dem_bildschirm']=' | '.join(actual)
+        r['medium']='Lernbogen' if r['modul']=='UB08' else ('Infokarte und/oder Laufzettel' if r['modul']=='PREP' else 'Laufzettel')
     return rows
 
 def report(ref):
@@ -123,7 +141,9 @@ def report(ref):
             elif handoff and m=='UB08' and (QA/'Work-Gegenprobe.json').exists() and place.endswith(('/action','/screen')) and t in ('Förder','ESA') and place.split('/')[2] in ('MU-erst','MU-ergebnis','FR-erst','FR-ergebnis','LA-eigen','LA-abschluss'):
                 status='Work-Auftrag, PDF-Seite und Bildschirm verglichen';kind='Papierauftrag'
             elif m=='PREP' and place.endswith('/feedback') and (m,place) in changed_by_place and '/afterSolutionCheck/' not in place and any(field in place for field in ('/questions/','/paperCheck/','/intro/question/')) and (QA/'Browserpruefung.json').exists():
-                status='Rückmeldung zur konkreten Fehloption redigiert und im Frageweg geprüft';kind='Rückmeldung'
+                answer=compiled[m].get(place.rsplit('/',1)[0]+'/correct')
+                if answer is False:
+                    status='Rückmeldung zur konkreten Fehloption redigiert und im Frageweg geprüft';kind='Rückmeldung'
             elif m=='UB02' and '/hints/' in place and (m,place) in changed_by_place and (QA/'Empfehlungen.json').exists():
                 status='Hinweis im Entscheidungsweg und in seiner Stufenfolge geprüft';kind='Hilfe'
         elif typ=='JS-Template':kind='Laufzeitvorlage'
@@ -214,8 +234,26 @@ def report(ref):
              'Umfang.csv':csvdata([dict(modul=k[0],niveau=k[1],typ=k[2],abgleich=k[3],im_browser=k[4],einzelabnahme=k[5],anzahl=v) for k,v in sorted(counts.items())]),
              'Bildschirmzustaende.jsonl':'\n'.join(json.dumps(r,ensure_ascii=False) for r in screens)}
     compared=sum(count for raw,count in wege.pairs.values())
+    laufumfang=Counter()
+    unique=defaultdict(set)
     for name,(raw,count) in wege.pairs.items():
+        for line in raw.splitlines():
+            snap=json.loads(line)
+            key=(snap['modul'],snap['niveau'],snap['weg'],snap['aktion'],'geändert' if snap['alttext']!=snap['neutext'] else 'unverändert')
+            laufumfang[key]+=1
+            unique[key].add(snap['neutext'])
         archive['Laufzeitvergleich/'+name+'.jsonl']=raw
+    archive['Laufzeitumfang.csv']=csvdata([dict(modul=k[0],niveau=k[1],weg=k[2],aktion=k[3],wortlaut=k[4],beobachtungen=v,verschiedene_ansichten=len(unique[k])) for k,v in sorted(laufumfang.items())])
+    archive['Work-Druckhinweise.md']='''# Papierabgleich für die nächste Materialfassung
+
+Die beigefügten Originale vom 25.11. sind die Referenz für beide Pflichtlernbögen. Die Sichtprüfung enthält die unveränderten Seiten als gerenderte Ansichten. Die Seiten 2 und 3 haben jeweils eine einzige Optionsliste. Links steht der erste Vorschlag, rechts die geprüfte Wahl. Das erste Kreuz bleibt stehen. Die Spaltenkoordinaten stehen in Pflichtbogenabgleich.json.
+
+Auf Seite 4 führt „Weiter im Chat: Lauras Frage – Prüfen“ zum Abschnitt LA-03. Am iPad heißt der Knopf in LA-02 „Meine Antwort prüfen“. Die Formulierung „Fallakte schließen!“ auf Papier gehört zum Wechsel in die gemeinsame Sicherung. In LA-04 wird dafür kein zusätzlicher Knopf verlangt. Beim direkten Wiedereinstieg kennzeichnet „Ich habe den geprüften Fakt auf meinem Lernbogen eingetragen.“ einen bereits vorhandenen Papiereintrag. Im Wiederaufnahmedialog lautet der Knopf zum Öffnen des ausgewählten Abschnitts „Hier weiterarbeiten“.
+
+Vorbereitung: Auf Seite 4 der vier früheren Schüler-Druckfassungen lautet der Schnittauftrag noch „vier Karten“. Für die Duplexfassung sind die Seiten 1 und 2 ein doppelseitiges Kartenblatt. Ein Schnitt an der Mittellinie ergibt zwei Karten mit vier Methodenflächen. Seiten 3 und 4 bilden den separaten Laufzettel. Der freigegebene Rückfallstand vom 26.11. bleibt separat nutzbar. Für die spätere Materialbearbeitung gelten die tatsächlich geprüften Zielansichten und die Medienwechselmatrix.
+
+Für das im Work-Nachtrag erwähnte separate Ausfallmaterial gilt die Zuordnung des Familienrats: Mutter auf Seite 2, Freundin auf Seite 3, Lauras Antwort auf Seite 4. Der Seitenvergleich in dieser Runde bezieht sich auf die zwei beigefügten Pflichtbögen.
+'''
     archive['Hinweise.md']='''# Softwarevertrag zur Prüfung
 
 Fundstellen.csv verknüpft die Angaben aus dem Sprachaudit mit den neu gebauten Dokumenten. Derselbe Wortlaut kann in verschiedenen Situationen unterschiedliche Aufgaben erfüllen. Die Zuordnung zum Papierauftrag ist dort eingetragen, wo die Fundstelle einen konkreten Medienwechsel beschreibt. Den produktiven Zustand und seine erlaubten Bedienhandlungen zeigen die Browserprotokolle.

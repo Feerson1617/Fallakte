@@ -32,16 +32,16 @@ Softwarecommit `{head}`. Referenz `{BASE}`. Diese Ausgabe ist ein Prüfkandidat.
 
 In der Vorbereitung nennen die Aufträge die Felder auf der Infokarte. Die MSA- und AHR-Frage gehört auf den Laufzettel. Nach dem B-Vergleich folgt dort „Karte kontrolliert“ und anschließend „Weiter im Chat“. Die Schlussansicht beschreibt den einen Schnitt durch das Duplexblatt. Die Rückmeldungen auf die 135 Fehloptionen der regulären Fachfragen einschließlich Pearl-Index und der acht Papierfragen erklären den jeweiligen Unterschied. Bei einer falschen Antwort zur Hormonfreiheit und zu Regelschmerzen erklärt der Papiercheck jetzt die mögliche Veränderung der Schmerzen. In der Anwendung 3A auf MSA und AHR fragt der Text ausdrücklich nach der nicht untersuchten Schutzwirkung. Damit lässt sich die Frage von der Einordnung der Spermien als Zellen unterscheiden. Hilfen führen vom konkreten Lesetipp zur Lösung und der zusätzlichen Anwendung.
 
-In der Beratung mit Laura beziehen sich die Aufträge auf die biologische Wirkung und Lauras aktuellen Wunsch. Der persönliche Schlussrat kommt einmal auf den Laufzettel. Beim Stopp kann die Lehrkraft unmittelbar zur Sicherung wechseln. Die beiden Abstimmungen mit dem Empfehlungsrad stehen im Lehrkrafthinweis. Nach Laura sind Tom und Celina beide anwählbar.
+In der Beratung mit Laura beziehen sich die Aufträge auf die biologische Wirkung und Lauras aktuellen Wunsch. Der persönliche Schlussrat kommt einmal auf den Laufzettel. Beim Stopp kann die Lehrkraft unmittelbar zur Sicherung wechseln. Die beiden Abstimmungen mit dem Empfehlungsrad stehen im Lehrkrafthinweis. Nach Laura sind Tom und Celina beide anwählbar. Bei Celina erklärt das Feedback den konkreten Denkfehler, etwa weshalb die Entscheidung für ein Kondom keine Zustimmung zur Einlage einer Spirale ist.
 
-Im Familienrat setzen Förder- und ESA-Lernende das erste Kreuz links und das geprüfte Kreuz rechts. Das erste bleibt lesbar. Im Förderauftrag auf Seite 4 können sie eine oder beide Fragen und Nachrichten wählen. Sie ordnen M oder F dem Fakt zu und erklären ihre Wahl. Unter „Festhalten“ bleibt die erste Antwort erhalten. Persönliche Begründungen werden im Unterricht besprochen.
+Im Familienrat setzen Förder- und ESA-Lernende das erste Kreuz links und das geprüfte Kreuz rechts. Das erste bleibt lesbar. Im Förderauftrag auf Seite 4 können sie eine oder beide Fragen und Nachrichten wählen. Sie ordnen M oder F dem Fakt zu und erklären ihre Wahl. Unter „Festhalten“ bleibt die erste Antwort erhalten. Die persönliche Hilfe unterscheidet die Frage, die eine biologische Information beantwortet, von dem Rat, den die Lernenden selbst begründen. Persönliche Begründungen werden im Unterricht besprochen.
 
 ## Ausgeführte Prüfungen
 
 - Vier Offline-HTMLs und vier SCORM-1.2-Pakete mit gestaffelten Dateninhalten. 16 Kombinationen aus Auslieferung, Freigabestufe und Browser. Das entpackte Startdokument stimmt jeweils byteweise mit der entsprechenden HTML-Datei überein. Die Manifeste wurden gegen das Schema validiert.
 - 32 Vorbereitungsdurchläufe, vier Niveaus, 68 reguläre Fragen, acht Papierfragen. Der Browser prüfte Fehlversuche, fünf Hilfen, Anwendungen nach der Lösung und alle vier Wege zur Musterkarte. 16 Vollkarten und 64 Einträge stimmen mit den Druckkarten überein.
 - Je acht vollständige Laura- und Familienratswege in der gemeinsamen Fassung. Zusätzlich 140 Kombinationen aus Lauras fünf Abschnitten, vier Niveaus und sieben Empfehlungen in Chromium. Tom und Celina wurden in beiden Engines auf vier Niveaus geöffnet, beraten und über ihre Abschnittsauswahl wieder aufgenommen.
-- Im Familienrat zusätzlich {sum(map(len,family.values()))} Wege einschließlich gemischter Teams. In jeder Engine wurden alle 16 Paarungen der vier Niveaus geprüft. Die Zustandsprotokolle erfassen Fehler, späte Hilfen, Anwendungen, Direkteinstieg, Abbruch und Wiederaufnahme. Der Work-Vergleich umfasst {len(work)} Vorher-/Nachher-Einträge zu sechs Übergaben und vier Teamkonstellationen. Zwei Original-PDFs wurden auf je drei Seiten verglichen.
+- Im Familienrat zusätzlich {sum(map(len,family.values()))} Wege einschließlich gemischter Teams. In jeder Engine wurden alle 16 Paarungen der vier Niveaus geprüft. Die Zustandsprotokolle erfassen Fehler, späte Hilfen, Anwendungen, Direkteinstieg, Abbruch und Wiederaufnahme. Der Work-Vergleich umfasst {len(work)} Vorher-/Nachher-Einträge zu sechs Übergaben und vier Teamkonstellationen. Zwei Original-PDFs wurden auf je drei Seiten verglichen. Die Koordinaten der Spaltenköpfe und sechs Ansichten der Originalseiten liegen in der Sichtprüfung.
 - Die Browserprüfungen überwachten Netzwerkzugriffe, Cookies und Schreibzugriffe. Der Testhost erhielt nur SCORM-Sitzungsbeginn und -ende. Alle Texte der Prüfsitzungen stammen aus simulierten Lernwegen.
 - {len(layout)} Layoutansichten in Chromium und WebKit bei 150 % Grundschrift. Befunde in den gemessenen Ansichten: {dict(issues) if issues else 'keine'}. Layoutstichprobe.json führt die betroffenen Bedienelemente auf. Die Kontrastmessung erfasst deckende Flächen mit auswertbarer Hintergrundfarbe.
 
@@ -64,13 +64,19 @@ Die sprachliche Einzelabnahme aller verbleibenden Fundstellen, aller zusammenges
 Für den Praxistest den Kandidaten auf einem Schul-iPad offline öffnen und als separate Testressource in itslearning importieren. Im Hoch- und Querformat eine Papieraufgabe bearbeiten, die App neu laden und mit dem markierten Abschnitt weiterarbeiten. Mit Förder- und ESA-Lernenden prüfen, ob sie Papierfeld, Schreibhandlung und Rückkehrknopf selbst finden. Die Bearbeitungszeit und der von der Lehrkraft angeleitete Wechsel in Minute 23 wurden im Klassenraum noch nicht erprobt.
 """
     if herkunft:
-        report+=f"\nDie Detailprotokolle für UB02 und UB08 aus dem Prüflauf `{herkunft['quelle']}` wurden anhand der SHA-256-Werte der tatsächlich eingebetteten Module übernommen. Pruefherkunft.json nennt die betroffenen Dateien. Paketprüfung und Gesamtlernwege liefen auf dem oben genannten Softwarecommit.\n"
+        report+=f"\nDie in Pruefherkunft.json aufgeführten Detailprotokolle für {', '.join({'vor':'Vorbereitung','02':'UB02','08':'UB08'}[m] for m in herkunft['module'])} aus dem Prüflauf `{herkunft['quelle']}` wurden anhand der SHA-256-Werte der tatsächlich eingebetteten Module und der verglichenen Navigationshülle übernommen. Paketprüfung und Gesamtlernwege liefen auf dem oben genannten Softwarecommit.\n"
     (OUT/'Pruefbericht.md').write_text(report)
     proof={p+'.json':(QA/(p+'.json')).read_bytes() for p in ('Browserpruefung','Kartenpruefung','Pflichtbogenabgleich','Work-Gegenprobe','Layoutstichprobe','Sprachumfang','Empfehlungen')}
     proof.update({p.name:p.read_bytes() for p in sorted(QA.glob('*-LA-*.jpg'))+sorted(QA.glob('nachher-MU-*.jpg'))+[QA/'Start-Gesamt.jpg',QA/'Musterkarte-Foerder.jpg']})
     for p in ['Modulquellen.json','Unterrichtspruefung.json','Pruefherkunft.json']:
         if (QA/p).exists():proof[p]=(QA/p).read_bytes()
     for p in QA.glob('Familienwege-*.json'):
+        proof[p.name]=p.read_bytes()
+    for name in ('Laura-02.jpg','Familienrat-08.jpg','Wiederaufnahme.jpg','vorher-MU-erst.jpg','vorher-MU-ergebnis.jpg'):
+        proof[name]=(QA/name).read_bytes()
+    for name in ('chromium-Celina-Schluss.jpg','webkit-Tom-Quelle.jpg'):
+        proof[name]=(ROOT/'build/vertiefungen'/name).read_bytes()
+    for p in QA.glob('Druckvergleich-*.jpg'):
         proof[p.name]=p.read_bytes()
     proof['Vertiefungspruefung.json']=(ROOT/'build/vertiefungen/Vertiefungspruefung.json').read_bytes()
     proof['Pruefbericht.md']=report
