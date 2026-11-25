@@ -68,7 +68,11 @@ def gruppen(docs):
             assert sum(a['ok'] for a in t['answers'])==1
             prefix='cases/'+name+'/'+sub
             collect(key,prefix+'/prompt',t['prompt'])
+            if t.get('advancedPrompt'):
+                collect(key,prefix+'/advancedPrompt',t['advancedPrompt'])
             for i,a in enumerate(t['answers']):
+                for field in ('advancedText','advancedFeedback'):
+                    if a.get(field):collect(key,prefix+'/answers/'+str(i)+'/'+field,a[field])
                 collect(key,prefix+'/answers/'+str(i)+'/text',a['text'])
                 collect(key,prefix+'/answers/'+str(i)+'/feedback',a['feedback'])
             for tier,hs in t['helpByLevel'].items():
@@ -98,6 +102,14 @@ def gruppen(docs):
                         collect(k,f'{base}/options/{i}/'+field,o[field])
     for person in ('Tom','Celina'):
         case=bank(docs[person][0])
+        if person=='Tom':
+            for tier,art in case['articles'].items():
+                key=('Tom',tier,'Lesematerial','Verhütungsmethoden, Forschungsansätze und bisher gemessene Ergebnisse sind unterschieden.')
+                collect(key,'articles/'+tier+'/title',art['title'])
+                for j,para in enumerate(art['paragraphs']):collect(key,f'articles/{tier}/paragraphs/{j}',para)
+            for j,study in enumerate(case['studies']):
+                key=('Tom','alle vier','Studie '+str(j+1),'Studie A erfasst Schwangerschaften in der Wirksamkeitsphase. Studie B untersucht Einzeldosen bei vasektomierten Männern. Sie belegt keine Verhütungswirkung.')
+                for field in ('label','body','source','meaning'):collect(key,f'studies/{j}/'+field,study[field])
         for i,step in enumerate(case['stages']):
             base='stages/'+str(i)
             for tier,task in step['task'].items():

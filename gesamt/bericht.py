@@ -74,7 +74,7 @@ Für den Praxistest den Kandidaten auf einem Schul-iPad offline öffnen und als 
     (OUT/'Pruefbericht.md').write_text(report)
     proof={p+'.json':(QA/(p+'.json')).read_bytes() for p in ('Browserpruefung','Kartenpruefung','Hilfenvergleich','Pflichtbogenabgleich','Work-Gegenprobe','Layoutstichprobe','Sprachumfang','Empfehlungen')}
     proof.update({p.name:p.read_bytes() for p in sorted(QA.glob('*-LA-*.jpg'))+sorted(QA.glob('nachher-MU-*.jpg'))+[QA/'Start-Gesamt.jpg',QA/'Musterkarte-Foerder.jpg']})
-    for p in ['Modulquellen.json','Bestandsvergleich.json','Unterrichtspruefung.json','Pruefherkunft.json','Reproduzierbarer-Bau.json']:
+    for p in ['Modulquellen.json','Bildtexte.json','Bestandsvergleich.json','Unterrichtspruefung.json','Pruefherkunft.json','Reproduzierbarer-Bau.json']:
         if (QA/p).exists():proof[p]=(QA/p).read_bytes()
     for p in QA.glob('Familienwege-*.json'):
         proof[p.name]=p.read_bytes()

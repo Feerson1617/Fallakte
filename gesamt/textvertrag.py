@@ -137,6 +137,7 @@ def report(ref):
     wege=Lernwege(QA)
     lesarten=nachweise(new)
     astrollen={}
+    bilder=json.loads((QA/'Bildtexte.json').read_text()) if (QA/'Bildtexte.json').is_file() else {}
     rows=[];counts=Counter()
     uebergaben=stationsuebergaenge(new,wege)
     matrix=media(new)
@@ -193,7 +194,10 @@ def report(ref):
                 status='Planungsfeld im Datenvertrag; kein eigener Ausgabezugriff im Schüler-Renderer'
                 kind='Planungsdaten'
         elif typ=='JS-Template':kind='Laufzeitvorlage'
-        elif typ=='SVG':kind='Bildtext'
+        elif typ=='SVG':
+            kind='Bildtext'
+            if bilder and all(v.get(place)==neu for v in bilder.values()):
+                status='Beschriftung oder Bildbeschreibung in beiden Browsern mit dem tatsächlichen Schaubild verglichen'
         elif typ=='HTML':kind='HTML oder zugängliche Beschriftung'
         elif typ=='JS-Literal' and (neu and re.fullmatch(r'#[a-z][\w-]*|aria-[a-z-]+|data-[a-z-]+',str(neu))):
             status='technische Zeichenkette im Skript';kind='Technik'

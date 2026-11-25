@@ -32,6 +32,7 @@ jobs:
       - run: python gesamt/hilfenvergleich.py
       - run: python gesamt/workseiten.py
       - run: python gesamt/layout_scan.py
+      - run: python gesamt/bildtexte.py
       - run: python -u gesamt/beratung_scan.py
       - run: python -u gesamt/unterricht.py
       - name: Stationswege und freiwillige Fälle
