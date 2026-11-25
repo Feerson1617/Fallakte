@@ -74,16 +74,25 @@ def matrix(docs,s):
             if q:
                 add('PREP',t,k,'Papier-Fachcheck','Laufzettel',paperpage,title,k+' · A/B/C und Begründung',q['screen']+' '+q['return'],
                     'Code prüfen → Nachricht senden → Weiter im Chat',next_state,state)
+                add('PREP',t,k,'Ausfallhilfe mit sichtbaren Aussagen','Laufzettel',paperpage,title,k+' · A/B/C und Begründung',
+                    'Bei fehlendem Papierbogen die eingeblendeten Aussagen lesen. Den Buchstaben am iPad eingeben.',
+                    'Code prüfen → Nachricht senden → Weiter im Chat',next_state,s.sources['PREP',t,k+'-Ersatz'])
             if is_b:
                 state=s.find('PREP',t,[c['title'],'Kreuze „Karte kontrolliert“'])
                 add('PREP',t,k,'Kartenvergleich','Kartenblatt / Laufzettel',f'{cardpage} / {paperpage}',title,'Felder 1–4 / '+k+' · Karte kontrolliert','Alle vier Felder mit der Musterkarte vergleichen. Fehlendes ergänzen. Kartenkontrolle ankreuzen.','Weiter im Chat',next_state,state)
+        add('PREP',t,'Neustart','Nach der Niveauwahl','Laufzettel','3–4','Laufzettel 1A bis 2B / 3A bis 4B','zuletzt markiertes Kapitel','Markierung auf dem Laufzettel lesen und die Abschnittsliste öffnen.','Abschnitt auswählen','Abschnittsliste',s.sources['PREP',t,'Niveaustart'])
+        add('PREP',t,'Ausfallhilfe','Methode auswählen','Kartenblatt','1–2','Musterkarten','Felder 1–4','Die Methode wählen, zu der Wörter fehlen.',' / '.join(METHODS.values()),'Musterkarte der gewählten Methode',s.sources['PREP',t,'Kartenwahl'])
         for method,title in METHODS.items():
             add('PREP',t,'Ausfallhilfe',title,'Kartenblatt',1 if method in ('K','P') else 2,title,'Felder 1–4','Fehlende Wörter auf der passenden Kartenfläche ergänzen. Prüfungen bleiben offen.','Schließen','Vorherige Ansicht',s.sources['PREP',t,'Muster-'+method])
         add('PREP',t,'2B','Stundenende','Kartenblatt / Laufzettel','1 / 3','Kondom und Kombinationspille / Nach 2B','Felder 1–4 / Hier arbeite ich weiter','Beide Methodenflächen prüfen. Nächstes Kapitel eintragen.','Jetzt mit 3A weiterarbeiten oder Abschnitt auswählen','3A oder Abschnittsauswahl',s.find('PREP',t,'Ende der ersten Vorbereitungsstunde\nDu hast Kondom'))
         add('PREP',t,'4B','Abschluss','Kartenblatt','1–2','Alle vier Methodenflächen','Felder 1–4','Mit den Musterkarten vergleichen. Ergänzen. Duplexblatt einmal durchschneiden und beide Karten aufbewahren.','Schließen (Musterkarte) / Abschnitt auswählen','Abschluss / Abschnittsauswahl',s.find('PREP',t,'Zwei doppelseitige Infokarten kontrollieren'))
+        add('PREP',t,'2B','Nach Direkteinstieg oder Unterbrechung','Kartenblatt / Laufzettel','1 / 3','Kondom und Kombinationspille / Nach 2B','Felder 1–4 / Hier arbeite ich weiter','Kartenflächen prüfen und das nächste Kapitel eintragen. Die Sitzung belegt nur die angezeigten digitalen Prüfungen.','Jetzt mit 3A weiterarbeiten / Abschnitt auswählen','3A oder Abschnittsauswahl',s.sources['PREP',t,'2B-Teileinstieg'])
+        add('PREP',t,'4B','Abschluss nach Direkteinstieg','Kartenblatt','1–2','Alle vier Methodenflächen','Felder 1–4','Alle vier Kartenflächen vergleichen, Fehlendes ergänzen, einmal schneiden und beide Karten aufbewahren. Die digitalen Prüfstände bleiben getrennt.',' / '.join(METHODS.values())+' → Schließen / Abschnitt auswählen','Musterkarte, Abschluss oder Abschnittsauswahl',s.sources['PREP',t,'4B-Teileinstieg'])
         add('PREP',t,'Neustart','Abschnitt wählen','Laufzettel','3–4','Laufzettel 1A bis 2B / 3A bis 4B','zuletzt markiertes Kapitel','Markierung lesen. Dieses oder das folgende offene Kapitel öffnen.',' / '.join(c['title'] for c in prep['levels'][tier]['chapters']),'Einstieg in das gewählte Kapitel',s.find('PREP',t,'Laufzettel: Suche das zuletzt markierte Kapitel'))
         add('UB02',t,'L01','Einstieg','Laufzettel',1,'Laura 1 – Latexallergie','Mein erster Rat','Analogen ersten Rat lesen.','Neu beginnen','Laura 1',s.sources['UB02',t,'Einstieg'])
         add('UB02',t,'Wiederaufnahme','Abschnitt wählen','Laufzettel','1–5','Laura 1 bis Laura 5','Markierung am letzten Abschnitt','Letzten bearbeiteten Abschnitt lesen und im gewählten Fall öffnen.',' / '.join(c['title'] for c in first['stages'].values()),'Ausgewählter Abschnitt',s.sources['UB02',t,'Neustart'])
+        for name,last in [('Tom',3),('Celina',5)]:
+            add('UB02',t,'Wiederaufnahme',name,'Zusatzbogen '+name,'1–'+str(last),'Abschnitte '+name,'Abschnittsmarkierung','Falls ein Abschnitt auf Papier markiert ist, diesen am iPad öffnen. Es wird kein neuer Eintrag verlangt.',' / '.join(f'{name} {n}' for n in range(1,last+1)),'Gewählter Abschnitt von '+name,s.sources['UB02',t,'Neustart-'+name])
         for i,(k,c) in enumerate(first['stages'].items(),1):
             task=c['levels'][tier]
             if task['paperPrompt']:
