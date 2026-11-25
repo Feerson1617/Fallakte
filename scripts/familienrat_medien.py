@@ -20,8 +20,10 @@ def compile_media(bank):
                        'GM':'das, was der Großmutter wichtig ist',
                        'VA':'die allgemeine Regel, an der sich der Vater orientiert'}[prefix]
                 first=key.endswith('-erst')
+                question={'GM':'Welche Aussage beschreibt, was der Großmutter wichtig ist?',
+                          'VA':'Welche allgemeine Regel meint der Vater?'}.get(prefix,'Welche Aussage über '+topic+' passt zur Nachricht?')
                 if level in ('Förder','ESA'):
-                    action=('Welche Aussage über '+topic+' passt zur Nachricht? '+
+                    action=(question+' '+
                             ('Setze dein erstes Kreuz links in „Meine erste Antwort“.' if first else
                              'Setze dein Kreuz rechts in „Nach dem Prüfen“. Dein erstes Kreuz bleibt.'))
                     if not first:
@@ -29,6 +31,14 @@ def compile_media(bank):
                                     'FR':'Was erklärt der Fakt über spätere Kinder? Wer entscheidet über die Schwangerschaft?',
                                     'GM':'Wie hängt dieser Wert mit dem Rat der Großmutter zusammen?',
                                     'VA':'Wie wendet der Vater diese Regel auf Lauras Situation an?'}[prefix]
+                elif prefix in ('GM','VA'):
+                    focus='den Wert der Großmutter' if prefix=='GM' else 'die allgemeine Regel des Vaters'
+                    if first:
+                        action=question+' Schreibe '+focus+' in „Meine erste Antwort“.'
+                    else:
+                        action=('Schreibe '+focus+' in „Nach dem Prüfen“. Lass deine erste Antwort stehen. '+
+                                ('Wie passt diese Aussage zum Rat in der Nachricht?' if level=='MSA' else
+                                 'Was erklärt diese Aussage über den Rat? Was entscheidet Laura selbst?'))
                 else:
                     action=('Schreibe in „Meine erste Antwort“, welche Aussage über '+topic+' deiner Meinung nach fehlt.' if first else
                             'Schreibe in „Nach dem Prüfen“ die geprüfte Aussage über '+topic+'. Lass deine erste Antwort stehen. '+
