@@ -29,6 +29,7 @@ jobs:
       - run: python gesamt/auslieferung.py
       - run: python gesamt/sprachpruefung.py
       - run: python gesamt/pdfvergleich.py gesamt/pruefgrundlagen/Pflichtlernboegen_25-11.zip
+      - run: python gesamt/hilfenvergleich.py
       - run: python gesamt/workseiten.py
       - run: python gesamt/layout_scan.py
       - run: python -u gesamt/beratung_scan.py

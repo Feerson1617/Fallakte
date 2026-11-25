@@ -13,6 +13,7 @@ def write():
     scope=read('Sprachumfang');compare=read('Bestandsvergleich');work=read('Work-Gegenprobe')
     assert checks['commit']==cards['commit']==ub['commit']==compare['commit']==head
     herkunft=read('Pruefherkunft') if (QA/'Pruefherkunft.json').exists() else None
+    assert sum(bool(r['sichtbare_optionen']) for r in work)==8
     assert len(work)==72 and len(read('Empfehlungen'))==140 and len(read('Pflichtbogenabgleich')['seiten'])==6
     assert len(cards['karten'])==16 and sum(len(r['felder']) for r in cards['karten'])==64
     assert len(checks['wege'])==32 and len(checks['sitzungen'])==16
@@ -39,7 +40,7 @@ Im Familienrat setzen Förder- und ESA-Lernende das erste Kreuz links und das ge
 ## Ausgeführte Prüfungen
 
 - Vier Offline-HTMLs und vier SCORM-1.2-Pakete mit gestaffelten Dateninhalten. 16 Kombinationen aus Auslieferung, Freigabestufe und Browser. Das entpackte Startdokument stimmt jeweils byteweise mit der entsprechenden HTML-Datei überein. Die Manifeste wurden gegen das Schema validiert.
-- 32 Vorbereitungsdurchläufe, vier Niveaus, 68 reguläre Fragen, acht Papierfragen. Der Browser prüfte Fehlversuche, fünf Hilfen, Anwendungen nach der Lösung und alle vier Wege zur Musterkarte. 16 Vollkarten und 64 Einträge stimmen mit den Druckkarten überein.
+- 32 Vorbereitungsdurchläufe, vier Niveaus, 68 reguläre Fragen, acht Papierfragen. Der Browser prüfte Fehlversuche, fünf Hilfen, Anwendungen nach der Lösung und alle vier Wege zur Musterkarte. In {len(read('Hilfenvergleich')['wege'])} Hilfefolgen der drei Module enthielten die Stufen 1 bis 4 keine wörtliche Kopie der längeren richtigen Antwort. 16 Vollkarten und 64 Einträge stimmen mit den Druckkarten überein.
 - Je acht vollständige Laura- und Familienratswege in der gemeinsamen Fassung. Zusätzlich 140 Kombinationen aus Lauras fünf Abschnitten, vier Niveaus und sieben Empfehlungen in Chromium. Tom und Celina wurden in beiden Engines auf vier Niveaus geöffnet, beraten und über ihre Abschnittsauswahl wieder aufgenommen.
 - Im Familienrat zusätzlich {sum(map(len,family.values()))} Wege einschließlich gemischter Teams. In jeder Engine wurden alle 16 Paarungen der vier Niveaus geprüft. Die Zustandsprotokolle erfassen Fehler, späte Hilfen, Anwendungen, Direkteinstieg, Abbruch und Wiederaufnahme. Der Work-Vergleich umfasst {len(work)} Vorher-/Nachher-Einträge zu sechs Übergaben und vier Teamkonstellationen. Zwei Original-PDFs wurden auf je drei Seiten verglichen. Die Koordinaten der Spaltenköpfe und sechs Ansichten der Originalseiten liegen in der Sichtprüfung.
 - Die Browserprüfungen überwachten Netzwerkzugriffe, Cookies und Schreibzugriffe. Der Testhost erhielt nur SCORM-Sitzungsbeginn und -ende. Alle Texte der Prüfsitzungen stammen aus simulierten Lernwegen.
@@ -66,7 +67,7 @@ Für den Praxistest den Kandidaten auf einem Schul-iPad offline öffnen und als 
     if herkunft:
         report+=f"\nDie in Pruefherkunft.json aufgeführten Detailprotokolle für {', '.join({'vor':'Vorbereitung','02':'UB02','08':'UB08'}[m] for m in herkunft['module'])} aus dem Prüflauf `{herkunft['quelle']}` wurden anhand der SHA-256-Werte der tatsächlich eingebetteten Module und der verglichenen Navigationshülle übernommen. Paketprüfung und Gesamtlernwege liefen auf dem oben genannten Softwarecommit.\n"
     (OUT/'Pruefbericht.md').write_text(report)
-    proof={p+'.json':(QA/(p+'.json')).read_bytes() for p in ('Browserpruefung','Kartenpruefung','Pflichtbogenabgleich','Work-Gegenprobe','Layoutstichprobe','Sprachumfang','Empfehlungen')}
+    proof={p+'.json':(QA/(p+'.json')).read_bytes() for p in ('Browserpruefung','Kartenpruefung','Hilfenvergleich','Pflichtbogenabgleich','Work-Gegenprobe','Layoutstichprobe','Sprachumfang','Empfehlungen')}
     proof.update({p.name:p.read_bytes() for p in sorted(QA.glob('*-LA-*.jpg'))+sorted(QA.glob('nachher-MU-*.jpg'))+[QA/'Start-Gesamt.jpg',QA/'Musterkarte-Foerder.jpg']})
     for p in ['Modulquellen.json','Unterrichtspruefung.json','Pruefherkunft.json']:
         if (QA/p).exists():proof[p]=(QA/p).read_bytes()

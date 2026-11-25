@@ -33,8 +33,14 @@ def run(ref):
                     for i,lvl in enumerate(tiers):
                         prompt=panel.locator('[data-member]').nth(i).inner_text()
                         assert prompt==material['media']['steps'][key]['orders'][lvl]['screen']
+                        visible_options=[]
+                        if len(tiers)==1 and key in ('MU-erst','FR-erst'):
+                            paper=material['media']['fields'][material['media']['steps'][key]['field']]
+                            expected=paper['foerder' if lvl=='Förder' else 'options']
+                            visible_options=f.locator('button[id^="answer-"]:visible').all_inner_texts()
+                            assert visible_options==expected,(version,key,lvl,visible_options,expected)
                         rows.append(dict(version=version,team=tiers,person=i+1,niveau=lvl,zustand=key,anzeige=prompt,
-                                         rueckweg=f.locator('[data-return],[data-terminal]').inner_text()))
+                                         sichtbare_optionen=visible_options,rueckweg=f.locator('[data-return],[data-terminal]').inner_text()))
                     if tiers==('Förder',) and key in ('LA-eigen','LA-abschluss','MU-erst','MU-ergebnis'):
                         p.screenshot(path=QA/(version+'-'+key+'.jpg'),quality=67)
                 p.close()
