@@ -232,7 +232,9 @@
     title.textContent = 'Gemeinsame Sicherung';
     const facts = element('ul');
     for (const fact of data.facts) facts.append(element('li',fact));
-    body.append(facts,element('h3',data.finalAdvice?.title || data.paperField),finalAdvice(view.levelId));
+    body.append(facts,element('h3',data.paperField));
+    const level=view.levelId || 'Foerder';
+    body.append(element('p',window.LAURA.stages.L05.levels[level].task),finalAdvice(level));
   }
 
   function draw() {

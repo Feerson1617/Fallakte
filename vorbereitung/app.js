@@ -139,7 +139,7 @@ function firstHourEnd() {
   return `<h1>Ende der ersten Vorbereitungsstunde</h1>
     <p>${complete?'Du hast Kondom und Kombinationspille bearbeitet.':'In den Kapiteln 1A bis 2B geht es um Kondom und Kombinationspille.'}</p>
     <div class="paper"><p>Infokarten „Kondom“ und „Kombinationspille“: Prüfe die Felder 1 bis 4 auf beiden Kartenflächen.</p>
-    <p>Laufzettel: Markiere das Kapitel, mit dem du weiterarbeitest.</p></div>
+    <p>Laufzettel · Seite 3 · „Nach 2B“: Trage das nächste Kapitel bei „Hier arbeite ich weiter“ ein.</p></div>
     <p>Öffne am iPad in der nächsten Stunde das Kapitel, das du auf dem Laufzettel markiert hast. Nach 2B kommt 3A.</p>
     ${digitalChecks(first)}
     <div class="actions">${next?btn('open','Jetzt mit '+next.id+' weiterarbeiten',{value:next.id}):''}${btn('picker',ui.picker)}</div>`;
@@ -160,7 +160,7 @@ function learning() {
     if(c?.id==='4B') return preparationEnd();
     body=`<p>Du hast diesen Abschnitt bearbeitet.</p>${btn('continue',c?.nextChapter?ui.next:ui.picker,{primary:true})}`;
   } else if(s.step==='info') {
-    body=`${c?`<p class="paper">Papier · Markiere <strong>${c.id}</strong> auf deinem Laufzettel.</p>`:''}<section class="panel">${material()}</section>${btn('begin','Zur Fachfrage',{primary:true})}`;
+    body=`${c?`<p class="paper">Papier · Markiere <strong>${c.id}</strong> auf deinem Laufzettel (Seite ${Number(c.id[0])<=2?3:4}).</p>`:''}<section class="panel">${material()}</section>${btn('begin','Zur Fachfrage',{primary:true})}`;
   } else if(s.step==='question') {
     body=`<div class="tools"><strong>${c?'Fachfrage '+(s.index+1)+' von 2':'Fachfrage'}</strong>${btn('material',ui.read)}</div>${question(currentQuestion(),attempt())}`;
   } else if(s.step==='paper') {
@@ -169,7 +169,7 @@ function learning() {
     body+=c.paperCheck?paperCheck(c.paperCheck,attempt()):btn(c.id.endsWith('B')?'review':'finish',c.id.endsWith('B')?'Vollständige Karte vergleichen':ui.next,{primary:true});
   } else {
     const card=bank.cards[level].find(card=>card.method===c.method);
-    body=`<p class="paper">Infokarte „${esc(card.title)}“: Vergleiche die Felder 1 bis 4 mit der Musterkarte. Ergänze fehlende Wörter. Laufzettel „${esc(c.id)}“: Kreuze „${ui.cardReview}“ an.</p>${fullCard(card)}<p>Tippe auf „${ui.next}“.</p>${btn('finish',ui.next,{primary:true})}`;
+    body=`<p class="paper">Infokarte „${esc(card.title)}“: Vergleiche die Felder 1 bis 4 mit der Musterkarte. Ergänze fehlende Wörter. Laufzettel · Seite ${Number(c.id[0])<=2?3:4} · „${esc(c.id)}“: Kreuze „${ui.cardReview}“ an.</p>${fullCard(card)}<p>Tippe auf „${ui.next}“.</p>${btn('finish',ui.next,{primary:true})}`;
   }
   return `<h1>${esc(title)}</h1>${body}`;
 }

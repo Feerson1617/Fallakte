@@ -12,8 +12,8 @@
     "Norm": "Welche Regel soll nach Meinung der Person für alle gelten?",
     "Folgerung": "Was rät die Person Laura aus diesen Gründen?"
   },
-  "opening": "Ich bin Laura, 19. Trotz Verhütung bin ich ungeplant schwanger geworden. Ich habe meine Familie und meine Freundin um Rat gefragt. Ihre Antworten sind so unterschiedlich, dass ich unsicher bin. Helft ihr mir, die Ratschläge zu verstehen? Ich möchte verlässliche Informationen und am Ende selbst entscheiden.",
-  "second": "Meine Ausbildung ist mir wichtig. Ich weiß aber noch nicht, ob ich jetzt ein Kind bekommen möchte. Ich habe Angst vor Blutungen und Schmerzen bei einem Abbruch. Und kann ich danach später noch schwanger werden? Welche eurer ergänzten Nachrichten hilft mir jetzt besonders? Entscheiden möchte ich selbst.",
+  "opening": "Ich bin Laura, 19. Trotz Verhütung bin ich ungeplant schwanger geworden. Ich habe meine Familie und meine Freundin um Rat gefragt. Ihre Antworten sind so unterschiedlich, dass ich unsicher bin. Hilfst du mir, die Ratschläge zu verstehen? Ich möchte verlässliche Informationen und am Ende selbst entscheiden.",
+  "second": "Meine Ausbildung ist mir wichtig. Ich weiß aber noch nicht, ob ich jetzt ein Kind bekommen möchte. Ich habe Angst vor Blutungen und Schmerzen bei einem Abbruch. Und kann ich danach später noch schwanger werden? Welche der ergänzten Nachrichten hilft mir jetzt besonders? Entscheiden möchte ich selbst.",
   "cards": [
     {
       "title": "Blutungen und Schmerzen",
@@ -1926,10 +1926,10 @@
     ]
   ],
   "evaluation": {
-    "Förder": "Arbeite allein auf Seite 4. Kreuze Lauras Frage oder beide Fragen an. Trage M für Mutter oder F für Freundin beim passenden Fakt ein. Kreuze an, welche Nachricht dir für Laura hilft. Erkläre kurz, warum. Wählst du beide, erkläre beide.",
-    "ESA": "Wähle eine Frage von Laura oder beide. Schreibe, welche Nachricht dir dabei hilft. Du kannst beide wählen. Nenne den biologischen Fakt zu deiner Wahl. Warum ist er für Laura wichtig?",
-    "MSA": "Welche Nachricht hilft Laura aus deiner Sicht? Du kannst auch beide wählen. Begründe deine Wahl in zwei bis drei Sätzen mit Lauras Frage und einem biologischen Fakt.",
-    "AHR": "Vergleiche beide Nachrichten mit Lauras Fragen. Begründe biologisch, welche Nachricht du hilfreicher findest oder warum beide gleich wichtig sind. Was lässt sich mit den Fakten allein nicht entscheiden?"
+    "Förder": "1. Kreuze Lauras Frage nach Beschwerden, nach späteren Kindern oder beide Fragen an.\n2. Trage M für Mutter oder F für Freundin auf der Linie vor dem passenden Fakt ein. Hast du beide Fragen gewählt, fülle beide Linien aus.\n3. Kreuze an, welche Nachricht Laura hilft. Du kannst beide wählen.\n4. Erkläre kurz, warum du diese Nachricht hilfreich findest. Wählst du beide, erkläre beide.",
+    "ESA": "1. Schreibe unter „Meine Wahl und Lauras Frage(n)“, welche Nachricht du hilfreich findest und welche Frage von Laura sie beantwortet. Du kannst beide wählen.\n2. Schreibe den passenden Fakt zu Beschwerden oder späteren Kindern in das Feld „Der passende Fakt dazu ist“. Bei beiden Fragen nenne beide Fakten.\n3. Erkläre unter „Das hilft Laura zu verstehen“, warum die Nachricht für Laura wichtig ist.",
+    "MSA": "1. Wähle die Frage nach Beschwerden, nach späteren Kindern oder beide Fragen.\n2. Ordne jeder gewählten Frage einen biologischen Fakt aus der Nachricht der Mutter oder der Freundin zu.\n3. Begründe in zwei bis drei Sätzen, welche Nachricht Laura damit hilft. Du kannst beide wählen.",
+    "AHR": "1. Vergleiche die beiden Nachrichten mit Lauras Fragen nach Beschwerden und späteren Kindern.\n2. Ordne den Fragen die passenden biologischen Fakten zu.\n3. Begründe, welche Nachricht hilfreicher ist oder warum beide gleich wichtig sind. Was kann Laura mit den Fakten allein nicht entscheiden?"
   },
   "expectation": {
     "Förder": "Eine zusammenhängende Aussage mit Anliegen, korrektem Fakt und Grund für die eigene Gewichtung. Keine bereits vollständig ausgefüllte Musterantwort. Die Grenze der Information wird mit der kurzen Auswahlfrage geprüft. Bei Bedarf eigener kurzer mündlicher Beleg.",
@@ -2008,12 +2008,8 @@
     "Eine biologische Information erklärt Möglichkeiten und Grenzen. Laura entscheidet selbst."
   ],
   "time": "Hinweis für die Lehrkraft: In Minute 23 zu Lauras Frage wechseln. In Minute 31 die Geräte schließen.",
-  "analog": "Je Person ein eigener Bogen. Bei Ausfall am letzten Abschnitt weiterlesen. Nachrichten, Aufgaben und Karten den Lernenden geben. Erklärungen und Lösungshilfen gesondert zum Vergleichen bereithalten.",
+  "analog": "Nutze den Lernbogen deines Niveaus. Bei Ausfall am letzten Abschnitt weiterlesen. Erklärungen und Lösungshilfen gesondert zum Vergleichen bereithalten.",
   "ui": {
-    "team": "Wer arbeitet mit?",
-    "one": "Person 1",
-    "two": "Person 2",
-    "solo": "Ich arbeite allein",
     "choose": "Niveau wählen",
     "start": "Mutter – Nachricht öffnen",
     "home": "Nachrichten",
@@ -2043,7 +2039,6 @@
     "choice": "Welche Nachricht hilft Laura aus deiner Sicht? Du kannst auch beide wählen.",
     "both": "Beide Nachrichten",
     "limit": "Was kannst du aus dem Fakt nicht ableiten?",
-    "apply": "Person auswählen",
     "before": "Lies die beiden Fragen von Laura. Öffne „Lauras Frage – Meine Antwort“.",
     "return": "Weiter im Chat",
     "theme": "Lauras Frage",
@@ -2055,11 +2050,9 @@
     "reserve": "Freiwillige weitere Nachrichten",
     "noPast": "Die früheren Fragen sind am iPad noch nicht als bearbeitet markiert.",
     "where": "Wo möchtest du weiterarbeiten?",
-    "change": "Niveaus ändern",
     "source": "Information auf der Fachkarte lesen",
     "again": "Frage oder Fakt neu wählen",
     "openPersonal": "Lauras Frage – Meine Antwort",
-    "role": "Tauscht die Rollen. Wer eben gelesen hat, bedient jetzt das iPad.",
     "result": "Deine geprüften Aussagen",
     "read": "Nachricht prüfen",
     "examples": "Satzanfänge am iPad ansehen",
@@ -2075,10 +2068,8 @@
     "returnStart": "Tippe oben auf „Tagesauswahl“, um zum Startmenü zu kommen.",
     "helpTitle": "Hilfe",
     "evidenceOK": "Der Fakt passt zu Lauras Frage. Wähle jetzt, was du mit ihm nicht entscheiden kannst.",
-    "reviewEach": "Person 1 prüft ihre eigene Antwort. Danach prüft Person 2 ihre eigene Antwort.",
     "transfer": "Neue Frage",
-    "pair": "Lest die Nachricht gemeinsam. Begründet eure Antworten selbst.",
-    "readFacts": "Lies bei Bedarf nach, was in den Nachrichten fehlt.",
+    "readFacts": "Wenn dir ein Fakt fehlt, öffne „Ergänzungen ansehen“.",
     "resumeHere": "Hier weiterarbeiten",
     "pick": "Auswählen",
     "reason": "Warum hilft diese Nachricht?",
@@ -2086,7 +2077,6 @@
     "written": "Auf dem Lernbogen eingetragen",
     "glossary": "Begriffe nachschlagen",
     "openingTitle": "Eine Nachricht von Laura",
-    "helpFor": "Hinweise für",
     "myRule": "Meine eigene Begründung",
     "paperReturn": "Weiter im Chat",
     "factSource": "Welche Frage von Laura beantwortet der Fakt?",
@@ -2109,17 +2099,16 @@
     "assisted": "Neue Frage nach einem Hinweis oder einer Korrektur richtig beantwortet.",
     "pending": "Neue Frage noch nicht beantwortet.",
     "openReason": "Schreibe kurz am iPad: Warum hilft dieser Fakt Laura bei der Frage, die du gewählt hast? Erkläre, warum die Nachricht dafür hilfreich ist.",
-    "reasonOpen": "Deine eigene Begründung besprecht ihr im Unterricht.",
+    "reasonOpen": "Deine eigene Begründung bleibt offen für die Besprechung im Unterricht.",
     "limitChecked": "Fakt und Frage passen zusammen. Du hast richtig gewählt, was der Fakt nicht entscheiden kann.",
     "checkLimit": "Wähle, was der Fakt nicht entscheiden kann. Deine eigene Begründung wird nicht automatisch bewertet.",
     "reviewPending": "Öffne „Lauras Frage – Prüfen“. Prüfe dort deine Auswahl.",
     "transferIntro": "Beantworte jetzt eine neue Frage zu dieser Information.",
     "editReason": "Eigene Worte ändern",
     "continueReason": "Prüfen: Was sagt der Fakt nicht?",
-    "mixedTransfer": "Erkläre auch: Was kann Laura mit diesem Fakt allein nicht entscheiden?",
     "timeHint": "Die Formulierungshilfe war geöffnet.",
     "digitalCheck": "Am iPad: Wähle die Nachricht, Lauras Frage und den Fakt. Wähle danach, was der Fakt nicht entscheiden kann.",
-    "endRecovery": "Steht der geprüfte Fakt zu deiner Antwort auf deinem Lernbogen? Wenn nein, prüfe deine Auswahl am iPad. Wenn ja, nimm den Lernbogen zum Unterrichtsgespräch mit.",
+    "endRecovery": "Am iPad ist deine persönliche Prüfung noch offen. Tippe auf „Lauras Frage – Prüfen“.",
     "sameStep": "Am iPad: Wähle deine Antwort zur Frage in diesem Abschnitt.",
     "helpBeforePaper": "Am iPad: Beantworte zuerst die neue Frage.",
     "readMatrix": "Argumente in der Nachricht nachlesen",
@@ -2128,10 +2117,7 @@
     "skipped": "Für Lauras Frage unterbrochen. Die neue Frage ist noch nicht beantwortet.",
     "appliedSolution": "Neue Frage mit gezeigter Lösung beantwortet.",
     "fresh": "Neu beginnen",
-    "replaceTeam": "Wenn ihr neu beginnt, werden eure bisherigen Antworten am iPad gelöscht. Mit „Zurück zum Gespräch“ behaltet ihr sie.",
-    "inSession": "Eure bisherigen Antworten am iPad sind noch da. Ihr könnt im letzten Abschnitt weiterarbeiten.",
     "thoughtHint": "Schreibe wenige eigene Wörter. Das Programm bewertet deinen Text nicht.",
-    "paperReady": "Ich habe den geprüften Fakt auf meinem Lernbogen eingetragen.",
     "reviewSolo": "Prüfe am iPad den Fakt zu deiner eigenen Antwort.",
     "soloReplace": "Wenn du neu beginnst, werden deine bisherigen Antworten am iPad gelöscht. Mit „Zurück zum Gespräch“ behältst du sie.",
     "soloSession": "Deine bisherigen Antworten am iPad sind noch da."
@@ -2143,11 +2129,11 @@
     },
     "ESA": {
       "analyse": "Ordne die Aussage zu. Achte darauf, ob sie einen Wert, eine Regel oder einen Rat nennt.",
-      "Ergänzung": "Wähle den passenden Grund. Ergänze mündlich: Diese Information hilft, weil …"
+      "Ergänzung": "Wähle die Aussage, die in der Nachricht fehlt."
     },
     "MSA": {
       "analyse": "Benenne den Bestandteil mit eigenen Worten. Was bedeutet er für diesen Rat? Stichworte reichen.",
-      "Ergänzung": "Finde die passende Fachkartenstelle. Formuliere eine Ergänzung und erkläre ihren Bezug."
+      "Ergänzung": "Lies die Fachkarte. Erkläre im Textfeld, welche Aussage in der Nachricht fehlt und wie sie zum Rat passt."
     },
     "AHR": {
       "analyse": "Zeige an wenigen Worten aus der Nachricht, welche Funktion die Aussage für den Rat hat.",
@@ -2198,7 +2184,7 @@
       "Vergleiche Beschwerden heute und die Möglichkeit, später Kinder zu bekommen. Welche Frage ist dir für Laura wichtiger? Du kannst beide gleich wichtig finden. Begründe, was die Fakten erklären und was Laura selbst entscheiden muss."
     ]
   },
-  "paperRecovery": "Nach einem Neustart dieselben Niveaus wählen. Benutze beim zuletzt bearbeiteten Papierfeld den angegebenen Rückkehrschritt unter „Nach Neustart“. Frühere Einträge bleiben auf deinem Bogen.",
+  "paperRecovery": "Nach einem Neustart dein Niveau wählen. Benutze beim zuletzt bearbeiteten Papierfeld den angegebenen Rückkehrschritt unter „Nach Neustart“. Frühere Einträge bleiben auf deinem Bogen.",
   "levelsHelp": "Hilfe 1 gibt eine Denkrichtung, Hilfe 2 lenkt den Blick, Hilfe 3 erschließt die Textstelle, Hilfe 4 strukturiert und Hilfe 5 unterstützt beim Vergleich. Nur eine vor dem Lösen gezeigte Lösung zur Ergänzung führt zur zugehörigen kurzen Anwendung. Die Bewertungshilfe lässt die eigene Gewichtung offen.",
   "screens": {
     "Tagesauswahl.jpg": "Gemeinsamer Einstieg",
@@ -2300,8 +2286,8 @@
     "Freundin": "IQWiG beschreibt in der Regel keine Auswirkungen auf die spätere Fruchtbarkeit. Die Freundin nennt spätere Kinder ausdrücklich. Der ergänzte Fakt klärt eine Möglichkeit der Familienplanung. Er garantiert weder eine spätere Schwangerschaft noch den Abschluss der Ausbildung."
   },
   "crossReference": [
-    "Diesen Fakt zu Beschwerden habt ihr bei der Mutter ergänzt. Wie hilft er dir, die Nachricht der Freundin zu beurteilen?",
-    "Diesen Fakt zu späteren Kindern habt ihr bei der Freundin ergänzt. Wie hilft er dir, die Nachricht der Mutter zu beurteilen?"
+    "Diesen Fakt zu Beschwerden hast du bei der Mutter ergänzt. Wie hilft er dir, die Nachricht der Freundin zu beurteilen?",
+    "Diesen Fakt zu späteren Kindern hast du bei der Freundin ergänzt. Wie hilft er dir, die Nachricht der Mutter zu beurteilen?"
   ],
   "mediaActions": {
     "first": {
@@ -2317,10 +2303,10 @@
       "AHR": "Halte die Ergänzung kurz fest. Begründe, was sie klärt und welche Entscheidung offenbleibt."
     },
     "final": {
-      "Förder": "Prüfe deinen Fakt. Ergänze bei Bedarf deine Begründung. Lass deine erste Antwort stehen.",
-      "ESA": "Lass deine erste Antwort stehen. Ergänze unter „Festhalten“, was du mit der biologischen Information genauer erklären kannst.",
-      "MSA": "Lass deine erste Antwort stehen. Ergänze unter „Festhalten“, warum die geprüfte Information für deine Wahl wichtig ist.",
-      "AHR": "Lass deine erste Antwort stehen. Ergänze unter „Festhalten“, wie die Information deinen Vergleich stützt und welche Entscheidung offenbleibt."
+      "Förder": "1. Lies deine erste Antwort auf Seite 4. Lass deine erste Antwort stehen.\n2. Kannst du jetzt genauer erklären, warum die Nachricht Laura hilft? Dann ergänze das im Feld „Festhalten“.",
+      "ESA": "1. Lies deine erste Antwort auf Seite 4. Lass deine erste Antwort stehen.\n2. Kannst du jetzt genauer erklären, wie die biologische Information Lauras Frage beantwortet? Dann ergänze das im Feld „Festhalten“.",
+      "MSA": "1. Lies deine erste Antwort auf Seite 4. Lass deine erste Antwort stehen.\n2. Kannst du jetzt genauer erklären, warum der geprüfte Fakt für deine Wahl wichtig ist? Dann ergänze das im Feld „Festhalten“.",
+      "AHR": "1. Lies deine erste Antwort auf Seite 4. Lass deine erste Antwort stehen.\n2. Kannst du jetzt genauer erklären, wie der Fakt deinen Vergleich stützt und was Laura selbst entscheiden muss? Dann ergänze das im Feld „Festhalten“."
     },
     "firstLabel": "Meine erste Antwort",
     "checkedLabel": "Nach dem Prüfen",
@@ -2328,7 +2314,7 @@
     "supportLabel": "Mit Lösungshilfe",
     "layout": "Pro Person ein eigener Bogen. Für Lauras Anliegen, biologischen Fakt, Gewichtung mit eigenem Grund und die spätere Präzisierung einen zusammenhängenden Bereich von mindestens einer halben Seite vorsehen. Die erste Fassung bleibt lesbar. Bei gleicher Gewichtung Platz für beide Bezüge lassen.",
     "digitalOnly": "Wert, Norm, Folgerung und Leerstelle werden am Gerät untersucht. Die Antwortmatrix, Hilfetexte und Anwendungsantworten werden nicht abgeschrieben. Nach einer gezeigten Lösung zur Ergänzung folgt am Gerät eine kurze Anwendung desselben Zusammenhangs.",
-    "finish": "Nimm deinen persönlichen Lernbogen zur gemeinsamen Sicherung mit.",
+    "finish": "Nimm deinen Lernbogen zur Besprechung im Unterricht mit.",
     "personalMethod": {
       "Förder": "Markiere die Satzteile für deinen eigenen Grund.",
       "ESA": "Halte deinen eigenen Grund in einem kurzen Satz fest.",

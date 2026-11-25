@@ -604,7 +604,7 @@ const FALLAKTE = {
           ],
           "ESA": [
             "Hi, ich bin Celina, 17. Ich suche eine zuverlässige Verhütung ohne zusätzliche Hormone.",
-            "Welche Möglichkeiten würdet ihr mit mir vergleichen?"
+            "Welche Möglichkeiten würdest du mit mir vergleichen?"
           ],
           "MSA": [
             "Ich bin Celina, 17, und möchte in den nächsten Jahren nicht schwanger werden.",
@@ -622,13 +622,13 @@ const FALLAKTE = {
           "AHR": "Trenne akzeptable Optionen und Gewichtung. Formuliere einen vorläufigen Vorschlag."
         },
         "options": {
-          "K": "Wir schlagen dir ein Kondom vor.",
-          "P": "Wir schlagen dir die Kombinationspille vor.",
-          "Cu": "Wir schlagen dir die Kupferspirale vor.",
-          "H": "Wir schlagen dir die Hormonspirale vor.",
-          "K+P": "Wir schlagen dir ein Kondom und die Kombinationspille vor.",
-          "K+Cu": "Wir schlagen dir ein Kondom und die Kupferspirale vor.",
-          "K+H": "Wir schlagen dir ein Kondom und die Hormonspirale vor."
+          "K": "Ich schlage dir ein Kondom vor.",
+          "P": "Ich schlage dir die Kombinationspille vor.",
+          "Cu": "Ich schlage dir die Kupferspirale vor.",
+          "H": "Ich schlage dir die Hormonspirale vor.",
+          "K+P": "Ich schlage dir ein Kondom und die Kombinationspille vor.",
+          "K+Cu": "Ich schlage dir ein Kondom und die Kupferspirale vor.",
+          "K+H": "Ich schlage dir ein Kondom und die Hormonspirale vor."
         },
         "replies": {
           "K": "Das ist ohne zusätzliche Hormone. Was müsste ich bei der Anwendung beachten?",
@@ -637,7 +637,7 @@ const FALLAKTE = {
           "H": "Auch die Hormonspirale enthält Hormone. Die möchte ich nicht.",
           "K+P": "Die Kombination enthält die Pille. Ich möchte ohne zusätzliche Hormone verhüten.",
           "K+Cu": "Ihr nennt eine hormonfreie Kombination. Was spricht für beide Teile?",
-          "K+H": "In eurem Vorschlag ist eine Hormonspirale. Mein Wunsch ist aber hormonfrei."
+          "K+H": "In deinem Vorschlag ist eine Hormonspirale. Mein Wunsch ist aber hormonfrei."
         },
         "hints": {
           "K": [
@@ -719,13 +719,13 @@ const FALLAKTE = {
           "AHR": "Prüfe den Unterschied zwischen lang wirkend und dauerhaft. Begründe eine Gewichtung."
         },
         "options": {
-          "K": "Wir möchten dir ein Kondom vorschlagen.",
-          "P": "Wir möchten dir die Kombinationspille vorschlagen.",
-          "Cu": "Wir möchten dir die Kupferspirale vorschlagen.",
-          "H": "Wir möchten dir die Hormonspirale vorschlagen.",
-          "K+P": "Wir möchten dir ein Kondom und die Kombinationspille vorschlagen.",
-          "K+Cu": "Wir möchten dir ein Kondom und die Kupferspirale vorschlagen.",
-          "K+H": "Wir möchten dir ein Kondom und die Hormonspirale vorschlagen."
+          "K": "Ich möchte dir ein Kondom vorschlagen.",
+          "P": "Ich möchte dir die Kombinationspille vorschlagen.",
+          "Cu": "Ich möchte dir die Kupferspirale vorschlagen.",
+          "H": "Ich möchte dir die Hormonspirale vorschlagen.",
+          "K+P": "Ich möchte dir ein Kondom und die Kombinationspille vorschlagen.",
+          "K+Cu": "Ich möchte dir ein Kondom und die Kupferspirale vorschlagen.",
+          "K+H": "Ich möchte dir ein Kondom und die Hormonspirale vorschlagen."
         },
         "replies": {
           "K": "Beim Sex müssten wir dann immer daran denken. Das können wir uns vorstellen.",
@@ -829,7 +829,7 @@ const FALLAKTE = {
           "P": "Meine Sorge vor der Einlage ist kein Ja zur Pille. Hormone möchte ich nicht.",
           "Cu": "Eine Einlage habe ich noch nicht ausgeschlossen. Aber ich möchte vorher Beratung.",
           "H": "Die Unsicherheit bei der Einlage ändert nichts an meinem Nein zu Hormonen.",
-          "K+P": "Die Pille bleibt für mich ausgeschlossen. Bitte prüft die andere Möglichkeit.",
+          "K+P": "Die Pille bleibt für mich ausgeschlossen. Bitte prüfe die andere Möglichkeit.",
           "K+Cu": "Diese Möglichkeit würde ich nach Beratung abwägen. Sagt mir bitte auch, was dagegen spricht.",
           "K+H": "Mein Nein zu zusätzlichen Hormonen gilt weiterhin."
         },
@@ -895,11 +895,11 @@ const FALLAKTE = {
           ],
           "ESA": [
             "Wir sind fest zusammen und vertrauen uns. Trotzdem möchte ich auch das STI-Risiko verringern.",
-            "Wie passt das zu eurem Vorschlag?"
+            "Wie passt das zu deinem Vorschlag?"
           ],
           "MSA": [
             "Eine feste Beziehung ersetzt für mich keinen Infektionsschutz. Auch dieses Risiko möchte ich verringern.",
-            "Prüft euren Vorschlag darauf."
+            "Prüfe deinen Vorschlag darauf."
           ],
           "AHR": [
             "Vertrauen ist mir wichtig, aber es ist kein medizinischer Nachweis eines Infektionsstatus.",
@@ -913,18 +913,18 @@ const FALLAKTE = {
           "AHR": "Begründe, welche Aussagen zum Schutz durch die Angaben gedeckt sind und welche nicht."
         },
         "options": {
-          "K": "Wir würden dir ein Kondom vorschlagen.",
-          "P": "Wir würden dir die Kombinationspille vorschlagen.",
-          "Cu": "Wir würden dir die Kupferspirale vorschlagen.",
-          "H": "Wir würden dir die Hormonspirale vorschlagen.",
-          "K+P": "Wir würden dir ein Kondom und die Kombinationspille vorschlagen.",
-          "K+Cu": "Wir würden dir ein Kondom und die Kupferspirale vorschlagen.",
-          "K+H": "Wir würden dir ein Kondom und die Hormonspirale vorschlagen."
+          "K": "Ich würde dir ein Kondom vorschlagen.",
+          "P": "Ich würde dir die Kombinationspille vorschlagen.",
+          "Cu": "Ich würde dir die Kupferspirale vorschlagen.",
+          "H": "Ich würde dir die Hormonspirale vorschlagen.",
+          "K+P": "Ich würde dir ein Kondom und die Kombinationspille vorschlagen.",
+          "K+Cu": "Ich würde dir ein Kondom und die Kupferspirale vorschlagen.",
+          "K+H": "Ich würde dir ein Kondom und die Hormonspirale vorschlagen."
         },
         "replies": {
           "K": "Erklärt bitte auch, welche Grenzen das Kondom hat.",
           "P": "Die Pille möchte ich nicht. Und meine Frage zum Infektionsschutz ist damit noch offen.",
-          "Cu": "Was ist bei eurem Vorschlag mit meinem Wunsch nach Infektionsschutz?",
+          "Cu": "Was ist bei deinem Vorschlag mit meinem Wunsch nach Infektionsschutz?",
           "H": "Die Hormonspirale möchte ich wegen der Hormone nicht. Und wie wäre das mit dem Schutz vor Infektionen?",
           "K+P": "Das Kondom ist möglich. Die Pille ist für mich weiter keine Option.",
           "K+Cu": "Erklärt, welche Aufgabe jeder Teil übernimmt. Meine Zustimmung zur Spirale ist noch offen.",
@@ -991,7 +991,7 @@ const FALLAKTE = {
             "Welchen Vorschlag macht ihr mir? Nennt auch einen Nachteil."
           ],
           "ESA": [
-            "Bitte nennt mir euren Vorschlag und einen Grund, der besonders für mich zählt.",
+            "Bitte nennt mir deinen Vorschlag und einen Grund, der besonders für mich zählt.",
             "Welche andere Möglichkeit wäre ebenfalls vertretbar? Ich entscheide nach Beratung selbst."
           ],
           "MSA": [
@@ -1010,22 +1010,22 @@ const FALLAKTE = {
           "AHR": "Prüfe, wie eine andere Gewichtung oder Celinas Entscheidung eure Empfehlung verändert."
         },
         "options": {
-          "K": "Wir schlagen dir ein Kondom vor.",
-          "P": "Wir schlagen dir die Kombinationspille vor.",
-          "Cu": "Wir schlagen dir die Kupferspirale vor.",
-          "H": "Wir schlagen dir die Hormonspirale vor.",
-          "K+P": "Wir schlagen dir ein Kondom und die Kombinationspille vor.",
-          "K+Cu": "Wir schlagen dir ein Kondom und die Kupferspirale vor.",
-          "K+H": "Wir schlagen dir ein Kondom und die Hormonspirale vor."
+          "K": "Ich schlage dir ein Kondom vor.",
+          "P": "Ich schlage dir die Kombinationspille vor.",
+          "Cu": "Ich schlage dir die Kupferspirale vor.",
+          "H": "Ich schlage dir die Hormonspirale vor.",
+          "K+P": "Ich schlage dir ein Kondom und die Kombinationspille vor.",
+          "K+Cu": "Ich schlage dir ein Kondom und die Kupferspirale vor.",
+          "K+H": "Ich schlage dir ein Kondom und die Hormonspirale vor."
         },
         "replies": {
-          "K": "Begründet euren Vorschlag bitte mit meinen Wünschen und einer Fachinformation.",
-          "P": "Die Pille widerspricht meinem Nein zu zusätzlichen Hormonen. Prüft euren Vorschlag noch einmal.",
+          "K": "Begründet deinen Vorschlag bitte mit meinen Wünschen und einer Fachinformation.",
+          "P": "Die Pille widerspricht meinem Nein zu zusätzlichen Hormonen. Prüfe deinen Vorschlag noch einmal.",
           "Cu": "Ich möchte erst klären, ob sie medizinisch passt und ob ich das Einsetzen will. Wie berücksichtige ich bis dahin den Infektionsschutz?",
           "H": "Ich möchte ohne zusätzliche Hormone verhüten. Das gilt auch für die Hormonspirale.",
-          "K+P": "Die Pille möchte ich nicht. Prüft euren Vorschlag vor dem Aufschreiben.",
+          "K+P": "Die Pille möchte ich nicht. Prüfe deinen Vorschlag vor dem Aufschreiben.",
           "K+Cu": "Die Kupferspirale kommt nur infrage, wenn ich nach Beratung zustimme. Begründet auch, warum ihr sie zusätzlich vorschlagt.",
-          "K+H": "Meine Grenze zu Hormonen bleibt bestehen. Prüft den Vorschlag noch einmal."
+          "K+H": "Meine Grenze zu Hormonen bleibt bestehen. Prüfe den Vorschlag noch einmal."
         },
         "hints": {
           "K": [
@@ -1064,7 +1064,7 @@ const FALLAKTE = {
             "Ob sie für meinen Körper passt. Und ob ich sie nach der Beratung möchte."
           ],
           [
-            "Welche Aufgabe wäre im Alltag für euch möglich?",
+            "Welche Aufgabe könntest du im Alltag übernehmen?",
             "Ein Kondom bei jedem Sex wäre für uns möglich."
           ]
         ],
@@ -1091,7 +1091,7 @@ const FALLAKTE = {
           ],
           "ESA": [
             "Hi, ich bin Tom, 17. Verhütung soll nicht nur Aufgabe meiner Freundin sein.",
-            "Ich suche eine Methode, die ich selbst anwenden kann. Welche schlagt ihr vor?"
+            "Ich suche eine Methode, die ich selbst anwenden kann. Welche schlägst du vor?"
           ],
           "MSA": [
             "Ich bin Tom, 17, und möchte selbst zur Verhütung beitragen.",
@@ -1110,13 +1110,13 @@ const FALLAKTE = {
           "AHR": "Prüfe körperliche Anwendungsvoraussetzungen und Entscheidungsrechte getrennt."
         },
         "options": {
-          "K": "Wir schlagen dir ein Kondom vor.",
-          "P": "Wir schlagen dir die Kombinationspille vor.",
-          "Cu": "Wir schlagen dir die Kupferspirale vor.",
-          "H": "Wir schlagen dir die Hormonspirale vor.",
-          "K+P": "Wir schlagen dir ein Kondom und die Kombinationspille vor.",
-          "K+Cu": "Wir schlagen dir ein Kondom und die Kupferspirale vor.",
-          "K+H": "Wir schlagen dir ein Kondom und die Hormonspirale vor."
+          "K": "Ich schlage dir ein Kondom vor.",
+          "P": "Ich schlage dir die Kombinationspille vor.",
+          "Cu": "Ich schlage dir die Kupferspirale vor.",
+          "H": "Ich schlage dir die Hormonspirale vor.",
+          "K+P": "Ich schlage dir ein Kondom und die Kombinationspille vor.",
+          "K+Cu": "Ich schlage dir ein Kondom und die Kupferspirale vor.",
+          "K+H": "Ich schlage dir ein Kondom und die Hormonspirale vor."
         },
         "replies": {
           "K": "Ein Kondom kann ich an meinem eigenen Körper benutzen. Das ist mir wichtig.",
@@ -1173,7 +1173,7 @@ const FALLAKTE = {
           "Tom fragt nach einer Methode für seinen eigenen Körper."
         ],
         "selfAdvice": "Für dich selbst schlagen wir ein Kondom vor.",
-        "selfAnswer": "Ein Kondom kann ich selbst benutzen. Was würdet ihr mir für meinen Körper vorschlagen?",
+        "selfAnswer": "Ein Kondom kann ich selbst benutzen. Was würdest du mir für meinen Körper vorschlagen?",
         "recap": "Tom ist 17. Er möchte bei der Verhütung selbst etwas tun."
       },
       {
@@ -1255,7 +1255,7 @@ const FALLAKTE = {
           ],
           "AHR": [
             "Ein Freund meint: „Studie B zeigt schon, dass das Mittel sicher vor einer Schwangerschaft schützt.“",
-            "Was sagen die Ergebnisse wirklich? Welche weitere Untersuchung würdet ihr vorschlagen?"
+            "Was sagen die Ergebnisse wirklich? Welche weitere Untersuchung würdest du vorschlagen?"
           ]
         },
         "task": {

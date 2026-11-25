@@ -92,3 +92,57 @@ def redigieren(bank):
                 frage(q,'unter „'+c['information'][0]['title']+'“',IMPULSE[code][0])
                 erkläre_fehler(q)
     assert applied==feedback.keys()
+    # Die Druckvorlage ist verbindlich. Diese Bearbeitung betrifft nur die
+    # Lesetexte und die digitalen Aufgaben, nie die Karten oder ihre Einträge.
+    for lesson in bank['levels'].values():
+        klartext(lesson['intro'])
+        for chapter in lesson['chapters']:
+            for key in ('questions','paperCheck','observationPrompt','information'):
+                if chapter.get(key):
+                    chapter[key]=klartext(chapter[key])
+            number=int(chapter['id'][0])
+            chapter['paperPrompt']=f'Kartenblatt · Seite {1 if number<=2 else 2} · '+chapter['paperPrompt']
+            if chapter.get('paperCheck'):
+                q=chapter['paperCheck']
+                q['screen']=f'Laufzettel · Seite {3 if number<=2 else 4} · '+q['screen'].replace('unter die Aussagen','in das Feld „Begründung“')
+
+
+KLARTEXT={
+    'Welche Zahl spricht unter vergleichbaren Bedingungen für weniger Schwangerschaften trotz Verhütung?':
+        'Zwei Gruppen verhüten gleich lange. Beide wenden ihre Methode wie vorgesehen an. Welcher Pearl-Index bedeutet weniger Schwangerschaften?',
+    'Unter vergleichbaren Bedingungen steht der kleinere Wert für einen zuverlässigeren Schwangerschaftsschutz.':
+        'Wenn die Methoden ähnlich angewendet und untersucht wurden, spricht der kleinere Wert für weniger Schwangerschaften.',
+    'unter vergleichbaren Bedingungen':'bei ähnlicher Anwendung und Untersuchung',
+    'Vergleiche den hauptsächlichen Wirkmechanismus mit dem der Pille und die Modellgrenze.':
+        'Vergleiche die Wirkung der Hormonspirale mit der Wirkung der Pille. Welche Wirkung zeigt das Bild? Welche zeigt es nicht?',
+    'Die Richtung ist vertauscht. Vergleiche die kleinere mit der größeren Zahl.':'Beim Pearl-Index zählen Schwangerschaften trotz Verhütung. Wo wurden weniger gezählt?',
+    'Das ist keine Kondomwirkung. Lies die Stelle zum Infektionsschutz.':'Das Kondom bedeckt einen Teil der Haut. Über welche Hautstellen können Erreger trotzdem übertragen werden?',
+    'Der Sitz ist verändert. Denke an die Voraussetzung für die Barriere.':'Wenn das Kondom abrutscht, kann Sperma an der Hülle vorbeigelangen.',
+    'Die regelmäßige Einnahme schafft keine Erregerbarriere.':'Auch bei regelmäßiger Einnahme hält die Pille Krankheitserreger beim Sex nicht zurück.',
+    'Die Pille wirkt auf den Zyklus und bildet keine Erregerbarriere.':'Die Pille wirkt auf den Zyklus. Sie hält Krankheitserreger beim Sex nicht zurück.',
+    'Die Kupferwirkung betrifft Spermien und beweist keine Erregerbarriere.':'Kupfer wirkt auf Spermien. Das sagt nichts darüber aus, ob Krankheitserreger übertragen werden.',
+    'Hemmung des Eisprungs verhindert eine Befruchtung; keine Erregerbarriere.':'Ohne Eisprung wird keine Eizelle frei. Krankheitserreger können beim Sex trotzdem übertragen werden.',
+    'Es wird keine Eizelle zur Befruchtung freigesetzt; eine Erregerbarriere entsteht nicht.':'Es wird keine Eizelle frei. Krankheitserreger können trotzdem übertragen werden.',
+    'Keine STI-Risikominderung durch die Pille; eine Erregerbarriere fehlt.':'Die Pille schützt nicht vor Infektionen beim Sex. Sie hält keine Krankheitserreger zurück.',
+    'Kupfer wirkt auf Spermien; es gibt keine Erregerbarriere beim Sex.':'Kupfer wirkt auf Spermien. Die Kupferspirale hält beim Sex keine Krankheitserreger zurück.',
+    'Ein hoher Schwangerschaftsschutz beweist eine Erregerbarriere.':'Ein hoher Schutz vor Schwangerschaft beweist, dass die Methode auch Krankheitserreger zurückhält.',
+    'Spermienwirkung ist keine Erregerbarriere':'Eine Wirkung auf Spermien schützt nicht vor Krankheitserregern',
+    'Erregerübertragung ist ein anderer Vorgang. Trenne die beiden Ziele.':'Eine Befruchtung braucht Spermien. Eine Infektion entsteht durch Krankheitserreger. Worauf wirkt Kupfer?',
+    'Ungeklärte starke Schmerzen sollten nicht ignoriert werden. Lies den Hinweis am Kartenende.':'Bei starken Schmerzen ohne bekannte Ursache sollte eine Ärztin oder ein Arzt die Ursache klären.',
+    'Diese möglichen Veränderungen sind individuell.':'Bei manchen Menschen wird die Blutung schwächer. Sie verändert sich nicht bei allen gleich.',
+    'Das ist keine tägliche Anwendung. Schau auf das Bild der liegenden Spirale.':'Die Kupferspirale liegt in der Gebärmutter. Wer darf sie dort einsetzen?',
+    'Die Spirale ist keine tägliche äußerliche Methode. Sieh dir das Modell an.':'Suche auf dem Bild die Gebärmutter. Wo liegt die Spirale?',
+    'Eine mögliche Linderung ist keine Garantie.':'Schmerzen können nachlassen. Das passiert nicht bei jeder Person.',
+    'Spermienwirkung und Infektionsschutz sind verschieden.':'Der Schleim erschwert Spermien den Weg. Beim Sex können trotzdem Krankheitserreger übertragen werden.'
+}
+
+def klartext(value):
+    if isinstance(value,dict):
+        for key,text in value.items():
+            value[key]=klartext(text)
+    elif isinstance(value,list):
+        return [klartext(text) for text in value]
+    elif isinstance(value,str):
+        for old,new in KLARTEXT.items():
+            value=value.replace(old,new)
+    return value

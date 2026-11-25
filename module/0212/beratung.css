@@ -53,3 +53,5 @@
 }
 
 #beratung .abschnittshinweis{margin:0 0 .55rem;padding:.4rem .6rem;border-left:.18rem solid #728d72;background:#eff3eb}
+
+#beratung legend, #beratung p, #material-dialog p {white-space:pre-line}

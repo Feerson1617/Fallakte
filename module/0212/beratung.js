@@ -280,7 +280,7 @@ window.Beratung = (() => {
     details.id='papier-ersatz';
     details.open=draft.anchorsOpen;
     details.ontoggle=()=>{if (details.isConnected) draft.anchorsOpen=details.open;};
-    if (draft.recheck) section.append(element('p','','Laufzettel „'+stage().title+'“: Lies deine Begründung. Passt sie zur neuen Empfehlung? Ergänze sie bei Bedarf. Gib den Buchstaben erneut ein.'));
+    if (draft.recheck) section.append(element('p','','Laufzettel „'+stage().title+'“: Lies deine Begründung. Passt sie zur neuen Empfehlung? Wenn dein neuer Rat einen anderen Grund hat, ergänze ihn. Gib den Buchstaben erneut ein.'));
     else section.append(element('p','',task().task),element('p','',task().paperPrompt));
     details.append(element('summary','',task().paperFallback),element('p','',task().task));
     for (const [letter,text] of Object.entries(stage().anchors)) details.append(element('p','',letter+' · '+text));

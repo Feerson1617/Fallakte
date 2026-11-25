@@ -123,6 +123,6 @@ def build():
         '## Papierweg und Ausfallweg\n\n'+bank['analog']+' '+bank['paperRecovery']+'\n\n'+
         'Die Felder „Meine erste Antwort“ und „Nach dem Prüfen“ bleiben getrennt. '+
         'Die Medienwechsel- und Papierfeldmatrix ist verbindlich für Feldnamen, Aufträge und Rückkehrziele. '+
-        'Bei Lauras Frage halten beide zuerst unabhängig ihr Anliegen, den Fakt und ihre Einschätzung fest.\n\n'+markdown(bank)+'\n')
+        'Bei Lauras Frage bleiben die persönliche erste Antwort und die spätere Ergänzung getrennt lesbar.\n\n'+markdown(bank)+'\n')
     print(OUT)
 if __name__=='__main__':build()

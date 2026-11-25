@@ -3,7 +3,7 @@
   "paperFallbackInstruction": "Schreibe in eigenen Worten, warum du diese Verhütung empfiehlst. Gib A, B oder C für die richtige Aussage in das Buchstabenfeld ein.",
   "baseCommit": "ec94147fd8d61442305a0281f7df032f3162362c",
   "caseId": "Laura",
-  "opening": "Hey, ich bin Laura, 19. Ich möchte möglichst sicher verhindern, dass ich schwanger werde. Ich habe eine Latexallergie. Und bei Verhütung mit Hormonen bin ich unsicher, weil ich mich damit nicht gut auskenne. Was würdet ihr mir empfehlen?",
+  "opening": "Hey, ich bin Laura, 19. Ich möchte möglichst sicher verhindern, dass ich schwanger werde. Ich habe eine Latexallergie. Und bei Verhütung mit Hormonen bin ich unsicher, weil ich mich damit nicht gut auskenne. Was würdest du mir empfehlen?",
   "levels": {
     "Foerder": "Förder",
     "ESA": "ESA",
@@ -327,7 +327,7 @@
         "Foerder": {
           "id": "Foerder",
           "taskId": "Laura-L01-Foerder",
-          "message": "Hi, ich bin Laura, 19. Ich möchte nicht schwanger werden. Ich habe eine Latexallergie. Bei Hormonen kenne ich mich noch nicht gut aus. Was meint ihr zu eurem ersten Rat?",
+          "message": "Hi, ich bin Laura, 19. Ich möchte nicht schwanger werden. Ich habe eine Latexallergie. Bei Hormonen kenne ich mich noch nicht gut aus. Was meinst du zu deinem ersten Rat?",
           "task": "Welche Aussage erklärt, ob die gewählte Verhütung zu Lauras Latexallergie passt?",
           "primary": [
             "K",
@@ -652,8 +652,8 @@
               "questions": [
                 {
                   "id": "L01.K+H.anliegen",
-                  "text": "Was wäre dir wichtig, wenn wir dir Kondom und Hormonspirale erklären?",
-                  "answer": "Warum ihr beide erwägt und wozu das Hormon in der Spirale gut sein soll."
+                  "text": "Was wäre dir wichtig, wenn ich dir Kondom und Hormonspirale erkläre?",
+                  "answer": "Warum du beide erwägst und wozu das Hormon in der Spirale gut sein soll."
                 }
               ],
               "hints": [
@@ -713,8 +713,8 @@
         "ESA": {
           "id": "ESA",
           "taskId": "Laura-L01-ESA",
-          "message": "Ihr kennt meinen ersten Wunsch: Ich möchte möglichst sicher verhüten. Ich habe eine Latexallergie und weiß noch wenig über Hormone. Was meint ihr zu eurem ersten Rat?",
-          "task": "Warum passt deine gewählte Verhütung zu Lauras Latexallergie?",
+          "message": "Du kennst meinen ersten Wunsch: Ich möchte möglichst sicher verhüten. Ich habe eine Latexallergie und weiß noch wenig über Hormone. Was meinst du zu deinem ersten Rat?",
+          "task": "Passt die gewählte Verhütung zu Lauras Latexallergie? Woran erkennst du das?",
           "primary": [
             "K",
             "Cu",
@@ -1099,8 +1099,8 @@
               "questions": [
                 {
                   "id": "L01.K+H.anliegen",
-                  "text": "Was wäre dir wichtig, wenn wir dir Kondom und Hormonspirale erklären?",
-                  "answer": "Warum ihr beide erwägt und wozu das Hormon in der Spirale gut sein soll."
+                  "text": "Was wäre dir wichtig, wenn ich dir Kondom und Hormonspirale erkläre?",
+                  "answer": "Warum du beide erwägst und wozu das Hormon in der Spirale gut sein soll."
                 }
               ],
               "hints": [
@@ -1176,7 +1176,7 @@
         "MSA": {
           "id": "MSA",
           "taskId": "Laura-L01-MSA",
-          "message": "Ich möchte möglichst sicher verhüten. Bei meiner Latexallergie und den Fragen zu Hormonen: Würdet ihr mir euren ersten Rat weiterhin geben?",
+          "message": "Ich möchte möglichst sicher verhüten. Bei meiner Latexallergie und den Fragen zu Hormonen: Würdest du mir deinen ersten Rat weiterhin geben?",
           "task": "Erkläre, was die Latexallergie für deinen ersten Rat bedeutet. Du darfst deinen Rat beibehalten, wenn du ihn biologisch begründest.",
           "primary": [
             "K",
@@ -1187,7 +1187,7 @@
             "K+Cu",
             "K+H"
           ],
-          "paperPrompt": "Laufzettel „Laura 1 – Latexallergie“: Beantworte die Frage über den Aussagen auf den freien Zeilen. Kreise A, B oder C ein.",
+          "paperPrompt": "Laufzettel · Seite 1 · „Laura 1 – Latexallergie“: Beantworte die Frage über den Aussagen auf den freien Zeilen. Kreise A, B oder C ein.",
           "returnPrompt": "Gib deinen Buchstaben am iPad ein. Tippe auf „Code prüfen“. Nach der richtigen Auswahl erscheint „Nachricht senden“.",
           "strategies": {
             "K": {
@@ -1380,8 +1380,8 @@
               "questions": [
                 {
                   "id": "L01.K+H.anliegen",
-                  "text": "Was wäre dir wichtig, wenn wir dir Kondom und Hormonspirale erklären?",
-                  "answer": "Warum ihr beide erwägt und wozu das Hormon in der Spirale gut sein soll."
+                  "text": "Was wäre dir wichtig, wenn ich dir Kondom und Hormonspirale erkläre?",
+                  "answer": "Warum du beide erwägst und wozu das Hormon in der Spirale gut sein soll."
                 }
               ],
               "hints": [
@@ -1427,7 +1427,7 @@
         "AHR": {
           "id": "AHR",
           "taskId": "Laura-L01-AHR",
-          "message": "Ihr kennt meine Latexallergie und meine Unsicherheit bei Hormonen. Was bedeutet das für euren ersten Rat zur Verhütung?",
+          "message": "Du kennst meine Latexallergie und meine Unsicherheit bei Hormonen. Was bedeutet das für deinen ersten Rat zur Verhütung?",
           "task": "Laura verträgt Latex nicht. Erkläre den Unterschied zwischen dem Material und der Methode. Was bedeutet das für deine Empfehlung?",
           "primary": [
             "K",
@@ -1438,7 +1438,7 @@
             "K+Cu",
             "K+H"
           ],
-          "paperPrompt": "Laufzettel „Laura 1 – Latexallergie“: Beantworte die Frage über den Aussagen auf den freien Zeilen. Kreise A, B oder C ein.",
+          "paperPrompt": "Laufzettel · Seite 1 · „Laura 1 – Latexallergie“: Beantworte die Frage über den Aussagen auf den freien Zeilen. Kreise A, B oder C ein.",
           "returnPrompt": "Gib deinen Buchstaben am iPad ein. Tippe auf „Code prüfen“. Nach der richtigen Auswahl erscheint „Nachricht senden“.",
           "strategies": {
             "K": {
@@ -1631,8 +1631,8 @@
               "questions": [
                 {
                   "id": "L01.K+H.anliegen",
-                  "text": "Was wäre dir wichtig, wenn wir dir Kondom und Hormonspirale erklären?",
-                  "answer": "Warum ihr beide erwägt und wozu das Hormon in der Spirale gut sein soll."
+                  "text": "Was wäre dir wichtig, wenn ich dir Kondom und Hormonspirale erkläre?",
+                  "answer": "Warum du beide erwägst und wozu das Hormon in der Spirale gut sein soll."
                 }
               ],
               "hints": [
@@ -1728,7 +1728,7 @@
         "Foerder": {
           "id": "Foerder",
           "taskId": "Laura-L02-Foerder",
-          "message": "Noch etwas ist mir wichtig. Ich möchte mich beim Sex auch vor Infektionen schützen. Was ratet ihr mir jetzt?",
+          "message": "Noch etwas ist mir wichtig. Ich möchte mich beim Sex auch vor Infektionen schützen. Was rätst du mir jetzt?",
           "task": "Kann deine Verhütung eine Schwangerschaft verhindern? Senkt sie auch das Risiko von Infektionen beim Sex? Wähle die richtige Aussage.",
           "primary": [
             "K",
@@ -2143,7 +2143,7 @@
         "ESA": {
           "id": "ESA",
           "taskId": "Laura-L02-ESA",
-          "message": "Mir ist noch etwas wichtig: Ich möchte beim Sex auch mein Risiko für sexuell übertragbare Infektionen senken. Was würdet ihr mir jetzt raten?",
+          "message": "Mir ist noch etwas wichtig: Ich möchte beim Sex auch mein Risiko für sexuell übertragbare Infektionen senken. Was würdest du mir jetzt raten?",
           "task": "Erkläre getrennt: Wie gut schützt deine Verhütung vor einer Schwangerschaft? Was leistet sie gegen Infektionen beim Sex?",
           "primary": [
             "K",
@@ -2629,7 +2629,7 @@
         "MSA": {
           "id": "MSA",
           "taskId": "Laura-L02-MSA",
-          "message": "An eines habe ich vorhin nicht gedacht: Ich möchte auch das Risiko senken, mich beim Sex mit einer Infektion anzustecken. Was würdet ihr mir jetzt raten?",
+          "message": "An eines habe ich vorhin nicht gedacht: Ich möchte auch das Risiko senken, mich beim Sex mit einer Infektion anzustecken. Was würdest du mir jetzt raten?",
           "task": "Laura möchte sich auch vor Infektionen beim Sex schützen. Erkläre, welche biologische Wirkung deiner Methode oder Kombination dafür wichtig ist.",
           "primary": [
             "K",
@@ -2640,7 +2640,7 @@
             "K+Cu",
             "K+H"
           ],
-          "paperPrompt": "Laufzettel „Laura 2 – Zwei Schutzziele“: Beantworte die Frage über den Aussagen auf den freien Zeilen. Kreise A, B oder C ein.",
+          "paperPrompt": "Laufzettel · Seite 2 · „Laura 2 – Zwei Schutzziele“: Beantworte die Frage über den Aussagen auf den freien Zeilen. Kreise A, B oder C ein.",
           "returnPrompt": "Gib deinen Buchstaben am iPad ein. Tippe auf „Code prüfen“. Nach der richtigen Auswahl erscheint „Nachricht senden“.",
           "strategies": {
             "K": {
@@ -2900,7 +2900,7 @@
         "AHR": {
           "id": "AHR",
           "taskId": "Laura-L02-AHR",
-          "message": "Ich möchte nicht nur eine Schwangerschaft vermeiden. Mir ist auch wichtig, beim Sex das Risiko einer Infektion zu senken. Wie sieht euer Rat jetzt aus?",
+          "message": "Ich möchte nicht nur eine Schwangerschaft vermeiden. Mir ist auch wichtig, beim Sex das Risiko einer Infektion zu senken. Wie sieht dein Rat jetzt aus?",
           "task": "Erkläre getrennt, welche Methode vor Schwangerschaft schützt und welche das Risiko von STI senkt. Welche Grenze oder Bedingung bleibt?",
           "primary": [
             "K",
@@ -2911,7 +2911,7 @@
             "K+Cu",
             "K+H"
           ],
-          "paperPrompt": "Laufzettel „Laura 2 – Zwei Schutzziele“: Beantworte die Frage über den Aussagen auf den freien Zeilen. Kreise A, B oder C ein.",
+          "paperPrompt": "Laufzettel · Seite 2 · „Laura 2 – Zwei Schutzziele“: Beantworte die Frage über den Aussagen auf den freien Zeilen. Kreise A, B oder C ein.",
           "returnPrompt": "Gib deinen Buchstaben am iPad ein. Tippe auf „Code prüfen“. Nach der richtigen Auswahl erscheint „Nachricht senden“.",
           "strategies": {
             "K": {
@@ -4126,7 +4126,7 @@
             "K+Cu",
             "K+H"
           ],
-          "paperPrompt": "Laufzettel „Laura 3 – Hormone und Alltag“: Beantworte die Frage über den Aussagen auf den freien Zeilen. Kreise A, B oder C ein.",
+          "paperPrompt": "Laufzettel · Seite 3 · „Laura 3 – Hormone und Alltag“: Beantworte die Frage über den Aussagen auf den freien Zeilen. Kreise A, B oder C ein.",
           "returnPrompt": "Gib deinen Buchstaben am iPad ein. Tippe auf „Code prüfen“. Nach der richtigen Auswahl erscheint „Nachricht senden“.",
           "strategies": {
             "K": {
@@ -4392,7 +4392,7 @@
             "K+Cu",
             "K+H"
           ],
-          "paperPrompt": "Laufzettel „Laura 3 – Hormone und Alltag“: Beantworte die Frage über den Aussagen auf den freien Zeilen. Kreise A, B oder C ein.",
+          "paperPrompt": "Laufzettel · Seite 3 · „Laura 3 – Hormone und Alltag“: Beantworte die Frage über den Aussagen auf den freien Zeilen. Kreise A, B oder C ein.",
           "returnPrompt": "Gib deinen Buchstaben am iPad ein. Tippe auf „Code prüfen“. Nach der richtigen Auswahl erscheint „Nachricht senden“.",
           "strategies": {
             "K": {
@@ -5640,7 +5640,7 @@
             "K+Cu",
             "K+H"
           ],
-          "paperPrompt": "Laufzettel „Laura 4 – Schmerzen und Einlage“: Beantworte die Frage über den Aussagen auf den freien Zeilen. Kreise A, B oder C ein.",
+          "paperPrompt": "Laufzettel · Seite 4 · „Laura 4 – Schmerzen und Einlage“: Beantworte die Frage über den Aussagen auf den freien Zeilen. Kreise A, B oder C ein.",
           "returnPrompt": "Gib deinen Buchstaben am iPad ein. Tippe auf „Code prüfen“. Nach der richtigen Auswahl erscheint „Nachricht senden“.",
           "strategies": {
             "K": {
@@ -5913,7 +5913,7 @@
         "AHR": {
           "id": "AHR",
           "taskId": "Laura-L04-AHR",
-          "message": "Meine Regelschmerzen sind stark. Was dahintersteckt, wurde noch nicht untersucht. Das Einsetzen einer Spirale macht mir Sorgen. Was würdet ihr mir unter diesen Umständen raten?",
+          "message": "Meine Regelschmerzen sind stark. Was dahintersteckt, wurde noch nicht untersucht. Das Einsetzen einer Spirale macht mir Sorgen. Was würdest du mir unter diesen Umständen raten?",
           "task": "Vergleiche den Nutzen deiner Verhütung mit möglichen Beschwerden. Unter welcher medizinischen oder persönlichen Bedingung würdest du Laura etwas anderes empfehlen?",
           "primary": [
             "K",
@@ -5924,7 +5924,7 @@
             "K+Cu",
             "K+H"
           ],
-          "paperPrompt": "Laufzettel „Laura 4 – Schmerzen und Einlage“: Beantworte die Frage über den Aussagen auf den freien Zeilen. Kreise A, B oder C ein.",
+          "paperPrompt": "Laufzettel · Seite 4 · „Laura 4 – Schmerzen und Einlage“: Beantworte die Frage über den Aussagen auf den freien Zeilen. Kreise A, B oder C ein.",
           "returnPrompt": "Gib deinen Buchstaben am iPad ein. Tippe auf „Code prüfen“. Nach der richtigen Auswahl erscheint „Nachricht senden“.",
           "strategies": {
             "K": {
@@ -6249,8 +6249,8 @@
         "Foerder": {
           "id": "Foerder",
           "taskId": "Laura-L05-Foerder",
-          "message": "Jetzt kennt ihr meine Wünsche und Sorgen. Was würdet ihr mir raten?",
-          "task": "Auf dem Laufzettel unter „Mein Schlussrat“: Schreibe, welche Verhütung du Laura jetzt empfiehlst. Nenne einen Wunsch oder eine Sorge, die du neu erfahren hast. Erkläre mit deinen Infokarten, warum deine Methode dazu passt. Vergleiche deinen ersten Rat mit dem Schlussrat.",
+          "message": "Jetzt kennst du meine Wünsche und Sorgen. Was würdest du mir raten?",
+          "task": "Laufzettel · Seite 5 · „Mein Schlussrat“\n1. Schreibe deine Empfehlung für Laura auf.\n2. Nenne einen Wunsch oder eine Sorge, die du im Chat erfahren hast.\n3. Erkläre mit der Infokarte, was deine Methode dafür leisten kann.\n4. Vergleiche mit deinem ersten Rat. Was erklärst du jetzt anders oder genauer?",
           "primary": [
             "K",
             "K+Cu"
@@ -6498,7 +6498,7 @@
                   "section": "sti"
                 }
               ],
-              "reply": "Ich verstehe, wozu ihr beides vorschlagt. Ich muss noch klären, ob ich die Pille möchte.",
+              "reply": "Ich verstehe, wozu du beides vorschlägst. Ich muss noch klären, ob ich die Pille möchte.",
               "questions": [
                 {
                   "id": "L05.K+P.anliegen",
@@ -6679,8 +6679,8 @@
         "ESA": {
           "id": "ESA",
           "taskId": "Laura-L05-ESA",
-          "message": "Was würdet ihr mir jetzt raten, wenn ihr an meine Wünsche und Sorgen denkt?",
-          "task": "Auf dem Laufzettel unter „Mein Schlussrat“: Erkläre mit der Wirkung deiner Methode, warum deine Empfehlung zu einem neuen Wunsch oder einer neuen Sorge von Laura passt. Nenne eine Grenze oder Bedingung. Vergleiche deine erste und letzte Begründung.",
+          "message": "Was würdest du mir jetzt raten, wenn du an meine Wünsche und Sorgen denkst?",
+          "task": "Laufzettel · Seite 5 · „Mein Schlussrat“\n1. Schreibe deine Empfehlung für Laura auf.\n2. Erkläre mit der Wirkung der Methode, wie du einen neuen Wunsch oder eine Sorge berücksichtigst.\n3. Nenne eine Grenze oder eine Bedingung.\n4. Vergleiche deine erste und letzte Begründung.",
           "primary": [
             "K",
             "K+P",
@@ -7103,7 +7103,7 @@
                   "section": "einlage"
                 }
               ],
-              "reply": "Jetzt weiß ich, warum ihr das Kondom und die Hormonspirale zusammen erwägt. Über die Einlage möchte ich nach der Beratung selbst entscheiden.",
+              "reply": "Jetzt weiß ich, warum du das Kondom und die Hormonspirale zusammen erwägst. Über die Einlage möchte ich nach der Beratung selbst entscheiden.",
               "questions": [
                 {
                   "id": "L05.K+H.anliegen",
@@ -7180,8 +7180,8 @@
         "MSA": {
           "id": "MSA",
           "taskId": "Laura-L05-MSA",
-          "message": "Ihr kennt meinen Alltag und meine Sorgen. Was spricht aus eurer Sicht jetzt für euren Rat?",
-          "task": "Auf dem Laufzettel unter „Mein Schlussrat“: Begründe mit einer biologischen Information, warum deine Empfehlung zu einem neuen Wunsch oder einer neuen Sorge von Laura passt. Erkläre kurz, wann eine andere Methode infrage käme. Vergleiche deine erste und letzte Begründung.",
+          "message": "Du kennst meinen Alltag und meine Sorgen. Was spricht aus deiner Sicht jetzt für deinen Rat?",
+          "task": "Laufzettel · Seite 5 · „Mein Schlussrat“\n1. Begründe deine Empfehlung mit einer biologischen Information und einem neuen Wunsch oder einer Sorge von Laura.\n2. Erkläre, wann eine andere Methode infrage käme.\n3. Vergleiche deine erste und letzte Begründung.",
           "primary": [
             "K",
             "P",
@@ -7191,7 +7191,7 @@
             "K+Cu",
             "K+H"
           ],
-          "paperPrompt": "Laufzettel „Laura 5 – Mein Schlussrat“: Lies deinen Eintrag „Mein Schlussrat“. Kreise A, B oder C ein.",
+          "paperPrompt": "Laufzettel · Seite 5 · „Laura 5 – Mein Schlussrat“: Lies deinen Eintrag „Mein Schlussrat“. Kreise A, B oder C ein.",
           "returnPrompt": "Gib deinen Buchstaben am iPad ein. Tippe auf „Code prüfen“. Nach der richtigen Auswahl erscheint „Nachricht senden“.",
           "strategies": {
             "K": {
@@ -7419,7 +7419,7 @@
                   "section": "einlage"
                 }
               ],
-              "reply": "Jetzt weiß ich, warum ihr das Kondom und die Hormonspirale zusammen erwägt. Über die Einlage möchte ich nach der Beratung selbst entscheiden.",
+              "reply": "Jetzt weiß ich, warum du das Kondom und die Hormonspirale zusammen erwägst. Über die Einlage möchte ich nach der Beratung selbst entscheiden.",
               "questions": [
                 {
                   "id": "L05.K+H.anliegen",
@@ -7466,8 +7466,8 @@
         "AHR": {
           "id": "AHR",
           "taskId": "Laura-L05-AHR",
-          "message": "Ihr kennt jetzt meine Wünsche und meine offenen Fragen. Wie würde euer Rat für mich aussehen?",
-          "task": "Auf dem Laufzettel unter „Mein Schlussrat“: Vergleiche zwei Wünsche oder Sorgen von Laura. Erkläre mit biologischen Informationen, welcher für deinen Rat wichtiger ist und wann deine Empfehlung oder eine andere Methode infrage käme. Vergleiche deine erste und letzte Begründung.",
+          "message": "Du kennst jetzt meine Wünsche und meine offenen Fragen. Wie würde dein Rat für mich aussehen?",
+          "task": "Laufzettel · Seite 5 · „Mein Schlussrat“\n1. Vergleiche zwei Wünsche oder Sorgen von Laura.\n2. Begründe mit biologischen Informationen, welcher für deinen Rat wichtiger ist. Wann käme eine andere Methode infrage?\n3. Vergleiche deine erste und letzte Begründung.",
           "primary": [
             "K",
             "P",
@@ -7477,7 +7477,7 @@
             "K+Cu",
             "K+H"
           ],
-          "paperPrompt": "Laufzettel „Laura 5 – Mein Schlussrat“: Lies deinen Eintrag „Mein Schlussrat“. Kreise A, B oder C ein.",
+          "paperPrompt": "Laufzettel · Seite 5 · „Laura 5 – Mein Schlussrat“: Lies deinen Eintrag „Mein Schlussrat“. Kreise A, B oder C ein.",
           "returnPrompt": "Gib deinen Buchstaben am iPad ein. Tippe auf „Code prüfen“. Nach der richtigen Auswahl erscheint „Nachricht senden“.",
           "strategies": {
             "K": {
@@ -7705,7 +7705,7 @@
                   "section": "einlage"
                 }
               ],
-              "reply": "Jetzt weiß ich, warum ihr das Kondom und die Hormonspirale zusammen erwägt. Über die Einlage möchte ich nach der Beratung selbst entscheiden.",
+              "reply": "Jetzt weiß ich, warum du das Kondom und die Hormonspirale zusammen erwägst. Über die Einlage möchte ich nach der Beratung selbst entscheiden.",
               "questions": [
                 {
                   "id": "L05.K+H.anliegen",

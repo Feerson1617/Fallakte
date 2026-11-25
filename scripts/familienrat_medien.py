@@ -11,22 +11,29 @@ def compile_media(bank):
         orders={}
         for level in levels:
             action=by_level[level]
-            if key.startswith(('MU-', 'FR-')) and level in ('Förder','ESA'):
-                if key.endswith('-erst'):
-                    action='Kreuze allein links an: Meine erste Antwort.'
+            prefix=key.split('-')[0]
+            page={'MU':2,'FR':3,'LA':4,'GM':1,'VA':2}[prefix]
+            sheet='Vertiefungsbogen' if prefix in ('GM','VA') else 'Pflichtlernbogen'
+            if prefix!='LA':
+                topic={'MU':'mögliche Blutungen und Schmerzen beim Abbruch mit Medikamenten',
+                       'FR':'eine spätere Schwangerschaft nach einem Abbruch ohne Komplikationen',
+                       'GM':'das, was der Großmutter wichtig ist',
+                       'VA':'die allgemeine Regel, an der sich der Vater orientiert'}[prefix]
+                first=key.endswith('-erst')
+                if level in ('Förder','ESA'):
+                    action=('Welche Aussage über '+topic+' passt zur Nachricht? '+
+                            ('Setze dein erstes Kreuz links in „Meine erste Antwort“.' if first else
+                             'Setze dein Kreuz rechts in „Nach dem Prüfen“. Dein erstes Kreuz bleibt.'))
+                    if not first:
+                        action+=' '+{'MU':'Überlege: Was erklärt der Fakt über Beschwerden? Wer entscheidet über die Schwangerschaft?',
+                                    'FR':'Was erklärt der Fakt über spätere Kinder? Wer entscheidet über die Schwangerschaft?',
+                                    'GM':'Wie hängt dieser Wert mit dem Rat der Großmutter zusammen?',
+                                    'VA':'Wie wendet der Vater diese Regel auf Lauras Situation an?'}[prefix]
                 else:
-                    oral='Sage, was sie erklärt und wer am Ende entscheidet.' if level=='Förder' else 'Erkläre mündlich: Sie hilft bei … . Ob Laura …, bleibt offen.'
-                    action='Kreuze rechts an: Nach dem Prüfen. Dein erstes Kreuz bleibt. '+oral
-            elif key[:3] in ('MU-','FR-','GM-','VA-'):
-                subject={'MU':'der biologische Fakt','FR':'der biologische Fakt','GM':'der Wert','VA':'die Regel'}[key[:2]]
-                if key.endswith('-erst'):
-                    action='Kreuze allein deine erste Vermutung an.' if level in ('Förder','ESA') else 'Schreibe in das Feld „Meine erste Antwort“, wie '+subject+' lauten könnte.'
-                else:
-                    action=({'Förder':'Kreuze die geprüfte Aussage an. Sage, was sie erklärt und wer entscheidet.',
-                             'ESA':'Kreuze die geprüfte Aussage an. Erkläre mündlich, was sie erklärt und was für Laura offenbleibt.',
-                             'MSA':'Schreibe die geprüfte Aussage unter „Nach dem Prüfen“. Erkläre, warum sie zur Nachricht passt.',
-                             'AHR':'Schreibe die geprüfte Aussage unter „Nach dem Prüfen“. Erkläre, was sie klärt und was Laura selbst entscheidet.'}[level]+' Lass deine erste Antwort stehen.')
-            orders[level]={'action':action,'screen':f'Dein Lernbogen · {field}\n{action}'}
+                    action=('Schreibe in „Meine erste Antwort“, welche Aussage über '+topic+' deiner Meinung nach fehlt.' if first else
+                            'Schreibe in „Nach dem Prüfen“ die geprüfte Aussage über '+topic+'. Lass deine erste Antwort stehen. '+
+                            ('Warum passt die Aussage zu dieser Nachricht?' if level=='MSA' else 'Was erklärt diese Aussage? Was entscheidet Laura selbst?'))
+            orders[level]={'action':action,'screen':f'{sheet} · Seite {page} · {field}\n{action}'}
         person=next((name for name,c in cases.items() if target in c['recovery']),bank['ui']['theme'])
         terminal=target is None
         staying=source==target
@@ -70,10 +77,11 @@ def compile_media(bank):
     add('LA-eigen',laura[1],laura[2],personal,'eigene Begründung',
         bank['evaluation'],
         'Fünf Hilfen. Auf Förder zusätzlich die aufklappbaren Satzteile.',
-        'Jede Person arbeitet zuerst allein auf ihrem eigenen Bogen.')
-    add('LA-abschluss',laura[3],None,personal,'eigene Begründung',actions['final'],
+        'Vor der digitalen Prüfung der persönlichen Antwort.')
+    add('LA-abschluss',laura[3],None,'Festhalten','eigene Begründung',actions['final'],
         'Die persönlichen Belege und die beiden Ergänzungen lassen sich im selben Abschnitt vergleichen.',
-        'Nach dem persönlichen Fachvergleich. Bei Neustart mit bereits vorliegendem Papierergebnis.')
+        'Nach der in dieser Sitzung abgeschlossenen persönlichen Prüfung.')
+    fields['Festhalten']=dict(group=laura[3]['section'],design='Platz für eine Ergänzung zur weiterhin lesbaren ersten Antwort auf Seite 4.')
     del bank['mediaActions']
     return dict(layout=actions['layout'],digitalOnly=actions['digitalOnly'],fields=fields,steps=steps)
 
