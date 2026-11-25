@@ -35,7 +35,7 @@ jobs:
       - run: python -u gesamt/unterricht.py
       - name: Stationswege und freiwillige Fälle
         run: |
-          PYTHONPATH=gesamt:tests python -u - <<'PYCODE'
+          FALLAKTE_ZUSATZ_HTML=dist/Gesamt/Fallakte-02-12.html PYTHONPATH=gesamt:tests python -u - <<'PYCODE'
           from leseprotokoll import Aufzeichnung
           import pruefen, vertiefungen
           for name, suite in [('Stationsansichten', pruefen), ('Zusatzdialoge', vertiefungen)]:

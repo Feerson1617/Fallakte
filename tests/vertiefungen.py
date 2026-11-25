@@ -8,11 +8,19 @@ QA=ROOT/'build/vertiefungen'
 LEVELS=('Foerder','ESA','MSA','AHR')
 
 def enter(p,person,tier,index):
-    p.goto((OUT/'Fallakte.html').as_uri())
-    p.locator('#abschnitt-wahl').click();p.locator('#wieder-level-'+tier).click()
-    p.locator('#wiederfall').get_by_role('button',name=person,exact=True).click()
-    p.locator('#abschnitte button').nth(index).click()
-    return p.frame_locator('#rahmen-reserve-'+person)
+    integrated=os.getenv('FALLAKTE_ZUSATZ_HTML')
+    if integrated:
+        p.goto(Path(integrated).resolve().as_uri())
+        p.locator('#erster-tag').click()
+        day=p.frame_locator('iframe[title^=Mittwoch]')
+        p.locator('[data-action=recovery]').click()
+    else:
+        p.goto((OUT/'Fallakte.html').as_uri())
+        day=p;day.locator('#abschnitt-wahl').click()
+    day.locator('#wieder-level-'+tier).click()
+    day.locator('#wiederfall').get_by_role('button',name=person,exact=True).click()
+    day.locator('#abschnitte button').nth(index).click()
+    return day.frame_locator('#rahmen-reserve-'+person)
 
 def initial(f,tier,engine,person):
     shown=f.locator('[id^=method-]:visible').count()

@@ -12,7 +12,7 @@ from zipfile import ZipFile
 from lxml import etree,html
 from playwright.sync_api import sync_playwright,expect
 
-from auslieferung import ROOT,SRC,OUT,QA,MOD_HASH,VERSIONS,sha,revision,json_text
+from auslieferung import ROOT,SRC,OUT,QA,VERSIONS,sha,revision,json_text
 from karten import LEVELS,METHODS,printed,compare
 sys.path.insert(0,str(ROOT/'tests'))
 from vorbereitung_browser import STEPS,HOST,Quiet

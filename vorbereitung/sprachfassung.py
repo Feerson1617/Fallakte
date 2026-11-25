@@ -47,10 +47,18 @@ def frage(q, titel, impulse):
 def redigieren(bank):
     feedback=json.loads(Path(__file__).with_name('rueckmeldungen.json').read_text())
     applied=set()
+    def erkläre_fehler(q):
+        for option in q['options']:
+            if option['correct']:
+                continue
+            key=option['id'] if 'id' in option else q['id']+'-'+option['code']
+            option['feedback']=feedback[key]
+            applied.add(key)
     bank['ui']['reference']='Musterkarten bei Zeitnot oder Ausfall'
     for lesson in bank['levels'].values():
         intro=lesson['intro']
         frage(intro['question'],'die Erklärung zum Pearl-Index',IMPULSE['PI'])
+        erkläre_fehler(intro['question'])
         for c in lesson['chapters']:
             code=c['id']
             method=c['title'].split(' – ')[-1].split(':')[0]
@@ -65,13 +73,11 @@ def redigieren(bank):
                 titles=[section['title'] for section in c['information'] if section['sectionId'] in q['informationSections']]
                 assert titles,(code,q['id'])
                 frage(q,'unter „'+'“ und „'.join(titles)+'“',IMPULSE[code][i])
-                for option in q['options']:
-                    if not option['correct']:
-                        option['feedback']=feedback[option['id']]
-                        applied.add(option['id'])
+                erkläre_fehler(q)
             if c.get('paperCheck'):
                 q=c['paperCheck']
                 q['screen']=f'Laufzettel „{code}“: Kreise A, B oder C ein. Schreibe unter die Aussagen in wenigen Stichworten, warum die gewählte Aussage stimmt.'
                 q['return']='Gib den Buchstaben am iPad ein. Tippe auf „Code prüfen“. Nach der richtigen Auswahl kannst du „Nachricht senden“ antippen.'
                 frage(q,'unter „'+c['information'][0]['title']+'“',IMPULSE[code][0])
+                erkläre_fehler(q)
     assert applied==feedback.keys()
