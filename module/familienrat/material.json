@@ -2188,13 +2188,12 @@
   "levelsHelp": "Hilfe 1 gibt eine Denkrichtung, Hilfe 2 lenkt den Blick, Hilfe 3 erschließt die Textstelle, Hilfe 4 strukturiert und Hilfe 5 unterstützt beim Vergleich. Nur eine vor dem Lösen gezeigte Lösung zur Ergänzung führt zur zugehörigen kurzen Anwendung. Die Bewertungshilfe lässt die eigene Gewichtung offen.",
   "screens": {
     "Tagesauswahl.jpg": "Gemeinsamer Einstieg",
-    "Erste-Nachricht-und-Team.jpg": "Laura und Teamwahl",
     "Mutter-Aufgabe.jpg": "Argumenten-Check Mutter",
     "Mutter-Rueckmeldung.jpg": "Spezifische Fehlererklärung",
     "Mutter-Hilfe.jpg": "Zweite Hilfestufe",
     "Freundin-Aufgabe.jpg": "Argumenten-Check Freundin",
     "Lauras-zweite-Nachricht.jpg": "Lauras Bewertungsanlass",
-    "Persoenliche-Bewertung.jpg": "Zwei individuelle Papieraufträge im gemischten Team Förder/ESA",
+    "Persoenliche-Bewertung.jpg": "Persönlicher Papierauftrag zum gewählten Niveau",
     "Großmutter-Aufgabe.jpg": "Freiwillige Perspektive Großmutter",
     "Vater-Aufgabe.jpg": "Freiwillige Perspektive Vater",
     "Wiedereinstieg.jpg": "Direkt in Freundin 3 auf Förder/AHR",
@@ -2215,7 +2214,8 @@
     "Lernweg-Förder.jpg": "Eigene Bearbeitung · Förder",
     "Lernweg-ESA.jpg": "Eigene Bearbeitung · ESA",
     "Lernweg-MSA.jpg": "Eigene Bearbeitung · MSA",
-    "Lernweg-AHR.jpg": "Eigene Bearbeitung · AHR"
+    "Lernweg-AHR.jpg": "Eigene Bearbeitung · AHR",
+    "Erste-Nachricht-und-Niveau.jpg": "Laura und Niveauwahl"
   },
   "analogSteps": [
     "Bearbeite das persönliche Erstfeld der jeweiligen Ergänzung vor dem digitalen Vergleich.",

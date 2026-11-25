@@ -99,7 +99,7 @@ function draw(){
       add(desk,'p',s.task[tier]);
       if(['MSA','AHR'].includes(tier)){
         add(desk,'p',s.paper[tier].replace(' '+s.task[tier],'')+' Schreibe deine Begründung auf. Kreise die richtige Aussage ein.');
-        const d=add(desk,'details');add(d,'summary','Laufzettel nicht zur Hand?');
+        const d=add(desk,'details');add(d,'summary','Zusatzbogen nicht zur Hand?');
         check.answers.forEach((a,i)=>add(d,'p','ABC'[i]+' · '+a));add(desk,'p',s.return);
         const input=add(add(desk,'label','Prüfcode '),'input');input.id='code';input.value=state.code;
         input.oninput=()=>{state.code=input.value;state.result='';document.querySelector('#feedback').textContent='';};

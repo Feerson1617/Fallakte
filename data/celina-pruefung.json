@@ -489,7 +489,7 @@
       "K": {
         "answers": [
           "Auch ein Kondom muss ärztlich eingesetzt werden.",
-          "Der Rat des Teams ersetzt die persönliche Entscheidung.",
+          "Dein Rat ersetzt Celinas eigene Entscheidung.",
           "Das Kondom wird beim Sex benutzt. Dafür ist keine Einlage nötig."
         ],
         "code": "C",
@@ -499,7 +499,7 @@
         ],
         "feedback": [
           "Ein Kondom wird beim Sex über den Penis gerollt. Für eine Spirale braucht es einen Termin in der Arztpraxis.",
-          "Das Team kann Möglichkeiten erklären. Ob sie eine Spirale möchte, entscheidet Celina nach der Beratung selbst.",
+          "Du kannst Celina die Möglichkeiten erklären. Ob sie eine Spirale möchte, entscheidet Celina nach der Beratung selbst.",
           "Das stimmt. Das Kondom wird beim Sex benutzt. Dafür ist keine Einlage nötig."
         ],
         "questions": [
@@ -543,7 +543,7 @@
       "Cu": {
         "answers": [
           "Celinas wenig schmerzhafte Regel beweist, dass die Spirale passt.",
-          "Der Rat des Teams ersetzt die persönliche Entscheidung.",
+          "Dein Rat ersetzt Celinas eigene Entscheidung.",
           "Eine Kupferspirale braucht eine Einlage. Beratung und Celinas Zustimmung sind Voraussetzung."
         ],
         "code": "C",
@@ -553,7 +553,7 @@
         ],
         "feedback": [
           "Wie stark ihre Regel bisher schmerzt, klärt die Eignung zur Einlage nicht. Mit einer Kupferspirale können Blutungen und Schmerzen stärker werden.",
-          "Das Team kann Möglichkeiten erklären. Ob sie eine Spirale möchte, entscheidet Celina nach der Beratung selbst.",
+          "Du kannst Celina die Möglichkeiten erklären. Ob sie eine Spirale möchte, entscheidet Celina nach der Beratung selbst.",
           "Das stimmt. Eine Kupferspirale braucht eine Einlage. Beratung und Celinas Zustimmung sind Voraussetzung."
         ],
         "questions": [
@@ -624,7 +624,7 @@
       "K+Cu": {
         "answers": [
           "Wer ein Kondom benutzt, stimmt damit auch der Einlage zu.",
-          "Der Rat des Teams ersetzt die persönliche Entscheidung.",
+          "Dein Rat ersetzt Celinas eigene Entscheidung.",
           "Bis zur Entscheidung über die Einlage ist das Kondom allein möglich. Die Kupferspirale setzt Beratung und Zustimmung voraus."
         ],
         "code": "C",
@@ -634,7 +634,7 @@
         ],
         "feedback": [
           "Ein Kondom zu benutzen ist eine eigene Entscheidung. Für eine Spirale braucht es gesonderte Beratung und Celinas Zustimmung.",
-          "Das Team kann Möglichkeiten erklären. Ob sie eine Spirale möchte, entscheidet Celina nach der Beratung selbst.",
+          "Du kannst Celina die Möglichkeiten erklären. Ob sie eine Spirale möchte, entscheidet Celina nach der Beratung selbst.",
           "Das stimmt. Bis zur Entscheidung über die Einlage ist das Kondom allein möglich. Die Kupferspirale setzt Beratung und Zustimmung voraus."
         ],
         "questions": [
@@ -679,7 +679,7 @@
     "recap": true,
     "answers": [
       "Auch ein Kondom muss ärztlich eingesetzt werden.",
-      "Der Rat des Teams ersetzt die persönliche Entscheidung.",
+      "Dein Rat ersetzt Celinas eigene Entscheidung.",
       "Das Kondom wird beim Sex benutzt. Dafür ist keine Einlage nötig."
     ],
     "code": "C",
@@ -689,7 +689,7 @@
     ],
     "feedback": [
       "Ein Kondom wird beim Sex über den Penis gerollt. Für eine Spirale braucht es einen Termin in der Arztpraxis.",
-      "Das Team kann Möglichkeiten erklären. Ob sie eine Spirale möchte, entscheidet Celina nach der Beratung selbst.",
+      "Du kannst Celina die Möglichkeiten erklären. Ob sie eine Spirale möchte, entscheidet Celina nach der Beratung selbst.",
       "Das stimmt. Das Kondom wird beim Sex benutzt. Dafür ist keine Einlage nötig."
     ],
     "ref": [

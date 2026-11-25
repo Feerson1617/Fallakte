@@ -149,7 +149,7 @@ window.Beratung = (() => {
     draft.grant=null;
     active.previous=draft.strategy;
     const proposal='Mein Rat: '+bank().strategies[draft.strategy].label+'.';
-    appendMessage('send','Team',reason ? proposal+' '+reason : proposal);
+    appendMessage('send','Du',reason ? proposal+' '+reason : proposal);
     appendMessage('reaction','Laura',strategy.reply);
     if(!followingStage())window.dispatchEvent(new CustomEvent('beratung:abgeschlossen',{detail:active.tier}));
     active.chatScroll=null;
@@ -200,7 +200,7 @@ window.Beratung = (() => {
         entry.dataset.past='true';
         entry.hidden=!active.historyOpen;
       }
-      let sender=message.speaker==='Team' ? 'Dein Beratungsteam' : message.speaker;
+      let sender=message.speaker;
       if (message.kind==='question' || message.kind==='answer') {
         const historical=message.revision!==active.revision || active.phase==='sent';
         entry.dataset.historical=String(historical);
@@ -367,7 +367,7 @@ window.Beratung = (() => {
         if (!question) return;
         asked.add(id);
         active.asked.set(key,asked);
-        appendMessage('question','Team',question.text);
+        appendMessage('question','Du',question.text);
         appendMessage('answer','Laura',question.answer);
         active.chatScroll=null;
         render('beratung-verlauf',true);
