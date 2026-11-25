@@ -164,7 +164,8 @@ function learning() {
   } else if(s.step==='question') {
     body=`<div class="tools"><strong>${c?'Fachfrage '+(s.index+1)+' von 2':'Fachfrage'}</strong>${btn('material',ui.read)}</div>${question(currentQuestion(),attempt())}`;
   } else if(s.step==='paper') {
-    body=fields(c)+`<div class="tools"><strong>${esc(c.backToChat)}</strong>${btn('material',ui.read)}</div>`;
+    body=c.paperCheck && attempt().sent ? '' : fields(c);
+    if (!c.paperCheck || !attempt().sent) body+=`<div class="tools">${c.paperCheck?'':'<strong>'+esc(c.backToChat)+'</strong>'}${btn('material',ui.read)}</div>`;
     body+=c.paperCheck?paperCheck(c.paperCheck,attempt()):btn(c.id.endsWith('B')?'review':'finish',c.id.endsWith('B')?'Vollständige Karte vergleichen':ui.next,{primary:true});
   } else {
     const card=bank.cards[level].find(card=>card.method===c.method);

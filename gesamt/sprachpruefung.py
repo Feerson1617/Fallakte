@@ -36,10 +36,10 @@ def leaves(obj,path=''):
 # method restrictions, source data, question IDs and all graded keys are separate.
 ALLOWED={
  'PREP':r'ui/reference|levels/[^/]+/(?:intro/question|chapters/\d+/(?:questions/\d+|paperCheck))/(?:options/\d+/(?:hints/\d|feedback)|hintsBeforeChoice/\d|afterSolutionCheck/options/\d+/feedback|screen|return)|levels/[^/]+/chapters/\d+/(?:paperPrompt|backToChat|observationPrompt)',
- 'UB02':r'buildCommit|paperFallbackInstruction|consolidation/finalAdvice/levels/[^/]+/focus|stages/L0\d/(?:evidence|levels/[^/]+/(?:task|paperPrompt|returnPrompt|before/hints/\d|strategies/[^/]+/(?:hints/\d|feedback|options/\d+/feedback|correction/label)))',
+ 'UB02':r'buildCommit|paperFallbackInstruction|consolidation/finalAdvice/levels/[^/]+/focus|stages/L0\d/(?:evidence|levels/[^/]+/(?:task|evidence|paperPrompt|returnPrompt|before/hints/\d|strategies/[^/]+/(?:hints/\d|evidence|feedback|options/\d+/feedback|correction/label)))',
  'Tom':r'buildCommit|stages/\d+/(?:task/[^/]+|return|paper/[^/]+|questions/\d+/0)',
  'Celina':r'buildCommit|stages/\d+/(?:task/[^/]+|return|paper/[^/]+|(?:checks/[^/]+/)?feedback/\d+)',
- 'UB08':r'commit|time|definitions/[^/]+|ui/[^/]+|evaluation(?:Hints)?/[^/]+|stems/\d+/[01]|media/(?:fields/Lauras Frage – Meine Antwort/parts/\d+|steps/[^/]+/(?:returnText|restartApplication/label|buttonText|orders/[^/]+/(?:action|screen)))'}
+ 'UB08':r'commit|time|cases/[^/]+/tasks/\d+/(?:helpByLevel/[^/]+|hints)/[0-3]|definitions/[^/]+|ui/[^/]+|evaluationHelpByLevel/[^/]+/\d|evaluation(?:Hints)?/[^/]+|stems/\d+/[01]|media/(?:fields/[^/]+ / Nach dem Prüfen/support|fields/Lauras Frage – Meine Antwort/parts/\d+|steps/[^/]+/(?:support|returnText|restartApplication/label|buttonText|orders/[^/]+/(?:action|screen)))'}
 def pruefen(reference):
     old=documents(reference.read_bytes());new=documents((OUT/'Fallakte-Gesamt.html').read_bytes())
     assert {k:v[1] for k,v in old.items() if k!='START'}==BASE_HASH

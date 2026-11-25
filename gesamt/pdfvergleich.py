@@ -22,7 +22,9 @@ def run(archiv):
                     assert 'links an: Meine erste Antwort' in screens[0] and 'rechts an: Nach dem Prüfen. Dein erstes Kreuz bleibt.' in screens[1]
                     field=b['cases']['Mutter' if key=='MU' else 'Freundin']['field']
                     opt=b['media']['fields'][field+' / Meine erste Antwort']
-                    for label in opt['foerder' if level=='Förder' else 'options']:assert label in flat,label
+                    labels=opt['foerder' if level=='Förder' else 'options']
+                    positions=[flat.index(label) for label in labels]
+                    assert positions==sorted(positions),labels
                 else:
                     assert all(x in flat for x in ['Lauras Frage – Meine Antwort','Lauras Frage – Festhalten','digital geprüft','analog geprüft','noch offen'])
                     assert 'Lass deine erste Antwort stehen' in screens[1]

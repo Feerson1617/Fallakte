@@ -1520,7 +1520,7 @@
                 "Kupfer beeinträchtigt Spermien. Dazu sind keine Hormone nötig. Laufzettel „Laura 1 – Latexallergie“: Begründe deine Empfehlung. Kreise die fachlich richtige Aussage ein."
               ],
               "options": [],
-              "evidence": "Begründe den Rat zur Kupferspirale mit der Wirkung von Kupfer auf Spermien. Welche Rolle spielen Lauras Latexallergie und ihre Unsicherheit bei Hormonen für deine Gewichtung?"
+              "evidence": "Wie wirkt Kupfer auf Spermien? Erkläre, wie du Lauras Latexallergie und ihre Unsicherheit bei Hormonen in deinem Rat berücksichtigst."
             },
             "H": {
               "status": "C",
@@ -2219,7 +2219,7 @@
             "P": {
               "status": "B",
               "condition": "Persönliche Fragen zu Hormonen und medizinische Eignung klären. Regelmäßige Einnahme nach Plan nötig.",
-              "feedback": "Die Pille hemmt den Eisprung. Das senkt das Schwangerschaftsrisiko, aber nicht das Infektionsrisiko beim Sex. Prüfe deinen vollständigen Rat.",
+              "feedback": "Die Pille hemmt den Eisprung. Das senkt das Schwangerschaftsrisiko, aber nicht das Infektionsrisiko beim Sex. Wie kannst du auch Lauras Wunsch nach Infektionsschutz berücksichtigen?",
               "card": {
                 "method": "P",
                 "section": "sti"
@@ -2265,7 +2265,7 @@
                   "id": "L02.ESA.P.3",
                   "text": "Die Pille ist für Laura wirkungslos, weil sie Infektionen nicht verhindern kann.",
                   "correct": false,
-                  "feedback": "Die Pille kann vor einer Schwangerschaft schützen. Nur ihr fehlender STI-Schutz macht diesen vollständigen Rat unzureichend.",
+                  "feedback": "Die Pille kann eine Schwangerschaft verhindern. Allein erfüllt sie Lauras Wunsch nach Schutz vor Infektionen beim Sex nicht.",
                   "card": {
                     "method": "P",
                     "section": "sti"
@@ -2285,7 +2285,7 @@
             "Cu": {
               "status": "B",
               "condition": "Eignung, individuelle Fragen und Zustimmung zur Einlage in der Praxis klären.",
-              "feedback": "Die Kupferspirale beeinträchtigt Spermien. Sie schützt vor einer Schwangerschaft, aber nicht vor Infektionen beim Sex. Prüfe deinen vollständigen Rat.",
+              "feedback": "Die Kupferspirale beeinträchtigt Spermien. Sie schützt vor einer Schwangerschaft, aber nicht vor Infektionen beim Sex. Wie kannst du auch Lauras Wunsch nach Infektionsschutz berücksichtigen?",
               "card": {
                 "method": "Cu",
                 "section": "sti"
@@ -2351,7 +2351,7 @@
             "H": {
               "status": "B",
               "condition": "Fragen zur hormonellen Wirkung, Eignung und Zustimmung zur Einlage klären.",
-              "feedback": "Die Hormonspirale erschwert Spermien den Weg. Sie mindert das Schwangerschaftsrisiko, aber nicht das Infektionsrisiko beim Sex. Prüfe deinen vollständigen Rat.",
+              "feedback": "Die Hormonspirale erschwert Spermien den Weg. Sie mindert das Schwangerschaftsrisiko, aber nicht das Infektionsrisiko beim Sex. Wie kannst du auch Lauras Wunsch nach Infektionsschutz berücksichtigen?",
               "card": {
                 "method": "H",
                 "section": "sti"
@@ -2624,7 +2624,7 @@
               "Wähle die Verhütung, die du Laura empfiehlst. Du kannst deine Auswahl ändern, bevor du sie sendest."
             ]
           },
-          "evidence": "Laura nennt ein zweites Ziel. Welche Wirkung braucht dein vollständiger Rat jetzt zusätzlich?"
+          "evidence": "Laura möchte auch das Risiko einer Infektion beim Sex senken. Welche Wirkung braucht sie dafür?"
         },
         "MSA": {
           "id": "MSA",
@@ -2678,7 +2678,7 @@
             "P": {
               "status": "B",
               "condition": "Persönliche Fragen zu Hormonen und medizinische Eignung klären. Regelmäßige Einnahme nach Plan nötig.",
-              "feedback": "Die Kombinationspille trägt zum Schwangerschaftsschutz bei. Welches Ziel aus Lauras neuer Nachricht bleibt offen? Wähle deinen vollständigen Rat neu.",
+              "feedback": "Die Kombinationspille trägt zum Schwangerschaftsschutz bei. Welches Ziel aus Lauras neuer Nachricht bleibt offen? Wähle neu und berücksichtige beide Wünsche.",
               "card": {
                 "method": "P",
                 "section": "sti"
@@ -2712,7 +2712,7 @@
             "Cu": {
               "status": "B",
               "condition": "Eignung, individuelle Fragen und Zustimmung zur Einlage in der Praxis klären.",
-              "feedback": "Die Kupferspirale berücksichtigt den Schwangerschaftsschutz. Welches Ziel aus Lauras neuer Nachricht bleibt offen? Wähle deinen vollständigen Rat neu.",
+              "feedback": "Die Kupferspirale berücksichtigt den Schwangerschaftsschutz. Welches Ziel aus Lauras neuer Nachricht bleibt offen? Wähle neu und berücksichtige beide Wünsche.",
               "card": {
                 "method": "Cu",
                 "section": "sti"
@@ -2746,7 +2746,7 @@
             "H": {
               "status": "B",
               "condition": "Fragen zur hormonellen Wirkung, Eignung und Zustimmung zur Einlage klären.",
-              "feedback": "Die Hormonspirale berücksichtigt den Schwangerschaftsschutz. Welches Ziel aus Lauras neuer Nachricht bleibt offen? Wähle deinen vollständigen Rat neu.",
+              "feedback": "Die Hormonspirale berücksichtigt den Schwangerschaftsschutz. Welches Ziel aus Lauras neuer Nachricht bleibt offen? Wähle neu und berücksichtige beide Wünsche.",
               "card": {
                 "method": "H",
                 "section": "sti"
@@ -2975,7 +2975,7 @@
                 "method": "P",
                 "section": "sti"
               },
-              "evidence": "Begründe, welche Schutzaussage die Wirkung der Kombinationspille auf den Eisprung trägt. Wie weit reicht dein vollständiger Rat?",
+              "evidence": "Was bedeutet der gehemmte Eisprung für den Schwangerschaftsschutz? Welches der beiden Ziele bleibt bei der Pille allein offen?",
               "correction": {
                 "label": "Verhütung neu wählen"
               }
@@ -4459,7 +4459,7 @@
             "Cu": {
               "status": "B",
               "condition": "Eignung, individuelle Fragen und Zustimmung zur Einlage in der Praxis klären.",
-              "feedback": "Welchen Teil von Lauras Anliegen erreicht die lang wirkende Kupferspirale? Prüfe die Lücke im vollständigen Rat.",
+              "feedback": "Welches Ziel erreicht die lang wirkende Kupferspirale? Wie könntest du zusätzlich Lauras Wunsch nach Infektionsschutz berücksichtigen?",
               "card": {
                 "method": "Cu",
                 "section": "alltag"
@@ -6406,7 +6406,7 @@
                   "id": "L05.Foerder.Cu.2",
                   "text": "Die zuverlässige Schwangerschaftsverhütung durch Kupfer wiegt automatisch schwerer als jedes neu genannte Anliegen.",
                   "correct": false,
-                  "feedback": "Lauras eigener Wunsch nach STI-Risikominderung bleibt Teil des vollständigen Rats. Mögliche Schmerzen sind ebenfalls zu beachten.",
+                  "feedback": "Laura möchte sich weiterhin vor Infektionen beim Sex schützen. Bei Kupfer können außerdem die Regelschmerzen stärker werden.",
                   "card": {
                     "method": "Cu",
                     "section": "schmerzen"
@@ -6745,7 +6745,7 @@
                   }
                 }
               ],
-              "evidence": "Welche Barriere bietet das Kondom? Nenne dafür ein späteres Anliegen und eine Grenze."
+              "evidence": "Was hält das Kondom zurück? Nenne einen Wunsch von Laura, zu dem das passt, und eine Grenze des Schutzes."
             },
             "P": {
               "status": "B",
@@ -6847,7 +6847,7 @@
                   "id": "L05.ESA.Cu.1",
                   "text": "Die zuverlässige Schwangerschaftsverhütung durch Kupfer wiegt automatisch schwerer als jedes neu genannte Anliegen.",
                   "correct": false,
-                  "feedback": "Lauras eigener Wunsch nach STI-Risikominderung bleibt Teil des vollständigen Rats. Mögliche Schmerzen sind ebenfalls zu beachten.",
+                  "feedback": "Laura möchte sich weiterhin vor Infektionen beim Sex schützen. Bei Kupfer können außerdem die Regelschmerzen stärker werden.",
                   "card": {
                     "method": "Cu",
                     "section": "schmerzen"
@@ -7174,7 +7174,7 @@
             ],
             "freeCards": true
           },
-          "evidence": "Welches spätere Anliegen ist für deinen Schlussrat wichtig?",
+          "evidence": "Welchen Wunsch oder welche Sorge hat Laura dir nach ihrem ersten Rat genannt?",
           "paperFieldId": "L05.schlussrat"
         },
         "MSA": {
@@ -7219,7 +7219,7 @@
                 "Eine Barriere kann Sperma und viele Krankheitserreger zurückhalten. Das Kondom bedeckt nur einen Teil der Haut. Laufzettel „Laura 5 – Mein Schlussrat“: Begründe deine Empfehlung. Kreise die fachlich richtige Aussage ein."
               ],
               "options": [],
-              "evidence": "Begründe das Kondom mit einem späteren Anliegen. Wäre ein ergänzender Rat vertretbar?"
+              "evidence": "Welchen neu genannten Wunsch berücksichtigt das Kondom? Erkläre, ob eine weitere Methode Laura helfen könnte."
             },
             "P": {
               "status": "B",
@@ -7289,7 +7289,7 @@
                 "method": "Cu",
                 "section": "sti"
               },
-              "evidence": "Prüfe diesen Rat mit Blick auf Kupferwirkung und spätere Anliegen. Welche Alternative wäre vertretbar?",
+              "evidence": "Was bewirkt Kupfer bei Spermien? Berücksichtige auch Infektionsschutz und Regelschmerzen. Welche andere Empfehlung wäre möglich?",
               "correction": {
                 "label": "Verhütung neu wählen"
               }
@@ -7328,7 +7328,7 @@
                 "method": "H",
                 "section": "sti"
               },
-              "evidence": "Prüfe den Rat zur Hormonspirale an möglichen Wirkungen und den späteren Anliegen.",
+              "evidence": "Welche Wirkung der Hormonspirale könnte zu Lauras Wünschen passen? Was muss Laura vor dem Einsetzen klären?",
               "correction": {
                 "label": "Verhütung neu wählen"
               }
@@ -7399,7 +7399,7 @@
                 "Das Kondom schützt durch eine Barriere. Es gleicht mögliche stärkere Regelschmerzen durch Kupfer nicht aus. Laufzettel „Laura 5 – Mein Schlussrat“: Begründe deine Empfehlung. Kreise die fachlich richtige Aussage ein."
               ],
               "options": [],
-              "evidence": "Prüfe den Nutzen von Kondom und Kupferspirale an den späteren Anliegen. Vergleiche eine Alternative."
+              "evidence": "Was trägt jede der beiden Methoden zum Schutz bei? Vergleiche eine andere Möglichkeit und berücksichtige Lauras Schmerzen."
             },
             "K+H": {
               "status": "C",
@@ -7435,7 +7435,7 @@
                 "Das Kondom bildet eine Barriere. Ob die Hormonspirale die Schmerzen lindert und ob Laura die Einlage möchte, ist offen. Laufzettel „Laura 5 – Mein Schlussrat“: Begründe deine Empfehlung. Kreise die fachlich richtige Aussage ein."
               ],
               "options": [],
-              "evidence": "Prüfe den Nutzen von Kondom und Hormonspirale an den späteren Anliegen. Vergleiche eine Alternative."
+              "evidence": "Was trägt jede der beiden Methoden zum Schutz bei? Vergleiche eine andere Möglichkeit und berücksichtige Lauras Sorge vor der Einlage."
             }
           },
           "before": {
@@ -7544,7 +7544,7 @@
             "Cu": {
               "status": "B",
               "condition": "Eignung, individuelle Fragen und Zustimmung zur Einlage in der Praxis klären. Die starken ungeklärten Schmerzen sollten ärztlich abgeklärt werden.",
-              "feedback": "Das Abwägen der möglichen Schmerzen ist wichtig. Welchen Teil des vollständigen Rats deckt die Kupferwirkung nicht ab?",
+              "feedback": "Kupfer kann die Regelschmerzen verstärken. Welchen von Lauras beiden Schutzwünschen erfüllt die Kupferspirale allein?",
               "card": {
                 "method": "Cu",
                 "section": "schmerzen"

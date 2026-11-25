@@ -16,8 +16,6 @@ def make_bank(person):
         record.update(check)
         record['replies']={**original['replies'],**record.pop('sentReplies',{})}
         record['previousFacts']=[s['recap'] for s in stages[:len(records)] if s.get('recap')]
-        if person=='Celina':
-            record['task']={**record['task'],'Foerder':'Welcher Grund passt zu diesem Vorschlag?','ESA':'Prüfe den Vorschlag an Celinas Anliegen. Wähle den passenden Grund.'}
         record['choices']=original['options'] if original['type']=='recommend' else {}
         if person=='Tom' and record['choices']:
             refs={'K':'alltag','P':'wirkung','Cu':'einlage','H':'einlage'}
@@ -54,7 +52,12 @@ def make_bank(person):
                     full=short+' Prüfe deinen gesamten Vorschlag an ihrer Entscheidung.'
                 record['conflicts'][key]={'short':short,'full':full}
         if person=='Celina':
-            record['task']['Foerder']='Welche Aussage erklärt, ob dein Vorschlag zu Celinas Wunsch passt?'
+            focus=['ihrem Wunsch nach einer Methode ohne Hormone','ihrem Wunsch nach längerem Schutz','ihrer Sorge vor dem Einsetzen','ihrem Wunsch nach Schutz vor Infektionen','ihren Wünschen und Grenzen'][len(records)]
+            record['task']['Foerder']='Welche Aussage erklärt, ob dein Vorschlag zu '+focus+' passt?'
+            if len(records) in (0,1,4):
+                record['task']['AHR']={0:'Welche Methoden kommen ohne zusätzliche Hormone infrage? Begründe, welche du Celina zunächst empfiehlst.',
+                    1:'Was unterscheidet langen Schutz von einem dauerhaften Eingriff? Erkläre, was für deinen Rat an Celina wichtiger ist.',
+                    4:'Was würde deinen Rat ändern, wenn Celina einen anderen Wunsch wichtiger findet oder eine Einlage ablehnt?'}[len(records)]
             record['task']['ESA']='Lies Celinas Nachricht. Welche Aussage erklärt, ob die Methode zu ihrem Wunsch oder ihrer Sorge passt?'
         elif not records:
             record['task']['Foerder']='Welche Verhütung kann Tom selbst benutzen? Wähle die Aussage, die erklärt, warum.'
