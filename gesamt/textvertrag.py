@@ -111,6 +111,9 @@ def report(ref):
     astrollen={}
     rows=[];counts=Counter()
     matrix=media(new)
+    cases={m:bank(new[m][0]) for m in ('Tom','Celina')}
+    # Die freiwilligen Fälle zeigen bei einem Widerspruch nur die Konfliktmeldung.
+    # inspect() gibt für diese Methoden vor dem Zugriff auf die Codeantwort zurück.
     def match_matrix(mod,tier,path):
         for x in matrix:
             if x['modul']!=mod or x['niveau']!=tier:continue
@@ -144,8 +147,16 @@ def report(ref):
                 answer=compiled[m].get(place.rsplit('/',1)[0]+'/correct')
                 if answer is False:
                     status='Rückmeldung zur konkreten Fehloption redigiert und im Frageweg geprüft';kind='Rückmeldung'
-            elif m=='UB02' and '/hints/' in place and (m,place) in changed_by_place and (QA/'Empfehlungen.json').exists():
+            elif m=='UB02' and '/hints/' in place and (QA/'Empfehlungen.json').exists():
                 status='Hinweis im Entscheidungsweg und in seiner Stufenfolge geprüft';kind='Hilfe'
+            if m in cases and len(keys)>3 and keys[0]=='stages' and keys[2]=='checks':
+                case=cases[m]['stages'][int(keys[1])]
+                if keys[3] in case.get('conflicts',{}) and len(keys)>4 and keys[4] in ('feedback','answers','short'):
+                    status='Antwortprüfung in diesem Konfliktweg gesperrt; Funktionsweg und Quellenfeld geprüft'
+                    kind='gesperrter Prüfzweig'
+            if (m=='PREP' and keys[-1] in ('focus','purpose','chapter','solutionExplanation','explanation') and any(k in keys for k in ('question','questions','paperCheck'))) or (m=='UB08' and keys[0] in ('differentiation','workingTrace','analogSteps','paperFields')):
+                status='Planungsfeld im Datenvertrag; kein eigener Ausgabezugriff im Schüler-Renderer'
+                kind='Planungsdaten'
         elif typ=='JS-Template':kind='Laufzeitvorlage'
         elif typ=='SVG':kind='Bildtext'
         elif typ=='HTML':kind='HTML oder zugängliche Beschriftung'

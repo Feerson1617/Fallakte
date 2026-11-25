@@ -1,7 +1,6 @@
 """Prüfurteile zu begrenzten Textgruppen mit explizitem Kontext und gebundenem Wortlaut."""
 import hashlib
 import json
-import re
 from collections import defaultdict
 from auslieferung import SRC
 from sprachpruefung import bank
@@ -72,6 +71,10 @@ def gruppen(docs):
             for i,a in enumerate(t['answers']):
                 collect(key,prefix+'/answers/'+str(i)+'/text',a['text'])
                 collect(key,prefix+'/answers/'+str(i)+'/feedback',a['feedback'])
+            for tier,hs in t['helpByLevel'].items():
+                hint_key=('UB08',tier,name+' · '+sub,FAMILIE[name]+' Lesestelle, Denkfrage, Satzanfang und anschließende Lösung sind getrennt.')
+                for i,h in enumerate(hs):
+                    collect(hint_key,prefix+'/helpByLevel/'+tier+'/'+str(i),h)
     for i,t in enumerate(family['limits']):
         key=('UB08','alle vier',t['id'],'Aus der medizinischen Information folgt für Laura keine verpflichtende persönliche Entscheidung.')
         collect(key,'limits/'+str(i)+'/prompt',t['prompt'])
@@ -82,6 +85,34 @@ def gruppen(docs):
             key=('UB02',tier,sid,BERATUNG[sid])
             for field in ('task','paperPrompt','returnPrompt'):
                 collect(key,f'stages/{sid}/levels/{tier}/'+field,task[field])
+            for method,way in task['strategies'].items():
+                base=f'stages/{sid}/levels/{tier}/strategies/{method}'
+                k=('UB02',tier,sid+' · '+method,BERATUNG[sid]+' Rückfragen und Bedingungen gehören zur gewählten Methode.')
+                for field in ('condition','feedback'):
+                    collect(k,base+'/'+field,way[field])
+                for i,q in enumerate(way['questions']):
+                    for field in ('text','answer'):
+                        collect(k,f'{base}/questions/{i}/'+field,q[field])
+                for i,o in enumerate(way['options']):
+                    for field in ('text','feedback'):
+                        collect(k,f'{base}/options/{i}/'+field,o[field])
+    for person in ('Tom','Celina'):
+        case=bank(docs[person][0])
+        for i,step in enumerate(case['stages']):
+            base='stages/'+str(i)
+            for tier,task in step['task'].items():
+                k=(person,tier,step['title'],'Auftrag im Gespräch, Methode und Papierfeld gehören zur aktuellen Frage von '+person+'.')
+                collect(k,base+'/task/'+tier,task)
+                collect(k,base+'/paper/'+tier,step['paper'][tier])
+                for j,x in enumerate(step['message'][tier]):collect(k,f'{base}/message/{tier}/{j}',x)
+            methods=step.get('checks',{})
+            checks=methods.items() if methods else [('',step)]
+            for method,check in checks:
+                stem=base+'/checks/'+method if method else base
+                k=(person,'alle vier',step['title']+' '+method,'Die Erklärung bezieht sich auf die konkrete Aussage und '+('Toms eigene Anwendung bzw. die Reichweite des Studienbefunds.' if person=='Tom' else 'Celinas Wünsche, Anwendungsform oder Zustimmung.'))
+                for j,(answer,feedback) in enumerate(zip(check['answers'],check['feedback'],strict=True)):
+                    collect(k,stem+'/answers/'+str(j),answer)
+                    collect(k,stem+'/feedback/'+str(j),feedback)
     return groups
 
 
