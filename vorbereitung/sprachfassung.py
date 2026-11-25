@@ -97,7 +97,7 @@ def redigieren(bank):
     for lesson in bank['levels'].values():
         klartext(lesson['intro'])
         for chapter in lesson['chapters']:
-            for key in ('questions','paperCheck','observationPrompt','information'):
+            for key in ('questions','paperCheck','observationPrompt','information','supportingInfo'):
                 if chapter.get(key):
                     chapter[key]=klartext(chapter[key])
             number=int(chapter['id'][0])
@@ -108,6 +108,19 @@ def redigieren(bank):
 
 
 KLARTEXT={
+    'Die Einnahme besprechen wir in 2B.':'In Kapitel 2B erfährst du, wann die Pille eingenommen wird.',
+    'Vergleiche die beiden Materialien und die Hüllenfunktion.':'Vergleiche die beiden Hüllen. Woraus bestehen sie? Was können sie zurückhalten?',
+    'Erkläre die Wirkungskette.':'Wie verändert das Hormon den Schleim? Was bedeutet das für den Weg der Spermien?',
+    'Trenne Materialeigenschaft und mechanische Funktion.':'Woraus besteht die Hülle? Wie kann sie Spermien zurückhalten?',
+    'Unterscheide die räumliche Grenze und die Anwendungsgrenze.':'Welche Hautstellen bedeckt das Kondom? Wann kann es beim Sex schützen?',
+    'Welche Beobachtungen erlauben keine sichere persönliche Prognose?':'Was kannst du aus der Erfahrung einer anderen Person über die eigene Verträglichkeit schließen?',
+    'Trenne mögliche Linderung, individuelle Eignung und persönliche Zustimmung.':'Wie können sich Schmerzen verändern? Was klärt die Arztpraxis? Wer entscheidet über das Einsetzen?',
+    'Eine Einzelerfahrung stützt eine Möglichkeit, keine sichere Prognose.':'Bei einer Person wurden die Schmerzen schwächer. Bei einer anderen Person kann es anders sein.',
+    'Ein Fremdbericht ist keine Diagnose. Unterscheide Beobachtung und Ursache.':'Die Erfahrung der Bekannten erklärt nicht, woher die eigenen Schmerzen kommen.',
+    'Die Beschwerden bedürfen einer eigenen Abklärung.':'Eine Ärztin oder ein Arzt sollte die Schmerzen untersuchen.',
+    'Sie ist eine Langzeitmethode. Prüfe die Anwendungsform.':'Die Spirale wirkt nach dem Einsetzen längere Zeit. Muss die Person dafür täglich eine Tablette nehmen?',
+    'Das ist keine Wirkung eines Kondoms. Trenne Hülle und Zyklus.':'Das Kondom hält Sperma in der Hülle zurück. Es verändert den Eisprung nicht.',
+    'Das folgt aus der Zykluswirkung nicht. Erreger benötigen keinen Eisprung.':'Auch ohne Eisprung können beim Sex Krankheitserreger übertragen werden.',
     'Welche Zahl spricht unter vergleichbaren Bedingungen für weniger Schwangerschaften trotz Verhütung?':
         'Zwei Gruppen verhüten gleich lange. Beide wenden ihre Methode wie vorgesehen an. Welcher Pearl-Index bedeutet weniger Schwangerschaften?',
     'Unter vergleichbaren Bedingungen steht der kleinere Wert für einen zuverlässigeren Schwangerschaftsschutz.':

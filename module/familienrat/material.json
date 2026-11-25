@@ -1921,7 +1921,7 @@
       "Deshalb finde ich die ergänzte Nachricht der Mutter jetzt besonders hilfreich. / Deshalb finde ich die ergänzte Nachricht der Freundin jetzt besonders hilfreich. / Deshalb finde ich beide ergänzten Nachrichten wichtig, jeweils für eine andere Frage."
     ],
     [
-      "Der Grund für die Verbindung",
+      "Warum der Fakt zur gewählten Frage passt",
       "So erfährt Laura, welche körperlichen Beschwerden auftreten können. / So erfährt Laura, dass spätere Kinder nach einem komplikationslosen Abbruch möglich bleiben."
     ]
   ],
@@ -2137,14 +2137,14 @@
     },
     "AHR": {
       "analyse": "Zeige an wenigen Worten aus der Nachricht, welche Funktion die Aussage für den Rat hat.",
-      "Ergänzung": "Formuliere die Ergänzung selbst. Was klärt sie, und welche Schlussfolgerung wäre zu weitgehend?"
+      "Ergänzung": "Formuliere die fehlende Aussage im Textfeld. Was erklärt sie? Was kannst du aus ihr nicht schließen?"
     }
   },
   "caseReflection": {
     "Mutter": "Welcher Vorgang kann Beschwerden erklären? Was kannst du daraus über die Belastung einer fortgesetzten Schwangerschaft ableiten?",
     "Freundin": "Warum ist die Information für spätere Kinder relevant? Erkläre den Unterschied zwischen einer Möglichkeit und einer Garantie.",
     "Großmutter": "Begründet das Ende der Embryonalentwicklung allein eine moralische Verpflichtung? Unterscheide Sachverhalt und persönliche Überzeugung.",
-    "Vater": "Wie unterstützt die ärztliche Klärung eine selbstbestimmte Entscheidung? Wer gewichtet die Möglichkeiten?"
+    "Vater": "Was kann Laura bei der ärztlichen Beratung erfahren? Wer entscheidet, was für sie wichtiger ist?"
   },
   "known": "Prüfe vier Bestandteile: Fakt, Wert, Norm und Folgerung. Hier meint „Fakt“ einen biologischen Beleg. Auch Lauras Pläne sind wichtige Fallinformationen. Prüfe bei jeder Nachricht selbst, was ausdrücklich gesagt wird.",
   "designFiles": {
@@ -2160,7 +2160,7 @@
       "Was ist für Laura jetzt wichtig: Schmerzen, spätere Kinder oder beides?",
       "Suche den Fakt, der ihre Frage beantwortet.",
       "Beginne: „Ich finde … wichtig, weil … .“",
-      "Die Mutter spricht über Beschwerden. Die Freundin über spätere Kinder. Wähle eine oder beide. Was hilft Laura daran? Gib deinen eigenen Grund."
+      "Die Mutter spricht über Beschwerden. Die Freundin über spätere Kinder. Wähle eine oder beide. Was hilft Laura daran? Warum hilft gerade diese Information bei Lauras Frage?"
     ],
     "ESA": [
       "Welche von Lauras Fragen würdest du zuerst klären? Warum?",

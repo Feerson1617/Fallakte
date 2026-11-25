@@ -25,7 +25,7 @@
     "task": {
       "Foerder": "Was kann Tom selbst benutzen? Wähle den Grund.",
       "ESA": "Begründe, welchen Teil des Vorschlags Tom selbst anwenden kann.",
-      "MSA": "Unterscheide eigene Anwendung und gemeinsam besprochene Entscheidungen.",
+      "MSA": "Was kann Tom selbst benutzen? Welche Entscheidung trifft seine Freundin über ihren Körper?",
       "AHR": "Prüfe die körperliche Anwendungsvoraussetzung und erkläre, wer jeweils entscheidet."
     }
   },
@@ -97,7 +97,7 @@
       "Foerder": "Was wurde in Studie B geprüft? Wähle die passende Aussage.",
       "ESA": "Was zeigt Studie B? Prüfe deine Antwort mit dem Studienkasten.",
       "MSA": "Trenne Messwert und Schlussfolgerung. Welche Untersuchung würde die offene Frage zum Schutz prüfen?",
-      "AHR": "Vergleiche die Endpunkte beider Studien. Begründe, welche Daten über längere Anwendung und Schwangerschaften noch fehlen."
+      "AHR": "Vergleiche, was die beiden Studien gemessen haben. Begründe, welche Daten über längere Anwendung und Schwangerschaften noch fehlen."
     },
     "message": {
       "Foerder": [

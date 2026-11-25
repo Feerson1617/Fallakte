@@ -66,7 +66,7 @@ def make_bank(person):
         elif len(records)==1:
             record['task']['Foerder']='Lies den Artikel. Erkläre mündlich, warum die Forschung Zeit braucht.'
         record['return']='Gib A, B oder C am iPad ein. Tippe auf „Code prüfen“. Nach der richtigen Auswahl erscheint „Nachricht senden“.'
-        record['paper']={t:f"Zusatzbogen {person} · Seite {len(records)+1} · {person} {len(records)+1} – {record['title']}. "+task for t,task in record['task'].items()}
+        record['paper']={t:f"Zusatzbogen {person} · Seite {len(records)+1} · {person} {len(records)+1} – {record['title']} · "+task for t,task in record['task'].items()}
         records.append(record)
     bank={'version':person.lower()+('-1.2' if person=='Tom' else '-1.1'),'buildCommit':commit(),'person':person,'levels':laura['levels'],
           'stages':records,'cards':laura['cards']}

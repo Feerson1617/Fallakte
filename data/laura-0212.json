@@ -3009,7 +3009,7 @@
                 "method": "Cu",
                 "section": "sti"
               },
-              "evidence": "Welche Aussage zum Schutz lässt die Kupferspirale durch ihre Wirkung auf Spermien zu? Prüfe die Reichweite deines Rats am zweiten Anliegen.",
+              "evidence": "Welche Aussage zum Schutz lässt die Kupferspirale durch ihre Wirkung auf Spermien zu? Welche Aussage kannst du damit über Infektionen beim Sex treffen?",
               "correction": {
                 "label": "Verhütung neu wählen"
               }
@@ -3165,7 +3165,7 @@
               "Wähle die Verhütung, die du Laura empfiehlst. Du kannst deine Auswahl ändern, bevor du sie sendest."
             ]
           },
-          "evidence": "Wie verändert das zusätzliche Schutzziel deine bisherige Abwägung?",
+          "evidence": "Was bedeutet Lauras Wunsch nach Schutz vor Infektionen für deinen bisherigen Rat?",
           "paperFallback": "Laufzettel nicht zur Hand? Aufgabe hier ansehen."
         }
       }
@@ -3828,7 +3828,7 @@
                 "method": "Cu",
                 "section": "sti"
               },
-              "evidence": "Welche Anwendung braucht die Kupferspirale nach dem Einsetzen? Welches Schutzziel bleibt offen?",
+              "evidence": "Woran müsste Laura nach dem Einsetzen der Kupferspirale im Alltag denken? Welches Schutzziel bleibt offen?",
               "correction": {
                 "label": "Synthetisches Kondom ohne Latex ergänzen",
                 "target": "K+Cu"
@@ -4154,7 +4154,7 @@
                 "Bei jedem Sex wird ein neues Kondom von Anfang an richtig benutzt. Laufzettel „Laura 3 – Hormone und Alltag“: Begründe deine Empfehlung. Kreise die fachlich richtige Aussage ein."
               ],
               "options": [],
-              "evidence": "Wie passt das Kondom zu Lauras Alltag? Begründe auch, wann seine Barriere wirken kann."
+              "evidence": "Was müsste Laura bei jedem Sex tun? Passt das zu ihrem Alltag? Begründe auch, wann seine Barriere wirken kann."
             },
             "P": {
               "status": "B",
@@ -4219,7 +4219,7 @@
                 "method": "Cu",
                 "section": "sti"
               },
-              "evidence": "Ordne die Kupferspirale im Alltag ein. Welche Grenze hat ihre Wirkung?",
+              "evidence": "Was müsste Laura bei der Kupferspirale im Alltag tun? Welches Schutzziel bleibt offen?",
               "correction": {
                 "label": "Verhütung neu wählen"
               }
@@ -4618,7 +4618,7 @@
                 "Bei der Hormonspirale fällt keine tägliche Tablette an. Das Kondom wird bei jedem Sex neu benutzt. Laufzettel „Laura 3 – Hormone und Alltag“: Begründe deine Empfehlung. Kreise die fachlich richtige Aussage ein."
               ],
               "options": [],
-              "evidence": "Gewichte die Anwendung von Kondom und Hormonspirale und Lauras offene Frage zur Verträglichkeit."
+              "evidence": "Vergleiche die Anwendung von Kondom und Hormonspirale. Wie wichtig ist für deinen Rat, dass Laura noch nicht weiß, wie sie Hormone verträgt?"
             }
           },
           "before": {
@@ -4703,7 +4703,7 @@
           "id": "Foerder",
           "taskId": "Laura-L04-Foerder",
           "message": "Bei meiner Regel habe ich starke Schmerzen. Warum, weiß ich nicht. Ich war damit noch nicht in der Praxis. Das Einsetzen einer Spirale macht mir Sorgen.",
-          "task": "Wie kann sich deine Verhütung auf Lauras Regelschmerzen auswirken? Wähle die passende Aussage.",
+          "task": "Wie könnte die von dir gewählte Methode Lauras Regelschmerzen verändern? Wähle die passende Aussage.",
           "primary": [
             "K",
             "K+H"
@@ -6022,7 +6022,7 @@
                 "method": "Cu",
                 "section": "sti"
               },
-              "evidence": "Wäge bei der Kupferspirale den möglichen Nachteil für die Regel gegen ihren Nutzen und Lauras Einlagebedenken ab.",
+              "evidence": "Wäge bei der Kupferspirale den möglichen Nachteil für die Regel gegen ihren Nutzen und Lauras Sorge vor dem Einsetzen ab.",
               "correction": {
                 "label": "Verhütung neu wählen"
               }
@@ -7174,7 +7174,7 @@
             ],
             "freeCards": true
           },
-          "evidence": "Welchen Wunsch oder welche Sorge hat Laura dir nach ihrem ersten Rat genannt?",
+          "evidence": "Welchen Wunsch oder welche Sorge hat Laura dir nach deinem ersten Rat genannt?",
           "paperFieldId": "L05.schlussrat"
         },
         "MSA": {
@@ -7614,7 +7614,7 @@
                 "method": "H",
                 "section": "sti"
               },
-              "evidence": "Gewichte Nutzen, Einlage und Grenzen der Hormonspirale allein. Wovon hinge ein vertretbarer Schlussrat ab?",
+              "evidence": "Was spricht für und was gegen die Hormonspirale? Denke an den Schutz, das Einsetzen und Lauras Wünsche. Wann würdest du sie empfehlen?",
               "correction": {
                 "label": "Verhütung neu wählen"
               }

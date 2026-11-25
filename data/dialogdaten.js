@@ -816,13 +816,13 @@ const FALLAKTE = {
           "AHR": "Entwickle zwei bedingte Wege abhängig von Celinas späterer Zustimmung, ohne medizinische Eignung zu unterstellen."
         },
         "options": {
-          "K": "Unser Vorschlag ist: Ein Kondom.",
-          "P": "Unser Vorschlag ist: Die Kombinationspille.",
-          "Cu": "Unser Vorschlag ist: Die Kupferspirale.",
-          "H": "Unser Vorschlag ist: Die Hormonspirale.",
-          "K+P": "Unser Vorschlag ist: Ein Kondom und die Kombinationspille.",
-          "K+Cu": "Unser Vorschlag ist: Ein Kondom und die Kupferspirale.",
-          "K+H": "Unser Vorschlag ist: Ein Kondom und die Hormonspirale."
+          "K": "Mein Vorschlag ist: Ein Kondom.",
+          "P": "Mein Vorschlag ist: Die Kombinationspille.",
+          "Cu": "Mein Vorschlag ist: Die Kupferspirale.",
+          "H": "Mein Vorschlag ist: Die Hormonspirale.",
+          "K+P": "Mein Vorschlag ist: Ein Kondom und die Kombinationspille.",
+          "K+Cu": "Mein Vorschlag ist: Ein Kondom und die Kupferspirale.",
+          "K+H": "Mein Vorschlag ist: Ein Kondom und die Hormonspirale."
         },
         "replies": {
           "K": "Das wäre ohne Einsetzen einer Spirale. Wie wägt ihr den Schutz im Alltag ab?",
