@@ -92,6 +92,34 @@ def media(docs):
         r['medium']='Lernbogen' if r['modul']=='UB08' else ('Infokarte und/oder Laufzettel' if r['modul']=='PREP' else 'Laufzettel')
     return rows
 
+def stationsuebergaenge(docs,wege):
+    bank_vor=bank(docs['PREP'][0])
+    gruppen=defaultdict(list)
+    raw,_=wege.pairs['PREP']
+    for n,line in enumerate(raw.splitlines(),1):
+        step=json.loads(line)
+        gruppen[step['niveau']].append((n,step['neutext'],step['bedienung']))
+    result={}
+    for tier,lesson in bank_vor['levels'].items():
+        for i,c in enumerate(lesson['chapters']):
+            key=c['id'];papier=c.get('paperCheck')
+            expected='Code prüfen' if papier else 'Vollständige Karte vergleichen' if key.endswith('B') else 'Weiter im Chat'
+            card=next(k for k in bank_vor['cards'][tier] if k['method']==c['method'])
+            numbers=[f['number'] for f in c['cardEntries']]
+            assert numbers==([1,2] if key.endswith('A') else [3,4])
+            assert card['title'] in c['paperPrompt'] and ' und '.join(map(str,numbers)) in c['paperPrompt']
+            examples=[(n,text,actions) for n,text,actions in gruppen[tier] if c['paperPrompt'] in text]
+            hit=next(n for n,text,buttons in examples if expected in buttons)
+            proof=dict(niveau=tier,kapitel=key,infokarte=card['title'],felder=numbers,erste_rueckkehr=expected,rueckkehrbeleg=hit)
+            if papier:
+                proof['auftrag_auf_papier']=next(n for n,text,actions in examples if papier['screen'] in text and papier['return'] in text)
+                proof['senden']=next(n for n,text,actions in examples if 'Nachricht senden' in actions)
+            elif key.endswith('B'):
+                proof['kartenkontrolle']=next(n for n,text,actions in gruppen[tier] if 'Laufzettel „'+key+'“' in text and 'Karte kontrolliert' in text and 'Weiter im Chat' in actions)
+            result[tier,i]=proof
+    assert len(result)==32
+    return result
+
 def report(ref):
     old,new,changes=pruefen(ref)
     states=[]
@@ -110,6 +138,7 @@ def report(ref):
     lesarten=nachweise(new)
     astrollen={}
     rows=[];counts=Counter()
+    uebergaben=stationsuebergaenge(new,wege)
     matrix=media(new)
     cases={m:bank(new[m][0]) for m in ('Tom','Celina')}
     # Die freiwilligen Fälle zeigen bei einem Widerspruch nur die Konfliktmeldung.
@@ -149,6 +178,12 @@ def report(ref):
                     status='Rückmeldung zur konkreten Fehloption redigiert und im Frageweg geprüft';kind='Rückmeldung'
             elif m=='UB02' and '/hints/' in place and (QA/'Empfehlungen.json').exists():
                 status='Hinweis im Entscheidungsweg und in seiner Stufenfolge geprüft';kind='Hilfe'
+            if m=='PREP' and len(keys)>=5 and keys[0]=='levels' and keys[2]=='chapters':
+                transfer=uebergaben[keys[1],int(keys[3])]
+                if keys[4]=='paperPrompt' or ('paperCheck' in keys and keys[-1] in ('screen','return')):
+                    status='Papierfeld, Handlungsauftrag und nutzbarer Rückweg im Kapitel einzeln geprüft';kind='Papierauftrag'
+                if keys[4]=='backToChat':
+                    status=('Im regulären Codeweg wird stattdessen der Papierfrage-Auftrag angezeigt' if 'senden' in transfer else 'Rückkehrhinweis und Schaltfläche im Kapitel einzeln geprüft');kind='Rückkehrhinweis'
             if m in cases and len(keys)>3 and keys[0]=='stages' and keys[2]=='checks':
                 case=cases[m]['stages'][int(keys[1])]
                 if keys[3] in case.get('conflicts',{}) and len(keys)>4 and keys[4] in ('feedback','answers','short'):
@@ -254,6 +289,7 @@ def report(ref):
             laufumfang[key]+=1
             unique[key].add(snap['neutext'])
         archive['Laufzeitvergleich/'+name+'.jsonl']=raw
+    archive['Stations-Medienwechsel.json']=json.dumps(list(uebergaben.values()),ensure_ascii=False,indent=2)
     archive['Laufzeitumfang.csv']=csvdata([dict(modul=k[0],niveau=k[1],weg=k[2],aktion=k[3],wortlaut=k[4],beobachtungen=v,verschiedene_ansichten=len(unique[k])) for k,v in sorted(laufumfang.items())])
     archive['Work-Druckhinweise.md']='''# Papierabgleich für die nächste Materialfassung
 
