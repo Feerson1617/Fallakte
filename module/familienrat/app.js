@@ -247,7 +247,9 @@ function options(box,task,r,onDone,application=false){
       }
       if(application){r.finished=o.ok;r.skipped=false;}
       draw();
-      const fb=document.getElementById('response');fb.focus({preventScroll:true});fb.scrollIntoView({block:'nearest'});
+      const target=application && o.ok?root.querySelector('[data-handoff]'):document.getElementById('response');
+      target.tabIndex=-1;
+      target.focus({preventScroll:true});target.scrollIntoView({block:'nearest'});
     });
     if(target===extra && r.selected===index)extra.open=true;
     b.disabled=r.valid||r.finished===true;b.setAttribute('aria-pressed',String(r.selected===index));
