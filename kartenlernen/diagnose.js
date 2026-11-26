@@ -172,6 +172,18 @@ const Lernfeedback = (() => {
   gram.kupfer.b.push('(?:die |eine )?eizelle wird '+reduced+' befruchtet','so schaffen weniger (?:spermien |samenzellen )?die befruchtung',
     '(?:die |sie |diese )?'+reduced+' (?:zum ei|zur eizelle) (?:kommen|gelangen)');
   gram.kupfer.negatives.bewegung.push(...frame(swimmers,'schwimmen|werden','schneller|beweglicher'));
+  gram.pille.a.push('(?:der )?eisprung faellt aus','(?:meistens |meist )?springt kein ei aus dem eierstock','(?:unter|mit) der pille der eisprung ausbleibt');
+  gram.pille.b.push(noCell+' (?:steht bereit|zur befruchtung|zum befruchten)','(?:dann )?ist fuer (?:die )?spermien kein ei da',
+    '(?:die )?spermien (?:finden|haben) '+noCell+'(?: zum befruchten)?');
+  gram.schleim.b.push('(?:so )?ist der weg fuer (?:die )?spermien schwer zu schaffen');
+  gram.haut.a.push('haut ist noch frei','(?:auch )?ein (?:heiles|intaktes) kondom laesst hautstellen frei');
+  gram.haut.b.push('an (?:diesen|den) (?:stellen|hautstellen) ohne schutz kann man sich (?:anstecken|infizieren)',
+    'dort koennen '+germs+' (?:weitergegeben|uebertragen) werden',
+    'auf (?:dieser|der) freien haut koennen '+germs+' von einem menschen zum anderen (?:kommen|gelangen)');
+  gram.haut.negatives.flaeche.push(...frame(condom,'bedeckt|bedecken|schuetzt|schuetzen','die (?:ganze|gesamte) haut'));
+  gram.kupfer.a.push(...frame(swimmers,'verlieren','(?:an )?tempo'));
+  gram.kupfer.b.push('(?:so )?haben sie es schwerer bis zum ei');
+  gram.kupfer.negatives.befruchtung.push(...frame('(?:die |eine )?befruchtung','wird','leichter|erleichtert'));
   for(const [id,g] of Object.entries(gram)){
     for(const tag of ['a','b','ab','extra'])bound[id][tag]=[...(bound[id][tag]||[]),...g[tag]];
     for(const [e,patterns] of Object.entries(g.negatives))bound[id].negatives[e].push(...patterns);
@@ -231,15 +243,35 @@ const Lernfeedback = (() => {
     for(const tag of ['ab','a','b','extra'])if(matches(model[tag],clause))return {tag};
     return null;
   }
+  // Unterscheide die benannte Nominalgruppe vom Rest des Prädikats. Nur ganze
+  // Formen desselben Satzes werden umgestellt; kein Objekt oder Negator entfällt.
+  const subject=/^(?:(?:die |der |das |ein |eine |kein |keine )?(?:freie |befruchtbare |manche |andere |einige )?(?:kombinationspille|pille|eisprung|eizelle|ei|samenzellen|spermien|kupferionen|kupfer|kupferspirale|hormonspirale|zervixschleim|schleim|kondome?|hautstellen|haut|befruchtungsfaehigkeit|befruchtung|erreger|keime|viren|hormone?)|(?:ein teil|teile) der haut|diese|sie)\b/;
+  const finite=/^(?:wird|werden|ist|sind|bleibt|bleiben|faellt|kommen|gelangen|schwimmen|erreichen|befruchten|fehlt|fehlen|kann|koennen|finden|haben|sinkt|hemmt|hemmen|unterdrueckt|verhindert|bremst|bremsen|bedeckt|macht|machen|verdickt|verdicken)$/;
+  function orderedReading(model,c){
+    const direct=recognition(model,c);
+    if(direct)return direct;
+    const words=c.split(' ');
+    if(words.length<3)return null;
+    const first=words[0],last=words.at(-1);
+    if(finite.test(first)){
+      const rest=c.slice(first.length+1),subj=rest.match(subject)?.[0];
+      if(subj){const hit=recognition(model,subj+' '+first+rest.slice(subj.length));if(hit)return hit;}
+    }
+    if(finite.test(last)){
+      const subj=c.match(subject)?.[0];
+      if(subj)return recognition(model,subj+' '+last+c.slice(subj.length,-last.length-1));
+    }
+    return null;
+  }
   function readClause(model,clause){
-    const read=recognition(model,clause);
+    const read=orderedReading(model,clause);
     if(read)return [read];
     // Zwei vollständige Satzglieder ohne Satzzeichen. Restwörter werden nicht verworfen.
     if(clause.length<=220){
       for(const space of clause.matchAll(/ /g)){
         const left=recognition(model,clause.slice(0,space.index));
         if(!left)continue;
-        const right=recognition(model,clause.slice(space.index+1));
+        const right=orderedReading(model,clause.slice(space.index+1));
         if(right)return [left,right];
       }
     }
@@ -260,7 +292,8 @@ const Lernfeedback = (() => {
     if(s.length>2400 || /[?„“"]|\b(?:vielleicht|angeblich|weiss nicht|oder|nicht sicher|wenn|falls|glaube nicht|behauptet|falsch ist|es stimmt nicht|es waere falsch|es ist falsch)\b/.test(s))return result('unsicher');
     for(const [from,to] of repairs[id])s=s.replace(from,to);
     // Eine vollständig erklärte Gegenwirkung bleibt erhalten, auch bei geteilter Subjektgruppe.
-    s=s.replace(/\bund (deshalb|dadurch|daher) (die eizelle|das ei) (schwerer|schlechter) (erreichen|befruchten)\b/g,', $1 koennen sie $2 $3 $4')
+    s=s.replace(/(samenzellen|spermien) (kommen|schwimmen) (kaum noch|langsamer|schlechter) voran und (erreichen|befruchten) (das ei|die eizelle) deshalb /g,'$1 $2 $3 voran, deshalb $4 sie $5 ')
+      .replace(/\bund (deshalb|dadurch|daher) (die eizelle|das ei) (schwerer|schlechter) (erreichen|befruchten)\b/g,', $1 koennen sie $2 $3 $4')
       .replace(/\bund (deshalb|dadurch|daher)\b/g,', $1')
       .replace(/\b((?:die )?(?:samenzellen|spermien)) (kommen|gelangen|schwimmen) (deshalb|dadurch|daher) /g,'$3 $2 $1 ')
       .replace(/\bdas ist (?:darum|deshalb) so,? weil /g,'weil ')
@@ -269,13 +302,14 @@ const Lernfeedback = (() => {
     s=s.replace(/\bso dass\b/g,'sodass');
     const leading=s.match(/^(weil|da)\s+/);
     if(leading)s=s.slice(leading[0].length);
-    const chunks=s.split(/(\s*[,.;:]?\s*\b(?:weil|da|denn|dadurch|deshalb|daher|darum|sodass|also|deswegen|somit|folglich)\b\s*|\s+aber\s+|\s+und\s+(?!(?:befruchten sie|befruchten die eizelle))|\s*(?:->|→)\s*|[.,;:\n]+)/);
+    const chunks=s.split(/(\s*[,.;:]?\s*\b(?:weil|da|denn|dadurch|deshalb|daher|darum|sodass|also|deswegen|somit|folglich)\b\s*|\s+aber\s+|\s+und\s+(?!(?:befruchten sie|befruchten die eizelle))|\s*(?:->|→)\s*|[!.,;:\n]+)/);
     let last='',link='',first=true;
     for(let i=0;i<chunks.length;i++){
       if(i%2){const token=chunks[i].trim().replace(/^[,.;:]\s*/, '');if(token||!link)link=token;continue;}
       let c=chunks[i].trim().replace(/ (?:und|aber)$/,'');
       if(!c||c==='aber'||c==='und')continue;
-      c=c.replace(/^(der schleim) (zaeher|dicker|dichter) wird$/,'$1 wird $2')
+      c=c.replace(/^dort (koennen|werden) ((?:manche |einige )?(?:erreger|keime|viren)) (weitergegeben|uebertragen) werden$/,'$2 koennen bei hautkontakt $3 werden')
+        .replace(/^(der schleim) (zaeher|dicker|dichter) wird$/,'$1 wird $2')
         .replace(/^(die pille) den eisprung (hemmt|verhindert)$/,'$1 $2 den eisprung')
         .replace(/^kupfer (?:die )?spermien bremst$/,'kupfer bremst spermien')
         .replace(/^(ein teil der haut) (frei|unbedeckt) bleibt$/,'$1 bleibt $2')
