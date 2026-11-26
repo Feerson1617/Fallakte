@@ -14,7 +14,11 @@
  tap('#hilfe');const hilfen=[$('#hilfe-text').textContent];
  while($('#hilfe-weiter')){tap('#hilfe-weiter');hilfen.push($('#hilfe-text').textContent);}
  if(hilfen.length!==5||!hilfen[0].includes('Kombinationspille')||!hilfen[4].includes(correct))throw Error(hilfen.join(' / '));
- tap('#material-zurueck');type(own);tap('#vergleichen');
+ tap('#material-zurueck');
+ for(const bad of way.options.filter(o=>!o.correct && !(stage==='L04' && o.text.includes('Lauras Sorge')))){
+   type(bad.text);tap('#vergleichen');if(!$('#erklaerung')||!$('#fachmeldung').textContent.trim())throw Error('Übernommene falsche Kontrollaussage');
+ }
+ type(own);tap('#vergleichen');
  const errors=[];
  for(const bad of way.options.filter(o=>!o.correct)){
    tap('[data-option="'+bad.id+'"]');tap('#hilfe');

@@ -114,9 +114,19 @@ window.Beratung = (() => {
     active.phase='choose';
     render('aktueller-rat');
   }
+  function draftIssue(){
+    const draft=active.draft;
+    const medical=Entwurf.fehler(draft.reason);
+    if(medical || !advanced() || !draft.strategy)return medical;
+    // Nur überprüfbare Kontrollaussagen dieser konkreten Aufgabe. Die Gewichtung von Lauras Sorgen ist persönlich.
+    const canonical=s=>s.trim().toLocaleLowerCase('de').replace(/[.!]+$/u,'').replace(/\s+/gu,' ');
+    const option=info().options.find(o=>!o.correct && canonical(o.text)===canonical(draft.reason) &&
+        !(active.stageId==='L04' && o.text.includes('Lauras Sorge')));
+    return option?{frage:task().task,info:option.feedback,ref:option.card}:null;
+  }
   function matchesEvidence() {
     const draft=active.draft;
-    if(advanced() && (!draft.compared || Entwurf.fehler(draft.reason)))return false;
+    if(advanced() && (!draft.compared || draftIssue()))return false;
     return info().options.some(option=>option.id===draft.optionId && option.correct);
   }
   function canSend() {
@@ -266,7 +276,7 @@ window.Beratung = (() => {
     const label=element('label','',task().task);label.htmlFor='erklaerung';
     const field=element('textarea');field.id='erklaerung';field.rows=2;field.value=active.draft.reason;
     const next=control('vergleichen','Mit den Aussagen vergleichen',()=>{
-      const d=active.draft, error=Entwurf.fehler(d.reason);
+      const d=active.draft, error=draftIssue();
       d.feedback=error?{type:'A',text:error.info,card:error.ref}:null;
       d.compared=!error;
       render(error?'fachmeldung':'begruendungen');
@@ -325,7 +335,7 @@ window.Beratung = (() => {
     const context={stageId:active.stageId,levelId:active.tier,strategy:active.draft.strategy,
       asked:new Set(asked),feedback:active.draft.feedback};
     if (active.draft.strategy || active.stageId==='L01') tools.append(cardLinks());
-    tools.append(control('hilfe','Hilfe',b=>window.Material.help({...context,feedback:active.draft.feedback,error:Entwurf.fehler(active.draft.reason)},b)));
+    tools.append(control('hilfe','Hilfe',b=>window.Material.help({...context,feedback:active.draft.feedback,error:draftIssue()},b)));
     const questions=active.draft.strategy ? info().questions : (task().before?.questions || []);
     if (questions.some(q=>!asked.has(q.id))) {
       const sourceSession=active, sourceDraft=active.draft;

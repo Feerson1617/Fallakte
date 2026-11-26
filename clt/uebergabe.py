@@ -119,10 +119,11 @@ def release():
         suffix='Laura' if day=='02' else 'Familie'
         for p in PHYS.glob('*-'+suffix+'.jpg'):screens['Treffer/'+p.name]=p.read_bytes()
         for e in ('chromium','webkit'):
-            if day=='02':
-                drafts=(QA/'Gegenpruefung'/f'Entwuerfe-{e}.json').read_bytes()
-                assert json.loads(drafts)['html_sha256']==sha(raw)
-                logs['Entwuerfe/'+e+'.json']=drafts
+            drafts=(QA/'Gegenpruefung'/f'Entwuerfe-{e}.json').read_bytes()
+            audit=json.loads(drafts)
+            assert audit['html_sha256' if day=='02' else 'familien_html_sha256']==sha(raw)
+            assert len(audit['wege'])==70 and len(audit['fehlerhilfen'])==464 and len(audit['zusaetzliche_wege'])==68
+            logs['Entwuerfe-und-Fehlerhilfen/'+e+'.json']=drafts
             evidence=(QA/'Sitzung'/('Sitzungspruefung-'+e+'.json')).read_bytes()
             assert json.loads(evidence)['html_sha256']==sha((OUT/'Fallakte-08-12.html').read_bytes())
             logs['Tageswechsel/'+e+'.json']=evidence
@@ -142,6 +143,8 @@ def release():
 Commit `{revision}`. SHA-256 der Offline-Datei `{sha(raw)}`.
 
 {protection}
+
+Gegenprüfung gegenüber ac86cb8: Auf 46 sendbaren Wegen musste der HIV-Irrtum vor der Kontrollauswahl berichtigt werden. Alle 46 Empfehlungen blieben nach der Überarbeitung sendbar. Weitere 68 Freitextwege betrafen Familiennachrichten, Tom und Celina. Zusätzlich wurden auf 464 unterschiedlichen Quellen-, Auswahl- und Konfliktwegen der Familiennachrichten und Zusatzfälle jeweils alle fünf Hilfetexte geprüft. Die Zahlen beziehen sich jeweils auf einen Browser. Die Protokolle enthalten die tatsächlich angezeigten Hilfen.
 
 Die Lehrkraft gibt zwei Karten getrennt aus. Die Arbeit dazwischen läuft digital. Das Menü „Stundenabschluss“ ist auch bei frühem Stopp erreichbar. Wer bereits einen anderen Rat gesendet hat, kann ihn im Gespräch nachlesen. Persönliche Gründe werden im Unterricht besprochen.
 

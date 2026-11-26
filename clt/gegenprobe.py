@@ -28,14 +28,17 @@ def pruefen(engine):
         assert family_raw==(folder/'Fallakte-08-12.html').read_bytes()
         family=extracted(family_raw.decode(),'modul-08')
         extra=[]
+        hilfen=[]
         for tag,persons in [('08',['Mutter','Freundin','Großmutter','Vater']),('02',['Tom','Celina'])]:
             for name in persons:
                 p.goto('about:blank')
                 p.set_content(family if tag=='08' else extracted(page,'reserve-'+name))
                 if tag=='02':p.evaluate('window.setTierForTest = value => {tier=value;}')
+                for level in (('Förder' if tag=='08' else 'Foerder'),'ESA','MSA','AHR'):
+                    hilfen.extend(p.evaluate((HERE/'fehlerhilfen.js').read_text(),dict(name=name,niveau=level,tag=tag)))
                 for level in ('MSA','AHR'):
                     extra.extend(p.evaluate((HERE/'entwurfsvergleich.js').read_text(),dict(name=name,tier=level,tag=tag)))
     assert len(out)==70 and sum(r['sendbar'] for r in out)==46
     dst=ROOT/'build/CLT/Gegenpruefung';dst.mkdir(parents=True,exist_ok=True)
-    (dst/f'Entwuerfe-{engine}.json').write_text(json.dumps(dict(html_sha256=hashlib.sha256(raw).hexdigest(),wege=out,zusaetzliche_wege=extra,familien_html_sha256=hashlib.sha256(family_raw).hexdigest()),ensure_ascii=False))
+    (dst/f'Entwuerfe-{engine}.json').write_text(json.dumps(dict(html_sha256=hashlib.sha256(raw).hexdigest(),wege=out,zusaetzliche_wege=extra,fehlerhilfen=hilfen,familien_html_sha256=hashlib.sha256(family_raw).hexdigest()),ensure_ascii=False))
 if __name__=='__main__':pruefen(sys.argv[1])

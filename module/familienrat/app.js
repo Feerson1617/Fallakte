@@ -88,6 +88,8 @@ function cards(index){
 const medizinischeAussagen=[
   {satz:/^(?:nach einem (?:unkomplizierten )?(?:abbruch|schwangerschaftsabbruch) kann (?:man|eine frau) nie (?:mehr |wieder )?schwanger werden|ein (?:schwangerschafts)?abbruch macht (?:immer )?unfruchtbar)$/,quelle:'Später schwanger werden',frage:'Was ist nach einem Abbruch ohne Komplikationen möglich?',info:bank.cards[1].short},
   {satz:/^(?:nach einem (?:unkomplizierten )?(?:abbruch|schwangerschaftsabbruch) wird (?:man|eine frau) (?:garantiert|immer|sicher) (?:wieder )?schwanger)$/,quelle:'Später schwanger werden',frage:'Kann jemand eine spätere Schwangerschaft versprechen?',info:bank.cards[1].short},
+  {satz:/^(?:nach einem abbruch mit medikamenten ist eine spaetere schwangerschaft nie mehr moeglich|eine spaetere schwangerschaft ist (?:immer |sicher )?garantiert)$/,quelle:'Später schwanger werden',frage:'Was kann man über eine spätere Schwangerschaft sagen?',info:bank.cards[1].short},
+  {satz:/^weil medikamente eingesetzt werden, koennen keine schmerzen auftreten$/,quelle:'Blutungen und Schmerzen',frage:'Was kann passieren, wenn sich die Gebärmutter zusammenzieht?',info:bank.cards[0].short},
   {satz:/^(?:ein medikamentoeser (?:schwangerschafts)?abbruch (?:ist immer schmerzfrei|verursacht nie (?:schmerzen|blutungen)))$/,quelle:'Blutungen und Schmerzen',frage:'Was kann im Bauch passieren?',info:bank.cards[0].short}
 ];
 const medizin=text=>Entwurf.fehler(text||'',medizinischeAussagen);
@@ -98,13 +100,22 @@ function help(task,r){
     else r.laterDepth=Math.max(r.laterDepth||0,depth);
     popup(ui.helpTitle+' '+depth+' / 5',box=>{
       const issue=medizin(r.text || (r.step==='reason'?r.reason:''));
-      const wrong=!r.valid && (r.sourceError || (r.selected!==undefined || r.urteil==='falsch' ? r.feedback:''));
+      const wrong=!r.valid && (r.sourceError || (r.selected!==undefined || ['falsch','impuls'].includes(r.urteil) ? r.feedback:''));
       const where=issue?.quelle || (issue?.ref?'Infokarte zur Verhütung':
         r.sourceError?'Originalnachricht':task.id && bank.definitions[task.id]?'Originalnachricht · '+task.id:
         bank.cards[names.indexOf(current?.person)]?.title || 'Fachinformation zum Anliegen');
       const hints=issue || wrong?Entwurf.hilfen(where,issue?.frage||
           (r.sourceError?'Welche Textstelle beantwortet die Frage?':task.prompt || 'Welche Fachinformation passt zum Anliegen?'),issue?.info||wrong):
           (task.helpByLevel?.[tier] || task.hints);
+      if(!issue && r.sourceError && task.evidenceSentences){
+        const original=sentences(bank.cases[current.person].original);
+        const ref=task.evidenceSentences[0];
+        hints[0]='Lies die Nachricht von '+current.person+'.';
+        hints[1]=task.prompt;
+        hints[2]='Suche den '+(ref+1)+'. Satz.';
+        hints[3]=original[ref];
+        hints[4]='Vergleiche die Textstellen. Zur Frage passt: „'+original[ref]+'“';
+      }
       if(issue?.ref)hints[0]='Prüfe die Aussage zur Verhütung in deinem eigenen Text.';
       paragraph(box,hints[depth-1]);
       const row=el(box,'div',undefined,'row');
@@ -231,7 +242,7 @@ function draft(box,task,r,c){
   if(r.source!==undefined)paragraph(box,ui.sourceYes+' '+sentences(c.original)[r.source],'small');
   if(r.draftError)paragraph(box,r.draftError,'feedback falsch').id='draft-error';
   thought(box,ui.free,r.text,text=>{r.text=text;r.draftError='';box.querySelector('#draft-error')?.remove();},'compare',ui.compare,()=>{
-    const issue=medizin(r.text);r.draftError=issue?.info || '';r.compared=!issue;draw(true);
+    const issue=medizin(r.text);r.draftError=issue?.info || '';r.compared=!issue;if(r.compared)r.sourceError='';draw(true);
   });
   if(!task.evidenceSentences)return;
   const d=el(box,'details');el(d,'summary',ui.sourceInstead);
