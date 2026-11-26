@@ -12,11 +12,12 @@ HERE=Path(__file__).resolve().parent
 ROOT=HERE.parent
 OUT=ROOT/'dist/Kartenlernen'
 REF='562ea2566dd80e31c093f313b925adcb31e22c9a'
-START='88ec05360259ab88967315c5dee800064e9ceef0'
+START='24678df39fd672aa81b4c0a2c6b3c08c4ad68f4b'
 sys.path.extend([str(ROOT/'vorbereitung'),str(ROOT/'scripts')])
 from build import manifest
 from bilder import make_graphics
-from aufgaben import THEMEN,HILFEN,NIVEAUS
+from aufgaben import BILDER,TITEL,INFO,INFOHILFE,FRAGEN,NIVEAUS
+from antwortmodelle import MODELLE
 from zipfile import ZIP_DEFLATED,ZipInfo
 
 
@@ -36,7 +37,7 @@ def reference():
 
 def build():
     cards,old=reference()
-    material={'levels':{},'topics':list(THEMEN),'graphics':make_graphics()}
+    material={'levels':{},'modelle':MODELLE,'graphics':{k:v for k,v in make_graphics().items() if k in sum((list(pair) for pair in BILDER),[])}}
     work={'referenz':REF,'ausgangsstand':START,'kartenvertrag_sha256':old['cardContractSHA256'],'niveaus':{}}
     for ti,t in enumerate(NIVEAUS):
         levels=[]
@@ -46,16 +47,21 @@ def build():
                 ueberschrift=f'Kapitel {n} – '+c['title'],felder=fields,texte=[dict(titel=s['title'],lueckentext=s['template'],volltext=s['completedText']) for s in c['sections']],
                 pearl=c['pearlIndex'],pearl_erklaerung=c['pearlExplanation']))
         work['niveaus'][t]=levels
-        qs={}
-        for i,(topic,versions) in enumerate(THEMEN.items()):
-            info,prompt,answer,other,retry,feedback=versions[ti]
-            correct=(i+ti+i//3)%2
-            qs[topic]=dict(info=info,frage=prompt,antworten=[other,answer] if correct else [answer,other],richtig=correct,fehler=retry,rueckmeldung=feedback,
-                hilfen=[*HILFEN[topic][ti],retry,'Passend ist: „'+answer+'“'])
-        material['levels'][t]={'cards':levels,'fragen':qs}
+        info=[]
+        for ch,lines in enumerate(INFO[t]):
+            info.append([dict(titel=TITEL[ch][part],bild=BILDER[ch][part],hilfe=INFOHILFE[ch][part],felder=[2*part+1,2*part+2],
+                text=list(lines[2*part:2*part+2])) for part in range(2)])
+        qs=[]
+        for ch,original in enumerate(FRAGEN[t]):
+            q=dict(original)
+            if q['typ']=='wahl':
+                options=[q['passend'],*[a['text'] for a in q['alternativen']]]
+                q['optionen']=options[::-1] if (ti+ch)%2 else options
+            qs.append(q)
+        material['levels'][t]={'cards':levels,'info':info,'fragen':qs}
     head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     styles=(HERE/'stil.css').read_text().replace('FONT_URL','data:font/ttf;base64,'+base64.b64encode((ROOT/'assets/dmsans.ttf').read_bytes()).decode())
-    values=dict(STIL=styles,ANWENDUNG=(HERE/'app.js').read_text(),SITZUNG=(ROOT/'tagesauswahl/sitzung.js').read_text(),
+    values=dict(STIL=styles,ANWENDUNG='\n'.join((HERE/f).read_text() for f in ['diagnose.js','hilfe.js','app.js']),SITZUNG=(ROOT/'tagesauswahl/sitzung.js').read_text(),
         LERNSTOFF=json.dumps(material,ensure_ascii=False,separators=(',',':')).replace('<','\\u003c'),COMMIT=head,LIZENZ=(ROOT/'assets/dmsans-OFL.txt').read_text())
     raw=re.sub('|'.join(values),lambda m:values[m[0]],(HERE/'index.html').read_text()).encode()
     OUT.mkdir(exist_ok=True,parents=True);(OUT/'Vorbereitung.html').write_bytes(raw)
@@ -74,6 +80,10 @@ Ersetze auf den bisherigen Schüler- und Musterkarten nur die Methodenüberschri
             guide+='### '+c['ueberschrift']+' · '+c['seite']+' '+c['position']+'\n\nPearl-Index '+c['pearl']+' · Richtwert nach pro familia '+c['pearl_erklaerung']+' Kein Maß für den Schutz vor sexuell übertragbaren Infektionen (STI).\n\n'
             for s in c['texte']:guide+='**'+s['titel']+'**  \n'+s['lueckentext']+'\n\n'
             guide+=' | '.join('Feld '+str(f['nummer'])+' → '+f['wort'] for f in c['felder'])+'\n\n'
+    work['fragenverweise']={t:[dict(kapitel=i+1,ueberschrift=work['niveaus'][t][i]['texte'][q['abschnitt']]['titel']) for i,q in enumerate(FRAGEN[t])] for t in NIVEAUS}
+    guide+='\n## Verbindliche Orientierung am Gerät\n\nDie markierte Hälfte des Blatts entspricht der Kapitelnummer und der Blattposition. Jede Schreibzeile beginnt mit „Schreibe bei“ und der gedruckten Lückennummer. Die Lösungen bleiben wortgleich. Erst auf Zeichen der Lehrkraft einmal an der Mittellinie schneiden.\n\n'
+    for t,qs in work['fragenverweise'].items():
+        for q in qs:guide+=f"- {t}, Frage {q['kapitel']} · {q['ueberschrift']}\n"
     pack(OUT/'Kartenvertrag-Work.zip',{'Kartenvertrag.json':json.dumps(work,ensure_ascii=False,indent=2),'Kartenvertrag.md':guide})
 
 

@@ -22,32 +22,21 @@ RECORDER=r"""selector=>{
 COUNTS=r"""()=>({bedienhandlungen:spur.handlungen.length,bildschirmwechsel:spur.ansichten.length-1,
   lesewoerter:[...spur.woerter].join(' ').match(/[\p{L}\p{N}]+(?:[-–][\p{L}\p{N}]+)*/gu).length,
   handlungen:spur.handlungen})"""
-OLD="""tier=>{
- const b=JSON.parse(document.querySelector('#material').textContent),lesson=b.levels[tier];
- const click=(key,value)=>{const el=document.querySelector('[data-do="'+key+'"]'+(value===undefined?'':'[data-value="'+value+'"]'));
- if(!el||el.disabled)throw Error(key);el.click()};
- function solve(q){click('choice',q.options.findIndex(x=>x.correct));click('check');click('advance')}
- click('level',tier);click('new');click('begin');solve(lesson.intro.question);
- for(const c of lesson.chapters){
-   click('begin');c.questions.forEach(solve);
-   if(c.paperCheck){const input=document.querySelector('#code');input.value=c.paperCheck.options.find(o=>o.correct).code;
-   input.dispatchEvent(new Event('input',{bubbles:true}));click('code-check');click('send');}
-   if(c.id.endsWith('B'))click('review');
-   click('finish');if(c.id==='2B')click('open','3A');
- }
- if(!document.querySelector('h1').textContent.includes('Abschluss'))throw Error('Abschluss fehlt');
- return 1+lesson.chapters.reduce((n,c)=>n+c.questions.length+Number(!!c.paperCheck),0);
-}"""
 def measure(ref):
+    import subprocess
+    from erstellen import START
+    oldtest=subprocess.check_output(['git','show',START+':kartenlernen/sichttest.js'],cwd=ROOT,text=True)
     records=[]
     with sync_playwright() as pw,pw.chromium.launch() as browser:
         for tier in ['Foerder','ESA','MSA','AHR']:
-            p=browser.new_page(viewport={'width':1024,'height':768})
-            p.goto((ref/'Fallakte-Vorbereitung.html').as_uri());p.locator('#vorbereitung').click()
-            f=p.frames[-1];f.locator('#view button').first.wait_for();f.evaluate(RECORDER,'#view')
-            questions=f.evaluate(OLD,tier);old=f.evaluate(COUNTS);old['fragen']=questions
-            p.goto((OUT/'Vorbereitung.html').as_uri());p.evaluate('document.fonts.ready');p.evaluate(RECORDER,'#page')
-            result=p.evaluate((HERE/'sichttest.js').read_text(),dict(tier=tier,assist=False,models=False))
-            assert not result['errors'];new=p.evaluate(COUNTS);new['fragen']=9
-            records.append(dict(niveau=tier,alt=old,neu=new));p.close()
+            result={'niveau':tier}
+            for title,path,script in [('alt',ref/'Vorbereitung.html',oldtest),('neu',OUT/'Vorbereitung.html',(HERE/'sichttest.js').read_text())]:
+                p=browser.new_page(viewport={'width':1024,'height':768})
+                p.goto(path.as_uri());p.evaluate('document.fonts.ready');p.evaluate(RECORDER,'#page')
+                row=p.evaluate(script,dict(tier=tier,assist=False,models=False))
+                assert not row['errors']
+                result[title]=dict(klicks=row['taps'],papierphasen=row['papers'],woerter=p.evaluate(COUNTS)['lesewoerter'],
+                                   pflichtfragen=9 if title=='alt' else 4,freitext=2 if title=='neu' and tier in ('MSA','AHR') else 0)
+                p.close()
+            records.append(result)
     return records

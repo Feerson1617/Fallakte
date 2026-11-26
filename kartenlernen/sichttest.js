@@ -26,8 +26,8 @@
      const r=b.getBoundingClientRect();if(!box(r)||r.height<43.9||r.width<43.9)problem('Taste: '+b.textContent);
      if(!b.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)))problem('Taste verdeckt: '+b.textContent);
    }
-   if($('#page').dataset.screen==='question'){
-     const h=key('help');ok(h?.textContent==='Ich brauche Hilfe','Hilfezugang');
+   if(['info','paper','question','feedback','help','reference','compare'].includes($('#page').dataset.screen)){
+     const h=key('help');ok(h?.textContent.includes('Ich brauche Hilfe'),'Hilfezugang');
      const r=h.getBoundingClientRect();if(!helpPos)helpPos=[r.right,r.top];
      if(Math.abs(r.right-helpPos[0])>1 || Math.abs(r.top-helpPos[1])>1)problem('Hilfe verschoben');
    }
@@ -37,58 +37,77 @@
    }
  }
  function tap(a,v){const b=$('[data-action="'+a+'"]'+(v===undefined?'':'[data-value="'+v+'"]'));ok(b&&!b.disabled,a+' '+v);b.click();taps++;}
- function showAnswers(){if(key('toanswers')){tap('toanswers');segments++;inspect(state+' · Auswahl');}}
- function help(label,start,end,q){
-   const previous=$('#page').innerText;tap('help');
-   for(let h=start;h<=end;h++){
-     inspect(label+' · Hilfe '+h);
-     ok($('#page h1').textContent==='Hilfe '+h+' von 5','gespeicherte Hilfestufe '+h);
-     ok($('#page').innerText.includes(q.hilfen[h-1]),'Hilfe der aktuellen Frage');
-     if(h<end)tap('more');
-   }
-   tap('back');ok($('#page').innerText===previous,'Arbeitsstand nach Hilfe');inspect(label+' · zurück');
+ const chapter=material.levels[tier],quellen=[];
+ function enter(text){const el=$('#entry');el.value=text;el.dispatchEvent(new Event('input',{bubbles:true}));}
+ function visitHelp(n,kind){
+   const old=$('#page').innerText,value=$('#entry')?.value;
+   tap('help');inspect(kind+' Hilfe 1');
+   for(let h=2;h<=n;h++){tap('more');inspect(kind+' Hilfe '+h);}
+   const saved=$('#page').innerText;tap('back');ok(old===$('#page').innerText,'Rückkehr aus Hilfe');tap('help');
+   ok(saved===$('#page').innerText,'letzte Hilfestufe');tap('back');
+   if(value!==undefined)ok($('#entry').value===value,'Entwurf erhalten');
  }
- inspect('Einstieg');tap('level',tier);inspect('Kapitelauswahl');
- ok($('#page').innerText.includes('STI bedeutet „sexuell übertragbare Infektionen“'),'STI beim ersten Auftreten erklärt');
- ok(!$('.chapter .done'),'unbearbeitete Sitzung');tap('open',0);
- const seen=[];
+ inspect('Einstieg');tap('level',tier);inspect('Wiederaufnahme');tap('open',0);
  for(let i=0;i<4;i++){
-   const sources=[];seen.push(sources);
-   const ts=[['index','huelle','kontakt'],['eisprung','einnahme'],['kupfer','kupferwahl'],['schleim','hormonwahl']][i];
-   for(const topic of ts){
-     const q=material.levels[tier].fragen[topic];inspect(topic);ok($('#page').innerText.includes(q.frage)||key('toanswers'),'Frage oder Leseansicht');
-     const counter='Kapitel '+(i+1)+'/4';
-     ok($('.context').innerText.includes(counter) && $('.context').innerText.includes('Frage '+(ts.indexOf(topic)+1)+'/'+ts.length),'Zähler der Aufgabe');
-     ok($('.fact')?.innerText===q.info,'sichtbarer Lerntext vor Auswahl');sources.push({thema:topic,ansicht:'Lerntext',text:$('.fact').innerText});
-     if(assist){help(topic,1,2,q);help(topic+' · erneut',2,3,q);}
-     showAnswers();ok($('#page').innerText.includes(q.frage),'Frage in Auswahl');ok(all('[data-action=answer]').length===2,'beide Antworten');
-     if(assist){
-       tap('answer',1-q.richtig);inspect(topic+' · Fehler');ok($('#page').innerText.includes(q.fehler),'Fehlerhinweis');
-       help(topic+' · nach Fehler',3,5,q);showAnswers();
+   for(let part=0;part<2;part++){
+     inspect('Info '+(i+1)+'/'+(part+1));
+     ok(!key('pick')&&!$('#entry'),'reine Information');
+     const texts=all('.lesson p').map(el=>el.innerText);
+     ok(texts.length===2,'zwei Lernbelege');
+     texts.forEach((text,index)=>{
+       const field=part*2+index;
+       ok(text===chapter.info[i][part].text[index].replaceAll('*',''),'Lerntext tatsächlich sichtbar');
+       quellen.push({niveau:tier,kapitel:i+1,feld:field+1,wort:cs[i].felder[field].wort,text});
+     });
+     if(assist)visitHelp(2,'Information');tap('readnext');
+   }
+   inspect('Papier '+(i+1));ok($('#page h1').innerText==='Schreibe auf deine Infokarte.','Schreibauftrag');
+   const f=all('li strong').map(n=>n.innerText);
+   ok(JSON.stringify(f)===JSON.stringify(cs[i].felder.map(f=>f.wort)),'Originalwörter');
+   ok($('.sheet .active').innerText===String(i+1),'richtige Blatthälfte');
+   ok($('#page').innerText.includes('Stehen alle vier Wörter bei 1, 2, 3 und 4'),'Selbstkontrolle');
+   if(assist)visitHelp(2,'Papier');papers++;tap('written');
+ }
+ inspect('Übergang');tap('startq');
+ for(let i=0;i<4;i++){
+   const q=chapter.fragen[i],m=material.modelle[q.modell];
+   inspect('Frage '+(i+1));ok($('.locator').innerText.includes(cs[i].texte[q.abschnitt].titel),'Überschrift wie auf Papier');
+   if(assist){
+     tap('help');inspect('Kartenorientierung');tap('reference');inspect('Ersatzkarte');
+     for(let n=q.abschnitt;n>0;n--)tap('prev');
+     for(const t of cs[i].texte){inspect('Ersatzkarte '+t.titel);ok($('#page').innerText.includes(t.volltext),'Originaltext');tap('following');}
+     inspect('Ersatzkarte Pearl-Index');tap('helpback');tap('back');
+     if(q.typ==='wahl'){
+       const wrong=q.alternativen[0];
+       for(let k=0;k<2;k++){
+         tap('pick',q.optionen.indexOf(wrong.text));inspect('Fehlwahl');
+         ok($('#page').innerText.includes(wrong.impuls),'spezifischer Denkimpuls');
+         if(k===0)visitHelp(5,'Fehlwahl');
+         tap('revise');
+       }
+     }else{
+       tap('check');inspect('Leer');ok(!key('compare'),'leere Abgabe ohne Abschluss');tap('revise');
+       const part=m.teile[0];
+       const samples={schleim:['Der Schleim wird zäher.','Der Schleim wird zäher. Spermien kommen leichter durch.'],pille:['Kein Eisprung.','Kein Eisprung. Die Eizelle wird trotzdem frei.'],haut:['Freie Haut.','Freie Haut. Erreger werden nur mit Sperma übertragen.'],kupfer:['Kupfer bremst Spermien.','Kupfer bremst Spermien. Die Befruchtung wird leichter.']}[q.modell];
+       enter(samples[0]);tap('check');inspect('Teilantwort');ok($('#page').innerText.includes(part),'richtige Teilaussage');
+       tap('help');tap('more');inspect('Adaptiver Impuls');ok($('#page').innerText.includes(m.impulse[1]),'fehlende Folge');tap('back');tap('revise');
+       enter(samples[1]);tap('help');inspect('Überarbeiteter Entwurf in Hilfe 2');
+       ok(Object.values(m.fehler).some(text=>$('#page').innerText.includes(text)), 'Hilfe reagiert vor erneutem Prüfen');
+       tap('back');tap('check');inspect('Widerspruch');ok($('#page').innerText.includes('Prüfe den anderen Teil'),'Widerspruch');
+       tap('help');tap('more');inspect('Satzstarter');tap('more');inspect('Fachhilfe');tap('more');inspect('Beispiel');tap('back');tap('revise');
+       enter('Ich meine einen anderen Zusammenhang.');tap('check');inspect('Unsicher');tap('compare');inspect('Selbstvergleich');
+       ok($('#page').innerText.includes(m.beispiel),'Beispiel zum Vergleich');
+       if(i>=2){tap('compared');continue;}tap('revise');
      }
-     tap('answer',q.richtig);inspect(topic+' · richtig');ok($('#page').innerText.includes(q.rueckmeldung),'Erklärung');
-     sources.push({thema:topic,ansicht:'Rückmeldung',text:q.rueckmeldung});
-     if(assist)help(topic+' · nach Lösung',5,5,q);
-     tap('next');
    }
-   inspect('Papier '+(i+1));ok($('#page h1').innerText==='Jetzt brauchst du deine Infokarte!','Papierüberschrift');
-   ok(all('button').length===1&&key('finish').textContent==='Karte fertig – weiter','ein Rückweg');
-   ok(JSON.stringify(all('li strong').map(n=>n.innerText))===JSON.stringify(cs[i].felder.map(f=>f.wort)),'vier Lösungen');
-   if(i===2)ok($('#page').innerText.includes('Wende dein Kartenblatt'),'Blatt wenden');
-   ok($('#page').innerText.includes(cs[i].seite+' '+cs[i].position) && $('#page h2').innerText===cs[i].ueberschrift,'Papierposition und Kapitel');
-   ok($('.paperinstruction').innerText.includes('fett gedruckten Wörter in die gleich nummerierten Lücken. Richtige Wörter bleiben stehen.'),'Papierauftrag');
-   ok(all('li .number').map(n=>n.innerText).join('')==='1234','Feldreihenfolge');
-   papers++;tap('finish');
+   if(q.typ==='wahl')tap('pick',q.optionen.indexOf(q.passend));else{enter(m.beispiel);tap('check');}
+   inspect('Passend');ok(key('advance'),'Weg zum Abschluss');tap('advance');
  }
- inspect('Abschluss');ok($('#page').textContent.includes('alle vier Kapitel'),'Sitzungsabschluss');
- const mandatoryTaps=taps, mandatoryWords=new Set(words);
+ inspect('Abschluss');ok($('#page h1').innerText==='Du bist fertig.','Abschluss');
+ const regularTaps=taps,read=[...words].join(' ').match(/[\p{L}\p{N}]+/gu).length;
  if(models){
-   tap('menu');inspect('Vier Kapitel bearbeitet');ok(all('.chapter .done').length===4,'Sitzungsmarkierungen');tap('models');inspect('Musterkarten wählen');
-   for(let i=0;i<4;i++){
-     tap('model',i);
-     for(const s of cs[i].texte){inspect('Muster '+(i+1)+' · '+s.titel);ok($('#page').innerText.includes(s.volltext),'Volltext');tap('section');}
-     inspect('Muster '+(i+1)+' · Pearl-Index');tap('fill');inspect('Muster · Papier '+(i+1));tap('finish');ok($('#page').dataset.screen==='models' && all('[data-action=model]').length===4,'zurück zur Kartenauswahl');
-   }
+   tap('menu');inspect('Sitzungsmarken');ok(all('.chapter').every(b=>b.innerText.endsWith('✓')),'vier Sitzungsmarken');
+   tap('lookup');inspect('Zeitnotweg');for(let i=0;i<4;i++){tap('fill',i);inspect('Zeitnot Papier');ok(key('written').innerText==='Zurück zur Kartenauswahl','Beschriftung');tap('written');ok(key('fill'),'Kartenauswahl');}
  }
- return {tier,assist,quellen:seen,count,taps:mandatoryTaps,papers,segments,lesewoerter:[...mandatoryWords].join(' ').match(/[\p{L}\p{N}]+(?:[-–][\p{L}\p{N}]+)*/gu)?.length,errors};
+ return {tier,assist,count,taps:regularTaps,papers,lesewoerter:read,errors,quellen};
 }

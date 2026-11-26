@@ -1,176 +1,265 @@
 (() => {
   'use strict';
-  const bank = JSON.parse(document.getElementById('material').textContent);
-  const bar = document.getElementById('bar');
-  const page = document.getElementById('page');
-  const workspace = document.getElementById('workspace');
-  const names = {Foerder:'Förder', ESA:'ESA', MSA:'MSA', AHR:'AHR'};
-  const topics = [['index','huelle','kontakt'],['eisprung','einnahme'],['kupfer','kupferwahl'],['schleim','hormonwahl']];
-  const icons = {
-    menu:'<path d="M3 5h3v3H3zM10 5h11M3 11h3v3H3zM10 11h11M3 17h3v3H3zM10 17h11"/>',
-    paper:'<path d="M4 3h11l3 3v4M4 3v18h13v-4M7 8h6M7 12h3M12 17l1-4 6-6 3 3-6 6z"/>',
-    help:'<circle cx="12" cy="12" r="9"/><path d="M9.4 9a2.8 2.8 0 115 1.6c-1.3 1.3-2.4 1.4-2.4 3.5M12 17h.01"/>',
-    arrow:'<path d="M4 12h15m-6-6 6 6-6 6"/>',
-    back:'<path d="M20 12H5m6-6-6 6 6 6"/>',
-    book:'<path d="M3 5c4-1 6 0 9 2 3-2 5-3 9-2v13c-4-1-6 0-9 2-3-2-5-3-9-2zM12 7v13"/>'
-  };
-  const icon = key => '<svg viewBox="0 0 24 24" aria-hidden="true" class="icon">'+icons[key]+'</svg>';
-  const esc = value => String(value).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
-  function button(action,label,style='',value='',symbol='') {
-    return '<button type="button" data-action="'+action+'" data-value="'+esc(value)+'" class="'+style+'">'+(symbol?icon(symbol):'')+'<span>'+esc(label)+'</span></button>';
+  const data=JSON.parse(document.querySelector('#material').textContent);
+  const bar=document.querySelector('#bar'), page=document.querySelector('#page'), work=document.querySelector('#workspace');
+  const names={Foerder:'Förder',ESA:'ESA',MSA:'MSA',AHR:'AHR'};
+  const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+  const btn=(action,label,style='',value='')=>'<button type="button" data-action="'+action+'" data-value="'+esc(value)+'" class="'+style+'">'+esc(label)+'</button>';
+  const go=(action,text)=>btn(action,text,'primary');
+  const para=s=>'<p>'+esc(s)+'</p>';
+  const title=s=>'<h1>'+esc(s)+'</h1>';
+  const context=s=>'<p class="context">'+esc(s)+'</p>';
+  const strong=s=>esc(s).replace(/\*([^*]+)\*/g,'<strong>$1</strong>');
+  let screen='level',level='',chapter=0,step=0,qi=0,source='',cardpage=0,shortcut=false;
+  const sessions=new Map();
+  const lesson=()=>data.levels[level],session=()=>sessions.get(level);
+  const number=()=>chapter+1,card=(i=chapter)=>lesson().cards[i],label=(i=chapter)=>(i+1)+' – '+card(i).titel;
+  const q=()=>lesson().fragen[qi],r=()=>session().answers[qi],model=()=>data.modelle[q().modell];
+  const section=()=>card(qi).texte[q().abschnitt];
+  const info=()=>lesson().info[chapter][step];
+  const key=()=>source==='info'?'info-'+chapter+'-'+step:source==='paper'?'paper-'+chapter:'frage-'+qi;
+  function sess(){
+    return {units:[0,0,0,0],done:new Set(),hints:{},position:0,answers:Array.from({length:4},()=>({
+      text:'',choice:null,tries:0,last:null,repeat:false,used:0,revealed:false,closed:null,view:'question',attempts:[]
+    }))};
   }
-  const sessions = new Map();
-  let level='', screen='level', chapter=0, modelSection=0, lookup=false;
-  let shortStep='read', forceRead=false;
-  const session=()=>sessions.get(level);
-  const cards=()=>bank.levels[level].cards;
-  const progress=()=>session().progress[chapter];
-  const topic=()=>topics[chapter][progress().item];
-  const task=()=>bank.levels[level].fragen[topic()];
-  const header=()=>cards()[chapter].ueberschrift;
-  function graphic(key) {
-    const g=bank.graphics[key];
-    return '<figure>'+g.svg+'<figcaption>'+esc(g.caption)+'</figcaption></figure>';
+  const questionScreens=['question','feedback','compare'];
+  function diagram(i){
+    const side=i<2?'Vorderseite':'Rückseite',base=i<2?0:2;
+    return '<div class="sheet" role="img" aria-label="'+side+', '+card(i).position+' markiert">'+[base,base+1].map(n=>'<span class="'+(i===n?'active':'')+'">'+(n+1)+'</span>').join('')+'</div>';
   }
-  function selectChapter(index) {
-    chapter=index;lookup=false;shortStep='read';forceRead=false;
-    const r=session().progress[index];
-    if (!r || r.done) session().progress[index]={item:0,hint:1,chosen:null,correct:false,done:false,paper:false};
-    screen=progress().paper?'paper':'question';
+  function graphic(k){const g=data.graphics[k];return '<figure>'+g.svg+'<figcaption>'+esc(g.caption)+'</figcaption></figure>';}
+  function menu(lookup=false){
+    const buttons=lesson().cards.map((c,i)=>btn(lookup?'fill':'open',label(i)+(session().done.has(i)&&!lookup?' ✓':''),'chapter',i)).join('');
+    return title(lookup?'Welche Infokarte möchtest du ergänzen?':'Auf welcher Infokarte fehlen noch Wörter?')+
+      para(lookup?'Wähle die Karte auf deinem Blatt.':'Schau auf dein Blatt mit den Infokarten. Ist es leer? Beginne bei 1 – Kondom.')+
+      '<div class="grid">'+buttons+'</div>'+(lookup?'':'<div class="menulinks">'+btn('questions','Alle vier Karten vollständig? Zu den Fragen')+btn('lookup','Fehlende Wörter auf der Infokarte ergänzen')+'</div>');
   }
-  function navigation() {
-    const inTask=screen==='question'||screen==='help';
-    const isPaper=screen==='paper';
-    const logo='<strong class="brand">Fallakte<span>.</span></strong>';
-    const home=button('menu','Kapitel','plain','','menu');
-    const left=screen==='level'||screen==='menu'||screen==='end'||isPaper?logo:home;
-    const levelLabel=level?'<span class="level">'+names[level]+'</span>':'';
-    const right=inTask?button('help','Ich brauche Hilfe','help','','help'):
-      screen==='menu'?button('levels','Niveau ändern','plain'):'';
-    bar.innerHTML='<div class="navleft">'+left+levelLabel+'</div>'+right;
+  function paperLocation(){
+    return (chapter===2?'Drehe dein Blatt um. ':'')+'Suche '+card().position+' auf der '+card().seite+' '+label()+'.';
   }
-  function levels() {
-    return '<section class="landing"><div class="intro"><div class="book">'+icon('book')+'</div><h1>Vier Methoden zur Verhütung</h1><p>Lerne die Methoden am iPad kennen. Am Ende jedes Kapitels füllst du eine Infokarte aus.</p></div><div class="selectbox"><h2>Wähle dein Niveau.</h2><div class="levelgrid">'+Object.entries(names).map(([k,v])=>button('level',v,'choice',k)).join('')+'</div></div></section>';
+  function rows(){
+    return '<ol>'+card().felder.map(f=>'<li><span>Schreibe bei <b>'+f.nummer+'</b>:</span> <strong>'+esc(f.wort)+'</strong></li>').join('')+'</ol>';
   }
-  function menu(models) {
-    const heading=models?'Welche Musterkarte brauchst du?':'Welches Kapitel ist noch nicht fertig?';
-    const intro=models?'Bei Zeitnot kannst du fehlende Wörter ergänzen. Die Aufgaben bleiben offen.':
-      (session().completed.size?'✓ = in dieser Sitzung bearbeitet.':'Schau auf dein Kartenblatt.')+' STI bedeutet „sexuell übertragbare Infektionen“.';
-    const items=cards().map((c,i)=>{
-      const done=!models && session().completed.has(i);
-      const label=c.ueberschrift+(done?', in dieser Sitzung bearbeitet':'');
-      const number='<span class="number'+(done?' done':'')+'">'+(i+1)+(done?' ✓':'')+'</span>';
-      return '<button type="button" class="chapter" aria-label="'+esc(label)+'" data-action="'+(models?'model':'open')+'" data-value="'+i+'">'+number+'<span>'+esc(c.titel)+'</span>'+icon('arrow')+'</button>';
-    }).join('');
-    return '<section class="menu"><h1>'+heading+'</h1><p>'+intro+'</p><div class="chaptergrid">'+items+'</div>'+
-      (models?'':'<div class="menufoot">'+button('models','Bei Zeitnot: Musterkarten','plain','','paper')+'</div>')+'</section>';
+  function paper(){
+    return '<section class="paper">'+title('Schreibe auf deine Infokarte.')+
+      '<div class="locator">'+diagram(chapter)+'<div>'+para('Nimm dein Blatt mit den vier Infokarten.')+para(paperLocation())+'</div></div>'+
+      rows()+para('Richtige Wörter bleiben stehen.')+para('Stehen alle vier Wörter bei 1, 2, 3 und 4 auf deiner Infokarte '+label()+'?')+
+      go('written',shortcut?'Zurück zur Kartenauswahl':'Ja, weiter')+'</section>';
   }
-  function context() {
-    return '<p class="context">Kapitel '+(chapter+1)+'/4 · '+esc(topic()==='index'?'Pearl-Index':cards()[chapter].titel)+' · Frage '+(progress().item+1)+'/'+topics[chapter].length+'</p>';
+  const sourceTitle=()=>context('Frage '+(qi+1)+' von 4');
+  function location(){
+    return '<div class="locator">'+diagram(qi)+'<div>'+para('Lies auf deiner Infokarte '+label(qi)+'.')+'<p>Suche „<strong>'+esc(section().titel)+'</strong>“.</p></div></div>';
   }
-  function source() {
-    return '<section class="source">'+graphic(topic())+'<p class="fact">'+esc(task().info)+'</p></section>';
+  function resultView(){
+    const rec=r(),st=rec.last.state;
+    let heading=({passend:'Gut erklärt.',teilweise:'Ein Teil stimmt.',fehlvorstellung:'Schau noch einmal hin.',widerspruch:'Prüfe den Zusammenhang.',unsicher:'Vergleiche deine Erklärung.',leer:'Beginne hier.'})[st];
+    if(st==='passend' && q().typ==='wahl')heading='Das passt.';
+    return sourceTitle()+title(heading)+para(rueckmeldung(q(),model(),rec))+
+      (st==='passend'?go('advance','Weiter'):go('revise',q().typ==='wahl'?'Antwort ändern':'Antwort bearbeiten')+
+       ((q().typ==='text' && rec.text.trim() && st!=='leer')?btn('compare','Mit Beispiel vergleichen'):''));
   }
-  function question() {
-    const q=task(),p=progress();
-    const choices=q.antworten.map((text,i)=>{
-      const picked=p.chosen===i;
-      return '<button class="answer'+(picked?(p.correct?' yes':' no'):'')+'" data-action="answer" data-value="'+i+'" aria-pressed="'+picked+'"'+(p.correct?' disabled':'')+'><span class="mark" aria-hidden="true">'+(picked?(p.correct?'✓':'×'):'')+'</span><span>'+esc(text)+'</span></button>';
-    }).join('');
-    const result=p.chosen===null?'':'<div class="feedback '+(p.correct?'good':'again')+'" role="status"><strong>'+(p.correct?'Richtig.':'Versuch es noch einmal.')+'</strong> '+esc(p.correct?q.rueckmeldung:q.fehler)+'</div>';
-    const next=p.correct?button('next','Weiter','primary','','arrow'):'';
-    return '<div class="work">'+context()+'<div class="panes">'+source()+'<section class="task"><h1>'+esc(q.frage)+'</h1><div class="answers">'+choices+'</div>'+result+next+'</section></div></div>';
+  function question(){
+    return '<section class="question">'+sourceTitle()+location()+title(q().frage)+(q().typ==='wahl'?
+      '<div class="answers">'+q().optionen.map((o,i)=>btn('pick',o,'answer',i)).join('')+'</div>':
+      '<label for="entry">Schreibe kurz. Stichwörter reichen.</label><textarea id="entry" rows="2" aria-label="'+esc(q().frage)+'" spellcheck="false">'+esc(r().text)+'</textarea><div class="editfoot"><div id="segments"></div>'+go('check','Antwort prüfen')+'</div>')+'</section>';
   }
-  function splitQuestion() {
-    const q=task(),p=progress();
-    if(forceRead || (shortStep==='read' && !p.correct))return '<div class="compactpage">'+context()+'<h1>Lies die Info zum Bild.</h1>'+source()+button('toanswers','Antwort wählen','primary','','arrow')+'</div>';
-    if((shortStep==='feedback' || p.correct) && p.chosen!==null)return '<div class="compactpage">'+context()+'<h1>'+(p.correct?'Richtig.':'Versuch es noch einmal.')+'</h1><p class="remember">'+esc(q.antworten[p.chosen])+'</p><p>'+esc(p.correct?q.rueckmeldung:q.fehler)+'</p>'+button(p.correct?'next':'toanswers',p.correct?'Weiter':'Antwort ändern','primary','','arrow')+'</div>';
-    return '<div class="compactpage">'+context()+'<h1>'+esc(q.frage)+'</h1>'+
-      q.antworten.map((text,i)=>button('answer',text,'answer'+(p.chosen===i?' no':''),i)).join('')+
-      button('read','Bild und Info ansehen','plain','','book')+'</div>';
-  }
-  function helpPage(){
-    const hint=progress().hint;
-    return '<section class="assist">'+context()+'<div class="hintbody">'+graphic(topic())+'<div><h1>Hilfe '+hint+' von 5</h1><p>'+esc(task().hilfen[hint-1])+'</p></div></div><div class="actions">'+
-      (hint<5?button('more','Mehr Hilfe','secondary','','help'):'')+button('back','Zurück zur Aufgabe','primary','','back')+'</div></section>';
-  }
-  function paper() {
-    const c=cards()[chapter];
-    const fields=c.felder.map(f=>'<li><span class="number">'+f.nummer+'</span><div><span class="fieldname">'+esc(f.titel)+'</span><strong>'+esc(f.wort)+'</strong></div></li>').join('');
-    return '<section class="paper"><div class="paperhead">'+icon('paper')+'<h1>Jetzt brauchst du deine Infokarte!</h1></div><h2>'+esc(c.ueberschrift)+'</h2>'+
-     '<p class="paperinstruction">'+(chapter===2?'Wende dein Kartenblatt. ':'')+esc(c.seite)+' '+esc(c.position)+'. Schreibe die fett gedruckten Wörter in die gleich nummerierten Lücken. Richtige Wörter bleiben stehen.</p>'+
-     '<ol>'+fields+'</ol>'+button('finish','Karte fertig – weiter','primary','','arrow')+'</section>';
-  }
-  function model() {
-    const c=cards()[chapter], section=c.texte[modelSection];
-    const text=section?section.volltext:c.pearl_erklaerung+' Kein Maß für den Schutz vor sexuell übertragbaren Infektionen (STI).';
-    return '<section class="model"><p class="context">Musterkarte · '+esc(header())+'</p><h1>'+esc(section?section.titel:'Pearl-Index: '+c.pearl+' · Richtwert nach pro familia')+'</h1><p>'+esc(text)+'</p><div class="actions">'+
-      (modelSection?button('prevsection','Zurück','plain','','back'):'')+(modelSection<c.texte.length?button('section','Weiterlesen','secondary','','book'):'')+
-      button('fill','Fehlende Wörter ergänzen','primary','','paper')+'</div></section>';
-  }
-  function completion() {
-    const done=session().completed.size;
-    const count=done===4?'Du hast alle vier Kapitel in dieser Sitzung bearbeitet.':done===1?'Du hast ein Kapitel in dieser Sitzung bearbeitet.':'In dieser Sitzung bearbeitete Kapitel: '+done+'.';
-    return '<section class="end"><div class="book">'+icon('book')+'</div><h1>Deine Karten für die Beratung</h1><p>'+count+'</p><p>Sind alle vier Karten vollständig? Schneide das Blatt einmal an der Mittellinie durch. Bewahre beide Karten für den 2. Dezember auf.</p>'+button('menu','Kapitel auswählen','primary','','menu')+'</section>';
-  }
-  function fits() {
-    return page.scrollHeight<=page.clientHeight+1 && page.scrollWidth<=page.clientWidth+1;
-  }
-  function render(focus=false) {
-    navigation();
-    workspace.classList.remove('tight','split','papergrid');
-    page.innerHTML=screen==='level'?levels():screen==='menu'||screen==='models'?menu(screen==='models'):
-      screen==='question'?question():screen==='help'?helpPage():screen==='paper'?paper():screen==='model'?model():completion();
-    if(!fits())workspace.classList.add('tight');
-    if(screen==='paper' && !fits())workspace.classList.add('papergrid');
-    if(screen==='question' && (!fits()||forceRead)){
-      workspace.classList.add('split');page.innerHTML=splitQuestion();
+  function help(){
+    const stage=session().hints[key()]||1,task=questionScreens.includes(source);
+    const max=task?5:2;
+    let body='';
+    if(task){
+      body=title(stage===5?'Beispiel zum Vergleichen':'Hilfe '+stage+' von 5')+para(fachhilfe(q(),model(),r(),card(qi),stage))+
+        (stage===5?para('Vergleiche mit deiner Antwort.'):'')+btn('reference','Digitale Infokarte lesen');
+    }else if(source==='paper'){
+      body=title('So findest du die Schreibstelle.')+'<div class="locator">'+diagram(chapter)+para(paperLocation())+'</div>'+
+        (stage===1?para('Suche die Zahlen 1 bis 4 in dieser Hälfte.'):rows());
+    }else{
+      body=title('Hilfe zum Bild')+graphic(info().bild)+para(info().hilfe[stage-1]);
     }
-    page.dataset.screen=screen;
-    if(focus)page.focus({preventScroll:true});
+    return body+'<div class="actions">'+(stage<max?btn('more','Mehr Hilfe'):'')+go('back','Zurück zur Aufgabe')+'</div>';
   }
-  document.addEventListener('click',event=>{
-    const b=event.target.closest('button[data-action]');if(!b||b.disabled)return;
-    const action=b.dataset.action,value=b.dataset.value;
-    switch(action){
-      case 'level':level=value;if(!sessions.has(level))sessions.set(level,{progress:[],completed:new Set()});screen='menu';break;
+  function reference(){
+    const c=card(qi),sec=c.texte[cardpage];
+    return context('Digitale Infokarte '+label(qi))+title(sec?sec.titel:'Pearl-Index · '+c.pearl)+para(sec?sec.volltext:c.pearl_erklaerung+' Der Wert misst keinen STI-Schutz.')+
+      '<div class="actions">'+(cardpage>0?btn('prev','Vorherige Stelle'):'')+(sec?btn('following','Nächste Stelle'):'')+go('helpback','Zur Hilfe')+'</div>';
+  }
+  function main(){
+    switch(screen){
+      case 'level':return title('Vier Methoden zur Verhütung')+para('Wähle dein Niveau.')+'<div class="grid">'+Object.entries(names).map(([k,v])=>btn('level',v,'chapter',k)).join('')+'</div>';
+      case 'menu':return menu();case 'lookup':return menu(true);
+      case 'info':return '<section class="learn">'+context('Kapitel '+number()+' von 4 · '+card().titel)+title(info().titel)+'<div class="lesson">'+graphic(info().bild)+'<div>'+info().text.map(s=>'<p>'+strong(s)+'</p>').join('')+'</div></div>'+go('readnext','Weiter')+'</section>';
+      case 'paper':return paper();
+      case 'intro':return title('Lass dein Blatt mit den Infokarten neben dem iPad liegen.')+para('Du brauchst die Infokarten für die nächsten Fragen.')+go('startq',session().position?'Zu den Fragen':'Zur ersten Frage');
+      case 'question':return question();case 'feedback':return resultView();
+      case 'help':return help();case 'reference':return reference();
+      case 'compare':return sourceTitle()+title('Vergleiche mit dem Beispiel.')+'<p><b>Deine Antwort</b></p>'+'<p id="draft"></p><div id="pieces"></div><p><b>Beispiel</b></p>'+para(model().beispiel)+'<div class="actions">'+btn('revise','Antwort bearbeiten')+go('compared','Verglichen, weiter')+'</div>';
+      case 'end':return title('Du bist fertig.')+para('Bewahre deine Infokarten für den Unterricht auf. Schneide das Blatt erst auf das Zeichen deiner Lehrkraft einmal in der Mitte durch.')+btn('menu','Zur Kapitelauswahl');
+    }
+  }
+  function nav(){
+    const active=screen==='info'||screen==='paper'||questionScreens.includes(screen)||screen==='help'||screen==='reference';
+    bar.innerHTML=(['level','menu'].includes(screen)?'<strong>Fallakte.</strong>':btn('menu','‹ Kapitel'))+
+      (screen==='menu'?btn('levels','Niveau ändern'):active?btn('help','Ich brauche Hilfe','help'):'');
+    const h=bar.querySelector('.help');if(h)h.innerHTML='<span aria-hidden="true">?</span> Ich brauche Hilfe';
+  }
+  // Seite nur bei mehr Text als Platz. Der ganze Entwurf bleibt separat im RAM.
+  let editorParts=[],editAt=0,compareAt=0;
+  function portions(text,box,isEditor){
+    const parts=[];let offset=0;
+    const set=s=>{if(isEditor)box.value=s;else box.textContent=s;};
+    while(offset<text.length){
+      let low=1,high=Math.min(1024,text.length-offset);
+      while(low<high){
+        const mid=Math.ceil((low+high)/2);
+        set(text.slice(offset,offset+mid));
+        if(box.scrollHeight<=box.clientHeight+1)low=mid;else high=mid-1;
+      }
+      let cut=offset+low;
+      if(cut<text.length){
+        const end=text.slice(offset,cut).match(/\s+(?=\S*$)/g);
+        const space=end?text.slice(offset,cut).search(/\s+\S*$/):-1;
+        if(space>low/2)cut=offset+space+1;
+      }
+      parts.push(text.slice(offset,cut));offset=cut;
+    }
+    return parts.length?parts:[''];
+  }
+  function pager(area,index,total){
+    area.replaceChildren();
+    if(total<2)return;
+    area.innerHTML=(index?btn('earlier','‹'):'')+ '<span>'+ (index+1)+'/'+total+'</span>'+(index+1<total?btn('later','›'):'');
+    area.querySelector('[data-action=earlier]')?.setAttribute('aria-label','Vorheriger Textteil');
+    area.querySelector('[data-action=later]')?.setAttribute('aria-label','Nächster Textteil');
+  }
+  function paginate(position){
+    const box=document.querySelector('#entry'),display=document.querySelector('#draft');
+    if(!box && !display)return;
+    if(display){
+      const parts=portions(r().text,display,false);
+      compareAt=Math.max(0,Math.min(compareAt,parts.length-1));
+      display.textContent=parts[compareAt];pager(document.querySelector('#pieces'),compareAt,parts.length);return;
+    }
+    const focus=box===document.activeElement, full=r().text;
+    const before=editorParts.slice(0,editAt).join('').length;
+    const caret=position??(before+(focus?box.selectionStart:0));
+    const selectionEnd=position??(before+box.selectionEnd);
+    const mirror=box.cloneNode(false);
+    mirror.removeAttribute('id');mirror.removeAttribute('aria-label');mirror.tabIndex=-1;
+    mirror.style.cssText='position:fixed;visibility:hidden;pointer-events:none;left:0;top:0';
+    const metrics=getComputedStyle(box);
+    for(const name of ['width','height','fontSize','lineHeight','padding','border','boxSizing'])mirror.style[name]=metrics[name];
+    box.parentNode.append(mirror);
+    editorParts=portions(full,mirror,true);mirror.remove();
+    let start=0;editAt=0;
+    while(editAt+1<editorParts.length && start+editorParts[editAt].length<=caret){
+      start+=editorParts[editAt++].length;
+    }
+    if(box.value!==editorParts[editAt])box.value=editorParts[editAt];
+    if(focus)box.setSelectionRange(Math.max(0,caret-start),Math.max(0,selectionEnd-start));
+    pager(document.querySelector('#segments'),editAt,editorParts.length);
+  }
+  function visibleArea(){
+    const viewport=window.visualViewport;
+    let top=viewport?.offsetTop||0,bottom=top+Math.min(innerHeight,viewport?.height||innerHeight);
+    let host=window,offset=0;
+    // Ein zugänglicher LMS-Rahmen kann bei offener Tastatur größer als sein Ausschnitt bleiben.
+    try{
+      while(host!==host.parent && host.frameElement){
+        const frame=host.frameElement;offset+=frame.getBoundingClientRect().top+frame.clientTop;
+        host=host.parent;
+        const v=host.visualViewport,y=v?.offsetTop||0;
+        top=Math.max(top,y-offset);bottom=Math.min(bottom,y+Math.min(host.innerHeight,v?.height||host.innerHeight)-offset);
+      }
+    }catch{ /* Bei einem fremden Ursprung liefert der eigene Viewport die verfügbare Höhe. */ }
+    return {top,height:Math.max(1,bottom-top)};
+  }
+  function resize(){
+    const area=visibleArea();
+    work.style.height=area.height+'px';work.style.top=area.top+'px';
+    work.classList.toggle('editing',screen==='question' && q().typ==='text' && area.height<410);
+    work.classList.remove('tight');
+    if(page.scrollHeight>page.clientHeight||page.scrollWidth>page.clientWidth)work.classList.add('tight');
+    paginate();
+    if(!work.classList.contains('tight') && page.scrollHeight>page.clientHeight){work.classList.add('tight');paginate();}
+  }
+  function render(){
+    editorParts=[];editAt=0;compareAt=0;nav();page.dataset.screen=screen;page.innerHTML=main();resize();page.focus({preventScroll:true});
+  }
+  function openUnit(n){
+    chapter=n;shortcut=false;const pos=session().units[n];step=pos<2?pos:1;screen=pos===2?'paper':'info';
+    if(pos===3){step=0;session().units[n]=0;}
+  }
+  function startQ(){
+    qi=session().position;
+    screen=qi>=4?'end':r().view;
+  }
+  function record(d){
+    const rec=r();rec.tries++;
+    rec.repeat=!!rec.last&&d.state===rec.last.state && d.error===rec.last.error && String(d.parts)===String(rec.last.parts);
+    if(d.state==='passend')rec.outcome=rec.revealed||rec.used>=2||rec.tries>1?'unterstuetzt':'selbststaendig';
+    rec.last=d;rec.attempts.push({...d});rec.view=screen='feedback';
+    if(rec.repeat && d.state!=='passend')session().hints['frage-'+qi]=Math.max(session().hints['frage-'+qi]||1,2);
+  }
+  function advance(compared){
+    const rec=r();rec.closed=compared?'selbstvergleich':rec.outcome;
+    session().position=qi+1;startQ();
+  }
+  document.addEventListener('click',e=>{
+    const b=e.target.closest('button[data-action]');if(!b)return;
+    const a=b.dataset.action,v=b.dataset.value;
+    switch(a){
+      case 'earlier':case 'later':{
+        const delta=a==='later'?1:-1;
+        if(screen==='compare'){compareAt+=delta;paginate();}
+        else{const pos=editorParts.slice(0,editAt+delta).join('').length;document.querySelector('#entry').focus({preventScroll:true});paginate(pos);}
+        return;
+      }
       case 'levels':screen='level';break;
+      case 'level':level=v;if(!sessions.has(v))sessions.set(v,sess());screen='menu';break;
       case 'menu':screen='menu';break;
-      case 'models':screen='models';break;
-      case 'open':selectChapter(Number(value));break;
-      case 'model':chapter=Number(value);modelSection=0;lookup=true;screen='model';break;
-      case 'section':modelSection++;break;
-      case 'prevsection':modelSection--;break;
-      case 'fill':screen='paper';break;
-      case 'read':forceRead=true;shortStep='read';break;
-      case 'toanswers':forceRead=false;shortStep='answers';break;
-      case 'help':screen=screen==='help'?'question':'help';break;
-      case 'more':progress().hint=Math.min(progress().hint+1,5);break;
-      case 'back':screen='question';break;
-      case 'answer':{
-        const p=progress();if(p.correct)return;
-        p.chosen=Number(value);p.correct=p.chosen===task().richtig;shortStep='feedback';break;
-      }
-      case 'next':{
-        const p=progress();if(!p.correct)return;
-        if(p.item+1===topics[chapter].length){p.paper=true;screen='paper';}
-        else{p.item++;p.hint=1;p.chosen=null;p.correct=false;shortStep='read';forceRead=false;}
-        break;
-      }
-      case 'finish':{
-        if(lookup){lookup=false;screen='models';break;}
-        progress().done=true;progress().paper=false;
-        session().completed.add(chapter);
-        const next=cards().findIndex((c,i)=>i>chapter && !session().completed.has(i));
-        if(next>=0)selectChapter(next);else screen='end';
-        break;
-      }
+      case 'open':openUnit(+v);break;
+      case 'readnext':session().units[chapter]=step+1;if(step===0)step++;else screen='paper';break;
+      case 'written':
+        if(shortcut){screen='lookup';break;}
+        session().done.add(chapter);session().units[chapter]=3;
+        if(chapter===3)screen='intro';else openUnit(chapter+1);break;
+      case 'lookup':screen='lookup';break;
+      case 'fill':chapter=+v;shortcut=true;screen='paper';break;
+      case 'questions':case 'startq':startQ();break;
+      case 'pick':r().choice=q().optionen[+v];record({state:r().choice===q().passend?'passend':'fehlvorstellung',parts:[],error:q().alternativen.find(x=>x.text===r().choice)?.muster||null});break;
+      case 'check':record(Lernfeedback.analyze(q().modell,r().text));break;
+      case 'help':
+        if(screen==='help'||screen==='reference'){screen=source;break;}
+        source=screen;screen='help';if(questionScreens.includes(source))r().used=Math.max(r().used,session().hints[key()]||1);break;
+      case 'more':session().hints[key()]=(session().hints[key()]||1)+1;
+        if(questionScreens.includes(source)){r().used=session().hints[key()];if(r().used===5)r().revealed=true;}break;
+      case 'back':screen=source;break;
+      case 'reference':cardpage=q().abschnitt;screen='reference';break;
+      case 'prev':cardpage--;break;case 'following':cardpage++;break;case 'helpback':screen='help';break;
+      case 'revise':r().view=screen='question';break;
+      case 'compare':r().revealed=true;r().view=screen='compare';break;
+      case 'advance':advance(false);break;case 'compared':advance(true);break;
+      default:return;
     }
-    render(true);
+    render();
   });
-  const observer=new ResizeObserver(()=>render());
-  observer.observe(workspace);
-  observer.observe(document.getElementById('type-measure'));
-  document.fonts.ready.then(()=>render());
-  render();
+  document.addEventListener('input',e=>{
+    if(e.target.id!=='entry')return;
+    const prefix=editorParts.slice(0,editAt).join('');
+    r().text=prefix+e.target.value+editorParts.slice(editAt+1).join('');
+    paginate(prefix.length+e.target.selectionStart);
+  });
+  document.addEventListener('focusin',e=>{if(e.target.id==='entry')requestAnimationFrame(resize);});
+  window.addEventListener('resize',resize);
+  window.visualViewport?.addEventListener('resize',resize);
+  window.visualViewport?.addEventListener('scroll',resize);
+  try{
+    let host=window;
+    while(host!==host.parent && host.frameElement){
+      host=host.parent;host.addEventListener('resize',resize);host.addEventListener('scroll',resize);
+      host.visualViewport?.addEventListener('resize',resize);host.visualViewport?.addEventListener('scroll',resize);
+    }
+  }catch{ /* Der eigene Viewport bleibt erreichbar. */ }
+  document.fonts.ready.then(resize);render();
 })();

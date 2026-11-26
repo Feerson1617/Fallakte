@@ -1,0 +1,52 @@
+[pille]
+passend|Die Pille verhindert den Eisprung. Eine befruchtbare Eizelle fehlt.
+passend|Es fehlt eine freie Eizelle, denn die Pille hemmt den Eisprung.
+passend|Ohne Eisprung wird kein Ei aus dem Eierstock entlassen, das befruchtet werden könnte.
+teilweise|Die Hormone hemmen den Eisprung.
+teilweise|Ohne freie Eizelle wäre da gar nichts zum Befruchten.
+fehlvorstellung|Die Pille stoppt Spermien.
+fehlvorstellung|Die Hormone lassen beim Verhüten extra viele Eizellen springen.
+widerspruch|Der Eisprung entfällt. Eine Eizelle wird trotzdem frei.
+unsicher|Mein Satz beginnt mit „Eierstock“.
+unsicher|Ist es überhaupt der Eisprung, der da fehlt?
+unsicher|Die Pille hemmt den Eisprung und eine Eizelle wird immer befruchtet.
+leer|  …
+[schleim]
+passend|Die Spirale macht den Schleim dicker. Spermien gelangen schlechter zur Eizelle.
+passend|Samenzellen schwimmen schlechter durch den Schleim, weil der Schleim zäher wird.
+passend|Der Pfropf am Hals der Gebärmutter ist dickflüssiger, die Samenzellen schaffen die Passage kaum.
+teilweise|Dichter Schleim.
+teilweise|Der Schleim verändert seine Konsistenz und wird dickflüssiger.
+fehlvorstellung|Der Schleim wird flüssiger.
+fehlvorstellung|Die Spirale macht den Weg für Samenzellen jetzt leichter.
+widerspruch|Der Zervixschleim wird dicker. Die Spermien gelangen leichter durch.
+unsicher|Schleim? Das war doch etwas mit Hormonen.
+unsicher|Die Samenzellen bilden den Schleim.
+unsicher|Der Schleim wird dicker. Spermien kommen schwerer durch. Infektionen sind ausgeschlossen.
+leer|?!
+[haut]
+passend|Teile der Haut bleiben unbedeckt, dadurch können Erreger bei Hautkontakt übertragen werden.
+passend|Das Kondom bedeckt nicht alle Hautstellen. Übertragung durch Hautkontakt.
+passend|Neben dem bedeckten Bereich berührt sich Haut. Auch so können bestimmte Krankheitserreger von einer Person zur anderen gelangen.
+teilweise|Ein Teil der Haut ist unbedeckt.
+teilweise|Neben dem Kondom gibt es immer noch freie Hautflächen.
+fehlvorstellung|Das Kondom schützt alle Hautstellen.
+fehlvorstellung|Haut kann gar keine Erreger weitergeben.
+widerspruch|Manche Hautstellen sind frei. Erreger werden nur mit Sperma übertragen.
+unsicher|Hautkontakt, vielleicht?
+unsicher|Eine Infektion kann eine Hautstelle auslösen.
+unsicher|Freie Haut. Übertragung durch Hautkontakt. Das Kondom ist deshalb unwirksam.
+leer|..
+[kupfer]
+passend|Kupfer hemmt die Bewegung der Spermien, dadurch befruchten sie das Ei schwerer.
+passend|Die Beweglichkeit der Spermien sinkt. Die Befruchtung wird schwieriger.
+passend|Die Samenzellen kommen langsamer voran und schaffen es deshalb seltener, das Ei zu befruchten.
+teilweise|Die Samenzellen schwimmen schlechter.
+teilweise|Die Zellen im Sperma sind nicht mehr so flott unterwegs.
+fehlvorstellung|Kupfer stoppt den Eisprung.
+fehlvorstellung|Kupfer macht die Eizelle unbeweglich und das reicht.
+widerspruch|Kupfer bremst die Spermien. Sie befruchten die Eizelle leichter.
+unsicher|Das Kupfer bremst nicht nur die Bewegung.
+unsicher|Den genauen Grund weiß ich nicht mehr.
+unsicher|Die Befruchtung wird erschwert. Kupfer bremst alle Erreger ab.
+leer|—

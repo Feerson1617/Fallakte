@@ -26,9 +26,11 @@ jobs:
           python gesamt/auslieferung.py
       - name: Vorbereitung separat bauen und beide Browser prüfen
         run: |
+          git worktree add --detach /tmp/fallakte-vorfassung 24678df39fd672aa81b4c0a2c6b3c08c4ad68f4b
+          python /tmp/fallakte-vorfassung/kartenlernen/erstellen.py
           python kartenlernen/erstellen.py
           python -u kartenlernen/pruefen.py /tmp/fallakte-bestand/dist/Gesamt
-          python -u kartenlernen/ausliefern.py /tmp/fallakte-bestand/dist/Gesamt
+          python -u kartenlernen/ausliefern.py /tmp/fallakte-vorfassung/dist/Kartenlernen
           cd dist/Kartenlernen
           sha256sum -c SHA256SUMS
       - uses: actions/upload-artifact@v4

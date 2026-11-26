@@ -1,173 +1,75 @@
-"""Zwei Entscheidungen pro Methode. Fachgrundlage: geprüfte Karten aus 562ea25."""
+"""Unterrichtsinhalte des eigenständigen Vorbereitungswegs. Feldreihenfolge wie im Druck."""
+NIVEAUS = ('Foerder','ESA','MSA','AHR')
+# Zwei kurze Bildseiten je Methode. Die Nummern binden jeden Lernbeleg an das Originalfeld.
+# Sternchen markieren den fachlichen Kern, der im Browser hervorgehoben wird.
+BILDER = [('huelle','kontakt'),('eisprung','einnahme'),('kupfer','kupferwahl'),('schleim','hormonwahl')]
+TITEL = [('Wie hält das Kondom Sperma zurück?','Wann schützt das Kondom?'),
+         ('Was bewirkt die Kombinationspille?','Was ist bei der Pille wichtig?'),
+         ('Was macht das Kupfer?','Was kann sich bei der Regel ändern?'),
+         ('Was verändert die Hormonspirale?','Was kann sich bei der Regel ändern?')]
+INFO = {
+'Foerder': [
+ ('Bei Latexallergie gibt es geeignete Kondome *ohne Latex*.','Die heile Hülle fängt Sperma auf. Sie hält *Spermien* zurück.','Das *Risiko* für viele Infektionen beim Sex sinkt. Haut bleibt frei.','Benutze bei jedem Sex *von Anfang an* ein neues Kondom.'),
+ ('Die Hormone verhindern meist den *Eisprung*. Dann wird keine Eizelle frei.','Die Pille bietet *keinen* Schutz vor Infektionen beim Sex.','Nimm die Pille *regelmäßig* nach Plan.','Menschen vertragen die Pille *unterschiedlich*. Manche bekommen Übelkeit.'),
+ ('Kupfer stört *Spermien*. Sie bewegen sich schlechter und können die Eizelle schwerer befruchten.','Kupfer bietet *keinen* Schutz vor Infektionen beim Sex.','Die Spirale wirkt lange. *Tägliche Tabletten* sind nicht nötig.','Blutung und Regelschmerzen können *stärker* werden.'),
+ ('Ein Hormon macht den Schleim am Gebärmutterhals *zäher*. Spermien kommen schwerer durch.','Der Schleim schützt *nicht* vor Infektionen beim Sex.','Die Spirale wirkt lange. *Tägliche Tabletten* sind nicht nötig.','Später können Blutung und Schmerzen *schwächer* werden.')],
+'ESA': [
+ ('Bei Latexallergie gibt es geeignete Kondome *ohne Latex* aus Kunststoff.','Eine heile Hülle hält *Spermien* zurück.','Bei sexuell übertragbaren Infektionen (STI) bleibt ein *Restrisiko*. Nicht alle Haut ist bedeckt.','Ein neues Kondom muss bei jedem Sex *von Anfang an* sitzen.'),
+ ('Die Hormone hemmen meist den *Eisprung*. Ohne freie Eizelle gibt es keine Befruchtung.','Die Pille hält keine Erreger zurück. Sie bietet *keinen STI-Schutz*.','Die Pille *regelmäßig* nach Plan nehmen. Vergessen kann den Schutz mindern.','Menschen vertragen sie *unterschiedlich*. Eigene Beschwerden ärztlich klären.'),
+ ('Kupfer stört die Bewegung und die *Befruchtungsfähigkeit* der Spermien.','Es entsteht *kein STI-Schutz*. Kupfer hält keine Erreger zurück.','Die Spirale wirkt lange ohne *tägliche Einnahme*.','Blutung und Regelschmerzen können *stärker* werden.'),
+ ('Ein Hormon macht den Schleim am Gebärmutterhals *zäher*. Spermien kommen schwerer durch.','Das bietet *keinen STI-Schutz*.','Die Spirale wirkt lange ohne *tägliche Einnahme*.','Nach anfangs unregelmäßiger Blutung können Blutung und Schmerzen *schwächer* werden.')],
+'MSA': [
+ ('Geeignete Kondome *ohne Latex* sind bei Latexallergie eine Alternative.','Die intakte Hülle bildet eine *Barriere*. Sie hält Sperma zurück.','Bei sexuell übertragbaren Infektionen (STI) bleibt durch freie Haut ein *Restrisiko*.','Ein neues Kondom muss bei jedem Sex *von Anfang an* sitzen.'),
+ ('Die Hormone hemmen vor allem den *Eisprung*. Ohne freie Eizelle ist keine Befruchtung möglich.','Für Erreger entsteht keine *Barriere*.','Vergessene Tabletten können den Schwangerschaftsschutz *verringern*.','Die Verträglichkeit ist *individuell*. Die Erfahrung einer Freundin gilt für ihren Körper.'),
+ ('Kupfer beeinträchtigt Bewegung und *Befruchtungsfähigkeit* der Spermien.','Die Spirale bildet keine *Barriere* gegen Erreger.','Die lange Wirkung erspart die *tägliche Einnahme*.','Blutung und Regelschmerzen können *stärker* werden.'),
+ ('Ein Gestagen macht den Schleim am Gebärmutterhals zäher. *Spermien* kommen schwerer hindurch.','Der zähe Schleim bietet *keinen STI-Schutz*.','Die Spirale wirkt lange ohne *tägliche Einnahme*.','Blutung und Schmerzen können später *schwächer* werden.')],
+'AHR': [
+ ('Bei Latexallergie kommen geeignete *synthetische* Kondome infrage.','Eine intakte Hülle bildet eine mechanische *Barriere* für Sperma.','Beim Schutz vor sexuell übertragbaren Infektionen (STI) ist Naturmembran *nicht gleichwertig*. Auch bei geeigneten Kondomen bleiben Hautstellen frei. Erreger können dort übertragen werden.','Ein neues Kondom bei jedem Sex *von Anfang an* richtig anwenden.'),
+ ('Östrogen und Gestagen hemmen vor allem den *Eisprung*. Ohne freie Eizelle ist keine Befruchtung möglich.','Die Wirkung auf den Zyklus bildet keine *Barriere* gegen Erreger.','Vergessene Tabletten können den Schwangerschaftsschutz *mindern*.','Die Verträglichkeit ist *individuell*. Gleiche Einnahme belegt keine gleiche Reaktion.'),
+ ('Kupfer stört die Bewegung und *Befruchtungsfähigkeit* der Spermien. Der Eisprung kann stattfinden.','Die Wirkung auf Spermien bedeutet *keinen STI-Schutz*.','Die Spirale wirkt langfristig ohne *tägliche Einnahme*.','Blutung und Regelschmerzen können *stärker* werden. Hormonfrei heißt nicht beschwerdefrei.'),
+ ('Ein Gestagen macht den Schleim am Gebärmutterhals für Spermien *schwer durchlässig*.','Veränderter Schleim bietet *keinen STI-Schutz*.','Die Spirale wirkt langfristig ohne *tägliche Einnahme*.','Anfangs kann die Blutung unregelmäßig sein. Später können Blutung und Schmerzen *abnehmen*.')]
+}
+# Diagnose, Rückmeldung und nächster Denkimpuls sind je Antwortalternative fest verbunden.
+def wahl(abschnitt, ziel, frage, richtig, fehler, grund, impuls, starter):
+    return dict(typ='wahl',abschnitt=abschnitt,ziel=ziel,frage=frage,passend=richtig,alternativen=[
+        dict(text=text,muster=kategorie,erklaerung=antwort,impuls=hilfe) for text,kategorie,antwort,hilfe in fehler],
+        grund=grund,impuls=impuls,starter=starter)
 
-NIVEAUS = ('Foerder', 'ESA', 'MSA', 'AHR')
+def frei(abschnitt,modell,frage,ziel):
+    return dict(typ='text',abschnitt=abschnitt,modell=modell,frage=frage,ziel=ziel)
 
-# Info, Frage, passende Aussage, Gegenoption, Rückmeldung bei Irrtum, Begründung.
-THEMEN = {
-'index': [
- ('100 Frauen verhüten ein Jahr. Drei werden schwanger. Der Pearl-Index ist hier 3.',
-  'Was zählt der Pearl-Index hier?', 'Schwangerschaften', 'Infektionen beim Sex',
-  'Hier werden Schwangerschaften gezählt.', 'Der Wert sagt nichts über Infektionen beim Sex.'),
- ('100 Frauen nutzen eine Methode ein Jahr. Drei werden schwanger. Das ergibt den Pearl-Index 3.',
-  'Was bedeutet ein kleinerer Pearl-Index?', 'In der Gruppe gab es weniger Schwangerschaften.', 'Die Methode schützt besser vor Infektionen.',
-  'Der Index zählt keine Infektionen.', 'Vergleiche gleich große Gruppen über die gleiche Zeit.'),
- ('Der Pearl-Index zählt Schwangerschaften in 100 Anwendungsjahren. Auch die Anwendung beeinflusst den Wert.',
-  'Vergleichbare Gruppen, Pearl-Index 1 und 3. Was bedeutet das?', 'Bei Wert 1 traten weniger Schwangerschaften auf.', 'Wert 1 bedeutet dreimal längere Anwendung.',
-  'Beide Werte beziehen sich auf 100 Anwendungsjahre.', 'Der kleinere Wert beschreibt weniger Schwangerschaften in der Vergleichsgruppe.'),
- ('Der Pearl-Index zählt Schwangerschaften in 100 Anwendungsjahren. Auch Anwendungsfehler beeinflussen den Wert.',
-  'Zwei Studien, Pearl-Index 1 und 3. Was musst du vergleichen?', 'Die Anwendungsbedingungen beider Studien.', 'Allein die Gruppengrößen reichen aus.',
-  'Gleich große Gruppen können eine Methode unterschiedlich anwenden.', 'Der Gruppenwert hängt auch von der Anwendung ab. Er misst keinen STI-Schutz.')],
-'huelle': [
- ('Ein heiles Kondom fängt Sperma auf. Es gibt geeignete Kondome aus Kunststoff ohne Latex.',
-  'Was hält die heile Kondomhülle zurück?', 'Spermien', 'Den Eisprung',
-  'Der Eisprung passiert im Eierstock.', 'Spermien bleiben in der heilen Hülle.'),
- ('Bei Latexallergie gibt es geeignete Kondome ohne Latex aus Kunststoff. Eine heile Hülle fängt Sperma auf.',
-  'Warum schützt auch ein geeignetes Kondom ohne Latex?', 'Die Hülle hält Spermien zurück.', 'Der Kunststoff hemmt den Eisprung.',
-  'Der Kunststoff gibt keine Hormone ab.', 'Die Hülle bildet ein Hindernis für Spermien.'),
- ('Ein heiles Kondom hält Sperma zurück. Diese Barriere gibt es auch ohne Latex, etwa aus Kunststoff.',
-  'Jemand verträgt Latex nicht. Welche Wahl ist begründet?', 'Ein geeignetes latexfreies Kondom hält Sperma zurück.', 'Zum STI-Schutz reicht die Angabe „latexfrei“.',
-  'Prüfe auch das Material. Naturmembran schützt weniger zuverlässig vor STI.', 'Material und Barriere sind zwei verschiedene Eigenschaften.'),
- ('Eine heile Hülle hält Sperma zurück. Bei Latexallergie eignen sich synthetische Kondome. Naturmembran bietet keinen gleichwertigen STI-Schutz.',
-  'Reicht „latexfrei“ zur Wahl eines Kondoms für den STI-Schutz?', 'Nein. Prüfe Material und Eignung zum STI-Schutz.', 'Ja. Sperma zurückzuhalten genügt als Beleg für STI-Schutz.',
-  'Auch eine Naturmembran kann Sperma zurückhalten. Prüfe das Material.', '„Latexfrei“ allein belegt keinen gleichwertigen Schutz vor Infektionen.')],
-'kontakt': [
- ('Nimm bei jedem Sex von Anfang an ein neues Kondom. Es bedeckt nur einen Teil der Haut. Das Risiko für viele Infektionen sinkt.',
-  'Ab wann muss das Kondom sitzen?', 'Schon beim ersten Kontakt', 'Erst kurz vor dem Samenerguss',
-  'Schon beim ersten Kontakt können Erreger übertragen werden.', 'Ein geeignetes Kondom senkt das Risiko. Ein Teil der Haut bleibt frei.'),
- ('Ein neues Kondom soll von Anfang an richtig sitzen. Es senkt das Risiko vieler STI. Haut bleibt frei.',
-  'Warum bleibt beim Kondom ein STI-Risiko?', 'Erreger können über unbedeckte Haut übertragen werden.', 'Ein Kondom kann nur nach dem Sex schützen.',
-  'Schutz braucht es schon beim ersten Kontakt.', 'Die Hülle bedeckt nur einen Teil der Haut.'),
- ('Ein geeignetes Kondom senkt das Risiko vieler STI. Ein Teil der Haut bleibt frei. Die Barriere muss von Anfang an sitzen.',
-  'Warum reicht ein spätes Überziehen des Kondoms beim STI-Schutz nicht?', 'Beim ersten Kontakt hat die Barriere gefehlt.', 'Für den STI-Schutz zählt erst der Kontakt mit Sperma.',
-  'Manche Erreger werden schon beim ersten Hautkontakt übertragen.', 'Bei jedem Sex braucht es von Anfang an ein neues, gut sitzendes Kondom.'),
- ('Ein geeignetes Kondom bildet von Anfang an eine Barriere. Bei STI bleibt ein Risiko durch unbedeckte Haut. Die Hülle kann auch reißen.',
-  'Eine intakte Hülle hält Sperma zurück. Belegt das Schutz vor jeder STI?', 'Nein. Erreger können auch über freie Haut übertragen werden.', 'Ja. Die Spermadichtheit zeigt auch das gesamte STI-Risiko.',
-  'Für manche Erreger reicht Hautkontakt.', 'Schwangerschaftsschutz und STI-Schutz hängen von unterschiedlichen Wegen ab.')],
-'eisprung': [
- ('Die Kombinationspille enthält Hormone. Sie verhindern meist den Eisprung. Vor Infektionen beim Sex schützt die Pille nicht.',
-  'Was fehlt ohne Eisprung für eine Befruchtung?', 'Eine Eizelle, die befruchtet werden kann', 'Alle Spermien',
-  'Die Pille wirkt vor allem auf den Eisprung.', 'Ohne Eisprung wird keine Eizelle frei.'),
- ('Die Hormone der Pille hemmen meist den Eisprung. Gegen Krankheitserreger entsteht dabei kein Schutz.',
-  'Wie wirkt die Kombinationspille gegen Schwangerschaft?', 'Ohne Eisprung wird keine Eizelle frei.', 'Die Pille hält Spermien in einer Hülle fest.',
-  'Eine Hülle gehört zum Kondom.', 'Die Hormone wirken auf den Zyklus. Sie schützen nicht vor STI.'),
- ('Die Kombinationspille hemmt vor allem den Eisprung. Sie bildet keine Barriere gegen Krankheitserreger.',
-  'Weshalb schützt die Pille vor Schwangerschaft, aber nicht vor STI?', 'Es fehlt die freie Eizelle. Erreger können trotzdem übertragen werden.', 'Der ausbleibende Eisprung erschwert auch die Übertragung von Erregern.',
-  'Erreger brauchen für die Übertragung keinen Eisprung.', 'Eisprung und Übertragung von Erregern sind zwei verschiedene Vorgänge.'),
- ('Östrogen und Gestagen hemmen vor allem den Eisprung. Die Pille bildet keine Barriere gegen Erreger.',
-  'Pille und Kondom können Schwangerschaften verhindern. Was unterscheidet sie?', 'Die Pille hemmt den Eisprung. Das Kondom hält Sperma zurück.', 'Beide halten Spermien auf, die Pille durch Eisprunghemmung.',
-  'Ohne Eisprung fehlt die Eizelle. Der Weg der Spermien bleibt möglich.', 'Nur beim geeigneten Kondom kann die Barriere auch das STI-Risiko senken.')],
-'einnahme': [
- ('Die Pille wird regelmäßig nach Plan eingenommen. Manche bekommen Übelkeit, andere nicht. Die Verträglichkeit ist unterschiedlich.',
-  'Eine Freundin verträgt die Pille gut. Gilt das für alle?', 'Jeder Körper kann anders reagieren.', 'Alle vertragen die Pille gleich gut.',
-  'Eine andere Person kann zum Beispiel Übelkeit bekommen.', 'In der Arztpraxis lässt sich klären, ob die Pille geeignet ist.'),
- ('Die Pille wird regelmäßig nach Plan genommen. Vergessen kann den Schutz mindern. Beschwerden wie Übelkeit sind von Person zu Person verschieden.',
-  'Zwei Personen vertragen die Pille unterschiedlich. Was hilft bei der Wahl?', 'Die eigene Eignung in der Arztpraxis klären.', 'Nur nach der Erfahrung der Freundin entscheiden.',
-  'Die Erfahrung der Freundin gilt für ihren eigenen Körper.', 'Verträglichkeit und regelmäßige Einnahme sind für die eigene Wahl wichtig.'),
- ('Vergessene Tabletten können den Schutz verringern. Verträglichkeit ist individuell. Auch Übelkeit kann auftreten.',
-  'Eine Freundin verträgt die Pille gut. Was sagt das über deine Verträglichkeit?', 'Ihre Erfahrung sagt meine Verträglichkeit nicht voraus.', 'Gleiche Einnahme macht ihre Erfahrung auf mich übertragbar.',
-  'Der Einnahmeplan sagt nichts Sicheres über Beschwerden.', 'Zuverlässige Einnahme und persönliche Verträglichkeit sind verschiedene Fragen.'),
- ('Regelmäßige Einnahme ist wichtig. Vergessene Tabletten können den Schutz mindern. Blutung und Schmerzen können abnehmen. Die Verträglichkeit ist individuell.',
-  'Weniger Regelschmerzen mit der Pille: Was bedeutet die Erfahrung einer Freundin?', 'Besserung ist möglich. Die eigene Eignung bleibt ärztlich zu klären.', 'Ähnliche Regelschmerzen belegen die gleiche Eignung.',
-  'Ähnliche Schmerzen sagen wenig über Verträglichkeit und persönliche Risiken.', 'Eine Erfahrung zeigt eine Möglichkeit. Sie erlaubt keine sichere Vorhersage.')],
-'kupfer': [
- ('Die Kupferspirale gibt Kupfer ab. Spermien bewegen sich schlechter. Sie können die Eizelle dann schwerer befruchten.',
-  'Worauf wirkt das Kupfer?', 'Auf Spermien', 'Auf den Eisprung',
-  'Kupfer hemmt nicht den Eisprung.', 'Kupfer stört die Bewegung der Spermien. Vor Infektionen schützt es nicht.'),
- ('Kupfer stört Spermien. Sie bewegen sich schlechter und können eine Eizelle schwerer befruchten. Es gibt keinen STI-Schutz.',
-  'Was vermindert das Kupfer der Spirale?', 'Die Befruchtungsfähigkeit der Spermien', 'Das Risiko für jede Infektion beim Sex',
-  'Kupfer bildet keine Barriere gegen Erreger.', 'Befruchtungsfähigkeit heißt hier, dass Spermien eine Eizelle befruchten können.'),
- ('Kupfer stört Bewegung und Befruchtungsfähigkeit der Spermien. Die Spirale bildet keine Barriere gegen Erreger.',
-  'Eine Person möchte auch STI vermeiden. Was leistet das Kupfer?', 'Es erschwert die Befruchtung. Eine Barriere gegen Erreger fehlt.', 'Die geringere Beweglichkeit der Spermien senkt zugleich das STI-Risiko.',
-  'Erreger können unabhängig von Spermien übertragen werden.', 'Die Wirkung auf Spermien erklärt den Schwangerschaftsschutz.'),
- ('Kupfer beeinträchtigt Bewegung und Befruchtungsfähigkeit von Spermien. Der Eisprung kann stattfinden. Die Methode schützt nicht vor STI.',
-  'Trotz Eisprung ist eine Befruchtung erschwert. Wie passt das zusammen?', 'Kupfer wirkt auf Spermien und braucht den Eisprung nicht zu hemmen.', 'Kupfer verschiebt den Eisprung und verhindert so die Befruchtung.',
-  'Die Wirkung auf Spermien reicht als Erklärung aus.', 'Kupfer und Kombinationspille greifen an unterschiedlichen Stellen an.')],
-'kupferwahl': [
- ('Die Kupferspirale wirkt lange. Tägliche Tabletten entfallen. Blutung und Regelschmerzen können stärker werden.',
-  'Wie kann die Kupferspirale Regelschmerzen verändern?', 'Die Schmerzen können stärker werden.', 'Schmerzen verschwinden immer.',
-  'Kupfer kann die Blutung und die Schmerzen verstärken.', 'Die Praxis prüft die Eignung. Nur mit Zustimmung wird die Spirale eingesetzt.'),
- ('Die Kupferspirale wirkt ohne tägliche Einnahme. Blutung und Schmerzen können stärker werden. Die Person entscheidet über das Einsetzen.',
-  'Was ist vor der Kupferspirale bei starken Regelschmerzen wichtig?', 'Die Schmerzen in der Arztpraxis ansprechen.', 'Ohne Hormone gibt es keine Beschwerden.',
-  'Auch eine hormonfreie Methode kann Beschwerden verstärken.', 'Eignung und Beschwerden gehören ins Arztgespräch. Die Person muss zustimmen.'),
- ('Kupfer schützt länger ohne tägliche Einnahme. Stärkere Blutungen und Schmerzen sind möglich. Die Praxis prüft die Eignung.',
-  'Häufig vergessene Tabletten, starke Regelschmerzen: Was ist bei der Kupferspirale abzuwägen?', 'Keine tägliche Einnahme, aber möglicherweise stärkere Schmerzen.', 'Ohne Hormontablette sind schwächere Schmerzen zu erwarten.',
-  'Auch ohne Hormone können die Regelschmerzen stärker werden.', 'Ungeklärte Schmerzen ärztlich abklären. Die Person entscheidet selbst.'),
- ('Die Kupferspirale braucht keine tägliche Einnahme. Blutung und Schmerzen können stärker werden. Das Einsetzen kann wehtun.',
-  'Ärztlich spricht nichts gegen die Kupferspirale. Reicht das bei Zögern zum Einsetzen?', 'Nein. Die Person entscheidet nach der Beratung selbst.', 'Ja. Bei ärztlicher Eignung genügt ein fehlender Widerspruch.',
-  'Ein Befund ist keine Zustimmung.', 'Eignung und freiwillige Zustimmung sind zwei Voraussetzungen.')],
-'schleim': [
- ('Die Hormonspirale macht den Schleim am Gebärmutterhals zäher. Spermien kommen schwerer hindurch. Vor Infektionen schützt sie nicht.',
-  'Was kommt schwerer durch den zähen Schleim?', 'Spermien', 'Eine Tablette',
-  'Der Schleim liegt auf dem Weg der Spermien.', 'Zäher Schleim erschwert den Weg zur Eizelle.'),
- ('Die Hormonspirale gibt ein Hormon ab. Der Schleim am Gebärmutterhals wird zäher. Das erschwert den Weg der Spermien.',
-  'Wovor schützt diese Wirkung?', 'Vor einer Schwangerschaft, nicht vor STI', 'Vor einer Schwangerschaft und allen STI',
-  'Der veränderte Schleim bietet keinen STI-Schutz.', 'Spermien gelangen schwerer durch den Gebärmutterhals. Das schützt nicht vor STI.'),
- ('Ein Gestagen macht den Schleim am Gebärmutterhals zäher. Spermien kommen schwerer hindurch. Daraus folgt kein STI-Schutz.',
-  'Wie wirkt die Hormonspirale im Unterschied zur Kombinationspille?', 'Hier wird vor allem der Weg der Spermien erschwert.', 'Beide hemmen vor allem den Eisprung.',
-  'Bei der Hormonspirale ist der Schleim besonders wichtig.', 'Die Pille hemmt vor allem den Eisprung. Die Spirale verändert vor allem den Schleim.'),
- ('Die Hormonspirale gibt Gestagen ab. Der Schleim am Gebärmutterhals wird für Spermien schwer durchlässig.',
-  'Was erklärt das Modell des zähen Schleims am Gebärmutterhals?', 'Es erklärt den erschwerten Weg der Spermien.', 'Er erschwert auch die Übertragung von STI.',
-  'Die Zeichnung zeigt Spermien, keine Übertragungswege von Erregern.', 'Der zähe Schleim erschwert die Befruchtung. Er bietet keinen STI-Schutz.')],
-'hormonwahl': [
- ('Die Hormonspirale wirkt lange. Tägliche Tabletten entfallen. Anfangs kann die Regel unregelmäßig sein. Später können Blutung und Schmerzen schwächer werden.',
-  'Wie können sich Regelschmerzen mit der Hormonspirale verändern?', 'Die Schmerzen können schwächer werden.', 'Die Schmerzen sind sicher weg.',
-  '„Können“ heißt, dass es bei manchen so ist.', 'Die Praxis prüft die Eignung. Die Person entscheidet über das Einsetzen.'),
- ('Die Hormonspirale wirkt ohne tägliche Einnahme. Anfangs kann die Blutung unregelmäßig sein. Später können Blutung und Schmerzen schwächer werden.',
-  'Welche Wirkung auf Regelschmerzen ist mit der Hormonspirale möglich?', 'Eine Besserung ist möglich.', 'Die Schmerzen hören sicher auf.',
-  'Jeder Körper kann anders reagieren.', 'Die Praxis klärt, ob die Spirale passt. Das Einsetzen braucht Zustimmung.'),
- ('Die Hormonspirale wirkt ohne tägliche Einnahme. Blutungen können anfangs unregelmäßig sein. Später können Blutung und Schmerzen schwächer werden.',
-  'Was spricht bei Regelschmerzen für eine Beratung zur Hormonspirale?', 'Eine Besserung ist möglich. Eignung und eigene Wünsche klären.', 'Die erste Blutung zeigt bereits die spätere Schmerzlinderung.',
-  'Anfangs unregelmäßige Blutungen sagen die späteren Schmerzen nicht voraus.', 'Das Einsetzen ist eine eigene Entscheidung nach ärztlicher Beratung.'),
- ('Ohne tägliche Einnahme wirkt die Hormonspirale lange. Blutung und Schmerzen können abnehmen. Das Einsetzen kann wehtun und braucht Zustimmung.',
-  'Wie können beide Spiralen Regelschmerzen beeinflussen?', 'Unter Kupfer können Schmerzen zunehmen, unter der Hormonspirale abnehmen.', 'Beide lindern Regelschmerzen, weil sie lange wirken.',
-  'Mögliche Veränderungen sind keine sichere Vorhersage.', 'Ungeklärte Schmerzen ärztlich abklären. Eignung und die eigene Entscheidung zählen.')]
+FRAGEN={
+'Foerder':[
+ wahl(1,'Barriere erkennen','Was hält ein heiles Kondom zurück?','Spermien',[('Den Eisprung','zyklus','Die Hülle liegt außerhalb des Eierstocks.','Was bleibt in der Hülle?')],'Die Hülle fängt Sperma mit Spermien auf.','Was fängt die Hülle auf?','In der Hülle bleiben …'),
+ wahl(0,'Ausbleibenden Eisprung verstehen','Was wird ohne Eisprung nicht frei?','Eine Eizelle',[('Spermien','zellen','Spermien entstehen nicht im Eierstock.','Welche Zelle verlässt sonst den Eierstock?')],'Beim Eisprung wird eine Eizelle frei. Bleibt er aus, fehlt sie.','Was verlässt beim Eisprung den Eierstock?','Ohne Eisprung fehlt …'),
+ wahl(0,'Wirkort des Kupfers erkennen','Was bewegt sich durch Kupfer schlechter?','Spermien',[('Die Eizelle','zellen','Kupfer stört vor allem die Spermien.','Wer bewegt sich zur Eizelle?')],'Spermien kommen schlechter zur Eizelle.','Wer muss zur Eizelle gelangen?','Das Kupfer stört …'),
+ wahl(4,'Mögliche Veränderung von Schmerzen erkennen','Wie können sich Regelschmerzen mit der Hormonspirale verändern?','Sie können schwächer werden.',[('Sie hören sicher auf.','garantie','Die Schmerzen lassen nur bei manchen nach.','Ist eine Besserung sicher?')],'Schwächere Schmerzen sind möglich.','Suche das Wort „können“.','Später können die Schmerzen …')],
+'ESA':[
+ wahl(2,'Ein verbleibendes Infektionsrisiko erklären','Warum bleibt mit Kondom ein Risiko für Infektionen?','Ein Teil der Haut bleibt frei.',[('Die Hülle bedeckt die gesamte Haut.','haut','Das Kondom bedeckt nur einen Teil der Haut.','Wo kann es noch Hautkontakt geben?')],'Über freie Haut können manche Erreger übertragen werden.','Welche Haut berührt sich noch?','Ein Risiko bleibt, weil …'),
+ wahl(3,'Persönliche Verträglichkeit unterscheiden','Eine Freundin verträgt die Pille gut. Was gilt für eine andere Person?','Ihr Körper kann anders reagieren.',[('Bei gleicher Pille verträgt sie sie genauso gut.','erfahrung','Die Erfahrung betrifft die Freundin.','Wessen Körper wurde beobachtet?')],'Die Verträglichkeit ist von Person zu Person verschieden.','Für wen gilt die Erfahrung?','Für eine andere Person …'),
+ wahl(4,'Hormonfreiheit und Beschwerden unterscheiden','Die Kupferspirale ist hormonfrei. Was gilt für Regelschmerzen?','Sie können stärker werden.',[('Ohne Hormone bleiben die Schmerzen gleich.','hormonfrei','Auch bei einer hormonfreien Spirale können Schmerzen zunehmen.','Was steht bei Regelschmerzen?')],'Hormonfreiheit schützt nicht vor stärkeren Regelschmerzen.','Kann eine hormonfreie Spirale Beschwerden verändern?','Unter Kupfer können …'),
+ wahl(0,'Folge des zähen Schleims verstehen','Was bewirkt zäher Schleim am Gebärmutterhals?','Spermien kommen schwerer hindurch.',[('Die Eizelle verlässt den Eierstock nicht.','zyklus','Hier verändert sich der Schleim am Gebärmutterhals.','Welche Zellen müssen dort hindurch?')],'Der zähere Schleim erschwert Spermien den Weg.','Wer muss durch den Schleim?','Der Schleim erschwert …')],
+'MSA':[
+ wahl(2,'Grenze der Barriere erklären','Warum bleibt trotz intaktem Kondom ein STI-Risiko?','Erreger können über unbedeckte Haut übertragen werden.',[('Erreger müssen mit Sperma durch die Hülle gelangen.','haut','Manche Erreger werden auch bei Hautkontakt übertragen.','Welche Haut bleibt außerhalb der Hülle?')],'Die Barriere bedeckt nur einen Teil der Haut.','Welche Übertragung braucht kein Sperma?','Ein Restrisiko bleibt, weil …'),
+ frei(0,'pille','Wie verhindert die Pille durch ihre Wirkung auf den Eisprung eine Befruchtung?','Ausbleibenden Eisprung mit fehlender befruchtbarer Eizelle verbinden.'),
+ wahl(4,'Hormonfreiheit und individuelle Wirkung trennen','Was bedeutet „hormonfrei“ bei der Kupferspirale für Regelschmerzen?','Sie können trotzdem stärker werden.',[('Ohne Hormone können Schmerzen nicht zunehmen.','hormonfrei','Hormonfreiheit schließt stärkere Blutungen und Schmerzen nicht aus.','Welche Veränderung beschreibt die Karte?')],'Auch eine hormonfreie Methode kann Regelschmerzen verstärken.','Was ist trotz Hormonfreiheit möglich?','Hormonfrei bedeutet hier …'),
+ frei(0,'schleim','Warum kommen Spermien mit der Hormonspirale schwerer zur Eizelle?','Veränderte Schleimbeschaffenheit mit erschwertem Durchtritt verbinden.')],
+'AHR':[
+ frei(2,'haut','Warum können manche Erreger trotz intaktem Kondom übertragen werden?','Grenzen der bedeckten Fläche mit Übertragung bei Hautkontakt verbinden.'),
+ wahl(3,'Grenzen einer Einzelerfahrung begründen','Eine Freundin verträgt die Pille gut. Was folgt für eine andere Person?','Die Erfahrung lässt ihre persönliche Verträglichkeit offen.',[('Gleiche Einnahme bedeutet gleiche Verträglichkeit.','erfahrung','Die Dosis allein bestimmt die persönliche Reaktion nicht.','Welche Person wurde tatsächlich beobachtet?')],'Eigene Beschwerden und Risiken müssen individuell geklärt werden.','Worüber gibt eine einzelne Erfahrung Auskunft?','Die Erfahrung zeigt … Offen bleibt …'),
+ frei(0,'kupfer','Wie erschwert Kupfer die Befruchtung, obwohl ein Eisprung stattfinden kann?','Eingeschränkte Spermienbewegung mit erschwerter Befruchtung verbinden.'),
+ wahl(4,'Grenzen einer Vorhersage prüfen','Die Blutung ist anfangs unregelmäßig. Was folgt für spätere Regelschmerzen?','Die Schmerzen können nachlassen. Ihr Verlauf bleibt offen.',[('Die unregelmäßige Blutung zeigt schon, dass die Schmerzen nachlassen.','garantie','Die anfängliche Blutung erlaubt keine sichere Vorhersage.','Welche spätere Veränderung ist nur möglich?')],'Ein möglicher Verlauf ist keine individuelle Garantie.','Welche Beobachtung betrifft nur den Anfang?','Später ist möglich …')]
 }
 
-# Je Frage drei kurze Denkanstöße. Stufe 4 greift den konkreten Irrtum auf,
-# Stufe 5 zeigt die passende Aussage. Gleiche Lernziele teilen sich Hinweise.
-INDEX_EINFACH = ('Was bedeuten die drei markierten Punkte?', 'Jeder Punkt steht für eine Frau.', 'Markiert sind die Frauen, die schwanger wurden.')
-VERTRAEGLICHKEIT = ('Wessen Körper beschreibt die Erfahrung?', 'Verträglichkeit kann sich von Person zu Person unterscheiden.', 'Die Erfahrung der Freundin ersetzt keine eigene Beratung.')
-SCHMERZEN = ('Achte auf das Wort „kann“.', 'Schmerzen können später nachlassen.', 'Eine mögliche Besserung ist keine Zusage.')
-HILFEN = {
-'index': (INDEX_EINFACH,
- ('Vergleiche zwei gleich große Gruppen.', 'In beiden Gruppen vergeht ein Jahr.', 'Ein kleinerer Index steht für weniger Schwangerschaften.'),
- ('Beide Werte gelten für dieselbe Anwendungszeit.', 'Vergleiche die Zahl der Schwangerschaften.', 'Der Index gibt keine längere Anwendungszeit an.'),
- ('Wie wurden die Methoden angewendet?', 'Bei gleicher Gruppengröße kann die Anwendung verschieden sein.', 'Vergleiche etwa regelmäßige und vergessene Einnahmen.')),
-'huelle': (
- ('Was ist in der Hülle zu sehen?', 'Sperma enthält Spermien.', 'Die heile Hülle hält Sperma zurück.'),
- ('Was fängt die heile Hülle auf?', 'Kunststoff kann ebenso eine Barriere bilden.', 'Die Hülle wirkt auf dem Weg der Spermien.'),
- ('Betrifft die Allergie den Stoff oder die Barriere?', 'Auch Kunststoff kann Sperma zurückhalten.', 'Achte auf ein geeignetes latexfreies Kondom.'),
- ('Was verrät „latexfrei“ über das Material?', 'Kunststoff und Naturmembran können beide latexfrei sein.', 'Ihre Eignung zum STI-Schutz ist verschieden.')),
-'kontakt': (
- ('Wann berührt sich die Haut zum ersten Mal?', 'Erreger können schon beim ersten Kontakt übergehen.', 'Die Hülle muss dann bereits sitzen.'),
- ('Welche Haut bleibt im Bild frei?', 'Manche Erreger werden durch Hautkontakt übertragen.', 'Freie Haut lässt ein Restrisiko.'),
- ('Was geschieht vor dem Überziehen?', 'Beim ersten Hautkontakt fehlt dann die Barriere.', 'Manche Erreger brauchen keinen Kontakt mit Sperma.'),
- ('Welche Haut deckt das Kondom ab?', 'Manche Erreger gelangen über unbedeckte Haut zum Partner.', 'Sperma zurückzuhalten schließt diesen Weg nicht aus.')),
-'eisprung': (
- ('Was verlässt beim Eisprung den Eierstock?', 'Eine Eizelle wird frei.', 'Ohne Eisprung fehlt die freie Eizelle.'),
- ('Was passiert mit dem Eisprung?', 'Die Pille hemmt ihn meist.', 'Für eine Befruchtung müsste eine Eizelle frei werden.'),
- ('Brauchen Erreger eine freie Eizelle?', 'Der Eisprung betrifft die Befruchtung.', 'Gegen Erreger bräuchte es eine andere Art von Schutz.'),
- ('Wo wirkt die Pille, wo das Kondom?', 'Die Hormone wirken auf den Zyklus.', 'Die Hülle wirkt auf dem Weg der Spermien.')),
-'einnahme': (
- ('Wer hat die Pille gut vertragen?', 'Ein anderer Körper kann anders reagieren.', 'Auch bei gleicher Pille ist Übelkeit möglich.'),
- VERTRAEGLICHKEIT, VERTRAEGLICHKEIT,
- ('Wessen Schmerzen sind zurückgegangen?', 'Ähnliche Beschwerden bedeuten keine gleichen Risiken.', 'Die eigene medizinische Eignung muss geklärt werden.')),
-'kupfer': (
- ('Was bewegt sich in Richtung Eizelle?', 'Kupfer stört diese Bewegung.', 'Es wirkt auf Spermien.'),
- ('Wie kommen Spermien unter Kupfer voran?', 'Sie bewegen sich schlechter.', 'Damit wird auch das Befruchten einer Eizelle schwieriger.'),
- ('Vergleiche Spermien und Krankheitserreger.', 'Kupfer beeinträchtigt Spermien.', 'Gegen Erreger entsteht dadurch keine Barriere.'),
- ('Welche Zelle trifft auf das Kupfer?', 'Der Eisprung kann weiter stattfinden.', 'Für die Befruchtung zählt auch die Fähigkeit der Spermien.')),
-'kupferwahl': (
- ('Was zeigt der Pfeil bei der Blutung?', 'Die Blutung kann stärker werden.', 'Auch Regelschmerzen können zunehmen.'),
- ('Welche Beschwerden hat die Person bereits?', 'Unter Kupfer können Regelschmerzen zunehmen.', 'Diese Beschwerden gehören ins Arztgespräch.'),
- ('Was spricht für die Spirale, was ist offen?', 'Die tägliche Tablette entfällt.', 'Starke Regelschmerzen können sich aber verstärken.'),
- ('Wer zögert beim Einsetzen?', 'Die Praxis beurteilt die medizinische Eignung.', 'Nur die Person selbst kann dem Einsetzen zustimmen.')),
-'schleim': (
- ('Wo liegt der Schleim im Bild?', 'Spermien müssen durch den Gebärmutterhals.', 'Zäher Schleim erschwert ihnen den Weg.'),
- ('Wessen Weg wird im Schleim erschwert?', 'Spermien kommen schlechter durch.', 'Das ist kein Schutz vor Krankheitserregern.'),
- ('Vergleiche Eisprung und Schleim.', 'Das Gestagen der Spirale verändert vor allem den Schleim.', 'Die Pille wirkt vor allem auf den Eisprung.'),
- ('Was ist im Modell dargestellt?', 'Zu sehen ist der Weg von Spermien durch Schleim.', 'Übertragungswege von Erregern zeigt das Bild nicht.')),
-'hormonwahl': (SCHMERZEN, SCHMERZEN,
- ('Unterscheide die erste Blutung und spätere Schmerzen.', 'Anfangs unregelmäßige Blutungen sind möglich.', 'Schmerzlinderung ist möglich und individuell verschieden.'),
- ('Vergleiche die Richtung der möglichen Veränderung.', 'Unter Kupfer können Schmerzen stärker werden.', 'Unter der Hormonspirale können sie nachlassen.'))
-}
+INFOHILFE = [[['Was hält die heile Hülle zurück?', 'Die Hülle fängt Sperma auf. Es gibt geeignete Hüllen ohne Latex.'],
+  ['Suche die freie Haut im Bild.',
+   'Manche Erreger gehen bei Hautkontakt über. Das Kondom muss von Anfang an sitzen.']],
+ [['Was fehlt rechts im Bild?', 'Ohne Eisprung wird keine Eizelle frei. Erreger können trotzdem übertragen werden.'],
+  ['Was zeigt die Lücke im Kalender?',
+   'Eine vergessene Tablette kann den Schutz mindern. Nicht alle vertragen die Pille gleich.']],
+ [['Suche die Spermien nahe am Kupfer.', 'Kupfer stört Spermien. Gegen Erreger entsteht keine Barriere.'],
+  ['Was bedeutet der Pfeil nach oben?',
+   'Ohne tägliche Tablette wirkt die Spirale lange. Regelschmerzen können zunehmen.']],
+ [['Suche den Schleim am Ausgang der Gebärmutter.',
+   'Zäher Schleim erschwert Spermien den Weg. Vor Infektionen schützt er nicht.'],
+  ['Was bedeutet der Pfeil nach unten?', 'Die Spirale wirkt lange. Später können Blutung und Schmerzen nachlassen.']]]

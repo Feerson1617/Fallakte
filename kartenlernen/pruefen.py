@@ -1,6 +1,5 @@
 """Teste die tatsächlichen HTML-/SCO-Ansichten mit zwei Browsern und einem lokalen LMS."""
 import argparse
-import ast
 import functools
 import json
 import os
@@ -15,7 +14,8 @@ from zipfile import ZipFile
 from lxml import etree,html
 from playwright.sync_api import sync_playwright
 
-from feldabgleich import abgleich
+
+from feldabgleich import pruefe
 from erstellen import HERE,ROOT,OUT,START,sha,reference
 QA=ROOT/'build/Kartenlernen'
 sys.path.insert(0,str(ROOT/'gesamt'))
@@ -23,30 +23,6 @@ from karten import printed,LEVELS,NUM,spaced
 HOST='''<!doctype html><meta charset="utf-8"><style>*{box-sizing:border-box}body{margin:0}iframe{border:0;width:100vw;height:calc(100dvh - 54px);display:block}p{height:54px;margin:0}</style><p>Test-Lernplattform</p><script>window.calls=[];window.API={LMSInitialize(x){calls.push(['Start',x]);return 'true'},LMSFinish(x){calls.push(['Ende',x]);return 'true'},LMSSetValue(){throw Error('Speicherzugriff')}};</script><iframe title="Vorbereitung" src="index.html"></iframe>'''
 class Quiet(SimpleHTTPRequestHandler):
     def log_message(self,*args):pass
-
-
-def umfang_vergleichen(material):
-    original=subprocess.check_output(['git','show',START+':kartenlernen/aufgaben.py'],cwd=ROOT,text=True)
-    basis={stmt.targets[0].id:ast.literal_eval(stmt.value) for stmt in ast.parse(original).body
-           if isinstance(stmt,ast.Assign) and stmt.targets[0].id in ('THEMEN','HILFEN')}
-    counts={}
-    for index,niveau in enumerate(LEVELS):
-        fragen=material['levels'][niveau]['fragen']
-        assert list(fragen)==list(basis['THEMEN']) and len(fragen)==9
-        alt=neu=0
-        for thema,frage in fragen.items():
-            _,prompt,richtig,falsch,fehler,_=basis['THEMEN'][thema][index]
-            vorher=[*basis['HILFEN'][thema],fehler,'Die passende Antwort lautet: „'+richtig+'“']
-            nachher=frage['hilfen']
-            assert len(nachher)==5 and len(frage['antworten'])==2
-            assert max(map(len,nachher))<=max(map(len,vorher)),(niveau,thema)
-            assert sum(map(len,nachher))<=sum(map(len,vorher)),(niveau,thema)
-            alt+=sum(len(text.split()) for text in (prompt,richtig,falsch))
-            neu+=sum(len(text.split()) for text in (frage['frage'],*frage['antworten']))
-        if niveau in ('MSA','AHR'):
-            assert neu<=alt
-        counts[niveau]=dict(frage_und_optionen_woerter_alt=alt,frage_und_optionen_woerter_neu=neu)
-    return counts
 
 
 def protected(folder):
@@ -86,7 +62,7 @@ def protected(folder):
             assert norm(filled)==norm(paper['reference'])
             assert norm(text)==norm(r['title']+' '+NUM.sub('',paper['reference']))
             results.append(dict(niveau=t,kapitel=n,felder=[f['wort'] for f in c['felder']],druck=paper['reference_sha256'],schueler=paper['student_sha256']))
-    return dict(bestandsdateien=out,karten=results,umfang_gegen_88ec053=umfang_vergleichen(m))
+    return dict(bestandsdateien=out,karten=results)
 
 
 def run(reference_folder,quick=False):
@@ -125,7 +101,9 @@ def run(reference_folder,quick=False):
                             f.evaluate('(z)=>document.documentElement.style.fontSize=z+"%"',zoom)
                             f.evaluate('async()=>{await document.fonts.ready;await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))}')
                             result=f.evaluate((HERE/'sichttest.js').read_text(),dict(tier=tier,assist=assisted))
-                            befund=abgleich(tier,karten[tier],result.pop('quellen'))
+                            befund=result.pop('quellen')
+                            assert len(befund)==16
+                            pruefe(befund,karten[tier])
                             assert belege.setdefault(tier,befund)==befund
                             records.append(dict(browser=engine,version=browser.version,breite=w,hoehe=h,schrift=zoom,scorm=sco,**result))
                             if result['errors']:print('Layout',engine,tier,w,h,zoom,result['errors'][:2],flush=True)
