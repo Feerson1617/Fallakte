@@ -37,7 +37,7 @@ def karte(niveau, index, vorlage):
                 'Jeder Körper reagiert *anders*. Manchen wird von der Pille übel.']
         zusatz = ['Ohne freie Eizelle gibt es keine Befruchtung. Die Pille enthält zwei Hormone.',
                   'Die Hormone halten keine Krankheitserreger auf.', '',
-                  'Eine Freundin verträgt sie gut? In der Arztpraxis klärst du, ob sie auch zu dir passt.']
+                  'Nicht alle vertragen die Pille gleich gut. Dazu berät die Arztpraxis.']
         if not einfach: zusatz[0] += ' Sie heißen Östrogen und Gestagen.'
         if vertieft: zusatz[3] += ' Selten bildet sich ein Blutgerinnsel. Dabei verklumpt Blut in einem Gefäß.'
         extra = 'Blutung und Schmerzen können schwächer werden. '+ARZTPRAXIS
@@ -79,7 +79,7 @@ def karte(niveau, index, vorlage):
                   'Die Pille *nach Plan* nehmen. Vergessen? Der Schutz kann sinken.',
                   'Jeder Körper reagiert *anders*. Die Pille kann Übelkeit auslösen.']
             zusatz[0]='Ohne freie Eizelle keine Befruchtung. In der Pille sind zwei Hormone.'+(' Sie heißen Östrogen und Gestagen.' if not einfach else '')
-            zusatz[3]='Verträgt eine Freundin die Pille gut? Ob sie zu dir passt, klärst du in der Arztpraxis.'
+            zusatz[3]='Nicht alle vertragen die Pille gleich gut. Dazu berät die Arztpraxis.'
         elif index == 2:
             kern[0]='Kupfer bremst *Spermien*. Die Samenzellen erreichen die Eizelle schlechter. Eine Befruchtung wird seltener.'
         else:

@@ -27,6 +27,8 @@ def run(previous):
     assert len(proof['feldbelege'])==64
     sizes=sorted({(r['breite'],r['hoehe'],r['schrift'],r['scorm']) for r in runs})
     ver={r['browser']:r['version'] for r in runs}
+    from gegenprobe import pruefen as gegenprobe
+    gegen=gegenprobe()
     pics={'Screenshots/'+p.name:p.read_bytes() for p in (QA/'Sichtbilder').glob('*.jpg')}
     scope=dict(externe_browserwege=len(externe_wege),commit=head,ausgangsstand=START,kartenreferenz=REF,wege=len(runs),bildschirmpruefungen=sum(r['count'] for r in runs),
                browser=ver,fenster=sizes,feedback=counts,kartenfelder=64,schutz=proof['bestandsdateien'],screenshots=len(pics))
@@ -117,10 +119,20 @@ Die lokale Prüfung erkennt nur bestimmte fachliche Aussagen und Beziehungen. Un
 
 Ein echtes Schul-iPad, die native Tastatur im produktiven itslearning-Kurs, die pädagogische Abnahme und gemessene Bearbeitungszeiten mit dieser Lerngruppe stehen aus. Für den Praxistest im Hoch- und Querformat die Infokarte 3 auf der Rückseite finden, auf MSA eine Teilantwort schreiben, bei offener Tastatur Hilfe verwenden, zurückkehren und überarbeiten. Danach vollständig neu laden und anhand des Papierstands wieder einsteigen. Beobachten, ob die Lernenden Hilfe und Lücken ohne individuelle Erklärung finden. Die Unterrichtsfreigabe folgt nach dieser Erprobung.
 '''
+    neutral=sum(r['ist']=='unsicher' for r in gegen['texte'])
+    report=f"""# Nachkorrektur gegenüber bbdc2e1
+
+Geprüfter Commit `{head}`. Die vier Papieransichten zeigen jeweils die Blattposition, vier Schreibzeilen und „Alle vier Wörter eingetragen?“. Bei 740 × 340 CSS-Pixeln und 150 % Schrift wurde jede Papieransicht durch Antippen geöffnet und verlassen. Alle vier Zeilen und beide Navigationstasten blieben erreichbar. Im kürzesten Fenster nennt der Orientierungssatz die Blattposition. Die Blattminiatur steht dort in der Hilfe. Geprüft wurden 64 Kombinationen aus Niveau, Karte, Browser und Offline-/SCORM-Datei.
+
+Alle 1.058 vorgegebenen Freitexte der Gegenprüfung wurden samt ihren ursprünglichen Sollbewertungen wiederholt. {neutral} Eingaben erhielten eine neutrale Aufforderung zum Selbstvergleich. Im Bestand gab es keine fachlich falsche Eingabe mit positivem Gesamturteil. Unbekannte Formulierungen, auch richtige, können weiterhin im Selbstvergleich landen. Die Einzelresultate einschließlich der fünf Hilfen stehen in Gegenpruefung-CLT.json im Sichtprüfungspaket.
+
+Die Eisprungfrage benennt die gesuchte Zelle. Fragen zur Pille beziehen sich auf unterschiedliche Reaktionen von Menschen. Der Kartenverweis nennt Methode und Überschrift. Work erhält den verbindlichen Wortlaut und die Feldzuordnung für den großzügigen Satz der Druckkarten.
+
+"""+report
     (OUT/'Pruefbericht.md').write_text(report)
     files={'Sichtbarer-Wortlaut.json':sichttexte,'Externe-Freitextwege.json':dump(externe_wege),'Browserpruefung.json':(QA/'Browserpruefung.json').read_bytes(),'Touch-und-Tastatur.json':dump(t),'Feedback-Ergebnisse.json':dump(counts),
            'Kartenfelder-im-Lernweg.json':dump(proof['feldbelege']),'Arbeitsumfang.json':dump(costs),'Pruefumfang.json':dump(scope),'Pruefbericht.md':report}
-    pack(OUT/'Vorbereitung-Sichtpruefung.zip',{**files,**pics})
+    pack(OUT/'Vorbereitung-Sichtpruefung.zip',{**files,**pics,'Gegenpruefung-CLT.json':dump(gegen)})
     (OUT/'Testergebnisse.json').write_text(dump(dict(**scope,touch=t,arbeitsumfang=costs)))
     from clt import ausgabe
     ausgabe()

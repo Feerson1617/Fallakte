@@ -46,7 +46,7 @@ WEG="""({row,tier})=>{
  function pruefe(test,meldung){if(!test)throw Error(row.nummer+' · '+meldung);}
  if(row.soll!=='passend')pruefe(!$('[data-action=advance]'),'unberechtigte Bestätigung');
  if(row.merkmal)pruefe(d.error===row.merkmal && antwort.includes(frage),'falscher Denkimpuls');
- if(d.state==='unsicher')pruefe(antwort.includes('Deine Antwort kann richtig sein.') && $('[data-action=compare]').classList.contains('primary'),'kein neutraler Selbstvergleich');
+ if(d.state==='unsicher')pruefe(antwort.includes('Vergleiche deine Erklärung mit dem Beispiel.') && !antwort.includes('kann richtig sein') && $('[data-action=compare]').classList.contains('primary'),'kein neutraler Selbstvergleich');
  tap('help');const hilfen=[lesen()];
  for(let i=2;i<=5;i++){tap('more');hilfen.push(lesen());}
  pruefe(hilfen[4].includes(m.beispiel),'Beispiel fehlt');

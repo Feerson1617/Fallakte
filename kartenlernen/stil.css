@@ -64,7 +64,7 @@ textarea{border:2px solid #6f8977;border-radius:.48rem;padding:.35em;width:100%;
 @media(max-width:480px){#bar:has([data-action=levels])>strong{display:none}}
 #bar .help{align-self:flex-start}
 .editing #bar{padding-block:4px}
-.tight .paper .locator>div p:first-child{display:none}
+
 @media(min-aspect-ratio:6/5){
  .tight .question .locator{flex-wrap:nowrap}
 }
@@ -81,3 +81,13 @@ textarea{border:2px solid #6f8977;border-radius:.48rem;padding:.35em;width:100%;
 }
 .tight #page[data-screen=compare]>.context{display:none}
 .tight #page[data-screen=compare] #draft{height:2.65em}
+
+@media (min-width:650px) and (max-height:360px) {
+ .tight .paper{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);grid-template-rows:auto auto auto;align-items:center}
+ .tight .paper h1{grid-area:1/1}
+ .tight .paper ol{grid-area:2/1/4/2}
+ .tight .paper .locator{grid-area:1/2;display:grid}
+ .tight .paper .locator .sheet{display:none}
+ .tight .paper>p{grid-area:2/2}
+ .tight .paper .primary{grid-area:3/2}
+}

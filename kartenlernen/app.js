@@ -43,21 +43,21 @@
     return '<ol>'+card().felder.map(f=>'<li><span>Schreibe bei <b>'+f.nummer+'</b>:</span> <strong>'+esc(f.wort)+'</strong></li>').join('')+'</ol>';
   }
   function paper(){
-    return '<section class="paper">'+title('Schreibe auf deine Infokarte.')+
-      '<div class="locator">'+diagram(chapter)+'<div>'+para('Dein Blatt mit den Infokarten')+para(paperLocation())+'</div></div>'+
-      rows()+para('Fette Wörter in die Lücken mit derselben Zahl. Richtige Wörter bleiben stehen.')+para('Alle vier Lücken gefüllt?')+
+    return '<section class="paper">'+title('Infokarte · '+card().titel)+
+      '<div class="locator">'+diagram(chapter)+'<div>'+para(paperLocation())+'</div></div>'+
+      rows()+para('Alle vier Wörter eingetragen?')+
       go('written',shortcut?'Zurück zur Kartenauswahl':'Ja, weiter')+'</section>';
   }
   const sourceTitle=()=>context('Frage '+(qi+1)+' von 4');
   function location(){
-    return '<div class="locator">'+diagram(qi)+'<div>'+para('Deine Infokarte '+card(qi).bezug)+'<p>Suche „<strong>'+esc(section().titel)+'</strong>“.</p></div></div>';
+    return '<div class="locator">'+'<p>'+esc(card(qi).titel)+' · <strong>'+esc(section().titel)+'</strong></p></div>';
   }
   function resultView(){
     const rec=r(),st=rec.last.state;
     let heading=({passend:'Gut erklärt.',teilweise:'Ein Teil stimmt.',fehlvorstellung:'Schau noch einmal hin.',widerspruch:'Prüfe diese Stelle.',vertauscht:'Prüfe die Reihenfolge.',unsicher:'Vergleiche deine Erklärung.',leer:'Dein erster Gedanke'})[st];
     if(st==='passend' && q().typ==='wahl')heading='Das passt.';
     const [karte,stelle]=rec.last.quelle||[qi,q().abschnitt];
-    const reference=st==='passend'?'':context('Infokarte '+card(karte).bezug+' · '+card(karte).texte[stelle].titel);
+    const reference=st==='passend'?'':context(card(karte).titel+' · '+card(karte).texte[stelle].titel);
     const compare=q().typ==='text' && rec.text.trim() && st!=='leer';
     const recommended=st==='unsicher' && compare;
     const actions=st==='passend'?go('advance','Weiter'):recommended?
@@ -100,7 +100,7 @@
   function reference(){
     const [karte,stelle]=hilfequelle();
     const c=card(karte),sec=c.texte[cardpage];
-    return context('Infokarte '+c.bezug)+title(sec?sec.titel:'Pearl-Index · '+c.pearl)+(sec && cardpage===stelle?'<p class="beleg">'+esc(sec.volltext)+'</p>':para(sec?sec.volltext:c.pearl_erklaerung))+
+    return context(c.titel)+title(sec?sec.titel:'Pearl-Index · '+c.pearl)+(sec && cardpage===stelle?'<p class="beleg">'+esc(sec.volltext)+'</p>':para(sec?sec.volltext:c.pearl_erklaerung))+
       '<div class="actions">'+(cardpage>0?btn('prev','Vorherige Stelle'):'')+(sec?btn('following','Nächste Stelle'):'')+go('helpback','Zur Hilfe')+'</div>';
   }
   function main(){

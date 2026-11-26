@@ -33,7 +33,7 @@
      const r=h.getBoundingClientRect();if(!helpPos)helpPos=[r.right,r.top];
      if(Math.abs(r.right-helpPos[0])>1 || Math.abs(r.top-helpPos[1])>1)problem('Hilfe verschoben');
    }
-   if($('#page').dataset.screen==='feedback' && !key('advance'))ok($('.context:nth-of-type(2)')?.innerText.includes('Infokarte')||all('.context').some(n=>n.innerText.includes('Infokarte')&&n.innerText.includes(' · ')),'Kartenstelle in der Rückmeldung');
+   if($('#page').dataset.screen==='feedback' && !key('advance'))ok(all('.context').some(n=>cs.some(c=>c.texte.some(s=>n.innerText===c.titel+' · '+s.titel))),'Kartenstelle in der Rückmeldung');
    for(const g of all('figure svg')){const r=g.getBoundingClientRect();if(!box(r)||r.height<44||r.width<44)problem('Abbildung außerhalb');}
    for(const s of all('#page h1,#page h2,#page p,#page figcaption,#page button,#page li,#page .feedback')){
      if(s.innerText.trim())words.add(s.innerText.trim());
@@ -70,13 +70,13 @@
      });
      if(assist)visitHelp(2,'Information');tap('readnext');
    }
-   inspect('Papier '+(i+1));ok($('#page h1').innerText==='Schreibe auf deine Infokarte.','Schreibauftrag');
+   inspect('Papier '+(i+1));ok($('#page h1').innerText==='Infokarte · '+cs[i].titel && all('.paper li').length===4,'Schreibauftrag');
    ok($('.paper .locator').innerText.includes(cs[i].seite) && $('.paper h1').innerText.includes('Infokarte'),'Blattseite und Karte');
    if(i===2)ok($('.locator').innerText.includes('Suche auf der Rückseite oben 3 – Kupferspirale.'),'Blattposition in Kapitel 3');
    const f=all('li strong').map(n=>n.innerText);
    ok(JSON.stringify(f)===JSON.stringify(cs[i].felder.map(f=>f.wort)),'Originalwörter');
    ok($('.sheet .active').innerText===(i+1)+' – '+cs[i].titel,'richtige Blatthälfte');
-   ok($('#page').innerText.includes('Alle vier Lücken gefüllt?'),'Selbstkontrolle');
+   ok($('#page').innerText.includes('Alle vier Wörter eingetragen?'),'Selbstkontrolle');
    ok(all('.sheet span').map(n=>n.innerText).join('|')===cs.slice(i<2?0:2,i<2?2:4).map(c=>c.nummer+' – '+c.titel).join('|'),'Methodennamen auf beiden Blatthälften');
    if(assist)visitHelp(2,'Papier');papers++;tap('written');
  }
@@ -85,7 +85,7 @@
    const q=chapter.fragen[i],m=material.modelle[q.modell];
    inspect('Frage '+(i+1));ok($('.locator').innerText.includes(cs[i].texte[q.abschnitt].titel),'Überschrift wie auf Papier');
    if(assist){
-     tap('help');inspect('Kartenorientierung');ok($('#page').innerText.includes('Lies auf deiner Infokarte')&&$('#page').innerText.includes(cs[i].texte[q.abschnitt].titel),'konkreter Suchauftrag');tap('reference');inspect('Ersatzkarte');
+     tap('help');inspect('Kartenorientierung');ok($('#page').innerText.includes('Lies: '+cs[i].titel)&&$('#page').innerText.includes(cs[i].texte[q.abschnitt].titel),'konkreter Suchauftrag');tap('reference');inspect('Ersatzkarte');
      for(let n=q.abschnitt;n>0;n--)tap('prev');
      for(const t of cs[i].texte){inspect('Ersatzkarte '+t.titel);ok($('#page').innerText.includes(t.volltext),'Originaltext');tap('following');}
      inspect('Ersatzkarte Pearl-Index');tap('helpback');tap('back');
@@ -102,7 +102,7 @@
        enter(zusatz);tap('check');inspect('Gesundheitlicher Zusatz');
        ok($('#page').innerText.includes('Die Kupferspirale wirkt ohne Hormone.') && !key('advance'),'konkreter biologischer Fehler');
        tap('help');inspect('Kartenverweis beim Zusatz');
-       ok($('#page').innerText.includes('Infokarte zur Kupferspirale'),'Karte zum tatsächlichen Fehler');
+       ok($('#page').innerText.includes('Kupferspirale'),'Karte zum tatsächlichen Fehler');
        tap('reference');inspect('Fachbeleg zum Zusatz');
        ok($('.beleg').innerText===cs[2].texte[0].volltext,'richtige Originalstelle');
        tap('helpback');tap('back');tap('compare');inspect('Selbstvergleich mit erkanntem Zusatz');
@@ -125,9 +125,9 @@
        tap('back');tap('compare');inspect('Vergleich mit erkanntem Widerspruch');
        ok($('#page p:last-of-type').innerText.includes(fehlertext),'Korrektur zum geprüften Entwurf');tap('revise');
        enter(m.beispiel+' Das ist eine weitere Sache.');tap('check');inspect('Unklarer Zusatz');
-       ok($('#page').innerText.includes('Beide Schritte sind da.'),'vorhandene Aussagen bestätigt');
+       ok($('#page').innerText.includes('Prüfe auch deinen Zusatz.'),'unklarer Zusatz');
        tap('help');tap('back');tap('revise');enter('Ich meine einen anderen Zusammenhang.');tap('check');inspect('Unsicher');
-       ok(key('compare').classList.contains('primary')&&!key('revise').classList.contains('primary') && $('#page').innerText.includes('Deine Antwort kann richtig sein. Vergleiche sie mit diesem Beispiel.'),'passende primäre Handlung');tap('compare');inspect('Selbstvergleich');
+       ok(key('compare').classList.contains('primary')&&!key('revise').classList.contains('primary') && $('#page').innerText.includes('Vergleiche deine Erklärung mit dem Beispiel.'),'passende primäre Handlung');tap('compare');inspect('Selbstvergleich');
        ok($('.selbstcheck').innerText===m.vergleich && $('#draft').innerText==='Ich meine einen anderen Zusammenhang.','eigene Antwort und beide Vergleichsfragen');
        ok($('#page').innerText.includes(m.beispiel),'Beispiel zum Vergleich');
        if(i>=2){tap('compared');continue;}tap('revise');

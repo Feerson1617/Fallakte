@@ -66,7 +66,7 @@ def build():
     files={x.name:x.read_bytes() for x in (ROOT/'scorm').glob('*.xsd')}
     pack(OUT/'Vorbereitung-SCORM12.zip',dict(files,**{'index.html':raw,'imsmanifest.xml':manifest('VORBEREITUNG-VIER-KAPITEL').replace(b'>Fallakte.<',b'>Fallakte - Vier Methoden<')}))
     drucke={}
-    guide = "# Kartenvertrag für Work\n\nKartenvertrag.json ist die verbindliche Textquelle. Schülerblatt und Muster entstehen aus denselben Feldern. A4, Hochformat, beidseitig an der langen Kante, 100 %. Erst nach dem Zeichen der Lehrkraft in der Mitte schneiden. Die Feldnummer bleibt auf dem Papier stehen.\n"
+    guide = "# Kartenvertrag für Work\n\nKartenvertrag.json ist die verbindliche Textquelle. Work übernimmt Wortlaut, Feldnummern und Positionen in die großzügige Druckgestaltung mit größeren Schreibfeldern. Schülerblatt und Muster entstehen aus denselben Feldern. A4, Hochformat, beidseitig an der langen Kante, 100 %. Erst nach dem Zeichen der Lehrkraft in der Mitte schneiden. Die Feldnummer bleibt auf dem Papier stehen.\n"
     diff = ["# Änderungen gegenüber dem gelieferten Infokartenpaket", "", "Je Abschnitt stehen bisheriger und neuer Wortlaut sowie das neue Schreibfeld nebeneinander.", ""]
     work['revision']=head
     work['satzspiegel']={'format':'A4, Hochformat, zwei Kartenhälften je Seite','schreibfelder':'Alle vier Felder beginnen am selben linken Rand. Im Muster steht die Lösung im selben Feld.','vorderseite':['Kondom','Kombinationspille'],'rueckseite':['Kupferspirale','Hormonspirale']}

@@ -53,7 +53,7 @@ def hilfen_pruefen(q,m,card,cards,medizin,result):
     diag,h,fb=result['diagnose'],result['hilfen'],result['rueckmeldung']
     assert len(h)==5 and all(h)
     karte,stelle=(cards[diag['quelle'][0]],diag['quelle'][1]) if diag.get('quelle') else (card,q['abschnitt'])
-    assert h[0]==f"Lies auf deiner Infokarte {karte['bezug']} unter „{karte['texte'][stelle]['titel']}“."
+    assert h[0]==f"Lies: {karte['titel']} · {karte['texte'][stelle]['titel']}."
     beispiel=m['beispiel'] if m else q['grund']
     assert beispiel in h[4]
     if diag.get('error') and m:
@@ -68,7 +68,7 @@ def hilfen_pruefen(q,m,card,cards,medizin,result):
             assert alt['erklaerung'] in h[4]
         return
     if diag['state']=='unsicher':
-        assert 'Deine Antwort kann richtig sein. Vergleiche sie mit diesem Beispiel.' in fb
+        assert 'Vergleiche deine Erklärung mit dem Beispiel.' in fb
     if diag['kind']=='zusatz':
         assert 'Zusatz' in fb and 'Beide Schritte' in h[1] and 'Zusatz' in h[2]
     if diag['state']=='vertauscht':

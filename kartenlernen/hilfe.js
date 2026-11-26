@@ -15,7 +15,7 @@ function fachhilfe(q,m,r,card,step,karten){
   const d=m?Lernfeedback.analyze(q.modell,r.text):null;
   const ziel=d?.quelle?karten[d.quelle[0]]:card;
   const abschnitt=d?.quelle?.[1]??q.abschnitt;
-  const where='Lies auf deiner Infokarte '+ziel.bezug+' unter „'+ziel.texte[abschnitt].titel+'“.';
+  const where='Lies: '+ziel.titel+' · '+ziel.texte[abschnitt].titel+'.';
   if(step===1)return where;
   if(step===5)return vergleichstext(q,m,r,d);
   if(!m){
@@ -61,15 +61,12 @@ function rueckmeldung(q,m,r){
   if(d.state==='leer')return 'Beginne mit einem Stichwort. '+m.impulse[0];
   if(d.state==='vertauscht')return 'Du hast beide Vorgänge genannt. '+m.zuerst;
   if(d.state==='unsicher'){
-    const context=d.kind==='zusatz'?'Beide Schritte sind da. Prüfe deinen Zusatz. ':
-      d.kind==='beziehung'?'Du hast die Begriffe genannt. ':
-      known?'Das erkenne ich: '+known+' ':'';
-    return context+'Deine Antwort kann richtig sein. Vergleiche sie mit diesem Beispiel.';
+    return (d.kind==='zusatz'?'Prüfe auch deinen Zusatz. ':'')+'Vergleiche deine Erklärung mit dem Beispiel.';
   }
   if(d.error){
     if(d.quelle){
       const fach=Lernfeedback.gesundheit[d.error];
-      const teil=known?'Das stimmt: '+known+' ':d.parts.length===2?'Deine Erklärung passt. ':'';
+      const teil=known?'Das stimmt: '+known+' ':'';
       return teil+(r.repeat?'Schau auf die genannte Infokarte. ':fach.info+' ')+fach.frage;
     }
     const lead=known?'Das stimmt: '+known+' ':d.parts.length===2?'Beide Schritte sind da. Prüfe deinen Zusatz. ':'';
