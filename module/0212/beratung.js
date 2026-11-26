@@ -116,7 +116,7 @@ window.Beratung = (() => {
   }
   function matchesEvidence() {
     const draft=active.draft;
-    if(advanced() && !draft.compared)return false;
+    if(advanced() && (!draft.compared || Entwurf.fehler(draft.reason)))return false;
     return info().options.some(option=>option.id===draft.optionId && option.correct);
   }
   function canSend() {
@@ -150,12 +150,13 @@ window.Beratung = (() => {
     // A disabled control is a cue. This guard also covers stale events and repeat taps.
     if (!canSend()) return;
     const draft=active.draft, strategy=info();
-    const reason=advanced()?draft.reason:strategy.options.find(o=>o.id===draft.optionId)?.text;
+    const reason=strategy.options.find(o=>o.id===draft.optionId)?.text;
     active.phase='sent';
     draft.grant=null;
     active.previous=draft.strategy;
     const proposal='Mein Rat: '+bank().strategies[draft.strategy].label+'.';
-    appendMessage('send','Du',reason ? proposal+' '+reason : proposal);
+    if(advanced())appendMessage('entwurf','Dein eigener Grund · fachlich ungeprüft',draft.reason);
+    appendMessage('send','Du',advanced()?proposal:proposal+' '+reason);
     appendMessage('reaction','Laura',strategy.reply);
     active.chatScroll=null;
     render('beratung-reaktion',true);
@@ -264,9 +265,16 @@ window.Beratung = (() => {
     const box=element('section','fachcheck');
     const label=element('label','',task().task);label.htmlFor='erklaerung';
     const field=element('textarea');field.id='erklaerung';field.rows=2;field.value=active.draft.reason;
-    const next=control('vergleichen','Mit den Aussagen vergleichen',()=>{active.draft.compared=true;render('begruendungen');},'senden');
+    const next=control('vergleichen','Mit den Aussagen vergleichen',()=>{
+      const d=active.draft, error=Entwurf.fehler(d.reason);
+      d.feedback=error?{type:'A',text:error.info,card:error.ref}:null;
+      d.compared=!error;
+      render(error?'fachmeldung':'begruendungen');
+    },'senden');
     next.disabled=!field.value.trim();
-    field.oninput=()=>{active.draft.reason=field.value;next.disabled=!field.value.trim();};
+    field.oninput=()=>{active.draft.reason=field.value;active.draft.feedback=null;
+      const msg=document.getElementById('fachmeldung');if(msg){msg.textContent='';msg.dataset.type='';}
+      next.disabled=!field.value.trim();};
     box.append(label,field,next);return box;
   }
   function closedCheck() {
@@ -274,7 +282,11 @@ window.Beratung = (() => {
     field.id='begruendungen';
     const question=element('h2','',advanced()?'Welche Aussage stimmt?':task().task);
     question.id='begruendungsfrage';field.setAttribute('aria-labelledby',question.id);field.append(question);
-    if(advanced())field.append(element('p','','Deine Erklärung · '+active.draft.reason),control('erklaerung-aendern','Erklärung ändern',()=>{active.draft.compared=false;editReason();}));
+    if(advanced()){
+      const draft=element('details','eigener-text');draft.append(element('summary','','Eigener Grund'),
+          element('p','','Fachlich ungeprüft: '+active.draft.reason),control('erklaerung-aendern','Erklärung ändern',()=>{active.draft.compared=false;editReason();}));
+      field.append(draft);
+    }
     for (const option of info().options) {
       const b=control('grund-'+option.id,option.text,()=>check(option.id),'grund');
       b.dataset.option=option.id;
@@ -313,7 +325,7 @@ window.Beratung = (() => {
     const context={stageId:active.stageId,levelId:active.tier,strategy:active.draft.strategy,
       asked:new Set(asked),feedback:active.draft.feedback};
     if (active.draft.strategy || active.stageId==='L01') tools.append(cardLinks());
-    tools.append(control('hilfe','Hilfe',b=>window.Material.help(context,b)));
+    tools.append(control('hilfe','Hilfe',b=>window.Material.help({...context,feedback:active.draft.feedback,error:Entwurf.fehler(active.draft.reason)},b)));
     const questions=active.draft.strategy ? info().questions : (task().before?.questions || []);
     if (questions.some(q=>!asked.has(q.id))) {
       const sourceSession=active, sourceDraft=active.draft;
@@ -330,6 +342,11 @@ window.Beratung = (() => {
         render('beratung-verlauf',true);
       };
       tools.append(control('ask','Rückfrage an Laura',b=>window.Material.questions(context,ask,b)));
+    }
+    if(matchMedia('(max-width:650px),(max-height:400px)').matches){
+      const more=element('details','quellenwahl');more.append(element('summary','','Karte und Rückfragen'));
+      for(const item of [...tools.children])if(item.id!=='hilfe')more.append(item);
+      tools.append(more);
     }
     return tools;
   }
@@ -397,6 +414,11 @@ window.Beratung = (() => {
       } else {
         area.append(control('strategie-neu-waehlen',correction.label,editChoice,'ergaenzen'));
       }
+    }
+    if(advanced() && step==='senden'){
+      const statement=info().options.find(o=>o.id===active.draft.optionId);
+      area.append(element('p','','Vergleiche deinen Grund mit der geprüften Aussage: '+statement.text));
+      const own=element('details','entwurfsvergleich');own.append(element('summary','','Eigenen Grund ansehen'),element('p','',active.draft.reason));area.append(own);
     }
     const submit=control('nachricht-senden','Nachricht senden',send,'senden');
     submit.disabled=!canSend();

@@ -92,16 +92,17 @@ function draw(){
   chat.setAttribute('aria-label','Gespräch mit '+bank.person);
   work.setAttribute('aria-label','Deine Aufgabe');
   const past=state.sent?state.history.slice(0,-3):state.history;
-  for(const [i,text] of past.entries()){add(chat,'strong',i%3===1?'Du':bank.person);add(chat,'p',text);}
+  function note(i){if(state.notes?.[i]){const d=add(chat,'details');add(d,'summary','Dein eigener Grund · fachlich ungeprüft');add(d,'p',state.notes[i]);}}
+  for(const [i,text] of past.entries()){note(i);add(chat,'strong',i%3===1?'Du':bank.person);add(chat,'p',text);}
   if(state.direct && s.previousFacts.length){const facts=add(chat,'details');add(facts,'summary','Bisher im Fall');s.previousFacts.forEach(text=>add(facts,'p',text));}
   add(chat,'strong',bank.person);add(chat,'blockquote',s.message[tier].join(' '));
   const room=()=>Arbeitsplatz.setup(desk,work,chat,h,work.querySelector('#help'),b=>resource('Hilfe',box=>add(box,'p','Lies die Antwort. Tippe dann auf Weiter.')));
   if(state.sent){
-    add(chat,'strong','Du');add(chat,'p',state.history.at(-2));
+    note(state.history.length-2);add(chat,'strong','Du');add(chat,'p',state.history.at(-2));
     add(chat,'strong',bank.person);add(chat,'p',state.reply);
     btn(work,state.index+1===bank.stages.length?'Zur Fallübersicht':'Weiter im Gespräch','next',()=>{
       if(state.index+1===bank.stages.length){sessions.delete(tier);port.postMessage({type:'home'});return;}
-      const next=fresh(state.index+1,state.history);next.previous=state.choice;save(next);draw();
+      const next=fresh(state.index+1,state.history);next.notes=state.notes;next.previous=state.choice;save(next);draw();
     }).className='primary';room();return;
   }
   if(hasChoice && !state.choice){
@@ -115,25 +116,43 @@ function draw(){
       add(work,'p',s.task[tier]);
       if(!lower() && !state.compared){
         const field=add(add(work,'label','Deine Erklärung'),'textarea');field.id='erklaerung';field.value=state.reason;
-        const compare=btn(work,'Mit den Aussagen vergleichen','vergleichen',()=>{state.compared=true;draw();});
+        const compare=btn(work,'Mit den Aussagen vergleichen','vergleichen',()=>{const issue=Entwurf.fehler(state.reason);state.compared=!issue;state.result=issue?.info||'';draw();});
         compare.disabled=!field.value.trim();
-        field.oninput=()=>{state.reason=field.value;compare.disabled=!state.reason.trim();};
+        field.oninput=()=>{state.reason=field.value;state.result='';work.querySelector('#feedback').textContent='';compare.disabled=!state.reason.trim();};
       }else{
-        if(!lower())add(work,'p','Deine Erklärung · '+state.reason);
+        if(!lower()){
+          add(work,'p','Dein eigener Grund · fachlich ungeprüft: '+state.reason);
+          btn(work,'Grund bearbeiten','grund-aendern',()=>{state.compared=false;state.result='';draw();});
+        }
         for(const k of tier==='Foerder'?check.short:'ABC')btn(work,check.answers['ABC'.indexOf(k)],'answer-'+k,()=>inspect(k)).className='answer';
       }
     }
     add(work,'p',conflict()?.[lower()?'short':'full'] || state.result).id='feedback';document.querySelector('#feedback').setAttribute('role','status');
+    if(state.valid && !lower()){
+      add(work,'p','Vergleiche deinen Grund mit der geprüften Aussage: '+check.answers['ABC'.indexOf(check.code)]);
+      const own=add(work,'details');add(own,'summary','Eigenen Grund ansehen');add(own,'p',state.reason);
+      btn(own,'Grund bearbeiten','grund-aendern',()=>{state.compared=false;state.valid=false;state.result='';draw();});
+    }
     if(state.valid)btn(work,'Nachricht senden','send',()=>{
-      if(!state.valid || state.sent || conflict() || needsSource())return;state.sent=true;
+      if(!state.valid || state.sent || conflict() || needsSource() || Entwurf.fehler(state.reason))return;state.sent=true;
       if(bank.person==='Tom' && state.index===bank.stages.length-1)port.postMessage({type:'completed',person:bank.person,tier});
       state.reply=s.replies[state.choice || 'DONE'];
-      state.history.push(s.message[tier].join(' '),(s.choices[state.choice]||'')+' '+(state.reason||check.answers['ABC'.indexOf(check.code)]),state.reply);draw();
+      state.notes ||= {}; if(!lower())state.notes[state.history.length+1]=state.reason;
+      state.history.push(s.message[tier].join(' '),[s.choices[state.choice],check.answers['ABC'.indexOf(check.code)]].filter(Boolean).join(' '),state.reply);draw();
     }).className='primary';
   }
   btn(work,hasChoice?'Infokarte öffnen':'Artikel und Studien öffnen','source',source);
-  const hints=state.choice?s.hints[state.choice]:s.helpBefore;
   function hint(index){
+    const prior=state.choice?s.hints[state.choice]:s.helpBefore;
+    const issue=Entwurf.fehler(state.reason);
+    const reason=issue?.info || conflict()?.[lower()?'short':'full'] || (!state.valid && state.result);
+    const ref=issue?.ref || (check.ref && {method:check.ref[0],section:check.ref[1]});
+    const card=ref && bank.cards[ref.method];
+    const where=card?card.title+' · '+card.sections[ref.section].title:hasChoice?'Nachricht von '+bank.person:'Artikel und Studien';
+    const answer=check.answers?.['ABC'.indexOf(check.code)];
+    const hints=reason?Entwurf.hilfen(where,issue?.frage || (conflict()?'Welcher Wunsch bleibt offen?':s.task[tier]),reason):
+      [prior[0],s.task[tier],prior[1],prior[2] || (card?card.sections[ref.section].levels[tier]:prior.at(-1)),
+        prior[3] || answer || prior.at(-1)];
     resource('Hilfe '+(index+1)+' von '+hints.length,body=>{
       add(body,'p',hints[index]);
       if(index+1<hints.length)btn(body,'Mehr Hilfe','mehr-hilfe',()=>hint(index+1));

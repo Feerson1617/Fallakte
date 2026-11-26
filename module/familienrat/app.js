@@ -84,13 +84,29 @@ function cards(index){
     });
   });
 }
+// Ausschließlich explizite medizinische Behauptungen abgleichen. Lauras Entscheidung bleibt offen.
+const medizinischeAussagen=[
+  {satz:/^(?:nach einem (?:unkomplizierten )?(?:abbruch|schwangerschaftsabbruch) kann (?:man|eine frau) nie (?:mehr |wieder )?schwanger werden|ein (?:schwangerschafts)?abbruch macht (?:immer )?unfruchtbar)$/,quelle:'Später schwanger werden',frage:'Was ist nach einem Abbruch ohne Komplikationen möglich?',info:bank.cards[1].short},
+  {satz:/^(?:nach einem (?:unkomplizierten )?(?:abbruch|schwangerschaftsabbruch) wird (?:man|eine frau) (?:garantiert|immer|sicher) (?:wieder )?schwanger)$/,quelle:'Später schwanger werden',frage:'Kann jemand eine spätere Schwangerschaft versprechen?',info:bank.cards[1].short},
+  {satz:/^(?:ein medikamentoeser (?:schwangerschafts)?abbruch (?:ist immer schmerzfrei|verursacht nie (?:schmerzen|blutungen)))$/,quelle:'Blutungen und Schmerzen',frage:'Was kann im Bauch passieren?',info:bank.cards[0].short}
+];
+const medizin=text=>Entwurf.fehler(text||'',medizinischeAussagen);
 function help(task,r){
   const tier=task.personalTier || level;
   function show(depth){
     if(!r.valid && r.step!=='done')r.depth=Math.max(r.depth,depth);
     else r.laterDepth=Math.max(r.laterDepth||0,depth);
     popup(ui.helpTitle+' '+depth+' / 5',box=>{
-      paragraph(box,(task.helpByLevel?.[tier] || task.hints)[depth-1]);
+      const issue=medizin(r.text || (r.step==='reason'?r.reason:''));
+      const wrong=!r.valid && (r.sourceError || (r.selected!==undefined || r.urteil==='falsch' ? r.feedback:''));
+      const where=issue?.quelle || (issue?.ref?'Infokarte zur Verhütung':
+        r.sourceError?'Originalnachricht':task.id && bank.definitions[task.id]?'Originalnachricht · '+task.id:
+        bank.cards[names.indexOf(current?.person)]?.title || 'Fachinformation zum Anliegen');
+      const hints=issue || wrong?Entwurf.hilfen(where,issue?.frage||
+          (r.sourceError?'Welche Textstelle beantwortet die Frage?':task.prompt || 'Welche Fachinformation passt zum Anliegen?'),issue?.info||wrong):
+          (task.helpByLevel?.[tier] || task.hints);
+      if(issue?.ref)hints[0]='Prüfe die Aussage zur Verhütung in deinem eigenen Text.';
+      paragraph(box,hints[depth-1]);
       const row=el(box,'div',undefined,'row');
       if(depth<5)btn(row,ui.more,'hint-next',()=>show(depth+1));
       if(depth<4)btn(row,ui.solution,'hint-last',()=>show(5));
@@ -138,7 +154,10 @@ function chooseLevel(box){
   });
 }
 function tools(box,task,r,card){
-  const row=el(box,'div',undefined,'tools');
+  let row=el(box,'div',undefined,'tools');
+  if(matchMedia('(max-width:650px),(max-height:400px)').matches){
+    row=el(row,'details');el(row,'summary','Fachkarte und Begriffe');
+  }
   const guided=['Ergänzung','Reichweite','Transfer'].includes(task.id) && !advanced(level);
   btn(row,ui.help,'help',()=>help(task,r));
   btn(row,guided?bank.cards[card].title:ui.cards,'cards',()=>cards(guided?card:undefined));
@@ -205,30 +224,38 @@ function thought(box,label,text,save,id,buttonText,submit){
 function draft(box,task,r,c){
   if(r.valid)return;
   if(r.compared){
-    paragraph(box,r.text);
-    paragraph(box,ui.freeNote,'small');
+    paragraph(box,'Dein eigener Grund · fachlich ungeprüft: '+r.text);
+    btn(box,'Erklärung bearbeiten','edit-draft',()=>{r.compared=false;r.feedback='';r.selected=undefined;draw();});
     return;
   }
   if(r.source!==undefined)paragraph(box,ui.sourceYes+' '+sentences(c.original)[r.source],'small');
-  thought(box,ui.free,r.text,text=>r.text=text,'compare',ui.compare,()=>{r.compared=true;draw(true);});
+  if(r.draftError)paragraph(box,r.draftError,'feedback falsch').id='draft-error';
+  thought(box,ui.free,r.text,text=>{r.text=text;r.draftError='';box.querySelector('#draft-error')?.remove();},'compare',ui.compare,()=>{
+    const issue=medizin(r.text);r.draftError=issue?.info || '';r.compared=!issue;draw(true);
+  });
   if(!task.evidenceSentences)return;
   const d=el(box,'details');el(d,'summary',ui.sourceInstead);
   const feedback=paragraph(d,'','small');feedback.setAttribute('role','status');
   sentences(c.original).forEach((line,i)=>{
     btn(d,line,'source-'+i,()=>{
-      if(task.evidenceSentences.includes(i)){r.source=i;draw();const field=root.querySelector('textarea');Arbeitsplatz.zeigen(field);field.focus({preventScroll:true});}
-      else{r.wrong=true;feedback.textContent=ui.sourceRetry;}
+      if(task.evidenceSentences.includes(i)){r.source=i;r.sourceError='';draw();const field=root.querySelector('textarea');Arbeitsplatz.zeigen(field);field.focus({preventScroll:true});}
+      else{r.wrong=true;r.sourceError=ui.sourceRetry;feedback.textContent=r.sourceError;}
     });
   });
 }
 function options(box,task,r,onDone,application=false){
-  const row=el(box,'div',undefined,'answers');
+  const retry=!r.valid && r.selected!==undefined && matchMedia('(max-height:400px),(max-width:475px)').matches;
+  let choices=box;
+  if(retry){
+    choices=el(box,'details');el(choices,'summary','Aussage ändern');
+  }
+  const row=el(choices,'div',undefined,'answers');
   // Rotate in a stable order. A pupil may return to the same choice after opening a card.
   const shift=Array.from(task.prompt).reduce((sum,c)=>sum+c.charCodeAt(0),0)%task.answers.length;
   const arranged=task.answers.slice(shift).concat(task.answers.slice(0,shift));
   const compact=level==='Förder' && task.shortOptions;
   let extra;
-  if(compact && arranged.length>2 && !r.valid){
+  if(compact && arranged.length>2 && !r.valid && !retry){
     extra=el(box,'details');extra.id='more-options';el(extra,'summary',ui.moreOptions);
   }
   for(const o of arranged){
@@ -237,11 +264,12 @@ function options(box,task,r,onDone,application=false){
     const target=extra && !compact.includes(index)?extra:row;
     if(r.valid && r.selected!==index)continue;
     const b=btn(target,deeper?o.advancedText:o.text,'answer-'+index,()=>{
-      r.feedback=deeper?o.advancedFeedback:o.feedback;r.valid=o.ok;r.selected=index;if(!o.ok)r.wrong=true;
+      if(r.text && medizin(r.text))return;
+      r.sourceError='';r.feedback=deeper?o.advancedFeedback:o.feedback;r.valid=o.ok;r.selected=index;if(!o.ok)r.wrong=true;
       if(o.revealsSolution)r.solutionShown=true;
       if(o.ok && current.type==='case'){
         const key=current.person+'/'+task.id;
-        if(r.text?.trim())remember(key+'/entwurf','Deine Erklärung',r.text);
+        if(r.text?.trim())remember(key+'/entwurf','Dein eigener Grund · fachlich ungeprüft',r.text);
         remember(key,'Du · '+current.person,deeper?o.advancedText:o.text);
       }
       if(application){r.finished=o.ok;r.skipped=false;}
@@ -258,7 +286,10 @@ function options(box,task,r,onDone,application=false){
   if(r.feedback){const fb=paragraph(box,r.feedback,r.valid?'feedback':'feedback falsch');fb.id='response';fb.tabIndex=-1;fb.setAttribute('role','status');}
   if(r.valid && !application){
     paragraph(box,task.id==='Reichweite'?ui.limitChecked+' '+status(r):status(r),'tag');
-    if(r.compared && r.text)paragraph(box,ui.freeNote,'small');
+    if(r.compared && r.text){
+      const own=el(box,'details');el(own,'summary','Eigenen Grund vergleichen');
+      paragraph(own,r.text);paragraph(own,ui.freeNote,'small');
+    }
     btn(box,ui.next,'next',onDone,'primary');
   }
 }
@@ -389,8 +420,9 @@ function comparison(box){
     }else if(p.step==='reason'){
       paragraph(box,ui.otherNote);
       paragraph(box,bank.crossReference[p.concern]);
-      thought(box,ui.openReason,p.reason||'',text=>p.reason=text,'check-reason',ui.continueReason,()=>{
-        p.step='limit';draw(true);
+      thought(box,ui.openReason,p.reason||'',text=>{p.reason=text;p.feedback='';box.querySelector('.retry')?.remove();},'check-reason',ui.continueReason,()=>{
+        const issue=medizin(p.reason);if(issue){p.feedback=issue.info;p.urteil='falsch';draw(true);return;}
+        p.feedback='';p.step='limit';draw(true);
       });
       btn(box,ui.again,'rechoose',()=>{p.step='concern';p.other=false;draw(true);});
     }else{

@@ -2,12 +2,12 @@
 LEVELS=('Förder','ESA','MSA','AHR')
 KARTEN={
 '02':{
-'Förder':('Mein erster Rat für Laura ist …','Mein Rat für Laura ist …','Laura ist … wichtig. Die Methode hilft dabei, weil …'),
+'Förder':('Mein erster Rat für Laura ist … Mein Grund: … Stichworte reichen.','Mein Rat für Laura ist …','Laura ist … wichtig. Die Methode hilft dabei, weil …'),
 'ESA':('Ich rate Laura zu …, weil …','Ich rate Laura jetzt zu …','Für Laura ist … wichtig. Die Methode … Deshalb …'),
 'MSA':('Welchen ersten Rat gibst du Laura? Was spricht dafür?','Welchen Rat gibst du Laura jetzt?','Verbinde ein Anliegen mit der Wirkung der Methode. Welche Grenze bleibt?'),
 'AHR':('Welcher Rat passt zu Lauras erster Nachricht? Begründe deine Annahme.','Welche Empfehlung vertrittst du jetzt?','Wäge zwei Anliegen mit biologischen Gründen ab. Unter welcher Bedingung wäre ein anderer Rat vertretbar?')},
 '08':{
-'Förder':('Welche Nachricht hilft Laura zuerst? Mutter, Freundin, beide oder noch unsicher?','Welche Nachricht hilft Laura jetzt?','Ich denke … Laura ist … wichtig. Der geprüfte Fakt zeigt …'),
+'Förder':('Welche Nachricht hilft Laura zuerst? Mutter, Freundin, beide oder noch unsicher? Mein Grund: … Stichworte reichen.','Welche Nachricht hilft Laura jetzt?','Ich denke … Laura ist … wichtig. Der geprüfte Fakt zeigt …'),
 'ESA':('Welche Nachricht findest du für Laura hilfreich? Warum?','Welche Nachricht hilft Laura jetzt besonders?','Ich finde …, weil Laura … Der Fakt … erklärt …'),
 'MSA':('Welche Nachricht hilft Laura zunächst? Nenne deinen ersten Grund.','Welche ergänzte Nachricht hilft Laura jetzt besonders?','Verbinde ein Anliegen mit einem geprüften Fakt. Was bleibt für Laura offen?'),
 'AHR':('Wie schätzt du die beiden Ratschläge zunächst ein? Begründe kurz.','Wie bewertest du die ergänzten Ratschläge jetzt?','Wäge die Anliegen und die Reichweite der biologischen Informationen ab. Begründe auch eine mögliche Unsicherheit.')}

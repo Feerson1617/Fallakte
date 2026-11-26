@@ -103,3 +103,13 @@ dialog[open]{max-height:var(--sichtbare-hoehe,100dvh)!important;height:calc(var(
 .blatt-inhalt.geteilt button,#beratung .blatt-inhalt.geteilt button{
   display:inline-block!important;vertical-align:top;break-inside:avoid-column;clear:none;
 }
+
+.blatt-inhalt.geteilt button[hidden],#beratung .blatt-inhalt.geteilt button[hidden]{display:none!important}
+@media(max-width:650px),(max-height:400px){
+ .lernraum .blatt-inhalt :is(p,h1,h2,h3,fieldset,legend,details,section,.tools,.answers,.fachcheck,.beratung-tools,.gewaehlter-rat){margin-block:.12em;padding-block:0}
+ .lernraum .blatt-inhalt :is(h2,h3,legend){font-size:1.05em;line-height:1.16}
+ .lernraum .blatt-inhalt .gewaehlter-rat{display:flex;flex-wrap:wrap;align-items:center;gap:.35em}
+ .lernraum .blatt-inhalt .fachmeldung:empty{display:none}
+ .lernraum .blatt-inhalt :is(summary,.textaktion){min-height:44px;align-content:center}
+ .lernraum .blatt-inhalt button{min-height:44px}
+}

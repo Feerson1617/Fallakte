@@ -159,7 +159,13 @@
     const {context,depth} = view;
     const data = viewData(context);
     title.textContent = 'Hilfe '+(depth+1)+' von '+data.hints.length;
-    const hint = element('p',data.hints[depth]);
+    const issue=context.error, feedback=context.feedback;
+    const focusCard=issue?.ref || feedback?.card || data.card;
+    const targeted=issue || ['A','B'].includes(feedback?.type);
+    const hints=targeted?Entwurf.hilfen(cardLabel(focusCard),issue?.frage ||
+      (feedback.type==='B'?'Welches Anliegen bleibt bei deinem Rat offen?':'Welche Aussage auf der Karte passt zu deiner Wahl?'),
+      issue?.info||feedback.text):data.hints;
+    const hint = element('p',hints[depth]);
     hint.id = 'hilfe-text';
     hint.dataset.depth = String(depth+1);
     hint.setAttribute('aria-describedby','material-titel');
@@ -175,11 +181,11 @@
     }
     if (depth > 0) controls.append(button('Vorherige Hilfe',() => step(-1),'hilfe-zurueck'));
     if (depth+1 < data.hints.length) controls.append(button('Nächste Hilfe',() => step(1),'hilfe-weiter'));
-    if (data.freeCards) {
+    if (data.freeCards && !targeted) {
       const browse = button('Infokarte auswählen',() => child({type:'cards',levelId:context.levelId},browse),'hilfe-kartenauswahl');
       controls.append(browse);
     } else {
-      for (const [i,ref] of [data.card,...(data.extraCards || [])].entries()) {
+      for (const [i,ref] of (targeted?[focusCard]:[data.card,...(data.extraCards || [])]).entries()) {
         const source = button(cardLabel(ref),() => child({type:'card',ref,levelId:context.levelId},source),i ? 'hilfe-karte-'+i : 'hilfe-karte');
         source.dataset.method = ref.method;
         source.dataset.section = ref.section;

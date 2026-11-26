@@ -11,6 +11,27 @@ STEPS={
 'L04':'Wie passen Regelschmerzen und Lauras Sorge vor dem Einsetzen zu deinem Rat?',
 'L05':'Welches Anliegen ist für deinen Rat besonders wichtig? Warum?'}
 
+def klar(text):
+    paare=(
+       ('Persönliche Fragen zu Hormonen und medizinische Eignung klären.', 'Laura kann in der Arztpraxis fragen: Passt die Pille zu mir?'),
+       ('Regelmäßige Einnahme nach Plan nötig.', 'Die Pille muss sie nach Plan nehmen.'),
+       ('Lauras wechselnden Alltag berücksichtigen.', 'Lauras Alltag wechselt.'),
+       ('Die Erfahrung der Freundin sagt ihre Verträglichkeit nicht voraus.', 'Ihre Freundin hatte Beschwerden. Bei Laura kann es anders sein.'),
+       ('Die starken ungeklärten Schmerzen sollten ärztlich abgeklärt werden.', 'Die Arztpraxis sollte prüfen, warum Laura starke Schmerzen hat.'),
+       ('geeignetes synthetisches Kondom ohne Latex','latexfreies Kondom aus Kunststoff'),
+       ('geeignetes synthetisches Kondom','Kondom aus Kunststoff ohne Latex'),
+       ('Geeignete synthetische latexfreie Kondome bilden eine Barriere für Spermien.', 'Latexfreie Kondome aus Kunststoff halten Spermien zurück.'),
+       ('geeignete synthetische Kondome','Kondome aus Kunststoff'))
+    for alt,neu in paare:text=text.replace(alt,neu)
+    return text
+
+def einfache_sprache(ctx):
+    for k in ('feedback','condition','evidence'):
+        if k in ctx:ctx[k]=klar(ctx[k])
+    ctx['hints']=list(map(klar,ctx['hints']))
+    for op in ctx.get('options',[]):
+        for k in ('feedback','text'):op[k]=klar(op[k])
+
 def karten(bank):
     work=json.loads((ROOT/'clt/Infokarten.json').read_text())
     for i,key in enumerate(METHODS):
@@ -45,6 +66,7 @@ def laura(bank):
             if advanced:
                 for way in task['strategies'].values():
                     way['options']=[dict(id='aussage-'+str(i+1),text=text,correct=key==stage['code'],feedback=stage['anchorFeedback'][key]['text'],card=stage['anchorFeedback'][key]['card']) for i,(key,text) in enumerate(stage['anchors'].items())]
+            for ctx in [task['before'],*task['strategies'].values()]:einfache_sprache(ctx)
         for k in ('anchors','code','anchorFeedback'):stage.pop(k)
     for k in ('normalization','paperFallbackInstruction'):bank.pop(k,None)
     return bank

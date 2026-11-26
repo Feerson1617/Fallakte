@@ -10,6 +10,9 @@ from io import BytesIO
 from pathlib import Path
 from zipfile import ZipFile, ZIP_DEFLATED
 from lxml import etree, html
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"scripts"))
+from clt_inhalte import klar
 from material import LEVELS,vertrag
 from matrix import matrix
 
@@ -58,15 +61,15 @@ def verify_source(day,b):
             assert l['message']==ref['levels'][t]['message']
             for m,w in l['strategies'].items():
                 original=ref['levels'][t]['strategies'][m]
-                for field in ('status','reply','feedback','condition','questions'):assert w[field]==original[field]
-                if t in ('ESA','Foerder'):assert w['options']==original['options']
+                for field in ('status','reply','feedback','condition','questions'):assert w[field]==(klar(original[field]) if field in ('condition','feedback') else original[field])
+                if t in ('ESA','Foerder'):assert w['options']==[dict(o,text=klar(o['text']),feedback=klar(o['feedback'])) for o in original['options']]
                 else:
-                    assert [s['text'] for s in w['options']]==list(ref['anchors'].values())
-                    assert [s['feedback'] for s in w['options']]==[ref['anchorFeedback'][a]['text'] for a in ref['anchors']]
+                    assert [s['text'] for s in w['options']]==list(map(klar,ref['anchors'].values()))
+                    assert [s['feedback'] for s in w['options']]==[klar(ref['anchorFeedback'][a]['text']) for a in ref['anchors']]
     for i,m in enumerate(('K','P','Cu','H')):
         for sec in b['cards'][m]['sections'].values():
             for t,cs in cards.items():assert sec['levels'][t]==next(r['volltext'] for r in cs[i]['texte'] if r['titel']==sec['title'])
-    return 'Fallinformationen, bekannte Anliegen je Abschnitt, Lernziele, Empfehlungen, Bedingungen, Rückfragen und Reaktionen entsprechen c4814a9. Die früher per Buchstabe geprüften Aussagen stehen auf MSA/AHR als vollständiger Wortlaut zur Auswahl. Alle 80 niveauabhängigen Kartenabschnitte stimmen mit den Work-Texten aus bbdc2e1 überein.'
+    return 'Fallinformationen, bekannte Anliegen je Abschnitt, Lernziele, Empfehlungen, Bedingungen, Rückfragen und Reaktionen entsprechen c4814a9. Die früher per Buchstabe geprüften Aussagen stehen auf MSA/AHR als vollständiger Wortlaut zur Auswahl. Alle 80 niveauabhängigen Kartenabschnitte stimmen mit den aktuellen Work-Texten der Vorbereitung überein.'
 def release():
     revision=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     both={}
@@ -116,6 +119,10 @@ def release():
         suffix='Laura' if day=='02' else 'Familie'
         for p in PHYS.glob('*-'+suffix+'.jpg'):screens['Treffer/'+p.name]=p.read_bytes()
         for e in ('chromium','webkit'):
+            if day=='02':
+                drafts=(QA/'Gegenpruefung'/f'Entwuerfe-{e}.json').read_bytes()
+                assert json.loads(drafts)['html_sha256']==sha(raw)
+                logs['Entwuerfe/'+e+'.json']=drafts
             evidence=(QA/'Sitzung'/('Sitzungspruefung-'+e+'.json')).read_bytes()
             assert json.loads(evidence)['html_sha256']==sha((OUT/'Fallakte-08-12.html').read_bytes())
             logs['Tageswechsel/'+e+'.json']=evidence
@@ -146,7 +153,7 @@ Das Offline-HTML und index.html im SCO stimmen byteweise überein. Das SCORM-1.2
 
 ## Grenzen und Geltungsbereich
 
-Prüfprotokolle enthalten die tatsächlich beobachteten Ausgaben. Wiederholungen führen bei einzelnen Aufgaben auf denselben Fehlertext zurück. Die Quelle der Familienantworten, Lösungsoffenlegung, verspätete Hilfe, vorheriger Vorschlag und fachlicher Stand bleiben unterscheidbar. Unendlich viele Freitexte und Unterbrechungsfolgen lassen sich nicht vollständig prüfen. Freie UB-Begründungen haben keine automatische inhaltliche Diagnose. Native Tastatur, produktives itslearning, Hilfsmittel wie Screenreader, fremde Schriftmetriken, tatsächliches Leseverständnis und reale Minuten mit 28 Lernenden sind offen. Die Matrix begründet Gestaltungsentscheidungen. Eine empirische Entlastung ist nicht nachgewiesen.
+Prüfprotokolle enthalten die tatsächlich beobachteten Ausgaben. Wiederholungen führen bei einzelnen Aufgaben auf denselben Fehlertext zurück. Die Quelle der Familienantworten, Lösungsoffenlegung, verspätete Hilfe, vorheriger Vorschlag und fachlicher Stand bleiben unterscheidbar. Unendlich viele Freitexte und Unterbrechungsfolgen lassen sich nicht vollständig prüfen. Bei freien Begründungen prüft die Software ausdrücklich formulierte medizinische Behauptungen mit eng begrenzten Regeln. Alle anderen eigenen Texte bleiben fachlich ungeprüft. Persönliche Gewichtungen werden im Unterricht besprochen. Native Tastatur, produktives itslearning, Hilfsmittel wie Screenreader, fremde Schriftmetriken, tatsächliches Leseverständnis und reale Minuten mit 28 Lernenden sind offen. Die Matrix begründet Gestaltungsentscheidungen. Eine empirische Entlastung ist nicht nachgewiesen.
 
 Die beiden Browser prüfen angebotene Antworten und fachlich unterschiedliche Übergänge. Beliebige Mischfolgen aller Hilfetiefen, Kartenaufrufe und Fachfehler mit frei gewählten Wiederholungen sind nicht einzeln nachgespielt. Bei langen Arbeitsansichten gelangen Lernende über Blättertasten zum nächsten Teil. Freiwilliges Scrollen bleibt im Gespräch möglich.
 """
