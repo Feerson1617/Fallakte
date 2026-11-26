@@ -413,9 +413,7 @@ window.Beratung = (() => {
       } else {
         area.append(chosenStrategy(true));
         if(advanced() && !active.draft.compared)area.append(explanation());
-        else if(compact() && active.draft.feedback?.type==='A'){
-          const retry=element('details','erneute-wahl');retry.append(element('summary','','Andere Aussage wählen'),closedCheck());area.append(retry);
-        }else area.append(closedCheck());
+        else area.append(closedCheck());
 
       }
     } else {
@@ -428,8 +426,11 @@ window.Beratung = (() => {
     feedback.tabIndex=-1;
     feedback.dataset.type=report?.type || '';
     feedback.setAttribute('role','status');
-    const retry=area.querySelector('.erneute-wahl');
-    if(retry)area.insertBefore(feedback,retry);else area.append(feedback);
+    const retry=compact() && report?.type==='A' && area.querySelector('#begruendungen');
+    if(retry){
+      area.insertBefore(feedback,retry);
+      retry.querySelector('h2').textContent='Welche Aussage passt jetzt?';
+    }else area.append(feedback);
     if(step==='grund' && advanced() && !active.draft.compared && report?.type==='A'){
       area.append(control('entwurf-bearbeiten','Grund bearbeiten',()=>{
         active.draft.feedback=null;render('erklaerung');Entwurf.bearbeiten(document.getElementById('erklaerung'));

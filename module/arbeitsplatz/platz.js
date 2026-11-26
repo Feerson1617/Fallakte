@@ -38,6 +38,15 @@ window.Arbeitsplatz = (() => {
       const i=Math.round(content.scrollLeft/content.getBoundingClientRect().width);
       if(i!==index){index=i;indicate();}
     });
+    // Bei Touch muss der Seitenumfang schon zur geöffneten Quelle passen, bevor eine weitere Taste angetippt wird.
+    content.addEventListener('click',event=>{
+      const summary=event.target.closest('summary');
+      if(!summary || event.defaultPrevented || summary.parentElement?.tagName!=='DETAILS')return;
+      event.preventDefault();
+      summary.parentElement.open=!summary.parentElement.open;
+      refresh();
+      zeigen(summary);
+    });
     content.addEventListener('toggle',refresh,true);
   }
   function zeigen(node){
