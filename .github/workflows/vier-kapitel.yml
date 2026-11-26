@@ -1,0 +1,38 @@
+name: Vorbereitung · Vier Kapitel
+on:
+  push:
+    branches: [entwicklung/vorbereitung-vier-kapitel]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  unterrichtsversion:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    container: mcr.microsoft.com/playwright/python:v1.62.0-noble
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Werkzeuge installieren
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          python -m pip install -r tests/requirements.txt
+          if ! command -v pdftotext >/dev/null; then apt-get update -qq && apt-get install -y poppler-utils; fi
+      - name: Abgenommenen Bestand zum Prüfsummenvergleich bauen
+        run: |
+          git worktree add --detach /tmp/fallakte-bestand b166bce44d4b07d0a87ccc64b4471fa7410ad71e
+          cd /tmp/fallakte-bestand
+          python gesamt/auslieferung.py
+      - name: Vorbereitung separat bauen und beide Browser prüfen
+        run: |
+          python kartenlernen/erstellen.py
+          python -u kartenlernen/pruefen.py /tmp/fallakte-bestand/dist/Gesamt
+          python -u kartenlernen/ausliefern.py /tmp/fallakte-bestand/dist/Gesamt
+          cd dist/Kartenlernen
+          sha256sum -c SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Vorbereitung-Vier-Kapitel
+          path: dist/Kartenlernen/
+          if-no-files-found: error
