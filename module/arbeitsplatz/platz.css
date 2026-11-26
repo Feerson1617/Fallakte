@@ -5,7 +5,7 @@ main:has(.lernraum){padding:0;max-width:none}
 .arbeitskopf>:first-child:not(button){margin:0;min-width:0}
 .arbeitskopf h1,.arbeitskopf #beratung-stage{font:600 1rem/1.2 system-ui,sans-serif;margin:0}
 .arbeitskopf .beratung-kopf{margin:0!important}
-button.hilfezugang,#beratung button.hilfezugang,dialog button.hilfezugang{margin:0 0 0 auto;align-self:flex-start;background:#ffdb69;color:#342b16;border:1px solid #a17812;border-radius:.5rem;min-height:44px;min-width:44px;font:700 1rem/1.12 system-ui,sans-serif;padding:.32em .65em;cursor:pointer}
+button.hilfezugang,#beratung button.hilfezugang,dialog button.hilfezugang,#material-dialog button.dialoghilfe{margin:0 0 0 auto;align-self:flex-start;background:#ffdb69;color:#342b16;border:1px solid #a17812;border-radius:.5rem;min-height:44px;min-width:44px;font:700 1rem/1.12 system-ui,sans-serif;padding:.32em .65em;cursor:pointer}
 .lernraum .arbeitsfelder{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.3fr);gap:.65rem;align-items:stretch;flex:1;min-height:0;margin:0}
 .lernraum .gespraech{position:static;max-height:none;min-height:0;overflow:auto;overscroll-behavior:contain;background:#eef2ef;padding:.55rem}
 .lernraum .gespraech .chat-history{max-height:none;overflow:visible}

@@ -115,6 +115,11 @@ def release():
         assert len(hits)==40,len(hits)
         suffix='Laura' if day=='02' else 'Familie'
         for p in PHYS.glob('*-'+suffix+'.jpg'):screens['Treffer/'+p.name]=p.read_bytes()
+        for e in ('chromium','webkit'):
+            evidence=(QA/'Sitzung'/('Sitzungspruefung-'+e+'.json')).read_bytes()
+            assert json.loads(evidence)['html_sha256']==sha((OUT/'Fallakte-08-12.html').read_bytes())
+            logs['Tageswechsel/'+e+'.json']=evidence
+            img=QA/'Sitzung'/f'{e}-{day}-frueher-Stopp.jpg';screens['Stundenabschluss/'+img.name]=img.read_bytes()
         c=vertrag(day,b);c['revision']=revision
         archive(target/'Materialvertrag-Work.zip',{'Materialvertrag.json':dump(c),'Auftraege.md':md_contract(c)})
         archive(target/'CLT-Abnahmematrix.zip',{'Matrix.csv':matrix(rows.values(),day),'Grundlagen.md':(HERE/'Grundlagen.md').read_bytes(),'Perspektiven.md':(HERE/'planung.md').read_bytes(),'Zeitplanung.json':dump(c['phasen'])})

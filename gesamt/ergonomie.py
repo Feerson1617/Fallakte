@@ -50,9 +50,12 @@ def room(shell,day):
 
 def check_help(f,button,back,stages):
     normal=f.locator(button);reach(f,normal)
+    yellow='rgb(255, 219, 105)'
+    assert normal.evaluate('e=>getComputedStyle(e).backgroundColor')==yellow
     place=normal.bounding_box();normal.tap()
     active=f.locator('dialog[open] .dialoghilfe')
     assert active.evaluate(HIT)
+    assert active.evaluate('e=>getComputedStyle(e).backgroundColor')==yellow
     modal=active.bounding_box()
     assert abs((place['x']+place['width'])-(modal['x']+modal['width']))<4 and abs(place['y']-modal['y'])<4,(place,modal)
     for selector in stages:touch(f,selector)

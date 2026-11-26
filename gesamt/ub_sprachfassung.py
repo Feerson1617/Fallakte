@@ -23,6 +23,7 @@ def bauen(joint):
       #auswahl{padding-top:max(52px,4vh)}
       @media(max-height:660px){#auswahl header{padding:0;margin-bottom:.5rem;border:0}#auswahl .tag img{height:clamp(48px,calc((100dvh - 190px)*.9),260px);object-fit:contain}}
       @media(max-width:580px) and (max-height:660px){#auswahl .tag img{height:clamp(44px,calc((100dvh - 205px)/2),125px)}}
+      @container(max-width:60rem){#tagesnavigation .wortmarke{display:none}}
       #arbeitsplatz{height:var(--sichtbar,100dvh)}
       #tageshinweis[hidden]{display:none}
       #tageshinweis{max-width:25rem;background:#fffdf7;color:#213c34;border:1px solid #aebbb2;border-radius:.5rem}
