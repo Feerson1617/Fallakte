@@ -112,6 +112,11 @@ def run(engine,day,tier,profil='quer'):
                 s.locator('[data-action=abschluss]').click()
                 expect(f.locator('#dialog-body')).to_contain_text('keine Nachricht geprüft')
                 assert not errors,errors
+            # Die ausgelieferte SCORM-Hülle darf nur die Sitzung öffnen und beenden.
+            s,f=open_module(True)
+            assert p.evaluate('calls')==[['LMSInitialize','']]
+            p.locator('[name=sco]').evaluate("e=>e.src='about:blank'")
+            p.wait_for_function("calls.length>=2");assert p.evaluate('calls')==[['LMSInitialize',''],['LMSFinish','']]
             assert not p.context.cookies() and not p.context.storage_state()['origins']
             assert not errors,errors
     (folder/'Geometrie.json').write_text(json.dumps(layout,ensure_ascii=False))

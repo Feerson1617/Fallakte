@@ -43,7 +43,7 @@ jobs:
         run: |
           for profil in quer hoch kurs schmal tastatur; do python clt/pruefen.py "$ENGINE" "$TAG" "$NIVEAU" --profil "$profil"; done
           if [ "$TAG" = 02 ]; then python clt/folgen.py "$ENGINE" "$NIVEAU"; fi
-          if [ "$TAG" = 08 ]; then python gesamt/ergonomie.py --browser "$ENGINE" --niveau "$NIVEAU"; fi
+          if [ "$TAG" = 08 ]; then python clt/statuswege.py "$ENGINE" "$NIVEAU" && python gesamt/ergonomie.py --browser "$ENGINE" --niveau "$NIVEAU"; fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:

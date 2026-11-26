@@ -90,7 +90,12 @@ def release():
                 if day=='02':
                     evidence=json.loads((base/'Ratfolgen.json').read_text());assert evidence['html_sha256']==sha(raw)
                     assert len(set(evidence['folgen']))==1792;paths+=len(evidence['folgen'])
+                    assert len(evidence['zusatz']['Tom'])==1 and len(evidence['zusatz']['Celina'])==108
                     logs[f'{e}/{t}/Ratfolgen.json']=(base/'Ratfolgen.json').read_bytes()
+                else:
+                    status=json.loads((base/'Statuswege.json').read_text())
+                    assert status['html_sha256']==sha(raw) and len(status['pruefungen'])==48*18
+                    logs[f'{e}/{t}/Statuswege.json']=(base/'Statuswege.json').read_bytes()
                 for profile in PROFILES:
                     d=base/profile;prefix=f'{e}/{t}/{profile}/'
                     row=json.loads((d/'Pruefung.json').read_text());assert row['html_sha256']==sha(raw);counts.append(row)
@@ -125,7 +130,7 @@ Die Lehrkraft gibt zwei Karten getrennt aus. Die Arbeit dazwischen läuft digita
 
 {len(counts)} Browser-, Niveau- und Fensterdurchläufe. Die Matrix umfasst {len(rows)} unterschiedliche protokollierte Kombinationen von Niveau, Kontext, Wortlaut und Bedienelementen. {ngeo} Geometrieprüfungen erfassten aktive Steuerelemente. {failnote} Weitere 40 Tast- und Navigationstests mit Chromium und WebKit prüften physische Treffer bis zum äußeren Fenster. Die Bildschirmtastatur wurde durch eine verkleinerte Höhe simuliert.
 
-{(str(paths)+' vollständige Folgen sendbarer Laura-Empfehlungen. Zusätzlich wurden unpassende Einzelvorschläge, Begründungsoptionen, wiederholte Fehler, Karten, Rückfragen, Hilfen und beide Zusatzfälle geprüft.') if day=='02' else 'Alle vier Personen mit eigenständiger Auswahl, Fehlversuchen, Hilfen und Lösungsoffenlegung. Alle zwölf Kombinationen aus Gewichtung und Anliegen wurden bearbeitet, einschließlich begründeter Unsicherheit und anderer sachlicher Verknüpfungen. Die Quellenwahl allein vergibt keinen Hilfestatus.'}
+{(str(paths)+' vollständige Folgen sendbarer Laura-Empfehlungen. Zusätzlich wurden unpassende Einzelvorschläge, Begründungsoptionen, wiederholte Fehler, Karten, Rückfragen, Hilfen und beide Zusatzfälle geprüft. Pro Niveau und Browser wurden alle 108 sendbaren Celina-Folgen und Toms vollständiger Weg gespielt.') if day=='02' else 'Alle vier Personen mit eigenständiger Auswahl, Fehlversuchen, Hilfen und Lösungsoffenlegung. Alle zwölf Kombinationen aus Gewichtung und Anliegen wurden bearbeitet, einschließlich begründeter Unsicherheit und anderer sachlicher Verknüpfungen. Je Niveau und Browser prüften 864 Statusbeobachtungen die Teilmengen falscher Auswahlen bei Hilfetiefe null bis fünf und nachträglich geöffneter Hilfe. Die Quellenwahl allein vergibt keinen Hilfestatus.'}
 
 Das Offline-HTML und index.html im SCO stimmen byteweise überein. Das SCORM-1.2-Manifest wurde gegen das Schema geprüft. Version A enthält ausschließlich den ersten Unterrichtstag. Beide Fassungen enthalten dasselbe erste Modul.
 
@@ -133,7 +138,7 @@ Das Offline-HTML und index.html im SCO stimmen byteweise überein. Das SCORM-1.2
 
 Prüfprotokolle enthalten die tatsächlich beobachteten Ausgaben. Wiederholungen führen bei einzelnen Aufgaben auf denselben Fehlertext zurück. Die Quelle der Familienantworten, Lösungsoffenlegung, verspätete Hilfe, vorheriger Vorschlag und fachlicher Stand bleiben unterscheidbar. Unendlich viele Freitexte und Unterbrechungsfolgen lassen sich nicht vollständig prüfen. Freie UB-Begründungen haben keine automatische inhaltliche Diagnose. Native Tastatur, produktives itslearning, Hilfsmittel wie Screenreader, fremde Schriftmetriken, tatsächliches Leseverständnis und reale Minuten mit 28 Lernenden sind offen. Die Matrix begründet Gestaltungsentscheidungen. Eine empirische Entlastung ist nicht nachgewiesen.
 
-Die beiden Browser prüfen angebotene Antworten und fachlich unterschiedliche Übergänge. Beliebige Mischfolgen aller Hilfetiefen, Kartenaufrufe und Fachfehler sowie sämtliche Verlaufspermutationen der Zusatzfälle sind nicht einzeln nachgespielt. Bei langen Arbeitsansichten gelangen Lernende über Blättertasten zum nächsten Teil. Freiwilliges Scrollen bleibt im Gespräch möglich.
+Die beiden Browser prüfen angebotene Antworten und fachlich unterschiedliche Übergänge. Beliebige Mischfolgen aller Hilfetiefen, Kartenaufrufe und Fachfehler mit frei gewählten Wiederholungen sind nicht einzeln nachgespielt. Bei langen Arbeitsansichten gelangen Lernende über Blättertasten zum nächsten Teil. Freiwilliges Scrollen bleibt im Gespräch möglich.
 """
         (target/'Pruefbericht.md').write_text(report)
         screens['Pruefbericht.md']=report;screens['Zaehlungen.json']=dump(counts);screens['Geometriebefunde.json']=dump(geoerrors)

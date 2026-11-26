@@ -263,9 +263,10 @@ window.Beratung = (() => {
     box.append(label,field,next);return box;
   }
   function closedCheck() {
-    const field=element('fieldset','fachcheck');
+    const field=element('section','fachcheck');
     field.id='begruendungen';
-    field.append(element('legend','',advanced()?'Welche Aussage stimmt?':task().task));
+    const question=element('h2','',advanced()?'Welche Aussage stimmt?':task().task);
+    question.id='begruendungsfrage';field.setAttribute('aria-labelledby',question.id);field.append(question);
     if(advanced())field.append(element('p','','Deine Erklärung · '+active.draft.reason),control('erklaerung-aendern','Erklärung ändern',()=>{active.draft.compared=false;editReason();}));
     for (const option of info().options) {
       const b=control('grund-'+option.id,option.text,()=>check(option.id),'grund');

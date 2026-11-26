@@ -47,7 +47,8 @@ function source(){
     });return;
   }
   const [m,key]=currentCheck().ref,c=bank.cards[m],section=c.sections[key];
-  resource(c.title+' · '+section.title,body=>{
+  resource(c.title,body=>{
+    add(body,'h3',section.title);
     add(body,'p',section.levels?.[tier] || section[small?'shortText':'text']);const full=add(body,'details');add(full,'summary','Ganze Karte lesen');
     for(const part of Object.values(c.sections)){add(full,'h2',part.title);add(full,'p',part.levels?.[tier]||part.text);}
   });

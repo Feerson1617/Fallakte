@@ -27,7 +27,7 @@ window.Arbeitsplatz = (() => {
     pages.set(parent,()=>{
       const width=content.getBoundingClientRect().width;if(!width)return;
       controls.hidden=true;content.classList.remove('geteilt');
-      if(content.scrollHeight<=content.clientHeight+1 && content.scrollWidth<=width+1){index=0;count=1;return;}
+      if(content.scrollHeight<=content.clientHeight && content.scrollWidth<=width+1){index=0;count=1;return;}
       controls.hidden=false;content.classList.add('geteilt');
       count=Math.max(1,Math.ceil((content.scrollWidth-1)/width));
       if(count===1)controls.hidden=true;

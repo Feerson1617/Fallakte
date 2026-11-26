@@ -94,7 +94,12 @@ dialog[open]{max-height:var(--sichtbare-hoehe,100dvh)!important;height:calc(var(
  .arbeitskopf>.gespraech-wechsel .vorschau{font:inherit}
 }
 @media(max-height:400px){
- .blatt-inhalt.geteilt button.answer,.blatt-inhalt.geteilt .answers button,.blatt-inhalt.geteilt button.grund{
+ .blatt-inhalt.geteilt button,#beratung .blatt-inhalt.geteilt button{
    padding:.08em .3em;line-height:1.18;margin-block:.08em;
  }
+}
+
+/* Unteilbare Tasten behalten auch in WebKits mehrspaltigem Satz ihr Rechteck. */
+.blatt-inhalt.geteilt button,#beratung .blatt-inhalt.geteilt button{
+  display:inline-block!important;vertical-align:top;break-inside:avoid-column;clear:none;
 }

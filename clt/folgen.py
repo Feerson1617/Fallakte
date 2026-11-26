@@ -47,9 +47,25 @@ def run(engine,level,limit=None):
                 assert p.evaluate(PLAY,dict(tier=tier,path=path))
                 paths.append(' / '.join(path))
             print(engine,level,len(paths),flush=True)
+            p.locator('#beratung-fertig').click()
+            extra={}
+            for name in ('Tom','Celina'):
+                extra[name]=[]
+                button=p.locator('[data-optional="'+name+'"]')
+                button.click()
+                iframe=p.locator('#rahmen-reserve-'+name)
+                f=iframe.element_handle().content_frame()
+                f.locator('#step').wait_for()
+                choices=f.evaluate("JSON.parse(document.querySelector('#bank').textContent).stages.map(s=>s.allowed||[''])")
+                for idx,route in enumerate(itertools.islice(itertools.product(*choices),limit)):
+                    if idx:
+                        button.click()
+                        f.wait_for_function("!!document.querySelector('[id^=method-]')")
+                    f.evaluate((Path(__file__).parent/'zusatzfolge.js').read_text(),route)
+                    button.wait_for(state='visible');extra[name].append(route)
             if limit:return
             folder=QA/f'02-{level}-{engine}';folder.mkdir(parents=True,exist_ok=True)
-            (folder/'Ratfolgen.json').write_text(json.dumps(dict(html_sha256=sha(raw),folgen=paths),ensure_ascii=False))
+            (folder/'Ratfolgen.json').write_text(json.dumps(dict(html_sha256=sha(raw),folgen=paths,zusatz=extra),ensure_ascii=False))
 
 if __name__=='__main__':
     a=argparse.ArgumentParser();a.add_argument('browser',choices=['chromium','webkit']);a.add_argument('niveau',choices=LEVELS);a.add_argument('--limit',type=int);o=a.parse_args();run(o.browser,o.niveau,o.limit)
