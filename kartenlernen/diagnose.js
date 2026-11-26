@@ -155,6 +155,23 @@ const Lernfeedback = (() => {
     word(refer)+' (?:die eizelle|das ei) '+reduced+' (?:erreichen|befruchten) koennen',
     'koennen '+word(refer)+' (?:die eizelle|das ei) '+reduced+' (?:erreichen|befruchten)',
     '(?:die |eine )?eizelle (?:wird|kann) '+reduced+' befruchtet (?:werden)?');
+  gram.pille.a.push('(?:mit der pille|unter der pille|durch die pille) (?:bleibt der eisprung aus|faellt der eisprung (?:aus|weg))',
+    '(?:normalerweise |meist )?faellt (?:mit|unter) der pille der eisprung (?:aus|weg)');
+  gram.pille.b.push('fehlt (?:die |eine )?(?:freie |befruchtbare )?eizelle','(?:dann )?(?:es )?gibt (?:es )?(?:auch )?nichts (?:zum befruchten|zur befruchtung)',
+    '(?:dann )?gibt es (?:auch )?nichts,? was die spermien befruchten koennten','spermien koennen (?:somit )?kein ei befruchten',
+    'es gibt keine eizelle mehr die befruchtet werden kann');
+  gram.schleim.ab.push('(?:der |ein )?(?:dickfluessige[rn]?|zaehe[rn]?|dichte[rn]?) (?:schleim|schleimpfropf) (?:versperrt|erschwert) den (?:spermien|samenzellen) (?:fast |weitgehend )?(?:den weg|die passage)');
+  gram.schleim.b.push(word(refer)+' '+reduced+' (?:vorankommen|durchkommen|weiterkommen)',
+    'durch den schleim '+word(move)+' '+word(refer)+' '+reduced);
+  gram.haut.a.push('(?:die )?haut (?:neben|ausserhalb) (?:dem kondom|des kondoms) kann (?:andere )?haut beruehren',
+    'neben (?:dem kondom|der huelle) (?:bleibt|ist) (?:noch )?haut (?:ungeschuetzt|frei|unbedeckt)');
+  gram.haut.b.push('(?:dabei|dort|so) koennen '+germs+' (?:wechseln|uebergehen|weitergegeben werden|uebertragen werden)',
+    'uebertragung von (?:erregern|keimen|viren) durch hautkontakt');
+  gram.kupfer.a.push('fuer (?:die )?(?:spermien|samenzellen) ist es (?:durch kupfer )?(?:schwieriger|muehsamer) zu schwimmen',
+    'weil sich (?:die )?spermien schlechter bewegen');
+  gram.kupfer.b.push('(?:die |eine )?eizelle wird '+reduced+' befruchtet','so schaffen weniger (?:spermien |samenzellen )?die befruchtung',
+    '(?:die |sie |diese )?'+reduced+' (?:zum ei|zur eizelle) (?:kommen|gelangen)');
+  gram.kupfer.negatives.bewegung.push(...frame(swimmers,'schwimmen|werden','schneller|beweglicher'));
   for(const [id,g] of Object.entries(gram)){
     for(const tag of ['a','b','ab','extra'])bound[id][tag]=[...(bound[id][tag]||[]),...g[tag]];
     for(const [e,patterns] of Object.entries(g.negatives))bound[id].negatives[e].push(...patterns);
@@ -175,14 +192,14 @@ const Lernfeedback = (() => {
   const correctedNouns={
     eisprung:['eisprng','eisprngg','eisprun','eisprumg'],eizelle:['eizellee','eizäle','eizele','eizellle'],
     spermien:['spermine','spermiern','sperminen','spermiien'],samenzellen:['samenzelen','samenzelln'],
-    schleim:['schleimm','schleihm','schleimn'],hautkontakt:['hautkontackt','hautkontkt'],
+    schleim:['schleimm','schleihm','schleimn'],erregern:['eregern','errregern'],hautkontakt:['hautkontackt','hautkontkt'],
     kupferionen:['kupferjonen','kupferionnen'],kondom:['kondomm','kondon'],
     gebaermutterhals:['gebaermuterhals','gebarmutterhals'],befruchtung:['befruchtug','befruchtunng'],
     beweglichkeit:['beweglichket','beweglichkiet'],erreger:['ereger','erregr']
   };
   const spellings=new Map(Object.entries(correctedNouns).flatMap(([word,forms])=>forms.map(f=>[f,word])));
   function normalize(text){
-    return clean(text).replace(/[a-z]+/g,w=>spellings.get(w)||w)
+    return clean(text).replace(/[–—]/g,';').replace(/[a-z]+/g,w=>spellings.get(w)||w)
       .replace(/\bnich\b/g,'nicht').replace(/\bnich(t)? mehr so einfach\b/g,'nicht mehr so leicht')
       .replace(/\bnur noch schwer\b/g,'nur schwer').replace(/\bso dass\b/g,'sodass')
       .replace(/\b(?:in der regel|in den meisten faellen)\b/g,'meist')
@@ -194,6 +211,9 @@ const Lernfeedback = (() => {
       .replace(/\bueberhaupt nicht\b/g,'nicht')
       .replace(/\b(?:menschliche )?eizelle zur befruchtung frei wird\b/g,'eizelle wird zur befruchtung frei')
       .replace(/,? (?:die|das) befruchtet werden (?:kann|koennte)\b/g,' zur befruchtung')
+      .replace(/,? was die spermien befruchten koennten\b/g,' zum befruchten')
+      .replace(/,\s*(?:die|welche) (?:darum|deshalb|dadurch) /g,', sodass diese ')
+      .replace(/\bdeshalb dann\b/g,'deshalb')
       .replace(/\bnicht (mehr )?so einfach\b/g,'nicht $1so leicht').replace(/ +/g,' ');
   }
   // Nur diese vollständig erfassten Berichtigungen haben eine eindeutige Reichweite.
