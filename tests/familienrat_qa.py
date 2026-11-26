@@ -192,7 +192,8 @@ def case(page,f,person,team,probe,trace,shots=False):
         answer=task['answers'][0]
         expected=answer.get('advancedFeedback',answer['feedback']) if advanced else answer['feedback']
         expect(f.locator('#response')).to_have_text(expected)
-        expect(f.locator('#answer-0')).to_be_disabled()
+        expect(f.locator('[id^=answer-]')).to_have_count(0)
+        expect(f.locator('[data-handoff]')).to_be_focused()
         expect(f.locator('section')).not_to_contain_text(BANK['ui']['helpBeforePaper'])
         expect(f.locator('#help-tier,#member')).to_have_count(0)
         expect(f.locator('section .answers')).to_have_count(0)

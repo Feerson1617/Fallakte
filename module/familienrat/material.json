@@ -17,23 +17,23 @@
   "cards": [
     {
       "title": "Blutungen und Schmerzen",
-      "text": "Eines der Medikamente bewirkt, dass sich die Gebärmutter zusammenzieht. Dabei wird Schwangerschaftsgewebe mit einer Blutung ausgestoßen. Schmerzen und Krämpfe können auftreten. Bei fachgerechter Durchführung sind schwere Komplikationen selten.",
-      "short": "Die Gebärmutter zieht sich zusammen. Es kommt zu Blutungen. Der Bauch kann schmerzen oder krampfen."
+      "text": "Ein Medikament lässt die Gebärmutter sich zusammenziehen. Dabei wird Schwangerschaftsgewebe mit einer Blutung ausgestoßen. Der Bauch kann schmerzen oder krampfen. Bei fachgerechtem Abbruch sind schwere medizinische Probleme selten.",
+      "short": "Die Gebärmutter zieht sich zusammen. Es kommt zu Blutungen. Der Bauch kann wehtun oder krampfen."
     },
     {
       "title": "Später schwanger werden",
-      "text": "Nach einem komplikationslosen medikamentösen Abbruch bleibt eine spätere Schwangerschaft möglich. Die spätere Fruchtbarkeit wird nach heutigem Wissen dadurch nicht beeinträchtigt. Das ist keine Zusage einer späteren Schwangerschaft.",
-      "short": "Nach einem Abbruch ohne Komplikationen kann eine Frau später wieder schwanger werden. Niemand kann ihr das sicher versprechen."
+      "text": "Ein Abbruch mit Medikamenten ohne Komplikationen schadet nach heutigem Wissen der späteren Fruchtbarkeit nicht. Fruchtbarkeit bedeutet hier, schwanger werden zu können. Ob es später zu einer Schwangerschaft kommt, bleibt offen.",
+      "short": "Ohne Komplikationen heißt: ohne zusätzliche medizinische Probleme. Nach so einem Abbruch kann eine Frau später wieder schwanger werden. Sicher versprechen kann das niemand."
     },
     {
       "title": "Entwicklung des Embryos",
-      "text": "Bei einem Abbruch einer frühen Schwangerschaft endet die Entwicklung des Embryos. Daraus folgt keine naturwissenschaftliche Entscheidung über moralische Wertfragen.",
-      "short": "Bei einem frühen Schwangerschaftsabbruch endet die weitere Entwicklung des Embryos."
+      "text": "Am Anfang der Schwangerschaft spricht man vom Embryo. Bei einem frühen Abbruch endet seine Entwicklung. Der Fakt allein sagt nicht, wie man den Abbruch bewerten soll.",
+      "short": "Am Anfang der Schwangerschaft spricht man vom Embryo. Bei einem frühen Abbruch wächst er nicht weiter."
     },
     {
       "title": "Medizinische Voraussetzungen",
-      "text": "In der Arztpraxis wird unter anderem geprüft, wie weit die Schwangerschaft fortgeschritten ist und ob medizinische Gründe gegen eine Methode sprechen.",
-      "short": "In der Arztpraxis werden das Alter der Schwangerschaft und die Gesundheit der Person berücksichtigt."
+      "text": "Die Arztpraxis prüft unter anderem, wie lange die Person schwanger ist. Auch ihre Gesundheit zählt. Manche Methoden kommen aus medizinischen Gründen nicht infrage.",
+      "short": "Die Arztpraxis prüft: Wie lange ist die Person schwanger? Welche Methode passt zu ihrer Gesundheit?"
     }
   ],
   "cases": {
