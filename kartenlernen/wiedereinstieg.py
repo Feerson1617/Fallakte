@@ -72,8 +72,19 @@ def run():
                                 shot('12a-Widerspruch');tap('help');tap('more');tap('more');shot('12b-Hilfe-zum-Widerspruch')
                                 tap('back');tap('revise')
                             p.locator('#entry').fill('Das könnte auch anders zusammenhängen.');tap('check')
-                            if i==3:shot('12-Unsicher');tap('compare');shot('13-Selbstvergleich');tap('compared');continue
-                            tap('revise')
+                            if i==3:shot('12-Unsicher')
+                            tap('compare')
+                            assert p.locator('.selbstcheck').inner_text()==model['vergleich']
+                            assert p.locator('#draft').inner_text()=='Das könnte auch anders zusammenhängen.'
+                            shot('17-Selbstvergleich-'+q['modell'])
+                            if i==3:
+                                shot('13-Selbstvergleich');tap('compared');continue
+                            tap('revise');assert p.locator('#entry').input_value()=='Das könnte auch anders zusammenhängen.'
+                            if q['modell']=='pille':
+                                p.locator('#entry').fill(model['beispiel']+' Die Pille schützt vor HIV.');tap('check')
+                                shot('18-STI-Zusatz');tap('help');tap('reference')
+                                assert p.locator('#page h1').inner_text()=='Schutz vor Infektionen'
+                                shot('19-Kartenstelle-STI');tap('helpback');tap('back');tap('revise')
                             model=p.evaluate("k=>JSON.parse(document.querySelector('#material').textContent).modelle[k]",q['modell'])
                             p.locator('#entry').fill(model['beispiel']);tap('check')
                         tap('advance')

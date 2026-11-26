@@ -69,6 +69,7 @@
      if(assist)visitHelp(2,'Information');tap('readnext');
    }
    inspect('Papier '+(i+1));ok($('#page h1').innerText==='Schreibe auf deine Infokarte.','Schreibauftrag');
+   ok($('#page').innerText.includes('Nimm dein Blatt mit den vier Infokarten.'),'Blattname');
    const f=all('li strong').map(n=>n.innerText);
    ok(JSON.stringify(f)===JSON.stringify(cs[i].felder.map(f=>f.wort)),'Originalwörter');
    ok($('.sheet .active').innerText===(i+1)+' – '+cs[i].titel,'richtige Blatthälfte');
@@ -95,6 +96,18 @@
        }
      }else{
        tap('check');inspect('Leer');ok(!key('compare'),'leere Abgabe ohne Abschluss');tap('revise');
+       const zusatz=m.beispiel+' Die Kupferspirale enthält Hormone.';
+       enter(zusatz);tap('check');inspect('Gesundheitlicher Zusatz');
+       ok($('#page').innerText.includes('Die Kupferspirale wirkt ohne Hormone.') && !key('advance'),'konkreter biologischer Fehler');
+       tap('help');inspect('Kartenverweis beim Zusatz');
+       ok($('#page').innerText.includes('Infokarte 3 – Kupferspirale'),'Karte zum tatsächlichen Fehler');
+       tap('reference');inspect('Fachbeleg zum Zusatz');
+       ok($('.beleg').innerText===cs[2].texte[0].volltext,'richtige Originalstelle');
+       tap('helpback');tap('back');tap('revise');
+       const verkehrt={pille:'Kein Eisprung, weil die Eizelle fehlt.',schleim:'Der Schleim wird zäher, weil die Spermien schwerer durchkommen.',haut:'Freie Haut, weil Erreger durch Hautkontakt übertragen werden.',kupfer:'Die Spermien bewegen sich schlechter, weil die Befruchtung erschwert ist.'};
+       enter(verkehrt[q.modell]);tap('check');inspect('Vertauschte Ursache');
+       ok($('#page').innerText.includes(m.zuerst) && !$('#page').innerText.includes('kann richtig sein') && key('revise').classList.contains('primary'),'Ursache korrigieren');
+       tap('revise');
        const part=m.teile[0];
        const samples={schleim:['Der Schleim wird zäher.','Der Schleim wird zäher. Spermien kommen leichter durch.'],pille:['Kein Eisprung.','Kein Eisprung. Die Eizelle wird trotzdem frei.'],haut:['Freie Haut.','Freie Haut. Erreger werden nur mit Sperma übertragen.'],kupfer:['Kupfer bremst Spermien.','Kupfer bremst Spermien. Die Befruchtung wird leichter.']}[q.modell];
        enter(samples[0]);tap('check');inspect('Teilantwort');ok($('#page').innerText.includes(part),'richtige Teilaussage');
@@ -107,6 +120,7 @@
        ok($('#page').innerText.includes('Beide Schritte sind da.'),'vorhandene Aussagen bestätigt');
        tap('help');tap('back');tap('revise');enter('Ich meine einen anderen Zusammenhang.');tap('check');inspect('Unsicher');
        ok(key('compare').classList.contains('primary')&&!key('revise').classList.contains('primary') && $('#page').innerText.includes('Deine Antwort kann richtig sein. Vergleiche sie mit diesem Beispiel.'),'passende primäre Handlung');tap('compare');inspect('Selbstvergleich');
+       ok($('.selbstcheck').innerText===m.vergleich && $('#draft').innerText==='Ich meine einen anderen Zusammenhang.','eigene Antwort und beide Vergleichsfragen');
        ok($('#page').innerText.includes(m.beispiel),'Beispiel zum Vergleich');
        if(i>=2){tap('compared');continue;}tap('revise');
      }

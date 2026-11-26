@@ -12,7 +12,7 @@ HERE=Path(__file__).resolve().parent
 ROOT=HERE.parent
 OUT=ROOT/'dist/Kartenlernen'
 REF='562ea2566dd80e31c093f313b925adcb31e22c9a'
-START='2f42593baa0cc262264ff8a736adb73296453a30'
+START='b3abb525f78940c3b19f23787762be7fa3072c4a'
 sys.path.extend([str(ROOT/'vorbereitung'),str(ROOT/'scripts')])
 from build import manifest
 from bilder import make_graphics
@@ -61,7 +61,7 @@ def build():
         material['levels'][t]={'cards':levels,'info':info,'fragen':qs}
     head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     styles=(HERE/'stil.css').read_text().replace('FONT_URL','data:font/ttf;base64,'+base64.b64encode((ROOT/'assets/dmsans.ttf').read_bytes()).decode())
-    values=dict(STIL=styles,ANWENDUNG='\n'.join((HERE/f).read_text() for f in ['diagnose.js','hilfe.js','app.js']),SITZUNG=(ROOT/'tagesauswahl/sitzung.js').read_text(),
+    values=dict(STIL=styles,ANWENDUNG='\n'.join((HERE/f).read_text() for f in ['gesundheit.js','diagnose.js','hilfe.js','app.js']),SITZUNG=(ROOT/'tagesauswahl/sitzung.js').read_text(),
         LERNSTOFF=json.dumps(material,ensure_ascii=False,separators=(',',':')).replace('<','\\u003c'),COMMIT=head,LIZENZ=(ROOT/'assets/dmsans-OFL.txt').read_text())
     raw=re.sub('|'.join(values),lambda m:values[m[0]],(HERE/'index.html').read_text()).encode()
     OUT.mkdir(exist_ok=True,parents=True);(OUT/'Vorbereitung.html').write_bytes(raw)

@@ -51,3 +51,7 @@ textarea{border:2px solid #6f8977;border-radius:.48rem;padding:.35em;width:100%;
  .tight .paper>p,.tight .paper .primary{grid-column:2;align-self:center}
  .tight .paper li{gap:.3em}
 }
+@media(max-width:520px){
+ .tight .paper{row-gap:2px}
+ .tight .paper .locator{padding-block:1px}
+}

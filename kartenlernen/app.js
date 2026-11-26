@@ -43,7 +43,7 @@
   }
   function paper(){
     return '<section class="paper">'+title('Schreibe auf deine Infokarte.')+
-      '<div class="locator">'+diagram(chapter)+'<div>'+para('Nimm dein Infokartenblatt.')+para(paperLocation())+'</div></div>'+
+      '<div class="locator">'+diagram(chapter)+'<div>'+para('Nimm dein Blatt mit den vier Infokarten.')+para(paperLocation())+'</div></div>'+
       rows()+para('Richtige Wörter bleiben stehen.')+para('Stehen alle vier Wörter bei 1, 2, 3 und 4 auf deiner Infokarte '+label()+'?')+
       go('written',shortcut?'Zurück zur Kartenauswahl':'Ja, weiter')+'</section>';
   }
@@ -53,9 +53,10 @@
   }
   function resultView(){
     const rec=r(),st=rec.last.state;
-    let heading=({passend:'Gut erklärt.',teilweise:'Ein Teil stimmt.',fehlvorstellung:'Schau noch einmal hin.',widerspruch:'Prüfe den Zusammenhang.',unsicher:'Vergleiche deine Erklärung.',leer:'Beginne hier.'})[st];
+    let heading=({passend:'Gut erklärt.',teilweise:'Ein Teil stimmt.',fehlvorstellung:'Schau noch einmal hin.',widerspruch:'Prüfe den Zusammenhang.',vertauscht:'Prüfe die Reihenfolge.',unsicher:'Vergleiche deine Erklärung.',leer:'Beginne hier.'})[st];
     if(st==='passend' && q().typ==='wahl')heading='Das passt.';
-    const reference=st==='passend'?'':context('Infokarte '+label(qi)+' · '+section().titel);
+    const [karte,stelle]=rec.last.quelle||[qi,q().abschnitt];
+    const reference=st==='passend'?'':context('Infokarte '+label(karte)+' · '+card(karte).texte[stelle].titel);
     const compare=q().typ==='text' && rec.text.trim() && st!=='leer';
     const recommended=st==='unsicher' && compare;
     const actions=st==='passend'?go('advance','Weiter'):recommended?
@@ -73,7 +74,7 @@
     const max=task?5:2;
     let body='';
     if(task){
-      body=title(stage===5?'Beispiel zum Vergleichen':'Hilfe '+stage+' von 5')+para(fachhilfe(q(),model(),r(),card(qi),stage))+
+      body=title(stage===5?'Beispiel zum Vergleichen':'Hilfe '+stage+' von 5')+para(fachhilfe(q(),model(),r(),card(qi),stage,lesson().cards))+
         (stage===5?para('Vergleiche mit deiner Antwort.'):'')+btn('reference','Digitale Infokarte lesen');
     }else if(source==='paper'){
       body=title('So findest du die Schreibstelle.')+'<div class="locator">'+diagram(chapter)+para(paperLocation())+'</div>'+
@@ -83,9 +84,13 @@
     }
     return body+'<div class="actions">'+(stage<max?btn('more','Mehr Hilfe'):'')+go('back','Zurück zur Aufgabe')+'</div>';
   }
+  function hilfequelle(){
+    return (model() && Lernfeedback.analyze(q().modell,r().text).quelle)||[qi,q().abschnitt];
+  }
   function reference(){
-    const c=card(qi),sec=c.texte[cardpage];
-    return context('Digitale Infokarte '+label(qi))+title(sec?sec.titel:'Pearl-Index · '+c.pearl)+(sec && cardpage===q().abschnitt?'<p class="beleg">'+esc(sec.volltext)+'</p>':para(sec?sec.volltext:c.pearl_erklaerung+' Der Wert misst keinen STI-Schutz.'))+
+    const [karte,stelle]=hilfequelle();
+    const c=card(karte),sec=c.texte[cardpage];
+    return context('Digitale Infokarte '+label(karte))+title(sec?sec.titel:'Pearl-Index · '+c.pearl)+(sec && cardpage===stelle?'<p class="beleg">'+esc(sec.volltext)+'</p>':para(sec?sec.volltext:c.pearl_erklaerung+' Der Wert misst keinen STI-Schutz.'))+
       '<div class="actions">'+(cardpage>0?btn('prev','Vorherige Stelle'):'')+(sec?btn('following','Nächste Stelle'):'')+go('helpback','Zur Hilfe')+'</div>';
   }
   function main(){
@@ -97,7 +102,7 @@
       case 'intro':return title('Sind alle vier Infokarten ausgefüllt?')+para('Lass dein Blatt für die Fragen neben dem iPad liegen.')+'<div class="actions">'+go('startq',session().position?'Zu den Fragen':'Zur ersten Frage')+btn('lookup','Fehlende Infokarte ergänzen')+'</div>';
       case 'question':return question();case 'feedback':return resultView();
       case 'help':return help();case 'reference':return reference();
-      case 'compare':return sourceTitle()+title('Vergleiche mit dem Beispiel.')+'<p><b>Deine Antwort</b></p>'+'<p id="draft"></p><div id="pieces"></div><p><b>Beispiel</b></p>'+para(model().beispiel)+'<div class="actions">'+btn('revise','Antwort bearbeiten')+go('compared','Verglichen, weiter')+'</div>';
+      case 'compare':return sourceTitle()+title('Vergleiche mit dem Beispiel.')+'<p><b>Deine Antwort</b></p>'+'<p id="draft"></p><div id="pieces"></div>'+(r().last?.state==='unsicher'?'<p class="selbstcheck">'+esc(model().vergleich)+'</p>':'')+'<p><b>Beispiel</b> · '+esc(model().beispiel)+'</p>'+'<div class="actions">'+btn('revise','Antwort bearbeiten')+go('compared','Verglichen, weiter')+'</div>';
       case 'end':return title('Du bist fertig.')+para('Bewahre deine Infokarten für den Unterricht auf. Schneide das Blatt erst auf das Zeichen deiner Lehrkraft einmal in der Mitte durch.')+btn('menu','Zur Kapitelauswahl');
     }
   }
@@ -238,7 +243,7 @@
       case 'more':session().hints[key()]=(session().hints[key()]||1)+1;
         if(questionScreens.includes(source)){r().used=session().hints[key()];if(r().used===5)r().revealed=true;}break;
       case 'back':screen=source;break;
-      case 'reference':cardpage=q().abschnitt;screen='reference';break;
+      case 'reference':cardpage=hilfequelle()[1];screen='reference';break;
       case 'prev':cardpage--;break;case 'following':cardpage++;break;case 'helpback':screen='help';break;
       case 'revise':r().view=screen='question';break;
       case 'compare':r().revealed=true;r().view=screen='compare';break;

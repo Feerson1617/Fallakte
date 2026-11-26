@@ -18,7 +18,7 @@ passend|schreibung|Die Hormone hemmen den Eisprung. Kein Ei zur Befruchtug.
 teilweise|a|Unter der Pille bleibt der Eisprung aus.
 teilweise|a|Die Pille verhindert meistens den Eisprung.
 teilweise|b|Es ist kein Ei zum Befruchten da.
-teilweise|b|Die Eizelle kann nicht befruchtet werden.
+ergebnis|ergebnis|Die Eizelle kann nicht befruchtet werden.
 fehlvorstellung|zyklus|Die Pille unterdrückt den Eisprung nicht.
 fehlvorstellung|eizelle|Die Eizelle wird frei.
 verwechslung|spermien|Die Pille stoppt die Spermien.

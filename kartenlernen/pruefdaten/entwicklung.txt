@@ -26,8 +26,8 @@ widerspruch|Die Eizelle fehlt, aber der Eisprung findet statt.
 widerspruch|Die Pille hemmt den Eisprung. Die Pille stoppt Spermien.
 widerspruch|Die Pille hemmt den Eisprung. Der Eisprung wird nicht gehemmt.
 unsicher|Die Pille, Eisprung, Eizelle.
-unsicher|Kein Eisprung, weil die Eizelle fehlt.
-unsicher|Keine freie Eizelle → kein Eisprung.
+vertauscht|richtung|Kein Eisprung, weil die Eizelle fehlt.
+vertauscht|richtung|Keine freie Eizelle → kein Eisprung.
 unsicher|Vielleicht wird keine Eizelle frei.
 unsicher|Die Eizelle hemmt die Pille.
 unsicher|Die Pille hemmt nicht nur den Eisprung.
@@ -68,8 +68,8 @@ widerspruch|Der Schleim wird zäher und die Spermien kommen deshalb leichter dur
 widerspruch|Der Schleim wird dünner. Spermien kommen schwerer durch.
 widerspruch|Der Schleim wird dicker. Die Spirale verhindert immer den Eisprung.
 unsicher|Schleim, Spermien und Hormone
-unsicher|Spermien kommen schwerer durch, deshalb wird der Schleim zäher.
-unsicher|Zäher Schleim, weil die Spermien schwerer durchkommen.
+vertauscht|richtung|Spermien kommen schwerer durch, deshalb wird der Schleim zäher.
+vertauscht|richtung|Zäher Schleim, weil die Spermien schwerer durchkommen.
 unsicher|Die Spermien verdicken den Schleim.
 unsicher|Der Schleim wird nicht unbedingt dünner.
 unsicher|Der Schleim wird zäher, weil er sie mag.
@@ -111,8 +111,8 @@ widerspruch|Freie Haut, aber bei Hautkontakt werden keine Erreger übertragen.
 widerspruch|Das Kondom bedeckt die ganze Haut und ein Teil der Haut bleibt frei.
 unsicher|Haut, Erreger und Kondom.
 unsicher|Erreger bedecken das Kondom.
-unsicher|Übertragung durch Hautkontakt → freie Haut.
-unsicher|Freie Haut, weil Erreger durch Hautkontakt übertragen werden.
+vertauscht|richtung|Übertragung durch Hautkontakt → freie Haut.
+vertauscht|richtung|Freie Haut, weil Erreger durch Hautkontakt übertragen werden.
 unsicher|Ist die ganze Haut bedeckt?
 unsicher|Es gibt eine Stelle neben dem Gummi, wo etwas überspringen kann.
 unsicher|Ein Teil der Haut bleibt frei und Viren verschwinden.
@@ -153,8 +153,8 @@ widerspruch|Spermien sind weniger beweglich. Kupfer macht den Schleim zäher.
 widerspruch|Die Beweglichkeit der Spermien sinkt. Die Spermien schwimmen schneller.
 unsicher|Kupfer, Spermien, Befruchtung.
 unsicher|Die Eizelle bremst das Kupfer.
-unsicher|Die Befruchtung wird erschwert. Deshalb bremst Kupfer Spermien.
-unsicher|Kupfer bremst Spermien, weil die Befruchtungsfähigkeit sinkt.
+vertauscht|richtung|Die Befruchtung wird erschwert. Deshalb bremst Kupfer Spermien.
+vertauscht|richtung|Kupfer bremst Spermien, weil die Befruchtungsfähigkeit sinkt.
 unsicher|Kupfer stoppt nicht bloß den Eisprung.
 unsicher|Vielleicht bewegen sich Spermien langsamer.
 unsicher|Weniger flinke Samenfäden schaffen den Weg zur Eizelle seltener.

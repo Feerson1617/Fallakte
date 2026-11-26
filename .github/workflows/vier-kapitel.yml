@@ -26,7 +26,7 @@ jobs:
           python gesamt/auslieferung.py
       - name: Vorbereitung separat bauen und beide Browser prüfen
         run: |
-          git worktree add --detach /tmp/fallakte-vorfassung 2f42593baa0cc262264ff8a736adb73296453a30
+          git worktree add --detach /tmp/fallakte-vorfassung b3abb525f78940c3b19f23787762be7fa3072c4a
           python /tmp/fallakte-vorfassung/kartenlernen/erstellen.py
           python kartenlernen/erstellen.py
           python -u kartenlernen/pruefen.py /tmp/fallakte-bestand/dist/Gesamt

@@ -1,0 +1,84 @@
+[pille]
+passend|normal|Die Pille unterdrückt den Eisprung. Aus dem Eierstock wird keine Eizelle freigesetzt.
+passend|normal|Die Hormone verhindern den Eisprung. Dadurch setzt der Eierstock kein Ei frei.
+passend|normal|Die Hormone der Pille hemmen den Eisprung, sodass keine Eizelle aus dem Eierstock austritt.
+passend|normal|Der Eisprung bleibt meist aus. Deshalb ist in diesem Monat gar kein Ei zum Befruchten da.
+passend|schreibung|Die Pille verhindert den Eisprng. Der Eierstock gibt keine Eizele frei.
+passend|einschraenkung|Die Pille hemmt den Eisprung. Es wird keine Eizelle freigesetzt. Hormonfreie Methoden sind nicht automatisch beschwerdefrei.
+passend|berichtigung|Kein Eisprung. Es fehlt eine befruchtbare Eizelle. Die Pille schützt gegen HIV. Nein, sie schützt nicht gegen HIV.
+teilweise|a|Der Eisprung entfällt. Eine Befruchtung findet nicht statt.
+teilweise|b|Der Eierstock gibt kein Ei mehr frei.
+ergebnis|ergebnis|Es kommt nicht zu einer Befruchtung.
+fehlvorstellung|sti|Die Pille schützt auch vor HIV oder anderen STI.
+fehlvorstellung|kupferhormone|Eine Kupferspirale gibt Hormone ab.
+fehlvorstellung|beschwerden|Hormonfreie Methoden sind immer frei von Nebenwirkungen.
+widerspruch|spermien|Die Hormone unterdrücken den Eisprung. Keine Eizelle wird frei. Die Kombinationspille tötet Samenzellen.
+widerspruch|kondomschutz|Der Eisprung fehlt und deshalb wird kein Ei frei. Kondome schützen vor allen STI immer.
+widerspruch|einnahme|Der Eisprung fällt aus. Die Eizelle fehlt. Die regelmäßige Einnahme der Pille ist grundsätzlich unnötig.
+beziehung|richtung|Die freie Eizelle fehlt, deshalb verhindern die Hormone den Eisprung.
+unsicher|offen|Ich weiß nicht, ob die Pille die Spermien tötet.
+unsicher|offen|Die Hormone unterdrücken den Eisprung. In meinem Satz geht es dann noch um den Weg am Eierstock vorbei.
+zusatz|beide|Der Eisprung entfällt. Der Eierstock setzt keine Eizelle frei. Die Zeichnung sieht dabei wie ein Kreis aus.
+[schleim]
+passend|normal|Der Schleim am Muttermund wird dicker und hemmt den Durchtritt der Spermien.
+passend|normal|Die Passage der Samenzellen ist erschwert. Das liegt daran, dass der Schleim im Gebärmutterhals zäher wird.
+passend|normal|Durch den verdickten Zervixschleim kommen die Spermien nur mit Mühe zur Eizelle.
+passend|normal|Der Schleimpfropf am Gebärmutterhals verdickt sich und erschwert das Durchkommen der Samenzellen.
+passend|schreibung|Der Zervixschleim wird dicker. Spermiem kommen nur schwer hindurch.
+passend|einschraenkung|Der Schleim wird dicker und erschwert die Passage der Spermien. Die regelmäßige Einnahme der Pille ist wichtig.
+passend|berichtigung|Der Durchtritt der Spermien wird erschwert, weil der Schleim dichter wird. Kupferspiralen sind hormonhaltig. Korrektur: Kupferspiralen sind hormonfrei.
+teilweise|a|Der Schleimpfropf am Gebärmutterhals verdickt sich.
+teilweise|b|Die Passage von Samenzellen wird erschwert.
+fehlvorstellung|hormonabgabe|Die Hormonspirale gibt kein Hormon ab.
+fehlvorstellung|spermien|Eine Kombinationspille tötet die Samenzellen ab.
+fehlvorstellung|kondomschutz|Kondome schützen vor sämtlichen STI vollständig.
+widerspruch|kupferhormone|Der Schleim wird dichter. Der Durchtritt der Samenzellen wird erschwert. Eine Kupferspirale enthält ein Hormon.
+widerspruch|beschwerden|Der Schleim verdickt sich. Die Spermien kommen schwerer durch. Hormonfrei bedeutet garantiert keine Beschwerden.
+widerspruch|sti|Der Schleimpfropf wird verdickt. Die Hormonspirale schützt auch vor Chlamydien.
+beziehung|richtung|Die Samenzellen kommen schwerer durch den Schleim. Folglich wird der Schleim zähflüssiger.
+unsicher|offen|Der Schleim wird dickflüssiger. Ich stelle mir das wie ein Tor vor, das nur einen Spalt aufgeht.
+unsicher|offen|Vielleicht gibt die Hormonspirale gar kein Hormon ab?
+zusatz|beide|Der Schleim wird dichter und erschwert die Passage der Spermien. Das ist auch so ein Kreislauf mit mehreren Ringen.
+unsicher|offen|Ich bin mir über den Unterschied zwischen den beiden Spiralen noch unsicher.
+[haut]
+passend|normal|Auf freier Haut können einige Viren durch Berührung übertragen werden.
+passend|normal|Bei Kontakt ungeschützter Hautstellen können manche Erreger von einer Person zur anderen gelangen.
+passend|normal|Das Kondom lässt manche Hautstellen unbedeckt. Durch Hautkontakt ist eine Ansteckung möglich.
+passend|normal|Eine Infektion kann über die Haut am Rand weitergegeben werden, denn dort ist kein Kondom.
+passend|schreibung|Das Kondon bedeckt nur einen Teil der Haut. Bei Hautkontackt können Keime übertragen werden.
+passend|einschraenkung|An freien Hautstellen können Erreger durch Berührung weitergegeben werden. Kondome schützen nicht sicher vor sämtlichen STI.
+passend|berichtigung|Auf ungeschützter Haut können Keime durch Hautkontakt übertragen werden. Die Pille tötet alle Spermien. Nein, die Pille tötet keine Spermien.
+teilweise|a|Das Kondom lässt manche Stellen der Haut unbedeckt.
+teilweise|b|Bei engem Hautkontakt können manche Erreger weitergegeben werden.
+fehlvorstellung|sti|Die Hormonspirale bietet auch Schutz gegen HIV.
+fehlvorstellung|einnahme|Die Pille muss man nicht regelmäßig nehmen.
+fehlvorstellung|beschwerden|Eine hormonfreie Methode verursacht keine Nebenwirkungen.
+widerspruch|kondomschutz|Ein Teil der Haut bleibt frei. Bei Hautkontakt werden manche Keime übertragen. Kondome bieten hundertprozentigen Schutz vor allen STI.
+widerspruch|hormonabgabe|Ein Teil der Haut bleibt frei. Erreger können bei Hautkontakt übertragen werden. Eine Hormonspirale enthält keine Hormone.
+widerspruch|spermien|An unbedeckten Hautstellen können Viren durch Berührung übertragen werden. Eine Pille vernichtet die Spermien.
+beziehung|richtung|Hautkontakt kann Keime übertragen. Darum sind andere Hautstellen ungeschützt.
+unsicher|offen|Hat nicht jemand behauptet, das Kondom schütze bei jeder Infektion ganz sicher?
+unsicher|offen|Das Kondom schützt nur einen Teil. Danach passiert etwas an der anderen Person, das Wort dafür fällt mir gerade nicht ein.
+zusatz|beide|Bei Berührung freier Hautstellen können Keime übertragen werden. Die Linie auf der Karte geht bis ganz nach oben.
+unsicher|offen|Wenn das alles bedeckt wäre, wäre der Schutz vielleicht anders.
+[kupfer]
+passend|normal|Die Samenzellen erreichen das Ei kaum noch, weil das Kupfer ihre Beweglichkeit einschränkt.
+passend|normal|Kupferionen hemmen die Bewegung und die Befruchtungsfähigkeit von Spermien.
+passend|normal|Die Beweglichkeit der Spermien nimmt ab. Das Ei wird schwerer befruchtet.
+passend|normal|Kupfer macht die Schwimmer im Sperma träge, sodass sie das Ei kaum noch erreichen.
+passend|schreibung|Kupffer verringert die Beweglichket und Befruchtungsfähigkeit der Samenzelen.
+passend|einschraenkung|Kupferionen bremsen Spermien. Die Eizelle wird schwerer befruchtet. Hormonfrei bedeutet nicht immer beschwerdefrei.
+passend|berichtigung|Kupfer stört die Bewegungsfähigkeit und die Befruchtungsfähigkeit der Samenzellen. Die Pille schützt vor Chlamydien. Korrektur: Sie schützt nicht vor Chlamydien.
+teilweise|a|Das Kupfer schränkt die Bewegung der Spermien ein.
+teilweise|b|Kupfer beeinträchtigt Befruchtungsfähigkeit der Spermien.
+fehlvorstellung|sti|Die Pille schützt gegen eine Infektion mit HIV.
+fehlvorstellung|kupferhormone|Die Kupferspirale ist hormonhaltig.
+fehlvorstellung|hormonabgabe|Hormonspiralen geben kein Gestagen ab.
+widerspruch|einnahme|Kupferionen bremsen Samenzellen. Die Befruchtung wird schwieriger. Eine regelmäßige Einnahme der Pille ist nicht notwendig.
+widerspruch|beschwerden|Die Beweglichkeit der Spermien nimmt ab. Die Eizelle wird schwerer befruchtet. Hormonfreie Methoden sind immer nebenwirkungsfrei.
+widerspruch|kondomschutz|Kupfer mindert die Befruchtungsfähigkeit und Beweglichkeit der Spermien. Ein Kondom schützt sicher vor allen STI.
+beziehung|richtung|Die Samenzellen bewegen sich schlechter, da die Befruchtungsfähigkeit sinkt.
+unsicher|offen|Es ist falsch, dass die Pille vor HIV schützt.
+unsicher|offen|Die Spermien kommen langsamer voran. Den Rest kann ich auf der Zeichnung kaum sehen.
+zusatz|beide|Kupfer hemmt Bewegung und Befruchtungsfähigkeit der Spermien. Das hat noch einen Grund mit einer anderen Farbe.
+unsicher|offen|Ich kann mit dem Wort Fähigkeit hier wenig anfangen.
