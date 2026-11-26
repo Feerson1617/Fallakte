@@ -5,3 +5,14 @@ h1,h2,h3,p,blockquote{margin:0 0 .65rem}h1,h2{font-family:SerifDM,Georgia,serif;
 @media(max-width:650px){.split{grid-template-columns:1fr}.profile img{width:2.5rem;height:2.5rem}main{padding:.65rem}.msg p{margin:.35rem 0}.tools{gap:.3rem}.card,aside{padding:.75rem}}
 
 .paper-order{white-space:pre-line}.note strong+.paper-order{margin-top:.15rem}
+
+.msg {background:#edf2e9;min-width:0;overflow-wrap:break-word}
+.msg .profile ~ p,.msg .bubble {background:#fffdf7;border-radius:.1rem .7rem .7rem .7rem;padding:.45rem .65rem}
+.msg .bubble strong {color:#315648}
+.chat-history {margin-bottom:.6rem}
+.chat-history[open] {max-height:32dvh;overflow:auto;overscroll-behavior:contain}
+@media(min-width:650px){
+ .split {grid-template-columns:minmax(0,.86fr) minmax(0,1.3fr)}
+ .msg {position:sticky;top:.5rem;max-height:calc(100dvh - 1rem);overflow:auto}
+ dialog {margin-inline:auto max(2vw,calc((100vw - 73rem)/2));width:min(53vw,39rem)}
+}

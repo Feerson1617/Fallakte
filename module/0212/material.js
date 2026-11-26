@@ -113,7 +113,7 @@
 
   function cardLabel(ref) {
     const card=window.LAURA.cards[ref.method];
-    return 'Karte öffnen · '+card.title+' – '+card.sections[ref.section].title;
+    return card.title+' · '+card.sections[ref.section].title;
   }
 
   function cardView(view) {

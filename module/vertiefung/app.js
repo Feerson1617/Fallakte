@@ -57,20 +57,20 @@ function inspect(code){
 }
 function conflict(){return state.choice && stage().conflicts?.[state.choice];}
 function needsSource(){return !Object.keys(stage().choices).length && !lower() && !state.read;}
-function choices(s){
+function choices(s,work){
   const entries=Object.entries(s.choices);
   const group=(parent,set)=>{const box=add(parent,'div');box.className='choices';
     for(const [k,v] of set)btn(box,v,'method-'+k,()=>clearChoice(k));
   };
   if(lower()){
     const first=[...new Set([state.previous,...s.primary[tier]].filter(Boolean))].slice(0,3);
-    group(desk,entries.filter(([k])=>first.includes(k)));
-    const extra=add(desk,'details');extra.id='more';add(extra,'summary','Weitere Vorschläge');
+    group(work,entries.filter(([k])=>first.includes(k)));
+    const extra=add(work,'details');extra.id='more';add(extra,'summary','Weitere Vorschläge');
     group(extra,entries.filter(([k])=>!first.includes(k)));
   }else{
     for(const combo of [false,true]){
-      add(desk,'h3',combo?'Kombinationen':'Einzelmethoden');
-      group(desk,entries.filter(([k])=>k.includes('+')===combo));
+      add(work,'h3',combo?'Kombinationen':'Einzelmethoden');
+      group(work,entries.filter(([k])=>k.includes('+')===combo));
     }
   }
 }
@@ -78,58 +78,64 @@ function draw(){
   const s=stage(),check=currentCheck(),hasChoice=Object.keys(s.choices).length>0;
   desk.replaceChildren();const h=add(desk,'h1',bank.person+' '+(state.index+1)+' von '+bank.stages.length);h.id='step';
   add(desk,'p',s.title+' · '+bank.levels[tier]);
-  if(state.history.length){const old=add(desk,'details');add(old,'summary','Gesprächsverlauf');state.history.forEach(x=>add(old,'p',x));}
-  if(state.direct && s.previousFacts.length){const facts=add(desk,'details');add(facts,'summary','Bisher im Fall');s.previousFacts.forEach(text=>add(facts,'p',text));}
-  add(desk,'blockquote',s.message[tier].join(' '));
+  const layout=add(desk,'div');layout.className='split';
+  const chat=add(layout,'aside'),work=add(layout,'section');
+  chat.setAttribute('aria-label','Gespräch mit '+bank.person);
+  work.setAttribute('aria-label','Deine Aufgabe');
+  const past=state.sent?state.history.slice(0,-3):state.history;
+  if(past.length){const old=add(chat,'details');add(old,'summary','Gesprächsverlauf');past.forEach(x=>add(old,'p',x));}
+  if(state.direct && s.previousFacts.length){const facts=add(chat,'details');add(facts,'summary','Bisher im Fall');s.previousFacts.forEach(text=>add(facts,'p',text));}
+  add(chat,'strong',bank.person);add(chat,'blockquote',s.message[tier].join(' '));
   if(state.sent){
-    add(desk,'p',state.reply);
-    btn(desk,state.index+1===bank.stages.length?'Zur Fallübersicht':'Weiter im Gespräch','next',()=>{
+    add(chat,'strong','Du');add(chat,'p',state.history.at(-2));
+    add(chat,'strong',bank.person);add(chat,'p',state.reply);
+    btn(work,state.index+1===bank.stages.length?'Zur Fallübersicht':'Weiter im Gespräch','next',()=>{
       if(state.index+1===bank.stages.length){sessions.delete(tier);port.postMessage({type:'home'});return;}
       const next=fresh(state.index+1,state.history);next.previous=state.choice;save(next);draw();
     }).className='primary';return;
   }
   if(hasChoice && !state.choice){
-    add(desk,'h2','Welchen Vorschlag machst du?');
-    choices(s);
+    add(work,'h2','Welchen Vorschlag machst du?');
+    choices(s,work);
   }else{
-    if(hasChoice){add(desk,'strong',s.choices[state.choice]).id='selected';btn(desk,'Auswahl ändern','edit',()=>clearChoice(''));}
-    if(!hasChoice && lower()){add(desk,'strong','Aus der Quelle');add(desk,'blockquote',s.shortSource);}
-    if(needsSource())add(desk,'p',state.index===1?'Lies den Artikel. Welche Aussage ist belegt?':'Lies Studie B. Was wurde tatsächlich untersucht?');
+    if(hasChoice){add(work,'strong',s.choices[state.choice]).id='selected';btn(work,'Auswahl ändern','edit',()=>clearChoice(''));}
+    if(!hasChoice && lower()){add(work,'strong','Aus der Quelle');add(work,'blockquote',s.shortSource);}
+    if(needsSource())add(work,'p',state.index===1?'Lies den Artikel. Welche Aussage ist belegt?':'Lies Studie B. Was wurde tatsächlich untersucht?');
     if(!state.valid && !conflict() && !needsSource()){
-      add(desk,'p',s.task[tier]);
+      add(work,'p',s.task[tier]);
       if(['MSA','AHR'].includes(tier)){
         const paper=s.paper[tier].replace(' '+s.task[tier],'');
         const celina=bank.person==='Celina';
-        add(desk,'p',paper+(celina
+        add(work,'p',paper+(celina
           ? ' Lies A, B und C hier am iPad. Schreibe deine Begründung auf den Celina-Bogen. Kreise dort den Buchstaben der passenden Aussage ein.'
           : ' Schreibe deine Begründung auf. Kreise die richtige Aussage ein.'));
-        const list=add(desk,celina?'div':'details');
+        const list=add(work,celina?'div':'details');
         if(!celina)add(list,'summary','Zusatzbogen nicht zur Hand?');
         check.answers.forEach((answer,i)=>add(list,'p','ABC'[i]+' · '+answer));
-        add(desk,'p',s.return);
-        const input=add(add(desk,'label','Prüfcode '),'input');input.id='code';input.value=state.code;
+        add(work,'p',s.return);
+        const input=add(add(work,'label','Prüfcode '),'input');input.id='code';input.value=state.code;
         input.oninput=()=>{state.code=input.value;state.result='';document.querySelector('#feedback').textContent='';};
-        btn(desk,'Code prüfen','check',()=>inspect(state.code.trim().toUpperCase()));
+        btn(work,'Code prüfen','check',()=>inspect(state.code.trim().toUpperCase()));
       }else{
-        for(const k of tier==='Foerder'?check.short:'ABC')btn(desk,check.answers['ABC'.indexOf(k)],'answer-'+k,()=>inspect(k)).className='answer';
+        for(const k of tier==='Foerder'?check.short:'ABC')btn(work,check.answers['ABC'.indexOf(k)],'answer-'+k,()=>inspect(k)).className='answer';
       }
     }
-    add(desk,'p',conflict()?.[lower()?'short':'full'] || state.result).id='feedback';document.querySelector('#feedback').setAttribute('role','status');
-    if(state.valid)btn(desk,'Nachricht senden','send',()=>{
+    add(work,'p',conflict()?.[lower()?'short':'full'] || state.result).id='feedback';document.querySelector('#feedback').setAttribute('role','status');
+    if(state.valid)btn(work,'Nachricht senden','send',()=>{
       if(!state.valid || state.sent || conflict() || needsSource())return;state.sent=true;
       if(bank.person==='Tom' && state.index===bank.stages.length-1)port.postMessage({type:'completed',person:bank.person,tier});
       state.reply=s.replies[state.choice || 'DONE'];
       state.history.push(s.message[tier].join(' '),(s.choices[state.choice]||'')+' '+check.answers['ABC'.indexOf(check.code)],state.reply);draw();
     }).className='primary';
   }
-  btn(desk,hasChoice?'Infokarte öffnen':'Artikel und Studien öffnen','source',source);
+  btn(work,hasChoice?'Infokarte öffnen':'Artikel und Studien öffnen','source',source);
   const hints=state.choice?s.hints[state.choice]:s.helpBefore;
-  btn(desk,'Hilfe','help',()=>resource('Hilfe',body=>{for(const hint of hints)add(body,'p',hint);}));
+  btn(work,'Hilfe','help',()=>resource('Hilfe',body=>{for(const hint of hints)add(body,'p',hint);}));
   const qs=check.questions || s.questions;
-  if(qs.length)btn(desk,'Rückfrage an '+bank.person,'ask',()=>resource('Rückfrage',body=>{
+  if(qs.length)btn(work,'Rückfrage an '+bank.person,'ask',()=>resource('Rückfrage',body=>{
     for(const [q,a] of qs)btn(body,q,'q'+body.childElementCount,()=>{state.asked=q+' '+a;dialog.close();draw();});
   }));
-  if(state.asked)add(desk,'p',state.asked);
+  if(state.asked && !state.valid)add(chat,'p',state.asked);
   port?.postMessage({type:'status',person:bank.person,tier,abschnitt:state.index+1,view:'room'});
 }
 function leaveReading(){

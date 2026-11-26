@@ -7,12 +7,12 @@
     "AHR"
   ],
   "definitions": {
-    "Fakt": "Was lässt sich überprüfen? Ein biologischer Fakt beschreibt zum Beispiel, was im Körper passiert.",
+    "Fakt": "Was kannst du prüfen? Hier geht es um den Körper.",
     "Wert": "Was ist der Person wichtig?",
-    "Norm": "Welche Regel soll nach Meinung der Person für alle gelten?",
-    "Folgerung": "Was rät die Person Laura aus diesen Gründen?"
+    "Norm": "Was sollte man aus Sicht der Person tun?",
+    "Folgerung": "Was rät die Person Laura deshalb?"
   },
-  "opening": "Ich bin Laura, 19. Trotz Verhütung bin ich ungeplant schwanger geworden. Ich habe meine Familie und meine Freundin um Rat gefragt. Ihre Antworten sind so unterschiedlich, dass ich unsicher bin. Hilfst du mir, die Ratschläge zu verstehen? Ich möchte verlässliche Informationen und am Ende selbst entscheiden.",
+  "opening": "Ich bin Laura, 19. Ich bin trotz Verhütung ungeplant schwanger. Meine Familie und meine Freundin geben mir verschiedene Ratschläge. Das macht mich unsicher. Hilfst du mir, ihre Gründe zu prüfen? Ich möchte gute Informationen. Entscheiden möchte ich selbst.",
   "second": "Meine Ausbildung ist mir wichtig. Ich weiß aber noch nicht, ob ich jetzt ein Kind bekommen möchte. Ich habe Angst vor Blutungen und Schmerzen bei einem Abbruch. Und kann ich danach später noch schwanger werden? Welche der ergänzten Nachrichten hilft mir jetzt besonders? Entscheiden möchte ich selbst.",
   "cards": [
     {
@@ -49,18 +49,18 @@
           "answers": [
             {
               "text": "Lauras körperliche Gesundheit.",
-              "feedback": "Das passt. Die Mutter sagt ausdrücklich, dass ihr Lauras körperliche Gesundheit wichtig ist. Das ist ihr Wert.",
+              "feedback": "Der Mutter ist Lauras Gesundheit wichtig. Das ist ihr Wert.",
               "ok": true
             },
             {
               "text": "Lauras Ausbildung und Zukunftspläne.",
-              "feedback": "Auch das kann wichtig sein. In dieser Nachricht nennt die Mutter aber Lauras körperliche Gesundheit. Ausbildung und Zukunftspläne stehen bei der Freundin im Mittelpunkt.",
+              "feedback": "Die Freundin spricht über die Ausbildung. Was ist der Mutter wichtig? Sie nennt Lauras Gesundheit.",
               "ok": false,
               "revealsSolution": true
             },
             {
               "text": "Man sollte mögliche Beschwerden ernst nehmen.",
-              "feedback": "Das ist die Regel der Mutter. Sie sagt, was man tun sollte. Gesucht ist jetzt, was ihr wichtig ist: ihr Wert.",
+              "feedback": "„Man sollte …“ ist eine Regel. Hier suchst du den Wert. Was ist der Mutter wichtig?",
               "ok": false
             }
           ],
@@ -69,7 +69,7 @@
             "Über wen spricht die Mutter in diesem Satz?",
             "Wie endet der erste Satz?",
             "Ergänze für dich: „Der Mutter liegt … am Herzen.“",
-            "Der Wert ist Lauras körperliche Gesundheit. Das nennt die Mutter ausdrücklich als wichtig. Wähle die Aussage mit dieser Bedeutung."
+            "Der Wert ist Lauras körperliche Gesundheit. Das nennt die Mutter ausdrücklich als wichtig."
           ],
           "helpByLevel": {
             "Förder": [
@@ -77,28 +77,28 @@
               "Über wen spricht die Mutter in diesem Satz?",
               "Wie endet der erste Satz?",
               "Ergänze für dich: „Der Mutter liegt … am Herzen.“",
-              "Lauras körperliche Gesundheit. Das passt. Die Mutter sagt ausdrücklich, dass ihr Lauras körperliche Gesundheit wichtig ist. Das ist ihr Wert. Tippe auf die passende Antwort."
+              "Lauras körperliche Gesundheit. Die Mutter sagt ausdrücklich, dass ihr Lauras körperliche Gesundheit wichtig ist. Das ist ihr Wert."
             ],
             "ESA": [
               "Lies den ersten Satz der Mutter.",
               "Über wen spricht die Mutter in diesem Satz?",
               "Wie endet der erste Satz?",
               "Ergänze für dich: „Der Mutter liegt … am Herzen.“",
-              "Der Wert ist Lauras körperliche Gesundheit. Das nennt die Mutter ausdrücklich als wichtig. Wähle die Aussage mit dieser Bedeutung."
+              "Der Wert ist Lauras körperliche Gesundheit. Das nennt die Mutter ausdrücklich als wichtig."
             ],
             "MSA": [
               "Lies den ersten Satz der Mutter.",
               "Über wen spricht die Mutter in diesem Satz?",
               "Wie endet der erste Satz?",
               "Ergänze für dich: „Der Mutter liegt … am Herzen.“ Mit welchem Satz aus der Nachricht kannst du deine Deutung begründen?",
-              "Der Wert ist Lauras körperliche Gesundheit. Das nennt die Mutter ausdrücklich als wichtig. Wähle die Aussage mit dieser Bedeutung."
+              "Der Wert ist Lauras körperliche Gesundheit. Das nennt die Mutter ausdrücklich als wichtig."
             ],
             "AHR": [
               "Lies den ersten Satz der Mutter.",
               "Über wen spricht die Mutter in diesem Satz?",
               "Wie endet der erste Satz?",
               "Ergänze für dich: „Der Mutter liegt … am Herzen.“ Mit welchem Satz aus der Nachricht kannst du deine Deutung begründen?",
-              "Der Wert ist Lauras körperliche Gesundheit. Das nennt die Mutter ausdrücklich als wichtig. Wähle die Aussage mit dieser Bedeutung."
+              "Der Wert ist Lauras körperliche Gesundheit. Das nennt die Mutter ausdrücklich als wichtig."
             ]
           },
           "shortOptions": [
@@ -112,11 +112,11 @@
         },
         {
           "id": "Norm",
-          "prompt": "Welche allgemeine Regel nennt die Mutter?",
+          "prompt": "Welche Regel nennt die Mutter?",
           "answers": [
             {
               "text": "Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen.",
-              "feedback": "Das passt. Diese Regel kann auch bei anderen ähnlichen Entscheidungen gelten. Sie ist die Norm, die die Mutter hier vertritt.",
+              "feedback": "Diese Regel kann auch bei anderen ähnlichen Entscheidungen gelten. Sie ist die Norm, die die Mutter hier vertritt.",
               "ok": true
             },
             {
@@ -135,7 +135,7 @@
             "Für wen soll ihre Aussage gelten?",
             "Achte auf die Wörter „sollte man“.",
             "Welche Regel könnte sie auch einer anderen Person sagen?",
-            "Die Norm lautet: ‚Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen.‘ Sie sagt allgemein, woran man denken sollte. Wähle die Aussage mit dieser Bedeutung."
+            "Die Norm lautet: ‚Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen.‘ Sie sagt allgemein, woran man denken sollte."
           ],
           "helpByLevel": {
             "Förder": [
@@ -143,28 +143,28 @@
               "Für wen soll ihre Aussage gelten?",
               "Achte auf die Wörter „sollte man“.",
               "Welche Regel könnte sie auch einer anderen Person sagen?",
-              "Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen. Das passt. Diese Regel kann auch bei anderen ähnlichen Entscheidungen gelten. Sie ist die Norm, die die Mutter hier vertritt. Tippe auf die passende Antwort."
+              "Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen. Diese Regel kann auch bei anderen ähnlichen Entscheidungen gelten. Sie ist die Norm, die die Mutter hier vertritt."
             ],
             "ESA": [
               "Lies den zweiten Satz der Mutter.",
               "Für wen soll ihre Aussage gelten?",
               "Achte auf die Wörter „sollte man“.",
               "Welche Regel könnte sie auch einer anderen Person sagen?",
-              "Die Norm lautet: ‚Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen.‘ Sie sagt allgemein, woran man denken sollte. Wähle die Aussage mit dieser Bedeutung."
+              "Die Norm lautet: ‚Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen.‘ Sie sagt allgemein, woran man denken sollte."
             ],
             "MSA": [
               "Lies den zweiten Satz der Mutter.",
               "Für wen soll ihre Aussage gelten?",
               "Achte auf die Wörter „sollte man“.",
               "Welche Regel könnte sie auch einer anderen Person sagen? Mit welchem Satz aus der Nachricht kannst du deine Deutung begründen?",
-              "Die Norm lautet: ‚Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen.‘ Sie sagt allgemein, woran man denken sollte. Wähle die Aussage mit dieser Bedeutung."
+              "Die Norm lautet: ‚Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen.‘ Sie sagt allgemein, woran man denken sollte."
             ],
             "AHR": [
               "Lies den zweiten Satz der Mutter.",
               "Für wen soll ihre Aussage gelten?",
               "Achte auf die Wörter „sollte man“.",
               "Welche Regel könnte sie auch einer anderen Person sagen? Mit welchem Satz aus der Nachricht kannst du deine Deutung begründen?",
-              "Die Norm lautet: ‚Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen.‘ Sie sagt allgemein, woran man denken sollte. Wähle die Aussage mit dieser Bedeutung."
+              "Die Norm lautet: ‚Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen.‘ Sie sagt allgemein, woran man denken sollte."
             ]
           },
           "shortOptions": [
@@ -178,7 +178,7 @@
         },
         {
           "id": "Folgerung",
-          "prompt": "Was rät die Mutter Laura konkret?",
+          "prompt": "Was rät die Mutter Laura?",
           "answers": [
             {
               "text": "Die Schwangerschaft fortsetzen.",
@@ -210,7 +210,7 @@
               "An wen richtet sich dieser Satz?",
               "Welches Wort leitet den Rat ein?",
               "Welche Handlung wird Laura vorgeschlagen?",
-              "Die Schwangerschaft fortsetzen. Das ist der Rat der Mutter. Tippe auf die passende Antwort."
+              "Die Schwangerschaft fortsetzen. Das ist der Rat der Mutter."
             ],
             "ESA": [
               "Lies den letzten Satz in der Nachricht von Lauras Mutter.",
@@ -245,11 +245,11 @@
         },
         {
           "id": "Leerstelle",
-          "prompt": "Welcher Bestandteil des Arguments bleibt unausgesprochen?",
+          "prompt": "Was fehlt in der Nachricht?",
           "answers": [
             {
               "text": "Fakt",
-              "feedback": "Das passt. Die Person nennt, was ihr wichtig ist, eine Regel und ihren Rat. Eine biologische Information wird noch nicht genannt.",
+              "feedback": "Die Person nennt, was ihr wichtig ist, eine Regel und ihren Rat. Eine biologische Information wird noch nicht genannt.",
               "ok": true
             },
             {
@@ -281,7 +281,7 @@
               "Öffne „Fakt · Wert · Norm · Folgerung“. Lies die vier Fragen.",
               "Welche dieser Fragen lassen sich mit einem Satz aus der Nachricht beantworten?",
               "Für welche Frage fehlt ein ausdrücklicher Satz?",
-              "Fakt Das passt. Die Person nennt, was ihr wichtig ist, eine Regel und ihren Rat. Eine biologische Information wird noch nicht genannt. Tippe auf die passende Antwort."
+              "Fakt Die Person nennt, was ihr wichtig ist, eine Regel und ihren Rat. Eine biologische Information wird noch nicht genannt."
             ],
             "ESA": [
               "Lies die Nachricht von Lauras Mutter.",
@@ -317,7 +317,7 @@
           "answers": [
             {
               "text": "Es kommt zu Blutungen. Schmerzen und Krämpfe können auftreten.",
-              "feedback": "Das passt. Diese Information beschreibt mögliche körperliche Beschwerden. Sie hilft, die Sorge um Lauras körperliche Gesundheit genauer zu betrachten.",
+              "feedback": "Diese Information beschreibt mögliche körperliche Beschwerden. Sie hilft, die Sorge um Lauras körperliche Gesundheit genauer zu betrachten.",
               "ok": true
             },
             {
@@ -346,7 +346,7 @@
               "Lies den Satz darüber, was in der Gebärmutter geschieht.",
               "Welche Folgen beschreibt die Karte für den Körper?",
               "Achte auf den Unterschied zwischen „kann auftreten“ und „ist ausgeschlossen“.",
-              "Es kommt zu Blutungen. Schmerzen und Krämpfe können auftreten. Das passt. Diese Information beschreibt mögliche körperliche Beschwerden. Sie hilft, die Sorge um Lauras körperliche Gesundheit genauer zu betrachten. Tippe auf die passende Antwort."
+              "Es kommt zu Blutungen. Schmerzen und Krämpfe können auftreten. Diese Information beschreibt mögliche körperliche Beschwerden. Sie hilft, die Sorge um Lauras körperliche Gesundheit genauer zu betrachten."
             ],
             "ESA": [
               "Öffne die Fachkarte „Blutungen und Schmerzen“.",
@@ -513,7 +513,7 @@
           "answers": [
             {
               "text": "Lauras Ausbildung und ihre Pläne für später.",
-              "feedback": "Das passt. Sie nennt Ausbildung und Zukunftspläne ausdrücklich. Dazu kann auch gehören, wann Laura Kinder bekommen möchte.",
+              "feedback": "Sie nennt Ausbildung und Zukunftspläne ausdrücklich. Dazu kann auch gehören, wann Laura Kinder bekommen möchte.",
               "ok": true
             },
             {
@@ -533,7 +533,7 @@
             "Wessen Wünsche beschreibt die Freundin?",
             "Achte auf die Wörter „Mir ist wichtig“.",
             "Ergänze für dich: „Der Freundin liegt … am Herzen.“",
-            "Der Wert ist Ausbildung und Zukunftsplanung. Dazu kann gehören, wann Laura Kinder bekommen möchte. Wähle die Aussage mit dieser Bedeutung."
+            "Der Wert ist Ausbildung und Zukunftsplanung. Dazu kann gehören, wann Laura Kinder bekommen möchte."
           ],
           "helpByLevel": {
             "Förder": [
@@ -541,28 +541,28 @@
               "Wessen Wünsche beschreibt die Freundin?",
               "Achte auf die Wörter „Mir ist wichtig“.",
               "Ergänze für dich: „Der Freundin liegt … am Herzen.“",
-              "Lauras Ausbildung und ihre Pläne für später. Das passt. Sie nennt Ausbildung und Zukunftspläne ausdrücklich. Dazu kann auch gehören, wann Laura Kinder bekommen möchte. Tippe auf die passende Antwort."
+              "Lauras Ausbildung und ihre Pläne für später. Sie nennt Ausbildung und Zukunftspläne ausdrücklich. Dazu kann auch gehören, wann Laura Kinder bekommen möchte."
             ],
             "ESA": [
               "Lies den zweiten Satz der Freundin.",
               "Wessen Wünsche beschreibt die Freundin?",
               "Achte auf die Wörter „Mir ist wichtig“.",
               "Ergänze für dich: „Der Freundin liegt … am Herzen.“",
-              "Der Wert ist Ausbildung und Zukunftsplanung. Dazu kann gehören, wann Laura Kinder bekommen möchte. Wähle die Aussage mit dieser Bedeutung."
+              "Der Wert ist Ausbildung und Zukunftsplanung. Dazu kann gehören, wann Laura Kinder bekommen möchte."
             ],
             "MSA": [
               "Lies den zweiten Satz der Freundin.",
               "Wessen Wünsche beschreibt die Freundin?",
               "Achte auf die Wörter „Mir ist wichtig“.",
               "Ergänze für dich: „Der Freundin liegt … am Herzen.“ Mit welchem Satz aus der Nachricht kannst du deine Deutung begründen?",
-              "Der Wert ist Ausbildung und Zukunftsplanung. Dazu kann gehören, wann Laura Kinder bekommen möchte. Wähle die Aussage mit dieser Bedeutung."
+              "Der Wert ist Ausbildung und Zukunftsplanung. Dazu kann gehören, wann Laura Kinder bekommen möchte."
             ],
             "AHR": [
               "Lies den zweiten Satz der Freundin.",
               "Wessen Wünsche beschreibt die Freundin?",
               "Achte auf die Wörter „Mir ist wichtig“.",
               "Ergänze für dich: „Der Freundin liegt … am Herzen.“ Mit welchem Satz aus der Nachricht kannst du deine Deutung begründen?",
-              "Der Wert ist Ausbildung und Zukunftsplanung. Dazu kann gehören, wann Laura Kinder bekommen möchte. Wähle die Aussage mit dieser Bedeutung."
+              "Der Wert ist Ausbildung und Zukunftsplanung. Dazu kann gehören, wann Laura Kinder bekommen möchte."
             ]
           },
           "shortOptions": [
@@ -577,11 +577,11 @@
         },
         {
           "id": "Norm",
-          "prompt": "Welche allgemeine Regel nennt die Freundin?",
+          "prompt": "Welche Regel nennt die Freundin?",
           "answers": [
             {
               "text": "Man sollte überlegen, wann Kinder zu den eigenen Lebensplänen passen.",
-              "feedback": "Das passt. Die Freundin nennt eine Regel für solche Entscheidungen. Sie legt damit noch keine für alle Menschen gleiche Entscheidung fest.",
+              "feedback": "Die Freundin nennt eine Regel für solche Entscheidungen. Sie legt damit noch keine für alle Menschen gleiche Entscheidung fest.",
               "ok": true
             },
             {
@@ -600,7 +600,7 @@
             "Wer ist mit „man“ gemeint?",
             "Welche Überlegung schlägt sie für solche Entscheidungen vor?",
             "Wie würde ihre Regel für eine andere Person lauten?",
-            "Die Norm lautet: ‚Bei so einer Entscheidung sollte man berücksichtigen, wann Kinder zu den eigenen Lebensplänen passen.‘ Sie sagt allgemein, woran man denken sollte. Wähle die Aussage mit dieser Bedeutung."
+            "Die Norm lautet: ‚Bei so einer Entscheidung sollte man berücksichtigen, wann Kinder zu den eigenen Lebensplänen passen.‘ Sie sagt allgemein, woran man denken sollte."
           ],
           "helpByLevel": {
             "Förder": [
@@ -608,28 +608,28 @@
               "Wer ist mit „man“ gemeint?",
               "Welche Überlegung schlägt sie für solche Entscheidungen vor?",
               "Wie würde ihre Regel für eine andere Person lauten?",
-              "Man sollte überlegen, wann Kinder zu den eigenen Lebensplänen passen. Das passt. Die Freundin nennt eine Regel für solche Entscheidungen. Sie legt damit noch keine für alle Menschen gleiche Entscheidung fest. Tippe auf die passende Antwort."
+              "Man sollte überlegen, wann Kinder zu den eigenen Lebensplänen passen. Die Freundin nennt eine Regel für solche Entscheidungen. Sie legt damit noch keine für alle Menschen gleiche Entscheidung fest."
             ],
             "ESA": [
               "Lies den Satz vor dem Rat der Freundin.",
               "Wer ist mit „man“ gemeint?",
               "Welche Überlegung schlägt sie für solche Entscheidungen vor?",
               "Wie würde ihre Regel für eine andere Person lauten?",
-              "Die Norm lautet: ‚Bei so einer Entscheidung sollte man berücksichtigen, wann Kinder zu den eigenen Lebensplänen passen.‘ Sie sagt allgemein, woran man denken sollte. Wähle die Aussage mit dieser Bedeutung."
+              "Die Norm lautet: ‚Bei so einer Entscheidung sollte man berücksichtigen, wann Kinder zu den eigenen Lebensplänen passen.‘ Sie sagt allgemein, woran man denken sollte."
             ],
             "MSA": [
               "Lies den Satz vor dem Rat der Freundin.",
               "Wer ist mit „man“ gemeint?",
               "Welche Überlegung schlägt sie für solche Entscheidungen vor?",
               "Wie würde ihre Regel für eine andere Person lauten? Mit welchem Satz aus der Nachricht kannst du deine Deutung begründen?",
-              "Die Norm lautet: ‚Bei so einer Entscheidung sollte man berücksichtigen, wann Kinder zu den eigenen Lebensplänen passen.‘ Sie sagt allgemein, woran man denken sollte. Wähle die Aussage mit dieser Bedeutung."
+              "Die Norm lautet: ‚Bei so einer Entscheidung sollte man berücksichtigen, wann Kinder zu den eigenen Lebensplänen passen.‘ Sie sagt allgemein, woran man denken sollte."
             ],
             "AHR": [
               "Lies den Satz vor dem Rat der Freundin.",
               "Wer ist mit „man“ gemeint?",
               "Welche Überlegung schlägt sie für solche Entscheidungen vor?",
               "Wie würde ihre Regel für eine andere Person lauten? Mit welchem Satz aus der Nachricht kannst du deine Deutung begründen?",
-              "Die Norm lautet: ‚Bei so einer Entscheidung sollte man berücksichtigen, wann Kinder zu den eigenen Lebensplänen passen.‘ Sie sagt allgemein, woran man denken sollte. Wähle die Aussage mit dieser Bedeutung."
+              "Die Norm lautet: ‚Bei so einer Entscheidung sollte man berücksichtigen, wann Kinder zu den eigenen Lebensplänen passen.‘ Sie sagt allgemein, woran man denken sollte."
             ]
           },
           "shortOptions": [
@@ -643,7 +643,7 @@
         },
         {
           "id": "Folgerung",
-          "prompt": "Was rät die Freundin Laura konkret?",
+          "prompt": "Was rät die Freundin Laura?",
           "answers": [
             {
               "text": "Die Schwangerschaft fortsetzen.",
@@ -675,7 +675,7 @@
               "An wen richtet sich dieser Satz?",
               "Welches Wort leitet den Rat ein?",
               "Welche Handlung wird Laura vorgeschlagen?",
-              "Einen Abbruch mit Medikamenten vornehmen lassen. Das ist der Rat der Freundin. Tippe auf die passende Antwort."
+              "Einen Abbruch mit Medikamenten vornehmen lassen. Das ist der Rat der Freundin."
             ],
             "ESA": [
               "Lies den letzten Satz in der Nachricht von Lauras Freundin.",
@@ -710,7 +710,7 @@
         },
         {
           "id": "Leerstelle",
-          "prompt": "Welcher Bestandteil des Arguments bleibt unausgesprochen?",
+          "prompt": "Was fehlt in der Nachricht?",
           "answers": [
             {
               "text": "Fakt",
@@ -747,7 +747,7 @@
               "Öffne „Fakt · Wert · Norm · Folgerung“. Lies die vier Fragen.",
               "Welche dieser Fragen lassen sich mit einem Satz aus der Nachricht beantworten?",
               "Für welche Frage fehlt ein ausdrücklicher Satz?",
-              "Fakt Das passt. Die Person nennt, was ihr wichtig ist, eine Regel und ihren Rat. Eine biologische Information wird noch nicht genannt. Tippe auf die passende Antwort."
+              "Fakt Die Person nennt, was ihr wichtig ist, eine Regel und ihren Rat. Eine biologische Information wird noch nicht genannt."
             ],
             "ESA": [
               "Lies die Nachricht von Lauras Freundin.",
@@ -783,7 +783,7 @@
           "answers": [
             {
               "text": "Ja. Eine spätere Schwangerschaft bleibt möglich.",
-              "feedback": "Das passt. Nach einem komplikationslosen medikamentösen Abbruch bleibt eine spätere Schwangerschaft möglich. Das ist für die Planung späterer Kinder wichtig.",
+              "feedback": "Nach einem komplikationslosen medikamentösen Abbruch bleibt eine spätere Schwangerschaft möglich. Das ist für die Planung späterer Kinder wichtig.",
               "ok": true
             },
             {
@@ -817,7 +817,7 @@
               "Suche die Stelle über einen Abbruch ohne Komplikationen.",
               "Welche Aussage macht die Karte über die Zeit nach dem Abbruch?",
               "Was ist der Unterschied zwischen „möglich“ und „garantiert“?",
-              "Ja. Eine spätere Schwangerschaft bleibt möglich. Das passt. Nach einem komplikationslosen medikamentösen Abbruch bleibt eine spätere Schwangerschaft möglich. Das ist für die Planung späterer Kinder wichtig. Tippe auf die passende Antwort."
+              "Ja. Eine spätere Schwangerschaft bleibt möglich. Nach einem komplikationslosen medikamentösen Abbruch bleibt eine spätere Schwangerschaft möglich. Das ist für die Planung späterer Kinder wichtig."
             ],
             "ESA": [
               "Öffne die Fachkarte „Später schwanger werden“.",
@@ -980,7 +980,7 @@
       "tasks": [
         {
           "id": "Norm",
-          "prompt": "Welche Regel vertritt die Großmutter?",
+          "prompt": "Welche Regel nennt die Großmutter?",
           "answers": [
             {
               "text": "Ungeborenes Leben sollte geschützt werden.",
@@ -1011,7 +1011,7 @@
               "Wer soll nach ihrer Meinung wie handeln?",
               "Suche die Wörter, mit denen sie eine Regel formuliert.",
               "Was würde sie nach derselben Regel auch anderen raten?",
-              "Ungeborenes Leben sollte geschützt werden. Das ist die allgemeine Schutzregel, die sie vertritt. Tippe auf die passende Antwort."
+              "Ungeborenes Leben sollte geschützt werden. Das ist die allgemeine Schutzregel, die sie vertritt."
             ],
             "ESA": [
               "Lies den Satz der Großmutter, der für mehrere Menschen gelten soll.",
@@ -1046,7 +1046,7 @@
         },
         {
           "id": "Folgerung",
-          "prompt": "Was rät die Großmutter Laura konkret?",
+          "prompt": "Was rät die Großmutter Laura?",
           "answers": [
             {
               "text": "Die Schwangerschaft fortsetzen.",
@@ -1079,7 +1079,7 @@
               "An wen richtet sich dieser Satz?",
               "Welches Wort leitet den Rat ein?",
               "Welche Handlung wird Laura vorgeschlagen?",
-              "Die Schwangerschaft fortsetzen. Diesen konkreten Rat gibt die Großmutter. Tippe auf die passende Antwort."
+              "Die Schwangerschaft fortsetzen. Diesen konkreten Rat gibt die Großmutter."
             ],
             "ESA": [
               "Lies den letzten Satz in der Nachricht von Lauras Großmutter.",
@@ -1114,7 +1114,7 @@
         },
         {
           "id": "Leerstelle",
-          "prompt": "Welcher Bestandteil des Arguments bleibt unausgesprochen?",
+          "prompt": "Was fehlt in der Nachricht?",
           "answers": [
             {
               "text": "Fakt",
@@ -1150,7 +1150,7 @@
               "Öffne „Fakt · Wert · Norm · Folgerung“. Lies die vier Fragen.",
               "Welche dieser Fragen lassen sich mit einem Satz aus der Nachricht beantworten?",
               "Für welche Frage fehlt ein ausdrücklicher Satz?",
-              "Wert Das passt als Leerstelle. Ihre Regel lässt erkennen, was ihr wichtig ist. Du sollst diesen Wert jetzt ausdrücklich benennen. Tippe auf die passende Antwort."
+              "Wert Das passt als Leerstelle. Ihre Regel lässt erkennen, was ihr wichtig ist. Du sollst diesen Wert jetzt ausdrücklich benennen."
             ],
             "ESA": [
               "Lies die Nachricht von Lauras Großmutter.",
@@ -1186,7 +1186,7 @@
           "answers": [
             {
               "text": "Mir ist das ungeborene menschliche Leben wichtig.",
-              "feedback": "Das passt. Sie will dieses Leben schützen. Dein Satz nennt ausdrücklich ihren Wert.",
+              "feedback": "Sie will dieses Leben schützen. Dein Satz nennt ausdrücklich ihren Wert.",
               "ok": true
             },
             {
@@ -1214,7 +1214,7 @@
               "Was möchte sie mit dieser Regel erreichen?",
               "Unterscheide ihre Überzeugung von ihrem konkreten Rat an Laura.",
               "Beginne aus Sicht der Großmutter: „Mir ist … wichtig.“",
-              "Mir ist das ungeborene menschliche Leben wichtig. Das passt. Sie will dieses Leben schützen. Dein Satz nennt ausdrücklich ihren Wert. Tippe auf die passende Antwort."
+              "Mir ist das ungeborene menschliche Leben wichtig. Sie will dieses Leben schützen. Dein Satz nennt ausdrücklich ihren Wert."
             ],
             "ESA": [
               "Lies die Regel in der Nachricht der Großmutter.",
@@ -1251,7 +1251,7 @@
         "answers": [
           {
             "text": "Körperliche Gesundheit.",
-            "feedback": "Das passt. Die Regel betrifft den Schutz des Körpers.",
+            "feedback": "Die Regel betrifft den Schutz des Körpers.",
             "ok": true
           },
           {
@@ -1278,28 +1278,28 @@
             "Der Wert beschreibt, was jemandem wichtig ist.",
             "Achte im Beispielsatz auf „Körper“ und „Schäden“.",
             "Wie heißt das Gut, das vor Schäden geschützt werden soll?",
-            "Körperliche Gesundheit. Das passt. Die Regel betrifft den Schutz des Körpers. Tippe auf die passende Antwort."
+            "Körperliche Gesundheit. Die Regel betrifft den Schutz des Körpers."
           ],
           "ESA": [
             "Welche Sache ist der Person so wichtig, dass sie den Körper schützen will?",
             "Der Wert beschreibt, was jemandem wichtig ist.",
             "Achte im Beispielsatz auf „Körper“ und „Schäden“.",
             "Wie heißt das Gut, das vor Schäden geschützt werden soll?",
-            "Körperliche Gesundheit. Das passt. Die Regel betrifft den Schutz des Körpers. Wähle diese Erklärung."
+            "Körperliche Gesundheit. Die Regel betrifft den Schutz des Körpers. Wähle diese Erklärung."
           ],
           "MSA": [
             "Welche Sache ist der Person so wichtig, dass sie den Körper schützen will?",
             "Der Wert beschreibt, was jemandem wichtig ist.",
             "Achte im Beispielsatz auf „Körper“ und „Schäden“.",
             "Wie heißt das Gut, das vor Schäden geschützt werden soll?",
-            "Körperliche Gesundheit. Das passt. Die Regel betrifft den Schutz des Körpers. Wähle diese Erklärung."
+            "Körperliche Gesundheit. Die Regel betrifft den Schutz des Körpers. Wähle diese Erklärung."
           ],
           "AHR": [
             "Welche Sache ist der Person so wichtig, dass sie den Körper schützen will?",
             "Der Wert beschreibt, was jemandem wichtig ist.",
             "Achte im Beispielsatz auf „Körper“ und „Schäden“.",
             "Wie heißt das Gut, das vor Schäden geschützt werden soll?",
-            "Körperliche Gesundheit. Das passt. Die Regel betrifft den Schutz des Körpers. Wähle diese Erklärung."
+            "Körperliche Gesundheit. Die Regel betrifft den Schutz des Körpers. Wähle diese Erklärung."
           ]
         },
         "shortOptions": [
@@ -1396,7 +1396,7 @@
               "Wie stellt er sich Lauras Entscheidung vor?",
               "Achte auf die Wörter vor „entscheidest“.",
               "Ergänze aus seiner Sicht: „Für mich ist wichtig, dass Laura …“",
-              "Laura soll selbst gut informiert entscheiden können. Der Vater nennt ihre Selbstbestimmung als Wert. Tippe auf die passende Antwort."
+              "Laura soll selbst gut informiert entscheiden können. Der Vater nennt ihre Selbstbestimmung als Wert."
             ],
             "ESA": [
               "Lies den ersten Satz des Vaters.",
@@ -1431,7 +1431,7 @@
         },
         {
           "id": "Folgerung",
-          "prompt": "Was rät der Vater Laura konkret?",
+          "prompt": "Was rät der Vater Laura?",
           "answers": [
             {
               "text": "Die Schwangerschaft fortsetzen.",
@@ -1464,7 +1464,7 @@
               "An wen richtet sich dieser Satz?",
               "Welches Wort leitet den Rat ein?",
               "Welche Handlung wird Laura vorgeschlagen?",
-              "Die medizinischen Möglichkeiten in einer Arztpraxis klären lassen. Diesen konkreten Rat gibt der Vater. Tippe auf die passende Antwort."
+              "Die medizinischen Möglichkeiten in einer Arztpraxis klären lassen. Diesen konkreten Rat gibt der Vater."
             ],
             "ESA": [
               "Lies den letzten Satz in der Nachricht von Lauras Vater.",
@@ -1499,7 +1499,7 @@
         },
         {
           "id": "Leerstelle",
-          "prompt": "Welcher Bestandteil des Arguments bleibt unausgesprochen?",
+          "prompt": "Was fehlt in der Nachricht?",
           "answers": [
             {
               "text": "Fakt",
@@ -1535,7 +1535,7 @@
               "Öffne „Fakt · Wert · Norm · Folgerung“. Lies die vier Fragen.",
               "Welche dieser Fragen lassen sich mit einem Satz aus der Nachricht beantworten?",
               "Für welche Frage fehlt ein ausdrücklicher Satz?",
-              "Norm Das passt als Leerstelle. Der Vater gibt einen konkreten Rat. Eine allgemeine Regel, die hinter diesem Rat steht, sollst du ergänzen. Tippe auf die passende Antwort."
+              "Norm Das passt als Leerstelle. Der Vater gibt einen konkreten Rat. Eine allgemeine Regel, die hinter diesem Rat steht, sollst du ergänzen."
             ],
             "ESA": [
               "Lies die Nachricht von Lauras Vater.",
@@ -1571,7 +1571,7 @@
           "answers": [
             {
               "text": "Vor wichtigen medizinischen Entscheidungen sollte man sich verlässlich informieren.",
-              "feedback": "Das passt. Die Regel gilt allgemein. Der Vater wendet sie auf Laura an, indem er ihr zu einem Gespräch in einer Arztpraxis rät.",
+              "feedback": "Die Regel gilt allgemein. Der Vater wendet sie auf Laura an, indem er ihr zu einem Gespräch in einer Arztpraxis rät.",
               "ok": true
             },
             {
@@ -1598,7 +1598,7 @@
               "Was soll Laura vor ihrer Entscheidung tun?",
               "Welche Überlegung könnte auch bei einer anderen medizinischen Entscheidung helfen?",
               "Beginne die allgemeine Regel mit „Vor einer medizinischen Entscheidung sollte man …“.",
-              "Vor wichtigen medizinischen Entscheidungen sollte man sich verlässlich informieren. Das passt. Die Regel gilt allgemein. Der Vater wendet sie auf Laura an, indem er ihr zu einem Gespräch in einer Arztpraxis rät. Tippe auf die passende Antwort."
+              "Vor wichtigen medizinischen Entscheidungen sollte man sich verlässlich informieren. Die Regel gilt allgemein. Der Vater wendet sie auf Laura an, indem er ihr zu einem Gespräch in einer Arztpraxis rät."
             ],
             "ESA": [
               "Lies den letzten Satz des Vaters.",
@@ -1635,7 +1635,7 @@
         "answers": [
           {
             "text": "Jede Person sollte vor einer Behandlung deren Vor- und Nachteile kennen.",
-            "feedback": "Das passt. Die Regel gilt allgemein.",
+            "feedback": "Die Regel gilt allgemein.",
             "ok": true
           },
           {
@@ -1662,28 +1662,28 @@
             "Der einzelne Rat nennt Mila. Die Norm gilt allgemein.",
             "Achte auf den Unterschied zwischen „Mila“ und „jede Person“.",
             "Formuliere die Regel für Entscheidungen vor einer Behandlung.",
-            "Jede Person sollte vor einer Behandlung deren Vor- und Nachteile kennen. Das passt. Die Regel gilt allgemein. Tippe auf die passende Antwort."
+            "Jede Person sollte vor einer Behandlung deren Vor- und Nachteile kennen. Die Regel gilt allgemein."
           ],
           "ESA": [
             "Welche Regel gilt auch für eine andere Person?",
             "Der einzelne Rat nennt Mila. Die Norm gilt allgemein.",
             "Achte auf den Unterschied zwischen „Mila“ und „jede Person“.",
             "Formuliere die Regel für Entscheidungen vor einer Behandlung.",
-            "Jede Person sollte vor einer Behandlung deren Vor- und Nachteile kennen. Das passt. Die Regel gilt allgemein. Wähle diese Erklärung."
+            "Jede Person sollte vor einer Behandlung deren Vor- und Nachteile kennen. Die Regel gilt allgemein. Wähle diese Erklärung."
           ],
           "MSA": [
             "Welche Regel gilt auch für eine andere Person?",
             "Der einzelne Rat nennt Mila. Die Norm gilt allgemein.",
             "Achte auf den Unterschied zwischen „Mila“ und „jede Person“.",
             "Formuliere die Regel für Entscheidungen vor einer Behandlung.",
-            "Jede Person sollte vor einer Behandlung deren Vor- und Nachteile kennen. Das passt. Die Regel gilt allgemein. Wähle diese Erklärung."
+            "Jede Person sollte vor einer Behandlung deren Vor- und Nachteile kennen. Die Regel gilt allgemein. Wähle diese Erklärung."
           ],
           "AHR": [
             "Welche Regel gilt auch für eine andere Person?",
             "Der einzelne Rat nennt Mila. Die Norm gilt allgemein.",
             "Achte auf den Unterschied zwischen „Mila“ und „jede Person“.",
             "Formuliere die Regel für Entscheidungen vor einer Behandlung.",
-            "Jede Person sollte vor einer Behandlung deren Vor- und Nachteile kennen. Das passt. Die Regel gilt allgemein. Wähle diese Erklärung."
+            "Jede Person sollte vor einer Behandlung deren Vor- und Nachteile kennen. Die Regel gilt allgemein. Wähle diese Erklärung."
           ]
         },
         "shortOptions": [
@@ -2019,7 +2019,7 @@
     "close": "Zurück zum Gespräch",
     "next": "Weiter",
     "overview": "Zur Nachrichtenübersicht",
-    "resume": "Im letzten Abschnitt weiterarbeiten",
+    "resume": "Hier weitermachen",
     "switch": "Zu Lauras Frage",
     "family": "Nachricht",
     "addition": "Was in der Nachricht fehlt",
@@ -2029,37 +2029,37 @@
     "explain": "Mit einem Hinweis richtig gewählt.",
     "used": "Nach der gezeigten Lösung richtig gewählt.",
     "compare": "Mit den Aussagen vergleichen",
-    "free": "Schreibe deine Antwort in eigenen Worten",
-    "freeNote": "Deine Antwort ist eingetragen. Das Programm hat sie nicht bewertet. Vergleiche sie mit den Aussagen.",
+    "free": "Deine Erklärung",
+    "freeNote": "Dein Text steht hier. Ihr besprecht ihn im Unterricht.",
     "help": "Hilfe",
-    "more": "Noch ein Hinweis",
-    "solution": "Erklärung mit Lösung",
+    "more": "Mehr Hilfe",
+    "solution": "Lösung ansehen",
     "terms": "Fakt · Wert · Norm · Folgerung",
     "deeper": "Mehr Informationen lesen",
     "choice": "Welche Nachricht hilft Laura aus deiner Sicht? Du kannst auch beide wählen.",
     "both": "Beide Nachrichten",
     "limit": "Was kannst du aus dem Fakt nicht ableiten?",
-    "before": "Lies die beiden Fragen von Laura. Öffne „Lauras Frage – Meine Antwort“.",
+    "before": "Lies Lauras Fragen. Tippe dann auf „Lauras Frage – Meine Antwort“.",
     "return": "Weiter im Chat",
     "theme": "Lauras Frage",
     "facts": "Ergänzungen ansehen",
     "supported": "Als Hilfe angezeigt",
     "confirmed": "Passende Aussage gewählt",
-    "personal": "Du hast den Fakt und seine Grenze geprüft. Welche Nachricht du hilfreicher findest, entscheidest du selbst.",
+    "personal": "Du hast den Fakt geprüft. Welche Nachricht hilft, entscheidest du selbst.",
     "finish": "Prüfung meiner Auswahl abschließen",
     "reserve": "Freiwillige weitere Nachrichten",
-    "noPast": "Die früheren Fragen sind am iPad noch nicht als bearbeitet markiert.",
-    "where": "Wo möchtest du weiterarbeiten?",
-    "source": "Information auf der Fachkarte lesen",
-    "again": "Frage oder Fakt neu wählen",
+    "noPast": "Dieser Teil ist am iPad noch offen.",
+    "where": "Wo warst du?",
+    "source": "Fachkarte lesen",
+    "again": "Andere Frage wählen",
     "openPersonal": "Lauras Frage – Meine Antwort",
     "result": "Deine geprüften Aussagen",
     "read": "Nachricht prüfen",
     "examples": "Satzanfänge am iPad ansehen",
     "other": "Eigene Erklärung",
-    "otherNote": "Der Fakt passt zu Lauras Frage. Schreibe am iPad, warum er zu deiner Wahl der Nachricht passt.",
-    "priority": "Welche Frage von Laura ist dir bei dieser Nachricht wichtig?",
-    "evidence": "Welche biologische Information beantwortet die gewählte Frage?",
+    "otherNote": "Warum passt der Fakt zu deiner Wahl?",
+    "priority": "Welche Frage ist dir bei dieser Nachricht wichtig?",
+    "evidence": "Welcher Fakt hilft bei dieser Frage?",
     "questionA": "Welche Beschwerden können auftreten?",
     "questionB": "Kann ich nach einem Abbruch ohne Komplikationen später schwanger werden?",
     "guarantee": "Eine spätere Schwangerschaft ist sicher.",
@@ -2067,7 +2067,7 @@
     "optional": "Nach der persönlichen Bewertung",
     "returnStart": "Tippe oben auf „Tagesauswahl“, um zum Startmenü zu kommen.",
     "helpTitle": "Hilfe",
-    "evidenceOK": "Der Fakt passt zu Lauras Frage. Wähle jetzt, was du mit ihm nicht entscheiden kannst.",
+    "evidenceOK": "Der Fakt passt. Was bleibt offen?",
     "transfer": "Neue Frage",
     "readFacts": "Wenn dir ein Fakt fehlt, öffne „Ergänzungen ansehen“.",
     "resumeHere": "Hier weiterarbeiten",
@@ -2093,12 +2093,12 @@
     "evidenceStatus": "Fakt zur Frage geprüft",
     "rethink": "Du kannst noch einmal entscheiden, welche Nachricht Laura am meisten hilft.",
     "sourceInstead": "Satz in der Nachricht auswählen",
-    "sourceYes": "Du hast einen Satz gewählt. Erkläre in eigenen Worten, warum er zur Frage passt.",
-    "sourceRetry": "Lies die Frage noch einmal. Welcher Satz aus der Nachricht hilft dir, sie zu beantworten?",
+    "sourceYes": "Dieser Satz passt. Warum?",
+    "sourceRetry": "Welcher Satz passt zur Frage?",
     "applied": "Neue Frage ohne Hilfe richtig beantwortet.",
     "assisted": "Neue Frage nach einem Hinweis oder einer Korrektur richtig beantwortet.",
     "pending": "Neue Frage noch nicht beantwortet.",
-    "openReason": "Schreibe kurz am iPad: Warum hilft dieser Fakt Laura bei der Frage, die du gewählt hast? Erkläre, warum die Nachricht dafür hilfreich ist.",
+    "openReason": "Warum hilft dieser Fakt Laura? Wie passt er zur Nachricht?",
     "reasonOpen": "Deine eigene Begründung bleibt offen für die Besprechung im Unterricht.",
     "limitChecked": "Fakt und Frage passen zusammen. Du hast richtig gewählt, was der Fakt nicht entscheiden kann.",
     "checkLimit": "Wähle, was der Fakt nicht entscheiden kann. Deine eigene Begründung wird nicht automatisch bewertet.",
@@ -2117,9 +2117,9 @@
     "skipped": "Für Lauras Frage unterbrochen. Die neue Frage ist noch nicht beantwortet.",
     "appliedSolution": "Neue Frage mit gezeigter Lösung beantwortet.",
     "fresh": "Neu beginnen",
-    "thoughtHint": "Schreibe wenige eigene Wörter. Das Programm bewertet deinen Text nicht.",
+    "thoughtHint": "Stichwörter reichen. Deinen Grund besprichst du im Unterricht.",
     "reviewSolo": "Prüfe am iPad den Fakt zu deiner eigenen Antwort.",
-    "soloReplace": "Wenn du neu beginnst, werden deine bisherigen Antworten am iPad gelöscht. Mit „Zurück zum Gespräch“ behältst du sie.",
+    "soloReplace": "Neu beginnen löscht deine Antworten am iPad. Mit „Zurück zum Gespräch“ behältst du sie.",
     "soloSession": "Deine bisherigen Antworten am iPad sind noch da."
   },
   "levelPrompts": {
@@ -2132,12 +2132,12 @@
       "Ergänzung": "Wähle die Aussage, die in der Nachricht fehlt."
     },
     "MSA": {
-      "analyse": "Benenne den Bestandteil mit eigenen Worten. Was bedeutet er für diesen Rat? Stichworte reichen.",
-      "Ergänzung": "Lies die Fachkarte. Erkläre im Textfeld, welche Aussage in der Nachricht fehlt und wie sie zum Rat passt."
+      "analyse": "Wie passt der Satz zum Rat? Erkläre kurz.",
+      "Ergänzung": "Lies die Fachkarte. Was fehlt? Wie passt es zum Rat?"
     },
     "AHR": {
-      "analyse": "Zeige an wenigen Worten aus der Nachricht, welche Funktion die Aussage für den Rat hat.",
-      "Ergänzung": "Formuliere die fehlende Aussage im Textfeld. Was erklärt sie? Was kannst du aus ihr nicht schließen?"
+      "analyse": "Welche Wörter stützen den Rat? Erkläre, wie.",
+      "Ergänzung": "Was fehlt? Erkläre auch, was offenbleibt."
     }
   },
   "caseReflection": {
@@ -2146,7 +2146,7 @@
     "Großmutter": "Begründet das Ende der Embryonalentwicklung allein eine moralische Verpflichtung? Unterscheide Sachverhalt und persönliche Überzeugung.",
     "Vater": "Was kann Laura bei der ärztlichen Beratung erfahren? Wer entscheidet, was für sie wichtiger ist?"
   },
-  "known": "Prüfe vier Bestandteile: Fakt, Wert, Norm und Folgerung. Hier meint „Fakt“ einen biologischen Beleg. Auch Lauras Pläne sind wichtige Fallinformationen. Prüfe bei jeder Nachricht selbst, was ausdrücklich gesagt wird.",
+  "known": "Was sagt die Person? Prüfe Fakt, Wert, Norm und Folgerung. Ein Fakt ist hier eine prüfbare Aussage über den Körper. Auch Lauras Pläne sind wichtig.",
   "designFiles": {
     "Laura": "laura.webp",
     "Mutter": "mutter.webp",

@@ -55,3 +55,13 @@
 #beratung .abschnittshinweis{margin:0 0 .55rem;padding:.4rem .6rem;border-left:.18rem solid #728d72;background:#eff3eb}
 
 #beratung legend, #beratung p, #material-dialog p {white-space:pre-line}
+
+#beratung .chat-entry {background:#fffdf7;border:0;border-radius:.12rem .65rem .65rem .65rem}
+#beratung .chat-entry[data-speaker=Du] {background:#dbe9df;margin-inline-start:1rem;border-radius:.65rem .12rem .65rem .65rem}
+@media(min-width:650px) {
+ #beratung {max-width:72rem}
+ #beratung .beratung-spalten {grid-template-columns:minmax(0,.88fr) minmax(0,1.3fr);align-items:start}
+ #beratung-verlauf {position:sticky;top:.5rem}
+ #chat-meldungen {max-height:calc(100dvh - 9rem)}
+ #material-dialog {margin-inline:auto max(2vw,calc((100vw - 70rem)/2));width:min(53vw,39rem)}
+}
