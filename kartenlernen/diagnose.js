@@ -181,6 +181,8 @@ const Lernfeedback = (() => {
   gram.haut.b.push('an (?:diesen|den) (?:stellen|hautstellen) ohne schutz kann man sich (?:anstecken|infizieren)',
     'dort koennen '+germs+' (?:weitergegeben|uebertragen) werden',
     'auf (?:dieser|der) freien haut koennen '+germs+' von einem menschen zum anderen (?:kommen|gelangen)');
+  gram.haut.negatives.sperma.push('(?:krankheitserreger|erreger) koennen nur (?:mit|durch) sperma uebertragen werden');
+  gram.haut.negatives.kontakt.push('(?:durch|bei) hautkontakt koennen keine (?:krankheitserreger|erreger) uebertragen werden');
   gram.haut.negatives.flaeche.push(...frame(condom,'bedeckt|bedecken|schuetzt|schuetzen','die (?:ganze|gesamte) haut'));
   gram.kupfer.a.push(...frame(swimmers,'verlieren','(?:an )?tempo'));
   gram.kupfer.b.push('(?:so )?haben sie es schwerer bis zum ei');

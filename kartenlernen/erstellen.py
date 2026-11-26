@@ -12,7 +12,7 @@ HERE=Path(__file__).resolve().parent
 ROOT=HERE.parent
 OUT=ROOT/'dist/Kartenlernen'
 REF='562ea2566dd80e31c093f313b925adcb31e22c9a'
-START='b3abb525f78940c3b19f23787762be7fa3072c4a'
+START='30c32c48bd2e56384fead1d9ff7f07b294456c52'
 sys.path.extend([str(ROOT/'vorbereitung'),str(ROOT/'scripts')])
 from build import manifest
 from bilder import make_graphics

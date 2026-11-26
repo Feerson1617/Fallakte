@@ -70,6 +70,7 @@
    }
    inspect('Papier '+(i+1));ok($('#page h1').innerText==='Schreibe auf deine Infokarte.','Schreibauftrag');
    ok($('#page').innerText.includes('Nimm dein Blatt mit den vier Infokarten.'),'Blattname');
+   if(i===2)ok($('.locator').innerText.includes('Suche auf der Rückseite oben 3 – Kupferspirale.'),'Blattposition in Kapitel 3');
    const f=all('li strong').map(n=>n.innerText);
    ok(JSON.stringify(f)===JSON.stringify(cs[i].felder.map(f=>f.wort)),'Originalwörter');
    ok($('.sheet .active').innerText===(i+1)+' – '+cs[i].titel,'richtige Blatthälfte');
@@ -103,7 +104,9 @@
        ok($('#page').innerText.includes('Infokarte 3 – Kupferspirale'),'Karte zum tatsächlichen Fehler');
        tap('reference');inspect('Fachbeleg zum Zusatz');
        ok($('.beleg').innerText===cs[2].texte[0].volltext,'richtige Originalstelle');
-       tap('helpback');tap('back');tap('revise');
+       tap('helpback');tap('back');tap('compare');inspect('Selbstvergleich mit erkanntem Zusatz');
+       ok($('#page p:last-of-type').innerText.includes('Die Kupferspirale wirkt ohne Hormone.'),'Zusatz im Vergleich berichtigt');
+       tap('revise');
        const verkehrt={pille:'Kein Eisprung, weil die Eizelle fehlt.',schleim:'Der Schleim wird zäher, weil die Spermien schwerer durchkommen.',haut:'Freie Haut, weil Erreger durch Hautkontakt übertragen werden.',kupfer:'Die Spermien bewegen sich schlechter, weil die Befruchtung erschwert ist.'};
        enter(verkehrt[q.modell]);tap('check');inspect('Vertauschte Ursache');
        ok($('#page').innerText.includes(m.zuerst) && !$('#page').innerText.includes('kann richtig sein') && key('revise').classList.contains('primary'),'Ursache korrigieren');
@@ -115,7 +118,11 @@
        enter(samples[1]);tap('help');inspect('Überarbeiteter Entwurf in Hilfe 2');
        ok(Object.values(m.fragen).some(text=>$('#page').innerText.includes(text)), 'Hilfe reagiert vor erneutem Prüfen');
        tap('back');tap('check');inspect('Widerspruch');ok($('#page').innerText.includes('Prüfe den anderen Teil'),'Widerspruch');
-       tap('help');tap('more');inspect('Satzstarter');tap('more');inspect('Fachhilfe');tap('more');inspect('Beispiel');tap('back');tap('revise');
+       tap('help');tap('more');inspect('Satzstarter');tap('more');inspect('Fachhilfe');tap('more');inspect('Beispiel');
+       const fehlertext=m.fehler[Lernfeedback.analyze(q.modell,samples[1]).error];
+       ok($('#page').innerText.includes(fehlertext),'konkrete Korrektur in Hilfe 5');
+       tap('back');tap('compare');inspect('Vergleich mit erkanntem Widerspruch');
+       ok($('#page p:last-of-type').innerText.includes(fehlertext),'Korrektur zum geprüften Entwurf');tap('revise');
        enter(m.beispiel+' Das ist eine weitere Sache.');tap('check');inspect('Unklarer Zusatz');
        ok($('#page').innerText.includes('Beide Schritte sind da.'),'vorhandene Aussagen bestätigt');
        tap('help');tap('back');tap('revise');enter('Ich meine einen anderen Zusammenhang.');tap('check');inspect('Unsicher');
@@ -132,7 +139,7 @@
  const regularTaps=taps,read=[...words].join(' ').match(/[\p{L}\p{N}]+/gu).length;
  if(models){
    tap('menu');inspect('Sitzungsmarken');ok(all('.chapter').every(b=>b.innerText.endsWith('✓')),'vier Sitzungsmarken');
-   tap('lookup');inspect('Zeitnotweg');for(let i=0;i<4;i++){tap('fill',i);inspect('Zeitnot Papier');ok(key('written').innerText==='Zurück zur Kartenauswahl','Beschriftung');tap('written');ok(key('fill'),'Kartenauswahl');}
+   tap('lookup');inspect('Zeitnotweg');for(let i=0;i<4;i++){tap('fill',i);inspect('Zeitnot Papier');if(i===2)ok($('.locator').innerText.includes('Suche auf der Rückseite oben 3 – Kupferspirale.'),'Direkteinstieg Papier');ok(key('written').innerText==='Zurück zur Kartenauswahl','Beschriftung');tap('written');ok(key('fill'),'Kartenauswahl');}
  }
  return {tier,assist,count,taps:regularTaps,papers,lesewoerter:read,errors,quellen};
 }

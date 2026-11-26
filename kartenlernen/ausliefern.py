@@ -9,11 +9,13 @@ from pruefen import QA
 from umfang import measure
 from wiedereinstieg import run as touch
 from feedbackpruefung import run as feedback
+from externpruefung import browserwege
 
 def dump(x):return json.dumps(x,ensure_ascii=False,indent=2)
 
 def run(previous):
     t=touch()
+    externe_wege=browserwege()
     counts=feedback(previous)
     costs=measure(previous)
     proof=json.loads((QA/'Browserpruefung.json').read_text())
@@ -26,7 +28,7 @@ def run(previous):
     sizes=sorted({(r['breite'],r['hoehe'],r['schrift'],r['scorm']) for r in runs})
     ver={r['browser']:r['version'] for r in runs}
     pics={'Screenshots/'+p.name:p.read_bytes() for p in (QA/'Sichtbilder').glob('*.jpg')}
-    scope=dict(commit=head,ausgangsstand=START,kartenreferenz=REF,wege=len(runs),bildschirmpruefungen=sum(r['count'] for r in runs),
+    scope=dict(externe_browserwege=len(externe_wege),commit=head,ausgangsstand=START,kartenreferenz=REF,wege=len(runs),bildschirmpruefungen=sum(r['count'] for r in runs),
                browser=ver,fenster=sizes,feedback=counts,kartenfelder=64,schutz=proof['bestandsdateien'],screenshots=len(pics))
     umfang=f'''# Arbeitsumfang und Unterrichtsplanung
 
@@ -42,20 +44,19 @@ Für 45 Minuten sind 4 Minuten für die Orientierung, 20 Minuten für vier Metho
 '''
     (OUT/'Arbeitsumfang.md').write_text(umfang)
     reserve=counts['kontrollreserve']['satz']['kontrollreserve']
-    vergleich=counts['vorher_nachher']
+    extern=counts['extern']
     alle=counts['gesamt']['satz']
     fp=sum(v.get('falsch_positiv',0) for v in alle.values())
     fn=sum(v.get('ungerechtfertigt_negativ',0) for v in alle.values())
     assert fp==fn==0,(fp,fn)
-    freitexte=sum(counts['verschiedene_texte'].values())
     assert all(v>=200 for v in counts['verschiedene_texte'].values())
     assert all(x['alt']['klicks']==x['neu']['klicks'] and x['alt']['freitext']==x['neu']['freitext'] for x in costs)
     assert all(x['alt']['pflichtfragen']==x['neu']['pflichtfragen']==4 and x['alt']['papierphasen']==x['neu']['papierphasen']==4 for x in costs)
     titel={'passend':'Vollständig richtige Erklärungen','teilweise':'Richtige Teilaussagen','ergebnis':'Bloßes Ergebnis',
            'fehlvorstellung':'Fehlvorstellungen','widerspruch':'Widersprüche','beziehung':'Vertauschte Ursache und Wirkung',
            'unsicher':'Fachlich unklare Antworten','zusatz':'Richtiger Kern mit unklarem Zusatz'}
-    tabelle='\n'.join(f"| {label} | {vergleich[key]['gesamt']} | {vergleich[key]['vorher']} | {vergleich[key]['jetzt']} |"
-                      for key,label in titel.items())
+    tabelle='\n'.join(f"| {titel[key]} | {v['anzahl']} | {v['vorher']} | {v['jetzt']} |"
+                      for key,v in extern.items())
     report=f'''# Prüfbericht · Vorbereitung mit vier Infokarten
 
 Geprüfter Commit `{head}` auf dem Vorbereitungszweig. Der vor der Bearbeitung mit dem entfernten Zweig abgeglichene Ausgangsstand ist `{START}`.
@@ -70,15 +71,18 @@ Förder und ESA wählen Antworten. Auf MSA erklären Lernende den Zusammenhang z
 
 - {len(runs)} vollständige Lernwege, alle vier Niveaus mit und ohne Fehlversuche und Hilfen. {scope['bildschirmpruefungen']} Kontrollen der gerenderten Texte, Grafiken, Tasten und Trefferflächen in Chromium {ver['chromium']} und WebKit {ver['webkit']}. Alle im Katalog geprüften Arbeitsschritte waren ohne Scrollen erreichbar. Das Sichtpaket enthält {len(pics)} echte Browseraufnahmen.
 - 16 Originalkarten und alle 64 Feldlösungen mit Referenzarchiv, alten Auslieferungen sowie vier Schüler- und vier Muster-PDFs abgeglichen. Der Feldnachweis dokumentiert für jede Nummer den tatsächlich vor dem Schreiben gezeigten Text und den zugehörigen vollständigen Originalabsatz.
-- Alle zwölf Auswahlfragen wurden mit beiden Antworten geprüft. Für die vier freien Aufgaben liegen {freitexte} verschiedene Eingaben samt Sollbewertung, Ausgaben der beiden Softwarestände und Hilfestufen vor. In diesen Beständen gab es {fp} falsche vollständige Bestätigungen und {fn} richtige Antworten mit eindeutiger Fehlerzuschreibung. Die 109 extern geprüften Schülertexte lagen nicht vollständig im Wortlaut vor. Die fünf im Auftrag zitierten richtigen Formulierungen sowie ihre fachlichen Gegenproben sind als Regression enthalten.
-- Alle fünf Beispiele werden jetzt als passend erkannt. Bei „Die Pille verhindert den Eisprung. Eine Befruchtung ist nicht möglich.“ wird das Ergebnis erkannt und gezielt nach der Eizelle gefragt. Bei umgekehrter Kausalrichtung fragt die Anwendung nach dem ersten Vorgang. Ein erkennbarer Zusatz wie „Die Pille schützt vor HIV“ führt auch in einer anderen Aufgabe zur konkreten Fehlererklärung, Infokarte und Belegstelle. Bei offener Bedeutung dürfen Schüler ihren Text mit den beiden Kernaussagen und dem Beispiel vergleichen, bearbeiten oder weitergehen.
-- In der neuen Kontrollreserve stimmten {reserve['korrekt']} von {reserve['gesamt']} Diagnosen mit den festgelegten Bedeutungen überein. Vier richtige natürliche Erklärungen führten zum vorsichtigen Selbstvergleich. Beispiel: „Kupfer macht die Schwimmer im Sperma träge, sodass sie das Ei kaum noch erreichen.“ Die frühere Zielmarke von 95 % für normale richtige Antworten wurde in dieser anspruchsvollen Stichprobe verfehlt (12 von 16). Vier von vier Schreibvarianten und 32 von 32 Teilantworten, Fehlvorstellungen und Widersprüchen wurden korrekt erkannt.
-- Für jede Eingabe wurden die sichtbare Rückmeldung und alle fünf Hilfetexte geprüft. Bei {counts['hilfen']['sollbezogen']} von {reserve['gesamt']} Reservetexten entsprachen Diagnose und Hilfebezug dem vorab festgelegten Soll. Bei vier richtigen Antworten blieben Ursache oder Folge unerkannt. Hier war der neutrale Vergleich verfügbar, ohne einen bestimmten fehlenden Inhalt zu unterstellen. Das Verfahren überprüft Zuordnung, Texte, Quellen und Abschlusswege. Die Wirkung auf das Verständnis muss im Unterricht beobachtet werden.
-- Die Daten der Entwicklung, zwei neue Zwischenproben (86 und 85 Texte) und die nach Festlegung von Erkennung und Hilfen bei a59c7c3 erstellte Kontrollreserve (80 andere Texte) sind getrennt archiviert. Die erstmaligen Zwischenproben ergaben 78/86 und 78/85. Spätere Verbesserungen an diesen beiden Beständen zählen als Regression. Die Diagnosen und Hilfeansichten lassen sich im Testkatalog für jede Formulierung nachlesen.
+- Geprüft wurden die 961 bisherigen Freitexte, sämtliche zwölf Auswahlfragen und die 73 eingereichten CSV-Zeilen. Die Originaldatei ist mit unverändertem SHA-256 im Feedback-Testkatalog enthalten. Zeilennummer, Sollurteil, frühere Diagnose und aktuelle Ausgaben lassen sich dort nachschlagen. Im bisherigen Katalog blieben alle Diagnosen, Erstreaktionen und Hilfen 1 bis 4 identisch mit 30c32c4. Die frühere Kontrollreserve erreicht weiterhin {reserve['korrekt']}/{reserve['gesamt']}.
+- Beim Beispiel „Die Pille hemmt den Eisprung. Keine Eizelle wird frei. Die Pille schützt vor HIV.“ zeigten beide Browser am Ausgangsstand in Hilfe 5 und im Selbstvergleich nur die Eisprung-Erklärung. Jetzt steht in beiden Ansichten zusätzlich „Pille und Spiralen schützen nicht vor HIV oder anderen STI.“ Nach dem Bearbeiten bezieht sich Hilfe 5 sofort auf den neuen Entwurf. Die Papieransicht für Kapitel 3 und ihre Hilfe geben auch beim Direkteinstieg die Position „Suche auf der Rückseite oben 3 – Kupferspirale.“ an.
+- In der externen Stichprobe erhielten fünf Fehlvorstellungen, zwölf Widersprüche und drei vertauschte Ursache-Wirkungs-Beziehungen die zum Fehler passende Unterstützung. Sechs bisher offene Formulierungen führen jetzt zur bereits vorhandenen konkreten Fehlererklärung. Sieben zusätzliche Gegenproben prüfen Verneinungen, eine Frage und eine ausdrückliche Einschränkung zum Einnahmeplan. Im gesamten Testbestand gab es {fp} unberechtigte vollständige Bestätigungen und {fn} richtige Erklärungen mit eindeutiger Fehlerzuschreibung.
+- Alle 73 CSV-Antworten wurden in Chromium und WebKit bei 390 × 560 CSS-Pixeln und 125 % Schrift über die gebaute HTML-Datei eingegeben. Geprüft wurde die angezeigte Denkfrage, die Korrektur in den Hilfeansichten und im angebotenen Selbstvergleich, der vollständige eigene Text einschließlich aller Textteile und das Weiterarbeiten. Die Sichtprüfung enthält für alle {len(externe_wege)} Wege die tatsächlichen Ausgaben.
 
-| Erwartete Bedeutung in der Kontrollreserve | Texte | b3abb52 richtig zugeordnet | Aktueller Stand richtig zugeordnet |
+### Unabhängiger Freitexttest
+
+| Fachliches Soll aus der CSV | Texte | 30c32c4 richtig eingeordnet | Aktueller Stand richtig eingeordnet |
 |---|---:|---:|---:|
 {tabelle}
+
+Diese gezielt schwierigen Texte sind laut Einreichung nicht repräsentativ. Die Übereinstimmung stieg von 24 auf 30 von 73. Nur eine der 40 vollständigen Erklärungen wurde direkt als passend erkannt. Die übrigen 39 und vier der neun Teilantworten führten zum angeleiteten Selbstvergleich. Ein Beispiel ist die richtige Erklärung zur Ovulation mit dem Wort „Wirkstoffe“. Die Software lässt die Einordnung offen und zeigt den eigenen Text neben dem Beispiel. Automatisiert geprüft wurde die Zuordnung der Hilfe zum fachlichen Fehler. Die Lernwirkung muss im Unterricht untersucht werden.
 
 - Ein Browserweg prüfte wiederholte Fehlversuche, nachträglich geänderte Entwürfe, widersprüchliche und teilweise richtige Aussagen, erhaltene Hilfestufen, digitale Ersatzkarte und Selbstvergleich. Nach vollständigem Neuladen begann ein neuer Sitzungsstand. Auch das Ergänzen aller vier Karten über den Zeitnotweg vergibt keinen fachlichen Erfolg.
 - Fokussierte Texteingaben wurden bei verkleinerten Arbeitsflächen in beiden Browsern geprüft. Verfügbare Höhen waren 580, 340, 240 und 285 CSS-Pixel. Der vollständige Text blieb auch nach Aufteilung, Hilfe und Selbstvergleich erhalten. Diese Messung simuliert den Platzbedarf der Bildschirmtastatur.
@@ -96,7 +100,7 @@ Die lokale Prüfung erkennt nur bestimmte fachliche Aussagen und Beziehungen. Un
 Ein echtes Schul-iPad, die native Tastatur im produktiven itslearning-Kurs, die pädagogische Abnahme und gemessene Bearbeitungszeiten mit dieser Lerngruppe stehen aus. Für den Praxistest im Hoch- und Querformat die Infokarte 3 auf der Rückseite finden, auf MSA eine Teilantwort schreiben, bei offener Tastatur Hilfe verwenden, zurückkehren und überarbeiten. Danach vollständig neu laden und anhand des Papierstands wieder einsteigen. Beobachten, ob die Lernenden Hilfe und Lücken ohne individuelle Erklärung finden. Die Unterrichtsfreigabe folgt nach dieser Erprobung.
 '''
     (OUT/'Pruefbericht.md').write_text(report)
-    files={'Browserpruefung.json':(QA/'Browserpruefung.json').read_bytes(),'Touch-und-Tastatur.json':dump(t),'Feedback-Ergebnisse.json':dump(counts),
+    files={'Externe-Freitextwege.json':dump(externe_wege),'Browserpruefung.json':(QA/'Browserpruefung.json').read_bytes(),'Touch-und-Tastatur.json':dump(t),'Feedback-Ergebnisse.json':dump(counts),
            'Kartenfelder-im-Lernweg.json':dump(proof['feldbelege']),'Arbeitsumfang.json':dump(costs),'Pruefumfang.json':dump(scope),'Pruefbericht.md':report}
     pack(OUT/'Vorbereitung-Sichtpruefung.zip',{**files,**pics})
     (OUT/'Testergebnisse.json').write_text(dump(dict(**scope,touch=t,arbeitsumfang=costs)))

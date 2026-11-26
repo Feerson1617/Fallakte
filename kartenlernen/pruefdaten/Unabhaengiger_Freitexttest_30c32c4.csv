@@ -1,0 +1,74 @@
+﻿Aufgabe;Testantwort;Fachliches Soll (Prüfurteil);Diagnose b3abb52;Diagnose 30c32c4;Erkannte Teile;Erkannte Fehlerkategorie;Hinweis
+pille;Die Wirkstoffe unterdrücken die Ovulation. Deshalb kommt keine reife Eizelle aus dem Eierstock.;passend;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+pille;Weil der Eisprung durch die Hormone ausbleibt, steht den Spermien keine Eizelle zur Befruchtung zur Verfügung.;passend;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+pille;Die Pille verhindert die Freisetzung einer Eizelle, indem sie den Eisprung hemmt.;passend;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+pille;Es kommt wegen der Pille nicht zum Eisprung, also können die Samenzellen kein Ei befruchten.;passend;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+pille;Die Pille stoppt den Eisprung. So gibt es kein freies Ei, das befruchtet werden könnte.;passend;unsicher;unsicher;a;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+pille;Kein Eissprung -> kein freigesetztes Ei für die Befruchtung.;passend;unsicher;unsicher;a;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+pille;Kein Eisprung, es steht keine befruchtbare Eizelle zur Verfügung.;passend;unsicher;unsicher;a;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+pille;Die Pille unterdrückt den Eisprung. Dadurch kann keine Eizelle aus dem Eierstock austreten.;passend;unsicher;unsicher;a;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+pille;Die Hormone verhindern, dass beim Eisprung ein Ei freigesetzt wird.;passend;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+pille;Eine Eizelle wird nicht aus dem Eierstock freigesetzt, da der Eisprung unterdrückt wird.;passend;unsicher;unsicher;a;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+pille;Sie unterdrückt den Eisprung.;teilweise;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+pille;Es fehlt die freigesetzte Eizelle.;teilweise;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+pille;Durch den ausbleibenden Eisprung bleibt eine Schwangerschaft aus.;teilweise;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+pille;Die Pille tötet die Samenzellen ab.;fehlvorstellung;unsicher;fehlvorstellung;;spermien;Gezielt schwieriger Zusatztest, nicht repräsentativ
+pille;Die Pille hemmt den Eisprung. Keine Eizelle wird frei. Die Pille schützt außerdem vor HIV.;widerspruch;unsicher;unsicher;a,b;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+pille;Die Pille hemmt den Eisprung. Eine Eizelle wird trotzdem frei.;widerspruch;widerspruch;widerspruch;a;eizelle;Gezielt schwieriger Zusatztest, nicht repräsentativ
+pille;Die Pille verhindert den Eisprung. Keine Eizelle wird frei. Die Pille muss nicht jeden Tag eingenommen werden.;widerspruch;unsicher;unsicher;a,b;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+pille;Der Eisprung bleibt aus, weil keine Eizelle zur Befruchtung frei wird.;vertauscht;unsicher;vertauscht;a,b;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+pille;Eizelle Eisprung irgendwie?;unsicher;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+schleim;Das Hormon lässt den Schleim am Muttermund dickflüssiger werden. Samenzellen können ihn schlechter durchqueren.;passend;unsicher;unsicher;b;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+schleim;Gestagen verdickt den Zervixschleim, wodurch er für Spermien weniger durchlässig ist.;passend;unsicher;unsicher;a;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+schleim;Da der Schleim am Gebärmutterhals zähflüssiger wird, können die Spermien nicht mehr so leicht durch ihn gelangen.;passend;unsicher;unsicher;a;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+schleim;Die Spermien werden am Weiterkommen gehindert, weil der Schleim am Gebärmutterhals dicker wird.;passend;unsicher;unsicher;a;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+schleim;Der Schleim wird zäher und lässt weniger Samenzellen durch.;passend;unsicher;unsicher;a;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+schleim;Zäherer Schleim am Gebärmutterhals -> schlechteres Durchkommen der Spermien.;passend;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+schleim;Der Schleim ist dickflüssiger, deshalb fällt es Spermien schwerer, zur Eizelle zu gelangen.;passend;unsicher;unsicher;a;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+schleim;Der Schleim wird dichter. Die Samenzellen können schlechter passieren.;passend;passend;passend;a,b;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+schleim;Der Schleim wird zäher. Spermien müssen sich mehr durchkämpfen.;passend;unsicher;unsicher;a;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+schleim;Der Schleim wird nicht flüssiger, sondern zäher. Dadurch kommen die Spermien schwerer hindurch.;passend;unsicher;unsicher;b;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+schleim;Der Schleim am Gebärmutterhals verdickt sich.;teilweise;teilweise;teilweise;a;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+schleim;Die Spermien haben es schwerer durchzukommen.;teilweise;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+schleim;Der Schleim am Gebärmutterhals wird dünner.;fehlvorstellung;fehlvorstellung;fehlvorstellung;;dichte;Gezielt schwieriger Zusatztest, nicht repräsentativ
+schleim;Die Hormonspirale hemmt immer den Eisprung.;fehlvorstellung;fehlvorstellung;fehlvorstellung;;zyklus;Gezielt schwieriger Zusatztest, nicht repräsentativ
+schleim;Der Schleim wird dicker. Spermien gelangen dadurch schneller zur Eizelle.;widerspruch;widerspruch;widerspruch;a;weg;Gezielt schwieriger Zusatztest, nicht repräsentativ
+schleim;Der Schleim wird zäher. Die Spermien kommen schlechter durch. Die Hormonspirale gibt keine Hormone ab.;widerspruch;unsicher;widerspruch;a,b;hormonabgabe;Gezielt schwieriger Zusatztest, nicht repräsentativ
+schleim;Der Schleim wird zäher. Spermien kommen schwerer durch. Mit einer Hormonspirale kann man kein HIV bekommen.;widerspruch;unsicher;unsicher;a,b;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+schleim;Der Schleim wird dicker, weil Spermien schwerer hindurchkommen.;vertauscht;unsicher;vertauscht;a,b;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+schleim;Da unten ist dann anders.;unsicher;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+haut;Das Kondom schützt nur dort, wo es die Haut bedeckt. Bei einer Berührung an anderen Hautstellen können Erreger übertragen werden.;passend;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+haut;Es kann zum Kontakt mit infizierter Haut außerhalb des Kondoms kommen.;passend;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+haut;Viren können bei Berührung der Hautstellen außerhalb der Hülle auf die andere Person gelangen.;passend;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+haut;Die Haut neben dem Kondom bleibt frei, sodass man sich dort durch Berührung anstecken kann.;passend;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+haut;Weil nicht die komplette Haut bedeckt ist, können manche Erreger beim Hautkontakt übergehen.;passend;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+haut;Ein Teil der Haut ist ungeschützt. Über diese Stellen können Krankheiten durch Hautkontakt übertragen werden.;passend;unsicher;unsicher;a;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+haut;Nur ein Teil der Haut bedeckt -> Erreger können über Hautkontakt übertragen werden.;passend;unsicher;unsicher;b;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+haut;Es ist nicht die gesamte Haut bedeckt. Bei Hautkontakt können Erreger weitergegeben werden.;passend;unsicher;unsicher;b;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+haut;Auch bei intaktem Kondom kann sich die freie Haut berühren und dabei können Viren übertragen werden.;passend;unsicher;unsicher;b;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+haut;Erreger brauchen kein Sperma, sie können über Haut außerhalb des Kondoms übertragen werden.;passend;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+haut;Ein Teil der Haut bleibt unbedeckt.;teilweise;teilweise;teilweise;a;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+haut;Erreger können durch Hautkontakt übertragen werden.;teilweise;teilweise;teilweise;b;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+haut;Ein Kondom bedeckt die ganze Haut.;fehlvorstellung;fehlvorstellung;fehlvorstellung;;flaeche;Gezielt schwieriger Zusatztest, nicht repräsentativ
+haut;Erreger können nur mit Sperma übertragen werden.;fehlvorstellung;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+haut;Ein Teil der Haut bleibt frei. Erreger können bei Hautkontakt übertragen werden. Kondome schützen vor sämtlichen STI.;widerspruch;unsicher;widerspruch;a,b;kondomschutz;Gezielt schwieriger Zusatztest, nicht repräsentativ
+haut;Ein Teil der Haut bleibt frei. Durch Hautkontakt können keine Erreger übertragen werden.;widerspruch;unsicher;unsicher;a;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+haut;Ein Teil der Haut bleibt frei. Erreger können bei Hautkontakt übertragen werden. Das Kondom schützt zu hundert Prozent vor jeder Infektion beim Sex.;widerspruch;unsicher;unsicher;a,b;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+haut;Manchmal geht es trotzdem.;unsicher;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+kupfer;Die Kupferionen beeinträchtigen die Beweglichkeit der Samenzellen, deshalb gelangen weniger zur Eizelle.;passend;unsicher;unsicher;a;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+kupfer;Das Kupfer stört die Spermien auf ihrem Weg zum Ei und erschwert dadurch die Befruchtung.;passend;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+kupfer;Das Kupfer macht die Samenzellen weniger beweglich, sodass sie das Ei nicht so gut erreichen können.;passend;unsicher;unsicher;b;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+kupfer;Die Befruchtung ist schwieriger, weil Kupfer die Beweglichkeit und Funktion der Spermien beeinträchtigt.;passend;unsicher;unsicher;b;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+kupfer;Spermien bewegen sich nicht mehr so gut. Dadurch gelingt es ihnen seltener, die Eizelle zu befruchten.;passend;unsicher;unsicher;a;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+kupfer;Schlechter bewegliche Spermien -> geringere Chance der Befruchtung.;passend;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+kupfer;Kupferionen behindern die Spermienbewegung. Die Samenzellen kommen schlechter bis zur Eizelle.;passend;unsicher;unsicher;b;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+kupfer;Kupfer stört Bewegung und Befruchtungskraft der Spermien.;passend;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+kupfer;Die Schwimmfähigkeit der Samenzellen sinkt durch Kupfer, wodurch das Erreichen der Eizelle erschwert wird.;passend;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+kupfer;Auch wenn eine Eizelle frei wird, kommen die durch Kupfer beeinträchtigten Spermien schwerer an sie heran.;passend;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+kupfer;Kupfer bremst die Samenzellen.;teilweise;teilweise;teilweise;a;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+kupfer;Die Befruchtung wird erschwert.;teilweise;teilweise;teilweise;b;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+kupfer;Kupfer bremst Spermien. Die Befruchtung wird erschwert. Die Kupferspirale gibt Hormone ab.;widerspruch;unsicher;widerspruch;a,b;kupferhormone;Gezielt schwieriger Zusatztest, nicht repräsentativ
+kupfer;Kupfer bremst Spermien. Die Spermien befruchten die Eizelle leichter.;widerspruch;widerspruch;widerspruch;a;befruchtung;Gezielt schwieriger Zusatztest, nicht repräsentativ
+kupfer;Kupfer bremst Spermien. Die Befruchtung wird erschwert. Kupferspiralen schützen auch gegen HIV.;widerspruch;unsicher;widerspruch;a,b;sti;Gezielt schwieriger Zusatztest, nicht repräsentativ
+kupfer;Kupfer bremst die Spermien, weil die Befruchtung schwieriger ist.;vertauscht;unsicher;vertauscht;a,b;;Gezielt schwieriger Zusatztest, nicht repräsentativ
+kupfer;Vielleicht hat es mit dem Eisprung zu tun.;unsicher;unsicher;unsicher;;;Gezielt schwieriger Zusatztest, nicht repräsentativ

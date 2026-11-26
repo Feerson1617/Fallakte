@@ -9,7 +9,7 @@ const Fachwissen = (() => {
   const vor='(?:vor|gegen) (?:eine[r]? (?:ansteckung|infektion) mit )?(?:allen |saemtlichen |vielen )?'+erreger;
   const alle='vor (?:allen|saemtlichen|jeder art von) (?:sti[s]?|geschlechtskrankheiten|sexuell uebertragbaren infektionen)';
   const aktiv='(?:schuetzt|schuetzen)';
-  const schutz='(?:auch |immer |zuverlaessig |sicher |vollstaendig )*';
+  const schutz='(?:auch |ausserdem |immer |zuverlaessig |sicher |vollstaendig )*';
   const mittel='(?:(?:eine |die )?hormonfreie methode|hormonfreie methoden|hormonfrei)';
   const regel='(?:die |eine )?regelmaessige einnahme (?:der |von der )?pille';
   const einnehmen='(?:regelmaessig|nach plan|taeglich) (?:einnehmen|nehmen|eingenommen werden|genommen werden)';
@@ -23,10 +23,12 @@ const Fachwissen = (() => {
   const katalog={
     sti:eintrag(1,1,'Pille und Spiralen schützen nicht vor HIV oder anderen STI.','Hält diese Methode Krankheitserreger zurück?',
       [methoden+' '+aktiv+' '+schutz+vor,vor+' '+aktiv+' '+methoden,methoden+' (?:bietet|bieten) (?:auch )?schutz '+vor,
+       'mit (?:der |einer )?(?:(?:hormon|kupfer)?spirale|(?:kombinations)?pille) kann man kein hiv bekommen',
        methoden+' (?:verhindert|verhindern) (?:eine ansteckung mit )?(?:hiv|sti[s]?)'],
       [methoden+' '+aktiv+' (?:auch )?nicht '+vor,methoden+' '+aktiv+' '+vor+' nicht',methoden+' '+aktiv+' nicht gegen '+erreger,methoden+' (?:bietet|bieten) keinen (?:sti-schutz|schutz '+vor+')']),
     kondomschutz:eintrag(0,2,'Kondome senken das STI-Risiko. Manche Erreger können über freie Haut übertragen werden.','Welche Haut bleibt frei?',
-      [kondom+' '+aktiv+' '+schutz+alle+'(?: immer| sicher| vollstaendig)?',kondom+' (?:bietet|bieten) (?:hundertprozentigen|absoluten|sicheren) schutz '+alle],
+      [kondom+' '+aktiv+' '+schutz+alle+'(?: immer| sicher| vollstaendig)?',kondom+' (?:bietet|bieten) (?:hundertprozentigen|absoluten|sicheren) schutz '+alle,
+       kondom+' '+aktiv+' zu (?:hundert|100) prozent vor jeder infektion beim sex'],
       [kondom+' '+aktiv+' nicht (?:sicher |vollstaendig )?'+alle,kondom+' '+aktiv+' '+alle+' nicht sicher',kondom+' (?:senkt|senken) das (?:risiko vieler sti|sti-risiko)']),
     kupferhormone:eintrag(2,0,'Die Kupferspirale wirkt ohne Hormone.','Was gibt die Kupferspirale ab?',
       [kupfer+' (?:enthaelt|enthalten) '+hormonwort,kupfer+' (?:gibt|geben) '+hormonwort+' ab',kupfer+' (?:ist|sind) hormonhaltig'],
@@ -39,7 +41,7 @@ const Fachwissen = (() => {
       [pille+' toetet (?:die )?(?:spermien|samenzellen) nicht',pille+' toetet keine (?:spermien|samenzellen)']),
     einnahme:eintrag(1,2,'Die Pille muss nach ihrem Einnahmeplan genommen werden. Vergessen kann den Schutz verringern.','Was steht im Einnahmeplan?',
       [regel+' ist (?:grundsaetzlich |generell )?(?:unnoetig|egal|unwichtig|nicht (?:noetig|notwendig|wichtig))',
-       pille+' (?:muss|braucht) (?:man )?nicht '+einnehmen,'man muss '+pille+' nicht '+einnehmen],
+       pille+' muss nicht jeden tag (?:genommen|eingenommen) werden',pille+' (?:muss|braucht) (?:man )?nicht '+einnehmen,'man muss '+pille+' nicht '+einnehmen],
       [regel+' ist (?:noetig|notwendig|wichtig|nicht unnoetig)',pille+' muss (?:man )?'+einnehmen,'man muss '+pille+' '+einnehmen]),
     beschwerden:eintrag(2,4,'Auch ohne Hormone sind Beschwerden möglich. Bei der Kupferspirale kann die Blutung stärker werden.','Wie kann sich die Blutung bei der Kupferspirale ändern?',
       [mittel+' (?:ist|sind|bedeutet) (?:immer |grundsaetzlich |garantiert )?(?:beschwerdefrei|nebenwirkungsfrei|frei von nebenwirkungen|keine beschwerden)',

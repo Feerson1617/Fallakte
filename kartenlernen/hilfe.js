@@ -3,13 +3,21 @@ function fehlenderTeil(d){
   if(d.state!=='teilweise'||d.parts.length!==1)return null;
   return d.parts[0]==='a'?1:0;
 }
+function vergleichstext(q,m,r,d){
+  const beispiel=m?m.beispiel:q.grund;
+  if(d?.state==='vertauscht')return 'Achte auf die Reihenfolge. '+beispiel;
+  let korrektur;
+  if(!m)korrektur=q.alternativen.find(a=>a.text===r.choice)?.erklaerung;
+  else if(d.error)korrektur=d.quelle?Lernfeedback.gesundheit[d.error].info:m.fehler[d.error];
+  return korrektur && !beispiel.includes(korrektur)?beispiel+' '+korrektur:beispiel;
+}
 function fachhilfe(q,m,r,card,step,karten){
   const d=m?Lernfeedback.analyze(q.modell,r.text):null;
   const ziel=d?.quelle?karten[d.quelle[0]]:card;
   const abschnitt=d?.quelle?.[1]??q.abschnitt;
   const where='Lies auf deiner Infokarte '+ziel.nummer+' – '+ziel.titel+' unter der Überschrift „'+ziel.texte[abschnitt].titel+'“.';
   if(step===1)return where;
-  if(step===5)return m?m.beispiel:q.grund;
+  if(step===5)return vergleichstext(q,m,r,d);
   if(!m){
     if(r.choice===q.passend)return 'Deine Auswahl passt. Du kannst weitergehen.';
     const wrong=q.alternativen.find(a=>a.text===r.choice);

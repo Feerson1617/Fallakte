@@ -81,10 +81,20 @@ def run():
                                 shot('13-Selbstvergleich');tap('compared');continue
                             tap('revise');assert p.locator('#entry').input_value()=='Das könnte auch anders zusammenhängen.'
                             if q['modell']=='pille':
-                                p.locator('#entry').fill(model['beispiel']+' Die Pille schützt vor HIV.');tap('check')
+                                text='Die Pille hemmt den Eisprung. Keine Eizelle wird frei. Die Pille schützt vor HIV.'
+                                korrektur='Pille und Spiralen schützen nicht vor HIV oder anderen STI.'
+                                p.locator('#entry').fill(text);tap('check')
                                 shot('18-STI-Zusatz');tap('help');tap('reference')
                                 assert p.locator('#page h1').inner_text()=='Schutz vor Infektionen'
-                                shot('19-Kartenstelle-STI');tap('helpback');tap('back');tap('revise')
+                                shot('19-Kartenstelle-STI');tap('helpback')
+                                while p.locator('[data-action=more]').count():tap('more')
+                                assert korrektur in p.locator('#page').inner_text();shot('20-Hilfe-5-STI')
+                                tap('back');tap('compare')
+                                assert p.locator('#draft').inner_text()==text and korrektur in p.locator('#page p').last.inner_text()
+                                shot('21-Selbstvergleich-STI');tap('revise')
+                                p.locator('#entry').fill(model['beispiel']);tap('help')
+                                assert korrektur not in p.locator('#page').inner_text()
+                                tap('back')
                             model=p.evaluate("k=>JSON.parse(document.querySelector('#material').textContent).modelle[k]",q['modell'])
                             p.locator('#entry').fill(model['beispiel']);tap('check')
                         tap('advance')

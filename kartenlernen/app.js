@@ -36,7 +36,8 @@
       '<div class="grid">'+buttons+'</div>'+(lookup?(fromTransition?btn('startq','Zu den Fragen'):''):'<div class="menulinks">'+btn('questions','Alle vier Karten vollständig? Zu den Fragen')+btn('lookup','Fehlende Wörter auf der Infokarte ergänzen')+'</div>');
   }
   function paperLocation(){
-    return (chapter===2?'Drehe dein Blatt um. ':'')+'Suche '+card().position+' auf der '+card().seite+' '+label()+'.';
+    if(chapter===2)return 'Suche auf der Rückseite oben '+label()+'.';
+    return 'Suche '+card().position+' auf der '+card().seite+' '+label()+'.';
   }
   function rows(){
     return '<ol>'+card().felder.map(f=>'<li><span>Schreibe bei <b>'+f.nummer+'</b>:</span> <strong>'+esc(f.wort)+'</strong></li>').join('')+'</ol>';
@@ -102,7 +103,7 @@
       case 'intro':return title('Sind alle vier Infokarten ausgefüllt?')+para('Lass dein Blatt für die Fragen neben dem iPad liegen.')+'<div class="actions">'+go('startq',session().position?'Zu den Fragen':'Zur ersten Frage')+btn('lookup','Fehlende Infokarte ergänzen')+'</div>';
       case 'question':return question();case 'feedback':return resultView();
       case 'help':return help();case 'reference':return reference();
-      case 'compare':return sourceTitle()+title('Vergleiche mit dem Beispiel.')+'<p><b>Deine Antwort</b></p>'+'<p id="draft"></p><div id="pieces"></div>'+(r().last?.state==='unsicher'?'<p class="selbstcheck">'+esc(model().vergleich)+'</p>':'')+'<p><b>Beispiel</b> · '+esc(model().beispiel)+'</p>'+'<div class="actions">'+btn('revise','Antwort bearbeiten')+go('compared','Verglichen, weiter')+'</div>';
+      case 'compare':return sourceTitle()+title('Vergleiche mit dem Beispiel.')+'<p><b>Deine Antwort</b></p>'+'<p id="draft"></p><div id="pieces"></div>'+(r().last?.state==='unsicher'?'<p class="selbstcheck">'+esc(model().vergleich)+'</p>':'')+'<p><b>Beispiel</b> · '+esc(vergleichstext(q(),model(),r(),r().last))+'</p>'+'<div class="actions">'+btn('revise','Antwort bearbeiten')+go('compared','Verglichen, weiter')+'</div>';
       case 'end':return title('Du bist fertig.')+para('Bewahre deine Infokarten für den Unterricht auf. Schneide das Blatt erst auf das Zeichen deiner Lehrkraft einmal in der Mitte durch.')+btn('menu','Zur Kapitelauswahl');
     }
   }
