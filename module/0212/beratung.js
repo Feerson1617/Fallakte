@@ -280,7 +280,7 @@ window.Beratung = (() => {
     details.id='papier-ersatz';
     details.open=draft.anchorsOpen;
     details.ontoggle=()=>{if (details.isConnected) draft.anchorsOpen=details.open;};
-    if (draft.recheck) section.append(element('p','','Laufzettel „'+stage().title+'“: Lies deine Begründung. Passt sie zur neuen Empfehlung? Wenn dein neuer Rat einen anderen Grund hat, ergänze ihn. Gib den Buchstaben erneut ein.'));
+    if (draft.recheck) section.append(element('p','','Laufzettel · Seite '+Math.ceil(Number(stage().id.slice(1))/2)+' · „'+stage().title+'“: Lies deine Begründung. Passt sie zur neuen Empfehlung? Wenn dein neuer Rat einen anderen Grund hat, ergänze ihn. Gib den Buchstaben erneut ein.'));
     else section.append(element('p','',task().task),element('p','',task().paperPrompt));
     details.append(element('summary','',task().paperFallback),element('p','',task().task));
     for (const [letter,text] of Object.entries(stage().anchors)) details.append(element('p','',letter+' · '+text));
@@ -402,7 +402,7 @@ window.Beratung = (() => {
       const following=followingStage();
       const end=!following?.playable;
       area.append(element('h2','',end?'Schlussrat gesendet':'Lies Lauras Antwort.'));
-      if (end) area.append(element('p','','Laufzettel „Mein Schlussrat“: Lass deine Antwort für das Unterrichtsgespräch offen.'));
+      if (end) area.append(element('p','','Laufzettel · Seite '+(isPaper()?3:1)+' · „Mein Schlussrat“: Lass deine Antwort für das Unterrichtsgespräch offen.'));
       area.append(end ? control('beratung-fertig','Zur Fallübersicht',()=>window.Runde1.home(),'senden') :
         control('beratung-weiter',following.title.split(' – ')[0]+' öffnen',next,'senden'));
       return area;

@@ -12,7 +12,7 @@ def compile_media(bank):
         for level in levels:
             action=by_level[level]
             prefix=key.split('-')[0]
-            page={'MU':2,'FR':3,'LA':4,'GM':1,'VA':2}[prefix]
+            page=2 if prefix=='LA' else 1
             sheet='Vertiefungsbogen' if prefix in ('GM','VA') else 'Pflichtlernbogen'
             if prefix!='LA':
                 topic={'MU':'mögliche Blutungen und Schmerzen beim Abbruch mit Medikamenten',
@@ -91,7 +91,7 @@ def compile_media(bank):
     add('LA-abschluss',laura[3],None,'Festhalten','eigene Begründung',actions['final'],
         'Die persönlichen Belege und die beiden Ergänzungen lassen sich im selben Abschnitt vergleichen.',
         'Nach der in dieser Sitzung abgeschlossenen persönlichen Prüfung.')
-    fields['Festhalten']=dict(group=laura[3]['section'],design='Platz für eine Ergänzung zur weiterhin lesbaren ersten Antwort auf Seite 4.')
+    fields['Festhalten']=dict(group=laura[3]['section'],design='Platz für eine Ergänzung zur weiterhin lesbaren ersten Antwort auf Seite 2.')
     del bank['mediaActions']
     return dict(layout=actions['layout'],digitalOnly=actions['digitalOnly'],fields=fields,steps=steps)
 

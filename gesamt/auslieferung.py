@@ -94,10 +94,11 @@ def build(joint):
 .vorbereitung .tag{display:block}.vorbereitung .beschriftung{flex-direction:row;align-items:center}
 .beschriftung{overflow-wrap:anywhere}.tag{min-height:44px}
 </style>''')
-    shell=single_replace(shell,'</head>',f'<meta name="revision" content="{revision()}"></head>')
+    release=revision()
     OUT.mkdir(parents=True,exist_ok=True)
     for version,allowed in VERSIONS.items():
-        page=shell
+        version_commit='562ea2566dd80e31c093f313b925adcb31e22c9a' if version=='Vorbereitung' else release
+        page=single_replace(shell,'</head>',f'<meta name="revision" content="{version_commit}"></head>')
         for key in modules.keys()-set(allowed):
             page=single_replace(page,f'data-entry="modul-{key}"','disabled')
         data=''.join(f'<script id="modul-{key}" type="application/octet-stream">{base64.b64encode(modules[key]).decode()}</script>' for key in allowed)

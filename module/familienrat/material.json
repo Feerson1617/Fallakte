@@ -1926,7 +1926,7 @@
     ]
   ],
   "evaluation": {
-    "Förder": "1. Kreuze Lauras Frage nach Beschwerden, nach späteren Kindern oder beide Fragen an.\n2. Trage M für Mutter oder F für Freundin auf der Linie vor dem passenden Fakt ein. Hast du beide Fragen gewählt, fülle beide Linien aus.\n3. Kreuze an, welche Nachricht Laura hilft. Du kannst beide wählen.\n4. Erkläre kurz, warum du diese Nachricht hilfreich findest. Wählst du beide, erkläre beide.",
+    "Förder": "1. Kreuze Lauras Frage nach Beschwerden, nach späteren Kindern oder beide Fragen an.\n2. Trage M für Mutter oder F für Freundin auf der Linie vor dem passenden Fakt ein. Hast du beide Fragen gewählt, fülle beide Linien aus.\n3. Kreuze an, welche Nachricht Laura hilft. Du kannst beide wählen.\n4. Warum hilft die Nachricht Laura bei ihrer Frage? Nutze den biologischen Fakt. Beginne so: „Die Nachricht hilft Laura, weil …“ Wählst du beide Nachrichten, erkläre beide.",
     "ESA": "1. Schreibe unter „Meine Wahl und Lauras Frage(n)“, welche Nachricht du hilfreich findest und welche Frage von Laura sie beantwortet. Du kannst beide wählen.\n2. Schreibe den passenden Fakt zu Beschwerden oder späteren Kindern in das Feld „Der passende Fakt dazu ist“. Bei beiden Fragen nenne beide Fakten.\n3. Erkläre unter „Das hilft Laura zu verstehen“, warum die Nachricht für Laura wichtig ist.",
     "MSA": "1. Wähle die Frage nach Beschwerden, nach späteren Kindern oder beide Fragen.\n2. Ordne jeder gewählten Frage einen biologischen Fakt aus der Nachricht der Mutter oder der Freundin zu.\n3. Begründe in zwei bis drei Sätzen, welche Nachricht Laura damit hilft. Du kannst beide wählen.",
     "AHR": "1. Vergleiche die beiden Nachrichten mit Lauras Fragen nach Beschwerden und späteren Kindern.\n2. Ordne den Fragen die passenden biologischen Fakten zu.\n3. Begründe, welche Nachricht hilfreicher ist oder warum beide gleich wichtig sind. Was kann Laura mit den Fakten allein nicht entscheiden?"
@@ -2108,7 +2108,7 @@
     "continueReason": "Prüfen: Was sagt der Fakt nicht?",
     "timeHint": "Die Formulierungshilfe war geöffnet.",
     "digitalCheck": "Am iPad: Wähle die Nachricht, Lauras Frage und den Fakt. Wähle danach, was der Fakt nicht entscheiden kann.",
-    "endRecovery": "Am iPad ist deine persönliche Prüfung noch offen. Tippe auf „Lauras Frage – Prüfen“.",
+    "endRecovery": "Sieh auf Seite 2 unter „Festhalten“ nach. Ist „digital geprüft“ oder „analog geprüft“ angekreuzt? Lies deine erste Antwort. Möchtest du etwas genauer erklären, schreibe es nur in „Festhalten“. Deine erste Antwort bleibt stehen.\n\nFehlt das Kreuz oder ist „noch offen“ angekreuzt? Tippe auf „Lauras Frage – Prüfen“.",
     "sameStep": "Am iPad: Wähle deine Antwort zur Frage in diesem Abschnitt.",
     "helpBeforePaper": "Am iPad: Beantworte zuerst die neue Frage.",
     "readMatrix": "Argumente in der Nachricht nachlesen",
@@ -2303,10 +2303,10 @@
       "AHR": "Halte die Ergänzung kurz fest. Begründe, was sie klärt und welche Entscheidung offenbleibt."
     },
     "final": {
-      "Förder": "1. Lies deine erste Antwort auf Seite 4. Lass deine erste Antwort stehen.\n2. Kannst du jetzt genauer erklären, warum die Nachricht Laura hilft? Dann ergänze das im Feld „Festhalten“.",
-      "ESA": "1. Lies deine erste Antwort auf Seite 4. Lass deine erste Antwort stehen.\n2. Kannst du jetzt genauer erklären, wie die biologische Information Lauras Frage beantwortet? Dann ergänze das im Feld „Festhalten“.",
-      "MSA": "1. Lies deine erste Antwort auf Seite 4. Lass deine erste Antwort stehen.\n2. Kannst du jetzt genauer erklären, warum der geprüfte Fakt für deine Wahl wichtig ist? Dann ergänze das im Feld „Festhalten“.",
-      "AHR": "1. Lies deine erste Antwort auf Seite 4. Lass deine erste Antwort stehen.\n2. Kannst du jetzt genauer erklären, wie der Fakt deinen Vergleich stützt und was Laura selbst entscheiden muss? Dann ergänze das im Feld „Festhalten“."
+      "Förder": "1. Lies auf Seite 2 deine Antwort unter „Lauras Frage – Meine Antwort“. Lass sie stehen.\n2. Kannst du jetzt genauer erklären, warum die Nachricht Laura hilft? Dann ergänze das im Feld „Festhalten“.",
+      "ESA": "1. Lies auf Seite 2 deine Antwort unter „Lauras Frage – Meine Antwort“. Lass sie stehen.\n2. Kannst du jetzt genauer erklären, wie die biologische Information Lauras Frage beantwortet? Dann ergänze das im Feld „Festhalten“.",
+      "MSA": "1. Lies auf Seite 2 deine Antwort unter „Lauras Frage – Meine Antwort“. Lass sie stehen.\n2. Kannst du jetzt genauer erklären, warum der geprüfte Fakt für deine Wahl wichtig ist? Dann ergänze das im Feld „Festhalten“.",
+      "AHR": "1. Lies auf Seite 2 deine Antwort unter „Lauras Frage – Meine Antwort“. Lass sie stehen.\n2. Kannst du jetzt genauer erklären, wie der Fakt deinen Vergleich stützt und was Laura selbst entscheiden muss? Dann ergänze das im Feld „Festhalten“."
     },
     "firstLabel": "Meine erste Antwort",
     "checkedLabel": "Nach dem Prüfen",

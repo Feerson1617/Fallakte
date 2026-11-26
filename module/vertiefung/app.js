@@ -98,9 +98,15 @@ function draw(){
     if(!state.valid && !conflict() && !needsSource()){
       add(desk,'p',s.task[tier]);
       if(['MSA','AHR'].includes(tier)){
-        add(desk,'p',s.paper[tier].replace(' '+s.task[tier],'')+' Schreibe deine Begründung auf. Kreise die richtige Aussage ein.');
-        const d=add(desk,'details');add(d,'summary','Zusatzbogen nicht zur Hand?');
-        check.answers.forEach((a,i)=>add(d,'p','ABC'[i]+' · '+a));add(desk,'p',s.return);
+        const paper=s.paper[tier].replace(' '+s.task[tier],'');
+        const celina=bank.person==='Celina';
+        add(desk,'p',paper+(celina
+          ? ' Lies A, B und C hier am iPad. Schreibe deine Begründung auf den Celina-Bogen. Kreise dort den Buchstaben der passenden Aussage ein.'
+          : ' Schreibe deine Begründung auf. Kreise die richtige Aussage ein.'));
+        const list=add(desk,celina?'div':'details');
+        if(!celina)add(list,'summary','Zusatzbogen nicht zur Hand?');
+        check.answers.forEach((answer,i)=>add(list,'p','ABC'[i]+' · '+answer));
+        add(desk,'p',s.return);
         const input=add(add(desk,'label','Prüfcode '),'input');input.id='code';input.value=state.code;
         input.oninput=()=>{state.code=input.value;state.result='';document.querySelector('#feedback').textContent='';};
         btn(desk,'Code prüfen','check',()=>inspect(state.code.trim().toUpperCase()));
