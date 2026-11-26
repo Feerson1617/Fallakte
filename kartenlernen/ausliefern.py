@@ -122,6 +122,8 @@ Ein echtes Schul-iPad, die native Tastatur im produktiven itslearning-Kurs, die 
            'Kartenfelder-im-Lernweg.json':dump(proof['feldbelege']),'Arbeitsumfang.json':dump(costs),'Pruefumfang.json':dump(scope),'Pruefbericht.md':report}
     pack(OUT/'Vorbereitung-Sichtpruefung.zip',{**files,**pics})
     (OUT/'Testergebnisse.json').write_text(dump(dict(**scope,touch=t,arbeitsumfang=costs)))
+    from clt import ausgabe
+    ausgabe()
     hashes={p.name:sha(p.read_bytes()) for p in sorted(OUT.iterdir()) if p.name not in ('SHA256SUMS','Buildnachweis.json')}
     (OUT/'Buildnachweis.json').write_text(dump(dict(**scope,dateien=hashes)))
     (OUT/'SHA256SUMS').write_text(''.join(sha(p.read_bytes())+'  '+p.name+'\n' for p in sorted(OUT.iterdir()) if p.name!='SHA256SUMS'))
