@@ -53,7 +53,7 @@ Für 45 Minuten sind 4 Minuten für die Orientierung, 20 Minuten für vier Metho
     assert all(x['alt']['klicks']==x['neu']['klicks'] and x['alt']['freitext']==x['neu']['freitext'] for x in costs)
     assert all(x['alt']['pflichtfragen']==x['neu']['pflichtfragen']==4 and x['alt']['papierphasen']==x['neu']['papierphasen']==4 for x in costs)
     titel={'passend':'Vollständig richtige Erklärungen','teilweise':'Richtige Teilaussagen','ergebnis':'Bloßes Ergebnis',
-           'fehlvorstellung':'Fehlvorstellungen','widerspruch':'Widersprüche','beziehung':'Vertauschte Ursache und Wirkung',
+           'fehlvorstellung':'Fehlvorstellungen','widerspruch':'Widersprüche','vertauscht':'Vertauschte Ursache und Wirkung',
            'unsicher':'Fachlich unklare Antworten','zusatz':'Richtiger Kern mit unklarem Zusatz'}
     tabelle='\n'.join(f"| {titel[key]} | {v['anzahl']} | {v['vorher']} | {v['jetzt']} |"
                       for key,v in extern.items())
