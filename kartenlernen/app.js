@@ -70,7 +70,15 @@
       '<div class="answers">'+q().optionen.map((o,i)=>btn('pick',o,'answer',i)).join('')+'</div>':
       '<label for="entry">Stichwörter reichen.</label><textarea id="entry" rows="2" aria-label="'+esc(q().frage)+'" spellcheck="false">'+esc(r().text)+'</textarea><div class="editfoot"><div id="segments"></div>'+go('check','Antwort prüfen')+'</div>')+'</section>';
   }
+  const orientierung={
+    level:'Suche das Niveau oben auf deinem Blatt. Tippe auf denselben Namen.',
+    menu:'Beginne mit der ersten Karte, die auf deinem Blatt noch fehlt.',
+    lookup:'Suche den Namen der fehlenden Karte auf deinem Blatt. Tippe auf diesen Namen.',
+    intro:'Vergleiche die vier Karten auf deinem Blatt. Fehlt ein Eintrag, öffne die passende Karte.',
+    end:'Lege deine ausgefüllten Infokarten für die nächste Stunde weg.'
+  };
   function help(){
+    if(orientierung[source])return title('Hilfe')+para(orientierung[source])+go('back','Zurück');
     const stage=session().hints[key()]||1,task=questionScreens.includes(source);
     const max=task?5:2;
     let body='';
@@ -108,10 +116,9 @@
     }
   }
   function nav(){
-    const active=screen==='info'||screen==='paper'||questionScreens.includes(screen)||screen==='help'||screen==='reference';
-    bar.innerHTML=(['level','menu'].includes(screen)?'<strong>Fallakte.</strong>':btn('menu','‹ Kapitel'))+
-      (screen==='menu'?btn('levels','Niveau ändern'):active?btn('help','Ich brauche Hilfe','help'):'');
-    const h=bar.querySelector('.help');if(h)h.innerHTML='<span aria-hidden="true">?</span> Ich brauche Hilfe';
+    const origin=(screen==='help'||screen==='reference')?source:screen;
+    bar.innerHTML=(['level','menu'].includes(origin)?'<strong>Fallakte.</strong>':btn('menu','‹ Kapitel'))+
+      (screen==='menu'?btn('levels','Niveau ändern'):'')+btn('help','Ich brauche Hilfe','help');
   }
   // Seite nur bei mehr Text als Platz. Der ganze Entwurf bleibt separat im RAM.
   let editorParts=[],editAt=0,compareAt=0;
@@ -194,7 +201,7 @@
     if(!work.classList.contains('tight') && page.scrollHeight>page.clientHeight){work.classList.add('tight');paginate();}
   }
   function render(){
-    editorParts=[];editAt=0;compareAt=0;nav();page.dataset.screen=screen;page.innerHTML=main();resize();page.focus({preventScroll:true});
+    editorParts=[];editAt=0;compareAt=0;nav();page.dataset.screen=screen;page.dataset.feedback=screen==='feedback'?r().last.state:'';page.innerHTML=main();resize();page.focus({preventScroll:true});
   }
   function openUnit(n){
     chapter=n;shortcut=false;const pos=session().units[n];step=pos<2?pos:1;screen=pos===2?'paper':'info';

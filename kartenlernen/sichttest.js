@@ -28,7 +28,7 @@
      const r=b.getBoundingClientRect();if(!box(r)||r.height<43.9||r.width<43.9)problem('Taste: '+b.textContent);
      if(!b.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)))problem('Taste verdeckt: '+b.textContent);
    }
-   if(['info','paper','question','feedback','help','reference','compare'].includes($('#page').dataset.screen)){
+   {
      const h=key('help');ok(h?.textContent.includes('Ich brauche Hilfe'),'Hilfezugang');
      const r=h.getBoundingClientRect();if(!helpPos)helpPos=[r.right,r.top];
      if(Math.abs(r.right-helpPos[0])>1 || Math.abs(r.top-helpPos[1])>1)problem('Hilfe verschoben');
@@ -56,7 +56,7 @@
    ok(saved===$('#page').innerText,'letzte Hilfestufe');tap('back');
    if(value!==undefined)ok($('#entry').value===value,'Entwurf erhalten');
  }
- inspect('Einstieg');tap('level',tier);inspect('Wiederaufnahme');tap('open',0);
+ inspect('Einstieg');visitHelp(1,'Niveauauswahl');tap('level',tier);inspect('Wiederaufnahme');visitHelp(1,'Kapitelauswahl');tap('open',0);
  for(let i=0;i<4;i++){
    for(let part=0;part<2;part++){
      inspect('Info '+(i+1)+'/'+(part+1));
@@ -71,7 +71,7 @@
      if(assist)visitHelp(2,'Information');tap('readnext');
    }
    inspect('Papier '+(i+1));ok($('#page h1').innerText==='Schreibe auf deine Infokarte.','Schreibauftrag');
-   ok($('#page').innerText.includes('Dein Blatt mit den Infokarten'),'Blattname');
+   ok($('.paper .locator').innerText.includes(cs[i].seite) && $('.paper h1').innerText.includes('Infokarte'),'Blattseite und Karte');
    if(i===2)ok($('.locator').innerText.includes('Suche auf der Rückseite oben 3 – Kupferspirale.'),'Blattposition in Kapitel 3');
    const f=all('li strong').map(n=>n.innerText);
    ok(JSON.stringify(f)===JSON.stringify(cs[i].felder.map(f=>f.wort)),'Originalwörter');
@@ -80,7 +80,7 @@
    ok(all('.sheet span').map(n=>n.innerText).join('|')===cs.slice(i<2?0:2,i<2?2:4).map(c=>c.nummer+' – '+c.titel).join('|'),'Methodennamen auf beiden Blatthälften');
    if(assist)visitHelp(2,'Papier');papers++;tap('written');
  }
- inspect('Übergang');ok($('#page h1').innerText==='Sind alle vier Infokarten ausgefüllt?' && key('lookup'),'Selbstkontrolle mit Kartenrückweg');tap('startq');
+ inspect('Übergang');if(assist)visitHelp(1,'Übergang');ok($('#page h1').innerText==='Sind alle vier Infokarten ausgefüllt?' && key('lookup'),'Selbstkontrolle mit Kartenrückweg');tap('startq');
  for(let i=0;i<4;i++){
    const q=chapter.fragen[i],m=material.modelle[q.modell];
    inspect('Frage '+(i+1));ok($('.locator').innerText.includes(cs[i].texte[q.abschnitt].titel),'Überschrift wie auf Papier');
@@ -90,8 +90,7 @@
      for(const t of cs[i].texte){inspect('Ersatzkarte '+t.titel);ok($('#page').innerText.includes(t.volltext),'Originaltext');tap('following');}
      inspect('Ersatzkarte Pearl-Index');tap('helpback');tap('back');
      if(q.typ==='wahl'){
-       const wrong=q.alternativen[0];
-       for(let k=0;k<2;k++){
+       for(const [k,wrong] of [q.alternativen[0],...q.alternativen].entries()){
          tap('pick',q.optionen.indexOf(wrong.text));inspect('Fehlwahl');
          ok($('#page').innerText.includes(wrong.impuls),'spezifischer Denkimpuls');
          if(k===0)visitHelp(5,'Fehlwahl');
@@ -137,11 +136,11 @@
    if(q.typ==='wahl')tap('pick',q.optionen.indexOf(q.passend));else{enter(m.beispiel);tap('check');}
    inspect('Passend');ok(key('advance'),'Weg zum Abschluss');tap('advance');
  }
- inspect('Abschluss');ok($('#page h1').innerText==='Du bist fertig.','Abschluss');
+ inspect('Abschluss');if(assist)visitHelp(1,'Abschluss');ok($('#page h1').innerText==='Du bist fertig.','Abschluss');
  const regularTaps=taps,read=[...words].join(' ').match(/[\p{L}\p{N}]+/gu).length;
  if(models){
    tap('menu');inspect('Sitzungsmarken');ok(all('.chapter').every(b=>b.innerText.endsWith('✓')),'vier Sitzungsmarken');
-   tap('lookup');inspect('Zeitnotweg');for(let i=0;i<4;i++){tap('fill',i);inspect('Zeitnot Papier');if(i===2)ok($('.locator').innerText.includes('Suche auf der Rückseite oben 3 – Kupferspirale.'),'Direkteinstieg Papier');ok(key('written').innerText==='Zurück zur Kartenauswahl','Beschriftung');tap('written');ok(key('fill'),'Kartenauswahl');}
+   tap('lookup');inspect('Zeitnotweg');if(assist)visitHelp(1,'Fehlende Karte');for(let i=0;i<4;i++){tap('fill',i);inspect('Zeitnot Papier');if(i===2)ok($('.locator').innerText.includes('Suche auf der Rückseite oben 3 – Kupferspirale.'),'Direkteinstieg Papier');ok(key('written').innerText==='Zurück zur Kartenauswahl','Beschriftung');tap('written');ok(key('fill'),'Kartenauswahl');}
  }
  return {tier,assist,count,taps:regularTaps,papers,lesewoerter:read,errors,quellen,ansichten:[...ansichten.values()]};
 }

@@ -68,6 +68,12 @@ Auf jedem Niveau führen acht kurze Informationsansichten zu vier Papieraufträg
 
 Förder und ESA wählen Antworten. Auf MSA erklären Lernende den Zusammenhang zwischen ausbleibendem Eisprung und Befruchtung sowie zwischen Schleim und Durchtritt der Spermien. Auf AHR erläutern sie die Grenze des Kondomschutzes und die Wirkung von Kupfer trotz möglichen Eisprungs. Zwei weitere Auswahlfragen je Niveau prüfen Fehlvorstellungen. Die Lerntexte, Kartenstellen, Antwortalternativen, Begründungen und aufgabenspezifischen Hilfen sind im Vertrag gegenübergestellt. Die acht vorhandenen Funktionsskizzen zeigen Hülle, Hautkontakt, Eisprung, Einnahme, Kupfer, Schleim und mögliche Veränderungen der Blutung. Pfeile bezeichnen mögliche Veränderungen. Die Miniatur zeigt Nummer und Methodennamen auf beiden Blatthälften. Die gesuchte Hälfte ist markiert. Vor den Fragen können Lernende direkt beginnen oder eine fehlende Karte ergänzen. Es gibt keine vorgezogene Fallberatung.
 
+## Ergonomische Abnahme gegenüber 2c2d952
+
+Die gelbe Taste „Ich brauche Hilfe“ bleibt bei Niveauwahl, Kartenwahl, Nachschlagen, Übergang und Abschluss am selben rechten oberen Rand. Eine kurze Orientierung führt jeweils zur Ausgangsansicht zurück. Fachfehler, Teilergebnisse und passende Erklärungen haben zusätzlich zur Rückmeldung unterschiedliche Hervorhebungen. Allgemeine Aktionstasten sind blau. Enge Fenster nutzen weniger Zwischenraum und eine kürzere Blattorientierung. Die Aufgabenschrift wird dafür nicht verkleinert.
+
+Geprüft werden die Lage der Hilfetaste und die Trefferflächen aller Tasten in den protokollierten Ansichten. Der Fehlerweg umfasst jede vorgegebene Alternative. Die Vorbereitung arbeitet mit Infokarten und Papier. Ein Gesprächsverlauf gehört erst zu den Unterrichtsbesuchen. Ungeprüft bleiben beliebige andere Fenstermaße und Schriftstufen, sämtliche möglichen Freitexte sowie Kombinationen beliebig vieler Unterbrechungen.
+
 ## Sprachliche Abnahme
 
 Für jede Methode führt der Weg vom Bild über zwei kurze Kernsätze zur selben Aussage auf dem Blatt. Eine fett gedruckte Lösung gehört zu genau einer nummerierten Lücke. Die Suchhilfe nennt Methode und gedruckte Überschrift. Auf Förder und ESA stehen konkrete Personen, Körperteile und Handlungen im Satz. Die beiden höheren Niveaus verlangen weiter eigene biologische Erklärungen oder das Abwägen einer Aussage. Im Zeitnotweg führt der Rückweg zur fehlenden Karte.

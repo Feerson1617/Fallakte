@@ -22,16 +22,16 @@ figure{text-align:center}figure svg{display:block;width:100%;height:clamp(64px,1
 .sheet{width:max-content;flex:none;display:grid;border:2px solid #496756;background:white;transform:rotate(-3deg);font-size:1rem;line-height:1.1;text-align:center}
 .sheet span{padding:.1em .3em;color:#566a61}.sheet span+span{border-top:1px dashed #456251}.sheet .active{background:#244e3c;color:white;font-weight:bold}
 .paper{background:#fffdf5;border:1px solid var(--line);border-radius:.8rem;padding:var(--pad)}
-.paper h1:before{content:'✎ ';color:#5c6335}.paper ol,#page>ol{display:grid;list-style:none;padding:0;gap:4px}
+.paper ol,#page>ol{display:grid;list-style:none;padding:0;gap:4px}
 li{display:grid;grid-template-columns:max-content 1fr;gap:.9em;align-items:baseline;background:#eaf0e4;padding:.25em .5em;border-radius:.36rem}
 li b{display:inline-grid;place-content:center;border:1px solid #9db598;border-radius:.25em;min-width:1.45em}li strong{overflow-wrap:anywhere}.paper .primary{justify-self:stretch}
 textarea{border:2px solid #6f8977;border-radius:.48rem;padding:.35em;width:100%;resize:none;font-size:1.08rem;line-height:1.24;background:white}
 .editfoot{justify-content:space-between}.answers{gap:.5rem}.answer{text-align:left}
-#type-measure{position:absolute;visibility:hidden;width:1rem;height:1rem}.tight{--gap:5px;--pad:7px}.tight h1{font-size:1.23rem}.tight{font-size:1rem;line-height:1.19}.tight .paper{padding:4px}.tight button{padding:.24em .45em}.tight li{padding:.12em .3em}.tight .grid,.tight .actions,.tight .menulinks{gap:4px}
+#type-measure{position:absolute;visibility:hidden;width:1rem;height:1rem}.tight{--gap:5px;--pad:7px}.tight{line-height:1.19}.tight .paper{padding:4px}.tight button{padding:.24em .45em}.tight li{padding:.12em .3em}.tight .grid,.tight .actions,.tight .menulinks{gap:4px}
 .tight figure svg{height:64px}.tight .locator{padding:4px 7px}
 @media(max-width:520px){.grid,.menulinks{display:grid;grid-template-columns:1fr}.lesson{display:grid}.lesson figure,#page>figure{display:flex;text-align:left;align-items:center}.lesson figure svg,#page>figure svg{width:34%;height:78px}.paper{padding:.5rem}.paper li{gap:.45em}}
 .editing .question .locator,.editing .question .context,.editing .question label{display:none}
-.editing .question{gap:4px}.editing .question h1{font-size:1.11rem}.editing #page{padding:4px;gap:4px}
+.editing .question{gap:4px}.editing #page{padding:4px;gap:4px}
 .editing textarea{min-height:2.7em;padding:.12em .35em}.editing #bar{min-height:46px;padding-block:1px}
 #draft{height:3.95em;overflow-wrap:anywhere;white-space:pre-wrap;line-height:1.3}
 #segments:not(:empty),#pieces:not(:empty){display:flex;align-items:center;gap:.25em}
@@ -54,4 +54,17 @@ textarea{border:2px solid #6f8977;border-radius:.48rem;padding:.35em;width:100%;
 @media(max-width:520px){
  .tight .paper{row-gap:2px}
  .tight .paper .locator{padding-block:1px}
+}
+
+#bar .help{margin-inline-start:auto}
+.primary{background:#25485e;border-color:#25485e}
+#page[data-feedback=passend] h1{color:#206437}
+#page:is([data-feedback=fehlvorstellung],[data-feedback=widerspruch],[data-feedback=vertauscht]) h1{color:#93342e}
+#page:is([data-screen=help],[data-feedback=teilweise]) h1{border-inline-start:.25em solid #ebbd36;padding-inline-start:.4em}
+@media(max-width:480px){#bar:has([data-action=levels])>strong{display:none}}
+#bar .help{align-self:flex-start}
+.editing #bar{padding-block:4px}
+.tight .paper .locator>div p:first-child{display:none}
+@media(min-aspect-ratio:6/5){
+ .tight .question .locator{flex-wrap:nowrap}
 }
