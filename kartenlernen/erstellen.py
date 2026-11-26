@@ -12,7 +12,7 @@ HERE=Path(__file__).resolve().parent
 ROOT=HERE.parent
 OUT=ROOT/'dist/Kartenlernen'
 REF='562ea2566dd80e31c093f313b925adcb31e22c9a'
-START='e1c438d53d57eb0794d172c5e7880a83972c9912'
+START='88ec05360259ab88967315c5dee800064e9ceef0'
 sys.path.extend([str(ROOT/'vorbereitung'),str(ROOT/'scripts')])
 from build import manifest
 from bilder import make_graphics
@@ -51,7 +51,7 @@ def build():
             info,prompt,answer,other,retry,feedback=versions[ti]
             correct=(i+ti+i//3)%2
             qs[topic]=dict(info=info,frage=prompt,antworten=[other,answer] if correct else [answer,other],richtig=correct,fehler=retry,rueckmeldung=feedback,
-                hilfen=[*HILFEN[topic],retry,'Die passende Antwort lautet: „'+answer+'“'])
+                hilfen=[*HILFEN[topic][ti],retry,'Passend ist: „'+answer+'“'])
         material['levels'][t]={'cards':levels,'fragen':qs}
     head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     styles=(HERE/'stil.css').read_text().replace('FONT_URL','data:font/ttf;base64,'+base64.b64encode((ROOT/'assets/dmsans.ttf').read_bytes()).decode())
@@ -65,7 +65,7 @@ def build():
 
 Ein A4-Blatt, Hochformat, Duplexdruck an der langen Kante. Auf beiden Seiten liegt die Schnittlinie genau in der Mitte. Vorderseite oben Kapitel 1, unten Kapitel 2. Rückseite oben Kapitel 3, unten Kapitel 4. Nach einem Schnitt bilden 1 und 3 sowie 2 und 4 je eine doppelseitige A5-Karte. Druck bei 100 Prozent prüfen.
 
-Ersetze auf den bisherigen Schüler- und Musterkarten nur die Methodenüberschrift durch die unten genannte Kapitelüberschrift. Belasse das Niveau rechts und alle Fachtexte, Lücken, Feldnummern, Pearl-Werte und deren Erläuterung im Wortlaut der Referenz. Seiten 3 und 4 mit Laufzettel entfallen. Keine zusätzlichen Arbeitsaufträge, Abschnittsmarken oder Codes setzen. Eine deutliche Kapitelzahl und der ausgeschriebene Methodenname müssen auch in Graustufen eindeutig sein. Im Lückentext bedeuten {1} bis {4} die nummerierten Schreibfelder. Die Papieransicht am Gerät zeigt deren Titel, Nummern und Lösungswörter.
+Ersetze auf den bisherigen Schüler- und Musterkarten nur die Methodenüberschrift durch die unten genannte Kapitelüberschrift. Belasse das Niveau rechts und alle Fachtexte, Lücken, Feldnummern, Pearl-Werte und deren Erläuterung im Wortlaut der Referenz. Seiten 3 und 4 mit Laufzettel entfallen. Keine zusätzlichen Arbeitsaufträge, Abschnittsmarken oder Codes setzen. Eine deutliche Kapitelzahl und der ausgeschriebene Methodenname müssen auch in Graustufen eindeutig sein. Im Lückentext bedeuten {1} bis {4} die nummerierten Schreibfelder. Die Papieransicht am Gerät zeigt die vier nummerierten Felder in Papier-Reihenfolge. Die fett gedruckten Wörter kommen in die gleich nummerierten Lücken. Bereits richtige Wörter bleiben stehen. Im Zeitnotweg führt der Abschluss einer Karte zurück zur Musterkartenauswahl.
 
 '''
     for t,cs in work['niveaus'].items():

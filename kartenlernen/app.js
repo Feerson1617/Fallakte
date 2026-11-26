@@ -20,7 +20,7 @@
     return '<button type="button" data-action="'+action+'" data-value="'+esc(value)+'" class="'+style+'">'+(symbol?icon(symbol):'')+'<span>'+esc(label)+'</span></button>';
   }
   const sessions = new Map();
-  let level='', screen='level', chapter=0, hint=0, modelSection=0, lookup=false;
+  let level='', screen='level', chapter=0, modelSection=0, lookup=false;
   let shortStep='read', forceRead=false;
   const session=()=>sessions.get(level);
   const cards=()=>bank.levels[level].cards;
@@ -32,11 +32,10 @@
     const g=bank.graphics[key];
     return '<figure>'+g.svg+'<figcaption>'+esc(g.caption)+'</figcaption></figure>';
   }
-  function chapterTitle(i) {return '<span class="number">'+(i+1)+'</span><span>'+esc(cards()[i].titel)+'</span>';}
   function selectChapter(index) {
-    chapter=index;lookup=false;hint=0;shortStep='read';forceRead=false;
+    chapter=index;lookup=false;shortStep='read';forceRead=false;
     const r=session().progress[index];
-    if (!r || r.done) session().progress[index]={item:0,chosen:null,correct:false,done:false,paper:false};
+    if (!r || r.done) session().progress[index]={item:0,hint:1,chosen:null,correct:false,done:false,paper:false};
     screen=progress().paper?'paper':'question';
   }
   function navigation() {
@@ -55,13 +54,19 @@
   }
   function menu(models) {
     const heading=models?'Welche Musterkarte brauchst du?':'Welches Kapitel ist noch nicht fertig?';
-    const intro=models?'Bei Zeitnot kannst du fehlende Wörter ergänzen. Die Aufgaben bleiben offen.':'Schau auf dein Kartenblatt. Du kannst jedes Kapitel auch wiederholen.';
-    const items=cards().map((c,i)=>'<button type="button" class="chapter" data-action="'+(models?'model':'open')+'" data-value="'+i+'">'+chapterTitle(i)+icon('arrow')+'</button>').join('');
+    const intro=models?'Bei Zeitnot kannst du fehlende Wörter ergänzen. Die Aufgaben bleiben offen.':
+      (session().completed.size?'✓ = in dieser Sitzung bearbeitet.':'Schau auf dein Kartenblatt.')+' STI bedeutet „sexuell übertragbare Infektionen“.';
+    const items=cards().map((c,i)=>{
+      const done=!models && session().completed.has(i);
+      const label=c.ueberschrift+(done?', in dieser Sitzung bearbeitet':'');
+      const number='<span class="number'+(done?' done':'')+'">'+(i+1)+(done?' ✓':'')+'</span>';
+      return '<button type="button" class="chapter" aria-label="'+esc(label)+'" data-action="'+(models?'model':'open')+'" data-value="'+i+'">'+number+'<span>'+esc(c.titel)+'</span>'+icon('arrow')+'</button>';
+    }).join('');
     return '<section class="menu"><h1>'+heading+'</h1><p>'+intro+'</p><div class="chaptergrid">'+items+'</div>'+
       (models?'':'<div class="menufoot">'+button('models','Bei Zeitnot: Musterkarten','plain','','paper')+'</div>')+'</section>';
   }
   function context() {
-    return '<p class="context">'+(topic()==='index'?'Kapitel 1 · Pearl-Index':esc(header()))+'</p>';
+    return '<p class="context">Kapitel '+(chapter+1)+'/4 · '+esc(topic()==='index'?'Pearl-Index':cards()[chapter].titel)+' · Frage '+(progress().item+1)+'/'+topics[chapter].length+'</p>';
   }
   function source() {
     return '<section class="source">'+graphic(topic())+'<p class="fact">'+esc(task().info)+'</p></section>';
@@ -85,6 +90,7 @@
       button('read','Bild und Info ansehen','plain','','book')+'</div>';
   }
   function helpPage(){
+    const hint=progress().hint;
     return '<section class="assist">'+context()+'<div class="hintbody">'+graphic(topic())+'<div><h1>Hilfe '+hint+' von 5</h1><p>'+esc(task().hilfen[hint-1])+'</p></div></div><div class="actions">'+
       (hint<5?button('more','Mehr Hilfe','secondary','','help'):'')+button('back','Zurück zur Aufgabe','primary','','back')+'</div></section>';
   }
@@ -92,7 +98,7 @@
     const c=cards()[chapter];
     const fields=c.felder.map(f=>'<li><span class="number">'+f.nummer+'</span><div><span class="fieldname">'+esc(f.titel)+'</span><strong>'+esc(f.wort)+'</strong></div></li>').join('');
     return '<section class="paper"><div class="paperhead">'+icon('paper')+'<h1>Jetzt brauchst du deine Infokarte!</h1></div><h2>'+esc(c.ueberschrift)+'</h2>'+
-     '<p>'+(chapter===2?'Wende dein Kartenblatt. Suche oben.':'Suche '+(chapter<2?'vorne':'hinten')+' '+c.position+'.')+' Fülle Lücken. Verbessere Fehler.</p>'+
+     '<p class="paperinstruction">'+(chapter===2?'Wende dein Kartenblatt. ':'')+esc(c.seite)+' '+esc(c.position)+'. Schreibe die fett gedruckten Wörter in die gleich nummerierten Lücken. Richtige Wörter bleiben stehen.</p>'+
      '<ol>'+fields+'</ol>'+button('finish','Karte fertig – weiter','primary','','arrow')+'</section>';
   }
   function model() {
@@ -112,10 +118,11 @@
   }
   function render(focus=false) {
     navigation();
-    workspace.classList.remove('tight','split');
+    workspace.classList.remove('tight','split','papergrid');
     page.innerHTML=screen==='level'?levels():screen==='menu'||screen==='models'?menu(screen==='models'):
       screen==='question'?question():screen==='help'?helpPage():screen==='paper'?paper():screen==='model'?model():completion();
     if(!fits())workspace.classList.add('tight');
+    if(screen==='paper' && !fits())workspace.classList.add('papergrid');
     if(screen==='question' && (!fits()||forceRead)){
       workspace.classList.add('split');page.innerHTML=splitQuestion();
     }
@@ -128,7 +135,7 @@
     switch(action){
       case 'level':level=value;if(!sessions.has(level))sessions.set(level,{progress:[],completed:new Set()});screen='menu';break;
       case 'levels':screen='level';break;
-      case 'menu':screen='menu';hint=0;break;
+      case 'menu':screen='menu';break;
       case 'models':screen='models';break;
       case 'open':selectChapter(Number(value));break;
       case 'model':chapter=Number(value);modelSection=0;lookup=true;screen='model';break;
@@ -137,8 +144,8 @@
       case 'fill':screen='paper';break;
       case 'read':forceRead=true;shortStep='read';break;
       case 'toanswers':forceRead=false;shortStep='answers';break;
-      case 'help':if(screen==='help'){screen='question';}else{hint=1;screen='help';}break;
-      case 'more':hint=Math.min(hint+1,5);break;
+      case 'help':screen=screen==='help'?'question':'help';break;
+      case 'more':progress().hint=Math.min(progress().hint+1,5);break;
       case 'back':screen='question';break;
       case 'answer':{
         const p=progress();if(p.correct)return;
@@ -147,14 +154,13 @@
       case 'next':{
         const p=progress();if(!p.correct)return;
         if(p.item+1===topics[chapter].length){p.paper=true;screen='paper';}
-        else{p.item++;p.chosen=null;p.correct=false;shortStep='read';forceRead=false;}
+        else{p.item++;p.hint=1;p.chosen=null;p.correct=false;shortStep='read';forceRead=false;}
         break;
       }
       case 'finish':{
-        if(!lookup){
-          progress().done=true;progress().paper=false;
-          session().completed.add(chapter);
-        }
+        if(lookup){lookup=false;screen='models';break;}
+        progress().done=true;progress().paper=false;
+        session().completed.add(chapter);
         const next=cards().findIndex((c,i)=>i>chapter && !session().completed.has(i));
         if(next>=0)selectChapter(next);else screen='end';
         break;

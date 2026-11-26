@@ -38,42 +38,57 @@
  }
  function tap(a,v){const b=$('[data-action="'+a+'"]'+(v===undefined?'':'[data-value="'+v+'"]'));ok(b&&!b.disabled,a+' '+v);b.click();taps++;}
  function showAnswers(){if(key('toanswers')){tap('toanswers');segments++;inspect(state+' · Auswahl');}}
- function help(label){
+ function help(label,start,end,q){
    const previous=$('#page').innerText;tap('help');
-   for(let h=1;h<=5;h++){inspect(label+' · Hilfe '+h);ok($('#page').innerText.includes('Hilfe '+h+' von 5'),'Hilfestufe');if(h<5)tap('more');}
+   for(let h=start;h<=end;h++){
+     inspect(label+' · Hilfe '+h);
+     ok($('#page h1').textContent==='Hilfe '+h+' von 5','gespeicherte Hilfestufe '+h);
+     ok($('#page').innerText.includes(q.hilfen[h-1]),'Hilfe der aktuellen Frage');
+     if(h<end)tap('more');
+   }
    tap('back');ok($('#page').innerText===previous,'Arbeitsstand nach Hilfe');inspect(label+' · zurück');
  }
- inspect('Einstieg');tap('level',tier);inspect('Kapitelauswahl');tap('open',0);
+ inspect('Einstieg');tap('level',tier);inspect('Kapitelauswahl');
+ ok($('#page').innerText.includes('STI bedeutet „sexuell übertragbare Infektionen“'),'STI beim ersten Auftreten erklärt');
+ ok(!$('.chapter .done'),'unbearbeitete Sitzung');tap('open',0);
+ const seen=[];
  for(let i=0;i<4;i++){
+   const sources=[];seen.push(sources);
    const ts=[['index','huelle','kontakt'],['eisprung','einnahme'],['kupfer','kupferwahl'],['schleim','hormonwahl']][i];
    for(const topic of ts){
      const q=material.levels[tier].fragen[topic];inspect(topic);ok($('#page').innerText.includes(q.frage)||key('toanswers'),'Frage oder Leseansicht');
-     if(assist)help(topic);
+     const counter='Kapitel '+(i+1)+'/4';
+     ok($('.context').innerText.includes(counter) && $('.context').innerText.includes('Frage '+(ts.indexOf(topic)+1)+'/'+ts.length),'Zähler der Aufgabe');
+     ok($('.fact')?.innerText===q.info,'sichtbarer Lerntext vor Auswahl');sources.push({thema:topic,ansicht:'Lerntext',text:$('.fact').innerText});
+     if(assist){help(topic,1,2,q);help(topic+' · erneut',2,3,q);}
      showAnswers();ok($('#page').innerText.includes(q.frage),'Frage in Auswahl');ok(all('[data-action=answer]').length===2,'beide Antworten');
      if(assist){
        tap('answer',1-q.richtig);inspect(topic+' · Fehler');ok($('#page').innerText.includes(q.fehler),'Fehlerhinweis');
-       help(topic+' · nach Fehler');showAnswers();
+       help(topic+' · nach Fehler',3,5,q);showAnswers();
      }
      tap('answer',q.richtig);inspect(topic+' · richtig');ok($('#page').innerText.includes(q.rueckmeldung),'Erklärung');
-     if(assist)help(topic+' · nach Lösung');
+     sources.push({thema:topic,ansicht:'Rückmeldung',text:q.rueckmeldung});
+     if(assist)help(topic+' · nach Lösung',5,5,q);
      tap('next');
    }
    inspect('Papier '+(i+1));ok($('#page h1').innerText==='Jetzt brauchst du deine Infokarte!','Papierüberschrift');
    ok(all('button').length===1&&key('finish').textContent==='Karte fertig – weiter','ein Rückweg');
    ok(JSON.stringify(all('li strong').map(n=>n.innerText))===JSON.stringify(cs[i].felder.map(f=>f.wort)),'vier Lösungen');
    if(i===2)ok($('#page').innerText.includes('Wende dein Kartenblatt'),'Blatt wenden');
+   ok($('#page').innerText.includes(cs[i].seite+' '+cs[i].position) && $('#page h2').innerText===cs[i].ueberschrift,'Papierposition und Kapitel');
+   ok($('.paperinstruction').innerText.includes('fett gedruckten Wörter in die gleich nummerierten Lücken. Richtige Wörter bleiben stehen.'),'Papierauftrag');
+   ok(all('li .number').map(n=>n.innerText).join('')==='1234','Feldreihenfolge');
    papers++;tap('finish');
  }
  inspect('Abschluss');ok($('#page').textContent.includes('alle vier Kapitel'),'Sitzungsabschluss');
  const mandatoryTaps=taps, mandatoryWords=new Set(words);
  if(models){
-   tap('menu');tap('models');inspect('Musterkarten wählen');
+   tap('menu');inspect('Vier Kapitel bearbeitet');ok(all('.chapter .done').length===4,'Sitzungsmarkierungen');tap('models');inspect('Musterkarten wählen');
    for(let i=0;i<4;i++){
-     if(i){tap('menu');tap('models');}
      tap('model',i);
      for(const s of cs[i].texte){inspect('Muster '+(i+1)+' · '+s.titel);ok($('#page').innerText.includes(s.volltext),'Volltext');tap('section');}
-     inspect('Muster '+(i+1)+' · Pearl-Index');tap('fill');inspect('Muster · Papier '+(i+1));tap('finish');
+     inspect('Muster '+(i+1)+' · Pearl-Index');tap('fill');inspect('Muster · Papier '+(i+1));tap('finish');ok($('#page').dataset.screen==='models' && all('[data-action=model]').length===4,'zurück zur Kartenauswahl');
    }
  }
- return {tier,assist,count,taps:mandatoryTaps,papers,segments,lesewoerter:[...mandatoryWords].join(' ').match(/[\p{L}\p{N}]+(?:[-–][\p{L}\p{N}]+)*/gu)?.length,errors};
+ return {tier,assist,quellen:seen,count,taps:mandatoryTaps,papers,segments,lesewoerter:[...mandatoryWords].join(' ').match(/[\p{L}\p{N}]+(?:[-–][\p{L}\p{N}]+)*/gu)?.length,errors};
 }

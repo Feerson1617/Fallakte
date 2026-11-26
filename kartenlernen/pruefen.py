@@ -1,5 +1,6 @@
 """Teste die tatsächlichen HTML-/SCO-Ansichten mit zwei Browsern und einem lokalen LMS."""
 import argparse
+import ast
 import functools
 import json
 import os
@@ -7,12 +8,14 @@ from pathlib import Path
 import sys
 import re
 import tempfile
+import subprocess
 from threading import Thread
 from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler
 from zipfile import ZipFile
 from lxml import etree,html
 from playwright.sync_api import sync_playwright
 
+from feldabgleich import abgleich
 from erstellen import HERE,ROOT,OUT,START,sha,reference
 QA=ROOT/'build/Kartenlernen'
 sys.path.insert(0,str(ROOT/'gesamt'))
@@ -22,7 +25,32 @@ class Quiet(SimpleHTTPRequestHandler):
     def log_message(self,*args):pass
 
 
+def umfang_vergleichen(material):
+    original=subprocess.check_output(['git','show',START+':kartenlernen/aufgaben.py'],cwd=ROOT,text=True)
+    basis={stmt.targets[0].id:ast.literal_eval(stmt.value) for stmt in ast.parse(original).body
+           if isinstance(stmt,ast.Assign) and stmt.targets[0].id in ('THEMEN','HILFEN')}
+    counts={}
+    for index,niveau in enumerate(LEVELS):
+        fragen=material['levels'][niveau]['fragen']
+        assert list(fragen)==list(basis['THEMEN']) and len(fragen)==9
+        alt=neu=0
+        for thema,frage in fragen.items():
+            _,prompt,richtig,falsch,fehler,_=basis['THEMEN'][thema][index]
+            vorher=[*basis['HILFEN'][thema],fehler,'Die passende Antwort lautet: „'+richtig+'“']
+            nachher=frage['hilfen']
+            assert len(nachher)==5 and len(frage['antworten'])==2
+            assert max(map(len,nachher))<=max(map(len,vorher)),(niveau,thema)
+            assert sum(map(len,nachher))<=sum(map(len,vorher)),(niveau,thema)
+            alt+=sum(len(text.split()) for text in (prompt,richtig,falsch))
+            neu+=sum(len(text.split()) for text in (frage['frage'],*frage['antworten']))
+        if niveau in ('MSA','AHR'):
+            assert neu<=alt
+        counts[niveau]=dict(frage_und_optionen_woerter_alt=alt,frage_und_optionen_woerter_neu=neu)
+    return counts
+
+
 def protected(folder):
+    subprocess.run(['git','diff','--exit-code',START,'--','02-12.html','index.html','app','assets','data','gesamt','module','scorm','scripts','tagesauswahl','vorbereitung'],cwd=ROOT,check=True)
     with ZipFile(ROOT/'gesamt/kompakt/Kompakt-Abnahmenachweise.zip') as z:
         sums={n:h for h,n in (l.split('  ') for l in z.read('Programmdateien.sha256').decode().splitlines())}
     out={}
@@ -58,12 +86,15 @@ def protected(folder):
             assert norm(filled)==norm(paper['reference'])
             assert norm(text)==norm(r['title']+' '+NUM.sub('',paper['reference']))
             results.append(dict(niveau=t,kapitel=n,felder=[f['wort'] for f in c['felder']],druck=paper['reference_sha256'],schueler=paper['student_sha256']))
-    return dict(bestandsdateien=out,karten=results)
+    return dict(bestandsdateien=out,karten=results,umfang_gegen_88ec053=umfang_vergleichen(m))
 
 
 def run(reference_folder,quick=False):
     QA.mkdir(exist_ok=True,parents=True)
     report=protected(reference_folder)
+    belege={}
+    with ZipFile(OUT/'Kartenvertrag-Work.zip') as z:
+        karten=json.loads(z.read('Kartenvertrag.json'))['niveaus']
     records=[];specs=[(1024,768,100,False),(768,1024,100,False),(1180,820,150,False),(820,1180,150,False),(740,480,100,True),(740,480,150,True),(640,420,125,True),(390,560,125,True)]
     if quick:specs=specs[-2:]
     with tempfile.TemporaryDirectory() as temp,sync_playwright() as pw:
@@ -94,6 +125,8 @@ def run(reference_folder,quick=False):
                             f.evaluate('(z)=>document.documentElement.style.fontSize=z+"%"',zoom)
                             f.evaluate('async()=>{await document.fonts.ready;await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))}')
                             result=f.evaluate((HERE/'sichttest.js').read_text(),dict(tier=tier,assist=assisted))
+                            befund=abgleich(tier,karten[tier],result.pop('quellen'))
+                            assert belege.setdefault(tier,befund)==befund
                             records.append(dict(browser=engine,version=browser.version,breite=w,hoehe=h,schrift=zoom,scorm=sco,**result))
                             if result['errors']:print('Layout',engine,tier,w,h,zoom,result['errors'][:2],flush=True)
                             assert f.evaluate('!document.querySelector("input,textarea,select")')
@@ -109,6 +142,8 @@ def run(reference_folder,quick=False):
                     print(engine,w,h,zoom,'fertig',flush=True)
         server.shutdown();server.server_close()
     report['wege']=records
+    report['feldbelege']=[feld for niveau in LEVELS for feld in belege[niveau]]
+    assert len(report['feldbelege'])==64
     (QA/('Layout-Schnelltest.json' if quick else 'Browserpruefung.json')).write_text(json.dumps(report,ensure_ascii=False))
     assert not any(r['errors'] for r in records),'Layoutfehler im JSON'
 

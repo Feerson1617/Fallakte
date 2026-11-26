@@ -14,10 +14,20 @@ h1,h2,p,figure,ol{margin:0}h1{font-size:clamp(1.43rem,3.1vmin,2.35rem);line-heig
 #workspace{grid-template-columns:minmax(0,1fr)}#page,.assist,.menu,.task,.source,.hintbody,.paper,.compactpage,.work{min-width:0}
 .tight .paper{gap:4px;padding:6px}.tight .paper li{padding:4px;line-height:1.16}.tight .paper .primary{min-height:44px;padding:.35em .6em}
 @media(max-width:500px){#bar:has(.help) .level{display:none}.actions{flex-wrap:wrap}.actions button{min-width:0}}
-@media(max-height:530px) and (min-aspect-ratio:6/5){.tight .paper{grid-template-columns:minmax(0,.84fr) minmax(0,1.16fr);column-gap:12px}.tight .paperhead,.tight .paper h2,.tight .paper p{grid-column:1}.tight .paper ol{grid-column:2;grid-row:1/4;align-content:center}.tight .paper .primary{grid-column:1/-1}.tight .paperhead{align-items:flex-start}}
 .tight .chapter .icon{display:none}
-@media(max-height:530px) and (min-aspect-ratio:6/5){.tight .paper{grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr)}.tight .paperhead{grid-column:1/-1}.tight .paper ol{grid-row:2/4}.tight .paper h2,.tight .paper p{align-self:center}}
 .tight .compactpage button,.tight .actions button{padding:.27em .54em;min-height:44px}
 @media(max-width:450px){.tight .paper{border:0;padding:0;gap:3px}.tight .paperhead>.icon{align-self:flex-start}.tight .paper ol{gap:3px}.tight .paper .primary{margin-top:1px}}
 .tight .model{padding:6px}.tight .model .actions{gap:4px}
 .tight .model{padding:2px;border:0;gap:2px}.tight .model .actions{gap:3px}.tight .model .actions button{padding:.25em .4em}.tight .model p{line-height:1.25}
+
+.chapter .done{background:#cce4ce;color:#244f39;white-space:nowrap}
+.paper ol{grid-template-columns:minmax(0,1fr)}
+.paper li,.tight .paper li{display:flex;align-items:center}
+.paper li div,.tight .paper li div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.4em;flex:1;align-items:baseline}
+.papergrid .paper ol{grid-template-columns:repeat(2,minmax(0,1fr))}
+.papergrid .paper li div{display:block}
+.tight .paperinstruction{font-size:1rem;line-height:1.22}
+.tight .paper h2{font-size:1.25rem}
+.tight .paper li div{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
+.tight .paper li strong{font-size:1.05rem}
+.tight.papergrid .fieldname{line-height:1.14}
