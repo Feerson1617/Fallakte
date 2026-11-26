@@ -11,3 +11,5 @@
 }
 #feedback.fachlich-falsch{border-inline-start:4px solid #a14234;background:#fcf0eb}
 #feedback.fachlich-passend{border-inline-start:4px solid #36734b;background:#e6f2e8}
+#desk label:has(textarea){display:block}
+#desk textarea{display:block;box-sizing:border-box;width:100%;min-height:44px;font:inherit;color:inherit;resize:none;border:1px solid #72857a;border-radius:.45rem;padding:.15em .4em}

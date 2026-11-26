@@ -358,7 +358,7 @@ window.Beratung = (() => {
     if (active.phase==='sent') {
       const following=followingStage();
       const end=!following?.playable;
-      area.append(element('h2','',end?'Schlussrat gesendet':'Lies Lauras Antwort.'));
+      area.append(element('h2','',end?'Dein persönlicher Schlussrat':'Lies Lauras Antwort.'));
       if(end){
         const facts=element('details','fallwissen');facts.append(element('summary','','Was ist Laura wichtig?'));
         const list=element('ul');for(const text of knownConcerns(active.tier))list.append(element('li','',text));facts.append(list);area.append(facts);
