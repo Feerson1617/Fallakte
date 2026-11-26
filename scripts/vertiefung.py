@@ -67,9 +67,6 @@ def make_bank(person):
             record['task']['AHR']='Erkläre, an wessen Körper die Methode angewendet wird und wer darüber entscheidet.'
         elif len(records)==1:
             record['task']['Foerder']='Lies den Artikel. Erkläre mündlich, warum die Forschung Zeit braucht.'
-        record['return']='Gib A, B oder C am iPad ein. Tippe auf „Code prüfen“. Nach der richtigen Auswahl erscheint „Nachricht senden“.'
-        page=2 if person=='Celina' and len(records)>=3 else 1
-        record['paper']={t:f"Zusatzbogen {person} · Seite {page} · {person} {len(records)+1} – {record['title']} · "+task for t,task in record['task'].items()}
         records.append(record)
     bank={'version':person.lower()+('-1.2' if person=='Tom' else '-1.1'),'buildCommit':commit(),'person':person,'levels':laura['levels'],
           'stages':records,'cards':laura['cards']}
@@ -78,6 +75,8 @@ def make_bank(person):
     return bank
 
 def document(bank):
+    from clt_inhalte import karten
+    karten(bank)
     page=(ROOT/'module/vertiefung/index.html').read_text().replace('STYLE_CSS',(ROOT/'module/vertiefung/style.css').read_text()).replace(
         'BANK_JSON',json.dumps(bank,ensure_ascii=False).replace('<','\\u003c')).replace('APP_JS',(ROOT/'module/vertiefung/app.js').read_text())
     return einbetten(page)

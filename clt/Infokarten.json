@@ -1,0 +1,954 @@
+{
+  "Foerder": [
+    {
+      "titel": "Kondom",
+      "bezug": "zu Kondomen",
+      "nummer": 1,
+      "seite": "Vorderseite",
+      "position": "oben",
+      "ueberschrift": "1 – Kondom",
+      "felder": [
+        {
+          "nummer": 1,
+          "wort": "Kunststoff",
+          "titel": "Kondome ohne Latex"
+        },
+        {
+          "nummer": 2,
+          "wort": "Spermien",
+          "titel": "Die Hülle hält Sperma zurück"
+        },
+        {
+          "nummer": 3,
+          "wort": "freie Haut",
+          "titel": "Ansteckung über die Haut"
+        },
+        {
+          "nummer": 4,
+          "wort": "neues Kondom",
+          "titel": "Ein neues Kondom für jeden Sex"
+        }
+      ],
+      "texte": [
+        {
+          "titel": "Kondome ohne Latex",
+          "lueckentext": "Latex-Allergie? Es gibt Kondome aus {1}. Latex ist Gummi. Achte auf die Packung.",
+          "volltext": "Latex-Allergie? Es gibt Kondome aus Kunststoff. Latex ist Gummi. Achte auf die Packung."
+        },
+        {
+          "titel": "Die Hülle hält Sperma zurück",
+          "lueckentext": "Die heile Hülle hält {2} zurück. Das sind Samenzellen. Sperma bleibt im Kondom. Es muss gut sitzen. Ohne Hormone.",
+          "volltext": "Die heile Hülle hält Spermien zurück. Das sind Samenzellen. Sperma bleibt im Kondom. Es muss gut sitzen. Ohne Hormone."
+        },
+        {
+          "titel": "Ansteckung über die Haut",
+          "lueckentext": "Manche Erreger werden beim Sex über {3} übertragen. Ein geeignetes Kondom senkt das Risiko vieler Infektionen. Tierdarm schützt davor nicht zuverlässig.",
+          "volltext": "Manche Erreger werden beim Sex über freie Haut übertragen. Ein geeignetes Kondom senkt das Risiko vieler Infektionen. Tierdarm schützt davor nicht zuverlässig."
+        },
+        {
+          "titel": "Ein neues Kondom für jeden Sex",
+          "lueckentext": "Bei jedem Sex ein {4}. Von Anfang an. Reißt es oder rutscht es ab, sinkt der Schutz.",
+          "volltext": "Bei jedem Sex ein neues Kondom. Von Anfang an. Reißt es oder rutscht es ab, sinkt der Schutz."
+        },
+        {
+          "titel": "Die Regel bleibt gleich",
+          "lueckentext": "Das Kondom verändert die Regel nicht. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen.",
+          "volltext": "Das Kondom verändert die Regel nicht. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen."
+        }
+      ],
+      "pearl": "2–12",
+      "pearl_erklaerung": "So viele von 100 Frauen werden schwanger, wenn sie ein Jahr so verhüten. Kleine Zahl → seltener schwanger. Der Wert sagt nichts über Ansteckung beim Sex."
+    },
+    {
+      "titel": "Kombinationspille",
+      "bezug": "zur Kombinationspille",
+      "nummer": 2,
+      "seite": "Vorderseite",
+      "position": "unten",
+      "ueberschrift": "2 – Kombinationspille",
+      "felder": [
+        {
+          "nummer": 1,
+          "wort": "Eisprung",
+          "titel": "Die Pille bremst den Eisprung"
+        },
+        {
+          "nummer": 2,
+          "wort": "keinen Schutz",
+          "titel": "Kein Schutz vor Ansteckung"
+        },
+        {
+          "nummer": 3,
+          "wort": "nach Plan",
+          "titel": "Die Pille nach Plan nehmen"
+        },
+        {
+          "nummer": 4,
+          "wort": "anders",
+          "titel": "Jeder Körper reagiert anders"
+        }
+      ],
+      "texte": [
+        {
+          "titel": "Die Pille bremst den Eisprung",
+          "lueckentext": "Meist verhindert die Pille den {1}. Keine Eizelle wird frei. Ohne freie Eizelle keine Befruchtung. In der Pille sind zwei Hormone.",
+          "volltext": "Meist verhindert die Pille den Eisprung. Keine Eizelle wird frei. Ohne freie Eizelle keine Befruchtung. In der Pille sind zwei Hormone."
+        },
+        {
+          "titel": "Kein Schutz vor Ansteckung",
+          "lueckentext": "Die Pille bietet {2} vor Ansteckung beim Sex. Die Hormone halten keine Krankheitserreger auf.",
+          "volltext": "Die Pille bietet keinen Schutz vor Ansteckung beim Sex. Die Hormone halten keine Krankheitserreger auf."
+        },
+        {
+          "titel": "Die Pille nach Plan nehmen",
+          "lueckentext": "Die Pille {3} nehmen. Vergessen? Der Schutz kann sinken.",
+          "volltext": "Die Pille nach Plan nehmen. Vergessen? Der Schutz kann sinken."
+        },
+        {
+          "titel": "Jeder Körper reagiert anders",
+          "lueckentext": "Jeder Körper reagiert {4}. Die Pille kann Übelkeit auslösen. Verträgt eine Freundin die Pille gut? Ob sie zu dir passt, klärst du in der Arztpraxis.",
+          "volltext": "Jeder Körper reagiert anders. Die Pille kann Übelkeit auslösen. Verträgt eine Freundin die Pille gut? Ob sie zu dir passt, klärst du in der Arztpraxis."
+        },
+        {
+          "titel": "Regelschmerzen können nachlassen",
+          "lueckentext": "Blutung und Schmerzen können schwächer werden. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen.",
+          "volltext": "Blutung und Schmerzen können schwächer werden. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen."
+        }
+      ],
+      "pearl": "0,1–0,9",
+      "pearl_erklaerung": "So viele von 100 Frauen werden schwanger, wenn sie ein Jahr so verhüten. Kleine Zahl → seltener schwanger. Der Wert sagt nichts über Ansteckung beim Sex."
+    },
+    {
+      "titel": "Kupferspirale",
+      "bezug": "zur Kupferspirale",
+      "nummer": 3,
+      "seite": "Rückseite",
+      "position": "oben",
+      "ueberschrift": "3 – Kupferspirale",
+      "felder": [
+        {
+          "nummer": 1,
+          "wort": "Spermien",
+          "titel": "Kupfer bremst Spermien"
+        },
+        {
+          "nummer": 2,
+          "wort": "keinen Schutz",
+          "titel": "Kein Schutz vor Ansteckung"
+        },
+        {
+          "nummer": 3,
+          "wort": "keine Tablette",
+          "titel": "Schutz ohne tägliche Tablette"
+        },
+        {
+          "nummer": 4,
+          "wort": "stärker",
+          "titel": "Regelschmerzen können zunehmen"
+        }
+      ],
+      "texte": [
+        {
+          "titel": "Kupfer bremst Spermien",
+          "lueckentext": "Kupfer bremst {1}. Die Samenzellen erreichen die Eizelle schlechter. Eine Befruchtung wird seltener. Die Kupferspirale wirkt ohne Hormone.",
+          "volltext": "Kupfer bremst Spermien. Die Samenzellen erreichen die Eizelle schlechter. Eine Befruchtung wird seltener. Die Kupferspirale wirkt ohne Hormone."
+        },
+        {
+          "titel": "Kein Schutz vor Ansteckung",
+          "lueckentext": "Kupfer bietet {2} vor Ansteckung beim Sex. Kupfer hält Krankheitserreger nicht auf.",
+          "volltext": "Kupfer bietet keinen Schutz vor Ansteckung beim Sex. Kupfer hält Krankheitserreger nicht auf."
+        },
+        {
+          "titel": "Schutz ohne tägliche Tablette",
+          "lueckentext": "Die Spirale schützt lange vor Schwangerschaft. Du brauchst {3}. Der Schutz ist sehr zuverlässig. Die Arztpraxis prüft, ob die Spirale richtig sitzt.",
+          "volltext": "Die Spirale schützt lange vor Schwangerschaft. Du brauchst keine Tablette. Der Schutz ist sehr zuverlässig. Die Arztpraxis prüft, ob die Spirale richtig sitzt."
+        },
+        {
+          "titel": "Du entscheidest über die Spirale",
+          "lueckentext": "Vor dem Einsetzen prüft die Arztpraxis, ob die Spirale passt. Du entscheidest. Nur mit deinem Ja wird sie in die Gebärmutter eingesetzt. Das Einsetzen kann wehtun.",
+          "volltext": "Vor dem Einsetzen prüft die Arztpraxis, ob die Spirale passt. Du entscheidest. Nur mit deinem Ja wird sie in die Gebärmutter eingesetzt. Das Einsetzen kann wehtun."
+        },
+        {
+          "titel": "Regelschmerzen können zunehmen",
+          "lueckentext": "Blutung und Regelschmerzen können {4} werden. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen.",
+          "volltext": "Blutung und Regelschmerzen können stärker werden. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen."
+        }
+      ],
+      "pearl": "0,3–0,8",
+      "pearl_erklaerung": "So viele von 100 Frauen werden schwanger, wenn sie ein Jahr so verhüten. Kleine Zahl → seltener schwanger. Der Wert sagt nichts über Ansteckung beim Sex."
+    },
+    {
+      "titel": "Hormonspirale",
+      "bezug": "zur Hormonspirale",
+      "nummer": 4,
+      "seite": "Rückseite",
+      "position": "unten",
+      "ueberschrift": "4 – Hormonspirale",
+      "felder": [
+        {
+          "nummer": 1,
+          "wort": "zäher",
+          "titel": "Schleim bremst Spermien"
+        },
+        {
+          "nummer": 2,
+          "wort": "keinen Schutz",
+          "titel": "Kein Schutz vor Ansteckung"
+        },
+        {
+          "nummer": 3,
+          "wort": "keine Tablette",
+          "titel": "Schutz ohne tägliche Tablette"
+        },
+        {
+          "nummer": 4,
+          "wort": "schwächer",
+          "titel": "Regelschmerzen können nachlassen"
+        }
+      ],
+      "texte": [
+        {
+          "titel": "Schleim bremst Spermien",
+          "lueckentext": "Der Schleim am Eingang der Gebärmutter wird {1}. Spermien kommen schwerer durch. Dort ist der Gebärmutterhals. Ein Hormon aus der Spirale macht den Schleim dickflüssig.",
+          "volltext": "Der Schleim am Eingang der Gebärmutter wird zäher. Spermien kommen schwerer durch. Dort ist der Gebärmutterhals. Ein Hormon aus der Spirale macht den Schleim dickflüssig."
+        },
+        {
+          "titel": "Kein Schutz vor Ansteckung",
+          "lueckentext": "Der Schleim bietet {2} vor Ansteckung beim Sex. Erreger können beim Sex weitergegeben werden.",
+          "volltext": "Der Schleim bietet keinen Schutz vor Ansteckung beim Sex. Erreger können beim Sex weitergegeben werden."
+        },
+        {
+          "titel": "Schutz ohne tägliche Tablette",
+          "lueckentext": "Die Spirale schützt lange vor Schwangerschaft. Du brauchst {3}. Der Schutz ist sehr zuverlässig. Die Arztpraxis prüft, ob die Spirale richtig sitzt.",
+          "volltext": "Die Spirale schützt lange vor Schwangerschaft. Du brauchst keine Tablette. Der Schutz ist sehr zuverlässig. Die Arztpraxis prüft, ob die Spirale richtig sitzt."
+        },
+        {
+          "titel": "Du entscheidest über die Spirale",
+          "lueckentext": "Vor dem Einsetzen prüft die Arztpraxis, ob die Spirale passt. Du entscheidest. Nur mit deinem Ja wird sie in die Gebärmutter eingesetzt. Das Einsetzen kann wehtun.",
+          "volltext": "Vor dem Einsetzen prüft die Arztpraxis, ob die Spirale passt. Du entscheidest. Nur mit deinem Ja wird sie in die Gebärmutter eingesetzt. Das Einsetzen kann wehtun."
+        },
+        {
+          "titel": "Regelschmerzen können nachlassen",
+          "lueckentext": "Später können Blutung und Regelschmerzen {4} werden. Am Anfang kann die Blutung unregelmäßig sein. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen.",
+          "volltext": "Später können Blutung und Regelschmerzen schwächer werden. Am Anfang kann die Blutung unregelmäßig sein. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen."
+        }
+      ],
+      "pearl": "ca. 0,16",
+      "pearl_erklaerung": "So viele von 100 Frauen werden schwanger, wenn sie ein Jahr so verhüten. Kleine Zahl → seltener schwanger. Der Wert sagt nichts über Ansteckung beim Sex."
+    }
+  ],
+  "ESA": [
+    {
+      "titel": "Kondom",
+      "bezug": "zu Kondomen",
+      "nummer": 1,
+      "seite": "Vorderseite",
+      "position": "oben",
+      "ueberschrift": "1 – Kondom",
+      "felder": [
+        {
+          "nummer": 1,
+          "wort": "Kunststoff",
+          "titel": "Kondome ohne Latex"
+        },
+        {
+          "nummer": 2,
+          "wort": "Spermien",
+          "titel": "Die Hülle hält Sperma zurück"
+        },
+        {
+          "nummer": 3,
+          "wort": "freie Haut",
+          "titel": "Ansteckung über die Haut"
+        },
+        {
+          "nummer": 4,
+          "wort": "neues Kondom",
+          "titel": "Ein neues Kondom für jeden Sex"
+        }
+      ],
+      "texte": [
+        {
+          "titel": "Kondome ohne Latex",
+          "lueckentext": "Latex-Allergie? Es gibt Kondome aus {1}. Latex ist Gummi. Achte auf die Packung. Ein Kunststoff heißt Polyurethan.",
+          "volltext": "Latex-Allergie? Es gibt Kondome aus Kunststoff. Latex ist Gummi. Achte auf die Packung. Ein Kunststoff heißt Polyurethan."
+        },
+        {
+          "titel": "Die Hülle hält Sperma zurück",
+          "lueckentext": "Die heile Hülle hält {2} zurück. Das sind Samenzellen. Sperma bleibt im Kondom. Es muss gut sitzen. Ohne Hormone.",
+          "volltext": "Die heile Hülle hält Spermien zurück. Das sind Samenzellen. Sperma bleibt im Kondom. Es muss gut sitzen. Ohne Hormone."
+        },
+        {
+          "titel": "Ansteckung über die Haut",
+          "lueckentext": "Manche Erreger werden beim Sex über {3} übertragen. Ein geeignetes Kondom senkt das Risiko vieler Infektionen. Tierdarm schützt davor nicht zuverlässig.",
+          "volltext": "Manche Erreger werden beim Sex über freie Haut übertragen. Ein geeignetes Kondom senkt das Risiko vieler Infektionen. Tierdarm schützt davor nicht zuverlässig."
+        },
+        {
+          "titel": "Ein neues Kondom für jeden Sex",
+          "lueckentext": "Bei jedem Sex ein {4}. Von Anfang an. Reißt es oder rutscht es ab, sinkt der Schutz.",
+          "volltext": "Bei jedem Sex ein neues Kondom. Von Anfang an. Reißt es oder rutscht es ab, sinkt der Schutz."
+        },
+        {
+          "titel": "Die Regel bleibt gleich",
+          "lueckentext": "Das Kondom verändert die Regel nicht. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen.",
+          "volltext": "Das Kondom verändert die Regel nicht. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen."
+        }
+      ],
+      "pearl": "2–12",
+      "pearl_erklaerung": "So viele von 100 Frauen werden schwanger, wenn sie ein Jahr so verhüten. Kleine Zahl → seltener schwanger. Der Wert sagt nichts über Ansteckung beim Sex."
+    },
+    {
+      "titel": "Kombinationspille",
+      "bezug": "zur Kombinationspille",
+      "nummer": 2,
+      "seite": "Vorderseite",
+      "position": "unten",
+      "ueberschrift": "2 – Kombinationspille",
+      "felder": [
+        {
+          "nummer": 1,
+          "wort": "Eisprung",
+          "titel": "Die Pille bremst den Eisprung"
+        },
+        {
+          "nummer": 2,
+          "wort": "keinen Schutz",
+          "titel": "Kein Schutz vor Ansteckung"
+        },
+        {
+          "nummer": 3,
+          "wort": "nach Plan",
+          "titel": "Die Pille nach Plan nehmen"
+        },
+        {
+          "nummer": 4,
+          "wort": "anders",
+          "titel": "Jeder Körper reagiert anders"
+        }
+      ],
+      "texte": [
+        {
+          "titel": "Die Pille bremst den Eisprung",
+          "lueckentext": "Meist verhindert die Pille den {1}. Keine Eizelle wird frei. Ohne freie Eizelle keine Befruchtung. In der Pille sind zwei Hormone. Sie heißen Östrogen und Gestagen.",
+          "volltext": "Meist verhindert die Pille den Eisprung. Keine Eizelle wird frei. Ohne freie Eizelle keine Befruchtung. In der Pille sind zwei Hormone. Sie heißen Östrogen und Gestagen."
+        },
+        {
+          "titel": "Kein Schutz vor Ansteckung",
+          "lueckentext": "Die Pille bietet {2} vor Ansteckung beim Sex. Die Hormone halten keine Krankheitserreger auf.",
+          "volltext": "Die Pille bietet keinen Schutz vor Ansteckung beim Sex. Die Hormone halten keine Krankheitserreger auf."
+        },
+        {
+          "titel": "Die Pille nach Plan nehmen",
+          "lueckentext": "Die Pille {3} nehmen. Vergessen? Der Schutz kann sinken.",
+          "volltext": "Die Pille nach Plan nehmen. Vergessen? Der Schutz kann sinken."
+        },
+        {
+          "titel": "Jeder Körper reagiert anders",
+          "lueckentext": "Jeder Körper reagiert {4}. Die Pille kann Übelkeit auslösen. Verträgt eine Freundin die Pille gut? Ob sie zu dir passt, klärst du in der Arztpraxis.",
+          "volltext": "Jeder Körper reagiert anders. Die Pille kann Übelkeit auslösen. Verträgt eine Freundin die Pille gut? Ob sie zu dir passt, klärst du in der Arztpraxis."
+        },
+        {
+          "titel": "Regelschmerzen können nachlassen",
+          "lueckentext": "Blutung und Schmerzen können schwächer werden. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen.",
+          "volltext": "Blutung und Schmerzen können schwächer werden. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen."
+        }
+      ],
+      "pearl": "0,1–0,9",
+      "pearl_erklaerung": "So viele von 100 Frauen werden schwanger, wenn sie ein Jahr so verhüten. Kleine Zahl → seltener schwanger. Der Wert sagt nichts über Ansteckung beim Sex."
+    },
+    {
+      "titel": "Kupferspirale",
+      "bezug": "zur Kupferspirale",
+      "nummer": 3,
+      "seite": "Rückseite",
+      "position": "oben",
+      "ueberschrift": "3 – Kupferspirale",
+      "felder": [
+        {
+          "nummer": 1,
+          "wort": "Spermien",
+          "titel": "Kupfer bremst Spermien"
+        },
+        {
+          "nummer": 2,
+          "wort": "keinen Schutz",
+          "titel": "Kein Schutz vor Ansteckung"
+        },
+        {
+          "nummer": 3,
+          "wort": "keine Tablette",
+          "titel": "Schutz ohne tägliche Tablette"
+        },
+        {
+          "nummer": 4,
+          "wort": "stärker",
+          "titel": "Regelschmerzen können zunehmen"
+        }
+      ],
+      "texte": [
+        {
+          "titel": "Kupfer bremst Spermien",
+          "lueckentext": "Kupfer bremst {1}. Die Samenzellen erreichen die Eizelle schlechter. Eine Befruchtung wird seltener. Die Kupferspirale wirkt ohne Hormone.",
+          "volltext": "Kupfer bremst Spermien. Die Samenzellen erreichen die Eizelle schlechter. Eine Befruchtung wird seltener. Die Kupferspirale wirkt ohne Hormone."
+        },
+        {
+          "titel": "Kein Schutz vor Ansteckung",
+          "lueckentext": "Kupfer bietet {2} vor Ansteckung beim Sex. Kupfer hält Krankheitserreger nicht auf.",
+          "volltext": "Kupfer bietet keinen Schutz vor Ansteckung beim Sex. Kupfer hält Krankheitserreger nicht auf."
+        },
+        {
+          "titel": "Schutz ohne tägliche Tablette",
+          "lueckentext": "Die Spirale schützt lange vor Schwangerschaft. Du brauchst {3}. Der Schutz ist sehr zuverlässig. Die Arztpraxis prüft, ob die Spirale richtig sitzt. Wie lange sie wirkt, hängt vom Modell ab.",
+          "volltext": "Die Spirale schützt lange vor Schwangerschaft. Du brauchst keine Tablette. Der Schutz ist sehr zuverlässig. Die Arztpraxis prüft, ob die Spirale richtig sitzt. Wie lange sie wirkt, hängt vom Modell ab."
+        },
+        {
+          "titel": "Du entscheidest über die Spirale",
+          "lueckentext": "Vor dem Einsetzen prüft die Arztpraxis, ob die Spirale passt. Du entscheidest. Nur mit deinem Ja wird sie in die Gebärmutter eingesetzt. Das Einsetzen kann wehtun.",
+          "volltext": "Vor dem Einsetzen prüft die Arztpraxis, ob die Spirale passt. Du entscheidest. Nur mit deinem Ja wird sie in die Gebärmutter eingesetzt. Das Einsetzen kann wehtun."
+        },
+        {
+          "titel": "Regelschmerzen können zunehmen",
+          "lueckentext": "Blutung und Regelschmerzen können {4} werden. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen.",
+          "volltext": "Blutung und Regelschmerzen können stärker werden. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen."
+        }
+      ],
+      "pearl": "0,3–0,8",
+      "pearl_erklaerung": "So viele von 100 Frauen werden schwanger, wenn sie ein Jahr so verhüten. Kleine Zahl → seltener schwanger. Der Wert sagt nichts über Ansteckung beim Sex."
+    },
+    {
+      "titel": "Hormonspirale",
+      "bezug": "zur Hormonspirale",
+      "nummer": 4,
+      "seite": "Rückseite",
+      "position": "unten",
+      "ueberschrift": "4 – Hormonspirale",
+      "felder": [
+        {
+          "nummer": 1,
+          "wort": "zäher",
+          "titel": "Schleim bremst Spermien"
+        },
+        {
+          "nummer": 2,
+          "wort": "keinen Schutz",
+          "titel": "Kein Schutz vor Ansteckung"
+        },
+        {
+          "nummer": 3,
+          "wort": "keine Tablette",
+          "titel": "Schutz ohne tägliche Tablette"
+        },
+        {
+          "nummer": 4,
+          "wort": "schwächer",
+          "titel": "Regelschmerzen können nachlassen"
+        }
+      ],
+      "texte": [
+        {
+          "titel": "Schleim bremst Spermien",
+          "lueckentext": "Der Schleim am Eingang der Gebärmutter wird {1}. Spermien kommen schwerer durch. Dort ist der Gebärmutterhals. Ein Hormon aus der Spirale macht den Schleim dickflüssig. Das Hormon heißt Gestagen.",
+          "volltext": "Der Schleim am Eingang der Gebärmutter wird zäher. Spermien kommen schwerer durch. Dort ist der Gebärmutterhals. Ein Hormon aus der Spirale macht den Schleim dickflüssig. Das Hormon heißt Gestagen."
+        },
+        {
+          "titel": "Kein Schutz vor Ansteckung",
+          "lueckentext": "Der Schleim bietet {2} vor Ansteckung beim Sex. Erreger können beim Sex weitergegeben werden.",
+          "volltext": "Der Schleim bietet keinen Schutz vor Ansteckung beim Sex. Erreger können beim Sex weitergegeben werden."
+        },
+        {
+          "titel": "Schutz ohne tägliche Tablette",
+          "lueckentext": "Die Spirale schützt lange vor Schwangerschaft. Du brauchst {3}. Der Schutz ist sehr zuverlässig. Die Arztpraxis prüft, ob die Spirale richtig sitzt.",
+          "volltext": "Die Spirale schützt lange vor Schwangerschaft. Du brauchst keine Tablette. Der Schutz ist sehr zuverlässig. Die Arztpraxis prüft, ob die Spirale richtig sitzt."
+        },
+        {
+          "titel": "Du entscheidest über die Spirale",
+          "lueckentext": "Vor dem Einsetzen prüft die Arztpraxis, ob die Spirale passt. Du entscheidest. Nur mit deinem Ja wird sie in die Gebärmutter eingesetzt. Das Einsetzen kann wehtun.",
+          "volltext": "Vor dem Einsetzen prüft die Arztpraxis, ob die Spirale passt. Du entscheidest. Nur mit deinem Ja wird sie in die Gebärmutter eingesetzt. Das Einsetzen kann wehtun."
+        },
+        {
+          "titel": "Regelschmerzen können nachlassen",
+          "lueckentext": "Später können Blutung und Regelschmerzen {4} werden. Am Anfang kann die Blutung unregelmäßig sein. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen.",
+          "volltext": "Später können Blutung und Regelschmerzen schwächer werden. Am Anfang kann die Blutung unregelmäßig sein. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen."
+        }
+      ],
+      "pearl": "ca. 0,16",
+      "pearl_erklaerung": "So viele von 100 Frauen werden schwanger, wenn sie ein Jahr so verhüten. Kleine Zahl → seltener schwanger. Der Wert sagt nichts über Ansteckung beim Sex."
+    }
+  ],
+  "MSA": [
+    {
+      "titel": "Kondom",
+      "bezug": "zu Kondomen",
+      "nummer": 1,
+      "seite": "Vorderseite",
+      "position": "oben",
+      "ueberschrift": "1 – Kondom",
+      "felder": [
+        {
+          "nummer": 1,
+          "wort": "Kunststoff",
+          "titel": "Kondome ohne Latex"
+        },
+        {
+          "nummer": 2,
+          "wort": "Spermien",
+          "titel": "Die Hülle hält Sperma zurück"
+        },
+        {
+          "nummer": 3,
+          "wort": "freie Haut",
+          "titel": "Ansteckung über die Haut"
+        },
+        {
+          "nummer": 4,
+          "wort": "neues Kondom",
+          "titel": "Ein neues Kondom für jeden Sex"
+        }
+      ],
+      "texte": [
+        {
+          "titel": "Kondome ohne Latex",
+          "lueckentext": "Allergie gegen Latex? Es gibt Kondome aus {1}. Latex ist ein Material aus Gummi. Auf der Packung steht, ob das Kondom geeignet ist. Ein Beispiel für Kunststoff ist Polyurethan. Ein anderer Kunststoff ist Polyisopren.",
+          "volltext": "Allergie gegen Latex? Es gibt Kondome aus Kunststoff. Latex ist ein Material aus Gummi. Auf der Packung steht, ob das Kondom geeignet ist. Ein Beispiel für Kunststoff ist Polyurethan. Ein anderer Kunststoff ist Polyisopren."
+        },
+        {
+          "titel": "Die Hülle hält Sperma zurück",
+          "lueckentext": "Die heile Hülle hält {2} zurück. Das sind Samenzellen im Sperma. Diese Hülle ist eine Barriere. Sitzt sie richtig, kommt kein Sperma in die Scheide. Ohne Hormone.",
+          "volltext": "Die heile Hülle hält Spermien zurück. Das sind Samenzellen im Sperma. Diese Hülle ist eine Barriere. Sitzt sie richtig, kommt kein Sperma in die Scheide. Ohne Hormone."
+        },
+        {
+          "titel": "Ansteckung über die Haut",
+          "lueckentext": "Manche Erreger gehen beim Sex über {3} von Mensch zu Mensch. Ein geeignetes Kondom senkt das Risiko für viele Infektionen beim Sex. Kondome aus Tierdarm schützen davor nicht zuverlässig.",
+          "volltext": "Manche Erreger gehen beim Sex über freie Haut von Mensch zu Mensch. Ein geeignetes Kondom senkt das Risiko für viele Infektionen beim Sex. Kondome aus Tierdarm schützen davor nicht zuverlässig."
+        },
+        {
+          "titel": "Ein neues Kondom für jeden Sex",
+          "lueckentext": "Bei jedem Sex ein {4} benutzen. Gleich von Anfang an. Es kann reißen oder abrutschen. Dann schützt es schlechter.",
+          "volltext": "Bei jedem Sex ein neues Kondom benutzen. Gleich von Anfang an. Es kann reißen oder abrutschen. Dann schützt es schlechter."
+        },
+        {
+          "titel": "Die Regel bleibt gleich",
+          "lueckentext": "Das Kondom verändert die Regel nicht. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen.",
+          "volltext": "Das Kondom verändert die Regel nicht. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen."
+        }
+      ],
+      "pearl": "2–12",
+      "pearl_erklaerung": "So viele von 100 Frauen werden schwanger, wenn sie ein Jahr so verhüten. Kleine Zahl → seltener schwanger. Der Wert sagt nichts über Ansteckung beim Sex."
+    },
+    {
+      "titel": "Kombinationspille",
+      "bezug": "zur Kombinationspille",
+      "nummer": 2,
+      "seite": "Vorderseite",
+      "position": "unten",
+      "ueberschrift": "2 – Kombinationspille",
+      "felder": [
+        {
+          "nummer": 1,
+          "wort": "Eisprung",
+          "titel": "Die Pille bremst den Eisprung"
+        },
+        {
+          "nummer": 2,
+          "wort": "keinen Schutz",
+          "titel": "Kein Schutz vor Ansteckung"
+        },
+        {
+          "nummer": 3,
+          "wort": "nach Plan",
+          "titel": "Die Pille nach Plan nehmen"
+        },
+        {
+          "nummer": 4,
+          "wort": "anders",
+          "titel": "Jeder Körper reagiert anders"
+        }
+      ],
+      "texte": [
+        {
+          "titel": "Die Pille bremst den Eisprung",
+          "lueckentext": "Die Pille verhindert meist den {1}. Dann wird keine Eizelle frei. Ohne freie Eizelle gibt es keine Befruchtung. Die Pille enthält zwei Hormone. Sie heißen Östrogen und Gestagen.",
+          "volltext": "Die Pille verhindert meist den Eisprung. Dann wird keine Eizelle frei. Ohne freie Eizelle gibt es keine Befruchtung. Die Pille enthält zwei Hormone. Sie heißen Östrogen und Gestagen."
+        },
+        {
+          "titel": "Kein Schutz vor Ansteckung",
+          "lueckentext": "Die Pille bietet {2} vor Ansteckung beim Sex. Die Hormone halten keine Krankheitserreger auf.",
+          "volltext": "Die Pille bietet keinen Schutz vor Ansteckung beim Sex. Die Hormone halten keine Krankheitserreger auf."
+        },
+        {
+          "titel": "Die Pille nach Plan nehmen",
+          "lueckentext": "Die Pille {3} nehmen. Eine Pille vergessen → der Schutz vor Schwangerschaft kann sinken.",
+          "volltext": "Die Pille nach Plan nehmen. Eine Pille vergessen → der Schutz vor Schwangerschaft kann sinken."
+        },
+        {
+          "titel": "Jeder Körper reagiert anders",
+          "lueckentext": "Jeder Körper reagiert {4}. Manchen wird von der Pille übel. Eine Freundin verträgt sie gut? In der Arztpraxis klärst du, ob sie auch zu dir passt. Selten bildet sich ein Blutgerinnsel. Dabei verklumpt Blut in einem Gefäß.",
+          "volltext": "Jeder Körper reagiert anders. Manchen wird von der Pille übel. Eine Freundin verträgt sie gut? In der Arztpraxis klärst du, ob sie auch zu dir passt. Selten bildet sich ein Blutgerinnsel. Dabei verklumpt Blut in einem Gefäß."
+        },
+        {
+          "titel": "Regelschmerzen können nachlassen",
+          "lueckentext": "Blutung und Schmerzen können schwächer werden. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen.",
+          "volltext": "Blutung und Schmerzen können schwächer werden. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen."
+        }
+      ],
+      "pearl": "0,1–0,9",
+      "pearl_erklaerung": "So viele von 100 Frauen werden schwanger, wenn sie ein Jahr so verhüten. Kleine Zahl → seltener schwanger. Der Wert sagt nichts über Ansteckung beim Sex."
+    },
+    {
+      "titel": "Kupferspirale",
+      "bezug": "zur Kupferspirale",
+      "nummer": 3,
+      "seite": "Rückseite",
+      "position": "oben",
+      "ueberschrift": "3 – Kupferspirale",
+      "felder": [
+        {
+          "nummer": 1,
+          "wort": "Spermien",
+          "titel": "Kupfer bremst Spermien"
+        },
+        {
+          "nummer": 2,
+          "wort": "keinen Schutz",
+          "titel": "Kein Schutz vor Ansteckung"
+        },
+        {
+          "nummer": 3,
+          "wort": "keine Tablette",
+          "titel": "Schutz ohne tägliche Tablette"
+        },
+        {
+          "nummer": 4,
+          "wort": "stärker",
+          "titel": "Regelschmerzen können zunehmen"
+        }
+      ],
+      "texte": [
+        {
+          "titel": "Kupfer bremst Spermien",
+          "lueckentext": "Kupfer bremst {1}. Diese Samenzellen erreichen und befruchten die Eizelle schwerer. Die Kupferspirale wirkt ohne Hormone. Der Eisprung kann weiter stattfinden.",
+          "volltext": "Kupfer bremst Spermien. Diese Samenzellen erreichen und befruchten die Eizelle schwerer. Die Kupferspirale wirkt ohne Hormone. Der Eisprung kann weiter stattfinden."
+        },
+        {
+          "titel": "Kein Schutz vor Ansteckung",
+          "lueckentext": "Kupfer bietet {2} vor Ansteckung beim Sex. Kupfer hält Krankheitserreger nicht auf.",
+          "volltext": "Kupfer bietet keinen Schutz vor Ansteckung beim Sex. Kupfer hält Krankheitserreger nicht auf."
+        },
+        {
+          "titel": "Schutz ohne tägliche Tablette",
+          "lueckentext": "Die Spirale schützt lange vor Schwangerschaft. Du brauchst {3}. Der Schutz ist sehr zuverlässig. Die Arztpraxis prüft, ob die Spirale richtig sitzt. Wie lange sie wirkt, hängt vom Modell ab.",
+          "volltext": "Die Spirale schützt lange vor Schwangerschaft. Du brauchst keine Tablette. Der Schutz ist sehr zuverlässig. Die Arztpraxis prüft, ob die Spirale richtig sitzt. Wie lange sie wirkt, hängt vom Modell ab."
+        },
+        {
+          "titel": "Du entscheidest über die Spirale",
+          "lueckentext": "Die Arztpraxis prüft, ob die Spirale zu dir passt. Du entscheidest. Nur mit deinem Ja setzt sie die Spirale in die Gebärmutter ein. Das kann wehtun.",
+          "volltext": "Die Arztpraxis prüft, ob die Spirale zu dir passt. Du entscheidest. Nur mit deinem Ja setzt sie die Spirale in die Gebärmutter ein. Das kann wehtun."
+        },
+        {
+          "titel": "Regelschmerzen können zunehmen",
+          "lueckentext": "Blutung und Regelschmerzen können {4} werden. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen.",
+          "volltext": "Blutung und Regelschmerzen können stärker werden. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen."
+        }
+      ],
+      "pearl": "0,3–0,8",
+      "pearl_erklaerung": "So viele von 100 Frauen werden schwanger, wenn sie ein Jahr so verhüten. Kleine Zahl → seltener schwanger. Der Wert sagt nichts über Ansteckung beim Sex."
+    },
+    {
+      "titel": "Hormonspirale",
+      "bezug": "zur Hormonspirale",
+      "nummer": 4,
+      "seite": "Rückseite",
+      "position": "unten",
+      "ueberschrift": "4 – Hormonspirale",
+      "felder": [
+        {
+          "nummer": 1,
+          "wort": "zäher",
+          "titel": "Schleim bremst Spermien"
+        },
+        {
+          "nummer": 2,
+          "wort": "keinen Schutz",
+          "titel": "Kein Schutz vor Ansteckung"
+        },
+        {
+          "nummer": 3,
+          "wort": "keine Tablette",
+          "titel": "Schutz ohne tägliche Tablette"
+        },
+        {
+          "nummer": 4,
+          "wort": "schwächer",
+          "titel": "Regelschmerzen können nachlassen"
+        }
+      ],
+      "texte": [
+        {
+          "titel": "Schleim bremst Spermien",
+          "lueckentext": "Der Schleim unten an der Gebärmutter wird {1}. Spermien kommen schwerer durch. Dort ist der Gebärmutterhals. Ein Hormon aus der Spirale macht den Schleim dickflüssig. Das Hormon heißt Gestagen. Die Pille hemmt vor allem den Eisprung.",
+          "volltext": "Der Schleim unten an der Gebärmutter wird zäher. Spermien kommen schwerer durch. Dort ist der Gebärmutterhals. Ein Hormon aus der Spirale macht den Schleim dickflüssig. Das Hormon heißt Gestagen. Die Pille hemmt vor allem den Eisprung."
+        },
+        {
+          "titel": "Kein Schutz vor Ansteckung",
+          "lueckentext": "Der Schleim bietet {2} vor Ansteckung beim Sex. Erreger können beim Sex weitergegeben werden.",
+          "volltext": "Der Schleim bietet keinen Schutz vor Ansteckung beim Sex. Erreger können beim Sex weitergegeben werden."
+        },
+        {
+          "titel": "Schutz ohne tägliche Tablette",
+          "lueckentext": "Die Spirale schützt lange vor Schwangerschaft. Du brauchst {3}. Der Schutz ist sehr zuverlässig. Die Arztpraxis prüft, ob die Spirale richtig sitzt.",
+          "volltext": "Die Spirale schützt lange vor Schwangerschaft. Du brauchst keine Tablette. Der Schutz ist sehr zuverlässig. Die Arztpraxis prüft, ob die Spirale richtig sitzt."
+        },
+        {
+          "titel": "Du entscheidest über die Spirale",
+          "lueckentext": "Die Arztpraxis prüft, ob die Spirale zu dir passt. Du entscheidest. Nur mit deinem Ja setzt sie die Spirale in die Gebärmutter ein. Das kann wehtun.",
+          "volltext": "Die Arztpraxis prüft, ob die Spirale zu dir passt. Du entscheidest. Nur mit deinem Ja setzt sie die Spirale in die Gebärmutter ein. Das kann wehtun."
+        },
+        {
+          "titel": "Regelschmerzen können nachlassen",
+          "lueckentext": "Später können Blutung und Regelschmerzen {4} werden. Am Anfang kann die Blutung unregelmäßig sein. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen.",
+          "volltext": "Später können Blutung und Regelschmerzen schwächer werden. Am Anfang kann die Blutung unregelmäßig sein. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen."
+        }
+      ],
+      "pearl": "ca. 0,16",
+      "pearl_erklaerung": "So viele von 100 Frauen werden schwanger, wenn sie ein Jahr so verhüten. Kleine Zahl → seltener schwanger. Der Wert sagt nichts über Ansteckung beim Sex."
+    }
+  ],
+  "AHR": [
+    {
+      "titel": "Kondom",
+      "bezug": "zu Kondomen",
+      "nummer": 1,
+      "seite": "Vorderseite",
+      "position": "oben",
+      "ueberschrift": "1 – Kondom",
+      "felder": [
+        {
+          "nummer": 1,
+          "wort": "Kunststoff",
+          "titel": "Kondome ohne Latex"
+        },
+        {
+          "nummer": 2,
+          "wort": "Spermien",
+          "titel": "Die Hülle hält Sperma zurück"
+        },
+        {
+          "nummer": 3,
+          "wort": "freie Haut",
+          "titel": "Ansteckung über die Haut"
+        },
+        {
+          "nummer": 4,
+          "wort": "neues Kondom",
+          "titel": "Ein neues Kondom für jeden Sex"
+        }
+      ],
+      "texte": [
+        {
+          "titel": "Kondome ohne Latex",
+          "lueckentext": "Allergie gegen Latex? Es gibt Kondome aus {1}. Latex ist ein Material aus Gummi. Auf der Packung steht, ob das Kondom geeignet ist. Ein Beispiel für Kunststoff ist Polyurethan. Ein anderer Kunststoff ist Polyisopren.",
+          "volltext": "Allergie gegen Latex? Es gibt Kondome aus Kunststoff. Latex ist ein Material aus Gummi. Auf der Packung steht, ob das Kondom geeignet ist. Ein Beispiel für Kunststoff ist Polyurethan. Ein anderer Kunststoff ist Polyisopren."
+        },
+        {
+          "titel": "Die Hülle hält Sperma zurück",
+          "lueckentext": "Die heile Hülle hält {2} zurück. Das sind Samenzellen im Sperma. Diese Hülle ist eine Barriere. Sitzt sie richtig, kommt kein Sperma in die Scheide. Ohne Hormone.",
+          "volltext": "Die heile Hülle hält Spermien zurück. Das sind Samenzellen im Sperma. Diese Hülle ist eine Barriere. Sitzt sie richtig, kommt kein Sperma in die Scheide. Ohne Hormone."
+        },
+        {
+          "titel": "Ansteckung über die Haut",
+          "lueckentext": "Manche Erreger gehen beim Sex über {3} von Mensch zu Mensch. Ein geeignetes Kondom senkt das Risiko für viele Infektionen beim Sex. Kondome aus Tierdarm schützen davor nicht zuverlässig.",
+          "volltext": "Manche Erreger gehen beim Sex über freie Haut von Mensch zu Mensch. Ein geeignetes Kondom senkt das Risiko für viele Infektionen beim Sex. Kondome aus Tierdarm schützen davor nicht zuverlässig."
+        },
+        {
+          "titel": "Ein neues Kondom für jeden Sex",
+          "lueckentext": "Bei jedem Sex ein {4} benutzen. Gleich von Anfang an. Es kann reißen oder abrutschen. Dann schützt es schlechter.",
+          "volltext": "Bei jedem Sex ein neues Kondom benutzen. Gleich von Anfang an. Es kann reißen oder abrutschen. Dann schützt es schlechter."
+        },
+        {
+          "titel": "Die Regel bleibt gleich",
+          "lueckentext": "Das Kondom verändert die Regel nicht. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen.",
+          "volltext": "Das Kondom verändert die Regel nicht. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen."
+        }
+      ],
+      "pearl": "2–12",
+      "pearl_erklaerung": "So viele von 100 Frauen werden schwanger, wenn sie ein Jahr so verhüten. Kleine Zahl → seltener schwanger. Der Wert sagt nichts über Ansteckung beim Sex."
+    },
+    {
+      "titel": "Kombinationspille",
+      "bezug": "zur Kombinationspille",
+      "nummer": 2,
+      "seite": "Vorderseite",
+      "position": "unten",
+      "ueberschrift": "2 – Kombinationspille",
+      "felder": [
+        {
+          "nummer": 1,
+          "wort": "Eisprung",
+          "titel": "Die Pille bremst den Eisprung"
+        },
+        {
+          "nummer": 2,
+          "wort": "keinen Schutz",
+          "titel": "Kein Schutz vor Ansteckung"
+        },
+        {
+          "nummer": 3,
+          "wort": "nach Plan",
+          "titel": "Die Pille nach Plan nehmen"
+        },
+        {
+          "nummer": 4,
+          "wort": "anders",
+          "titel": "Jeder Körper reagiert anders"
+        }
+      ],
+      "texte": [
+        {
+          "titel": "Die Pille bremst den Eisprung",
+          "lueckentext": "Die Pille verhindert meist den {1}. Dann wird keine Eizelle frei. Ohne freie Eizelle gibt es keine Befruchtung. Die Pille enthält zwei Hormone. Sie heißen Östrogen und Gestagen.",
+          "volltext": "Die Pille verhindert meist den Eisprung. Dann wird keine Eizelle frei. Ohne freie Eizelle gibt es keine Befruchtung. Die Pille enthält zwei Hormone. Sie heißen Östrogen und Gestagen."
+        },
+        {
+          "titel": "Kein Schutz vor Ansteckung",
+          "lueckentext": "Die Pille bietet {2} vor Ansteckung beim Sex. Die Hormone halten keine Krankheitserreger auf.",
+          "volltext": "Die Pille bietet keinen Schutz vor Ansteckung beim Sex. Die Hormone halten keine Krankheitserreger auf."
+        },
+        {
+          "titel": "Die Pille nach Plan nehmen",
+          "lueckentext": "Die Pille {3} nehmen. Eine Pille vergessen → der Schutz vor Schwangerschaft kann sinken.",
+          "volltext": "Die Pille nach Plan nehmen. Eine Pille vergessen → der Schutz vor Schwangerschaft kann sinken."
+        },
+        {
+          "titel": "Jeder Körper reagiert anders",
+          "lueckentext": "Jeder Körper reagiert {4}. Manchen wird von der Pille übel. Eine Freundin verträgt sie gut? In der Arztpraxis klärst du, ob sie auch zu dir passt. Selten bildet sich ein Blutgerinnsel. Dabei verklumpt Blut in einem Gefäß.",
+          "volltext": "Jeder Körper reagiert anders. Manchen wird von der Pille übel. Eine Freundin verträgt sie gut? In der Arztpraxis klärst du, ob sie auch zu dir passt. Selten bildet sich ein Blutgerinnsel. Dabei verklumpt Blut in einem Gefäß."
+        },
+        {
+          "titel": "Regelschmerzen können nachlassen",
+          "lueckentext": "Blutung und Schmerzen können schwächer werden. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen.",
+          "volltext": "Blutung und Schmerzen können schwächer werden. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen."
+        }
+      ],
+      "pearl": "0,1–0,9",
+      "pearl_erklaerung": "So viele von 100 Frauen werden schwanger, wenn sie ein Jahr so verhüten. Kleine Zahl → seltener schwanger. Der Wert sagt nichts über Ansteckung beim Sex."
+    },
+    {
+      "titel": "Kupferspirale",
+      "bezug": "zur Kupferspirale",
+      "nummer": 3,
+      "seite": "Rückseite",
+      "position": "oben",
+      "ueberschrift": "3 – Kupferspirale",
+      "felder": [
+        {
+          "nummer": 1,
+          "wort": "Spermien",
+          "titel": "Kupfer bremst Spermien"
+        },
+        {
+          "nummer": 2,
+          "wort": "keinen Schutz",
+          "titel": "Kein Schutz vor Ansteckung"
+        },
+        {
+          "nummer": 3,
+          "wort": "keine Tablette",
+          "titel": "Schutz ohne tägliche Tablette"
+        },
+        {
+          "nummer": 4,
+          "wort": "stärker",
+          "titel": "Regelschmerzen können zunehmen"
+        }
+      ],
+      "texte": [
+        {
+          "titel": "Kupfer bremst Spermien",
+          "lueckentext": "Kupfer bremst {1}. Diese Samenzellen erreichen und befruchten die Eizelle schwerer. Die Kupferspirale wirkt ohne Hormone. Der Eisprung kann weiter stattfinden.",
+          "volltext": "Kupfer bremst Spermien. Diese Samenzellen erreichen und befruchten die Eizelle schwerer. Die Kupferspirale wirkt ohne Hormone. Der Eisprung kann weiter stattfinden."
+        },
+        {
+          "titel": "Kein Schutz vor Ansteckung",
+          "lueckentext": "Kupfer bietet {2} vor Ansteckung beim Sex. Kupfer hält Krankheitserreger nicht auf.",
+          "volltext": "Kupfer bietet keinen Schutz vor Ansteckung beim Sex. Kupfer hält Krankheitserreger nicht auf."
+        },
+        {
+          "titel": "Schutz ohne tägliche Tablette",
+          "lueckentext": "Die Spirale schützt lange vor Schwangerschaft. Du brauchst {3}. Der Schutz ist sehr zuverlässig. Die Arztpraxis prüft, ob die Spirale richtig sitzt. Wie lange sie wirkt, hängt vom Modell ab.",
+          "volltext": "Die Spirale schützt lange vor Schwangerschaft. Du brauchst keine Tablette. Der Schutz ist sehr zuverlässig. Die Arztpraxis prüft, ob die Spirale richtig sitzt. Wie lange sie wirkt, hängt vom Modell ab."
+        },
+        {
+          "titel": "Du entscheidest über die Spirale",
+          "lueckentext": "Die Arztpraxis prüft, ob die Spirale zu dir passt. Du entscheidest. Nur mit deinem Ja setzt sie die Spirale in die Gebärmutter ein. Das kann wehtun.",
+          "volltext": "Die Arztpraxis prüft, ob die Spirale zu dir passt. Du entscheidest. Nur mit deinem Ja setzt sie die Spirale in die Gebärmutter ein. Das kann wehtun."
+        },
+        {
+          "titel": "Regelschmerzen können zunehmen",
+          "lueckentext": "Blutung und Regelschmerzen können {4} werden. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen.",
+          "volltext": "Blutung und Regelschmerzen können stärker werden. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen."
+        }
+      ],
+      "pearl": "0,3–0,8",
+      "pearl_erklaerung": "So viele von 100 Frauen werden schwanger, wenn sie ein Jahr so verhüten. Kleine Zahl → seltener schwanger. Der Wert sagt nichts über Ansteckung beim Sex."
+    },
+    {
+      "titel": "Hormonspirale",
+      "bezug": "zur Hormonspirale",
+      "nummer": 4,
+      "seite": "Rückseite",
+      "position": "unten",
+      "ueberschrift": "4 – Hormonspirale",
+      "felder": [
+        {
+          "nummer": 1,
+          "wort": "zäher",
+          "titel": "Schleim bremst Spermien"
+        },
+        {
+          "nummer": 2,
+          "wort": "keinen Schutz",
+          "titel": "Kein Schutz vor Ansteckung"
+        },
+        {
+          "nummer": 3,
+          "wort": "keine Tablette",
+          "titel": "Schutz ohne tägliche Tablette"
+        },
+        {
+          "nummer": 4,
+          "wort": "schwächer",
+          "titel": "Regelschmerzen können nachlassen"
+        }
+      ],
+      "texte": [
+        {
+          "titel": "Schleim bremst Spermien",
+          "lueckentext": "Der Schleim unten an der Gebärmutter wird {1}. Spermien kommen schwerer durch. Dort ist der Gebärmutterhals. Ein Hormon aus der Spirale macht den Schleim dickflüssig. Das Hormon heißt Gestagen. Die Pille hemmt vor allem den Eisprung.",
+          "volltext": "Der Schleim unten an der Gebärmutter wird zäher. Spermien kommen schwerer durch. Dort ist der Gebärmutterhals. Ein Hormon aus der Spirale macht den Schleim dickflüssig. Das Hormon heißt Gestagen. Die Pille hemmt vor allem den Eisprung."
+        },
+        {
+          "titel": "Kein Schutz vor Ansteckung",
+          "lueckentext": "Der Schleim bietet {2} vor Ansteckung beim Sex. Erreger können beim Sex weitergegeben werden.",
+          "volltext": "Der Schleim bietet keinen Schutz vor Ansteckung beim Sex. Erreger können beim Sex weitergegeben werden."
+        },
+        {
+          "titel": "Schutz ohne tägliche Tablette",
+          "lueckentext": "Die Spirale schützt lange vor Schwangerschaft. Du brauchst {3}. Der Schutz ist sehr zuverlässig. Die Arztpraxis prüft, ob die Spirale richtig sitzt.",
+          "volltext": "Die Spirale schützt lange vor Schwangerschaft. Du brauchst keine Tablette. Der Schutz ist sehr zuverlässig. Die Arztpraxis prüft, ob die Spirale richtig sitzt."
+        },
+        {
+          "titel": "Du entscheidest über die Spirale",
+          "lueckentext": "Die Arztpraxis prüft, ob die Spirale zu dir passt. Du entscheidest. Nur mit deinem Ja setzt sie die Spirale in die Gebärmutter ein. Das kann wehtun.",
+          "volltext": "Die Arztpraxis prüft, ob die Spirale zu dir passt. Du entscheidest. Nur mit deinem Ja setzt sie die Spirale in die Gebärmutter ein. Das kann wehtun."
+        },
+        {
+          "titel": "Regelschmerzen können nachlassen",
+          "lueckentext": "Später können Blutung und Regelschmerzen {4} werden. Am Anfang kann die Blutung unregelmäßig sein. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen.",
+          "volltext": "Später können Blutung und Regelschmerzen schwächer werden. Am Anfang kann die Blutung unregelmäßig sein. Starke Schmerzen ohne klare Ursache? Lass sie in der Arztpraxis prüfen."
+        }
+      ],
+      "pearl": "ca. 0,16",
+      "pearl_erklaerung": "So viele von 100 Frauen werden schwanger, wenn sie ein Jahr so verhüten. Kleine Zahl → seltener schwanger. Der Wert sagt nichts über Ansteckung beim Sex."
+    }
+  ]
+}

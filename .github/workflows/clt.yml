@@ -1,0 +1,74 @@
+name: Digitale Unterrichtsbesuche – CLT-Abnahme
+on:
+  push:
+    branches: [entwicklung/ub-clt-digital]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  bauen:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python gesamt/ub_sprachfassung.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Gebaute-Unterrichtstage
+          path: dist/Gesamt/
+  pruefen:
+    needs: bauen
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    container: mcr.microsoft.com/playwright/python:v1.62.0-noble
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit]
+        tag: ['02','08']
+        niveau: [Förder, ESA, MSA, AHR]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: Gebaute-Unterrichtstage
+          path: dist/Gesamt
+      - run: python -m pip install -r tests/requirements.txt
+      - name: Entscheidungswege und Arbeitsfenster
+        env:
+          TAG: ${{ matrix.tag }}
+          ENGINE: ${{ matrix.browser }}
+          NIVEAU: ${{ matrix.niveau }}
+        run: |
+          for profil in quer hoch kurs schmal tastatur; do python clt/pruefen.py "$ENGINE" "$TAG" "$NIVEAU" --profil "$profil"; done
+          if [ "$TAG" = 02 ]; then python clt/folgen.py "$ENGINE" "$NIVEAU"; fi
+          if [ "$TAG" = 08 ]; then python gesamt/ergonomie.py --browser "$ENGINE" --niveau "$NIVEAU"; fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Protokoll-${{ matrix.tag }}-${{ matrix.browser }}-${{ matrix.niveau }}
+          path: build/
+  uebergabe:
+    needs: pruefen
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: Gebaute-Unterrichtstage
+          path: dist/Gesamt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: Protokoll-*
+          merge-multiple: true
+          path: build/
+      - run: |
+          python -m pip install lxml
+          python clt/uebergabe.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Unterrichtsbesuche-Work-und-Pruefung
+          path: dist/CLT

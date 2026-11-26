@@ -19,13 +19,13 @@ window.Arbeitsplatz = (() => {
     }
     function show(i,focus){
       index=Math.max(0,Math.min(count-1,i));
-      content.scrollLeft=index*content.clientWidth;indicate();
+      content.scrollLeft=index*content.getBoundingClientRect().width;indicate();
       if(focus)(index===count-1?previous:next).focus({preventScroll:true});
     }
     controls.append(previous,status,next);
     content.append(...parent.childNodes);parent.classList.add('blatt');parent.append(content,controls);
     pages.set(parent,()=>{
-      const width=content.clientWidth;if(!width)return;
+      const width=content.getBoundingClientRect().width;if(!width)return;
       controls.hidden=true;content.classList.remove('geteilt');
       if(content.scrollHeight<=content.clientHeight+1 && content.scrollWidth<=width+1){index=0;count=1;return;}
       controls.hidden=false;content.classList.add('geteilt');
@@ -35,7 +35,7 @@ window.Arbeitsplatz = (() => {
     });
     content.addEventListener('scroll',()=>{
       if(!content.classList.contains('geteilt'))return;
-      const i=Math.round(content.scrollLeft/content.clientWidth);
+      const i=Math.round(content.scrollLeft/content.getBoundingClientRect().width);
       if(i!==index){index=i;indicate();}
     });
     content.addEventListener('toggle',refresh,true);
@@ -45,7 +45,7 @@ window.Arbeitsplatz = (() => {
     if(!field || !field.clientWidth)return;
     const start=field.getBoundingClientRect().left;
     const left=node.getBoundingClientRect().left-start+field.scrollLeft;
-    field.scrollLeft=Math.floor((left+1)/field.clientWidth)*field.clientWidth;
+    const width=field.getBoundingClientRect().width;field.scrollLeft=Math.floor((left+1)/width)*width;
   }
   let current;
   function refresh(){

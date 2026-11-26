@@ -87,3 +87,14 @@ dialog[open]{max-height:var(--sichtbare-hoehe,100dvh)!important;height:calc(var(
  #dialog[open]>#dialog-body,dialog[open]>#reading{grid-area:2/1/3/4;align-self:stretch;padding:2px}
  dialog[open] .blatt-wechsel button,dialog[open] .row button{padding:.12em .4em}
 }
+.titel-kurz{display:none}
+@media(max-height:360px){
+ .titel-lang{display:none}.titel-kurz{display:inline}
+ .lernraum .arbeitskopf>.gespraech-wechsel{padding:.08em .35em;line-height:1.05}
+ .arbeitskopf>.gespraech-wechsel .vorschau{font:inherit}
+}
+@media(max-height:400px){
+ .blatt-inhalt.geteilt button.answer,.blatt-inhalt.geteilt .answers button,.blatt-inhalt.geteilt button.grund{
+   padding:.08em .3em;line-height:1.18;margin-block:.08em;
+ }
+}

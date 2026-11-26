@@ -142,7 +142,14 @@ function tools(box,task,r,card){
   const guided=['Ergänzung','Reichweite','Transfer'].includes(task.id) && !advanced(level);
   btn(row,ui.help,'help',()=>help(task,r));
   btn(row,guided?bank.cards[card].title:ui.cards,'cards',()=>cards(guided?card:undefined));
-  btn(row,ui.terms,'terms',()=>popup(ui.terms,b=>Object.entries(bank.definitions).forEach(([k,v])=>{el(b,'strong',k);paragraph(b,v);})));
+  const word=bank.definitions[task.id]?task.id:
+    ['Ergänzung','Transfer'].includes(task.id)?bank.cases[current.person].missing:
+    task.id==='Reichweite'?'Fakt':null;
+  if(word)btn(row,word+' erklären','terms',()=>popup(word,b=>paragraph(b,bank.definitions[word])));
+  else btn(row,'Begriff erklären','terms',()=>popup('Welcher Begriff?',box=>{
+    for(const [term,meaning] of Object.entries(bank.definitions))
+      btn(box,term,'begriff-'+term,()=>popup(term,b=>paragraph(b,meaning)));
+  }));
 }
 function showHome(){
   const layout=el(root,'div',undefined,'split'), aside=el(layout,'aside',undefined,'msg');
@@ -161,11 +168,11 @@ function showHome(){
     });
   },saved.last?'':'primary');
   if(saved.complete.Mutter)btn(box,bank.cases.Freundin.titles[0],'friend',()=>go('case',{person:'Freundin',at:0}));
-  btn(box,ui.switch,'jump',()=>go('laura',{at:0}));
+
   if(saved.completedReview)reserves(box);
 }
 function additionalCases(){
-  return saved.completedReview && names.slice(0,2).every(name=>saved.complete[name]);
+  return saved.finalCard && saved.completedReview && names.slice(0,2).every(name=>saved.complete[name]);
 }
 function reserves(box){
   if(!additionalCases())return;
@@ -180,23 +187,6 @@ function openSection(id){
   const at=bank.evaluationRecovery.findIndex(section=>section.id===id);
   if(at<0)throw new Error('Unbekannter Abschnitt '+id);
   go('laura',{at});
-}
-function paperOrder(box,key,{button=false,support=false}={}){
-  const step=bank.media.steps[key];
-  const panel=el(box,'div',undefined,'note');
-  panel.dataset.handoff=step.id;
-  const order=paragraph(panel,step.orders[level].screen,'paper-order');
-  order.dataset.level=level;
-  if(support)paragraph(panel,step.support);
-  if(!button){
-    let instruction=step.returnText;
-    if(step.nextId===step.sectionId && advanced(level))instruction='Schreibe deine Erklärung am iPad. Tippe auf „'+ui.compare+'“.';
-    const handoff=paragraph(panel,instruction,'small');
-    if(step.nextId)handoff.dataset.return=step.nextId;
-    else handoff.dataset.terminal='paper';
-  }
-  if(step.after)paragraph(panel,step.after,'small');
-  return step;
 }
 function thought(box,label,text,save,id,buttonText,submit){
   const input=el(el(box,'label',label),'textarea');input.value=text;
@@ -256,7 +246,7 @@ function options(box,task,r,onDone,application=false){
       }
       if(application){r.finished=o.ok;r.skipped=false;}
       draw();
-      const target=application && o.ok?root.querySelector('[data-handoff]'):document.getElementById('response');
+      const target=document.getElementById('response') || root.querySelector('#next');
       Arbeitsplatz.zeigen(target);
       target.tabIndex=-1;
       target.focus({preventScroll:true});
@@ -285,7 +275,7 @@ function caseView(){
   const {person,at}=current,c=bank.cases[person],idx=names.indexOf(person);
   const paper=at===c.tasks.length+1, transfer=paper && hasApplication(person);
   const application=transfer?record(person+'/Transfer'):null;
-  heading(root,c.recovery[at].section).dataset.section=c.recovery[at].id;
+  heading(root,at>0 && !paper?person+' · '+(c.tasks[at-1].id==='Ergänzung'?c.missing:c.tasks[at-1].id):c.recovery[at].section).dataset.section=c.recovery[at].id;
   const layout=el(root,'div',undefined,'split');
   const chat=originalPanel(layout,person,c,transfer && !application.finished);
   const box=el(layout,'section',undefined,'card');
@@ -296,21 +286,21 @@ function caseView(){
   }else if(!paper){
     const task=c.tasks[at-1],r=record(person+'/'+task.id);
     const adding=task.id==='Ergänzung';
-    if(adding && !r.valid && r.selected===undefined && !r.compared)paperOrder(box,c.recovery[0].id.split('-')[0]+'-erst');
+    const concept=adding?c.missing:task.id;
+    if(bank.definitions[concept])paragraph(box,concept,'small');
     el(box,'h2',task.prompt);
-    const phase=adding?'Ergänzung':'analyse';
     if(advanced(level) && !r.valid){
-      paragraph(box,level+' · '+bank.levelPrompts[level][phase],'small');
+
       if(adding)paragraph(box,bank.caseReflection[person]);
       draft(box,task,r,c);
-    }else if(adding && !r.valid)paragraph(box,bank.levelPrompts[level][phase],'small');
+    }
     if(!advanced(level)||r.compared)options(box,task,r,advance);
     tools(box,task,r,idx);
   }else{
     if(transfer){
       const task=c.transfer;box.dataset.application=task.sectionId;
       if(!application.finished){
-        paragraph(box,ui.helpBeforePaper,'small');
+        
         el(box,'h2',advanced(level) && task.advancedPrompt?task.advancedPrompt:task.prompt);
         options(box,task,application,null,true);
         tools(box,task,application,idx);
@@ -321,40 +311,28 @@ function caseView(){
       checked.id='response';checked.tabIndex=-1;checked.setAttribute('role','status');
       paragraph(box,applicationStatus(person),'tag');
     }
-    const prefix=c.recovery[0].id.split('-')[0];
-    const key=prefix+(idx>=2 && !saved.completedReview?'-einstieg':'-ergebnis');
+    if(c.tasks.every(task=>saved.records[person+'/'+task.id]?.valid))saved.complete[person]=true;
+    const next=idx===0?'Nachricht der Freundin':idx===1?'Zu Lauras Frage':'Zur Übersicht';
+    el(box,'h2','Zur Nachricht');
     const result=saved.records[person+'/Ergänzung'];
-    if(result?.valid)paragraph(box,status(result),'tag');
-    else{
-      paragraph(box,ui.supported+' · '+ui.noPast,'small');
-      paragraph(box,c.addition);
-    }
-    el(box,'h2',ui.paper);
-    const step=paperOrder(box,key,{button:true,support:solutionUsed(person)});
-    btn(box,step.buttonText,'next',()=>{
-      if(c.tasks.every(task=>saved.records[person+'/'+task.id]?.valid))saved.complete[person]=true;
-      openSection(step.nextId);
-    },'primary').dataset.return=step.nextId;
-    const matrix=el(box,'details');matrix.dataset.digital='matrix';
-    el(matrix,'summary',ui.readMatrix);
-    for(const [key,value] of Object.entries(c.matrix)){el(matrix,'strong',key);paragraph(matrix,value);}
-  }
-  if(idx<2){
-    const bar=el(box,'div',undefined,'tools');btn(bar,ui.switch,'jump',()=>go('laura',{at:0}));
+    if(result?.valid)paragraph(box,c.addition);else paragraph(box,'Hier kannst du die Fachinformation noch prüfen.');
+    btn(box,next,'next',()=>{if(idx===0)go('case',{person:names[1],at:0});else if(idx===1)go('laura',{at:0});else{screen='home';draw();}},'primary');
   }
 }
+
 function facts(box){
-  const d=el(box,'details');el(d,'summary',ui.facts);
-  for(const n of names.slice(0,2)){
-    el(d,'strong',n+' · '+(saved.records[n+'/Ergänzung']?.valid?ui.confirmed:ui.supported));
-    if(hasApplication(n))paragraph(d,applicationStatus(n),'small');
-    const original=el(d,'details');el(original,'summary',ui.family);paragraph(original,bank.cases[n].original);
-    el(d,'strong',ui.addition);paragraph(d,bank.cases[n].addition);paragraph(d,bank.cases[n].connection,'small');
+  const d=el(box,'details');el(d,'summary','Schon geprüft');
+  let count=0;
+  for(const name of names.slice(0,2)){
+    const c=bank.cases[name];
+    for(const t of c.tasks){
+      const r=saved.records[name+'/'+t.id];
+      if(!r?.valid)continue;
+      el(d,'strong',name+' · '+(t.id==='Ergänzung'?c.missing:t.id));
+      paragraph(d,t.id==='Ergänzung'?c.addition:t.answers[r.selected].text);count++;
+    }
   }
-  for(const n of names.slice(2)){
-    const r=saved.records[n+'/Transfer'];
-    if(r?.skipped || r?.valid)paragraph(d,n+' · '+applicationStatus(n),'small');
-  }
+  if(!count)paragraph(d,'In dieser Sitzung hast du noch keine Nachricht geprüft.');
 }
 function evaluationHelp(box,r){
   btn(box,ui.help,'help',()=>help({hints:bank.evaluationHints,helpByLevel:bank.evaluationHelpByLevel,personalTier:level},r));
@@ -367,6 +345,7 @@ function comparison(box){
     p.step='done';saved.completedReview=true;go('laura',{at:3});
   };
   if(p.choice){
+    paragraph(box,'Deine Einschätzung · '+p.choice);
     btn(box,ui.editWeight,'edit-weight',()=>{
       if(!window.confirm('Gewichtung ändern? Die bisherige Prüfung dieser Gewichtung beginnt neu.'))return;
       p.step='choice';p.choice='';p.part=0;p.notes={};p.reason='';p.alternate=false;p.other=false;p.feedback='';
@@ -381,13 +360,11 @@ function comparison(box){
     paragraph(box,ui.personal);btn(box,ui.next,'next',end,'primary');return;
   }
   if(p.step==='choice'){
-    const field=bank.media.steps['LA-eigen'].field;
-    paragraph(box,'„'+field+'“ · '+ui.digitalCheck).dataset.fieldref=field;
-    paragraph(box,ui.choice);
-    for(const [i,name] of [...names.slice(0,2),ui.both].entries())
+    paragraph(box,'Welche Nachricht hilft Laura besonders?');
+    for(const [i,name] of [...names.slice(0,2),ui.both,'Ich bin noch unsicher'].entries())
       btn(box,name,'weight-'+i,()=>{p.choice=name;p.part=0;p.step='concern';p.feedback='';draw(true);});
   }else{
-    const person=p.choice===ui.both?names[p.part]:p.choice,num=names.indexOf(person);
+    const person=(p.choice===ui.both || p.choice==='Ich bin noch unsicher')?names[p.part]:p.choice,num=names.indexOf(person);
     el(box,'strong',person);
     if(p.step==='concern'){
       paragraph(box,ui.priority);
@@ -428,7 +405,7 @@ function comparison(box){
       el(box,'h3',task.prompt);
       options(box,task,r,()=>{
         p.notes[person]={concern:target,reason:p.other?p.reason:'',outcome:status(r)};
-        if(p.choice===ui.both&&p.part===0){p.part++;p.step='concern';p.other=false;p.alternate=false;draw(true);}
+        if((p.choice===ui.both || p.choice==='Ich bin noch unsicher')&&p.part===0){p.part++;p.step='concern';p.other=false;p.alternate=false;draw(true);}
         else end();
       });
       tools(box,{...task,personalTier:level},r,target);return;
@@ -442,55 +419,32 @@ function lauraView(){
   const layout=el(root,'div',undefined,'split'),panel=el(layout,'aside',undefined,'msg');
   remember('frage','Laura',bank.second);profile(panel,'Laura');transcript(panel);
   const box=el(layout,'section',undefined,'card');
-  if(at===2)facts(box);else facts(panel);
+  facts(box);
   if(at===0){
-    paragraph(box,ui.before);btn(box,ui.openPersonal,'next',()=>go('laura',{at:1}),'primary');
-  }else if(at===1){
-    const step=paperOrder(box,'LA-eigen',{button:true});
-    if(level==='Förder'){
-      const d=el(box,'details');el(d,'summary',ui.examples);
-      for(const [field,line] of bank.stems){el(d,'strong',field);paragraph(d,line);}
-    }
-    paragraph(box,ui.reviewSolo);
-    btn(box,step.buttonText,'next',()=>openSection(step.nextId),'primary').dataset.return=step.nextId;
-    evaluationHelp(box,record('Bewertung/Vorbereitung'));
-  }else if(at===2)comparison(box);
+    paragraph(box,'Welche Frage ist Laura wichtig?');
+    btn(box,'Nachrichten abwägen','next',()=>go('laura',{at:2}),'primary');
+  }else if(at===1 || at===2)comparison(box);
   else{
-    el(box,'h2',ui.paper);
-    const p=saved.personal;
-    el(box,'strong',level);
-      paragraph(box,p?.step==='done'?p.choice+' · '+ui.personal:ui.noPast);
-      if(p?.notes)for(const [name,note] of Object.entries(p.notes)){
-        paragraph(box,name+' · '+(note.concern?ui.questionB:ui.questionA));
-        paragraph(box,ui.limitChecked+' '+note.outcome,'small');
-        if(note.reason){
-          paragraph(box,ui.other+' · '+note.reason);
-        }
-        paragraph(box,ui.reasonOpen,'small');
-      }
-      if(p?.depth===5)paragraph(box,ui.timeHint);
-    if(saved.records['Bewertung/Vorbereitung']?.depth===5)paragraph(box,ui.timeHint);
-    if(saved.completedReview)paperOrder(box,'LA-abschluss');
-    if(saved.completedReview)reserves(box);
-    else{
-      paragraph(box,ui.endRecovery,'small');
-      btn(box,bank.evaluationSteps[2],'open-review',()=>openSection(bank.evaluationRecovery[2].id),'primary');
-    }
+    if(saved.personal.choice)paragraph(box,'Deine Einschätzung · '+saved.personal.choice);
+    paragraph(box,'Deine Lehrkraft gibt die Abschlusskarte aus. Begründe dort deine eigene Einschätzung.');
+    if(saved.completedReview && !saved.finalCard)btn(box,'Meine Begründung steht auf der Abschlusskarte','abschlusskarte',()=>{saved.finalCard=true;draw();});
+    if(saved.finalCard)reserves(box);
+    if(!saved.completedReview)btn(box,'Zur Abwägung','open-review',()=>go('laura',{at:2}));
   }
 }
+
 function pickerView(){
   heading(root,ui.where);chooseLevel(root);if(!level)return;
   if(saved.last)paragraph(root,ui.soloSession,'small');
   if(!additionalCases() && !saved.paperRecovery)
-    btn(root,'Mein Pflichtteil ist auf Papier abgeschlossen','papierstand',()=>{saved.paperRecovery=true;draw();});
+    btn(root,'Meine Begründung steht auf der Abschlusskarte','papierstand',()=>{saved.paperRecovery=true;draw();});
   const available=additionalCases()||saved.paperRecovery?names:names.slice(0,2);
   if(![...available,ui.theme].includes(picker.person))picker={person:'Mutter',step:'0'};
   select(root,ui.home,'person',[...available,ui.theme].map(k=>[k,k]),picker.person,v=>{picker={person:v,step:'0'};draw();});
   const n=picker.person,c=bank.cases[n];
   const steps=c?c.recovery.map((r,i)=>[i,c.recovery.filter(s=>s.section===r.section).length>1?r.section+' · '+r.part:r.section]):bank.evaluationSteps.map((v,i)=>[i,v]);
   if(c){
-    const prefix=c.recovery[0].id.split('-')[0];
-    steps.push(['transfer',bank.media.steps[prefix+'-ergebnis'].restartApplication.label]);
+    steps.push(['transfer','Fachinformation anwenden']);
   }
   select(root,ui.selectSection,'entry',steps,picker.step,v=>{picker.step=v;draw();});
   btn(root,ui.resumeHere,'open-entry',()=>{
@@ -507,8 +461,8 @@ function draw(focus=false){
   if(screen==='home')showHome();else if(screen==='picker')pickerView();else if(current.type==='case')caseView();else lauraView();
   const work=root.querySelector('.split>.card')||root;
   const title=root.querySelector(':scope>h1')||work.querySelector('h1');
-  const hint=screen==='picker'?'Suche den Abschnitt auf deinem Laufzettel und wähle ihn aus.':
-    screen==='home'?'Wähle dein Niveau auf dem Laufzettel. Öffne dann die erste Nachricht.':
+  const hint=screen==='picker'?'Wähle die Person und den Abschnitt, bei dem du weiterarbeiten willst.':
+    screen==='home'?'Wähle dein Niveau. Öffne dann die erste Nachricht.':
     'Lies die aktuelle Nachricht. Der Arbeitsauftrag nennt den nächsten Schritt.';
   Arbeitsplatz.setup(root,work,root.querySelector('.split>.msg'),title,root.querySelector('#help'),b=>popup('Hilfe',box=>paragraph(box,hint),b));
   notify();
@@ -519,9 +473,12 @@ window.addEventListener('message',e=>{
   port?.close();port=e.ports[0];
   port.onmessage=({data})=>{
     if(dialog.open)dialog.close();
+    if(data==='abschluss'){popup('Stundenabschluss',box=>{
+      facts(box);paragraph(box,'Deine Lehrkraft gibt dir die Abschlusskarte. Begründe darauf, welche Nachricht dir bei Lauras Frage hilft. Auch Unsicherheit kannst du begründen.');
+    });return;}
     if(data==='resources'){cards();return;}
     if(data==='home'||data==='recovery'){screen=data==='home'?'home':'picker';draw(true);}
   };
-  port.postMessage({type:'ready',actions:[{id:'home',label:ui.home,icon:'folder'},{id:'resources',label:ui.cards,icon:'book'},{id:'recovery',label:ui.recovery,icon:'restart'}]});notify();
+  port.postMessage({type:'ready',actions:[{id:'home',label:ui.home,icon:'folder'},{id:'resources',label:ui.cards,icon:'book'},{id:'recovery',label:'Wiedereinstieg',icon:'restart'},{id:'abschluss',label:'Stundenabschluss'}]});notify();
 });
 resetPath();draw();

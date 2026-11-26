@@ -66,8 +66,8 @@ def markdown(data, depth=2):
 def module_document():
     bank=json.loads((SRC/'material.json').read_text())
     bank['commit']=git('rev-parse','HEAD').decode().strip()
-    bank['media']=compile_media(bank)
-    bank['paperFields']=list(bank['media']['fields'])
+    from clt_inhalte import familie
+    bank=familie(bank)
     css=(SRC/'style.css').read_text()
     for token,file in [('FONT_SANS','dmsans.ttf'),('FONT_SERIF','dmseriftext.ttf')]:
         css=css.replace(token,url('font/ttf',(ROOT/'assets'/file).read_bytes()))

@@ -7,20 +7,21 @@ const readingTrail=[];
 const stage=()=>bank.stages[state.index];
 function add(parent,tag,text=''){const e=document.createElement(tag);e.textContent=text;parent.append(e);return e;}
 function btn(parent,label,id,action){const b=add(parent,'button',label);b.id=id;b.onclick=action;return b;}
-function fresh(index,history=[]){return {index,history,choice:'',code:'',result:'',valid:false,sent:false,asked:'',read:false,previous:''};}
+function fresh(index,history=[]){return {index,history,choice:'',reason:'',drafts:{},compared:false,result:'',valid:false,sent:false,asked:'',read:false,previous:''};}
 function save(next){state=next;sessions.set(tier,next);}
 function clearChoice(key){
   if(!key && state.choice)state.previous=state.choice;
-  Object.assign(state,{choice:key,code:'',result:'',valid:false,asked:''});draw();
+  if(state.choice)state.drafts[state.choice]=state.reason;
+  Object.assign(state,{choice:key,reason:state.drafts[key]||'',compared:false,result:'',valid:false,asked:''});draw();
 }
 function resource(title,render){
   const heading=document.querySelector('#resource'),body=document.querySelector('#reading');
   if(dialog.open){
     if(heading.textContent===title)return;
-    readingTrail.push({title:heading.textContent,nodes:[...body.childNodes],scroll:dialog.scrollTop});
+    if(!(title.startsWith('Hilfe') && heading.textContent.startsWith('Hilfe')))readingTrail.push({title:heading.textContent,nodes:[...body.childNodes],scroll:dialog.scrollTop});
   }
   heading.textContent=title;body.replaceChildren();render(body);dialog.scrollTop=0;
-  if(!dialog.open)dialog.showModal();dialog.dataset.hilfe=String(title==='Hilfe');Arbeitsplatz.prepareDialog(dialog,body);
+  if(!dialog.open)dialog.showModal();dialog.dataset.hilfe=String(title.startsWith('Hilfe'));Arbeitsplatz.prepareDialog(dialog,body);
 }
 function source(){
   const s=stage(),small=['Foerder','ESA'].includes(tier);
@@ -38,10 +39,17 @@ function source(){
       }
     });return;
   }
+  if(!state.choice){
+    resource('Infokarten',box=>{
+      for(const [m,c] of Object.entries(bank.cards))btn(box,c.title,'karte-'+m,()=>resource(c.title,b=>{
+        for(const part of Object.values(c.sections)){add(b,'h2',part.title);add(b,'p',part.levels[tier]);}
+      }));
+    });return;
+  }
   const [m,key]=currentCheck().ref,c=bank.cards[m],section=c.sections[key];
   resource(c.title+' · '+section.title,body=>{
-    add(body,'p',section[small?'shortText':'text']);const full=add(body,'details');add(full,'summary','Ganze Karte lesen');
-    for(const part of Object.values(c.sections)){add(full,'h2',part.title);add(full,'p',part.text);}
+    add(body,'p',section.levels?.[tier] || section[small?'shortText':'text']);const full=add(body,'details');add(full,'summary','Ganze Karte lesen');
+    for(const part of Object.values(c.sections)){add(full,'h2',part.title);add(full,'p',part.levels?.[tier]||part.text);}
   });
 }
 function currentCheck(){return stage().checks?.[state.choice] || stage();}
@@ -104,20 +112,13 @@ function draw(){
     if(needsSource())add(work,'p',state.index===1?'Lies den Artikel. Welche Aussage ist belegt?':'Lies Studie B. Was wurde tatsächlich untersucht?');
     if(!state.valid && !conflict() && !needsSource()){
       add(work,'p',s.task[tier]);
-      if(['MSA','AHR'].includes(tier)){
-        const paper=s.paper[tier].replace(' '+s.task[tier],'');
-        const celina=bank.person==='Celina';
-        add(work,'p',paper+(celina
-          ? ' Lies A, B und C hier am iPad. Schreibe deine Begründung auf den Celina-Bogen. Kreise dort den Buchstaben der passenden Aussage ein.'
-          : ' Schreibe deine Begründung auf. Kreise die richtige Aussage ein.'));
-        const list=add(work,celina?'div':'details');
-        if(!celina)add(list,'summary','Zusatzbogen nicht zur Hand?');
-        check.answers.forEach((answer,i)=>add(list,'p','ABC'[i]+' · '+answer));
-        add(work,'p',s.return);
-        const input=add(add(work,'label','Prüfcode '),'input');input.id='code';input.value=state.code;
-        input.oninput=()=>{state.code=input.value;state.result='';document.querySelector('#feedback').textContent='';};
-        btn(work,'Code prüfen','check',()=>inspect(state.code.trim().toUpperCase()));
+      if(!lower() && !state.compared){
+        const field=add(add(work,'label','Deine Erklärung'),'textarea');field.id='erklaerung';field.value=state.reason;
+        const compare=btn(work,'Mit den Aussagen vergleichen','vergleichen',()=>{state.compared=true;draw();});
+        compare.disabled=!field.value.trim();
+        field.oninput=()=>{state.reason=field.value;compare.disabled=!state.reason.trim();};
       }else{
+        if(!lower())add(work,'p','Deine Erklärung · '+state.reason);
         for(const k of tier==='Foerder'?check.short:'ABC')btn(work,check.answers['ABC'.indexOf(k)],'answer-'+k,()=>inspect(k)).className='answer';
       }
     }
@@ -126,18 +127,24 @@ function draw(){
       if(!state.valid || state.sent || conflict() || needsSource())return;state.sent=true;
       if(bank.person==='Tom' && state.index===bank.stages.length-1)port.postMessage({type:'completed',person:bank.person,tier});
       state.reply=s.replies[state.choice || 'DONE'];
-      state.history.push(s.message[tier].join(' '),(s.choices[state.choice]||'')+' '+check.answers['ABC'.indexOf(check.code)],state.reply);draw();
+      state.history.push(s.message[tier].join(' '),(s.choices[state.choice]||'')+' '+(state.reason||check.answers['ABC'.indexOf(check.code)]),state.reply);draw();
     }).className='primary';
   }
   btn(work,hasChoice?'Infokarte öffnen':'Artikel und Studien öffnen','source',source);
   const hints=state.choice?s.hints[state.choice]:s.helpBefore;
-  btn(work,'Hilfe','help',()=>resource('Hilfe',body=>{for(const hint of hints)add(body,'p',hint);}));
+  function hint(index){
+    resource('Hilfe '+(index+1)+' von '+hints.length,body=>{
+      add(body,'p',hints[index]);
+      if(index+1<hints.length)btn(body,'Mehr Hilfe','mehr-hilfe',()=>hint(index+1));
+    });
+  }
+  btn(work,'Hilfe','help',()=>hint(0));
   const qs=check.questions || s.questions;
   if(qs.length)btn(work,'Rückfrage an '+bank.person,'ask',()=>resource('Rückfrage',body=>{
     for(const [q,a] of qs)btn(body,q,'q'+body.childElementCount,()=>{state.asked=q+' '+a;dialog.close();draw();});
   }));
   if(state.asked && !state.valid)add(chat,'p',state.asked);
-  if(state.result||conflict())work.querySelector('#feedback').className=state.valid?'fachlich-passend':conflict()||/^[abc]$/i.test(state.code.trim())||lower()?'fachlich-falsch':'';
+  if(state.result||conflict())work.querySelector('#feedback').className=state.valid?'fachlich-passend':'fachlich-falsch';
   room();
   port?.postMessage({type:'status',person:bank.person,tier,abschnitt:state.index+1,view:'room'});
 }

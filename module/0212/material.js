@@ -129,7 +129,7 @@
       const entry = element('section');
       entry.dataset.sectionId = id;
       const heading = element('h3',passage.title);
-      entry.append(heading,element('p',short && passage.shortText ? passage.shortText : passage.text));
+      entry.append(heading,element('p',passage.levels?.[view.levelId] || (short && passage.shortText ? passage.shortText : passage.text)));
       if (id === section) {
         entry.dataset.target = 'true';
         heading.tabIndex = -1;
@@ -138,18 +138,18 @@
       body.append(entry);
     }
     if (section) {
-      const more = button('Ganze Karte lesen',() => child({type:'card',ref:{method}},more),'material-ganze-karte');
+      const more = button('Ganze Karte lesen',() => child({type:'card',ref:{method},levelId:view.levelId},more),'material-ganze-karte');
       body.append(more);
     }
     return target;
   }
 
-  function cardsView() {
+  function cardsView(view) {
     title.textContent = 'Infokarten';
     const choices = element('div');
     choices.className = 'material-auswahl';
     for (const [id,card] of Object.entries(window.LAURA.cards)) {
-      const pick = button(card.title,() => child({type:'card',ref:{method:id}},pick),'material-karte-'+id);
+      const pick = button(card.title,() => child({type:'card',ref:{method:id},levelId:view.levelId},pick),'material-karte-'+id);
       choices.append(pick);
     }
     body.append(choices);
@@ -176,7 +176,7 @@
     if (depth > 0) controls.append(button('Vorherige Hilfe',() => step(-1),'hilfe-zurueck'));
     if (depth+1 < data.hints.length) controls.append(button('Nächste Hilfe',() => step(1),'hilfe-weiter'));
     if (data.freeCards) {
-      const browse = button('Infokarte auswählen',() => child({type:'cards'},browse),'hilfe-kartenauswahl');
+      const browse = button('Infokarte auswählen',() => child({type:'cards',levelId:context.levelId},browse),'hilfe-kartenauswahl');
       controls.append(browse);
     } else {
       for (const [i,ref] of [data.card,...(data.extraCards || [])].entries()) {
@@ -243,7 +243,13 @@
     delete dialog.dataset.method;
     delete dialog.dataset.section;
     body.replaceChildren();
-    const drawView = {orientation:v=>{title.textContent='Hilfe';body.append(element('p',v.text));},cards:cardsView,card:cardView,help:helpView,questions:questionsView,summary:summaryView};
+    const drawView = {abschluss:v=>{
+      title.textContent='Lauras Anliegen';
+      const known=window.Beratung.known(v.levelId);
+      const list=element('ul');for(const k of known)list.append(element('li',window.LAURA.facts[k]));
+      if(known.length)body.append(list);
+      body.append(element('p','Deine Lehrkraft gibt die Abschlusskarte aus. Welchen Rat gibst du Laura jetzt? Begründe deinen Rat.'));
+    },orientation:v=>{title.textContent='Hilfe';body.append(element('p',v.text));},cards:cardsView,card:cardView,help:helpView,questions:questionsView,summary:summaryView};
     if (view.context?.strategy) {
       const task = window.LAURA.stages[view.context.stageId].levels[view.context.levelId];
       const chosen = task.choiceLabels?.[view.context.strategy] || window.LAURA.strategies[view.context.strategy].label;
@@ -261,10 +267,11 @@
   }
 
   window.Material = Object.freeze({
+    abschluss:(levelId,trigger)=>begin({type:'abschluss',levelId},trigger),
     orient:(text,trigger)=>begin({type:'orientation',text},trigger),
     cardLabel,
     finalAdvice,
-    openCards: trigger => begin({type:'cards'},trigger),
+    openCards: (trigger,levelId) => begin({type:'cards',levelId},trigger),
     openCard: (ref,trigger,levelId) => begin({type:'card',ref,levelId},trigger),
     help: (context,trigger) => begin({type:'help',context,depth:0},trigger),
     questions: (context,onAsk,trigger) => begin({type:'questions',context,onAsk},trigger),

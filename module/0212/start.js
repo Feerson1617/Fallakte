@@ -70,7 +70,7 @@
     const unlocked=available.has(level+'/Tom');
     for(const node of document.querySelectorAll('.vertiefungen,.vertiefungen+p,.reserven'))node.hidden=!unlocked;
     for(const b of document.querySelectorAll('[data-optional]'))b.disabled=!unlocked;
-    Arbeitsplatz.setup($('start'),$('start'),null,$('start-titel'),null,b=>window.Material.orient('Wähle dein Niveau auf dem Laufzettel. Öffne dann Lauras Fall.',b));
+    Arbeitsplatz.setup($('start'),$('start'),null,$('start-titel'),null,b=>window.Material.orient('Wähle dein Niveau. Tippe auf „Neu beginnen“.',b));
   }
   function home() {
     show('start');drawHome();$('start-titel').focus({preventScroll:true});
@@ -95,7 +95,7 @@
     levelGroup($('wiederniveau'),pickerTier,id=>{pickerTier=id;drawPicker();});
     let claim=$('papierstand');
     if(!claim){
-      claim=control('Mein Pflichtfall ist auf Papier abgeschlossen',()=>{paperRecovery.add(pickerTier);drawPicker();});
+      claim=control('Mein persönlicher Schlussrat steht auf der Abschlusskarte',()=>{paperRecovery.add(pickerTier);drawPicker();});
       claim.id='papierstand';$('wiederfall').parentElement.before(claim);
     }
     claim.hidden=!pickerTier||available.has(pickerTier+'/Tom')||paperRecovery.has(pickerTier);
@@ -116,7 +116,7 @@
       });
       b.dataset.stage=id;b.disabled=!pickerTier;return b;
     }));
-    Arbeitsplatz.setup($('einstieg'),$('einstieg'),null,$('einstieg-titel'),null,b=>window.Material.orient('Dein Laufzettel zeigt deinen Abschnitt. Wähle Niveau und Abschnitt.',b));
+    Arbeitsplatz.setup($('einstieg'),$('einstieg'),null,$('einstieg-titel'),null,b=>window.Material.orient('Wähle dein Niveau und die Nachricht, bei der du weiterarbeiten möchtest.',b));
   }
   function recovery() {
     if (view==='einstieg')return;
@@ -124,11 +124,12 @@
     show('einstieg');drawPicker();$('einstieg-titel').focus({preventScroll:true});
   }
   function navigate(action,trigger) {
+    if(action==='abschluss')window.Material.abschluss(level,trigger);
     if (action==='home')home();
     if (action==='recovery')recovery();
     if (action==='resources') {
       if (view==='reserve-platz')window.Reserve0212.cards();
-      else window.Material.openCards(trigger);
+      else window.Material.openCards(trigger,level || pickerTier || 'Foerder');
     }
   }
   $('sicherung-oeffnen').onclick=()=>{
@@ -156,7 +157,7 @@
     Arbeitsplatz.refresh();
     port.postMessage({type:'ready',actions:[
       {id:'home',label:'Fallakten',icon:'folder'},{id:'resources',label:'Infokarten',icon:'book'},
-      {id:'recovery',label:'Abschnitt auswählen',icon:'restart'}
+      {id:'recovery',label:'Wiedereinstieg',icon:'restart'},{id:'abschluss',label:'Stundenabschluss'}
     ]});
     communicate();
   });

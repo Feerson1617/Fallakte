@@ -107,12 +107,10 @@ def build():
     OUT.mkdir(parents=True,exist_ok=True)
     bank=json.loads((ROOT/'data/laura-0212.json').read_text())
     bank['buildCommit']=commit()
+    from clt_inhalte import laura
+    bank=laura(bank)
     contract=json.dumps(bank,ensure_ascii=False,indent=2)+'\n'
     (OUT/'Materialvertrag.json').write_text(contract)
-    (OUT/'Materialvertrag.md').write_text(readable(bank))
-    document=(ROOT/'docs/0212-umsetzungsstand.md').read_text()
-    (OUT/'0212-umsetzungsstand.md').write_text(document.replace(
-        'siehe `Materialvertrag.json`, Feld `buildCommit`.', '`'+bank['buildCommit']+'`'))
     page=(ROOT/'02-12.html').read_text()
     def stylesheet(match):
         file=ROOT/match[1]
@@ -125,7 +123,7 @@ def build():
         '<script id="materialvertrag" type="application/json">'+contract.replace('<','\\u003c')+'</script>')
     for person in ('Tom','Celina'):
         case=make_bank(person)
-        export(case)
+
         payload=base64.b64encode(case_document(case).encode()).decode()
         page=page.replace('</main>',f'<script id="reserve-{person}" type="application/octet-stream">{payload}</script></main>')
     def javascript(m):

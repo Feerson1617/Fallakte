@@ -10,7 +10,7 @@ window.Beratung = (() => {
   const stage=()=>bank().stages[active.stageId];
   const task=()=>stage().levels[active.tier];
   const info=()=>task().strategies[active.draft.strategy];
-  const isPaper=()=>['MSA','AHR'].includes(active.tier);
+  const advanced=()=>['MSA','AHR'].includes(active.tier);
 
   function element(tag,cls,text) {
     const node=document.createElement(tag);
@@ -42,7 +42,7 @@ window.Beratung = (() => {
       strategy:active.draft.strategy,revision:active.revision});
   }
   function newDraft(strategy='') {
-    return {strategy,recheck:false,code:'',optionId:null,grant:null,feedback:null,anchorsOpen:false};
+    return {strategy,reason:'',compared:false,optionId:null,grant:null,feedback:null,anchorsOpen:false};
   }
   function enter(id,direct) {
     active.stageId=id;
@@ -51,7 +51,7 @@ window.Beratung = (() => {
     active.editingChoice=false;
     active.historyOpen=false;
     active.moreOpen=false;
-    active.paperChecked=false;
+
     active.draft=newDraft();
     if (direct && id!=='L01') appendMessage('recap','Bisher im Fall',stage().recovery);
     appendMessage('opening','Laura',task().message);
@@ -62,7 +62,7 @@ window.Beratung = (() => {
   function begin(tier,id='L01') {
     if (!Object.hasOwn(bank().levels,tier) || !bank().stages[id]?.playable) return false;
     pause();
-    active={tier,revision:0,asked:new Map(),messages:[],previous:'',focusId:'',pageScroll:0,chatScroll:null};
+    active={tier,revision:0,asked:new Map(),reasons:new Map(),messages:[],previous:'',focusId:'',pageScroll:0,chatScroll:null};
     sessions.set(tier,active);
     enter(id,true);
     render('beratung-stage',true);
@@ -90,8 +90,9 @@ window.Beratung = (() => {
     active.editingChoice=false;
     if (active.draft.strategy!==strategy) {
       active.revision++;
-      active.draft=newDraft(strategy);
-      active.draft.recheck=isPaper() && active.paperChecked;
+      active.reasons.set(active.stageId+'/'+active.draft.strategy,active.draft.reason);
+      active.draft=newDraft(strategy);active.draft.reason=active.reasons.get(active.stageId+'/'+strategy)||'';
+
       active.phase='choose';
     }
     render('aktueller-rat');
@@ -108,7 +109,7 @@ window.Beratung = (() => {
   }
   function matchesEvidence() {
     const draft=active.draft;
-    if (isPaper()) return draft.code.trim().toUpperCase()===stage().code;
+    if(advanced() && !draft.compared)return false;
     return info().options.some(option=>option.id===draft.optionId && option.correct);
   }
   function canSend() {
@@ -124,12 +125,10 @@ window.Beratung = (() => {
     active.phase='choose';
     const option=info().options.find(o=>o.id===optionId);
     if (!matchesEvidence()) {
-      const anchor=isPaper() ? stage().anchorFeedback[draft.code.trim().toUpperCase()] : null;
-      const inputHint=draft.code.trim() ? 'Wähle einen der Buchstaben A, B oder C von deinem Laufzettel.' : 'Gib den Buchstaben der passenden Aussage ein.';
-      draft.feedback={type:'A',text:option?.feedback || anchor?.text || inputHint,
-        card:option?.card || anchor?.card || info().card};
+      if(!option)return;
+      draft.feedback={type:'A',text:option.feedback,card:option.card};
     } else {
-      if (isPaper()) active.paperChecked=true;
+
       if (missingGoal() || info().status==='B') {
         draft.feedback={type:'B',text:info().feedback,card:info().goalCard || info().card};
       } else if (info().status==='C') {
@@ -144,14 +143,13 @@ window.Beratung = (() => {
     // A disabled control is a cue. This guard also covers stale events and repeat taps.
     if (!canSend()) return;
     const draft=active.draft, strategy=info();
-    const reason=strategy.options.find(o=>o.id===draft.optionId)?.text;
+    const reason=advanced()?draft.reason:strategy.options.find(o=>o.id===draft.optionId)?.text;
     active.phase='sent';
     draft.grant=null;
     active.previous=draft.strategy;
     const proposal='Mein Rat: '+bank().strategies[draft.strategy].label+'.';
     appendMessage('send','Du',reason ? proposal+' '+reason : proposal);
     appendMessage('reaction','Laura',strategy.reply);
-    if(!followingStage() && Object.values(bank().stages).filter(s=>s.playable).every(s=>active.messages.some(m=>m.kind==='send' && m.stageId===s.id)))window.dispatchEvent(new CustomEvent('beratung:abgeschlossen',{detail:active.tier}));
     active.chatScroll=null;
     render('beratung-reaktion',true);
   }
@@ -221,9 +219,9 @@ window.Beratung = (() => {
     }
     // Keep the previous recommendation visible alongside the new alternatives.
     // Lower levels start with at most three buttons; the other choices stay available.
-    const primary=[...task().primary];
+    const primary=task().primary.filter(id=>!advanced() || bank().strategies[id].methods.length===1);
     if (active.previous && !primary.includes(active.previous)) {
-      if (!isPaper() && primary.length>=3) primary.pop();
+      if (!advanced() && primary.length>=3) primary.pop();
       primary.push(active.previous);
     }
     function group(ids,title) {
@@ -236,9 +234,9 @@ window.Beratung = (() => {
       for (const id of ids) row.append(strategyButton(id));
       field.append(row);
     }
-    if (isPaper()) {
+    if (advanced()) {
       group(primary.filter(id=>bank().strategies[id].methods.length===1),'Einzelmethoden');
-      group(primary.filter(id=>bank().strategies[id].methods.length===2),'Kombinationen');
+      const combined=primary.filter(id=>bank().strategies[id].methods.length===2);if(combined.length)group(combined,'Bisheriger Vorschlag');
     } else group(primary);
     const other=Object.keys(task().strategies).filter(id=>!primary.includes(id));
     if (other.length) {
@@ -255,52 +253,20 @@ window.Beratung = (() => {
     }
     return field;
   }
-  function paperCheck() {
-    const section=element('section','fachcheck');
-    const draft=active.draft;
-    const details=element('details');
-    details.id='papier-ersatz';
-    details.open=draft.anchorsOpen;
-    details.ontoggle=()=>{if (details.isConnected) draft.anchorsOpen=details.open;};
-    if (draft.recheck) section.append(element('p','','Laufzettel · Seite '+Math.ceil(Number(stage().id.slice(1))/2)+' · „'+stage().title+'“: Lies deine Begründung. Passt sie zur neuen Empfehlung? Wenn dein neuer Rat einen anderen Grund hat, ergänze ihn. Gib den Buchstaben erneut ein.'));
-    else section.append(element('p','',task().task),element('p','',task().paperPrompt));
-    details.append(element('summary','',task().paperFallback),element('p','',task().task));
-    for (const [letter,text] of Object.entries(stage().anchors)) details.append(element('p','',letter+' · '+text));
-    details.append(element('p','',bank().paperFallbackInstruction));
-    const form=element('form','code-form');
-    const label=element('label','','Prüfcode vom Laufzettel');
-    label.htmlFor='pruefcode';
-    const input=element('input');
-    input.id='pruefcode';
-    input.type='text';
-    input.autocomplete='off';
-    input.autocapitalize='characters';
-    input.spellcheck=false;
-    input.enterKeyHint='done';
-    input.value=active.draft.code;
-    input.oninput=()=>{
-      if (active?.draft!==draft || active.phase==='sent') return;
-      draft.code=input.value;
-      draft.grant=null;
-      active.phase='choose';
-      draft.feedback=null;
-      const message=document.getElementById('fachmeldung');
-      message.textContent='';
-      message.dataset.type='';
-      document.getElementById('strategie-neu-waehlen')?.remove();
-      document.getElementById('kartenverweise').replaceWith(cardLinks());
-      document.getElementById('nachricht-senden').disabled=true;
-    };
-    const verify=control('fachcheck-pruefen','Code prüfen',()=>check(null),'pruefen');
-    form.onsubmit=event=>{event.preventDefault();verify.click();};
-    form.append(label,input,verify);
-    section.append(element('p','rueckkehr',task().returnPrompt),form,details);
-    return section;
+  function explanation(){
+    const box=element('section','fachcheck');
+    const label=element('label','',task().task);label.htmlFor='erklaerung';
+    const field=element('textarea');field.id='erklaerung';field.rows=2;field.value=active.draft.reason;
+    const next=control('vergleichen','Mit den Aussagen vergleichen',()=>{active.draft.compared=true;render('begruendungen');},'senden');
+    next.disabled=!field.value.trim();
+    field.oninput=()=>{active.draft.reason=field.value;next.disabled=!field.value.trim();};
+    box.append(label,field,next);return box;
   }
   function closedCheck() {
     const field=element('fieldset','fachcheck');
     field.id='begruendungen';
-    field.append(element('legend','',task().task));
+    field.append(element('legend','',advanced()?'Welche Aussage stimmt?':task().task));
+    if(advanced())field.append(element('p','','Deine Erklärung · '+active.draft.reason),control('erklaerung-aendern','Erklärung ändern',()=>{active.draft.compared=false;editReason();}));
     for (const option of info().options) {
       const b=control('grund-'+option.id,option.text,()=>check(option.id),'grund');
       b.dataset.option=option.id;
@@ -385,9 +351,14 @@ window.Beratung = (() => {
       const following=followingStage();
       const end=!following?.playable;
       area.append(element('h2','',end?'Schlussrat gesendet':'Lies Lauras Antwort.'));
-      if (end) area.append(element('p','','Laufzettel · Seite '+(isPaper()?3:1)+' · „Mein Schlussrat“: Lass deine Antwort für das Unterrichtsgespräch offen.'));
-      area.append(end ? control('beratung-fertig','Zur Fallübersicht',()=>window.Runde1.home(),'senden') :
-        control('beratung-weiter',following.title.split(' – ')[0]+' öffnen',next,'senden'));
+      if(end){
+        const facts=element('details','fallwissen');facts.append(element('summary','','Was ist Laura wichtig?'));
+        const list=element('ul');for(const k of stage().knownFacts)list.append(element('li','',bank().facts[k]));facts.append(list);area.append(facts);
+        area.append(element('p','','Deine Lehrkraft gibt dir die Abschlusskarte. Begründe dort deinen persönlichen Schlussrat.'));
+        area.append(control('beratung-fertig','Mein Schlussrat steht auf der Abschlusskarte',()=>{
+          window.dispatchEvent(new CustomEvent('beratung:abgeschlossen',{detail:active.tier}));window.Runde1.home();
+        },'senden'));
+      }else area.append(control('beratung-weiter',following.title.split(' – ')[0]+' öffnen',next,'senden'));
       return area;
     }
     if (step==='wahl' || step==='grund') {
@@ -397,15 +368,11 @@ window.Beratung = (() => {
       if (step==='wahl') {
         area.append(evidence,choices());
       } else {
-        area.append(chosenStrategy(true),evidence,isPaper()?paperCheck():closedCheck());
-        if (task().paperFieldId) {
-          const guide=element('details','schlussrat-hilfe');
-          guide.append(element('summary','','Schreibhilfe für „Mein Schlussrat“'),window.Material.finalAdvice(active.tier));
-          area.append(guide);
-        }
+        area.append(chosenStrategy(true),advanced() && !active.draft.compared?explanation():closedCheck());
+
       }
     } else {
-      const lowerCorrection=step==='korrektur' && !isPaper();
+      const lowerCorrection=step==='korrektur' && !advanced();
       area.append(chosenStrategy(step==='senden' || lowerCorrection));
     }
     const report=step==='wahl' ? null : active.draft.feedback;
@@ -417,7 +384,7 @@ window.Beratung = (() => {
     area.append(feedback);
     if (step==='korrektur') {
       const correction=info().correction;
-      if (correction.target && !isPaper()) {
+      if (correction.target && !advanced()) {
         area.append(control('strategie-ergaenzen',correction.label,()=>select(correction.target),'ergaenzen'));
       } else {
         area.append(control('strategie-neu-waehlen',correction.label,editChoice,'ergaenzen'));
@@ -431,7 +398,7 @@ window.Beratung = (() => {
       area.append(control('grund-bearbeiten','Antwort erneut prüfen',editReason,'textaktion'));
     }
     area.append(materialTools());
-    if (active.stageId!=='L01' && step==='wahl') {
+    if (active.stageId!=='L01') {
       const facts=element('details','fallwissen');
       facts.append(element('summary','','Was ist Laura wichtig?'));
       const list=element('ul');
@@ -448,7 +415,8 @@ window.Beratung = (() => {
       active.chatScroll=lastHistory.scrollTop;
     }
     const header=element('header','beratung-kopf');
-    const title=element('h1','',stage().title);
+    const title=element('h1');
+    title.append(element('span','titel-lang',stage().title),element('span','titel-kurz',stage().title.split(' – ')[0]));
     title.id='beratung-stage';
     title.dataset.stage=active.stageId;
     title.tabIndex=-1;
@@ -471,6 +439,7 @@ window.Beratung = (() => {
     window.dispatchEvent(new Event('beratung:view'));
   }
   return Object.freeze({
+    known:tier=>bank().stages[sessions.get(tier)?.stageId]?.knownFacts || [],
     begin,has:tier=>sessions.has(tier),resume,pause,
     status:()=>active ? {tier:active.tier,stageId:active.stageId,phase:active.phase} : null
   });

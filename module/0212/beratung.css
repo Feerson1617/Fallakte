@@ -69,3 +69,5 @@
 #beratung .senden{background:#29485f;color:white}
 
 #beratung button[data-urteil=falsch]{color:#702d23;border-color:#a14335;background:#faede9}
+#beratung .fachcheck label,#beratung .fachcheck textarea{display:block;width:100%}
+#beratung textarea{font:inherit;min-height:44px;resize:none;border:1px solid #72857a;border-radius:.5rem;padding:.25em .45em}

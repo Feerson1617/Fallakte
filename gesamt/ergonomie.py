@@ -67,15 +67,15 @@ def parcour(page,shell,tier,zoom,folder,tag):
     check_help(f,'#hilfe','#material-zurueck',['#hilfe-weiter']*4)
     touch(f,'[data-strategy=K]')
     if tier in ('MSA','AHR'):
-        field=f.locator('#pruefcode');reach(f,field);field.fill('Z')
-        touch(f,'#fachcheck-pruefen')
-        field.fill(f.evaluate('window.LAURA.stages.L01.code'));touch(f,'#fachcheck-pruefen')
-    else:
-        options=f.evaluate("t=>window.LAURA.stages.L01.levels[t].strategies.K.options",tier.replace('Förder','Foerder'))
-        for valid in (False,True):
-            opt=next(x for x in options if x['correct']==valid)
-            touch(f,'[data-option="'+opt['id']+'"]')
-            if not valid:check_help(f,'#hilfe','#material-zurueck',[])
+        field=f.locator('#erklaerung');reach(f,field);field.fill('Laura kann ein passendes Kondom ohne Latex wählen.')
+        check_help(f,'#hilfe','#material-zurueck',[])
+        assert field.input_value().endswith('ohne Latex wählen.')
+        touch(f,'#vergleichen')
+    options=f.evaluate("t=>window.LAURA.stages.L01.levels[t].strategies.K.options",tier.replace('Förder','Foerder'))
+    for valid in (False,True):
+        opt=next(x for x in options if x['correct']==valid)
+        touch(f,'[data-option="'+opt['id']+'"]')
+        if not valid:check_help(f,'#hilfe','#material-zurueck',[])
     touch(f,'#nachricht-senden');touch(f,'#beratung-weiter')
     assert f.locator('[data-stage=L01][data-kind=send]').count()==1
     if tag:page.screenshot(path=folder/(tag+'-Laura.jpg'),quality=65)
