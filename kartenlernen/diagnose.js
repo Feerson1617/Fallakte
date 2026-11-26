@@ -44,7 +44,7 @@ const Lernfeedback = (() => {
   const ov='(?:den |der )?eisprung', ovVerb='hemmt|hemmen|verhindert|verhindern|unterdrueckt|unterdruecken|stoppt|blockiert';
   const negOv='(?:den )?eisprung nicht';
   const cell='(?:eine |die )?eizelle|(?:ein |das )?ei';
-  const noCell='kein(?:e)? (?:freie |befruchtbare )?(?:eizelle|ei)';
+  const noCell='kein(?:e)? (?:freie[s]? |befruchtbare[s]? )?(?:eizelle|ei)';
   const sauce='(?:der |den )?(?:zervixschleim|schleim|schleimpfropf)(?: am (?:gebaermutterhals|muttermund))?';
   const thick='dickfluessiger|zaehfluessiger|dicker|zaeher|dichter|zaeh|dickfluessig';
   const fluid='duenner|fluessiger|durchlaessiger';
@@ -362,7 +362,7 @@ const Lernfeedback = (() => {
       .replace(/\b(bleibt) aber nicht aus\b/g,'$1 nicht aus').replace(/,\s*(aber|und) /g,' $1 ');
     if(id==='kupfer')s=s.replace(/(samenzellen|spermien) (schwimmen|kommen) (schlechter|langsamer)( voran)? und (erreichen|befruchten) /g,'$1 $2 $3$4 und sie $5 ');
     s=s.replace(/\bso dass\b/g,'sodass');
-    s=s.replace(/(?:^|(?<=[.!;]))\s*es (springt|tritt|kommt) (?:also|daher|deshalb) (kein(?:e)? (?:befruchtbare )?(?:ei|eizelle) aus dem eierstock)/g,', daher $1 $2');
+    s=s.replace(/(?:^|(?<=[.!;]))\s*es (springt|tritt|kommt) (?:also|daher|deshalb) (kein(?:e)? (?:befruchtbare[s]? )?(?:ei|eizelle) aus dem eierstock)/g,', daher $1 $2');
     const leading=s.match(/^(weil|da)\s+/);
     if(leading)s=s.slice(leading[0].length);
     const chunks=s.split(/(\s*[,.;:]?\s*\b(?:weil|da|denn|dadurch|deshalb|daher|darum|sodass|also|deswegen|somit|folglich)\b\s*|\s+aber\s+|\s+und\s+(?!(?:befruchten sie|befruchten die eizelle))|\s*(?:->|→)\s*|[!.,;:\n]+)/);

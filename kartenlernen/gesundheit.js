@@ -5,7 +5,7 @@ const Fachwissen = (() => {
   const kondom='(?:ein |das |die )?kondome?';
   const kupfer='(?:(?:die |eine )?kupferspirale[n]?)';
   const hormon='(?:(?:die |eine )?hormonspirale[n]?)';
-  const erreger='(?:hiv|sti[s]?|geschlechtskrankheiten|sexuell uebertragbaren (?:krankheiten|infektionen)|chlamydien|anderen sti[s]?)';
+  const erreger='(?:hiv(?: (?:oder|und|beziehungsweise) (?:anderen )?sti[s]?)?|sti[s]?|geschlechtskrankheiten|sexuell uebertragbaren (?:krankheiten|infektionen)|chlamydien|anderen sti[s]?)';
   const vor='(?:vor|gegen) (?:eine[r]? (?:ansteckung|infektion) mit )?(?:allen |saemtlichen |vielen )?'+erreger;
   const alle='vor (?:allen|saemtlichen|jeder art von) (?:sti[s]?|geschlechtskrankheiten|sexuell uebertragbaren infektionen)';
   const aktiv='(?:schuetzt|schuetzen)';
@@ -42,7 +42,7 @@ const Fachwissen = (() => {
        pille+' (?:muss|braucht) (?:man )?nicht '+einnehmen,'man muss '+pille+' nicht '+einnehmen],
       [regel+' ist (?:noetig|notwendig|wichtig|nicht unnoetig)',pille+' muss (?:man )?'+einnehmen,'man muss '+pille+' '+einnehmen]),
     beschwerden:eintrag(2,4,'Auch ohne Hormone sind Beschwerden möglich. Bei der Kupferspirale kann die Blutung stärker werden.','Wie kann sich die Blutung bei der Kupferspirale ändern?',
-      [mittel+' (?:ist|sind|bedeutet) (?:immer |grundsaetzlich |garantiert )?(?:beschwerdefrei|nebenwirkungsfrei|keine beschwerden)',
+      [mittel+' (?:ist|sind|bedeutet) (?:immer |grundsaetzlich |garantiert )?(?:beschwerdefrei|nebenwirkungsfrei|frei von nebenwirkungen|keine beschwerden)',
        mittel+' (?:macht|machen|verursacht|verursachen) (?:nie (?:beschwerden|nebenwirkungen)|keine (?:beschwerden|nebenwirkungen))'],
       [mittel+' (?:bedeutet|heisst) nicht,? dass man keine beschwerden (?:hat|bekommt)',mittel+' (?:ist|sind|bedeutet) nicht (?:immer |automatisch |grundsaetzlich )?(?:beschwerdefrei|nebenwirkungsfrei)',mittel+' (?:kann|koennen) (?:auch )?beschwerden (?:machen|verursachen)'])
   };
