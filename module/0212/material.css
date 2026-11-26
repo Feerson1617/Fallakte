@@ -32,3 +32,7 @@
 #material-dialog #hilfe-text{padding:.18rem}
 
 #material-dialog .material-bezug{color:#425d50;font-weight:650}
+
+@media(min-width:650px){
+ #material-dialog {margin-inline:auto max(2vw,calc((100vw - 70rem)/2));width:min(53vw,39rem)}
+}

@@ -233,7 +233,7 @@ window.Beratung = (() => {
   }
   function choices() {
     const field=element('fieldset','beratung-wahl');
-    field.append(element('legend','','Wähle deinen vollständigen Rat für Laura.'));
+    field.append(element('legend','','Was rätst du Laura?'));
     if (active.previous) {
       field.append(element('p','bisher','Dein bisheriger Rat: '+bank().strategies[active.previous].label+'.'));
     }
@@ -448,6 +448,13 @@ window.Beratung = (() => {
       area.append(control('grund-bearbeiten','Antwort erneut prüfen',editReason,'textaktion'));
     }
     area.append(materialTools());
+    if (active.stageId!=='L01' && step==='wahl') {
+      const facts=element('details','fallwissen');
+      facts.append(element('summary','','Was ist Laura wichtig?'));
+      const list=element('ul');
+      for(const key of stage().knownFacts)list.append(element('li','',bank().facts[key]));
+      facts.append(list);area.append(facts);
+    }
     return area;
   }
   function render(focusId,showLatest=false,restore=false) {

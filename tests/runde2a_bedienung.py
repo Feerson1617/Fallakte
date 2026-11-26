@@ -219,7 +219,7 @@ def challenge(browser,engine,tier,directory,files):
         target=modal.locator('[data-section-id]:visible')
         expect(modal).to_have_attribute('data-method','Cu')
         expect(target).to_have_count(1)
-        expect(target.locator('h3')).to_have_text('Kupfer und Spermien')
+        expect(target.locator('h3')).to_have_text('Kupfer bremst Spermien')
         expect(modal.locator('#material-ganze-karte')).to_be_visible()
         short=target.inner_text()
         if tier=='Foerder':

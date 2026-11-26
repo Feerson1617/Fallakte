@@ -240,7 +240,9 @@ function options(box,task,r,onDone,application=false){
       r.feedback=deeper?o.advancedFeedback:o.feedback;r.valid=o.ok;r.selected=index;if(!o.ok)r.wrong=true;
       if(o.revealsSolution)r.solutionShown=true;
       if(o.ok && current.type==='case'){
-        remember(current.person+'/'+task.id,'Du · '+current.person,deeper?o.advancedText:o.text);
+        const key=current.person+'/'+task.id;
+        if(r.text?.trim())remember(key+'/entwurf','Deine Erklärung',r.text);
+        remember(key,'Du · '+current.person,deeper?o.advancedText:o.text);
       }
       if(application){r.finished=o.ok;r.skipped=false;}
       draw();
@@ -258,7 +260,10 @@ function options(box,task,r,onDone,application=false){
 function originalPanel(layout,person,c,hideAddition){
   const panel=el(layout,'aside',undefined,'msg');
   remember(person,person,c.original);
-  earlier(panel,person);message(panel,person,c.original);
+  earlier(panel,person);
+  message(panel,person,c.lesefassung);
+  const source=el(panel,'details');el(source,'summary','Originalnachricht lesen');
+  paragraph(source,c.original);
   const r=saved.records[person+'/Ergänzung'];
   if(r?.valid && !hideAddition){el(panel,'h2',ui.addition);paragraph(panel,c.addition);paragraph(panel,c.connection,'small');}
   return panel;
@@ -418,8 +423,9 @@ function lauraView(){
   const at=current.at;heading(root,bank.evaluationSteps[at]).dataset.section=bank.evaluationRecovery[at].id;
   const layout=el(root,'div',undefined,'split'),panel=el(layout,'aside',undefined,'msg');
   remember('frage','Laura',bank.second);earlier(panel,'frage');
-  message(panel,'Laura',bank.second);facts(panel);
+  message(panel,'Laura',bank.second);
   const box=el(layout,'section',undefined,'card');
+  if(at===2)facts(box);else facts(panel);
   if(at===0){
     paragraph(box,ui.before);btn(box,ui.openPersonal,'next',()=>go('laura',{at:1}),'primary');
   }else if(at===1){

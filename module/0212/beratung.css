@@ -63,5 +63,4 @@
  #beratung .beratung-spalten {grid-template-columns:minmax(0,.88fr) minmax(0,1.3fr);align-items:start}
  #beratung-verlauf {position:sticky;top:.5rem}
  #chat-meldungen {max-height:calc(100dvh - 9rem)}
- #material-dialog {margin-inline:auto max(2vw,calc((100vw - 70rem)/2));width:min(53vw,39rem)}
 }

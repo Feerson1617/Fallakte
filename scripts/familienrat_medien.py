@@ -20,15 +20,16 @@ def compile_media(bank):
                        'GM':'das, was der Großmutter wichtig ist',
                        'VA':'die allgemeine Regel, an der sich der Vater orientiert'}[prefix]
                 first=key.endswith('-erst')
-                question={'GM':'Welche Aussage beschreibt, was der Großmutter wichtig ist?',
-                          'VA':'Welche allgemeine Regel meint der Vater?'}.get(prefix,'Welche Aussage über '+topic+' passt zur Nachricht?')
+                question={'MU':'Welche Beschwerden sind beim Abbruch mit Medikamenten möglich?',
+                          'FR':'Kann eine Frau nach einem Abbruch ohne Komplikationen später schwanger werden?',
+                          'GM':'Was ist der Großmutter wichtig?', 'VA':'Welche Regel meint der Vater?'}[prefix]
                 if level in ('Förder','ESA'):
                     action=(question+' '+
-                            ('Setze dein erstes Kreuz links in „Meine erste Antwort“.' if first else
-                             'Setze dein Kreuz rechts in „Nach dem Prüfen“. Dein erstes Kreuz bleibt.'))
+                            ('Kreuze links an: „Meine erste Antwort“.' if first else
+                             'Kreuze rechts an: „Nach dem Prüfen“. Dein erstes Kreuz bleibt.'))
                     if not first:
-                        action+=' '+{'MU':'Überlege: Was erklärt der Fakt über Beschwerden? Wer entscheidet über die Schwangerschaft?',
-                                    'FR':'Was erklärt der Fakt über spätere Kinder? Wer entscheidet über die Schwangerschaft?',
+                        action+=' '+{'MU':'Was weißt du über die Beschwerden? Wer entscheidet?',
+                                    'FR':'Was weißt du über spätere Kinder? Wer entscheidet?',
                                     'GM':'Wie hängt dieser Wert mit dem Rat der Großmutter zusammen?',
                                     'VA':'Wie wendet der Vater diese Regel auf Lauras Situation an?'}[prefix]
                 elif prefix in ('GM','VA'):

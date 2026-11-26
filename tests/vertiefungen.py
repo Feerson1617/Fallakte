@@ -51,7 +51,7 @@ def tom(p,tier,engine):
                 if f.locator('#edit').is_visible():f.locator('#edit').click()
                 choose(f,key)
                 method=key.split('+')[-1]
-                section={'K':'Bei jedem Sex','P':'Hormone und Eisprung','Cu':'Einsetzen und Entscheidung','H':'Einsetzen und Entscheidung'}[method]
+                section={'K':'Ein neues Kondom für jeden Sex','P':'Die Pille bremst den Eisprung','Cu':'Du entscheidest über die Spirale','H':'Du entscheidest über die Spirale'}[method]
                 f.locator('#help').click();expect(f.locator('#reading')).to_contain_text(section);f.locator('#back').click()
                 f.locator('#source').click();expect(f.locator('#resource')).to_contain_text(section);f.locator('#back').click()
                 if key!='K':blocked(f)

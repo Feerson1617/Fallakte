@@ -499,7 +499,8 @@
           "part": "Festhalten",
           "id": "MU-07"
         }
-      ]
+      ],
+      "lesefassung": "Laura, deine Gesundheit ist mir wichtig. Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen. Deshalb rate ich dir, die Schwangerschaft fortzusetzen."
     },
     "Freundin": {
       "original": "Laura, ich weiß, dass du erst deine Ausbildung abschließen und vielleicht später Kinder bekommen möchtest. Mir ist wichtig, dass du deine Zukunft selbst planen kannst. Bei solchen Entscheidungen sollte man berücksichtigen, wann Kinder zu den eigenen Lebensplänen passen. Deshalb rate ich dir zu einem Abbruch mit Medikamenten.",
@@ -970,7 +971,8 @@
           "part": "Festhalten",
           "id": "FR-07"
         }
-      ]
+      ],
+      "lesefassung": "Laura, du willst erst deine Ausbildung beenden. Vielleicht möchtest du später Kinder. Mir ist wichtig, dass du deine Zukunft selbst planst. Man sollte überlegen, wann Kinder zu den eigenen Plänen passen. Deshalb rate ich dir zu einem Abbruch mit Medikamenten."
     },
     "Großmutter": {
       "original": "Laura, wenn eine frühe Schwangerschaft abgebrochen wird, endet auch die Entwicklung des Embryos. Nach meiner Überzeugung sollte man ungeborenes menschliches Leben schützen. Deshalb rate ich dir, die Schwangerschaft fortzusetzen.",
@@ -1355,7 +1357,8 @@
           "part": "Festhalten",
           "id": "GM-06"
         }
-      ]
+      ],
+      "lesefassung": "Bei einem frühen Abbruch wächst der Embryo nicht weiter. Ich finde, man sollte ungeborenes menschliches Leben schützen. Deshalb rate ich dir, die Schwangerschaft fortzusetzen."
     },
     "Vater": {
       "original": "Laura, mir ist wichtig, dass du selbst und gut informiert entscheidest. Ob ein Abbruch mit Medikamenten infrage kommt, hängt auch davon ab, wie weit die Schwangerschaft fortgeschritten ist. Deshalb rate ich dir, deine medizinischen Möglichkeiten in einer Arztpraxis klären zu lassen.",
@@ -1739,7 +1742,8 @@
           "part": "Festhalten",
           "id": "VA-06"
         }
-      ]
+      ],
+      "lesefassung": "Laura, mir ist wichtig, dass du gut informiert selbst entscheidest. Ein Abbruch mit Medikamenten hängt auch davon ab, wie lange du schon schwanger bist. Deshalb rate ich dir, in der Arztpraxis nach deinen Möglichkeiten zu fragen."
     }
   },
   "limits": [
