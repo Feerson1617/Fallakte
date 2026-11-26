@@ -29,7 +29,7 @@ def pair(out,module,tier,route,frames):
     for i,(a,b) in enumerate(zip(*snapshots)):
         assert (a['aktion'],a['wert'])==(b['aktion'],b['wert']),(module,route,i,a['aktion'],b['aktion'])
         row=dict(modul=module,niveau=tier,weg=route,schritt=i,aktion=b['aktion'],auswahl=b['wert'],
-                 alttext=a['ansicht'],neutext=b['ansicht'],ganzer_bildschirm=b['gesamt'],bedienung=b['knopf'],grund='Zustand nach derselben Bedienhandlung auf beiden SCOs')
+                 alttext=a['ansicht'],alter_bildschirm=a['gesamt'],neutext=b['ansicht'],ganzer_bildschirm=b['gesamt'],bedienung=b['knopf'],grund='Zustand nach derselben Bedienhandlung auf beiden SCOs')
         out.write(json.dumps(row,ensure_ascii=False,separators=(',',':'))+'\n')
     return len(snapshots[0])
 def run(ref,kind):

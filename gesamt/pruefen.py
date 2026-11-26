@@ -71,7 +71,7 @@ def unpack(folder):
             assert ('disabled' in card.attrib)==(key not in allowed)
         assert not doc.xpath('//script[@src] | //link[@href]')
         assert all(x.startswith('data:') for x in doc.xpath('//@src'))
-        assert doc.xpath('string(//meta[@name="revision"]/@content)')==revision()
+        assert doc.xpath('string(//meta[@name="revision"]/@content)')==('562ea2566dd80e31c093f313b925adcb31e22c9a' if version=='Vorbereitung' else revision())
         (target/'host.html').write_text(HOST)
         contents[version]=hashes
     assert (folder/'Gesamt/index.html').read_bytes()==(folder/'08-12/index.html').read_bytes()

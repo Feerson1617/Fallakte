@@ -1,0 +1,40 @@
+name: Fallakte · kompakte Unterrichtsbesuche
+on:
+  push:
+    branches: [korrektur/ub-kompakt]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  auslieferung:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    container: mcr.microsoft.com/playwright/python:v1.62.0-noble
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Werkzeuge und Softwarestand
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          python -m pip install -r tests/requirements.txt
+          if ! command -v pdftotext >/dev/null; then apt-get update -qq && apt-get install -y poppler-utils; fi
+          git worktree add --detach /tmp/ub-software b166bce
+          cp -r gesamt/kompakt /tmp/ub-software/gesamt/
+      - name: Beide UBs bauen und kompakte Druckverweise prüfen
+        working-directory: /tmp/ub-software
+        env:
+          PYTHONPATH: gesamt:tests
+        run: |
+          python gesamt/auslieferung.py
+          python gesamt/kompakt/abnahme.py
+          cd dist/Gesamt
+          sha256sum *.html *.zip > SHA256SUMS
+          test "$(sha256sum Fallakte-Vorbereitung-SCORM12.zip | cut -d' ' -f1)" = 0d752ea942b745c8e997d622465815f3cd7ecc4d64965d62c19d9de357d84857
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Fallakte-Kompakt-b166bce
+          path: |
+            /tmp/ub-software/dist/Gesamt/
+            /tmp/ub-software/build/Gesamtpruefung/
+          if-no-files-found: error
