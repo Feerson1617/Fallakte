@@ -201,6 +201,11 @@ const Lernfeedback = (() => {
   gram.haut.ab.push('bei (?:kontakt|beruehrung) (?:freier|unbedeckter|ungeschuetzter) (?:hautstellen|haut) (?:koennen|werden) '+germs+' (?:von (?:einer person|einem menschen) (?:zur|zum) anderen (?:gelangen|kommen)|weitergegeben(?: werden)?|uebertragen(?: werden)?)');
   gram.kupfer.a.push('(?:die )?(?:bewegung|beweglichkeit|bewegungsfaehigkeit) der (?:samenzellen|spermien) (?:durch (?:das )?kupfer )?(?:geringer wird|eingeschraenkt wird|vermindert wird)');
   gram.kupfer.b.push(...frame(cell,'wird',reduced+' befruchtet'));
+  gram.pille.b.push('(?:es )?(?:springt|tritt|kommt) '+noCell+' aus dem eierstock(?: heraus| frei| aus)?');
+  gram.schleim.ab.push(word(swimmers)+' (?:kommen|gelangen) durch (?:den )?(?:zaehen|dicken|verdickten) (?:schleimpfropf|zervixschleim|schleim)(?: am (?:muttermund|gebaermutterhals))? (?:viel |nur )?'+reduced+' (?:durch|hindurch|zur eizelle)');
+  gram.haut.a.push(condom+' laesst (?:einige|manche) (?:stellen der haut|hautstellen) unbedeckt','haut neben dem kondom bleibt unbedeckt');
+  gram.haut.b.push('bei (?:direktem|engem) hautkontakt koennen '+germs+' (?:uebertragen|weitergegeben) werden');
+  gram.kupfer.b.push('(?:diesen zellen|den spermien|den samenzellen) faellt (?:die )?befruchtung (?:des eis|der eizelle) (?:dann )?schwerer');
   const durchtritt='(?:den durchtritt|die passage|den durchgang|das durchkommen) (?:der |von )?'+swimmers;
   const hindert='erschwert|behindert|hemmt';
   gram.schleim.b.push(...frame(sauce,hindert,durchtritt),'(?:der durchtritt|die passage) (?:der |von )?'+swimmers+' (?:wird|ist) (?:erschwert|schwieriger)');
@@ -327,12 +332,13 @@ const Lernfeedback = (() => {
   const effects=/^(?:darum|daher|deshalb|dadurch|also|deswegen|sodass|somit|folglich|->|→)$/;
   function analyze(id,text){
     const model=bound[id],parts=new Set(),errors=new Set();
-    let unknown=false,reversed=false,beleg=null,ergebnis=false;
+    let unknown=false,reversed=false,beleg=null,ergebnis=false,einschraenkung=false;
     function result(state,kind=state){
       return {state,kind,ergebnis,parts:[...parts],error:beleg?.code||[...errors][0]||null,quelle:beleg?[beleg.karte,beleg.abschnitt]:null,relation:reversed?'umgekehrt':parts.size===2?'verbunden':'offen',zusatz:unknown};
     }
     let s=gesund.berichtigungen(normalize(text),id).trim();
     if(id==='haut')s=s.replace(/^auch wenn (?:das |ein )?kondom (?:heil|intakt) ist, */,'');
+    if(id==='haut')s=s.replace(/(haut neben dem kondom bleibt unbedeckt|ein teil der haut bleibt frei)[.] wenn (?:diese stellen|die freien hautstellen) sich beruehren, koennen ((?:manche |einige )?(?:viren|keime|erreger)) (uebertragen|weitergegeben) werden\b/g,'$1. $2 koennen bei hautkontakt $3 werden');
     if(!/[a-z0-9]/.test(s))return result('leer');
     // Keine Behauptung aus einer Frage, einem Zitat oder einer hypothetischen Verneinung ableiten.
     if(s.length>2400 || /[„“"]/.test(s))return result('unsicher');
@@ -356,6 +362,7 @@ const Lernfeedback = (() => {
       .replace(/\b(bleibt) aber nicht aus\b/g,'$1 nicht aus').replace(/,\s*(aber|und) /g,' $1 ');
     if(id==='kupfer')s=s.replace(/(samenzellen|spermien) (schwimmen|kommen) (schlechter|langsamer)( voran)? und (erreichen|befruchten) /g,'$1 $2 $3$4 und sie $5 ');
     s=s.replace(/\bso dass\b/g,'sodass');
+    s=s.replace(/(?:^|(?<=[.!;]))\s*es (springt|tritt|kommt) (?:also|daher|deshalb) (kein(?:e)? (?:befruchtbare )?(?:ei|eizelle) aus dem eierstock)/g,', daher $1 $2');
     const leading=s.match(/^(weil|da)\s+/);
     if(leading)s=s.slice(leading[0].length);
     const chunks=s.split(/(\s*[,.;:]?\s*\b(?:weil|da|denn|dadurch|deshalb|daher|darum|sodass|also|deswegen|somit|folglich)\b\s*|\s+aber\s+|\s+und\s+(?!(?:befruchten sie|befruchten die eizelle))|\s*(?:->|→)\s*|[!.,;:\n]+)/);
@@ -384,6 +391,7 @@ const Lernfeedback = (() => {
         if(item.error){errors.add(item.error);continue;}
         if(item.unknown){unknown=true;continue;}
         if(item.tag==='extra')continue;
+        if(id==='pille' && item.tag==='a' && /\bnicht immer\b/.test(c))einschraenkung=true;
         for(const tag of item.tag){
           if((first && leading && tag==='b') || (last && last!==tag &&
             ((causes.test(link)&&tag==='b')||(effects.test(link)&&tag==='a'))))reversed=true;
@@ -396,7 +404,7 @@ const Lernfeedback = (() => {
       if(parts.size)return result('widerspruch');
       return result('fehlvorstellung',confusions[id].includes([...errors][0])?'verwechslung':'fehlvorstellung');
     }
-    if(parts.size===2 && /nicht immer/.test(s))return result('unsicher','beziehung');
+    if(parts.size===2 && einschraenkung)return result('unsicher');
     if(reversed && parts.size===2)return result('vertauscht','beziehung');
     if(reversed)return result('unsicher','beziehung');
     if(unknown){

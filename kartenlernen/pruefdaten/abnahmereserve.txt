@@ -1,0 +1,89 @@
+[pille]
+passend|normal|Die Hormone hemmen den Eisprung, sodass keine Eizelle aus dem Eierstock austritt.
+passend|normal|Der Eisprung fällt unter der Pille aus. Der Eierstock gibt kein Ei mehr frei.
+passend|normal|Weil der Eisprung ausbleibt, wird keine Eizelle aus dem Eierstock abgegeben.
+passend|normal|Die Pille hemmt den Eisprung. Es springt also kein befruchtbares Ei aus dem Eierstock.
+passend|normal|Der Eierstock gibt keine Eizelle frei, denn die Pille unterdrückt den Eisprung.
+passend|schreibung|Die Hormone hemmen den Eisprngg. Die Eizellle fehlt.
+passend|einschraenkung|Kein Eisprung, keine freie Eizelle. Kondome schützen nicht vollständig vor sämtlichen STI.
+teilweise|a|Die Hormone unterdrücken den Eisprung, deshalb ist eine Befruchtung nicht möglich.
+ergebnis|ergebnis|Eine Befruchtung ist dann nicht möglich.
+teilweise|b|Aus dem Eierstock wird kein Ei abgegeben.
+fehlvorstellung|sti|Die Hormonspirale schützt sicher vor HIV.
+verwechslung|spermien|Die Kombinationspille vernichtet Spermien.
+fehlvorstellung|beschwerden|Hormonfreie Methoden sind garantiert beschwerdefrei.
+fehlvorstellung|hormonabgabe|Eine Hormonspirale gibt kein Gestagen ab.
+widerspruch|einnahme|Die Hormone hemmen den Eisprung. Der Eierstock gibt keine Eizelle frei. Man muss die Pille nicht nach Plan nehmen.
+widerspruch|kondomschutz|Es wird kein Ei freigesetzt, weil der Eisprung ausbleibt. Das Kondom schützt vor sämtlichen Geschlechtskrankheiten.
+widerspruch|sti|Der Eisprung entfällt. Die Eizelle fehlt. Die Pille schützt vor HIV. Nein, die Pille schützt nicht vor Chlamydien.
+passend|berichtigung|Der Eisprung fällt aus. Der Eierstock gibt keine Eizelle frei. Die Hormonspirale ist hormonfrei. Nein, sie ist nicht hormonfrei.
+beziehung|richtung|Der Eisprung bleibt aus, da der Eierstock keine Eizelle freigibt.
+unsicher|offen|Vielleicht passiert zuerst etwas im Eierstock, oder der Follikel wächst anders.
+unsicher|offen|Die Hormone hemmen den Eisprung. Danach steht die Reserve still, wie ich das sehe.
+zusatz|beide|Die Pille hemmt den Eisprung. Die Eizelle fehlt. Den Teil mit dem Licht verstehe ich anders.
+[schleim]
+passend|normal|Der Schleimpfropf am Muttermund verdickt sich und hemmt die Passage der Samenzellen.
+passend|normal|Die Samenzellen kommen durch den zähen Schleimpfropf am Muttermund viel schwerer hindurch.
+passend|normal|Der Durchtritt der Spermien wird erschwert, weil die Hormone den Schleim verdicken.
+passend|normal|Durch den zähen Zervixschleim gelangen die Samenzellen nur mit Mühe hindurch.
+passend|normal|Der Schleim am Gebärmutterhals wird dicker und erschwert den Durchgang der Spermien.
+passend|schreibung|Der Schleihm wird dicker. Samenzelen kommen schlechter hindurch.
+passend|einschraenkung|Der Schleim verdickt sich. Der Durchtritt der Spermien wird erschwert. Die Pille schützt vor HIV nicht.
+teilweise|a|Der Zervixschleim am Muttermund wird dichter.
+teilweise|b|Die Passage der Spermien wird schwieriger.
+fehlvorstellung|kupferhormone|Kupferspiralen enthalten Gestagen.
+fehlvorstellung|spermien|Die Pille tötet alle Spermien.
+fehlvorstellung|sti|Die Kupferspirale schützt zuverlässig gegen Geschlechtskrankheiten.
+fehlvorstellung|kondomschutz|Kondome bieten absoluten Schutz vor allen sexuell übertragbaren Infektionen.
+widerspruch|hormonabgabe|Der Zervixschleim wird zäher. Dadurch kommen Spermien schlechter durch. Hormonspiralen wirken ohne Hormone.
+widerspruch|einnahme|Der Schleimpfropf wird verdickt. Der Durchtritt der Spermien wird erschwert. Die regelmäßige Einnahme der Pille ist unwichtig.
+widerspruch|beschwerden|Der Schleim wird dicker. Die Samenzellen kommen schwerer durch. Eine hormonfreie Methode ist nebenwirkungsfrei.
+passend|berichtigung|Der Schleim wird zäher. Die Passage der Samenzellen wird erschwert. Die Pille tötet Samenzellen. Korrektur: Die Pille tötet Samenzellen nicht.
+beziehung|richtung|Weil die Samenzellen schlechter hindurchkommen, wird der Schleim dicker.
+unsicher|offen|Ich glaube nicht, dass Hormonspiralen ohne Hormone wirken.
+unsicher|offen|Der Weg ist so eng wie ein Türspalt und sie passen dann wohl kaum noch durch.
+zusatz|beide|Der Schleim verdickt sich. Samenzellen kommen schlechter durch. Von einer zweiten Wirkung habe ich auch gehört.
+[haut]
+passend|normal|An freien Hautstellen können manche Viren durch Berührung weitergegeben werden.
+passend|normal|Einige Erreger können auf der ungeschützten Haut bei Berührung übertragen werden.
+passend|normal|Bei Kontakt unbedeckter Hautstellen können Erreger von einem Menschen zum anderen kommen.
+passend|normal|Das Kondom bedeckt nicht alle Hautstellen. Darum können Erreger bei Hautkontakt übergehen.
+passend|normal|Haut neben dem Kondom bleibt unbedeckt. Wenn diese Stellen sich berühren, können Viren übertragen werden.
+passend|schreibung|Das Kondomm bedeckt nur einen Teil der Haut. Durch Hautkontackt ist eine Ansteckung möglich.
+passend|einschraenkung|Auf freier Haut können Keime bei Berührung übertragen werden. Die Pille tötet keine Samenzellen.
+teilweise|a|Das Kondom lässt einige Stellen der Haut unbedeckt.
+teilweise|b|Bei direktem Hautkontakt können manche Viren übertragen werden.
+fehlvorstellung|sti|Die Spirale verhindert eine Ansteckung mit HIV.
+fehlvorstellung|einnahme|Die Pille muss nicht regelmäßig eingenommen werden.
+fehlvorstellung|hormonabgabe|Eine Hormonspirale wirkt hormonfrei.
+fehlvorstellung|beschwerden|Eine hormonfreie Methode macht keine Beschwerden.
+widerspruch|kondomschutz|Ein Teil der Haut bleibt unbedeckt. Bei Hautkontakt können Keime weitergegeben werden. Kondome schützen immer vor allen STI.
+widerspruch|kupferhormone|Freie Hautstellen. Bei Hautkontakt können Viren übertragen werden. Die Kupferspirale gibt ein Hormon ab.
+widerspruch|spermien|Auf ungeschützter Haut können Erreger durch Berührung übertragen werden. Die Pille vernichtet alle Spermien.
+passend|berichtigung|An freien Hautstellen können Keime durch Berührung übertragen werden. Die Kupferspirale enthält Gestagen. Nein, sie ist hormonfrei.
+beziehung|richtung|Krankheitserreger können bei Hautkontakt übertragen werden, deshalb bleiben Hautstellen frei.
+unsicher|offen|Schützen Kondome immer vor allen Infektionen, auch an anderen Stellen?
+unsicher|offen|Ich glaube, das liegt am Platz zwischen der Hülle und dem Körper.
+zusatz|beide|Auf unbedeckter Haut können Keime bei Hautkontakt übertragen werden. Da gibt es auch so ein Muster auf dem Bild.
+[kupfer]
+passend|normal|Kupferionen verringern die Bewegung und Befruchtungsfähigkeit der Spermien.
+passend|normal|Samenzellen erreichen das Ei seltener, weil das Kupfer ihre Bewegungsfähigkeit einschränkt.
+passend|normal|Die Beweglichkeit der Spermien nimmt ab. Diesen Zellen fällt die Befruchtung des Eis dann schwerer.
+passend|normal|Kupfer hemmt die Befruchtungsfähigkeit und die Beweglichkeit von Samenzellen.
+passend|normal|Die Spermien schwimmen langsamer. Das Ei wird schlechter befruchtet.
+passend|schreibung|Kupferjonen hemmen Beweglichkeit und Befruchtungsfähigkeit der Samenzelen.
+passend|einschraenkung|Kupfer bremst die Spermien. Eine Befruchtung wird schwieriger. Eine hormonfreie Methode ist nicht immer beschwerdefrei.
+teilweise|a|Kupfer schränkt die Bewegungsfähigkeit der Samenzellen ein.
+teilweise|b|Die Kupferspirale verringert die Befruchtungsfähigkeit der Samenzellen.
+fehlvorstellung|sti|Die Kombinationspille bietet Schutz vor Chlamydien.
+fehlvorstellung|kupferhormone|Die Kupferspirale gibt Gestagen ab.
+fehlvorstellung|spermien|Eine Pille tötet die Spermien ab.
+fehlvorstellung|einnahme|Die regelmäßige Einnahme der Pille ist nicht nötig.
+widerspruch|hormonabgabe|Kupferionen bremsen die Spermien. Sie erreichen das Ei seltener. Eine Hormonspirale ist hormonfrei.
+widerspruch|kondomschutz|Die Spermien kommen langsamer voran. Sie befruchten die Eizelle schwerer. Das Kondom schützt vollständig vor sämtlichen STI.
+widerspruch|beschwerden|Kupfer hemmt die Beweglichkeit der Spermien. Die Befruchtung wird erschwert. Hormonfreie Methoden verursachen keine Nebenwirkungen.
+passend|berichtigung|Kupfer stört Bewegung und Befruchtungsfähigkeit der Spermien. Die Pille schützt vor HIV. Korrektur: Die Pille bietet keinen Schutz vor HIV.
+beziehung|richtung|Samenzellen bewegen sich schlechter, weil die Befruchtung weniger wahrscheinlich wird.
+unsicher|offen|Wenn Kupferspiralen Hormone enthielten, könnte man das vielleicht so erklären.
+unsicher|offen|Die Spermien sind weniger beweglich. Die ganze Sache ist dann blockiert, irgendwie.
+zusatz|beide|Kupfer stört Beweglichkeit und Befruchtungsfähigkeit der Spermien. Ich denke dabei auch an die Form des Drahtes.
