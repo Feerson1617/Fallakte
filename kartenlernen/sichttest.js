@@ -56,7 +56,7 @@
    ok(saved===$('#page').innerText,'letzte Hilfestufe');tap('back');
    if(value!==undefined)ok($('#entry').value===value,'Entwurf erhalten');
  }
- inspect('Einstieg');visitHelp(1,'Niveauauswahl');tap('level',tier);inspect('Wiederaufnahme');visitHelp(1,'Kapitelauswahl');tap('open',0);
+ inspect('Einstieg');if(assist)visitHelp(1,'Niveauauswahl');tap('level',tier);inspect('Wiederaufnahme');if(assist)visitHelp(1,'Kapitelauswahl');tap('open',0);
  for(let i=0;i<4;i++){
    for(let part=0;part<2;part++){
      inspect('Info '+(i+1)+'/'+(part+1));
