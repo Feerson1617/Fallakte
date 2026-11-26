@@ -172,7 +172,7 @@ def check(engine):
             entry(person,'transfer');click('answer-2')
             expect(f.locator('#answer-0')).to_be_enabled();outer('home');click('resume')
             expect(f.locator('#response')).to_be_visible();click('jump')
-            f.locator('aside > details > summary').click()
+            f.get_by_text(BANK['ui']['facts'],exact=True).click()
             status_text=BANK['ui']['skipped']
             if person in ('Großmutter','Vater'):status_text=person+' · '+status_text
             expect(f.locator('aside')).to_contain_text(status_text)

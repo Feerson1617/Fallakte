@@ -357,12 +357,12 @@ def engine_run(engine,url,reference=None,routes=None):
                     recover(page,f,shell,team,n,0)
                     expect(f.locator('aside')).to_contain_text('Laura')
                 # A shortcut imports underlying facts as help without granting prior answers.
-                f.locator('aside > details > summary').tap();expect(f.locator('aside')).to_contain_text(BANK['ui']['supported'])
+                f.get_by_text(BANK['ui']['facts'],exact=True).tap();expect(f.locator('aside')).to_contain_text(BANK['ui']['supported'])
                 # Leave the first case after a full hint on an earlier analysis question.
                 # The factual check stays available, including after a detour to Laura.
                 recover(page,f,shell,team,'Mutter',1)
                 tap(f,'help');tap(f,'hint-last');tap(f,'dismiss');tap(f,'jump')
-                f.locator('aside > details > summary').tap()
+                f.get_by_text(BANK['ui']['facts'],exact=True).tap()
                 expect(f.locator('aside')).not_to_contain_text(BANK['ui']['pending'])
                 recover(page,f,shell,team,'Mutter',6)
                 expect(f.locator('#next')).to_be_visible()

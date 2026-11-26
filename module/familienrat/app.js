@@ -105,8 +105,9 @@ const sentences=text=>text.match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map(line=>line.trim
 function remember(id,speaker,text) {
   saved.history.set(id,{speaker,text});
 }
-function earlier(panel,currentId) {
-  const entries=[...saved.history].filter(([id])=>id!==currentId);
+function earlier(panel,currentId,hiddenTask) {
+  const entries=[...saved.history].filter(([id])=>id!==currentId &&
+    (!hiddenTask || (id!==hiddenTask && id!==hiddenTask+'/entwurf')));
   if(!entries.length)return;
   const past=el(panel,'details',undefined,'chat-history');
   el(past,'summary','Frühere Nachrichten');
@@ -260,7 +261,7 @@ function options(box,task,r,onDone,application=false){
 function originalPanel(layout,person,c,hideAddition){
   const panel=el(layout,'aside',undefined,'msg');
   remember(person,person,c.original);
-  earlier(panel,person);
+  earlier(panel,person,hideAddition?person+'/Ergänzung':null);
   message(panel,person,c.lesefassung);
   const source=el(panel,'details');el(source,'summary','Originalnachricht lesen');
   paragraph(source,c.original);
