@@ -190,11 +190,16 @@ const Lernfeedback = (() => {
   gram.pille.b.push(nichtsFrei+herkunft+' (?:freikommt|freiwird|freigesetzt wird|abgegeben wird|austritt|springt)',
     '(?:kommt|tritt) '+noCell+' (?:aus dem eierstock )?(?:frei|aus)',
     '(?:aus dem eierstock )?wird '+noCell+' (?:aus dem eierstock )?(?:freigesetzt|abgegeben)',
+    '(?:gibt|setzt) der eierstock '+noCell+' (?:mehr )?frei', 'der eisprung (?:faellt|bleibt) (?:mit|bei|unter) der pille (?:aus|weg)',
     'der eierstock (?:gibt '+noCell+' (?:mehr )?frei|setzt '+noCell+' (?:mehr )?frei|'+noCell+' (?:freigibt|freisetzt))',
     '(?:es )?(?:kommt|tritt) '+noCell+' aus dem eierstock (?:frei|aus|heraus)',
     '(?:es )?wird '+noCell+' mehr aus dem eierstock freigesetzt');
   const ergebnisOhneZelle=new RegExp('^(?:'+['(?:die |eine )?befruchtung (?:ist (?:dann )?nicht moeglich|findet nicht statt|bleibt aus)',
-    '(?:(?:es )?kommt (?:es )?nicht (?:zu einer|zur) befruchtung)', '(?:die )?eizelle kann nicht befruchtet werden'].join('|')+')$');
+    '(?:(?:es )?kommt (?:es )?nicht (?:zu einer|zur) befruchtung)', '(?:die )?eizelle kann nicht befruchtet werden','findet (?:die |eine )?befruchtung nicht statt','ist (?:eine |die )?befruchtung nicht moeglich'].join('|')+')$');
+  gram.schleim.ab.push('durch (?:den )?(?:verdickten|zaehen|dicken) (?:schleimpfropf|schleim|zervixschleim) (?:kommen|gelangen) '+swimmers+' (?:nur mit muehe|'+hard+') (?:durch|hindurch|zur eizelle)');
+  gram.haut.ab.push('bei (?:kontakt|beruehrung) (?:freier|unbedeckter|ungeschuetzter) (?:hautstellen|haut) (?:koennen|werden) '+germs+' (?:von (?:einer person|einem menschen) (?:zur|zum) anderen (?:gelangen|kommen)|weitergegeben(?: werden)?|uebertragen(?: werden)?)');
+  gram.kupfer.a.push('(?:die )?(?:bewegung|beweglichkeit|bewegungsfaehigkeit) der (?:samenzellen|spermien) (?:durch (?:das )?kupfer )?(?:geringer wird|eingeschraenkt wird|vermindert wird)');
+  gram.kupfer.b.push(...frame(cell,'wird',reduced+' befruchtet'));
   const durchtritt='(?:den durchtritt|die passage|den durchgang|das durchkommen) (?:der |von )?'+swimmers;
   const hindert='erschwert|behindert|hemmt';
   gram.schleim.b.push(...frame(sauce,hindert,durchtritt),'(?:der durchtritt|die passage) (?:der |von )?'+swimmers+' (?:wird|ist) (?:erschwert|schwieriger)');
@@ -334,7 +339,7 @@ const Lernfeedback = (() => {
     if(vorsicht.test(s)){
       // In einem unklaren Satz keine Diagnose raten. Gesondert behauptete Risiken bleiben sichtbar.
       const saetze=s.match(/[^.!?;]+[?]?/g)||[];
-      s=saetze.map(teil=>vorsicht.test(teil)?'ungeklaerte aussage':teil.trim()).join('. ');
+      s=saetze.map(teil=>vorsicht.test(teil) && !gesund.lesen(teil.trim(),id)?'ungeklaerte aussage':teil.trim()).join('. ');
     }
     // Bei einer gemeinsam angewendeten Kombination lässt sich der STI-Schutz keinem
     // der beiden genannten Mittel allein zuschreiben.
