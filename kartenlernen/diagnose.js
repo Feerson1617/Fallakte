@@ -187,10 +187,11 @@ const Lernfeedback = (() => {
   gram.kupfer.negatives.befruchtung.push(...frame('(?:die |eine )?befruchtung','wird','leichter|erleichtert'));
   // Rollen der Anatomie, nicht die bloße Nennung der Befruchtung.
   const herkunft='(?:aus dem |vom )?eierstock', nichtsFrei=noCell+' (?:mehr )?';
+  gram.pille.a.push('der eisprung (?:faellt|bleibt) (?:mit|bei|unter) der pille (?:aus|weg)');
   gram.pille.b.push(nichtsFrei+herkunft+' (?:freikommt|freiwird|freigesetzt wird|abgegeben wird|austritt|springt)',
     '(?:kommt|tritt) '+noCell+' (?:aus dem eierstock )?(?:frei|aus)',
     '(?:aus dem eierstock )?wird '+noCell+' (?:aus dem eierstock )?(?:freigesetzt|abgegeben)',
-    '(?:gibt|setzt) der eierstock '+noCell+' (?:mehr )?frei', 'der eisprung (?:faellt|bleibt) (?:mit|bei|unter) der pille (?:aus|weg)',
+    '(?:gibt|setzt) der eierstock '+noCell+' (?:mehr )?frei',
     'der eierstock (?:gibt '+noCell+' (?:mehr )?frei|setzt '+noCell+' (?:mehr )?frei|'+noCell+' (?:freigibt|freisetzt))',
     '(?:es )?(?:kommt|tritt) '+noCell+' aus dem eierstock (?:frei|aus|heraus)',
     '(?:es )?wird '+noCell+' mehr aus dem eierstock freigesetzt');

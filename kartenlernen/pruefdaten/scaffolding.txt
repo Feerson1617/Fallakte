@@ -12,6 +12,7 @@ passend|normal|Kein Eisprung, keine freie Eizelle. Die Pille schützt vor HIV. N
 unsicher|offen|Ich glaube nicht, dass die Pille vor HIV schützt.
 teilweise|a|Die Pille hemmt den Eisprung. Die Eizelle kann nicht befruchtet werden.
 fehlvorstellung|sti|Die Pille oder die Spirale schützen vor HIV.
+teilweise|a|Der Eisprung fällt mit der Pille weg. Die Pille hemmt den Eisprung.
 [schleim]
 passend|normal|Der Schleimpfropf wird verdickt und erschwert den Durchtritt der Samenzellen.
 passend|normal|Der Schleim am Muttermund verdickt sich und behindert die Passage der Spermien.
