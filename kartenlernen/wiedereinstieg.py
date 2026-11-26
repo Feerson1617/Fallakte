@@ -115,7 +115,9 @@ def run():
                     assert not p.evaluate(GEOMETRIE),(engine,w,p.evaluate(GEOMETRIE))
                     shot('15-Tastatur-'+str(w))
                     # Alle eingegebenen Textteile müssen weiterhin genau rekonstruierbar sein.
-                    tap('help');p.set_viewport_size({'width':w,'height':whole});tap('back')
+                    tap('help')
+                    assert not p.evaluate(GEOMETRIE),(engine,w,'Hilfe bei Tastatur',p.evaluate(GEOMETRIE))
+                    p.set_viewport_size({'width':w,'height':whole});tap('back')
                     while p.locator('[data-action=earlier]').count():tap('earlier')
                     parts=[edit.input_value()]
                     while p.locator('[data-action=later]').count():tap('later');parts.append(edit.input_value())
