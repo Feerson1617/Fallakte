@@ -37,34 +37,37 @@ def protected(folder):
     doc=html.fromstring(raw)
     assert not doc.xpath('//script[@src or @type="application/octet-stream"]|//link[@href]|//iframe|//input|//textarea')
     assert not any(s in raw.decode() for s in ('Laufzettel','Code prüfen','Lauras Frage','Nachricht senden','Fallakte Laura'))
-    cards,old=reference()
-    checked=printed()
-    from base64 import b64decode
-    old_dom=html.fromstring((folder/'Fallakte-Vorbereitung.html').read_bytes())
-    ref_bank=json.loads(html.fromstring(b64decode(old_dom.get_element_by_id('modul-vor').text)).get_element_by_id('material').text)
+    from openpyxl import load_workbook
+    workbook=load_workbook(HERE/'pruefdaten/Druckabgleich-542eddf.xlsx',read_only=True,data_only=True)
+    baseline,_=reference()
+    for tier,n,method,heading,full in list(workbook['80 Fachabschnitte'].values)[1:]:
+        oldcard=baseline[tier.replace('Förder','Foerder')][n-1]
+        assert (heading,full) in [(s['title'],s['completedText']) for s in oldcard['sections']]
+    for tier,n,method,side,j,word,*_ in list(workbook['64 Schreibfelder'].values)[1:]:
+        assert baseline[tier.replace('Förder','Foerder')][n-1]['fields'][j-1]['answer']==word
+    workbook.close()
     m=json.loads(doc.get_element_by_id('material').text);results=[]
-    with ZipFile(OUT/'Kartenvertrag-Work.zip') as z:work=json.loads(z.read('Kartenvertrag.json'))
-    for t in LEVELS:
-        actual=m['levels'][t]['cards'];assert actual==work['niveaus'][t]
-        for n,(c,r,w) in enumerate(zip(actual,ref_bank['cards'][t],cards[t]),1):
-            assert c['ueberschrift']==f'Kapitel {n} – '+r['title']
-            assert c['pearl']==r['pearlIndex'] and c['pearl_erklaerung']==r['pearlExplanation']
-            assert [f['wort'] for f in c['felder']]==[f['answer'] for f in r['fields']]
-            assert [f['volltext'] for f in c['texte']]==[s['completedText'] for s in r['sections']]
-            assert [f['lueckentext'] for f in c['texte']]==[s['template'] for s in w['sections']]
-            if (t,n) in {('ESA',2),('AHR',3),('AHR',4)}:
-                assert c['felder'][1]['wort']=='kein STI-Schutz'
-                assert '*kein STI-Schutz*' in m['levels'][t]['info'][n-1][0]['text'][1]
-            paper=checked[t,w['method']]
-            assert paper['page']==(1 if n<=2 else 2)
-            text=r['title']+' Pearl-Index: '+r['pearlIndex']+' · Richtwert nach pro familia '+r['pearlExplanation']+' Kein Maß für den Schutz vor sexuell übertragbaren Infektionen (STI). '+' '.join(s['title']+' '+s['completedText'] for s in r['sections'])
-            # Originaldruck hat ein eigenes Pearl-Layout. Die Funktion kontrolliert
-            # zusätzlich jede einzelne nummerierte Lücke unabhängig anhand beider PDFs.
-            norm=lambda s:re.sub(r' +([,.;:])',r'\1',spaced(s))
-            filled=NUM.sub(lambda x:x[1]+' '+c['felder'][int(x[1])-1]['wort'],paper['blank'])
-            assert norm(filled)==norm(paper['reference'])
-            assert norm(text)==norm(r['title']+' '+NUM.sub('',paper['reference']))
-            results.append(dict(niveau=t,kapitel=n,felder=[f['wort'] for f in c['felder']],druck=paper['reference_sha256'],schueler=paper['student_sha256']))
+    norm=lambda text:re.sub(r'\s+','',text)
+    with ZipFile(OUT/'Kartenvertrag-Work.zip') as z:
+        work=json.loads(z.read('Kartenvertrag.json'))
+        for tier in LEVELS:
+            cards=m['levels'][tier]['cards'];assert cards==work['niveaus'][tier] and len(cards)==4
+            for muster,typ in ((False,'Schuelerkarten'),(True,'Musterkarten')):
+                pdf=z.read(f'{typ}/{tier}.pdf')
+                pages=subprocess.check_output(['pdftotext','-raw','-','-'],input=pdf).decode().strip().split('\f')
+                assert len(pages)==2
+                for i,c in enumerate(cards):
+                    assert c['pearl']==baseline[tier][i]['pearlIndex']
+                    fields=c['felder'];assert [f['nummer'] for f in fields]==[1,2,3,4]
+                    content=c['ueberschrift']+' '+tier.replace('Foerder','Förder')+(' · Muster' if muster else '')
+                    for sec in c['texte']:
+                        filled=sec['lueckentext']
+                        for f in fields:
+                            filled=filled.replace('{'+str(f['nummer'])+'}',str(f['nummer'])+(' '+f['wort'] if muster else ''))
+                        content+=' '+sec['titel']+' '+filled
+                    content+=' Pearl-Index '+c['pearl']+' (pro familia). '+c['pearl_erklaerung']
+                    assert norm(content) in norm(pages[i//2]),(tier,typ,c['titel'])
+                    results.append(dict(niveau=tier,karte=c['titel'],seite=i//2+1,muster=muster,sha256=sha(pdf)))
     return dict(bestandsdateien=out,karten=results)
 
 
@@ -72,6 +75,7 @@ def run(reference_folder,quick=False):
     QA.mkdir(exist_ok=True,parents=True)
     report=protected(reference_folder)
     belege={}
+    sprachen={}
     with ZipFile(OUT/'Kartenvertrag-Work.zip') as z:
         karten=json.loads(z.read('Kartenvertrag.json'))['niveaus']
     records=[];specs=[(1024,768,100,False),(768,1024,100,False),(1180,820,150,False),(820,1180,150,False),(740,480,100,True),(740,480,150,True),(640,420,125,True),(390,560,125,True)]
@@ -104,6 +108,8 @@ def run(reference_folder,quick=False):
                             f.evaluate('(z)=>document.documentElement.style.fontSize=z+"%"',zoom)
                             f.evaluate('async()=>{await document.fonts.ready;await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))}')
                             result=f.evaluate((HERE/'sichttest.js').read_text(),dict(tier=tier,assist=assisted))
+                            for spur in result.pop('ansichten'):
+                                sprachen.setdefault((tier,spur['text']),dict(niveau=tier,**spur))
                             befund=result.pop('quellen')
                             assert len(befund)==16
                             pruefe(befund,karten[tier])
@@ -122,6 +128,7 @@ def run(reference_folder,quick=False):
                     ctx.close()
                     print(engine,w,h,zoom,'fertig',flush=True)
         server.shutdown();server.server_close()
+    (QA/'Sichtbarer-Wortlaut.json').write_text(json.dumps(list(sprachen.values()),ensure_ascii=False,indent=2))
     report['wege']=records
     report['feldbelege']=[feld for niveau in LEVELS for feld in belege[niveau]]
     assert len(report['feldbelege'])==64

@@ -2,13 +2,15 @@
 ({tier,assist,models=true})=>{
  const $=s=>document.querySelector(s), all=s=>Array.from(document.querySelectorAll(s));
  const material=JSON.parse($('#material').textContent),cs=material.levels[tier].cards;
- const errors=[],words=new Set();
+ const errors=[],words=new Set(),ansichten=new Map();
  let state='',count=0,taps=0,papers=0,segments=0,helpPos=null;
  const key=a=>document.querySelector('[data-action="'+a+'"]');
  const ok=(v,m)=>{if(!v)throw Error(tier+' / '+state+' / '+m);};
  const problem=m=>{errors.push({state,message:m});};
  function inspect(label){
    state=label;count++;
+   const sichtbar=$('#workspace').innerText;
+   if(!ansichten.has(sichtbar))ansichten.set(sichtbar,{weg:label,ansicht:$('#page').dataset.screen,text:sichtbar});
    const root=document.documentElement, vp=window.visualViewport;
    const W=Math.min(innerWidth,vp?.width||innerWidth), H=Math.min(innerHeight,vp?.height||innerHeight);
    if(scrollX||scrollY||root.scrollWidth>W+1||root.scrollHeight>H+1)problem('Seitenmaß '+[W,H,root.scrollWidth,root.scrollHeight,scrollY]);
@@ -69,12 +71,12 @@
      if(assist)visitHelp(2,'Information');tap('readnext');
    }
    inspect('Papier '+(i+1));ok($('#page h1').innerText==='Schreibe auf deine Infokarte.','Schreibauftrag');
-   ok($('#page').innerText.includes('Nimm dein Blatt mit den vier Infokarten.'),'Blattname');
+   ok($('#page').innerText.includes('Dein Blatt mit den Infokarten'),'Blattname');
    if(i===2)ok($('.locator').innerText.includes('Suche auf der Rückseite oben 3 – Kupferspirale.'),'Blattposition in Kapitel 3');
    const f=all('li strong').map(n=>n.innerText);
    ok(JSON.stringify(f)===JSON.stringify(cs[i].felder.map(f=>f.wort)),'Originalwörter');
    ok($('.sheet .active').innerText===(i+1)+' – '+cs[i].titel,'richtige Blatthälfte');
-   ok($('#page').innerText.includes('Stehen alle vier Wörter bei 1, 2, 3 und 4'),'Selbstkontrolle');
+   ok($('#page').innerText.includes('Alle vier Lücken gefüllt?'),'Selbstkontrolle');
    ok(all('.sheet span').map(n=>n.innerText).join('|')===cs.slice(i<2?0:2,i<2?2:4).map(c=>c.nummer+' – '+c.titel).join('|'),'Methodennamen auf beiden Blatthälften');
    if(assist)visitHelp(2,'Papier');papers++;tap('written');
  }
@@ -83,7 +85,7 @@
    const q=chapter.fragen[i],m=material.modelle[q.modell];
    inspect('Frage '+(i+1));ok($('.locator').innerText.includes(cs[i].texte[q.abschnitt].titel),'Überschrift wie auf Papier');
    if(assist){
-     tap('help');inspect('Kartenorientierung');ok($('#page').innerText.includes('Lies auf deiner Infokarte')&&$('#page').innerText.includes('unter der Überschrift'),'konkreter Suchauftrag');tap('reference');inspect('Ersatzkarte');
+     tap('help');inspect('Kartenorientierung');ok($('#page').innerText.includes('Lies auf deiner Infokarte')&&$('#page').innerText.includes(cs[i].texte[q.abschnitt].titel),'konkreter Suchauftrag');tap('reference');inspect('Ersatzkarte');
      for(let n=q.abschnitt;n>0;n--)tap('prev');
      for(const t of cs[i].texte){inspect('Ersatzkarte '+t.titel);ok($('#page').innerText.includes(t.volltext),'Originaltext');tap('following');}
      inspect('Ersatzkarte Pearl-Index');tap('helpback');tap('back');
@@ -101,7 +103,7 @@
        enter(zusatz);tap('check');inspect('Gesundheitlicher Zusatz');
        ok($('#page').innerText.includes('Die Kupferspirale wirkt ohne Hormone.') && !key('advance'),'konkreter biologischer Fehler');
        tap('help');inspect('Kartenverweis beim Zusatz');
-       ok($('#page').innerText.includes('Infokarte 3 – Kupferspirale'),'Karte zum tatsächlichen Fehler');
+       ok($('#page').innerText.includes('Infokarte zur Kupferspirale'),'Karte zum tatsächlichen Fehler');
        tap('reference');inspect('Fachbeleg zum Zusatz');
        ok($('.beleg').innerText===cs[2].texte[0].volltext,'richtige Originalstelle');
        tap('helpback');tap('back');tap('compare');inspect('Selbstvergleich mit erkanntem Zusatz');
@@ -141,5 +143,5 @@
    tap('menu');inspect('Sitzungsmarken');ok(all('.chapter').every(b=>b.innerText.endsWith('✓')),'vier Sitzungsmarken');
    tap('lookup');inspect('Zeitnotweg');for(let i=0;i<4;i++){tap('fill',i);inspect('Zeitnot Papier');if(i===2)ok($('.locator').innerText.includes('Suche auf der Rückseite oben 3 – Kupferspirale.'),'Direkteinstieg Papier');ok(key('written').innerText==='Zurück zur Kartenauswahl','Beschriftung');tap('written');ok(key('fill'),'Kartenauswahl');}
  }
- return {tier,assist,count,taps:regularTaps,papers,lesewoerter:read,errors,quellen};
+ return {tier,assist,count,taps:regularTaps,papers,lesewoerter:read,errors,quellen,ansichten:[...ansichten.values()]};
 }

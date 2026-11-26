@@ -82,10 +82,10 @@ def run():
                             tap('revise');assert p.locator('#entry').input_value()=='Das könnte auch anders zusammenhängen.'
                             if q['modell']=='pille':
                                 text='Die Pille hemmt den Eisprung. Keine Eizelle wird frei. Die Pille schützt vor HIV.'
-                                korrektur='Pille und Spiralen schützen nicht vor HIV oder anderen STI.'
+                                korrektur='Pille und Spiralen schützen nicht vor HIV. Auch andere Erreger können beim Sex übertragen werden.'
                                 p.locator('#entry').fill(text);tap('check')
                                 shot('18-STI-Zusatz');tap('help');tap('reference')
-                                assert p.locator('#page h1').inner_text()=='Schutz vor Infektionen'
+                                assert p.locator('#page h1').inner_text()=='Kein Schutz vor Ansteckung'
                                 shot('19-Kartenstelle-STI');tap('helpback')
                                 while p.locator('[data-action=more]').count():tap('more')
                                 assert korrektur in p.locator('#page').inner_text();shot('20-Hilfe-5-STI')

@@ -22,9 +22,9 @@ def make_graphics():
       ('index','0 0 110 110',grid,'100 Frauen · 1 Jahr','Drei von hundert Punkten sind markiert.'),
       ('huelle','20 6 130 118',barrier+sperm(77,53,20)+sperm(98,78,-45)+sperm(74,89,90),'Heile Hülle mit Spermien','Eine intakte Kondomhülle hält die dargestellten Spermien zurück.'),
       ('kontakt','0 8 180 84',skin,'Bedeckte und freie Haut','Links bedeckt die Hülle die Haut. Rechts bleibt die Haut frei.'),
-      ('eisprung','0 18 310 116',eggs,'Eisprung / Eisprung gehemmt','Links tritt eine Eizelle aus dem Eierstock aus. Rechts wird keine Eizelle frei.'),
-      ('einnahme','0 13 180 78',cal,'Einnahme · ein Tag fehlt','Drei Kalendertage. Am mittleren fehlt die Einnahme.'),
-      ('kupfer','18 28 203 162',copper,'Kupfer und Spermien','Die Kupferspirale sitzt in der Gebärmutter. Kupfer beeinträchtigt Spermien.'),
+      ('eisprung','0 18 310 116',eggs,'Links mit Eisprung · rechts ohne','Links tritt eine Eizelle aus dem Eierstock aus. Rechts wird keine Eizelle frei.'),
+      ('einnahme','0 13 180 78',cal,'Eine Pille vergessen','Drei Kalendertage. Am mittleren fehlt die Einnahme.'),
+      ('kupfer','18 28 203 162',copper,'Kupfer und Spermien','Die Kupferspirale sitzt in der Gebärmutter. Kupfer bremst Spermien.'),
       ('kupferwahl','19 8 139 85',complaints(True),'Blutung kann zunehmen','Ein Tropfen mit aufsteigendem Pfeil. Die Blutung kann zunehmen.'),
       ('schleim','18 28 203 162',mucus,'Zäher Schleim am Gebärmutterhals','Unter der Hormonspirale erschwert Schleim am Gebärmutterhals den Weg der Spermien.'),
       ('hormonwahl','19 8 139 85',complaints(False),'Blutung kann abnehmen','Ein Tropfen mit absteigendem Pfeil. Später kann die Blutung abnehmen.')]

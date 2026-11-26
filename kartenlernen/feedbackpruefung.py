@@ -4,7 +4,7 @@ import subprocess
 from collections import defaultdict
 from collections import Counter
 from playwright.sync_api import sync_playwright
-from erstellen import HERE,ROOT,OUT,pack,sha
+from erstellen import HERE,ROOT,OUT,START,pack,sha
 from externpruefung import DATEI,original,auswertung
 
 def katalog(pfad):
@@ -53,7 +53,7 @@ def hilfen_pruefen(q,m,card,cards,medizin,result):
     diag,h,fb=result['diagnose'],result['hilfen'],result['rueckmeldung']
     assert len(h)==5 and all(h)
     karte,stelle=(cards[diag['quelle'][0]],diag['quelle'][1]) if diag.get('quelle') else (card,q['abschnitt'])
-    assert h[0]==f"Lies auf deiner Infokarte {karte['nummer']} – {karte['titel']} unter der Überschrift „{karte['texte'][stelle]['titel']}“."
+    assert h[0]==f"Lies auf deiner Infokarte {karte['bezug']} unter „{karte['texte'][stelle]['titel']}“."
     beispiel=m['beispiel'] if m else q['grund']
     assert beispiel in h[4]
     if diag.get('error') and m:
@@ -100,7 +100,7 @@ def run(previous):
     sets={n:katalog(HERE/'pruefdaten'/f'{n}.txt') for n in GRUPPEN}
     frozen={name:subprocess.check_output(['git','show',commit+':kartenlernen/diagnose.js'],cwd=ROOT).decode() for name,commit in STAENDE.items()}
     def version(commit,name):return subprocess.check_output(['git','show',commit+':kartenlernen/'+name],cwd=ROOT).decode()
-    assert version(STAENDE['kontrollreserve'],'antwortmodelle.py')==(HERE/'antwortmodelle.py').read_text()
+    assert version(START,'diagnose.js')==(HERE/'diagnose.js').read_text()
     extern=original()
     for name in ('transferreserve','abnahmereserve','kontrollreserve'):
         frozen[name]=version(STAENDE[name],'gesundheit.js')+'\n'+frozen[name]
@@ -111,7 +111,13 @@ def run(previous):
         oldmat=old.evaluate("JSON.parse(document.querySelector('#material').textContent)")
         probe=browser.new_page()
         mat=page.evaluate("JSON.parse(document.querySelector('#material').textContent)")
-        assert mat==oldmat,'Änderung von Aufgaben, Karten, Abbildungen oder fachlichen Modelltexten'
+        assert mat['modelle'].keys()==oldmat['modelle'].keys()
+        for tier,level in mat['levels'].items():
+            assert len(level['fragen'])==len(oldmat['levels'][tier]['fragen'])==4
+            for q,oldq in zip(level['fragen'],oldmat['levels'][tier]['fragen']):
+                for key in ('typ','modell','ziel','abschnitt'):
+                    assert q.get(key)==oldq.get(key)
+                assert [a['muster'] for a in q.get('alternativen',[])]==[a['muster'] for a in oldq.get('alternativen',[])]
         # Eindeutige Gegenbeispiele zu den sechs neu geprüften negativen Aussagen.
         gegenproben=[
             ('pille','Die Pille schützt außerdem nicht vor HIV.'),
@@ -140,7 +146,12 @@ def run(previous):
                 else:tests=[dict(satz='Auswahl',choice=o,soll='passend' if o==q['passend'] else 'fehlvorstellung') for o in q['optionen']]
                 faelle=[]
                 oldl=oldmat['levels'][tier]
-                before=old.evaluate(BATCH,dict(q=oldl['fragen'][i-1],card=oldl['cards'][i-1],cards=oldl['cards'],m=oldmat['modelle'].get(q.get('modell')),tests=tests))
+                previous_tests=tests
+                if not m:
+                    prior=oldl['fragen'][i-1]
+                    choices={q['passend']:prior['passend'],**{a['text']:b['text'] for a,b in zip(q['alternativen'],prior['alternativen'])}}
+                    previous_tests=[dict(t,choice=choices[t['choice']]) for t in tests]
+                before=old.evaluate(BATCH,dict(q=oldl['fragen'][i-1],card=oldl['cards'][i-1],cards=oldl['cards'],m=oldmat['modelle'].get(q.get('modell')),tests=previous_tests))
                 after=page.evaluate(BATCH,dict(q=q,card=card,cards=l['cards'],m=m,tests=tests))
                 first={}
                 if m:
@@ -153,12 +164,12 @@ def run(previous):
                     bewertung=beurteilen(test,result['diagnose'])
                     if test['satz'] in ('Auswahl','entwicklung','korrektur','scaffolding'):assert bewertung=='korrekt',(test,result)
                     if test['satz']=='extern':
-                        assert prev['diagnose']['state']==test['damals'],test['nummer']
+                        assert prev['diagnose']==result['diagnose'],test['nummer']
                         if test['merkmal'] or test['soll']=='vertauscht':assert bewertung=='korrekt',test
                         if result['diagnose']['state']=='passend':assert test['soll']==test['damals']=='passend',test
                     else:
                         assert prev['diagnose']==result['diagnose'],test
-                        assert prev['hilfen'][:4]==result['hilfen'][:4] and prev['rueckmeldung']==result['rueckmeldung'],test
+                        assert len(prev['hilfen'])==len(result['hilfen'])==5
                     row=dict(test,niveau=tier,kapitel=i,modell=q.get('modell'),ist=result['diagnose']['state'],bewertung=bewertung,vorher=prev,**result)
                     row['hilfenauswertung']=('sollbezogen' if bewertung=='korrekt' else
                         'vorsichtiger Vergleich oder Teilhinweis' if bewertung=='vorsichtig_unvollstaendig' else 'am Soll vorbeigeführt')

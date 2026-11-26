@@ -17,7 +17,7 @@ jobs:
       - name: Werkzeuge installieren
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          python -m pip install -r tests/requirements.txt
+          python -m pip install -r tests/requirements.txt reportlab==4.4.9 openpyxl==3.1.5
           if ! command -v pdftotext >/dev/null; then apt-get update -qq && apt-get install -y poppler-utils; fi
       - name: Abgenommenen Bestand zum Prüfsummenvergleich bauen
         run: |
@@ -26,7 +26,7 @@ jobs:
           python gesamt/auslieferung.py
       - name: Vorbereitung separat bauen und beide Browser prüfen
         run: |
-          git worktree add --detach /tmp/fallakte-vorfassung 30c32c48bd2e56384fead1d9ff7f07b294456c52
+          git worktree add --detach /tmp/fallakte-vorfassung 542eddf02d913e30289211c5b27cc242004a3d7c
           python /tmp/fallakte-vorfassung/kartenlernen/erstellen.py
           python kartenlernen/erstellen.py
           python -u kartenlernen/pruefen.py /tmp/fallakte-bestand/dist/Gesamt

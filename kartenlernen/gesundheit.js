@@ -21,12 +21,12 @@ const Fachwissen = (() => {
   const einzelne='(?:'+pille+'|'+spirale+')';
   const methoden=einzelne+'(?: (?:oder|und) '+einzelne+')?';
   const katalog={
-    sti:eintrag(1,1,'Pille und Spiralen schützen nicht vor HIV oder anderen STI.','Hält diese Methode Krankheitserreger zurück?',
+    sti:eintrag(1,1,'Pille und Spiralen schützen nicht vor HIV. Auch andere Erreger können beim Sex übertragen werden.','Hält diese Methode Krankheitserreger zurück?',
       [methoden+' '+aktiv+' '+schutz+vor,vor+' '+aktiv+' '+methoden,methoden+' (?:bietet|bieten) (?:auch )?schutz '+vor,
        'mit (?:der |einer )?(?:(?:hormon|kupfer)?spirale|(?:kombinations)?pille) kann man kein hiv bekommen',
        methoden+' (?:verhindert|verhindern) (?:eine ansteckung mit )?(?:hiv|sti[s]?)'],
       [methoden+' '+aktiv+' (?:auch )?nicht '+vor,methoden+' '+aktiv+' '+vor+' nicht',methoden+' '+aktiv+' nicht gegen '+erreger,methoden+' (?:bietet|bieten) keinen (?:sti-schutz|schutz '+vor+')']),
-    kondomschutz:eintrag(0,2,'Kondome senken das STI-Risiko. Manche Erreger können über freie Haut übertragen werden.','Welche Haut bleibt frei?',
+    kondomschutz:eintrag(0,2,'Kondome senken das Risiko, sich beim Sex anzustecken. Manche Erreger gelangen über freie Haut zum anderen Menschen.','Welche Haut bleibt frei?',
       [kondom+' '+aktiv+' '+schutz+alle+'(?: immer| sicher| vollstaendig)?',kondom+' (?:bietet|bieten) (?:hundertprozentigen|absoluten|sicheren) schutz '+alle,
        kondom+' '+aktiv+' zu (?:hundert|100) prozent vor jeder infektion beim sex'],
       [kondom+' '+aktiv+' nicht (?:sicher |vollstaendig )?'+alle,kondom+' '+aktiv+' '+alle+' nicht sicher',kondom+' (?:senkt|senken) das (?:risiko vieler sti|sti-risiko)']),
@@ -39,7 +39,7 @@ const Fachwissen = (() => {
     spermien:eintrag(1,0,'Die Pille hemmt meist den Eisprung. Sie tötet keine Spermien.','Was geschieht bei der Pille mit dem Eisprung?',
       [pille+' (?:toetet|vernichtet) (?:die |alle )?(?:spermien|samenzellen)(?: ab)?',pille+' toetet (?:die )?(?:spermien|samenzellen) ab'],
       [pille+' toetet (?:die )?(?:spermien|samenzellen) nicht',pille+' toetet keine (?:spermien|samenzellen)']),
-    einnahme:eintrag(1,2,'Die Pille muss nach ihrem Einnahmeplan genommen werden. Vergessen kann den Schutz verringern.','Was steht im Einnahmeplan?',
+    einnahme:eintrag(1,2,'Nimm die Pille nach Plan. Vergisst du sie, kann der Schutz sinken.','Was steht im Einnahmeplan?',
       [regel+' ist (?:grundsaetzlich |generell )?(?:unnoetig|egal|unwichtig|nicht (?:noetig|notwendig|wichtig))',
        pille+' muss nicht jeden tag (?:genommen|eingenommen) werden',pille+' (?:muss|braucht) (?:man )?nicht '+einnehmen,'man muss '+pille+' nicht '+einnehmen],
       [regel+' ist (?:noetig|notwendig|wichtig|nicht unnoetig)',pille+' muss (?:man )?'+einnehmen,'man muss '+pille+' '+einnehmen]),
