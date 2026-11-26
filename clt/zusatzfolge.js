@@ -9,7 +9,15 @@ async path=>{
     const stage=bank.stages[i],context=stage.checks?.[key]||stage;
     if(!q('#step').textContent.includes((i+1)+' von'))throw Error('Schritt '+i);
     if(key)click('[id="method-'+key+'"]');
-    else{click('#source');click('#back');await new Promise(done=>requestAnimationFrame(()=>requestAnimationFrame(done)));}
+    else{
+      click('#source');click('#back');
+      // WebKit kann das native close-Ereignis nach mehreren Animationsframes zustellen.
+      const until=performance.now()+5000;
+      while(!q('#erklaerung,[id^=answer-]')){
+        if(performance.now()>until)throw Error('Quellenrückkehr ohne Eingabe in '+bank.person+' '+(i+1));
+        await new Promise(resolve=>setTimeout(resolve,20));
+      }
+    }
     if(q('#erklaerung')){
       const t=q('#erklaerung');t.value='Ich berücksichtige die Bedingungen und die Wünsche der Person.';
       t.dispatchEvent(new Event('input'));click('#vergleichen');
