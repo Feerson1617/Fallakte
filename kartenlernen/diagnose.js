@@ -24,7 +24,7 @@ const Lernfeedback = (() => {
     haut:{
       a:[skin+' (?:bleibt|bleiben|ist|sind) (?:frei|unbedeckt|nicht bedeckt)','(?:das )?kondom (?:bedeckt|schuetzt) (?:nicht die ganze haut|nur einen teil der haut|nicht alle hautstellen)','(?:unbedeckte|freie) haut(?:stellen)?','nicht (?:die )?ganze haut (?:ist )?bedeckt','(?:es )?bleiben hautstellen frei'],
       b:[germs+' (?:koennen )?(?:bei|durch|ueber) (?:direkten )?(?:hautkontakt|freie haut|unbedeckte haut) (?:uebertragen werden|uebergehen|weitergegeben werden)','(?:bei|durch) hautkontakt (?:koennen |werden )?'+germs+' (?:uebertragen werden|uebertragen|weitergegeben werden|uebergehen)','(?:bei )?hautkontakt (?:kann )?'+germs+' uebertragen','(?:koennen )?'+germs+' bei hautkontakt uebertragen werden','uebertragung (?:von erregern )?durch hautkontakt'],
-      negatives:{flaeche:['(?:das )?kondom (?:bedeckt|schuetzt) (?:die ganze haut|alle hautstellen)','(?:die )?ganze haut ist bedeckt'],kontakt:['(?:bei|durch) hautkontakt werden keine erreger uebertragen','erreger koennen durch hautkontakt nicht uebertragen werden'],sperma:['erreger werden nur (?:durch|mit) sperma uebertragen']}
+      negatives:{flaeche:['(?:das )?kondom (?:bedeckt|schuetzt) (?:die ganze haut|alle hautstellen)','(?:die )?ganze haut ist bedeckt','haut bleibt nicht frei'],kontakt:['(?:bei|durch) hautkontakt werden keine erreger uebertragen','erreger koennen durch hautkontakt nicht uebertragen werden'],sperma:['erreger werden nur (?:durch|mit) sperma uebertragen']}
     },
     kupfer:{
       a:['kupfer bremst (?:die )?'+sperm,'kupfer (?:stoert|hemmt|bremst) (?:die )?(?:bewegung|beweglichkeit) (?:der |von )?'+sperm,'(?:die )?'+sperm+' (?:bewegen sich|schwimmen) '+slow,'(?:die )?'+sperm+' sind weniger beweglich','(?:langsame|gebremste) spermien','(?:die )?beweglichkeit der spermien (?:nimmt ab|sinkt)'],
@@ -32,10 +32,137 @@ const Lernfeedback = (() => {
       negatives:{bewegung:['(?:die )?spermien (?:schwimmen|bewegen sich) (?:schneller|besser)','kupfer macht spermien beweglicher'],befruchtung:['(?:die )?befruchtung wird (?:leichter|erleichtert)','sie befruchten die eizelle leichter'],zyklus:['kupfer (?:verhindert|hemmt|stoppt) (?:den )?eisprung','(?:der )?eisprung bleibt aus'],schleim:['kupfer macht den schleim zaeher','der schleim wird dicker']}
     }
   };
+  // Jede Ergänzung bindet ein Subjekt an ein Prädikat und ein bestimmtes Objekt.
+  // Derselbe Rahmen gilt für Hauptsatz, Inversion und Verbendstellung.
+  const word = alternatives => '(?:'+alternatives+')';
+  function frame(s,v,o){
+    const S=word(s),V=word(v),O=word(o);
+    return [S+' '+V+' '+O,S+' '+O+' '+V,V+' '+S+' '+O];
+  }
+  const pill='(?:die )?(?:kombinationspille|pille|hormone(?: der pille)?)';
+  const ov='(?:den |der )?eisprung', ovVerb='hemmt|hemmen|verhindert|verhindern|unterdrueckt|unterdruecken|stoppt|blockiert';
+  const negOv='(?:den )?eisprung nicht';
+  const cell='(?:eine |die )?eizelle|(?:ein |das )?ei';
+  const noCell='kein(?:e)? (?:freie |befruchtbare )?(?:eizelle|ei)';
+  const sauce='(?:der |den )?(?:zervixschleim|schleim|schleimpfropf)(?: am (?:gebaermutterhals|muttermund))?';
+  const thick='dickfluessiger|zaehfluessiger|dicker|zaeher|dichter|zaeh|dickfluessig';
+  const fluid='duenner|fluessiger|durchlaessiger';
+  const hormonal='(?:die |das )?(?:hormonspirale|spirale|hormone?|gestagen)(?: der spirale)?';
+  const swimmers='(?:die )?(?:samenzellen|spermien|samenfaeden)';
+  const refer=swimmers+'|sie|diese';
+  const hard='schwerer|schlechter|langsamer|seltener|kaum(?: noch)?|weniger gut|nicht (?:mehr )?so (?:gut|leicht)|nur schwer';
+  const path='hindurch|durch(?: den (?:zaehen )?schleim)?|voran|weiter|zur eizelle|zum ei';
+  const copper='(?:das |die )?(?:kupfer(?:ionen)?|kupferspirale)';
+  const motion='(?:die )?(?:beweglichkeit|bewegung|bewegungsfaehigkeit) (?:der |von )?'+swimmers;
+  const condom='(?:das |ein |die )?kondom(?:e)?';
+  const outside='(?:einige |manche |andere )?(?:hautstellen|stellen)|(?:ein )?teil der haut|haut';
+  const bare='frei|unbedeckt|ungeschuetzt|nicht bedeckt';
+  const partialCover='nicht (?:die )?(?:ganze|gesamte) haut|nicht alle (?:hautstellen|stellen)|nur (?:die bedeckte stelle|einen teil der haut|einen teil)';
+  const route='(?:bei|durch|ueber) (?:direkten )?(?:hautkontakt|kontakt|(?:die )?(?:uebrige|freie|unbedeckte) haut)';
+  const transfer='uebertragen|weitergegeben|uebertragen werden|weitergegeben werden|uebergehen|weiterwandern';
+  const reduced=word(hard);
+  const gram={
+    pille:{
+      a:[...frame(pill,ovVerb,'(?:meist(?:ens)? |normalerweise )?'+ov),
+        ...frame(pill,ovVerb,'(?:den )?eisprung nicht immer'),
+        ...frame('(?:der )?eisprung','wird','(?:meist |normalerweise )?(?:gehemmt|verhindert|unterdrueckt)'),
+        '(?:der )?eisprung (?:ausbleibt|ausfaellt|nicht stattfindet)','es (?:gibt keinen eisprung|kommt (?:meist )?nicht zum eisprung)'],
+      b:[...frame(noCell,'wird|ist','(?:zur befruchtung )?(?:frei|freigesetzt|vorhanden|da)'),
+        ...frame(noCell,'kann','befruchtet werden'),...frame(cell,'wird','nicht (?:frei|freigesetzt)'),
+        '(?:eine |die )?(?:freie |befruchtbare )?eizelle fehlt',word(cell)+' fehlt','kein(?:e)? (?:eizelle|ei) (?:zum befruchten|zum befruchten da|zur befruchtung frei)',
+        '(?:es )?(?:ist|wird) '+noCell+' (?:frei|freigesetzt|zur befruchtung frei|zum befruchten frei)',
+        '(?:es )?gibt (?:es )?'+noCell+'(?: zum befruchten| zur befruchtung)?','fehlt eine befruchtbare eizelle',
+        'keine eizelle zur befruchtung (?:frei )?wird','(?:eine )?befruchtung ist (?:dann )?nicht moeglich'],
+      ab:['ohne eisprung (?:gibt es|wird|ist) '+noCell+'(?: frei| freigesetzt| da| zur befruchtung)?(?:,? (?:die|das) befruchtet werden (?:kann|koennte))?',
+        'ohne eisprung kann '+noCell+' befruchtet werden'],
+      extra:['(?:die )?pille enthaelt hormone','die pille schuetzt nicht vor sti'],
+      negatives:{zyklus:[...frame(pill,ovVerb,negOv),...frame(pill,'hemmt nicht|verhindert nicht|unterdrueckt nicht',ov),'(?:der )?eisprung wird nicht (?:unterdrueckt|verhindert)'],spermien:[...frame(pill,ovVerb,'(?:vor allem )?'+motion)]}
+    },
+    schleim:{
+      a:[...frame(sauce,'wird|ist',thick),...frame(hormonal,'verdickt|verdicken',sauce),'(?:durch (?:die hormonspirale|das gestagen|die hormone) )?(?:verdickt sich (?:der )?schleim|wird der schleim '+word(thick)+')',
+        ...frame(hormonal,'macht|machen',sauce+' '+word(thick)),sauce+' (?:verdickt sich|wird verdickt|'+word(thick)+')',
+        'der pfropf am hals der gebaermutter ist '+word(thick),'der schleim verdickt sich'],
+      b:[...frame(refer,'kommen|gelangen|schwimmen',reduced+' '+word(path)),
+        ...frame(refer,'kommen|gelangen',word(path)+' '+reduced),
+        ...frame(refer,'koennen',reduced+' (?:passieren|durchkommen|hindurchkommen|hindurchgelangen|durchschwimmen|durch den schleim gelangen)'),
+        ...frame(refer,'schaffen','(?:die passage|den weg) '+reduced),
+        word(refer)+' '+reduced+' (?:durchkommen|hindurchkommen|passieren)(?: koennen)?',
+        '(?:der |den )?spermien (?:faellt|wird) der weg zur eizelle schwerer'],
+      ab:['(?:der |durch den |durch |im )?(?:verdickte[nr]?|zaehere[nr]?|dickere[nr]?|zaehe[nr]?|dichte[nr]?) schleim(?: am gebaermutterhals)? (?:erschwert (?:den )?(?:spermien|samenzellen) (?:den weg|den durchtritt|das durchkommen)(?: zur eizelle)?|bremst (?:die )?(?:spermien|samenzellen)|kommen (?:die )?(?:spermien|samenzellen) '+reduced+' (?:durch|hindurch))'],
+      extra:['die hormonspirale gibt (?:ein hormon|gestagen) ab','(?:der )?eisprung kann (?:weiter )?stattfinden'],
+      negatives:{dichte:[...frame(sauce,'wird|ist','nicht '+word(thick)+'|'+fluid),sauce+' verdickt sich nicht'],
+        weg:[...frame(refer,'kommen|gelangen|schwimmen',word('leichter|schneller|besser')+' '+word(path)),...frame(refer,'koennen','(?:leichter|schneller|besser) passieren')],
+        zyklus:[...frame(hormonal,ovVerb,'(?:immer |vor allem )?'+ov)]}
+    },
+    haut:{
+      a:[...frame(condom,'schuetzt|schuetzen|bedeckt|bedecken',partialCover),...frame(condom,'deckt|decken',word(partialCover)+' ab'),
+        ...frame(outside,'bleibt|bleiben|ist|sind',bare),'neben dem kondom (?:gibt es|bleiben) (?:immer noch |noch )?freie hautflaechen','(?:das )?kondom laesst (?:einen teil der haut|hautstellen) frei','nicht alle (?:hautstellen|stellen) (?:vom kondom )?(?:bedeckt sind|sind bedeckt)',
+        '(?:die )?(?:ganze|gesamte) haut (?:ist nicht|wird nicht) (?:abgedeckt|bedeckt)','(?:das )?kondom (?:liegt|sitzt) nur (?:auf|an) einer stelle'],
+      b:[...frame(germs,'koennen|werden',route+' '+word(transfer)),route+' (?:koennen|werden) '+germs+' '+word(transfer),
+        route+' (?:kann man sich|koennen wir uns) (?:anstecken|infizieren)','(?:man kann sich|kann man sich) '+route+' (?:anstecken|infizieren)',
+        '(?:bei hautkontakt|dort|an diesen stellen) ist (?:eine )?ansteckung(?: durch hautkontakt)? moeglich',
+        '(?:ist )?(?:dort|hier) (?:eine )?ansteckung moeglich','(?:dort|hier) koennen erreger uebertragen werden',
+        'hautkontakt kann '+germs+' (?:uebertragen|weitergeben)'],
+      ab:['an (?:den )?(?:unbedeckten|freien|ungeschuetzten) hautstellen koennen '+germs+' (?:durch kontakt |bei hautkontakt )?(?:uebertragen|weitergegeben) werden'],
+      extra:['(?:das )?kondom (?:ist heil|ist intakt|haelt sperma zurueck)'],
+      negatives:{flaeche:[...frame(condom,'deckt|decken','(?:die )?(?:gesamte|ganze) haut ab'),...frame(condom,'bedeckt|schuetzt','die gesamte haut')],
+        kontakt:['(?:eine )?ansteckung '+route+' ist nicht moeglich','hautkontakt kann keine erreger uebertragen'],
+        sperma:['erreger brauchen (?:immer |nur )?sperma zur uebertragung']}
+    },
+    kupfer:{
+      a:[...frame(copper,'hemmt|hemmen|beeintraechtigt|beeintraechtigen|stoert|stoeren|bremst|bremsen',motion),
+        ...frame(copper,'bremst|bremsen|beeintraechtigt|beeintraechtigen',swimmers),
+        ...frame(swimmers,'koennen','sich '+reduced+' bewegen'),...frame(swimmers,'sind','(?:nicht mehr so|weniger|kaum noch) beweglich'),...frame(swimmers,'bewegen','sich '+reduced),
+        'sich '+swimmers+' '+reduced+' bewegen (?:koennen|muessen)',...frame(swimmers,'schwimmen',hard),...frame(swimmers,'kommen|schwimmen',reduced+' voran'),
+        'die beweglichkeit der spermien (?:wird eingeschraenkt|wird gehemmt|ist vermindert)'],
+      b:[...frame(refer,'erreichen|befruchten',word(cell)+' '+reduced),...frame(refer,'erreichen|befruchten',reduced+' '+word(cell)),
+        ...frame(refer,'koennen',word(cell)+' '+reduced+' (?:erreichen|befruchten)'),...frame(refer,'schaffen','es seltener bis zur eizelle'),
+        '(?:eine |die )?befruchtung (?:ist|wird) (?:weniger wahrscheinlich|unwahrscheinlicher)', '(?:sie|diese|die spermien|die samenzellen) kommen '+reduced+' (?:an die eizelle|bis zur eizelle|ans ei)','(?:ist|wird) (?:eine |die )?befruchtung (?:erschwert|schwieriger|weniger wahrscheinlich|unwahrscheinlicher)',
+        '(?:sie|diese) schaffen es seltener(?:,)? (?:die eizelle|das ei) zu befruchten'],
+      ab:['(?:langsamere|gebremste|weniger bewegliche) '+swimmers+' (?:erreichen|befruchten) '+word(cell)+' '+reduced],
+      extra:['(?:der |ein )?eisprung (?:kann (?:trotzdem |weiter )?stattfinden|ist weiterhin moeglich)','kupfer (?:hemmt|verhindert) (?:den eisprung nicht|nicht den eisprung)'],
+      negatives:{bewegung:[...frame(copper,'macht|machen',swimmers+' (?:beweglicher|schneller)'),...frame(copper,'beeintraechtigt|hemmt',motion+' nicht')],
+        zyklus:[...frame(copper,ovVerb,ov)],befruchtung:[...frame(refer,'erreichen|befruchten',word(cell)+' (?:besser|leichter)')]}
+    }
+  };
+  // Häufige fachliche Alternativen mit ausdrücklicher Orts- oder Wirkungsangabe.
+  gram.pille.a.push('(?:mit|durch) (?:die )?pille (?:bleibt der eisprung aus|wird der eisprung (?:meist )?gehemmt)',
+    '(?:die )?pille sorgt dafuer dass der eisprung ausbleibt','(?:es )?kommt nicht zu einem eisprung');
+  gram.pille.b.push('(?:zur befruchtung )?steht keine (?:freie |befruchtbare )?eizelle (?:mehr )?zur verfuegung',
+    'keine (?:freie |befruchtbare )?eizelle steht zur verfuegung','(?:es )?ist kein ei (?:zum befruchten|mehr frei)',
+    'spermien (?:finden|haben) keine (?:freie |befruchtbare )?eizelle(?: zum befruchten)?');
+  gram.pille.ab.push('ohne eisprung (?:steht keine eizelle zur verfuegung|fehlt (?:die |eine )?(?:freie |befruchtbare )?eizelle)(?: zur befruchtung)?',
+    'bleibt der eisprung aus wird keine eizelle frei');
+  gram.schleim.a.push('(?:der )?schleim (?:am gebaermutterhals )?(?:verdickt sich|wird dickfluessig)',
+    '(?:durch (?:das hormon|die hormonspirale) )?wird (?:der )?schleim am gebaermutterhals '+word(thick));
+  gram.schleim.b.push(...frame(refer,'kommen|gelangen','(?:da |dort |nun )?'+reduced+' (?:durch|hindurch)'),
+    ...frame(refer,'koennen','(?:den schleim |ihn )?'+reduced+' (?:durchdringen|passieren|durchqueren)'),
+    '(?:der weg|die passage) (?:fuer|von) (?:die )?spermien (?:ist|wird) (?:erschwert|schwieriger)');
+  gram.schleim.ab.push('(?:der |ein )?(?:zaehe[rn]?|dicke[rn]?|verdickte[rn]?) schleim (?:laesst|lassen) (?:die )?spermien '+reduced+' (?:durch|hindurch)',
+    'spermien (?:kommen|gelangen) durch (?:den )?(?:zaehen|dicken|verdickten) schleim '+reduced+' (?:hindurch|zur eizelle)');
+  gram.haut.a.push('(?:ein |das )?kondom (?:deckt|bedeckt) nur (?:eine stelle|einen bereich|einen teil)(?: ab)?',
+    '(?:manche |einige )?stellen bleiben (?:frei|ungeschuetzt)','ausserhalb (?:des kondoms|der huelle) bleibt haut frei',
+    'nicht alle (?:hautstellen|stellen) (?:werden|sind) (?:vom kondom )?(?:abgedeckt|bedeckt)');
+  gram.haut.b.push('(?:ueber|durch|bei) (?:die )?(?:haut|hautkontakt|freien stellen) (?:ist|bleibt) (?:eine )?ansteckung moeglich',
+    '(?:dort|hier|bei hautkontakt) kann man sich (?:noch |trotzdem )?(?:anstecken|infizieren)',
+    '(?:auch )?hautkontakt (?:genuegt|reicht) (?:fuer eine ansteckung|zur uebertragung)',
+    germs+' (?:werden|koennen) (?:auch )?'+route+' '+word(transfer));
+  gram.haut.ab.push('an (?:freien|unbedeckten|ungeschuetzten) hautstellen (?:kann man sich (?:durch hautkontakt )?anstecken|ist eine ansteckung moeglich)');
+  gram.kupfer.a.push(...frame(copper,'stoert|stoeren|behindert|behindern','die bewegung (?:von |der )?'+swimmers),
+    ...frame(swimmers,'sind','(?:durch (?:das )?kupfer )?(?:langsamer|langsamer beweglich|weniger beweglich)'),
+    'durch (?:das )?kupfer (?:bewegen sich|schwimmen) '+swimmers+' '+reduced);
+  gram.kupfer.b.push(...frame(refer,'schaffen','es '+reduced+' (?:bis )?(?:zur eizelle|zum ei)'),
+    word(refer)+' (?:die eizelle|das ei) '+reduced+' (?:erreichen|befruchten) koennen',
+    'koennen '+word(refer)+' (?:die eizelle|das ei) '+reduced+' (?:erreichen|befruchten)',
+    '(?:die |eine )?eizelle (?:wird|kann) '+reduced+' befruchtet (?:werden)?');
+  for(const [id,g] of Object.entries(gram)){
+    for(const tag of ['a','b','ab','extra'])bound[id][tag]=[...(bound[id][tag]||[]),...g[tag]];
+    for(const [e,patterns] of Object.entries(g.negatives))bound[id].negatives[e].push(...patterns);
+  }
   function matches(list, clause){return list.some(re=>re.test(clause));}
   const compile=list=>list.map(s=>new RegExp('^(?:'+s+')$'));
   for(const m of Object.values(bound)){
-    m.a=compile(m.a);m.b=compile(m.b);
+    for(const tag of ['a','b','ab','extra'])m[tag]=compile(m[tag]);
     for(const key of Object.keys(m.negatives))m.negatives[key]=compile(m.negatives[key]);
   }
   function clean(s){
@@ -45,40 +172,121 @@ const Lernfeedback = (() => {
       .replace(/\bzaher\b/g,'zaeher').replace(/\bhautkontak\b/g,'hautkontakt').replace(/\bkupffer\b/g,'kupfer')
       .replace(/\s+/g,' ').trim();
   }
+  const correctedNouns={
+    eisprung:['eisprng','eisprngg','eisprun','eisprumg'],eizelle:['eizellee','eizäle','eizele','eizellle'],
+    spermien:['spermine','spermiern','sperminen','spermiien'],samenzellen:['samenzelen','samenzelln'],
+    schleim:['schleimm','schleihm','schleimn'],hautkontakt:['hautkontackt','hautkontkt'],
+    kupferionen:['kupferjonen','kupferionnen'],kondom:['kondomm','kondon'],
+    gebaermutterhals:['gebaermuterhals','gebarmutterhals'],befruchtung:['befruchtug','befruchtunng'],
+    beweglichkeit:['beweglichket','beweglichkiet'],erreger:['ereger','erregr']
+  };
+  const spellings=new Map(Object.entries(correctedNouns).flatMap(([word,forms])=>forms.map(f=>[f,word])));
+  function normalize(text){
+    return clean(text).replace(/[a-z]+/g,w=>spellings.get(w)||w)
+      .replace(/\bnich\b/g,'nicht').replace(/\bnich(t)? mehr so einfach\b/g,'nicht mehr so leicht')
+      .replace(/\bnur noch schwer\b/g,'nur schwer').replace(/\bso dass\b/g,'sodass')
+      .replace(/\b(?:in der regel|in den meisten faellen)\b/g,'meist')
+      .replace(/\b(?:samenfaeden|spermienzellen)\b/g,'samenzellen')
+      .replace(/\b(?:gehemmt|unterdrueckt) wird\b/g,'wird gehemmt')
+      .replace(/\b(?:kein ei|keine eizelle) aus dem eierstock entlassen\b/g,'keine eizelle freigesetzt')
+      .replace(/\bnicht mehr so gut bewegen\b/g,'schlechter bewegen')
+      .replace(/\bin der gebaermutterhalsregion\b/g,'am gebaermutterhals')
+      .replace(/\bueberhaupt nicht\b/g,'nicht')
+      .replace(/\b(?:menschliche )?eizelle zur befruchtung frei wird\b/g,'eizelle wird zur befruchtung frei')
+      .replace(/,? (?:die|das) befruchtet werden (?:kann|koennte)\b/g,' zur befruchtung')
+      .replace(/\bnicht (mehr )?so einfach\b/g,'nicht $1so leicht').replace(/ +/g,' ');
+  }
+  // Nur diese vollständig erfassten Berichtigungen haben eine eindeutige Reichweite.
+  const repairs={
+    pille:[[/\b((?:die )?pille) haelt nicht (?:die )?spermien auf,? sondern (hemmt|verhindert|unterdrueckt) (?:den )?eisprung\b/g,'$1 $2 den eisprung']],
+    schleim:[[/\b((?:die )?(?:hormonspirale|spirale)) macht den schleim nicht duenner,? sondern (zaeher|dicker)\b/g,'$1 macht den schleim $2'],
+      [/\bder schleim wird nicht duenner,? sondern (zaeher|dicker)\b/g,'der schleim wird $1']],
+    kupfer:[[/\bkupfer verhindert nicht den eisprung,? sondern (beeintraechtigt|bremst) (?:die )?spermien\b/g,'kupfer $1 spermien']],
+    haut:[[/\bnicht die (?:gesamte|ganze) haut,? sondern nur ein teil (?:ist|wird) bedeckt\b/g,'ein teil der haut bleibt frei']]
+  };
+  const confusions={pille:['spermien'],schleim:['zyklus'],haut:['sperma'],kupfer:['zyklus','schleim']};
+  const vocabulary={pille:['eisprung','eizelle'],schleim:['schleim','spermien|samenzellen'],haut:['haut(?:kontakt)?','erreger'],kupfer:['spermien|samenzellen','befruchtung']};
+  function recognition(model,clause){
+    for(const [error,patterns] of Object.entries(model.negatives))if(matches(patterns,clause))return {error};
+    for(const tag of ['ab','a','b','extra'])if(matches(model[tag],clause))return {tag};
+    return null;
+  }
+  function readClause(model,clause){
+    const read=recognition(model,clause);
+    if(read)return [read];
+    // Zwei vollständige Satzglieder ohne Satzzeichen. Restwörter werden nicht verworfen.
+    if(clause.length<=220){
+      for(const space of clause.matchAll(/ /g)){
+        const left=recognition(model,clause.slice(0,space.index));
+        if(!left)continue;
+        const right=recognition(model,clause.slice(space.index+1));
+        if(right)return [left,right];
+      }
+    }
+    return [{unknown:true}];
+  }
+  const causes=/^(?:weil|denn|da)$/;
+  const effects=/^(?:darum|daher|deshalb|dadurch|also|deswegen|sodass|somit|folglich|->|→)$/;
   function analyze(id,text){
-    const s=clean(text), model=bound[id], parts=new Set(),errors=new Set();
-    function result(state){return {state,parts:[...parts],error:[...errors][0]||null};}
+    const model=bound[id],parts=new Set(),errors=new Set();
+    let unknown=false,reversed=false;
+    function result(state,kind=state){
+      return {state,kind,parts:[...parts],error:[...errors][0]||null,relation:reversed?'umgekehrt':parts.size===2?'verbunden':'offen',zusatz:unknown};
+    }
+    let s=normalize(text);
+    if(id==='haut')s=s.replace(/^auch wenn (?:das |ein )?kondom (?:heil|intakt) ist, */,'');
     if(!/[a-z0-9]/.test(s))return result('leer');
-    if(/\?|\b(?:vielleicht|angeblich|weiss nicht|oder|nicht sicher|wenn|falls)\b/.test(s))return result('unsicher');
-    // Split relation words separately so reversal of a causal arrow cannot earn approval.
-    const ordered=s.replace(/,\s*(aber|und) /g,' $1 ').replace(/((?:die )?(?:samenzellen|spermien)) (kommen|gelangen|schwimmen) (deshalb|dadurch|daher) /g,'$3 $2 $1 ');
-    const chunks=ordered.replace(/[.,;:]?\s*\b(weil|denn|dadurch|deshalb|daher|darum|sodass|also|deswegen)\b\s*/g,'|$1|')
-      .split(/(\|[a-z]+\||\s+aber\s+|\s+und\s+(?!(?:befruchten sie|befruchten die eizelle))|\s*(?:->|→)\s*|[.,;:\n]+)/);
-    let unknown=false,reversed=false,link='',last='';
+    // Keine Behauptung aus einer Frage, einem Zitat oder einer hypothetischen Verneinung ableiten.
+    if(s.length>2400 || /[?„“"]|\b(?:vielleicht|angeblich|weiss nicht|oder|nicht sicher|wenn|falls|glaube nicht|behauptet|falsch ist|es stimmt nicht|es waere falsch|es ist falsch)\b/.test(s))return result('unsicher');
+    for(const [from,to] of repairs[id])s=s.replace(from,to);
+    // Eine vollständig erklärte Gegenwirkung bleibt erhalten, auch bei geteilter Subjektgruppe.
+    s=s.replace(/\bund (deshalb|dadurch|daher) (die eizelle|das ei) (schwerer|schlechter) (erreichen|befruchten)\b/g,', $1 koennen sie $2 $3 $4')
+      .replace(/\bund (deshalb|dadurch|daher)\b/g,', $1')
+      .replace(/\b((?:die )?(?:samenzellen|spermien)) (kommen|gelangen|schwimmen) (deshalb|dadurch|daher) /g,'$3 $2 $1 ')
+      .replace(/\bdas ist (?:darum|deshalb) so,? weil /g,'weil ')
+      .replace(/\b(bleibt) aber nicht aus\b/g,'$1 nicht aus').replace(/,\s*(aber|und) /g,' $1 ');
+    if(id==='kupfer')s=s.replace(/(samenzellen|spermien) (schwimmen|kommen) (schlechter|langsamer)( voran)? und (erreichen|befruchten) /g,'$1 $2 $3$4 und sie $5 ');
+    s=s.replace(/\bso dass\b/g,'sodass');
+    const leading=s.match(/^(weil|da)\s+/);
+    if(leading)s=s.slice(leading[0].length);
+    const chunks=s.split(/(\s*[,.;:]?\s*\b(?:weil|da|denn|dadurch|deshalb|daher|darum|sodass|also|deswegen|somit|folglich)\b\s*|\s+aber\s+|\s+und\s+(?!(?:befruchten sie|befruchten die eizelle))|\s*(?:->|→)\s*|[.,;:\n]+)/);
+    let last='',link='',first=true;
     for(let i=0;i<chunks.length;i++){
-      if(i%2){if(chunks[i].trim())link=chunks[i].trim();continue;}
-      let c=chunks[i].trim().replace(/ (?:und|aber)$/,'');if(!c || c==='aber' || c==='und')continue;
-      // Normalize common verb-final clauses after "weil" and cause-first inversion.
+      if(i%2){const token=chunks[i].trim().replace(/^[,.;:]\s*/, '');if(token||!link)link=token;continue;}
+      let c=chunks[i].trim().replace(/ (?:und|aber)$/,'');
+      if(!c||c==='aber'||c==='und')continue;
       c=c.replace(/^(der schleim) (zaeher|dicker|dichter) wird$/,'$1 wird $2')
         .replace(/^(die pille) den eisprung (hemmt|verhindert)$/,'$1 $2 den eisprung')
         .replace(/^kupfer (?:die )?spermien bremst$/,'kupfer bremst spermien')
         .replace(/^(ein teil der haut) (frei|unbedeckt) bleibt$/,'$1 bleibt $2')
         .replace(/^dort (koennen|werden) /,'$1 ').replace(/^bei hautkontakt koennen sie /,'bei hautkontakt koennen erreger ');
-      let tag=matches(model.a,c)?'a':matches(model.b,c)?'b':'';
-      if(tag){
-        if(last && last!==tag && ((/weil|denn/.test(link) && tag==='b') || (/dadurch|deshalb|daher|darum|sodass|also|deswegen|→|->/.test(link) && tag==='a')))reversed=true;
-        parts.add(tag);last=tag;
-      }else{
-        const err=Object.keys(model.negatives).find(k=>matches(model.negatives[k],c));
-        if(err)errors.add(err);else unknown=true;
+      for(const item of readClause(model,c)){
+        if(item.error){errors.add(item.error);continue;}
+        if(item.unknown){unknown=true;continue;}
+        if(item.tag==='extra')continue;
+        for(const tag of item.tag){
+          if((first && leading && tag==='b') || (last && last!==tag &&
+            ((causes.test(link)&&tag==='b')||(effects.test(link)&&tag==='a'))))reversed=true;
+          parts.add(tag);last=tag;first=false;link='';
+        }
       }
       link='';
     }
-    if(unknown && errors.size)return result('unsicher');
-    if(errors.size)return result(parts.size?'widerspruch':'fehlvorstellung');
-    if(reversed||unknown)return result('unsicher');
-    if(parts.size===2)return result('passend');
-    return result(parts.size?'teilweise':'unsicher');
+    if(errors.size){
+      if(parts.size)return result('widerspruch');
+      return result('fehlvorstellung',confusions[id].includes([...errors][0])?'verwechslung':'fehlvorstellung');
+    }
+    if(parts.size===2 && /nicht immer/.test(s))return result('unsicher','beziehung');
+    if(reversed)return result('unsicher','beziehung');
+    if(unknown){
+      if(parts.size===2)return result('unsicher','zusatz');
+      const terms=vocabulary[id];
+      const keywords=new RegExp('^(?:'+terms.join('|')+'|die|der|das|und|pille|hormone|kupfer|kondom)$');
+      if(!parts.size && s.split(/\s+/).length<=6 && terms.every(t=>new RegExp('\\b(?:'+t+')\\b').test(s)) &&
+        s.split(/[ ,.;:]+/).filter(Boolean).every(w=>keywords.test(w)))return result('unsicher','beziehung');
+      return result('unsicher');
+    }
+    return result(parts.size===2?'passend':parts.size?'teilweise':'unsicher');
   }
   return {analyze};
 })();

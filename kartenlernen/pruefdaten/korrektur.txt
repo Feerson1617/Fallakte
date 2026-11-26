@@ -1,0 +1,76 @@
+[pille]
+passend|Da die Pille den Eisprung unterdrückt, kann keine Eizelle befruchtet werden.
+passend|Es wird kein Ei freigesetzt, weil die Pille den Eisprung hemmt.
+passend|Kein Eisprung → keine Eizelle zur Befruchtung.
+passend|Weil die Pille den Eisprung hemmt, wird keine Eizelle frei.
+passend|Die Pille hält nicht die Spermien auf, sondern hemmt den Eisprung. Es wird kein Ei freigesetzt.
+passend|Ohne Eisprung gibt es kein Ei, das befruchtet werden kann.
+passend|Kein Eisprung keine freie Eizelle
+teilweise|Die Pille verhindert den Eisprung nicht immer.
+teilweise|Die Hormone unterdrücken meistens den Eisprung.
+teilweise|Die Pille hält nicht die Spermien auf, sondern hemmt den Eisprung.
+fehlvorstellung|Die Pille verhindert den Eisprung nicht.
+fehlvorstellung|Die Hormone unterdrücken den Eisprung nicht.
+verwechslung|Die Pille hemmt vor allem die Beweglichkeit der Spermien.
+beziehung|Eisprung und Eizelle.
+beziehung|Da keine Eizelle frei wird, unterdrückt die Pille den Eisprung.
+zusatz|Der Eisprung bleibt aus. Keine freie Eizelle. Irgendetwas macht auch das Blut.
+widerspruch|Ohne Eisprung gibt es keine freie Eizelle. Der Eisprung bleibt aber nicht aus.
+unsicher|Ich glaube nicht, dass die Pille den Eisprung nicht verhindert.
+[schleim]
+passend|Die Hormone verdicken den Schleim am Gebärmutterhals, sodass Samenzellen kaum passieren können.
+passend|Die Samenzellen kommen schlechter durch, weil der Schleim dickflüssiger wird.
+passend|Schleim dicker, Spermien kommen nicht mehr so leicht durch.
+passend|Die Hormonspirale macht den Schleim nicht dünner, sondern zäher. Dadurch kommen Spermien schlechter hindurch.
+passend|Der verdickte Schleim erschwert den Spermien den Weg zur Eizelle.
+passend|Weil der Schleim am Gebärmutterhals zäher wird, kommen die Spermien kaum durch.
+passend|Zäher Schleim Spermien kommen schlechter durch
+teilweise|Die Hormonspirale macht den Schleim nicht dünner, sondern zäher.
+teilweise|Der Schleim wird dickflüssiger.
+fehlvorstellung|Der Schleim verdickt sich nicht.
+fehlvorstellung|Der Schleim wird durchlässiger.
+verwechslung|Die Hormonspirale unterdrückt vor allem den Eisprung.
+beziehung|Schleim und Samenzellen.
+beziehung|Weil Spermien schlechter durchkommen, wird der Schleim dicker.
+zusatz|Der Schleim wird zäher. Spermien kommen schwerer durch. Den Rest weiß meine Schwester.
+widerspruch|Die Hormone verdicken den Schleim. Dadurch können Spermien leichter passieren.
+unsicher|Ob das am Schleim liegt oder an etwas anderem, weiß ich nicht.
+unsicher|Die Samenzellen sind nicht weniger schnell als die anderen.
+[haut]
+passend|Kondome schützen nur die bedeckte Stelle. Über die übrige Haut kann man sich anstecken.
+passend|Manche Erreger können durch Hautkontakt übertragen werden, weil nicht alle Stellen vom Kondom bedeckt sind.
+passend|Auch wenn das Kondom heil ist, bleibt Haut frei. An diesen Stellen ist Ansteckung durch Hautkontakt möglich.
+passend|An unbedeckten Hautstellen können Erreger durch Kontakt übertragen werden.
+passend|Haut bleibt frei, deshalb ist dort eine Ansteckung möglich.
+passend|Das Kondom bedeckt nicht die gesamte Haut. Hautkontakt kann Keime übertragen.
+teilweise|Das Kondom bedeckt nicht die gesamte Haut.
+teilweise|Ein Kondom deckt nur einen Teil der Haut ab.
+teilweise|Bei Hautkontakt können Krankheitserreger weitergegeben werden.
+fehlvorstellung|Das Kondom deckt die gesamte Haut ab.
+fehlvorstellung|Eine Ansteckung über Hautkontakt ist nicht möglich.
+verwechslung|Erreger brauchen immer Sperma zur Übertragung.
+beziehung|Hautkontakt und Erreger.
+beziehung|Erreger werden durch Hautkontakt übertragen. Deshalb bleiben Hautstellen frei.
+zusatz|Nicht alle Hautstellen sind bedeckt. Bei Hautkontakt können Keime übertragen werden. Dazu gibt es noch eine Ausnahme.
+widerspruch|Nicht alle Hautstellen sind bedeckt. Hautkontakt kann keine Erreger übertragen.
+unsicher|Nur die Haut? Ich kann das nicht gut aufschreiben.
+unsicher|Das Kondom sitzt an einer Stelle.
+[kupfer]
+passend|Kupferionen hemmen die Beweglichkeit der Spermien, sodass diese die Eizelle schlechter erreichen.
+passend|Die Spermien können sich schlechter bewegen und deshalb die Eizelle schwerer befruchten.
+passend|Kupfer bremst die Samenzellen. Deshalb schaffen sie es seltener bis zur Eizelle.
+passend|Die Spermien schwimmen langsamer, darum ist eine Befruchtung weniger wahrscheinlich.
+passend|Weil sich die Spermien schlechter bewegen können, erreichen sie die Eizelle schwerer.
+passend|Der Eisprung kann stattfinden. Kupfer hemmt die Bewegung der Samenzellen. Dadurch wird die Befruchtung erschwert.
+teilweise|Kupfer verhindert nicht den Eisprung, sondern beeinträchtigt Spermien.
+teilweise|Kupferionen bremsen die Bewegung der Spermien.
+teilweise|Eine Befruchtung ist weniger wahrscheinlich.
+fehlvorstellung|Kupfer macht Spermien beweglicher.
+fehlvorstellung|Kupfer beeinträchtigt die Beweglichkeit der Spermien nicht.
+verwechslung|Die Kupferspirale hemmt den Eisprung.
+beziehung|Spermien und Befruchtung.
+beziehung|Die Befruchtung wird schwerer, daher schwimmen Spermien langsamer.
+zusatz|Kupfer bremst Spermien. Dadurch wird eine Befruchtung erschwert. Das ist wie letzte Woche.
+widerspruch|Kupferionen hemmen die Beweglichkeit der Spermien, aber die Befruchtung wird leichter.
+unsicher|Kupferionen sind daran irgendwie beteiligt.
+unsicher|Nicht Kupfer, sondern die Eizelle ist langsam.
