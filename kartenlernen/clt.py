@@ -76,5 +76,19 @@ def ausgabe():
 
 Planungsannahme: 4 Minuten für Material und Einstieg, 20 für vier Karten, 13 für die vier Anwendungen, 6 für Sicherung und 2 für Reflexion. Die freiwillige Pearl-Index-Reserve beansprucht keine Pflichtzeit. Bei Zeitnot übernimmt die Lehrkraft die Sicherung mit dem tatsächlichen Papierstand. Die Zeiten sind keine Unterrichtsmessung.
 """
-    pack(OUT/'CLT-Abnahme.zip',{'Matrix.csv':'\ufeff'+buf.getvalue(),'CLT-Lernwege.json.gz':(ROOT/'build/Kartenlernen/CLT-Lernwege.json.gz').read_bytes(),'Grundlagen.md':THEORIE,'Perspektiven-und-Zeit.md':perspectives,
+    import subprocess
+    from lxml import etree
+    alignment={}
+    with ZipFile(OUT/'Kartenvertrag-Work.zip') as z:
+        for t in m['levels']:
+            loc=[]
+            for typ in ('Schuelerkarten','Musterkarten'):
+                name=typ+'/'+t+'.pdf'
+                bbox=etree.fromstring(subprocess.check_output(['pdftotext','-bbox','-','-'],input=z.read(name)))
+                fields=[(i,w.text,w.get('xMin'),w.get('yMin')) for i,p in enumerate(bbox.xpath('//*[local-name()="page"]')) for w in p.xpath('.//*[local-name()="word"]') if w.text in ('1','2','3','4') and float(w.get('xMin'))==34]
+                assert len(fields)==16,(name,fields)
+                loc.append(fields);alignment[name]=fields
+            assert loc[0]==loc[1],t
+    grenzen='''Die Matrix verknüpft Aufgaben, konkrete Ausgaben und die jeweils zugrunde liegende Gestaltungsentscheidung. Bei der Diagnoseprüfung bleibt der tatsächliche Entwurf als Parameter im Protokoll. Zwei Texte werden für die Gerüstprüfung nur bei identischem Niveau, identischer Aufgabe und identischer vollständiger Diagnose gruppiert. Wortlaut, Zeilenumbruch und Eingabeteile können trotzdem abweichen. Deshalb werden der umfangreiche Einzeltextkatalog und die 73 externen Bildschirmwege gesondert mitgeliefert. Die kombinierte Prüfung wiederholt jede nicht passende Diagnose und prüft anschließend die Hilfe, den Selbstvergleich, soweit angeboten, sowie die Korrektur. Nicht nachgewiesen sind beliebige frühere Versuchsfolgen, alle denkbaren Freitexte und sämtliche Ketten von Hilfe-, Quellen- und Niveauwechseln in jeder Fenstergröße. Eine empirische Freigabe setzt die Erprobung mit der Lerngruppe voraus.'''
+    pack(OUT/'CLT-Abnahme.zip',{'Matrix.csv':'\ufeff'+buf.getvalue(),'CLT-Lernwege.json.gz':(ROOT/'build/Kartenlernen/CLT-Lernwege.json.gz').read_bytes(),'Grundlagen.md':THEORIE,'Abdeckung-und-Grenzen.md':grenzen,'PDF-Feldpositionen.json':json.dumps(alignment),'Perspektiven-und-Zeit.md':perspectives,
       'Stand.json':json.dumps(dict(commit=head,gerenderte_wortlaute=len(views),diagnosefaelle=len(diag),sha256=sha((OUT/'Vorbereitung.html').read_bytes())),indent=2)})

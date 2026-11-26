@@ -6,14 +6,17 @@
     const b=e.getBoundingClientRect();
     if(b.width<43.5 || b.height<43.5 || b.top<-.5 || b.bottom>innerHeight+1 || !e.contains(document.elementFromPoint(b.x+b.width/2,b.y+b.height/2)))throw Error('Taste '+e.textContent+' / '+view.innerText);
   }
-  function click(key,value){const b=act(key,value);hit(b);b.click();}
+  function click(key,value){const b=act(key,value);if(!b)throw Error('Taste fehlt '+key+' '+tier+' '+sample+' / '+view.innerText);hit(b);b.click();}
   function record(phase){
     for(const b of document.querySelectorAll('button'))hit(b);
     rows.push([phase,view.dataset.screen,view.innerText]);
   }
   function answer(q,text){
     if(q.typ==='wahl'){click('pick',q.optionen.indexOf(text));return;}
-    const field=document.querySelector('#entry');field.value=text;field.dispatchEvent(new Event('input',{bubbles:true}));click('check');
+    const field=document.querySelector('#entry');
+    while(act('earlier'))click('earlier');
+    while(field.value){field.value='';field.dispatchEvent(new Event('input',{bubbles:true}));}
+    field.value=text;field.dispatchEvent(new Event('input',{bubbles:true}));click('check');
   }
   click('level',tier);click('questions');
   for(const q of lesson.fragen.slice(0,task)){answer(q,q.passend||material.modelle[q.modell].beispiel);click('advance');}
