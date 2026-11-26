@@ -68,6 +68,11 @@ def build():
     drucke={}
     guide = "# Kartenvertrag für Work\n\nKartenvertrag.json ist die verbindliche Textquelle. Schülerblatt und Muster entstehen aus denselben Feldern. A4, Hochformat, beidseitig an der langen Kante, 100 %. Erst nach dem Zeichen der Lehrkraft in der Mitte schneiden. Die Feldnummer bleibt auf dem Papier stehen.\n"
     diff = ["# Änderungen gegenüber dem gelieferten Infokartenpaket", "", "Je Abschnitt stehen bisheriger und neuer Wortlaut sowie das neue Schreibfeld nebeneinander.", ""]
+    work['revision']=head
+    work['satzspiegel']={'format':'A4, Hochformat, zwei Kartenhälften je Seite','schreibfelder':'Alle vier Felder beginnen am selben linken Rand. Im Muster steht die Lösung im selben Feld.','vorderseite':['Kondom','Kombinationspille'],'rueckseite':['Kupferspirale','Hormonspirale']}
+    guide += '\nAlle nummerierten Schreibfelder beginnen am selben linken Rand. Der Satz vor dem Feld bleibt direkt darüber. Die Musterfassung hat dieselben Feldpositionen. Die vier ausgefüllten Karten belegen den Papierstand. Die vier anschließenden Aufgaben prüfen die Anwendung.\n'
+    guide += '\nFreiwillige analoge Reserve nach den vier Aufgaben: Vergleiche die Pearl-Index-Angaben zweier Karten. Was sagen sie über Schwangerschaften? Was sagen sie über eine Ansteckung beim Sex?\n'
+    work['reserve']={'zeitpunkt':'Nach dem regulären Abschluss, freiwillig','medium':'Infokarten auf Papier','frage':'Vergleiche die Pearl-Index-Angaben zweier Karten. Was sagen sie über Schwangerschaften? Was sagen sie über eine Ansteckung beim Sex?'}
     work['druckvorlage']='Infokarten_27-11-2026_542eddf.zip'
     work['fragenverweise']={}
     for tier,cs in work['niveaus'].items():

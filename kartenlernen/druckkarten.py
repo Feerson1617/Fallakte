@@ -19,7 +19,7 @@ def druck(cards, niveau, muster, fontpath):
         c.setFillColor(HexColor('#21483c'));c.setFont('Karte',22)
         c.drawString(left,top-33,card['ueberschrift'])
         c.setFont('Karte',12);c.drawRightString(right,top-30,('Förder' if niveau=='Foerder' else niveau)+(' · Muster' if muster else ''))
-        y=top-61
+        y=top-54
         def absatz(text,size,leading):
             nonlocal y
             c.setFont('Karte',size);x=left
@@ -29,7 +29,7 @@ def druck(cards, niveau, muster, fontpath):
                     wort=card['felder'][int(match[1])-1]['wort']
                     w=max(115,pdfmetrics.stringWidth(wort,'Karte',size)+25)
                 else: w=pdfmetrics.stringWidth(token,'Karte',size)
-                if x+w>right:
+                if (match and x>left) or x+w>right:
                     y-=leading;x=left
                 if match:
                     c.setStrokeColor(HexColor('#557769'));c.roundRect(x,y-3,w-5,leading-1,3)
@@ -42,7 +42,7 @@ def druck(cards, niveau, muster, fontpath):
         for s in card['texte']:
             c.setFillColor(HexColor('#205641'));absatz(s['titel'],14,17)
             c.setFillColor(HexColor('#15251f'));absatz(s['lueckentext'],12,16)
-            y-=5
+            y-=3
         c.setFillColor(HexColor('#344c41'))
         absatz('Pearl-Index '+card['pearl']+' (pro familia). '+card['pearl_erklaerung'],10,12)
         assert y>=top-height/2+2,(niveau,card['titel'],y-top+height/2)

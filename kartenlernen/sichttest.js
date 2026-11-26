@@ -139,6 +139,7 @@
  inspect('Abschluss');if(assist)visitHelp(1,'Abschluss');ok($('#page h1').innerText==='Du bist fertig.','Abschluss');
  const regularTaps=taps,read=[...words].join(' ').match(/[\p{L}\p{N}]+/gu).length;
  if(models){
+   tap('reserve');inspect('Freiwillige analoge Reserve');visitHelp(1,'Orientierung zur Reserve');tap('end');
    tap('menu');inspect('Sitzungsmarken');ok(all('.chapter').every(b=>b.innerText.endsWith('✓')),'vier Sitzungsmarken');
    tap('lookup');inspect('Zeitnotweg');if(assist)visitHelp(1,'Fehlende Karte');for(let i=0;i<4;i++){tap('fill',i);inspect('Zeitnot Papier');if(i===2)ok($('.locator').innerText.includes('Suche auf der Rückseite oben 3 – Kupferspirale.'),'Direkteinstieg Papier');ok(key('written').innerText==='Zurück zur Kartenauswahl','Beschriftung');tap('written');ok(key('fill'),'Kartenauswahl');}
  }

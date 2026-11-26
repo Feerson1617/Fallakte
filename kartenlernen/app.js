@@ -75,7 +75,8 @@
     menu:'Beginne mit der ersten Karte, die auf deinem Blatt noch fehlt.',
     lookup:'Suche den Namen der fehlenden Karte auf deinem Blatt. Tippe auf diesen Namen.',
     intro:'Vergleiche die vier Karten auf deinem Blatt. Fehlt ein Eintrag, öffne die passende Karte.',
-    end:'Lege deine ausgefüllten Infokarten für die nächste Stunde weg.'
+    end:'Lege deine ausgefüllten Infokarten für die nächste Stunde weg.',
+    reserve:'Suche unten auf zwei Karten den Pearl-Index. Vergleiche die Zahlen.'
   };
   function help(){
     if(orientierung[source])return title('Hilfe')+para(orientierung[source])+go('back','Zurück');
@@ -112,7 +113,8 @@
       case 'question':return question();case 'feedback':return resultView();
       case 'help':return help();case 'reference':return reference();
       case 'compare':return sourceTitle()+title('Vergleiche mit dem Beispiel.')+'<p><b>Deine Antwort</b></p>'+'<p id="draft"></p><div id="pieces"></div>'+(r().last?.state==='unsicher'?'<p class="selbstcheck">'+esc(model().vergleich)+'</p>':'')+'<p><b>Beispiel</b> · '+esc(vergleichstext(q(),model(),r(),r().last))+'</p>'+'<div class="actions">'+btn('revise','Antwort bearbeiten')+go('compared','Verglichen, weiter')+'</div>';
-      case 'end':return title('Du bist fertig.')+para('Hebe die Karten für den Unterricht auf. Schneide erst, wenn deine Lehrkraft es sagt. Schneide einmal in der Mitte.')+btn('menu','Zur Kapitelauswahl');
+      case 'reserve':return title('Zwei Karten vergleichen')+para('Vergleiche die Pearl-Index-Angaben zweier Karten. Was sagen sie über Schwangerschaften? Was sagen sie über eine Ansteckung beim Sex?')+btn('end','Zurück');
+      case 'end':return title('Du bist fertig.')+para('Hebe die Karten für den Unterricht auf. Schneide erst, wenn deine Lehrkraft es sagt. Schneide einmal in der Mitte.')+btn('reserve','Wenn du Zeit hast: Zwei Karten vergleichen')+btn('menu','Zur Kapitelauswahl');
     }
   }
   function nav(){
@@ -231,6 +233,8 @@
         else{const pos=editorParts.slice(0,editAt+delta).join('').length;document.querySelector('#entry').focus({preventScroll:true});paginate(pos);}
         return;
       }
+      case 'reserve':if(session()?.position===4)screen='reserve';break;
+      case 'end':screen='end';break;
       case 'levels':screen='level';break;
       case 'level':level=v;if(!sessions.has(v))sessions.set(v,sess());screen='menu';break;
       case 'menu':screen='menu';break;

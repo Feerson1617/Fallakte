@@ -68,6 +68,10 @@ Auf jedem Niveau führen acht kurze Informationsansichten zu vier Papieraufträg
 
 Förder und ESA wählen Antworten. Auf MSA erklären Lernende den Zusammenhang zwischen ausbleibendem Eisprung und Befruchtung sowie zwischen Schleim und Durchtritt der Spermien. Auf AHR erläutern sie die Grenze des Kondomschutzes und die Wirkung von Kupfer trotz möglichen Eisprungs. Zwei weitere Auswahlfragen je Niveau prüfen Fehlvorstellungen. Die Lerntexte, Kartenstellen, Antwortalternativen, Begründungen und aufgabenspezifischen Hilfen sind im Vertrag gegenübergestellt. Die acht vorhandenen Funktionsskizzen zeigen Hülle, Hautkontakt, Eisprung, Einnahme, Kupfer, Schleim und mögliche Veränderungen der Blutung. Pfeile bezeichnen mögliche Veränderungen. Die Miniatur zeigt Nummer und Methodennamen auf beiden Blatthälften. Die gesuchte Hälfte ist markiert. Vor den Fragen können Lernende direkt beginnen oder eine fehlende Karte ergänzen. Es gibt keine vorgezogene Fallberatung.
 
+## Verbindlicher CLT-Stand für Work
+
+Die Schreibfelder beginnen in jeder Kartenhälfte links. Schüler- und Musterfassung verwenden dieselbe Satzroutine. Die kurze Lesefassung für Förder und ESA benennt die Samenzelle, die freie Eizelle, die Zustimmung zum Einsetzen und mögliche Schmerzen direkt. Die höhere Anforderung auf MSA und AHR liegt weiterhin in der eigenen Erklärung. Der optionale Pearl-Index-Vergleich wird erst nach der vierten Aufgabe angeboten und findet mit den Papierkarten statt.
+
 ## Ergonomische Abnahme gegenüber 2c2d952
 
 Die gelbe Taste „Ich brauche Hilfe“ bleibt bei Niveauwahl, Kartenwahl, Nachschlagen, Übergang und Abschluss am selben rechten oberen Rand. Eine kurze Orientierung führt jeweils zur Ausgangsansicht zurück. Fachfehler, Teilergebnisse und passende Erklärungen haben zusätzlich zur Rückmeldung unterschiedliche Hervorhebungen. Allgemeine Aktionstasten sind blau. Enge Fenster nutzen weniger Zwischenraum und eine kürzere Blattorientierung. Die Aufgabenschrift wird dafür nicht verkleinert.

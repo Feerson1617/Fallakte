@@ -63,6 +63,29 @@ def karte(niveau, index, vorlage):
         if not einfach: zusatz[0] += ' Das Hormon heißt Gestagen.'
         if vertieft: zusatz[0] += ' Die Pille hemmt vor allem den Eisprung.'
         extra = EINSETZEN
+    if not vertieft:
+        if index == 0:
+            kern=['Latex-Allergie? Es gibt Kondome aus *Kunststoff*.',
+                  'Die heile Hülle hält *Spermien* zurück. Das sind Samenzellen.',
+                  'Manche Erreger werden beim Sex über *freie Haut* übertragen.',
+                  'Bei jedem Sex ein *neues Kondom*. Von Anfang an.']
+            zusatz=['Latex ist Gummi. Achte auf die Packung.'+(' Ein Kunststoff heißt Polyurethan.' if not einfach else ''),
+                    'Sperma bleibt im Kondom. Es muss gut sitzen. Ohne Hormone.',
+                    'Ein geeignetes Kondom senkt das Risiko vieler Infektionen. Tierdarm schützt davor nicht zuverlässig.',
+                    'Reißt es oder rutscht es ab, sinkt der Schutz.']
+        elif index == 1:
+            kern=['Meist verhindert die Pille den *Eisprung*. Keine Eizelle wird frei.',
+                  'Die Pille bietet *keinen Schutz* vor Ansteckung beim Sex.',
+                  'Die Pille *nach Plan* nehmen. Vergessen? Der Schutz kann sinken.',
+                  'Jeder Körper reagiert *anders*. Die Pille kann Übelkeit auslösen.']
+            zusatz[0]='Ohne freie Eizelle keine Befruchtung. In der Pille sind zwei Hormone.'+(' Sie heißen Östrogen und Gestagen.' if not einfach else '')
+            zusatz[3]='Verträgt eine Freundin die Pille gut? Ob sie zu dir passt, klärst du in der Arztpraxis.'
+        elif index == 2:
+            kern[0]='Kupfer bremst *Spermien*. Die Samenzellen erreichen die Eizelle schlechter. Eine Befruchtung wird seltener.'
+        else:
+            kern[0]='Der Schleim am Eingang der Gebärmutter wird *zäher*. Spermien kommen schwerer durch.'
+        if index in (2,3):
+            extra='Vor dem Einsetzen prüft die Arztpraxis, ob die Spirale passt. Du entscheidest. Nur mit deinem Ja wird sie in die Gebärmutter eingesetzt. Das Einsetzen kann wehtun.'
     sections, fields = [], []
     for s, heading in enumerate(TITEL[index]):
         if s in POSITION[index]:
