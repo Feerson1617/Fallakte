@@ -71,7 +71,7 @@ def browser(banks):
                         assert 'Seite '+str(1 if tier in ('Foerder','ESA') else 3)+' · „Mein Schlussrat“' in words
                         for fact in banks['UB02']['consolidation']['facts']:assert fact in words
                         stops.append(dict(browser=engine,niveau=tier,abschnitt=i,wortlaut=words))
-                        dlg.get_by_role('button',name='Schließen').click()
+                        dlg.locator('#material-zurueck').click()
                 for tier in ('MSA','AHR'):
                     for i,s in enumerate(banks['Celina']['stages'],1):
                         page.locator('[data-action=recovery]').click();f.locator('#wieder-level-'+tier).click()
