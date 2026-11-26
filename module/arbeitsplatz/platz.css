@@ -113,3 +113,26 @@ dialog[open]{max-height:var(--sichtbare-hoehe,100dvh)!important;height:calc(var(
  .lernraum .blatt-inhalt :is(summary,.textaktion){min-height:44px;align-content:center}
  .lernraum .blatt-inhalt button{min-height:44px}
 }
+.chat-kurz{display:none}
+@media(max-height:400px){
+ .lernraum .arbeitskopf>.gespraech-wechsel,#beratung .arbeitskopf>.gespraech-wechsel{
+   display:flex;align-items:center;gap:.28em;padding:.1em .3em;line-height:1.12;min-height:44px
+ }
+ .gespraech-wechsel .chat-lang{display:none}.gespraech-wechsel .chat-kurz{display:inline}
+ .lernraum .gespraech-wechsel .vorschau{display:block;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ #beratung .beratung-arbeit .beratung-tools,#beratung .beratung-arbeit .fallwissen{display:inline-block;vertical-align:top;margin:.1em .25em .1em 0}
+ #beratung .beratung-arbeit .fachcheck{padding:0;margin:.15em 0}
+ #beratung .beratung-arbeit :is(h2,p,legend){line-height:1.17;margin:.14em 0}
+ #beratung .beratung-arbeit .fachmeldung:not(:empty){padding:.14em .32em}
+}
+@media(max-height:400px){
+ .gespraech-wechsel .chat-kurz{flex:none;white-space:nowrap}
+ .gespraech-wechsel .vorschau{flex:1 1 0}
+}
+@media(min-width:651px) and (min-height:341px) and (max-height:400px){
+ .lernraum .arbeitskopf>.gespraech-wechsel,#beratung .arbeitskopf>.gespraech-wechsel{display:none}
+}
+@media(max-height:400px),(max-width:475px){
+ .lernraum .blatt-inhalt:has(>.quellenstelle[open])>:is(label:has(textarea),#compare-hint,#compare){display:none!important}
+ .lernraum .blatt-inhalt:has(>.quellenstelle[open])>.small{display:none}
+}

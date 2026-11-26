@@ -80,12 +80,15 @@ window.Arbeitsplatz = (() => {
           chat.lastElementChild;
         const excerpt=latest?.textContent.trim();
         const preview=()=>{
-          toggle.textContent='Gespräch lesen';
+          toggle.replaceChildren();
+          const label=make('span','chat-lang');label.textContent='Gespräch lesen';toggle.append(label);
+          const kurz=make('span','chat-kurz');kurz.textContent='Chat';toggle.append(kurz);
+          toggle.setAttribute('aria-label','Gespräch lesen');
           if(excerpt){const text=make('span','vorschau');text.textContent=excerpt;toggle.append(text);}
         };
         const toggle=button('Gespräch lesen',()=>{
           const open=room.classList.toggle('gespraech-offen');
-          if(open)toggle.textContent='Zur Aufgabe';else preview();
+          if(open){toggle.textContent='Zur Aufgabe';toggle.setAttribute('aria-label','Zur Aufgabe');}else preview();
           toggle.setAttribute('aria-expanded',String(open));
           if(open)chat.scrollTop=chat.scrollHeight;
           refresh();

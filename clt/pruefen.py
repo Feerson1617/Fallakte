@@ -46,7 +46,7 @@ def run(engine,day,tier,profil='quer'):
                 for r in f.evaluate('cltTest.records()'):
                     observed[json.dumps(r,ensure_ascii=False,sort_keys=True)]=r
                 f.evaluate('cltTest.clear()')
-                layout.append(f.evaluate('()=>{const x=geometrieStand(),v=structuredClone(x);x.issues=[];x.screens=0;x.checks=0;return v;}'))
+                layout.append(f.evaluate('()=>{const x=geometrieStand(),v=structuredClone(x);x.issues=[];x.seiten=[];x.screens=0;x.checks=0;return v;}'))
             if day=='02':
                 t=tier.replace('Förder','Foerder')
                 for mode in ('eigen','beispiel'):

@@ -33,6 +33,10 @@ function resetPath() {
   saved={history:new Map(),records:{},complete:{},personal:{choice:'',part:0,step:'choice',feedback:'',notes:{},depth:0},last:null};
 }
 const advanced=t=>bank.levels.indexOf(t)>=2;
+const kurz=()=>matchMedia('(max-height:400px),(max-width:475px)').matches;
+function aufklappen(parent,title){
+  const d=el(parent,'details');el(d,'summary',title);return d;
+}
 function go(type, fields={}) {
   if(!saved.history.size)remember('start','Laura',bank.opening);
   current={type,...fields};screen='work';saved.last=current;draw(true);
@@ -65,7 +69,11 @@ function notify(){
     status:screen==='work'? (current.person||ui.theme)+' · '+level:''});
 }
 function popup(title,content,from){
-  if(!dialog.open)opener=from || document.activeElement;
+  if(!dialog.open){
+    opener=from || document.activeElement;
+    const sources=root.querySelector('.quellenwahl[open]');
+    if(sources){sources.open=false;opener=sources.querySelector('summary');Arbeitsplatz.refresh();}
+  }
   document.getElementById('dialog-title').textContent=title;
   body.replaceChildren();content(body);dialog.scrollTop=0;
   if(!dialog.open)dialog.showModal();
@@ -167,7 +175,7 @@ function chooseLevel(box){
 function tools(box,task,r,card){
   let row=el(box,'div',undefined,'tools');
   if(matchMedia('(max-width:650px),(max-height:400px)').matches){
-    row=el(row,'details');el(row,'summary','Fachkarte und Begriffe');
+    row=el(row,'details');row.className='quellenwahl';el(row,'summary','Fachkarte und Begriffe');
   }
   const guided=['Ergänzung','Reichweite','Transfer'].includes(task.id) && !advanced(level);
   btn(row,ui.help,'help',()=>help(task,r));
@@ -235,8 +243,9 @@ function thought(box,label,text,save,id,buttonText,submit){
 function draft(box,task,r,c){
   if(r.valid)return;
   if(r.compared){
-    paragraph(box,'Dein eigener Grund · fachlich ungeprüft: '+r.text);
-    btn(box,'Erklärung bearbeiten','edit-draft',()=>{r.compared=false;r.feedback='';r.selected=undefined;draw();});
+    const own=el(box,'details');el(own,'summary','Eigener Grund');
+    paragraph(own,'Fachlich ungeprüft: '+r.text);
+    btn(own,'Erklärung bearbeiten','edit-draft',()=>{r.compared=false;r.feedback='';r.selected=undefined;draw();});
     return;
   }
   if(r.source!==undefined)paragraph(box,ui.sourceYes+' '+sentences(c.original)[r.source],'small');
@@ -245,7 +254,7 @@ function draft(box,task,r,c){
     const issue=medizin(r.text);r.draftError=issue?.info || '';r.compared=!issue;if(r.compared)r.sourceError='';draw(true);
   });
   if(!task.evidenceSentences)return;
-  const d=el(box,'details');el(d,'summary',ui.sourceInstead);
+  const d=aufklappen(box,ui.sourceInstead);d.className='quellenstelle';
   const feedback=paragraph(d,'','small');feedback.setAttribute('role','status');
   sentences(c.original).forEach((line,i)=>{
     btn(d,line,'source-'+i,()=>{
@@ -255,7 +264,7 @@ function draft(box,task,r,c){
   });
 }
 function options(box,task,r,onDone,application=false){
-  const retry=!r.valid && r.selected!==undefined && matchMedia('(max-height:400px),(max-width:475px)').matches;
+  const retry=!r.valid && r.selected!==undefined && kurz();
   let choices=box;
   if(retry){
     choices=el(box,'details');el(choices,'summary','Aussage ändern');
@@ -296,7 +305,7 @@ function options(box,task,r,onDone,application=false){
   }
   if(r.feedback){const fb=paragraph(box,r.feedback,r.valid?'feedback':'feedback falsch');fb.id='response';fb.tabIndex=-1;fb.setAttribute('role','status');}
   if(r.valid && !application){
-    paragraph(box,task.id==='Reichweite'?ui.limitChecked+' '+status(r):status(r),'tag');
+    paragraph(box,task.id==='Reichweite'&&!kurz()?ui.limitChecked+' '+status(r):status(r),'tag');
     if(r.compared && r.text){
       const own=el(box,'details');el(own,'summary','Eigenen Grund vergleichen');
       paragraph(own,r.text);paragraph(own,ui.freeNote,'small');
@@ -333,7 +342,7 @@ function caseView(){
     el(box,'h2',task.prompt);
     if(advanced(level) && !r.valid){
 
-      if(adding)paragraph(box,bank.caseReflection[person]);
+      if(adding && !r.compared)paragraph(box,bank.caseReflection[person]);
       draft(box,task,r,c);
     }
     if(!advanced(level)||r.compared)options(box,task,r,advance);
@@ -382,13 +391,14 @@ function evaluationHelp(box,r){
 const reviewText=i=>bank.review[i][1].split('“')[0];
 function comparison(box){
   const p=saved.personal;
-  el(box,'h2',level);
+  if(!kurz())el(box,'h2',level);
   const end=()=>{
     p.step='done';saved.completedReview=true;go('laura',{at:3});
   };
   if(p.choice){
-    paragraph(box,'Deine Einschätzung · '+p.choice);
-    btn(box,ui.editWeight,'edit-weight',()=>{
+    const last=kurz()?aufklappen(box,'Meine Einschätzung'):box;
+    paragraph(last,'Deine Einschätzung · '+p.choice);
+    btn(last,ui.editWeight,'edit-weight',()=>{
       if(!window.confirm('Gewichtung ändern? Die bisherige Prüfung dieser Gewichtung beginnt neu.'))return;
       p.step='choice';p.choice='';p.part=0;p.notes={};p.reason='';p.alternate=false;p.other=false;p.feedback='';
       // Recheck the selection while keeping any support this person already received.
@@ -407,16 +417,19 @@ function comparison(box){
       btn(box,name,'weight-'+i,()=>{p.choice=name;p.part=0;p.step='concern';p.feedback='';draw(true);});
   }else{
     const person=(p.choice===ui.both || p.choice==='Ich bin noch unsicher')?names[p.part]:p.choice,num=names.indexOf(person);
-    el(box,'strong',person);
+    if(!kurz()||p.step==='concern')el(box,'strong',person);
     if(p.step==='concern'){
       paragraph(box,ui.priority);
       [ui.questionA,ui.questionB].forEach((v,i)=>btn(box,v,'concern-'+i,()=>{
         p.concern=i;p.reason='';p.alternate=false;p.other=false;p.step='fact';p.feedback='';draw(true);
       }));
     }else if(p.step==='fact'){
-      paragraph(box,p.concern?ui.questionB:ui.questionA);paragraph(box,ui.evidence);
+      if(kurz())el(box,'h2',p.concern?'Welcher Fakt hilft bei der Frage nach einer späteren Schwangerschaft?':'Welcher Fakt hilft bei der Frage nach Blutungen und Schmerzen?');
+      else{paragraph(box,p.concern?ui.questionB:ui.questionA);paragraph(box,ui.evidence);}
       const values=[bank.cases.Mutter.addition,bank.cases.Freundin.addition,ui.guarantee,ui.forced];
-      values.forEach((v,i)=>btn(box,v,'fact-'+i,()=>{
+      const compactValues=['Die Gebärmutter zieht sich zusammen. Blutungen und Schmerzen sind möglich.','Nach einem Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich.',ui.guarantee,ui.forced];
+      const answers=p.feedback&&kurz()?aufklappen(box,'Fachinformation ändern'):box;
+      values.forEach((v,i)=>btn(answers,kurz()?compactValues[i]:v,'fact-'+i,()=>{
         p.alternate=false;
         if(i!==p.concern)record('Bewertung/'+person+'/'+p.concern).wrong=true;
         p.urteil=i>=2?'falsch':i===p.concern?'persoenlich':'impuls';
@@ -439,13 +452,14 @@ function comparison(box){
     }else{
       const target=p.concern;
       const r=record('Bewertung/'+person+'/'+target),task=bank.limits[target];
-      paragraph(box,p.other?ui.checkLimit:ui.evidenceOK);
+      if(!kurz())paragraph(box,p.other?ui.checkLimit:ui.evidenceOK);
       if(p.other){
-        paragraph(box,p.reason);
-        btn(box,ui.editReason,'edit-reason',()=>{p.step='reason';draw(true);});
+        const own=kurz()?aufklappen(box,'Eigener Grund · ungeprüft'):box;
+        paragraph(own,p.reason);
+        btn(own,ui.editReason,'edit-reason',()=>{p.step='reason';draw(true);});
       }
-      paragraph(box,p.concern?ui.reasonB:ui.reasonA);
-      el(box,'h3',task.prompt);
+      if(!kurz())paragraph(box,p.concern?ui.reasonB:ui.reasonA);
+      if(!r.valid||!kurz())el(box,'h3',task.prompt);
       options(box,task,r,()=>{
         p.notes[person]={concern:target,reason:p.other?p.reason:'',outcome:status(r)};
         if((p.choice===ui.both || p.choice==='Ich bin noch unsicher')&&p.part===0){p.part++;p.step='concern';p.other=false;p.alternate=false;draw(true);}
@@ -458,11 +472,11 @@ function comparison(box){
   evaluationHelp(box,p);
 }
 function lauraView(){
-  const at=current.at;heading(root,bank.evaluationSteps[at]).dataset.section=bank.evaluationRecovery[at].id;
+  const at=current.at;heading(root,bank.evaluationSteps[at]+(kurz()?' · '+level:'')).dataset.section=bank.evaluationRecovery[at].id;
   const layout=el(root,'div',undefined,'split'),panel=el(layout,'aside',undefined,'msg');
   remember('frage','Laura',bank.second);profile(panel,'Laura');transcript(panel);
   const box=el(layout,'section',undefined,'card');
-  facts(box);
+  facts(kurz()?panel:box);
   if(at===0){
     paragraph(box,'Welche Frage ist Laura wichtig?');
     btn(box,'Nachrichten abwägen','next',()=>go('laura',{at:2}),'primary');

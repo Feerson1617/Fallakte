@@ -2,6 +2,7 @@
 const bank=JSON.parse(document.querySelector('#bank').textContent);
 const desk=document.querySelector('#desk'),dialog=document.querySelector('dialog'),sessions=new Map();
 let port,state,tier;
+const compact=()=>matchMedia('(max-height:400px),(max-width:475px)').matches;
 const lower=()=>tier==='Foerder' || tier==='ESA';
 const readingTrail=[];
 const stage=()=>bank.stages[state.index];
@@ -86,7 +87,7 @@ function choices(s,work){
 function draw(){
   const s=stage(),check=currentCheck(),hasChoice=Object.keys(s.choices).length>0;
   desk.replaceChildren();const h=add(desk,'h1',bank.person+' '+(state.index+1)+' von '+bank.stages.length);h.id='step';
-  add(desk,'p',s.title+' · '+bank.levels[tier]);
+  if(compact())h.textContent+=' · '+bank.levels[tier];else add(desk,'p',s.title+' · '+bank.levels[tier]);
   const layout=add(desk,'div');layout.className='split';
   const chat=add(layout,'aside'),work=add(layout,'section');
   chat.setAttribute('aria-label','Gespräch mit '+bank.person);
@@ -109,11 +110,20 @@ function draw(){
     add(work,'h2','Welchen Vorschlag machst du?');
     choices(s,work);
   }else{
-    if(hasChoice){add(work,'strong',s.choices[state.choice]).id='selected';btn(work,'Auswahl ändern','edit',()=>clearChoice(''));}
-    if(!hasChoice && lower()){add(work,'strong','Aus der Quelle');add(work,'blockquote',s.shortSource);}
+    if(hasChoice){
+      if(compact()){
+        const edit=btn(work,'Rat ändern · ','edit',()=>clearChoice(''));
+        add(edit,'span',state.choice.split('+').map(m=>bank.cards[m]?.title || s.choices[state.choice]).join(' + ')).id='selected';
+      }
+      else{add(work,'strong',s.choices[state.choice]).id='selected';btn(work,'Auswahl ändern','edit',()=>clearChoice(''));}
+    }
+    if(!hasChoice && lower()){
+      const target=compact()?chat:work;
+      add(target,'strong','Aus der Quelle');add(target,'blockquote',s.shortSource);
+    }
     if(needsSource())add(work,'p',state.index===1?'Lies den Artikel. Welche Aussage ist belegt?':'Lies Studie B. Was wurde tatsächlich untersucht?');
     if(!state.valid && !conflict() && !needsSource()){
-      add(work,'p',s.task[tier]);
+      if(!state.result || !compact())add(work,'p',s.task[tier]);
       if(!lower() && !state.compared){
         const field=add(add(work,'label','Deine Erklärung'),'textarea');field.id='erklaerung';field.value=state.reason;
         const compare=btn(work,'Mit den Aussagen vergleichen','vergleichen',()=>{const issue=Entwurf.fehler(state.reason);state.compared=!issue;state.result=issue?.info||'';draw();});
@@ -121,15 +131,18 @@ function draw(){
         field.oninput=()=>{state.reason=field.value;state.result='';work.querySelector('#feedback').textContent='';compare.disabled=!state.reason.trim();};
       }else{
         if(!lower()){
-          add(work,'p','Dein eigener Grund · fachlich ungeprüft: '+state.reason);
-          btn(work,'Grund bearbeiten','grund-aendern',()=>{state.compared=false;state.result='';draw();});
+          const own=add(work,'details');add(own,'summary','Eigener Grund');
+          add(own,'p','Fachlich ungeprüft: '+state.reason);
+          btn(own,'Grund bearbeiten','grund-aendern',()=>{state.compared=false;state.result='';draw();});
         }
-        for(const k of tier==='Foerder'?check.short:'ABC')btn(work,check.answers['ABC'.indexOf(k)],'answer-'+k,()=>inspect(k)).className='answer';
+        const answers=compact() && state.result?add(work,'details'):work;
+        if(answers!==work)add(answers,'summary','Andere Aussage wählen');
+        for(const k of tier==='Foerder'?check.short:'ABC')btn(answers,check.answers['ABC'.indexOf(k)],'answer-'+k,()=>inspect(k)).className='answer';
       }
     }
     add(work,'p',conflict()?.[lower()?'short':'full'] || state.result).id='feedback';document.querySelector('#feedback').setAttribute('role','status');
     if(state.valid && !lower()){
-      add(work,'p','Vergleiche deinen Grund mit der geprüften Aussage: '+check.answers['ABC'.indexOf(check.code)]);
+      add(work,'p','Vergleiche deinen Grund mit dieser Aussage: '+check.answers['ABC'.indexOf(check.code)]);
       const own=add(work,'details');add(own,'summary','Eigenen Grund ansehen');add(own,'p',state.reason);
       btn(own,'Grund bearbeiten','grund-aendern',()=>{state.compared=false;state.valid=false;state.result='';draw();});
     }

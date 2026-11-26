@@ -86,7 +86,7 @@ def release():
         else:assert set(mods)=={'02','08'} and sha(mods['02'])==both['02']
         b=bank(mods[day],'materialvertrag' if day=='02' else 'material')
         protection=verify_source(day,b);target=ROOT/'dist/CLT'/stem;target.mkdir(parents=True,exist_ok=True)
-        logs={};screens={};rows={};counts=[];geoerrors=[];ngeo=0;paths=0
+        logs={};screens={};rows={};counts=[];geoerrors=[];ngeo=0;paths=0;seiten=[]
         for e in ('chromium','webkit'):
             for t in LEVELS:
                 base=QA/f'{day}-{t}-{e}'
@@ -105,7 +105,7 @@ def release():
                     for k in ('Pruefung.json','Zustaende.json.gz','Geometrie.json'):logs[prefix+k]=(d/k).read_bytes()
                     for v in json.loads(gzip.decompress(logs[prefix+'Zustaende.json.gz'])):rows[(t,dump(v))]=(t,v)
                     for g in json.loads(logs[prefix+'Geometrie.json']):
-                        ngeo+=g['checks'];geoerrors.extend((prefix,issue) for issue in g['issues'])
+                        seiten.extend(dict(profil=prefix,**v) for v in g['seiten']);ngeo+=g['checks'];geoerrors.extend((prefix,issue) for issue in g['issues'])
                     if t in ('Förder','AHR') and profile in ('hoch','kurs','quer'):
                         img=next(d.glob('*.jpg'));screens[prefix+img.name]=img.read_bytes()
         for p in PHYS.glob('Trefferpruefung-*.json'):
@@ -133,6 +133,7 @@ def release():
         assert json.loads(evidence)['html_sha256']==sha((OUT/'Fallakte-08-12.html').read_bytes())
         img=longtext/(day+'-Aussage-mit-grosser-Schrift.jpg')
         screens[img.name]=img.read_bytes();logs['Langtextpruefung.json']=evidence
+        logs['Seitenumfang.json.gz']=gzip.compress(dump(seiten).encode(),mtime=0)
         c=vertrag(day,b);c['revision']=revision
         archive(target/'Materialvertrag-Work.zip',{'Materialvertrag.json':dump(c),'Auftraege.md':md_contract(c)})
         archive(target/'CLT-Abnahmematrix.zip',{'Matrix.csv':matrix(rows.values(),day),'Fachdidaktische-Durchsicht.md':(HERE/('Beratung.md' if day=='02' else 'Familiennachrichten.md')).read_bytes(),'Grundlagen.md':(HERE/'Grundlagen.md').read_bytes(),'Perspektiven.md':(HERE/'planung.md').read_bytes(),'Zeitplanung.json':dump(c['phasen'])})
@@ -148,7 +149,7 @@ Gegenprüfung gegenüber ac86cb8: Auf 46 sendbaren Wegen musste der HIV-Irrtum v
 
 Die Lehrkraft gibt zwei Karten getrennt aus. Die Arbeit dazwischen läuft digital. Das Menü „Stundenabschluss“ ist auch bei frühem Stopp erreichbar. Wer bereits einen anderen Rat gesendet hat, kann ihn im Gespräch nachlesen. Persönliche Gründe werden im Unterricht besprochen.
 
-{len(counts)} Browser-, Niveau- und Fensterdurchläufe. Die Matrix umfasst {len(rows)} unterschiedliche protokollierte Kombinationen von Niveau, Kontext, Wortlaut und Bedienelementen. {ngeo} Geometrieprüfungen erfassten aktive Steuerelemente. {failnote} Weitere 40 Tast- und Navigationstests mit Chromium und WebKit prüften physische Treffer bis zum äußeren Fenster. Die Bildschirmtastatur wurde durch eine verkleinerte Höhe simuliert.
+{len(counts)} Browser-, Niveau- und Fensterdurchläufe. Die Matrix umfasst {len(rows)} unterschiedliche protokollierte Kombinationen von Niveau, Kontext, Wortlaut und Bedienelementen. {ngeo} Geometrieprüfungen erfassten aktive Steuerelemente. {failnote} Im Protokoll Seitenumfang.json.gz steht die gemessene Anzahl der Teilansichten pro Arbeitszustand. Weitere 40 Tast- und Navigationstests mit Chromium und WebKit prüften physische Treffer bis zum äußeren Fenster. Die Bildschirmtastatur wurde durch eine verkleinerte Höhe simuliert.
 
 {(str(paths)+' vollständige Folgen sendbarer Laura-Empfehlungen. Zusätzlich wurden unpassende Einzelvorschläge, Begründungsoptionen, wiederholte Fehler, Karten, Rückfragen, Hilfen und beide Zusatzfälle geprüft. Pro Niveau und Browser wurden alle 108 sendbaren Celina-Folgen und Toms vollständiger Weg gespielt.') if day=='02' else 'Alle vier Personen mit eigenständiger Auswahl, Fehlversuchen, Hilfen und Lösungsoffenlegung. Alle zwölf Kombinationen aus Gewichtung und Anliegen wurden bearbeitet, einschließlich begründeter Unsicherheit und anderer sachlicher Verknüpfungen. Je Niveau und Browser prüften 864 Statusbeobachtungen die Teilmengen falscher Auswahlen bei Hilfetiefe null bis fünf und nachträglich geöffneter Hilfe. Die Quellenwahl allein vergibt keinen Hilfestatus.'}
 

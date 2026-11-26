@@ -287,10 +287,12 @@ window.Beratung = (() => {
       next.disabled=!field.value.trim();};
     box.append(label,field,next);return box;
   }
+  const compact=()=>matchMedia('(max-height:400px),(max-width:475px)').matches;
+  const kurzfrage={L01:'Was bedeutet die Latexallergie für deinen Rat?',L02:'Wie schützt dein Rat vor Schwangerschaft und Infektionen?',L03:'Passt dein Rat zu Lauras wechselndem Alltag?',L04:'Wie passt dein Rat zu ihren Schmerzen und Sorgen?',L05:'Was spricht für deinen Schlussrat?'};
   function closedCheck() {
     const field=element('section','fachcheck');
     field.id='begruendungen';
-    const question=element('h2','',advanced()?'Welche Aussage stimmt?':task().task);
+    const question=element('h2','',advanced()?'Welche Aussage stimmt?':compact()?kurzfrage[active.stageId]:task().task);
     question.id='begruendungsfrage';field.setAttribute('aria-labelledby',question.id);field.append(question);
     if(advanced()){
       const draft=element('details','eigener-text');draft.append(element('summary','','Eigener Grund'),
@@ -355,6 +357,7 @@ window.Beratung = (() => {
     }
     if(matchMedia('(max-width:650px),(max-height:400px)').matches){
       const more=element('details','quellenwahl');more.append(element('summary','','Karte und Rückfragen'));
+      if(active.draft.strategy && !advanced())more.append(element('p','',task().task));
       for(const item of [...tools.children])if(item.id!=='hilfe')more.append(item);
       tools.append(more);
     }
@@ -372,8 +375,12 @@ window.Beratung = (() => {
     rat.tabIndex=-1;
     rat.dataset.aboutStrategy=active.draft.strategy;
     const label=task().choiceLabels?.[active.draft.strategy] || bank().strategies[active.draft.strategy].label;
-    rat.append(element('p','','Dein Rat · '+label));
-    if (canEdit) rat.append(control('strategie-bearbeiten','Auswahl ändern',editChoice,'textaktion'));
+    if(compact() && canEdit){
+      rat.append(control('strategie-bearbeiten','Rat ändern · '+label,editChoice,'textaktion'));
+    }else{
+      rat.append(element('p','','Dein Rat · '+label));
+      if(canEdit)rat.append(control('strategie-bearbeiten','Auswahl ändern',editChoice,'textaktion'));
+    }
     return rat;
   }
   function work() {
@@ -403,7 +410,11 @@ window.Beratung = (() => {
       if (step==='wahl') {
         area.append(evidence,choices());
       } else {
-        area.append(chosenStrategy(true),advanced() && !active.draft.compared?explanation():closedCheck());
+        area.append(chosenStrategy(true));
+        if(advanced() && !active.draft.compared)area.append(explanation());
+        else if(compact() && active.draft.feedback?.type==='A'){
+          const retry=element('details','erneute-wahl');retry.append(element('summary','','Andere Aussage wählen'),closedCheck());area.append(retry);
+        }else area.append(closedCheck());
 
       }
     } else {
@@ -416,7 +427,8 @@ window.Beratung = (() => {
     feedback.tabIndex=-1;
     feedback.dataset.type=report?.type || '';
     feedback.setAttribute('role','status');
-    area.append(feedback);
+    const retry=area.querySelector('.erneute-wahl');
+    if(retry)area.insertBefore(feedback,retry);else area.append(feedback);
     if (step==='korrektur') {
       const correction=info().correction;
       if (correction.target && !advanced()) {

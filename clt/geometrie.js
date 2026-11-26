@@ -1,6 +1,6 @@
 // Prüfe jede angebotene Taste mit der tatsächlichen Position auf allen Teilansichten.
 () => {
-  const result={screens:0,checks:0,issues:[]};
+  const result={screens:0,checks:0,issues:[],seiten:[]};
   const known=new Set();
   function hit(node,field){
     const r=node.getBoundingClientRect(),b=field?.getBoundingClientRect();
@@ -18,6 +18,10 @@
     });
     const missing=new Set(controls.filter(n=>!n.closest('.gespraech,.blatt-wechsel')));
     const pager=sheet?.querySelector(':scope > .blatt-wechsel');
+    if(root.matches('.lernraum') && root.querySelector('.arbeitsfelder')){
+      const count=pager && !pager.hidden?Number(pager.querySelector('span').textContent.split('/')[1]):1;
+      result.seiten.push({anzahl:count,zustand:JSON.parse(key).slice(0,3),wortlaut:count>=5?f.innerText:undefined});
+    }
     const before=f?.scrollLeft||0;
     const positions=new Map();
     const inspect=()=>{for(const n of [...missing]){

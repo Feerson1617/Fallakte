@@ -93,7 +93,12 @@
       if (view.type !== views.at(-1).type) child(view,document.activeElement);
       return;
     }
-    origin = rememberFocus(trigger);
+    const sources=trigger?.closest?.('.quellenwahl[open]');
+    if(sources){
+      sources.open=false;
+      Arbeitsplatz.refresh();
+      origin=rememberFocus(sources.querySelector('summary'));
+    }else origin=rememberFocus(trigger);
     views = [view];
     draw();
   }
