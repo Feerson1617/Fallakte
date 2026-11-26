@@ -1,6 +1,7 @@
 // Eine Aussage muss als ganze Teilaussage passen. Unbekannte Zusätze dürfen
 // eine richtige Teilbeobachtung erhalten, aber keine sichere Freigabe erzeugen.
 const Lernfeedback = (() => {
+  const gesund=typeof Fachwissen==='undefined'?require('./gesundheit.js'):Fachwissen;
   const sperm='(?:spermien|samenzellen)', egg='(?:ei|eizelle)', mucus='(?:schleim|zervixschleim)';
   const slow='(?:schwerer|schlechter|langsamer|kaum|nicht so leicht)', dense='(?:zaeher|dicker|dichter|zaehfluessiger|zaeh)';
   const pass='(?:hindurch|durch|durch den schleim|zur eizelle|voran|weiter|zum ei)';
@@ -11,7 +12,7 @@ const Lernfeedback = (() => {
       a:['(?:die )?(?:pille|hormone|hormone der pille) (?:hemmt|hemmen|verhindert|verhindern|unterdrueckt) (?:meist )?(?:den )?eisprung',
         '(?:der )?eisprung (?:bleibt aus|wird (?:meist )?(?:gehemmt|verhindert|unterdrueckt)|findet nicht statt|entfaellt)','(?:kein|ohne|gehemmter) eisprung'],
       b:['(?:es )?(?:wird|ist) keine (?:befruchtbare )?eizelle (?:frei|da|vorhanden)','keine (?:freie |befruchtbare )?eizelle(?: (?:wird frei|frei|zur befruchtung|kann befruchtet werden))?',
-        '(?:die )?eizelle (?:wird nicht frei|fehlt|kann nicht befruchtet werden)','(?:es )?fehlt (?:eine|die) (?:freie |befruchtbare )?eizelle',
+        '(?:die )?eizelle (?:wird nicht frei|fehlt)','(?:es )?fehlt (?:eine|die) (?:freie |befruchtbare )?eizelle',
         'steht keine (?:befruchtbare )?eizelle zur verfuegung','(?:es )?gibt (?:es )?keine (?:freie |befruchtbare )?eizelle','wird kein ei frei','wird keine eizelle zur befruchtung frei','ist keine befruchtbare eizelle da'],
       negatives:{zyklus:['(?:die pille )?(?:foerdert|verstaerkt) den eisprung','(?:der )?eisprung (?:findet statt|wird nicht gehemmt|bleibt nicht aus)'],eizelle:['(?:die |eine )?eizelle wird (?:trotzdem )?frei','(?:es )?wird eine eizelle frei'],spermien:['die pille (?:bremst|toetet|stoppt) (?:die )?spermien']}
     },
@@ -72,7 +73,7 @@ const Lernfeedback = (() => {
         '(?:eine |die )?(?:freie |befruchtbare )?eizelle fehlt',word(cell)+' fehlt','kein(?:e)? (?:eizelle|ei) (?:zum befruchten|zum befruchten da|zur befruchtung frei)',
         '(?:es )?(?:ist|wird) '+noCell+' (?:frei|freigesetzt|zur befruchtung frei|zum befruchten frei)',
         '(?:es )?gibt (?:es )?'+noCell+'(?: zum befruchten| zur befruchtung)?','fehlt eine befruchtbare eizelle',
-        'keine eizelle zur befruchtung (?:frei )?wird','(?:eine )?befruchtung ist (?:dann )?nicht moeglich'],
+        'keine eizelle zur befruchtung (?:frei )?wird'],
       ab:['ohne eisprung (?:gibt es|wird|ist) '+noCell+'(?: frei| freigesetzt| da| zur befruchtung)?(?:,? (?:die|das) befruchtet werden (?:kann|koennte))?',
         'ohne eisprung kann '+noCell+' befruchtet werden'],
       extra:['(?:die )?pille enthaelt hormone','die pille schuetzt nicht vor sti'],
@@ -184,6 +185,43 @@ const Lernfeedback = (() => {
   gram.kupfer.a.push(...frame(swimmers,'verlieren','(?:an )?tempo'));
   gram.kupfer.b.push('(?:so )?haben sie es schwerer bis zum ei');
   gram.kupfer.negatives.befruchtung.push(...frame('(?:die |eine )?befruchtung','wird','leichter|erleichtert'));
+  // Rollen der Anatomie, nicht die bloße Nennung der Befruchtung.
+  const herkunft='(?:aus dem |vom )?eierstock', nichtsFrei=noCell+' (?:mehr )?';
+  gram.pille.b.push(nichtsFrei+herkunft+' (?:freikommt|freiwird|freigesetzt wird|abgegeben wird|austritt|springt)',
+    '(?:kommt|tritt) '+noCell+' (?:aus dem eierstock )?(?:frei|aus)',
+    '(?:aus dem eierstock )?wird '+noCell+' (?:aus dem eierstock )?(?:freigesetzt|abgegeben)',
+    'der eierstock (?:gibt '+noCell+' (?:mehr )?frei|setzt '+noCell+' (?:mehr )?frei)');
+  const ergebnisOhneZelle=new RegExp('^(?:'+['(?:die |eine )?befruchtung (?:ist (?:dann )?nicht moeglich|findet nicht statt|bleibt aus)',
+    '(?:(?:es )?kommt (?:es )?nicht (?:zu einer|zur) befruchtung)', '(?:die )?eizelle kann nicht befruchtet werden'].join('|')+')$');
+  const durchtritt='(?:den durchtritt|die passage|den durchgang|das durchkommen) (?:der |von )?'+swimmers;
+  const hindert='erschwert|behindert|hemmt';
+  gram.schleim.b.push(...frame(sauce,hindert,durchtritt),'(?:der durchtritt|die passage) (?:der |von )?'+swimmers+' (?:wird|ist) (?:erschwert|schwieriger)');
+  gram.schleim.ab.push('(?:der |ein )?(?:verdickte[rn]?|zaehere[rn]?|dickere[rn]?) (?:schleim|schleimpfropf|zervixschleim) '+word(hindert)+' '+durchtritt);
+  const flaeche='(?:auf|an) (?:der )?(?:unbedeckter|freier|ungeschuetzter|unbedeckten|freien|ungeschuetzten) (?:haut|hautstellen)';
+  const beruehrung='(?:durch beruehrung|bei beruehrung|durch direkten hautkontakt|bei hautkontakt|durch hautkontakt)';
+  gram.haut.ab.push(flaeche+' (?:koennen|werden) '+germs+' (?:'+beruehrung+' )?(?:uebertragen|weitergegeben)(?: werden)?',
+    germs+' koennen '+flaeche+' (?:'+beruehrung+' )?(?:uebertragen|weitergegeben) werden',
+    flaeche+' kann man sich (?:'+beruehrung+' )?(?:anstecken|infizieren)');
+  gram.haut.a.push('(?:unbedeckte|freie) hautstellen bleiben (?:frei|unbedeckt)');
+  const beeintraechtigt='stoert|stoeren|beeintraechtigt|beeintraechtigen|hemmt|hemmen|mindert|mindern|verringert|verringern';
+  const mobil='(?:beweglichkeit|bewegung|bewegungsfaehigkeit)',fruchtbar='befruchtungsfaehigkeit';
+  const eigenschaft='(?:die )?(?:'+mobil+'|'+fruchtbar+')';
+  const traeger=' (?:der |von )?'+swimmers;
+  gram.kupfer.b.push(...frame(copper,beeintraechtigt,'(?:die )?'+fruchtbar+traeger));
+  gram.kupfer.a.push(...frame(copper,beeintraechtigt,'(?:die )?'+mobil+traeger),
+    copper+' (?:schraenkt|schraenken) (?:die )?'+mobil+traeger+' ein',
+    copper+' (?:die )?'+mobil+traeger+' (?:einschraenkt|einschraenken)');
+  // Ein gemeinsames Subjekt/Objekt nur innerhalb eines vollständigen Satzrahmens verteilen.
+  const paar=new RegExp('^('+copper+') ('+beeintraechtigt+') ('+eigenschaft+') und ('+eigenschaft+')('+traeger+')$');
+  const schleimpaar=new RegExp('^('+sauce+') (wird (?:verdickt|'+thick+')|verdickt sich) und ('+hindert+') ('+durchtritt+')$');
+  function koordinieren(s,id){
+    return s.split(/([.!?;])/).map(teil=>{
+      const c=teil.trim();
+      if(id==='kupfer')return c.replace(paar,'$1 $2 $3$5 und $1 $2 $4$5');
+      if(id==='schleim')return c.replace(schleimpaar,'$1 $2 und $1 $3 $4');
+      return c;
+    }).join(' ');
+  }
   for(const [id,g] of Object.entries(gram)){
     for(const tag of ['a','b','ab','extra'])bound[id][tag]=[...(bound[id][tag]||[]),...g[tag]];
     for(const [e,patterns] of Object.entries(g.negatives))bound[id].negatives[e].push(...patterns);
@@ -281,15 +319,27 @@ const Lernfeedback = (() => {
   const effects=/^(?:darum|daher|deshalb|dadurch|also|deswegen|sodass|somit|folglich|->|→)$/;
   function analyze(id,text){
     const model=bound[id],parts=new Set(),errors=new Set();
-    let unknown=false,reversed=false;
+    let unknown=false,reversed=false,beleg=null,ergebnis=false;
     function result(state,kind=state){
-      return {state,kind,parts:[...parts],error:[...errors][0]||null,relation:reversed?'umgekehrt':parts.size===2?'verbunden':'offen',zusatz:unknown};
+      return {state,kind,ergebnis,parts:[...parts],error:beleg?.code||[...errors][0]||null,quelle:beleg?[beleg.karte,beleg.abschnitt]:null,relation:reversed?'umgekehrt':parts.size===2?'verbunden':'offen',zusatz:unknown};
     }
-    let s=normalize(text);
+    let s=gesund.berichtigungen(normalize(text),id).trim();
     if(id==='haut')s=s.replace(/^auch wenn (?:das |ein )?kondom (?:heil|intakt) ist, */,'');
     if(!/[a-z0-9]/.test(s))return result('leer');
     // Keine Behauptung aus einer Frage, einem Zitat oder einer hypothetischen Verneinung ableiten.
-    if(s.length>2400 || /[?„“"]|\b(?:vielleicht|angeblich|weiss nicht|oder|nicht sicher|wenn|falls|glaube nicht|behauptet|falsch ist|es stimmt nicht|es waere falsch|es ist falsch)\b/.test(s))return result('unsicher');
+    if(s.length>2400 || /[„“"]/.test(s))return result('unsicher');
+    const vorsicht=/[?]|\b(?:vielleicht|angeblich|weiss nicht|oder|nicht sicher|wenn|falls|glaube nicht|behauptet|falsch ist|es stimmt nicht|es waere falsch|es ist falsch)\b/;
+    if(vorsicht.test(s)){
+      // In einem unklaren Satz keine Diagnose raten. Gesondert behauptete Risiken bleiben sichtbar.
+      const satz=s.match(/[^.!?;]+[?]?/g)||[];
+      for(const teil of satz){
+        if(vorsicht.test(teil))continue;
+        const befund=gesund.lesen(teil.trim(),id);
+        if(befund?.falsch){beleg=befund;return result('fehlvorstellung');}
+      }
+      return result('unsicher');
+    }
+    s=koordinieren(s,id);
     for(const [from,to] of repairs[id])s=s.replace(from,to);
     // Eine vollständig erklärte Gegenwirkung bleibt erhalten, auch bei geteilter Subjektgruppe.
     s=s.replace(/(samenzellen|spermien) (kommen|schwimmen) (kaum noch|langsamer|schlechter) voran und (erreichen|befruchten) (das ei|die eizelle) deshalb /g,'$1 $2 $3 voran, deshalb $4 sie $5 ')
@@ -314,6 +364,17 @@ const Lernfeedback = (() => {
         .replace(/^kupfer (?:die )?spermien bremst$/,'kupfer bremst spermien')
         .replace(/^(ein teil der haut) (frei|unbedeckt) bleibt$/,'$1 bleibt $2')
         .replace(/^dort (koennen|werden) /,'$1 ').replace(/^bei hautkontakt koennen sie /,'bei hautkontakt koennen erreger ');
+      // „Ihre Beweglichkeit“ bezieht sich nur auf zuvor ausdrücklich genannte Samenzellen.
+      if(id==='kupfer' && last==='b' && /\b(spermien|samenzellen)\b/.test(chunks[i-2]||'')){
+        c=c.replace(/\bihre (beweglichkeit|bewegung|bewegungsfaehigkeit)\b/,'die $1 der spermien');
+      }
+      if(c==='korrigierter zusatz'){unknown=true;continue;}
+      if(id==='pille' && ergebnisOhneZelle.test(c)){ergebnis=true;continue;}
+      const medizin=gesund.lesen(c,id);
+      if(medizin){
+        if(medizin.falsch){beleg??=medizin;errors.add(medizin.code);}
+        continue;
+      }
       for(const item of readClause(model,c)){
         if(item.error){errors.add(item.error);continue;}
         if(item.unknown){unknown=true;continue;}
@@ -331,6 +392,7 @@ const Lernfeedback = (() => {
       return result('fehlvorstellung',confusions[id].includes([...errors][0])?'verwechslung':'fehlvorstellung');
     }
     if(parts.size===2 && /nicht immer/.test(s))return result('unsicher','beziehung');
+    if(reversed && parts.size===2)return result('vertauscht','beziehung');
     if(reversed)return result('unsicher','beziehung');
     if(unknown){
       if(parts.size===2)return result('unsicher','zusatz');
@@ -340,8 +402,9 @@ const Lernfeedback = (() => {
         s.split(/[ ,.;:]+/).filter(Boolean).every(w=>keywords.test(w)))return result('unsicher','beziehung');
       return result('unsicher');
     }
+    if(ergebnis && !parts.size)return result('teilweise','ergebnis');
     return result(parts.size===2?'passend':parts.size?'teilweise':'unsicher');
   }
-  return {analyze};
+  return {analyze,gesundheit:gesund.katalog};
 })();
 if(typeof module!=='undefined' && module.exports)module.exports=Lernfeedback;

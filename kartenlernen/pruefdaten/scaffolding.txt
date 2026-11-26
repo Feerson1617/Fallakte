@@ -1,0 +1,44 @@
+[pille]
+passend|normal|Die Hormone verhindern den Eisprung, sodass keine Eizelle aus dem Eierstock freikommt.
+passend|normal|Die Hormone hemmen den Eisprung. Der Eierstock gibt keine Eizelle frei.
+teilweise|a|Die Pille verhindert den Eisprung. Eine Befruchtung ist nicht möglich.
+teilweise|a|Der Eisprung bleibt aus. Es kommt nicht zur Befruchtung.
+ergebnis|ergebnis|Eine Befruchtung findet nicht statt.
+fehlvorstellung|sti|Die Pille schützt vor HIV.
+widerspruch|sti|Kein Eisprung. Keine freie Eizelle. Die Spirale schützt vor anderen STI.
+widerspruch|beschwerden|Kein Eisprung. Hormonfreie Methoden sind immer beschwerdefrei.
+passend|normal|Der Eisprung entfällt. Die Eizelle fehlt. Die Kupferspirale enthält keine Hormone.
+passend|normal|Kein Eisprung, keine freie Eizelle. Die Pille schützt vor HIV. Nein, sie schützt nicht vor HIV.
+unsicher|offen|Ich glaube nicht, dass die Pille vor HIV schützt.
+teilweise|a|Die Pille hemmt den Eisprung. Die Eizelle kann nicht befruchtet werden.
+fehlvorstellung|sti|Die Pille oder die Spirale schützen vor HIV.
+[schleim]
+passend|normal|Der Schleimpfropf wird verdickt und erschwert den Durchtritt der Samenzellen.
+passend|normal|Der Schleim am Muttermund verdickt sich und behindert die Passage der Spermien.
+passend|normal|Verdickter Zervixschleim hemmt den Durchtritt der Samenzellen.
+fehlvorstellung|hormonabgabe|Die Hormonspirale gibt keine Hormone ab.
+fehlvorstellung|einnahme|Man muss die Pille nicht regelmäßig einnehmen.
+widerspruch|kondomschutz|Der Schleim wird zäher. Spermien kommen schwerer durch. Kondome schützen sicher vor sämtlichen STI.
+widerspruch|kupferhormone|Der Schleim wird dicker. Die Kupferspirale gibt Hormone ab.
+passend|normal|Der Schleim wird zäher. Dadurch kommen Spermien schwerer hindurch. Die Hormonspirale ist nicht hormonfrei.
+unsicher|offen|Der Schleim wird zäher. Sie stecken da irgendwie fest.
+[haut]
+passend|normal|Auf unbedeckter Haut können Erreger durch Berührung übertragen werden.
+passend|normal|Auf freier Haut können Viren durch Hautkontakt weitergegeben werden.
+passend|normal|Manche Erreger können an freien Hautstellen durch Berührung übertragen werden.
+fehlvorstellung|spermien|Die Pille tötet Spermien ab.
+widerspruch|kondomschutz|Unbedeckte Hautstellen bleiben frei. Das Kondom schützt sicher vor allen STI.
+widerspruch|sti|Auf freier Haut können Viren durch Hautkontakt übertragen werden. Vor HIV schützt die Hormonspirale.
+passend|normal|Ein Teil der Haut bleibt frei. Bei Hautkontakt können Erreger übertragen werden. Kondome schützen nicht vor allen STI.
+unsicher|offen|Schützt die Pille vor HIV?
+[kupfer]
+passend|normal|Die Spermien erreichen die Eizelle schlechter, weil das Kupfer ihre Beweglichkeit einschränkt.
+passend|normal|Kupfer stört die Beweglichkeit und die Befruchtungsfähigkeit der Spermien.
+passend|normal|Die Kupferspirale mindert Befruchtungsfähigkeit und Beweglichkeit der Samenzellen.
+passend|normal|Kupfer hemmt die Beweglichkeit der Spermien. Sie erreichen die Eizelle schlechter.
+beziehung|richtung|Die Spermien bewegen sich schlechter, weil die Befruchtung erschwert ist.
+widerspruch|kupferhormone|Kupfer bremst Spermien. Die Befruchtung wird erschwert. Die Kupferspirale enthält Hormone.
+fehlvorstellung|beschwerden|Eine hormonfreie Methode verursacht nie Beschwerden.
+passend|normal|Kupfer bremst Spermien. Dadurch wird eine Befruchtung erschwert. Hormonfrei bedeutet nicht automatisch beschwerdefrei.
+widerspruch|sti|Kupfer stört die Beweglichkeit und die Befruchtungsfähigkeit der Spermien. Die Pille schützt vor HIV.
+unsicher|offen|Die Spermien kommen kaum weiter. Das mit den Eiern ist kompliziert.

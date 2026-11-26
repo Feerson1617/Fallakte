@@ -54,3 +54,12 @@ DETAILS={
 }
 for name,details in DETAILS.items():
     MODELLE[name].update(details)
+
+# Zwei kurze Vergleichsfragen für den freiwilligen Abgleich mit dem eigenen Entwurf.
+for name,(vergleich,zuerst) in {
+    'pille':('Bleibt der Eisprung aus? Fehlt dadurch die Eizelle?', 'Was passiert zuerst mit dem Eisprung?'),
+    'schleim':('Wird der Schleim zäher? Kommen Spermien schwerer hindurch?', 'Was ändert sich zuerst am Schleim?'),
+    'haut':('Bleibt Haut frei? Können sich dort Erreger übertragen?', 'Welche Haut bleibt beim Kondom frei?'),
+    'kupfer':('Bewegen sich Spermien schlechter? Erreichen oder befruchten sie das Ei schwerer?', 'Was passiert zuerst mit den Spermien?')
+}.items():
+    MODELLE[name].update(vergleich=vergleich,zuerst=zuerst)
