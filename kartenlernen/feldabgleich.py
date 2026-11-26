@@ -1,9 +1,9 @@
 """Fachliche Gegenprobe für die 64 sichtbaren Lernbelege vor den Papieraufträgen."""
 STAMM = (
     (('latex','synthetisch'), ('hülle','barriere'), ('risiko','gleichwertig'), ('von anfang an',)),
-    (('eisprung',), ('keinen schutz','keinen sti-schutz','keine barriere'), ('regelmäßig','vergessene'), ('unterschiedlich','individuell')),
+    (('eisprung',), ('keinen schutz','kein sti-schutz','keinen sti-schutz','keine barriere'), ('regelmäßig','vergessene'), ('unterschiedlich','individuell')),
     (('spermien',), ('keinen schutz','kein sti-schutz','keine barriere','keinen sti-schutz'), ('tägliche',), ('stärker',)),
-    (('schleim',), ('nicht vor infektionen','keinen sti-schutz'), ('tägliche',), ('schwächer','abnehmen'))
+    (('schleim',), ('nicht vor infektionen','keinen sti-schutz','kein sti-schutz'), ('tägliche',), ('schwächer','abnehmen'))
 )
 
 def pruefe(belege,karten):

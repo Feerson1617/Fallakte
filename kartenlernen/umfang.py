@@ -36,7 +36,7 @@ def measure(ref):
                 row=p.evaluate(script,dict(tier=tier,assist=False,models=False))
                 assert not row['errors']
                 result[title]=dict(klicks=row['taps'],papierphasen=row['papers'],woerter=p.evaluate(COUNTS)['lesewoerter'],
-                                   pflichtfragen=9 if title=='alt' else 4,freitext=2 if title=='neu' and tier in ('MSA','AHR') else 0)
+                                   pflichtfragen=len(p.evaluate("JSON.parse(document.querySelector('#material').textContent).levels")[tier]['fragen']),freitext=2 if tier in ('MSA','AHR') else 0)
                 p.close()
             records.append(result)
     return records

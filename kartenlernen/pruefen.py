@@ -52,6 +52,9 @@ def protected(folder):
             assert [f['wort'] for f in c['felder']]==[f['answer'] for f in r['fields']]
             assert [f['volltext'] for f in c['texte']]==[s['completedText'] for s in r['sections']]
             assert [f['lueckentext'] for f in c['texte']]==[s['template'] for s in w['sections']]
+            if (t,n) in {('ESA',2),('AHR',3),('AHR',4)}:
+                assert c['felder'][1]['wort']=='kein STI-Schutz'
+                assert '*kein STI-Schutz*' in m['levels'][t]['info'][n-1][0]['text'][1]
             paper=checked[t,w['method']]
             assert paper['page']==(1 if n<=2 else 2)
             text=r['title']+' Pearl-Index: '+r['pearlIndex']+' · Richtwert nach pro familia '+r['pearlExplanation']+' Kein Maß für den Schutz vor sexuell übertragbaren Infektionen (STI). '+' '.join(s['title']+' '+s['completedText'] for s in r['sections'])

@@ -3,10 +3,10 @@ NIVEAUS = ('Foerder','ESA','MSA','AHR')
 # Zwei kurze Bildseiten je Methode. Die Nummern binden jeden Lernbeleg an das Originalfeld.
 # Sternchen markieren den fachlichen Kern, der im Browser hervorgehoben wird.
 BILDER = [('huelle','kontakt'),('eisprung','einnahme'),('kupfer','kupferwahl'),('schleim','hormonwahl')]
-TITEL = [('Wie hält das Kondom Sperma zurück?','Wann schützt das Kondom?'),
-         ('Was bewirkt die Kombinationspille?','Was ist bei der Pille wichtig?'),
-         ('Was macht das Kupfer?','Was kann sich bei der Regel ändern?'),
-         ('Was verändert die Hormonspirale?','Was kann sich bei der Regel ändern?')]
+TITEL = [('So wirkt das Kondom.','Schutz beim Sex.'),
+         ('So wirkt die Kombinationspille.','Einnahme und Verträglichkeit.'),
+         ('So wirkt die Kupferspirale.','Wirkdauer und Regelschmerzen.'),
+         ('So wirkt die Hormonspirale.','Wirkdauer und Regelschmerzen.')]
 INFO = {
 'Foerder': [
  ('Bei Latexallergie gibt es geeignete Kondome *ohne Latex*.','Die heile Hülle fängt Sperma auf. Sie hält *Spermien* zurück.','Das *Risiko* für viele Infektionen beim Sex sinkt. Haut bleibt frei.','Benutze bei jedem Sex *von Anfang an* ein neues Kondom.'),
@@ -15,7 +15,7 @@ INFO = {
  ('Ein Hormon macht den Schleim am Gebärmutterhals *zäher*. Spermien kommen schwerer durch.','Der Schleim schützt *nicht* vor Infektionen beim Sex.','Die Spirale wirkt lange. *Tägliche Tabletten* sind nicht nötig.','Später können Blutung und Schmerzen *schwächer* werden.')],
 'ESA': [
  ('Bei Latexallergie gibt es geeignete Kondome *ohne Latex* aus Kunststoff.','Eine heile Hülle hält *Spermien* zurück.','Bei sexuell übertragbaren Infektionen (STI) bleibt ein *Restrisiko*. Nicht alle Haut ist bedeckt.','Ein neues Kondom muss bei jedem Sex *von Anfang an* sitzen.'),
- ('Die Hormone hemmen meist den *Eisprung*. Ohne freie Eizelle gibt es keine Befruchtung.','Die Pille hält keine Erreger zurück. Sie bietet *keinen STI-Schutz*.','Die Pille *regelmäßig* nach Plan nehmen. Vergessen kann den Schutz mindern.','Menschen vertragen sie *unterschiedlich*. Eigene Beschwerden ärztlich klären.'),
+ ('Die Hormone hemmen meist den *Eisprung*. Ohne freie Eizelle gibt es keine Befruchtung.','Die Pille hält keine Erreger zurück. Darum besteht *kein STI-Schutz*.','Die Pille *regelmäßig* nach Plan nehmen. Vergessen kann den Schutz mindern.','Menschen vertragen sie *unterschiedlich*. Eigene Beschwerden ärztlich klären.'),
  ('Kupfer stört die Bewegung und die *Befruchtungsfähigkeit* der Spermien.','Es entsteht *kein STI-Schutz*. Kupfer hält keine Erreger zurück.','Die Spirale wirkt lange ohne *tägliche Einnahme*.','Blutung und Regelschmerzen können *stärker* werden.'),
  ('Ein Hormon macht den Schleim am Gebärmutterhals *zäher*. Spermien kommen schwerer durch.','Das bietet *keinen STI-Schutz*.','Die Spirale wirkt lange ohne *tägliche Einnahme*.','Nach anfangs unregelmäßiger Blutung können Blutung und Schmerzen *schwächer* werden.')],
 'MSA': [
@@ -26,8 +26,8 @@ INFO = {
 'AHR': [
  ('Bei Latexallergie kommen geeignete *synthetische* Kondome infrage.','Eine intakte Hülle bildet eine mechanische *Barriere* für Sperma.','Beim Schutz vor sexuell übertragbaren Infektionen (STI) ist Naturmembran *nicht gleichwertig*. Auch bei geeigneten Kondomen bleiben Hautstellen frei. Erreger können dort übertragen werden.','Ein neues Kondom bei jedem Sex *von Anfang an* richtig anwenden.'),
  ('Östrogen und Gestagen hemmen vor allem den *Eisprung*. Ohne freie Eizelle ist keine Befruchtung möglich.','Die Wirkung auf den Zyklus bildet keine *Barriere* gegen Erreger.','Vergessene Tabletten können den Schwangerschaftsschutz *mindern*.','Die Verträglichkeit ist *individuell*. Gleiche Einnahme belegt keine gleiche Reaktion.'),
- ('Kupfer stört die Bewegung und *Befruchtungsfähigkeit* der Spermien. Der Eisprung kann stattfinden.','Die Wirkung auf Spermien bedeutet *keinen STI-Schutz*.','Die Spirale wirkt langfristig ohne *tägliche Einnahme*.','Blutung und Regelschmerzen können *stärker* werden. Hormonfrei heißt nicht beschwerdefrei.'),
- ('Ein Gestagen macht den Schleim am Gebärmutterhals für Spermien *schwer durchlässig*.','Veränderter Schleim bietet *keinen STI-Schutz*.','Die Spirale wirkt langfristig ohne *tägliche Einnahme*.','Anfangs kann die Blutung unregelmäßig sein. Später können Blutung und Schmerzen *abnehmen*.')]
+ ('Kupfer stört die Bewegung und *Befruchtungsfähigkeit* der Spermien. Der Eisprung kann stattfinden.','Kupfer wirkt auf Spermien. Es entsteht *kein STI-Schutz*.','Die Spirale wirkt langfristig ohne *tägliche Einnahme*.','Blutung und Regelschmerzen können *stärker* werden. Hormonfrei heißt nicht beschwerdefrei.'),
+ ('Ein Gestagen macht den Schleim am Gebärmutterhals für Spermien *schwer durchlässig*.','Durch den zäheren Schleim entsteht *kein STI-Schutz*.','Die Spirale wirkt langfristig ohne *tägliche Einnahme*.','Anfangs kann die Blutung unregelmäßig sein. Später können Blutung und Schmerzen *abnehmen*.')]
 }
 # Diagnose, Rückmeldung und nächster Denkimpuls sind je Antwortalternative fest verbunden.
 def wahl(abschnitt, ziel, frage, richtig, fehler, grund, impuls, starter):
@@ -73,3 +73,19 @@ INFOHILFE = [[['Was hält die heile Hülle zurück?', 'Die Hülle fängt Sperma 
  [['Suche den Schleim am Ausgang der Gebärmutter.',
    'Zäher Schleim erschwert Spermien den Weg. Vor Infektionen schützt er nicht.'],
   ['Was bedeutet der Pfeil nach unten?', 'Die Spirale wirkt lange. Später können Blutung und Schmerzen nachlassen.']]]
+
+# Zweite Hilfe zur Erklärung des Bildes. Alle Niveaus erreichen sie mit derselben Taste.
+BILDDETAIL={
+ 'ESA':(('Auch eine geeignete Hülle ohne Latex hält Sperma zurück.','Neben der bedeckten Fläche bleibt Haut frei. Dort können Erreger übertragen werden.'),
+        ('Auf der rechten Seite wird keine Eizelle frei.','Der Kalender zeigt die Einnahme. Ob jemand Übelkeit bekommt, zeigt er nicht.'),
+        ('Bewegen sich Spermien schlechter, erreichen sie die Eizelle schwerer.','Der Pfeil zeigt eine Möglichkeit. Nicht bei allen wird die Blutung stärker.'),
+        ('Der Schleim liegt auf dem Weg der Spermien zur Eizelle.','Blutungen können am Anfang unregelmäßig sein und später nachlassen.')),
+ 'MSA':(('Barriere bedeutet hier, dass die heile Hülle Sperma zurückhält.','Außerhalb der Hülle können sich Hautstellen berühren.'),
+        ('Vergleiche die Eierstöcke. Nur links wird eine Eizelle frei.','Die Lücke im Kalender betrifft den Schutz. Verträglichkeit ist eine andere Frage.'),
+        ('Kupfer beeinträchtigt die Spermien. Erreger werden dadurch nicht aufgehalten.','Der Pfeil betrifft die Blutung. Auch Regelschmerzen können zunehmen.'),
+        ('Suche die enge Stelle am Gebärmutterhals. Dort wird der Schleim zäher.','Eine schwächere Blutung ist möglich. Der Pfeil sagt keinen persönlichen Verlauf voraus.')),
+ 'AHR':(('Eine Hülle kann Sperma zurückhalten. Für STI-Schutz zählt auch das Material.','Das Modell zeigt freie Haut neben der Hülle. Manche Erreger brauchen kein Sperma.'),
+        ('Ohne freie Eizelle kann keine Befruchtung stattfinden. Eine Barriere entsteht dabei nicht.','Gleiche Einnahme bedeutet nicht, dass zwei Körper gleich reagieren.'),
+        ('Der Eisprung kann stattfinden. Die Bewegung der Spermien ist beeinträchtigt.','Auch ohne Hormone können Blutung und Schmerzen stärker werden.'),
+        ('Das Modell zeigt den Weg der Spermien durch den Schleim. Es zeigt keine Erregersperre.','Der Pfeil steht für eine mögliche Abnahme, nicht für eine sichere Linderung.'))
+}

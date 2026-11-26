@@ -39,6 +39,8 @@ def run():
                         if ix==0:shot('04-Papier-'+str(i+1))
                         tap('written')
                     if ix==0:shot('05-Uebergang')
+                    tap('lookup');tap('fill',2);tap('written')
+                    assert page_name()=='lookup'
                     tap('startq')
                     bank=p.evaluate("t=>JSON.parse(document.querySelector('#material').textContent).levels[t]",tier)
                     for i,q in enumerate(bank['fragen']):
@@ -58,6 +60,13 @@ def run():
                             tap('revise');tap('menu');tap('questions')
                             assert p.locator('#entry').input_value()==partial
                             tap('help');assert 'Hilfe 2' in p.locator('#page h1').inner_text();tap('back')
+                            model=p.evaluate("k=>JSON.parse(document.querySelector('#material').textContent).modelle[k]",q['modell'])
+                            p.locator('#entry').fill(model['beispiel']+' Etwas anderes kommt noch dazu.')
+                            tap('help');assert 'Welcher Satz' in p.locator('#page').inner_text()
+                            tap('back');tap('check')
+                            assert p.locator('.primary').get_attribute('data-action')=='compare'
+                            if q['modell']=='pille':shot('16-Beide-Schritte-und-Zusatz')
+                            tap('revise')
                             if q['modell']=='schleim':
                                 p.locator('#entry').fill('Der Schleim wird dicker, aber Spermien kommen leichter durch.');tap('check')
                                 shot('12a-Widerspruch');tap('help');tap('more');tap('more');shot('12b-Hilfe-zum-Widerspruch')

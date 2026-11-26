@@ -31,6 +31,7 @@
      const r=h.getBoundingClientRect();if(!helpPos)helpPos=[r.right,r.top];
      if(Math.abs(r.right-helpPos[0])>1 || Math.abs(r.top-helpPos[1])>1)problem('Hilfe verschoben');
    }
+   if($('#page').dataset.screen==='feedback' && !key('advance'))ok($('.context:nth-of-type(2)')?.innerText.includes('Infokarte')||all('.context').some(n=>n.innerText.includes('Infokarte')&&n.innerText.includes(' · ')),'Kartenstelle in der Rückmeldung');
    for(const g of all('figure svg')){const r=g.getBoundingClientRect();if(!box(r)||r.height<44||r.width<44)problem('Abbildung außerhalb');}
    for(const s of all('#page h1,#page h2,#page p,#page figcaption,#page button,#page li,#page .feedback')){
      if(s.innerText.trim())words.add(s.innerText.trim());
@@ -38,7 +39,13 @@
  }
  function tap(a,v){const b=$('[data-action="'+a+'"]'+(v===undefined?'':'[data-value="'+v+'"]'));ok(b&&!b.disabled,a+' '+v);b.click();taps++;}
  const chapter=material.levels[tier],quellen=[];
- function enter(text){const el=$('#entry');el.value=text;el.dispatchEvent(new Event('input',{bubbles:true}));}
+ function enter(text){
+   const el=$('#entry');
+   // Im kleinen Editor können weitere Textteile folgen. Beim Ersetzen alle Teile löschen.
+   while(key('earlier'))tap('earlier');
+   while(el.value){el.value='';el.dispatchEvent(new Event('input',{bubbles:true}));}
+   el.value=text;el.dispatchEvent(new Event('input',{bubbles:true}));
+ }
  function visitHelp(n,kind){
    const old=$('#page').innerText,value=$('#entry')?.value;
    tap('help');inspect(kind+' Hilfe 1');
@@ -51,7 +58,7 @@
  for(let i=0;i<4;i++){
    for(let part=0;part<2;part++){
      inspect('Info '+(i+1)+'/'+(part+1));
-     ok(!key('pick')&&!$('#entry'),'reine Information');
+     ok(!key('pick')&&!$('#entry')&&!$('#page h1').innerText.endsWith('?'),'Informationstitel ohne Frage');
      const texts=all('.lesson p').map(el=>el.innerText);
      ok(texts.length===2,'zwei Lernbelege');
      texts.forEach((text,index)=>{
@@ -64,16 +71,17 @@
    inspect('Papier '+(i+1));ok($('#page h1').innerText==='Schreibe auf deine Infokarte.','Schreibauftrag');
    const f=all('li strong').map(n=>n.innerText);
    ok(JSON.stringify(f)===JSON.stringify(cs[i].felder.map(f=>f.wort)),'Originalwörter');
-   ok($('.sheet .active').innerText===String(i+1),'richtige Blatthälfte');
+   ok($('.sheet .active').innerText===(i+1)+' – '+cs[i].titel,'richtige Blatthälfte');
    ok($('#page').innerText.includes('Stehen alle vier Wörter bei 1, 2, 3 und 4'),'Selbstkontrolle');
+   ok(all('.sheet span').map(n=>n.innerText).join('|')===cs.slice(i<2?0:2,i<2?2:4).map(c=>c.nummer+' – '+c.titel).join('|'),'Methodennamen auf beiden Blatthälften');
    if(assist)visitHelp(2,'Papier');papers++;tap('written');
  }
- inspect('Übergang');tap('startq');
+ inspect('Übergang');ok($('#page h1').innerText==='Sind alle vier Infokarten ausgefüllt?' && key('lookup'),'Selbstkontrolle mit Kartenrückweg');tap('startq');
  for(let i=0;i<4;i++){
    const q=chapter.fragen[i],m=material.modelle[q.modell];
    inspect('Frage '+(i+1));ok($('.locator').innerText.includes(cs[i].texte[q.abschnitt].titel),'Überschrift wie auf Papier');
    if(assist){
-     tap('help');inspect('Kartenorientierung');tap('reference');inspect('Ersatzkarte');
+     tap('help');inspect('Kartenorientierung');ok($('#page').innerText.includes('Lies auf deiner Infokarte')&&$('#page').innerText.includes('unter der Überschrift'),'konkreter Suchauftrag');tap('reference');inspect('Ersatzkarte');
      for(let n=q.abschnitt;n>0;n--)tap('prev');
      for(const t of cs[i].texte){inspect('Ersatzkarte '+t.titel);ok($('#page').innerText.includes(t.volltext),'Originaltext');tap('following');}
      inspect('Ersatzkarte Pearl-Index');tap('helpback');tap('back');
@@ -92,10 +100,13 @@
        enter(samples[0]);tap('check');inspect('Teilantwort');ok($('#page').innerText.includes(part),'richtige Teilaussage');
        tap('help');tap('more');inspect('Adaptiver Impuls');ok($('#page').innerText.includes(m.impulse[1]),'fehlende Folge');tap('back');tap('revise');
        enter(samples[1]);tap('help');inspect('Überarbeiteter Entwurf in Hilfe 2');
-       ok(Object.values(m.fehler).some(text=>$('#page').innerText.includes(text)), 'Hilfe reagiert vor erneutem Prüfen');
+       ok(Object.values(m.fragen).some(text=>$('#page').innerText.includes(text)), 'Hilfe reagiert vor erneutem Prüfen');
        tap('back');tap('check');inspect('Widerspruch');ok($('#page').innerText.includes('Prüfe den anderen Teil'),'Widerspruch');
        tap('help');tap('more');inspect('Satzstarter');tap('more');inspect('Fachhilfe');tap('more');inspect('Beispiel');tap('back');tap('revise');
-       enter('Ich meine einen anderen Zusammenhang.');tap('check');inspect('Unsicher');tap('compare');inspect('Selbstvergleich');
+       enter(m.beispiel+' Das ist eine weitere Sache.');tap('check');inspect('Unklarer Zusatz');
+       ok($('#page').innerText.includes('Beide Schritte sind da.'),'vorhandene Aussagen bestätigt');
+       tap('help');tap('back');tap('revise');enter('Ich meine einen anderen Zusammenhang.');tap('check');inspect('Unsicher');
+       ok(key('compare').classList.contains('primary')&&!key('revise').classList.contains('primary') && $('#page').innerText.includes('Deine Antwort kann richtig sein. Vergleiche sie mit diesem Beispiel.'),'passende primäre Handlung');tap('compare');inspect('Selbstvergleich');
        ok($('#page').innerText.includes(m.beispiel),'Beispiel zum Vergleich');
        if(i>=2){tap('compared');continue;}tap('revise');
      }
