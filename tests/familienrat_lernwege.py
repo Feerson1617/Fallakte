@@ -42,7 +42,7 @@ TRANSFER={'Mutter':['Die Gebärmutter zieht','Kontraktionen können auch ohne Op
 def walk(b,tier,stumble):
     page=b.new_page(has_touch=True,viewport={'width':820 if stumble else 1180,'height':1180 if stumble else 820})
     page.goto(APP.as_uri()); page.locator('#zweiter-tag').click();f=page.frame_locator('iframe[title^=Dienstag]')
-    page.set_default_timeout(4500)
+    page.set_default_timeout(int(os.getenv('FALLAKTE_BROWSER_TIMEOUT_MS','4500')))
     log=[]
     def control(id):f.locator('#'+id).click()
     def choose(texts):

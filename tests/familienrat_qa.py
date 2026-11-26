@@ -41,7 +41,7 @@ def tap(frame,id):
     control.tap()
 def start(page,url,lms=False):
     page.goto(url)
-    shell=page.frame(name='sco') if lms else page
+    shell=page.frame_locator('iframe[name=sco]') if lms else page
     shell.locator('#zweiter-tag').tap()
     return shell,shell.frame_locator('iframe[title^=Dienstag]')
 def set_team(f,team):
@@ -315,7 +315,7 @@ def engine_run(engine,url,reference=None,routes=None):
                 for n in NAMES[2:]:
                     tap(f,'open-'+n);case(page,f,n,team,probe,trace,shots)
             if route==0 or route==7:
-                page.reload();shell=page.frame(name='sco') if lms else page
+                page.reload();shell=page.frame_locator('iframe[name=sco]') if lms else page
                 shell.locator('#zweiter-tag').tap();f=shell.frame_locator('iframe[title^=Dienstag]')
                 recover(page,f,shell,team,'Freundin',5)
                 expect(f.locator('section')).to_contain_text(BANK['cases']['Freundin']['tasks'][-1]['prompt'])

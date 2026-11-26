@@ -28,7 +28,11 @@ jobs:
         run: |
           python gesamt/auslieferung.py
           python gesamt/kompakt/abnahme.py
+          python -m zipfile -e gesamt/kompakt/Kompakt-Abnahmenachweise.zip build/Work
+          python gesamt/rueckfall.py
           cd dist/Gesamt
+          sha256sum -c ../../build/Work/Programmdateien.sha256
+          test "$(sha256sum Rueckfall-Vorbereitung.zip | cut -d' ' -f1)" = 562d27c68e0884a86c3f86494b9a7a1a8753b34282011626b0a98ced12df2563
           sha256sum *.html *.zip > SHA256SUMS
           test "$(sha256sum Fallakte-Vorbereitung-SCORM12.zip | cut -d' ' -f1)" = 0d752ea942b745c8e997d622465815f3cd7ecc4d64965d62c19d9de357d84857
       - uses: actions/upload-artifact@v4
@@ -37,4 +41,5 @@ jobs:
           path: |
             /tmp/ub-software/dist/Gesamt/
             /tmp/ub-software/build/Gesamtpruefung/
+            /tmp/ub-software/build/Work/
           if-no-files-found: error

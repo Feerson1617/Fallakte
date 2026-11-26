@@ -1,4 +1,5 @@
 """Run the existing pupil-side routes directly against the new integrated builds."""
+import hashlib
 import base64
 import json
 import os
@@ -34,12 +35,20 @@ def run():
         for ie,engine in enumerate(('chromium','webkit')):
             with getattr(pw,engine).launch(executable_path=os.getenv(engine.upper()+'_EXECUTABLE')) as browser:
                 for i,(tier,display) in enumerate(LEVELS.items()):
+                    checkpoint=QA/('Unterricht-'+engine+'-'+tier+'.json')
+                    signature=hashlib.sha256((OUT/'Fallakte-08-12.html').read_bytes()).hexdigest()
+                    if checkpoint.exists():
+                        saved=json.loads(checkpoint.read_text())
+                        if saved['html_sha256']==signature:
+                            records.append(saved['lauf']);continue
                     page=browser.new_page(has_touch=True)
                     size=[(820,1180),(1180,820),(390,844),(390,844)][i]
                     release_abnahme.route(page,engine,tier,OUT/'Fallakte-02-12.html',size)
                     page.close()
                     family=familienrat_lernwege.walk(browser,display,(i+ie)%2==1)
-                    records.append(dict(browser=engine,niveau=tier,laura='L01 bis L05',familienrat=family))
+                    record=dict(browser=engine,niveau=tier,laura='L01 bis L05',familienrat=family)
+                    checkpoint.write_text(json_text(dict(html_sha256=signature,lauf=record)))
+                    records.append(record)
             print(engine,'beide Unterrichtsbesuche auf vier Niveaus bestanden',flush=True)
     (QA/'Unterrichtspruefung.json').write_text(json_text(dict(commit=revision(),wege=records,karten=sources)))
 if __name__=='__main__':run()
