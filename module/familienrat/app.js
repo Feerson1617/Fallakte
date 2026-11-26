@@ -275,7 +275,8 @@ function caseView(){
   const paper=at===c.tasks.length+1, transfer=paper && hasApplication(person);
   const application=transfer?record(person+'/Transfer'):null;
   heading(root,c.recovery[at].section).dataset.section=c.recovery[at].id;
-  const layout=el(root,'div',undefined,'split');originalPanel(layout,person,c,transfer && !application.finished);
+  const layout=el(root,'div',undefined,'split');
+  const chat=originalPanel(layout,person,c,transfer && !application.finished);
   const box=el(layout,'section',undefined,'card');
   const advance=()=>go('case',{person,at:at+1});
   if(at===0){
@@ -297,14 +298,16 @@ function caseView(){
   }else{
     if(transfer){
       const task=c.transfer;box.dataset.application=task.sectionId;
-      if(!application.finished)paragraph(box,ui.helpBeforePaper,'small');
-      el(box,'h2',advanced(level) && task.advancedPrompt?task.advancedPrompt:task.prompt);
-      options(box,task,application,null,true);
       if(!application.finished){
+        paragraph(box,ui.helpBeforePaper,'small');
+        el(box,'h2',advanced(level) && task.advancedPrompt?task.advancedPrompt:task.prompt);
+        options(box,task,application,null,true);
         tools(box,task,application,idx);
         btn(box,ui.switch,'jump',()=>{application.skipped=true;go('laura',{at:0});});
         return;
       }
+      const checked=paragraph(chat,application.feedback,'feedback');
+      checked.id='response';checked.tabIndex=-1;checked.setAttribute('role','status');
       paragraph(box,applicationStatus(person),'tag');
     }
     const prefix=c.recovery[0].id.split('-')[0];

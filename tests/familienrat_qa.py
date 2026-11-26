@@ -195,6 +195,8 @@ def case(page,f,person,team,probe,trace,shots=False):
         expect(f.locator('#answer-0')).to_be_disabled()
         expect(f.locator('section')).not_to_contain_text(BANK['ui']['helpBeforePaper'])
         expect(f.locator('#help-tier,#member')).to_have_count(0)
+        expect(f.locator('section .answers')).to_have_count(0)
+        expect(f.locator('aside #response')).to_be_visible()
         outcome=BANK['ui'][['applied','assisted','assisted','appliedSolution'][source]]
         expect(f.locator('section')).to_contain_text(outcome)
         application=dict(person=person,frage=prompt,option=selected,rueckmeldung=expected,status=outcome,
