@@ -26,8 +26,12 @@ HIT="""e=>{
 }"""
 
 def reach(frame,control):
-    folded=control.locator('xpath=ancestor::details[not(@open)]/summary').first
-    if folded.count(): reach(frame,folded);folded.tap()
+    # Ein summary ist im eigenen geschlossenen details bereits sichtbar.
+    ancestor="ancestor::details[not(@open)]"
+    if control.evaluate("e=>e.tagName==='SUMMARY'"):ancestor="parent::details/"+ancestor
+    folded=control.locator('xpath='+ancestor+'/summary').first
+    if folded.count():
+        reach(frame,folded);folded.tap()
     if control.evaluate(HIT):return
     paper=control.locator('xpath=ancestor::*[contains(concat(" ",normalize-space(@class)," ")," blatt ")][1]')
     assert paper.count(),control.get_attribute('id')

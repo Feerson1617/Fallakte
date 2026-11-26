@@ -120,9 +120,14 @@ def release():
             assert json.loads(evidence)['html_sha256']==sha((OUT/'Fallakte-08-12.html').read_bytes())
             logs['Tageswechsel/'+e+'.json']=evidence
             img=QA/'Sitzung'/f'{e}-{day}-frueher-Stopp.jpg';screens['Stundenabschluss/'+img.name]=img.read_bytes()
+        longtext=QA/'Langtext'
+        evidence=(longtext/'Langtextpruefung.json').read_bytes()
+        assert json.loads(evidence)['html_sha256']==sha((OUT/'Fallakte-08-12.html').read_bytes())
+        img=longtext/(day+'-Aussage-mit-grosser-Schrift.jpg')
+        screens[img.name]=img.read_bytes();logs['Langtextpruefung.json']=evidence
         c=vertrag(day,b);c['revision']=revision
         archive(target/'Materialvertrag-Work.zip',{'Materialvertrag.json':dump(c),'Auftraege.md':md_contract(c)})
-        archive(target/'CLT-Abnahmematrix.zip',{'Matrix.csv':matrix(rows.values(),day),'Grundlagen.md':(HERE/'Grundlagen.md').read_bytes(),'Perspektiven.md':(HERE/'planung.md').read_bytes(),'Zeitplanung.json':dump(c['phasen'])})
+        archive(target/'CLT-Abnahmematrix.zip',{'Matrix.csv':matrix(rows.values(),day),'Fachdidaktische-Durchsicht.md':(HERE/('Beratung.md' if day=='02' else 'Familiennachrichten.md')).read_bytes(),'Grundlagen.md':(HERE/'Grundlagen.md').read_bytes(),'Perspektiven.md':(HERE/'planung.md').read_bytes(),'Zeitplanung.json':dump(c['phasen'])})
         archive(target/'Pruefprotokolle.zip',logs)
         failnote=f'Bei {len(geoerrors)} Beobachtungen ließ sich die vollständige Erreichbarkeit einer angebotenen Taste nicht nachweisen. Die betreffenden Beschriftungen, Positionen, Browser und Fenster stehen im Geometrieprotokoll.' if geoerrors else 'Alle in den Geometrieprotokollen erfassten aktiven Steuerungen waren über ihren aktuellen Ansichtsabschnitt erreichbar.'
         report=f"""# Prüfung am {day}.12.2026
