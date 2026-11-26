@@ -44,7 +44,8 @@ with TemporaryDirectory() as tmp,sync_playwright() as pw:
                     s.locator('[data-action=recovery]').click();a.locator('#abbrechen').click()
                     if i>=2:assert a.locator('#erklaerung').input_value()==sample
                     s.locator('[data-action=abschluss]').click();expect(a.locator('#material-titel')).to_have_text('Lauras Anliegen')
-                    assert 'Regelschmerzen' not in a.locator('.material-inhalt').inner_text()
+                    early=a.locator('.material-inhalt').inner_text()
+                    assert 'Regelschmerzen' not in early and 'Kondom' not in early and 'Latex' in early
                     if i==0:p.screenshot(path=OUT/(e+'-02-frueher-Stopp.jpg'),quality=63)
                     touch(a,'#material-zurueck');s.locator('#zurueck').click();f=room(s,'zweiter')
                     if i>=2:assert f.locator('textarea').input_value()=='Der Mutter ist Lauras Gesundheit wichtig.'

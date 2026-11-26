@@ -246,7 +246,7 @@
     const drawView = {abschluss:v=>{
       title.textContent='Lauras Anliegen';
       const known=window.Beratung.known(v.levelId);
-      const list=element('ul');for(const k of known)list.append(element('li',window.LAURA.facts[k]));
+      const list=element('ul');for(const text of known)list.append(element('li',text));
       if(known.length)body.append(list);
       body.append(element('p','Deine Lehrkraft gibt die Abschlusskarte aus. Welchen Rat gibst du Laura jetzt? Begründe deinen Rat.'));
     },orientation:v=>{title.textContent='Hilfe';body.append(element('p',v.text));},cards:cardsView,card:cardView,help:helpView,questions:questionsView,summary:summaryView};

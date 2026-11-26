@@ -20,6 +20,16 @@ def karten(bank):
 
 def laura(bank):
     karten(bank)
+    # Die Schlussübersicht enthält Lauras Anliegen. Methodeneigenschaften stehen auf den Infokarten.
+    bank['concernsShort']={
+        'ausgang':'Laura ist 19. Sie möchte sicheren Schutz vor einer Schwangerschaft.',
+        'latex':'Laura verträgt kein Latex.',
+        'hormonfrage':'Laura weiß wenig über Hormone. Sie ist unsicher.',
+        'sti':'Sie möchte sich beim Sex auch vor Infektionen schützen.',
+        'routine':'Ihr Alltag wechselt. Tägliche Dinge vergisst sie manchmal.',
+        'freundin':'Eine Freundin hatte Probleme mit der Pille. Laura weiß nicht, wie sie selbst die Pille verträgt.',
+        'schmerzen':'Laura hat starke Regelschmerzen. Die Ursache ist noch nicht ärztlich geklärt.',
+        'einlage':'Das Einsetzen einer Spirale macht ihr Sorgen. Sie hat sich noch nicht entschieden.'}
     for stage in bank['stages'].values():
         if stage['id']=='L05':stage['evidence']='Welche Wünsche und Sorgen von Laura sind für deinen Rat wichtig?'
         for tier,task in stage['levels'].items():

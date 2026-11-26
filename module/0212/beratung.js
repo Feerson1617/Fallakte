@@ -41,6 +41,13 @@ window.Beratung = (() => {
     active.messages.push({kind,speaker,text,stageId:active.stageId,
       strategy:active.draft.strategy,revision:active.revision});
   }
+  function knownConcerns(tier) {
+    const session=sessions.get(tier);
+    if(!session)return [];
+    const short=bank().concernsShort;
+    const text=tier==='Foerder'||tier==='ESA'?short:bank().facts;
+    return bank().stages[session.stageId].knownFacts.filter(key=>Object.hasOwn(short,key)).map(key=>text[key]);
+  }
   function newDraft(strategy='') {
     return {strategy,reason:'',compared:false,optionId:null,grant:null,feedback:null,anchorsOpen:false};
   }
@@ -354,7 +361,7 @@ window.Beratung = (() => {
       area.append(element('h2','',end?'Schlussrat gesendet':'Lies Lauras Antwort.'));
       if(end){
         const facts=element('details','fallwissen');facts.append(element('summary','','Was ist Laura wichtig?'));
-        const list=element('ul');for(const k of stage().knownFacts)list.append(element('li','',bank().facts[k]));facts.append(list);area.append(facts);
+        const list=element('ul');for(const text of knownConcerns(active.tier))list.append(element('li','',text));facts.append(list);area.append(facts);
         area.append(element('p','','Deine Lehrkraft gibt dir die Abschlusskarte. Begründe dort deinen persönlichen Schlussrat.'));
         area.append(control('beratung-fertig','Mein Schlussrat steht auf der Abschlusskarte',()=>{
           window.dispatchEvent(new CustomEvent('beratung:abgeschlossen',{detail:active.tier}));window.Runde1.home();
@@ -403,7 +410,7 @@ window.Beratung = (() => {
       const facts=element('details','fallwissen');
       facts.append(element('summary','','Was ist Laura wichtig?'));
       const list=element('ul');
-      for(const key of stage().knownFacts)list.append(element('li','',bank().facts[key]));
+      for(const text of knownConcerns(active.tier))list.append(element('li','',text));
       facts.append(list);area.append(facts);
     }
     return area;
@@ -440,7 +447,7 @@ window.Beratung = (() => {
     window.dispatchEvent(new Event('beratung:view'));
   }
   return Object.freeze({
-    known:tier=>bank().stages[sessions.get(tier)?.stageId]?.knownFacts || [],
+    known:knownConcerns,
     begin,has:tier=>sessions.has(tier),resume,pause,
     status:()=>active ? {tier:active.tier,stageId:active.stageId,phase:active.phase} : null
   });
