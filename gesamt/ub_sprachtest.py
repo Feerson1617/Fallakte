@@ -47,8 +47,8 @@ def run():
                         if width==820:page.screenshot(path=folder/f'{engine}-{i}-02.jpg',quality=68)
                         f.locator('[data-strategy=K]').click()
                         if i<2:
-                            f.locator('.grund').first.click()
-                            if not f.locator('#nachricht-senden').is_visible():f.locator('.grund').nth(1).click()
+                            method=f.evaluate("t=>window.LAURA.stages.L01.levels[t].strategies.K.options.find(o=>o.correct).id",level.replace('Förder','Foerder'))
+                            f.locator('[data-option="'+method+'"]').click()
                         else:
                             f.locator('#pruefcode').fill(f.evaluate('window.LAURA.stages.L01.code'));f.locator('#fachcheck-pruefen').click()
                         f.locator('#nachricht-senden').click();f.locator('#beratung-weiter').click()

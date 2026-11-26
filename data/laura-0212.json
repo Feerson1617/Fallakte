@@ -12,7 +12,7 @@
   },
   "strategies": {
     "K": {
-      "label": "Synthetisches Kondom ohne Latex",
+      "label": "Kondom aus Kunststoff ohne Latex",
       "methods": [
         "K"
       ]
@@ -36,21 +36,21 @@
       ]
     },
     "K+P": {
-      "label": "Synthetisches Kondom ohne Latex und Kombinationspille",
+      "label": "Kondom aus Kunststoff ohne Latex und Kombinationspille",
       "methods": [
         "K",
         "P"
       ]
     },
     "K+Cu": {
-      "label": "Synthetisches Kondom ohne Latex und Kupferspirale",
+      "label": "Kondom aus Kunststoff ohne Latex und Kupferspirale",
       "methods": [
         "K",
         "Cu"
       ]
     },
     "K+H": {
-      "label": "Synthetisches Kondom ohne Latex und Hormonspirale",
+      "label": "Kondom aus Kunststoff ohne Latex und Hormonspirale",
       "methods": [
         "K",
         "H"

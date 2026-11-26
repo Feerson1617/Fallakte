@@ -265,7 +265,7 @@ window.Beratung = (() => {
       more.open=active.moreOpen || other.includes(active.draft.strategy);
       const token=renderNumber;
       more.ontoggle=()=>{if (active && renderNumber===token) active.moreOpen=more.open;};
-      more.append(element('summary','','Weitere Strategien'));
+      more.append(element('summary','','Weitere Vorschläge'));
       const list=element('div','strategie-grid');
       for (const id of other) list.append(strategyButton(id));
       more.append(list);

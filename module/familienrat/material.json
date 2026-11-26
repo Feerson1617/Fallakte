@@ -186,13 +186,13 @@
               "ok": true
             },
             {
-              "text": "Einen Abbruch mit Medikamenten vornehmen lassen.",
+              "text": "Die Schwangerschaft mit Medikamenten abbrechen.",
               "feedback": "Dazu rät die Freundin. Die Mutter empfiehlt hier, die Schwangerschaft fortzusetzen.",
               "ok": false,
               "revealsSolution": true
             },
             {
-              "text": "Die medizinischen Möglichkeiten in einer Arztpraxis klären lassen.",
+              "text": "In der Arztpraxis nach den Möglichkeiten fragen.",
               "feedback": "Das wäre ein möglicher nächster Schritt, steht aber nicht als Rat in der Nachricht der Mutter.",
               "ok": false
             }
@@ -653,12 +653,12 @@
               "revealsSolution": true
             },
             {
-              "text": "Einen Abbruch mit Medikamenten vornehmen lassen.",
+              "text": "Die Schwangerschaft mit Medikamenten abbrechen.",
               "feedback": "Das ist der Rat der Freundin.",
               "ok": true
             },
             {
-              "text": "Die medizinischen Möglichkeiten in einer Arztpraxis klären lassen.",
+              "text": "In der Arztpraxis nach den Möglichkeiten fragen.",
               "feedback": "Das wäre ein möglicher nächster Schritt, steht aber nicht als Rat in der Nachricht der Freundin.",
               "ok": false
             }
@@ -668,7 +668,7 @@
             "An wen richtet sich dieser Satz?",
             "Welches Wort leitet den Rat ein?",
             "Welche Handlung wird Laura vorgeschlagen?",
-            "Einen Abbruch mit Medikamenten vornehmen lassen. Das ist der konkrete Rat. Wähle ihn aus."
+            "Die Schwangerschaft mit Medikamenten abbrechen. Das ist der konkrete Rat. Wähle ihn aus."
           ],
           "helpByLevel": {
             "Förder": [
@@ -676,28 +676,28 @@
               "An wen richtet sich dieser Satz?",
               "Welches Wort leitet den Rat ein?",
               "Welche Handlung wird Laura vorgeschlagen?",
-              "Einen Abbruch mit Medikamenten vornehmen lassen. Das ist der Rat der Freundin."
+              "Die Schwangerschaft mit Medikamenten abbrechen. Das ist der Rat der Freundin."
             ],
             "ESA": [
               "Lies den letzten Satz in der Nachricht von Lauras Freundin.",
               "An wen richtet sich dieser Satz?",
               "Welches Wort leitet den Rat ein?",
               "Welche Handlung wird Laura vorgeschlagen?",
-              "Einen Abbruch mit Medikamenten vornehmen lassen. Das ist der konkrete Rat. Wähle ihn aus."
+              "Die Schwangerschaft mit Medikamenten abbrechen. Das ist der konkrete Rat. Wähle ihn aus."
             ],
             "MSA": [
               "Lies den letzten Satz in der Nachricht von Lauras Freundin.",
               "An wen richtet sich dieser Satz?",
               "Welches Wort leitet den Rat ein?",
               "Welche Handlung wird Laura vorgeschlagen? Mit welchem Satz aus der Nachricht kannst du deine Deutung begründen?",
-              "Einen Abbruch mit Medikamenten vornehmen lassen. Das ist der konkrete Rat. Wähle ihn aus."
+              "Die Schwangerschaft mit Medikamenten abbrechen. Das ist der konkrete Rat. Wähle ihn aus."
             ],
             "AHR": [
               "Lies den letzten Satz in der Nachricht von Lauras Freundin.",
               "An wen richtet sich dieser Satz?",
               "Welches Wort leitet den Rat ein?",
               "Welche Handlung wird Laura vorgeschlagen? Mit welchem Satz aus der Nachricht kannst du deine Deutung begründen?",
-              "Einen Abbruch mit Medikamenten vornehmen lassen. Das ist der konkrete Rat. Wähle ihn aus."
+              "Die Schwangerschaft mit Medikamenten abbrechen. Das ist der konkrete Rat. Wähle ihn aus."
             ]
           },
           "shortOptions": [
@@ -1056,13 +1056,13 @@
               "ok": true
             },
             {
-              "text": "Einen Abbruch mit Medikamenten vornehmen lassen.",
+              "text": "Die Schwangerschaft mit Medikamenten abbrechen.",
               "feedback": "Lies den letzten Satz. Dort steht der Rat an Laura: Die Person rät Laura, die Schwangerschaft fortzusetzen.",
               "ok": false,
               "revealsSolution": true
             },
             {
-              "text": "Die medizinischen Möglichkeiten in einer Arztpraxis klären lassen.",
+              "text": "In der Arztpraxis nach den Möglichkeiten fragen.",
               "feedback": "Lies den letzten Satz. Dort steht der Rat an Laura: Die Person rät Laura, die Schwangerschaft fortzusetzen.",
               "ok": false,
               "revealsSolution": true
@@ -1443,13 +1443,13 @@
               "revealsSolution": true
             },
             {
-              "text": "Einen Abbruch mit Medikamenten vornehmen lassen.",
+              "text": "Die Schwangerschaft mit Medikamenten abbrechen.",
               "feedback": "Das ist nicht sein konkreter Rat. Lies den letzten Satz: Er rät Laura, ihre medizinischen Möglichkeiten ärztlich klären zu lassen.",
               "ok": false,
               "revealsSolution": true
             },
             {
-              "text": "Die medizinischen Möglichkeiten in einer Arztpraxis klären lassen.",
+              "text": "In der Arztpraxis nach den Möglichkeiten fragen.",
               "feedback": "Diesen konkreten Rat gibt der Vater.",
               "ok": true
             }
@@ -1459,7 +1459,7 @@
             "An wen richtet sich dieser Satz?",
             "Welches Wort leitet den Rat ein?",
             "Welche Handlung wird Laura vorgeschlagen?",
-            "Die medizinischen Möglichkeiten in einer Arztpraxis klären lassen. Das ist der konkrete Rat. Wähle ihn aus."
+            "In der Arztpraxis nach den Möglichkeiten fragen. Das ist der konkrete Rat. Wähle ihn aus."
           ],
           "helpByLevel": {
             "Förder": [
@@ -1467,28 +1467,28 @@
               "An wen richtet sich dieser Satz?",
               "Welches Wort leitet den Rat ein?",
               "Welche Handlung wird Laura vorgeschlagen?",
-              "Die medizinischen Möglichkeiten in einer Arztpraxis klären lassen. Diesen konkreten Rat gibt der Vater."
+              "In der Arztpraxis nach den Möglichkeiten fragen. Diesen konkreten Rat gibt der Vater."
             ],
             "ESA": [
               "Lies den letzten Satz in der Nachricht von Lauras Vater.",
               "An wen richtet sich dieser Satz?",
               "Welches Wort leitet den Rat ein?",
               "Welche Handlung wird Laura vorgeschlagen?",
-              "Die medizinischen Möglichkeiten in einer Arztpraxis klären lassen. Das ist der konkrete Rat. Wähle ihn aus."
+              "In der Arztpraxis nach den Möglichkeiten fragen. Das ist der konkrete Rat. Wähle ihn aus."
             ],
             "MSA": [
               "Lies den letzten Satz in der Nachricht von Lauras Vater.",
               "An wen richtet sich dieser Satz?",
               "Welches Wort leitet den Rat ein?",
               "Welche Handlung wird Laura vorgeschlagen? Mit welchem Satz aus der Nachricht kannst du deine Deutung begründen?",
-              "Die medizinischen Möglichkeiten in einer Arztpraxis klären lassen. Das ist der konkrete Rat. Wähle ihn aus."
+              "In der Arztpraxis nach den Möglichkeiten fragen. Das ist der konkrete Rat. Wähle ihn aus."
             ],
             "AHR": [
               "Lies den letzten Satz in der Nachricht von Lauras Vater.",
               "An wen richtet sich dieser Satz?",
               "Welches Wort leitet den Rat ein?",
               "Welche Handlung wird Laura vorgeschlagen? Mit welchem Satz aus der Nachricht kannst du deine Deutung begründen?",
-              "Die medizinischen Möglichkeiten in einer Arztpraxis klären lassen. Das ist der konkrete Rat. Wähle ihn aus."
+              "In der Arztpraxis nach den Möglichkeiten fragen. Das ist der konkrete Rat. Wähle ihn aus."
             ]
           },
           "shortOptions": [
@@ -2034,7 +2034,7 @@
     "used": "Nach der gezeigten Lösung richtig gewählt.",
     "compare": "Mit den Aussagen vergleichen",
     "free": "Deine Erklärung",
-    "freeNote": "Dein Text steht hier. Ihr besprecht ihn im Unterricht.",
+    "freeNote": "Dein eigener Text bleibt unbewertet. Ihr besprecht ihn im Unterricht.",
     "help": "Hilfe",
     "more": "Mehr Hilfe",
     "solution": "Lösung ansehen",

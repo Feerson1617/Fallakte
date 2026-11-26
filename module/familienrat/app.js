@@ -255,6 +255,7 @@ function options(box,task,r,onDone,application=false){
   if(r.feedback){const fb=paragraph(box,r.feedback,r.valid?'feedback':'feedback retry');fb.id='response';fb.tabIndex=-1;fb.setAttribute('role','status');}
   if(r.valid && !application){
     paragraph(box,task.id==='Reichweite'?ui.limitChecked+' '+status(r):status(r),'tag');
+    if(r.compared && r.text)paragraph(box,ui.freeNote,'small');
     btn(box,ui.next,'next',onDone,'primary');
   }
 }

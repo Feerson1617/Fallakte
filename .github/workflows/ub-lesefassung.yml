@@ -1,0 +1,52 @@
+name: Unterrichtsbesuche · Lesefassung
+on:
+  push:
+    branches: [entwicklung/ub-sprache-27-11]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  abnahme:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    container: mcr.microsoft.com/playwright/python:v1.62.0-noble
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [layout, beratung, zusatz, status, familie-0, familie-1, familie-2, familie-3, familie-4, familie-5, familie-6, familie-7]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Unterrichtsbesuche aus identischen Quellen bauen
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          python -m pip install -r tests/requirements.txt
+          python gesamt/ub_sprachfassung.py
+          mkdir -p build/Gesamtpruefung
+      - name: Lernwege prüfen
+        env:
+          SUITE: ${{ matrix.suite }}
+          PYTHONPATH: gesamt:tests:gesamt/kompakt
+        run: |
+          export FALLAKTE_FAMILIEN_HTML="$GITHUB_WORKSPACE/dist/Gesamt/Fallakte-08-12.html"
+          export FALLAKTE_ZUSATZ_HTML="$GITHUB_WORKSPACE/dist/Gesamt/Fallakte-02-12.html"
+          case "$SUITE" in
+            layout) python gesamt/ub_sprachtest.py && python tests/runde2a_bedienung.py ;;
+            beratung) python gesamt/beratung_scan.py ;;
+            zusatz) python tests/vertiefungen.py ;;
+            status) python gesamt/familien_scan.py chromium tandem && python gesamt/familien_scan.py webkit tandem ;;
+            familie-*) python -c 'import sys;from familienwege import weg;[weg((e,int(sys.argv[1]))) for e in ("chromium","webkit")]' "${SUITE#familie-}" ;;
+          esac
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Pruefung-${{ matrix.suite }}
+          path: |
+            build/Gesamtpruefung/
+            build/vertiefungen/
+            build/runde1/qa/
+      - uses: actions/upload-artifact@v4
+        if: matrix.suite == 'layout'
+        with:
+          name: Unterrichtsbesuche-HTML-und-SCORM
+          path: dist/Gesamt/
