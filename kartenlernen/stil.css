@@ -79,3 +79,5 @@ textarea{border:2px solid #6f8977;border-radius:.48rem;padding:.35em;width:100%;
  #page[data-screen=help]>button{grid-column:2;grid-row:1}
  #page[data-screen=help]>.actions{grid-column:2;grid-row:2/4}
 }
+.tight #page[data-screen=compare]>.context{display:none}
+.tight #page[data-screen=compare] #draft{height:2.65em}
