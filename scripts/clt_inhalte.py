@@ -13,6 +13,23 @@ STEPS={
 
 def klar(text):
     paare=(
+       ('Auch hormonfrei ist Verhütung möglich. Ein geeignetes synthetisches Kondom besteht nicht aus Latex.',
+        'Eine Möglichkeit ohne Hormone ist ein Kondom aus Kunststoff ohne Latex.'),
+       ('Naturmembranprodukte sind zur STI-Risikominderung nicht gleichwertig. Prüfe, ob das synthetische latexfreie Kondom dafür geeignet ist.',
+        'Kondome aus Naturmembran bieten diesen Infektionsschutz nicht. Bei Kondomen aus Kunststoff: Achte auf den Hinweis zum Infektionsschutz auf der Packung.'),
+       ('Für STI-Risikominderung kommt ein dafür geeignetes synthetisches latexfreies Kondom infrage. Naturmembranen sind nicht gleichwertig.',
+        'Ein dafür geeignetes Kondom aus Kunststoff ohne Latex senkt das Risiko einer Ansteckung. Kondome aus Naturmembran bieten diesen Schutz nicht.'),
+       ('Geeignetes synthetisches latexfreies Kondom richtig benutzen. Ob die Pille zusätzlich passt, hängt auch von Eignung, Einnahme und Lauras Entscheidung ab.',
+        'Das Kondom aus Kunststoff ohne Latex richtig benutzen. Möchte Laura zusätzlich die Pille? Passt die Pille zu ihrer Gesundheit? Kann Laura sie nach Plan nehmen?'),
+       ('Geeignete synthetische latexfreie Kondome sind selbst Barrieren. Die Pille hat eine andere Wirkung.',
+        'Kondome aus Kunststoff ohne Latex halten Spermien zurück. Die Pille wirkt anders.'),
+       ('Ein geeignetes synthetisches latexfreies Kondom hält Spermien zurück und senkt bei richtiger Anwendung das Risiko vieler STI. Ein Risiko bleibt.',
+        'Ein passendes Kondom aus Kunststoff ohne Latex hält Spermien zurück. Richtig benutzt senkt es das Risiko vieler Infektionen beim Sex. Ein Risiko bleibt.'),
+       ('geeignetes synthetisches latexfreies Kondom','passendes Kondom aus Kunststoff ohne Latex'),
+       ('geeignete synthetische latexfreie Kondome','passende Kondome aus Kunststoff ohne Latex'),
+       ('Das geeignete synthetische Kondom','Das Kondom aus Kunststoff ohne Latex'),
+       ('Das synthetische Kondom','Das Kondom aus Kunststoff ohne Latex'),
+       ('Synthetisches Kondom ohne Latex ergänzen','Kondom aus Kunststoff ohne Latex ergänzen'),
        ('Persönliche Fragen zu Hormonen und medizinische Eignung klären.', 'Laura kann in der Arztpraxis fragen: Passt die Pille zu mir?'),
        ('Regelmäßige Einnahme nach Plan nötig.', 'Die Pille muss sie nach Plan nehmen.'),
        ('Lauras wechselnden Alltag berücksichtigen.', 'Lauras Alltag wechselt.'),
@@ -29,6 +46,7 @@ def einfache_sprache(ctx):
     for k in ('feedback','condition','evidence'):
         if k in ctx:ctx[k]=klar(ctx[k])
     ctx['hints']=list(map(klar,ctx['hints']))
+    if ctx.get('correction',{}).get('label'):ctx['correction']['label']=klar(ctx['correction']['label'])
     for op in ctx.get('options',[]):
         for k in ('feedback','text'):op[k]=klar(op[k])
 

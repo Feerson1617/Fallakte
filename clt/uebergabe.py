@@ -59,6 +59,10 @@ def verify_source(day,b):
         for field in ('knownFacts','learningGoal','recovery'):assert s[field]==ref[field]
         for t,l in s['levels'].items():
             assert l['message']==ref['levels'][t]['message']
+            if t in ('Foerder','ESA'):
+                wortlaut=json.dumps(l,ensure_ascii=False).lower()
+                for begriff in ('synthetisch','medizinische eignung klären','sagt ihre verträglichkeit nicht voraus'):
+                    assert begriff not in wortlaut,(k,t,begriff)
             for m,w in l['strategies'].items():
                 original=ref['levels'][t]['strategies'][m]
                 for field in ('status','reply','feedback','condition','questions'):assert w[field]==(klar(original[field]) if field in ('condition','feedback') else original[field])
