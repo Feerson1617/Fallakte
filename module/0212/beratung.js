@@ -71,7 +71,7 @@ window.Beratung = (() => {
   function pause() {
     if (!active) return;
     active.pageScroll=window.scrollY;
-    active.chatScroll=document.getElementById('chat-meldungen')?.scrollTop ?? active.chatScroll;
+    active.chatScroll=document.getElementById('beratung-verlauf')?.scrollTop ?? active.chatScroll;
     if (root().contains(document.activeElement)) active.focusId=document.activeElement.id;
     window.Material.close(false);
     active=null;
@@ -151,7 +151,7 @@ window.Beratung = (() => {
     const proposal='Mein Rat: '+bank().strategies[draft.strategy].label+'.';
     appendMessage('send','Du',reason ? proposal+' '+reason : proposal);
     appendMessage('reaction','Laura',strategy.reply);
-    if(!followingStage())window.dispatchEvent(new CustomEvent('beratung:abgeschlossen',{detail:active.tier}));
+    if(!followingStage() && Object.values(bank().stages).filter(s=>s.playable).every(s=>active.messages.some(m=>m.kind==='send' && m.stageId===s.id)))window.dispatchEvent(new CustomEvent('beratung:abgeschlossen',{detail:active.tier}));
     active.chatScroll=null;
     render('beratung-reaktion',true);
   }
@@ -165,7 +165,7 @@ window.Beratung = (() => {
     if (active.phase!=='sent' || !following?.playable) return;
     enter(following.id,false);
     render('beratung-stage',true);
-    root().scrollIntoView({block:'start'});
+
   }
   function chat() {
     const history=element('div','beratung-verlauf');
@@ -176,30 +176,12 @@ window.Beratung = (() => {
     history.setAttribute('aria-label','Gespräch mit Laura');
     const messages=element('div','chat-meldungen');
     messages.id='chat-meldungen';
-    const latest=active.messages.length-1;
-    const showPast=control('fruehere-nachrichten','Gesprächsverlauf',button=>{
-      active.historyOpen=!active.historyOpen;
-      for (const entry of messages.querySelectorAll('[data-past=true]')) entry.hidden=!active.historyOpen;
-      button.setAttribute('aria-expanded',String(active.historyOpen));
-      messages.scrollTop=0;
-    });
-    showPast.setAttribute('aria-controls',messages.id);
-    showPast.setAttribute('aria-expanded',String(active.historyOpen));
-    let hasPast=false;
-    for (const [index,message] of active.messages.entries()) {
+    for (const message of active.messages) {
       const entry=element('div','chat-entry');
       entry.dataset.stage=message.stageId;
       entry.dataset.kind=message.kind;
       entry.dataset.speaker=message.speaker;
       entry.dataset.aboutStrategy=message.strategy;
-      const currentStart=message.stageId===active.stageId && ['opening','recap'].includes(message.kind);
-      const recentPair=index>=latest-1 && message.revision===active.revision;
-      const visible=active.phase==='sent' ? recentPair : currentStart || recentPair;
-      if (!visible) {
-        hasPast=true;
-        entry.dataset.past='true';
-        entry.hidden=!active.historyOpen;
-      }
       let sender=message.speaker;
       if (message.kind==='question' || message.kind==='answer') {
         const historical=message.revision!==active.revision || active.phase==='sent';
@@ -219,7 +201,7 @@ window.Beratung = (() => {
       }
       messages.append(entry);
     }
-    if (hasPast) history.append(showPast);
+
     history.append(messages);
     return history;
   }
@@ -322,6 +304,7 @@ window.Beratung = (() => {
     for (const option of info().options) {
       const b=control('grund-'+option.id,option.text,()=>check(option.id),'grund');
       b.dataset.option=option.id;
+      if(active.draft.optionId===option.id && active.draft.feedback?.type==='A')b.dataset.urteil='falsch';
       b.setAttribute('aria-pressed',String(active.draft.optionId===option.id));
       field.append(b);
     }
@@ -462,7 +445,7 @@ window.Beratung = (() => {
     const target=root();
     const lastHistory=target.querySelector('#beratung-verlauf');
     if (!showLatest && !restore && !target.hidden && lastHistory && lastHistory.dataset.level===active.tier) {
-      active.chatScroll=lastHistory.querySelector('#chat-meldungen').scrollTop;
+      active.chatScroll=lastHistory.scrollTop;
     }
     const header=element('header','beratung-kopf');
     const title=element('h1','',stage().title);
@@ -477,14 +460,14 @@ window.Beratung = (() => {
     history.dataset.level=active.tier;
     layout.append(history,work());
     target.replaceChildren(header,layout);
-    const transcript=history.querySelector('#chat-meldungen');
+    Arbeitsplatz.setup(target,layout.lastElementChild,history,header,layout.querySelector('#hilfe'),
+      b=>window.Material.orient('Lies Lauras Antwort. Die Taste in der Aufgabe führt weiter.',b));
+    const transcript=history;
     transcript.scrollTop=showLatest || active.chatScroll===null ? transcript.scrollHeight : active.chatScroll;
     const focus=document.getElementById(focusId);
+    if(focusId==='fachmeldung')Arbeitsplatz.zeigen(focus);
     focus?.focus({preventScroll:true});
-    if (!restore && focus && (focusId==='fachmeldung' || focusId==='aktueller-rat' || focusId==='beratung-reaktion')) {
-      const rect=focus.getBoundingClientRect();
-      if (rect.bottom<0 || rect.top>innerHeight) focus.scrollIntoView({block:'nearest'});
-    }
+
     window.dispatchEvent(new Event('beratung:view'));
   }
   return Object.freeze({

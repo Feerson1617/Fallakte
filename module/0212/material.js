@@ -243,7 +243,7 @@
     delete dialog.dataset.method;
     delete dialog.dataset.section;
     body.replaceChildren();
-    const drawView = {cards:cardsView,card:cardView,help:helpView,questions:questionsView,summary:summaryView};
+    const drawView = {orientation:v=>{title.textContent='Hilfe';body.append(element('p',v.text));},cards:cardsView,card:cardView,help:helpView,questions:questionsView,summary:summaryView};
     if (view.context?.strategy) {
       const task = window.LAURA.stages[view.context.stageId].levels[view.context.levelId];
       const chosen = task.choiceLabels?.[view.context.strategy] || window.LAURA.strategies[view.context.strategy].label;
@@ -253,12 +253,15 @@
     }
     const first = drawView[view.type](view) || title;
     if (!dialog.open) dialog.showModal();
+    dialog.dataset.hilfe=String(['help','orientation'].includes(view.type));
+    Arbeitsplatz.prepareDialog(dialog,body);
     body.scrollTop = view.scrollTop || 0;
     const focus = view.focusId && document.getElementById(view.focusId);
     (focus || first).focus({preventScroll:true});
   }
 
   window.Material = Object.freeze({
+    orient:(text,trigger)=>begin({type:'orientation',text},trigger),
     cardLabel,
     finalAdvice,
     openCards: trigger => begin({type:'cards'},trigger),

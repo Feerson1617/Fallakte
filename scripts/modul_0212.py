@@ -10,6 +10,8 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'dist/Runde-1'
 
 
+from arbeitsplatz import einbetten
+
 def data_url(file,mime):
     return f'data:{mime};base64,'+base64.b64encode(file.read_bytes()).decode('ascii')
 
@@ -133,7 +135,7 @@ def build():
     license_text='\n'.join(p.read_text() for p in sorted((ROOT/'assets').glob('*-OFL.txt')))
     page=page.replace('</body>','<script type="text/plain" id="font-licenses">'+license_text+'</script>\n</body>')
     dest=OUT/'Fallakte.html'
-    dest.write_text(page)
+    dest.write_text(einbetten(page))
     assert dest.stat().st_size<10_000_000
     print(dest,sha256(dest.read_bytes()).hexdigest())
     return dest

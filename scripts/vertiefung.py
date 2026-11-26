@@ -2,6 +2,8 @@
 import json
 from modul_0212 import ROOT, OUT, commit
 
+from arbeitsplatz import einbetten
+
 def legacy():
     return json.loads((ROOT/'data/dialogdaten.js').read_text().split('const FALLAKTE = ',1)[1].strip().removesuffix(';'))
 
@@ -76,8 +78,9 @@ def make_bank(person):
     return bank
 
 def document(bank):
-    return (ROOT/'module/vertiefung/index.html').read_text().replace('STYLE_CSS',(ROOT/'module/vertiefung/style.css').read_text()).replace(
+    page=(ROOT/'module/vertiefung/index.html').read_text().replace('STYLE_CSS',(ROOT/'module/vertiefung/style.css').read_text()).replace(
         'BANK_JSON',json.dumps(bank,ensure_ascii=False).replace('<','\\u003c')).replace('APP_JS',(ROOT/'module/vertiefung/app.js').read_text())
+    return einbetten(page)
 
 def export(bank):
     person=bank['person']

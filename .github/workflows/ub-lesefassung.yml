@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: [layout, beratung, zusatz, status, familie-0, familie-1, familie-2, familie-3, familie-4, familie-5, familie-6, familie-7]
+        suite: [ergonomie, layout, beratung, zusatz, status, familie-0, familie-1, familie-2, familie-3, familie-4, familie-5, familie-6, familie-7]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -32,6 +32,7 @@ jobs:
           export FALLAKTE_FAMILIEN_HTML="$GITHUB_WORKSPACE/dist/Gesamt/Fallakte-08-12.html"
           export FALLAKTE_ZUSATZ_HTML="$GITHUB_WORKSPACE/dist/Gesamt/Fallakte-02-12.html"
           case "$SUITE" in
+            ergonomie) python gesamt/ergonomie.py ;;
             layout) python gesamt/ub_sprachtest.py && python tests/runde2a_bedienung.py ;;
             beratung) python gesamt/beratung_scan.py ;;
             zusatz) python tests/vertiefungen.py ;;
@@ -50,3 +51,20 @@ jobs:
         with:
           name: Unterrichtsbesuche-HTML-und-SCORM
           path: dist/Gesamt/
+  uebergabe:
+    needs: abnahme
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          path: eingang
+      - run: |
+          python -m pip install lxml
+          python gesamt/ergonomie_release.py eingang uebergabe
+          cd uebergabe
+          sha256sum -c SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Unterrichtsbesuche-geprueft
+          path: uebergabe/

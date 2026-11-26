@@ -15,9 +15,13 @@ def module(page,day):
 
 def spalten(frame,left,right,width):
     a=frame.locator(left).bounding_box();b=frame.locator(right).bounding_box()
-    assert a and b and frame.evaluate('document.documentElement.scrollWidth <= innerWidth+1')
+    assert b and frame.evaluate('document.documentElement.scrollWidth <= innerWidth+1')
     if width>=650:assert a['x']+a['width']<=b['x']+1,(a,b)
-    else:assert a['y']+a['height']<=b['y']+1,(a,b)
+    else:
+        assert a is None
+        frame.locator('.gespraech-wechsel:visible').click()
+        assert frame.locator(left).is_visible() and not frame.locator(right).is_visible()
+        frame.locator('.gespraech-wechsel:visible').click()
 
 def run():
     folder=QA/'Sprachansichten';folder.mkdir(parents=True,exist_ok=True)
@@ -53,23 +57,25 @@ def run():
                             f.locator('#pruefcode').fill(f.evaluate('window.LAURA.stages.L01.code'));f.locator('#fachcheck-pruefen').click()
                         f.locator('#nachricht-senden').click();f.locator('#beratung-weiter').click()
                         assert not f.locator('.fachmeldung').inner_text().strip()
-                        f.locator('#fruehere-nachrichten').click()
+                        if width<650:f.locator('.gespraech-wechsel:visible').click()
                         expect(f.locator('[data-stage=L01][data-kind=send]')).to_be_visible()
                         page.locator('#zurueck').click();f=module(page,'08')
                         f.locator('#level-0').select_option(level);f.locator('#start').click()
                         spalten(f,'.msg','section.card',width)
+                        if width<650:f.locator('.gespraech-wechsel:visible').click()
                         f.get_by_text('Originalnachricht lesen',exact=True).click()
                         expect(f.locator('.msg')).to_contain_text('deine körperliche Gesundheit')
+                        if width<650:f.locator('.gespraech-wechsel:visible').click()
                         f.locator('#next').click()
                         if i>=2:f.locator('textarea').fill('Ihr ist Lauras Gesundheit wichtig.');f.locator('#compare').click()
-                        f.locator('#answer-2').click();expect(f.locator('.retry')).to_be_visible()
+                        f.locator('#answer-2').click();expect(f.locator('.feedback.falsch')).to_be_visible()
                         f.locator('#answer-0').click()
-                        assert not f.locator('.retry,#answer-2').count()
+                        assert not f.locator('.feedback.falsch,#answer-2').count()
                         f.locator('#next').click()
-                        f.get_by_text('Frühere Nachrichten',exact=True).click()
+                        if width<650:f.locator('.gespraech-wechsel:visible').click()
                         assert 'Du · Mutter' in f.locator('.chat-history').inner_text()
                         if i>=2:assert 'Ihr ist Lauras Gesundheit wichtig.' in f.locator('.chat-history').inner_text()
-                        f.get_by_text('Frühere Nachrichten',exact=True).click()
+                        if width<650:f.locator('.gespraech-wechsel:visible').click()
                         if width==820:page.screenshot(path=folder/f'{engine}-{i}-08.jpg',quality=68)
                         assert not issues,issues
                         rows.append(dict(browser=engine,niveau=level,breite=width,hoehe=height))

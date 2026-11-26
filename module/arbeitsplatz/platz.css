@@ -1,0 +1,89 @@
+[hidden]{display:none!important}
+main:has(.lernraum){padding:0;max-width:none}
+.lernraum{margin:0 auto;display:flex;flex-direction:column;min-width:0;max-width:81rem!important;overflow:clip;padding:0 .45rem}
+.lernraum .arbeitskopf{display:flex;align-items:center;flex:0 0 auto;gap:.4rem;min-width:0;padding:2px 0;margin:0}
+.arbeitskopf>:first-child:not(button){margin:0;min-width:0}
+.arbeitskopf h1,.arbeitskopf #beratung-stage{font:600 1rem/1.2 system-ui,sans-serif;margin:0}
+.arbeitskopf .beratung-kopf{margin:0!important}
+button.hilfezugang,#beratung button.hilfezugang,dialog button.hilfezugang{margin:0 0 0 auto;align-self:flex-start;background:#ffdb69;color:#342b16;border:1px solid #a17812;border-radius:.5rem;min-height:44px;min-width:44px;font:700 1rem/1.12 system-ui,sans-serif;padding:.32em .65em;cursor:pointer}
+.lernraum .arbeitsfelder{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.3fr);gap:.65rem;align-items:stretch;flex:1;min-height:0;margin:0}
+.lernraum .gespraech{position:static;max-height:none;min-height:0;overflow:auto;overscroll-behavior:contain;background:#eef2ef;padding:.55rem}
+.lernraum .gespraech .chat-history{max-height:none;overflow:visible}
+.lernraum .gespraech-wechsel{display:none;min-height:44px}
+.blatt{display:flex!important;flex-flow:column;align-items:stretch;min-height:0;min-width:0;flex:1;overflow:clip;padding:.45rem}
+.blatt-inhalt{min-height:0;min-width:0;flex:1;overflow:hidden;overflow-wrap:break-word}
+.blatt-wechsel{display:flex;align-items:center;justify-content:space-between;gap:.5rem;flex:none;margin-top:3px;border-top:1px solid #bdc9c1}
+.blatt-wechsel button{min-height:44px;color:#234858;background:#fff;border:1px solid #9cafa8}
+.blatt-inhalt.geteilt{column-width:100vw;column-gap:0;column-fill:auto}
+.blatt-inhalt.geteilt :is(.answers,.tools,.strategie-grid,.beratung-tools,.kartenverweise,.material-auswahl,.material-schritte,.code-form,.choices,.row,.startwege){display:block!important}
+.blatt-inhalt.geteilt :is(button,input,textarea,select,summary,label,.profile){break-inside:avoid}
+.blatt-inhalt.geteilt :is(.antwort,.grund,.answer,.strategie,.answers button){display:block;max-width:100%}
+.blatt-inhalt.geteilt fieldset{display:block;min-width:0}
+.blatt-inhalt.geteilt legend{float:none!important}
+body:has(dialog[open]) .lernraum .blatt{visibility:hidden}
+dialog[open]{position:fixed!important;inset:0 .45rem 2px auto!important;box-sizing:border-box;margin:0!important;max-height:none!important;height:calc(100% - 2px);width:min(61%,60rem);max-width:100%;display:flex!important;flex-direction:column;overflow:clip!important;padding:.45rem!important}
+dialog[open]::backdrop{background:transparent}
+dialog[open]>.dialoghilfe{position:absolute;right:0;top:2px}
+dialog[open]>h2,dialog[open] .material-kopf{min-height:46px;padding-right:10rem}
+dialog[open] .material-inhalt{overflow:clip}
+dialog[open] #dismiss,dialog[open] #back{align-self:flex-start;min-height:44px}
+@media(max-width:650px),(max-height:340px){
+ .lernraum .arbeitsfelder{grid-template-columns:minmax(0,1fr)}
+ .lernraum .arbeitsfelder>.gespraech{display:none}
+ .lernraum.gespraech-offen .gespraech{display:block}
+ .lernraum.gespraech-offen .arbeitsfelder>.blatt{display:none!important}
+ .lernraum .gespraech-wechsel{display:inline-block}
+ .arbeitskopf{flex-wrap:nowrap}
+ .arbeitskopf>:first-child:not(button){flex:1}
+ dialog[open]{width:calc(100% - .45rem)}
+}
+@media(max-width:475px){.arbeitskopf{flex-wrap:wrap}.arbeitskopf>:first-child:not(button){order:2;flex-basis:100%}}
+.lernraum .arbeitsfelder,#beratung.lernraum .arbeitsfelder{grid-template-rows:minmax(0,1fr);align-items:stretch}
+#material-dialog[open],#dialog[open],body>dialog[open]{width:min(61%,60rem);height:calc(100% - 2px);max-height:calc(100% - 2px);border-radius:.5rem}
+#material-dialog .material-kopf{padding:3px 10rem 3px .4rem;align-items:center;min-height:48px}
+#material-dialog[open]::backdrop{background:transparent}
+#material-dialog #material-zurueck{min-height:44px}
+#beratung .arbeitskopf h1{margin:0}
+@media(max-width:650px),(max-height:340px){#material-dialog[open],#dialog[open],body>dialog[open]{width:calc(100% - .45rem)}}
+
+dialog[open]{max-height:var(--sichtbare-hoehe,100dvh)!important;height:calc(var(--sichtbare-hoehe,100dvh) - 2px)!important}
+
+.gespraech-wechsel{min-width:44px;max-width:52%;text-align:left}
+.gespraech-wechsel .vorschau{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;font-weight:400}
+#beratung .chat-entry[data-speaker=Du],#beratung .chat-entry[data-speaker=Team]{background:#e4ecf1}
+.card .note{background:#f0f1ee;border-color:#8d9892}
+@media(max-width:475px){
+ .lernraum>.arbeitskopf{display:grid;grid-template-columns:minmax(0,1fr) max-content;row-gap:2px}
+ .arbeitskopf>.hilfezugang{grid-area:1/2;justify-self:end}
+ .arbeitskopf>.gespraech-wechsel{grid-area:1/1;max-width:100%;min-width:0}
+ .arbeitskopf>:first-child:not(button){grid-area:2/1/3/3}
+}
+@media(max-width:650px),(max-height:340px){
+ .lernraum .arbeitsfelder,#beratung.lernraum .arbeitsfelder{grid-template-columns:minmax(0,1fr)}
+ .lernraum>.arbeitskopf{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) max-content;gap:3px}
+ .arbeitskopf>.hilfezugang{grid-area:1/3;justify-self:end}
+ .arbeitskopf>.gespraech-wechsel{grid-area:1/2;max-width:100%;min-width:0}
+ .arbeitskopf>:first-child:not(button){grid-area:1/1}
+ .gespraech-wechsel .vorschau{max-width:100%;white-space:nowrap;text-overflow:ellipsis;display:block}
+}
+@media(max-width:475px){
+ .lernraum>.arbeitskopf{grid-template-columns:minmax(0,1fr) max-content}
+ .arbeitskopf>.hilfezugang{grid-area:1/2}
+ .arbeitskopf>.gespraech-wechsel{grid-area:1/1}
+ .arbeitskopf>:first-child:not(button){grid-area:2/1/3/3}
+}
+@media(max-height:360px){
+ .blatt-inhalt label:has(textarea){display:block;break-inside:auto}
+ .blatt textarea{display:block;resize:none;height:2.25em;min-height:44px;max-height:max(44px,calc(var(--sichtbare-hoehe,100dvh)*.2));padding:.12em .4em}
+ .lernraum .blatt{padding:2px}
+ .blatt-wechsel button,#beratung .blatt-wechsel button{padding:.1em .45em}
+ .arbeitskopf .vorschau{line-height:1.1}
+}
+@media(max-height:360px) and (min-width:500px){
+ #dialog[open],body>dialog[open]:has(#back){display:grid!important;grid-template-columns:minmax(0,1fr) auto auto;grid-template-rows:auto minmax(0,1fr);align-items:start;padding:2px!important}
+ #dialog[open]>h2,dialog[open]>#resource{grid-area:1/1;min-height:0;margin:0;padding:0}
+ #dialog[open]>#dismiss,dialog[open]>#back{grid-area:1/2;margin:0 .35rem;padding:.15em .4em}
+ #dialog[open]>.dialoghilfe,dialog[open]:has(#back)>.dialoghilfe{position:static;grid-area:1/3;margin:0}
+ #dialog[open]>#dialog-body,dialog[open]>#reading{grid-area:2/1/3/4;align-self:stretch;padding:2px}
+ dialog[open] .blatt-wechsel button,dialog[open] .row button{padding:.12em .4em}
+}

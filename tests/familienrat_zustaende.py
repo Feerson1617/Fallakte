@@ -57,7 +57,7 @@ def check_sources(page,engine):
         shell,f=open_task('ESA',entry)
         if entry=='transfer':
             shell.locator('[data-action=resources]').click()
-            f.locator('#dialog-body > details').first.locator('summary').first.click()
+            f.locator('#dialog-body .blatt-inhalt > details').first.locator('summary').first.click()
         else:
             f.locator('#cards').click()
         expect(f.locator('#dialog-body details[open]').first).to_contain_text('Gebärmutter')
@@ -93,6 +93,7 @@ def check(engine):
         def outer(action): shell.locator(f'[data-action={action}]').click()
         def entry(name,step,member=None):
             outer('recovery')
+            if name in ['Großmutter','Vater'] and f.locator('#papierstand').count():click('papierstand')
             f.locator('#person').select_option(name)
             f.locator('#entry').select_option(str(step))
             if member is not None:f.locator('#member').select_option(str(member))
@@ -145,11 +146,11 @@ def check(engine):
             expect(f.locator('[data-terminal],#paper-ready,#open-Vater')).to_have_count(0)
             click('open-review')
             compare(tier,weight,concerns,edit=True)
-            expect(f.locator('#open-Vater')).to_be_visible()
+            expect(f.locator('#open-Vater')).to_have_count(0)  # Direkte Bewertung ohne abgeschlossene Familienaufgaben.
             expect(f.locator('#open-review')).to_have_count(0)
             expect(f.locator('[data-terminal]')).to_be_visible()
             expect(f.locator('section')).to_contain_text(BANK['ui']['reasonOpen'])
-            entry('Lauras Frage',2);click('edit-weight')
+            entry('Lauras Frage',2);page.once('dialog',lambda d:d.accept());click('edit-weight')
             entry('Lauras Frage',3);expect(f.locator('#open-Vater')).to_have_count(0)
             expect(f.locator('#open-review')).to_be_visible()
             evidence.append(dict(niveau=tier,wahl=weight,fragen=concerns,wege='Ein Niveau; Hilfe, Abbruch, Festhalten und erneute Auswahl'))

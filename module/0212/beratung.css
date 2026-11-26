@@ -64,3 +64,8 @@
  #beratung-verlauf {position:sticky;top:.5rem}
  #chat-meldungen {max-height:calc(100dvh - 9rem)}
 }
+#beratung #chat-meldungen{max-height:none;overflow:visible}
+#beratung [aria-pressed=true]{background:#e8edf0;border-color:#62788a;box-shadow:inset .21rem 0 #62788a}
+#beratung .senden{background:#29485f;color:white}
+
+#beratung button[data-urteil=falsch]{color:#702d23;border-color:#a14335;background:#faede9}

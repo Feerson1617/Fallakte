@@ -20,7 +20,7 @@ function resource(title,render){
     readingTrail.push({title:heading.textContent,nodes:[...body.childNodes],scroll:dialog.scrollTop});
   }
   heading.textContent=title;body.replaceChildren();render(body);dialog.scrollTop=0;
-  if(!dialog.open)dialog.showModal();
+  if(!dialog.open)dialog.showModal();dialog.dataset.hilfe=String(title==='Hilfe');Arbeitsplatz.prepareDialog(dialog,body);
 }
 function source(){
   const s=stage(),small=['Foerder','ESA'].includes(tier);
@@ -83,16 +83,17 @@ function draw(){
   chat.setAttribute('aria-label','Gespräch mit '+bank.person);
   work.setAttribute('aria-label','Deine Aufgabe');
   const past=state.sent?state.history.slice(0,-3):state.history;
-  if(past.length){const old=add(chat,'details');add(old,'summary','Gesprächsverlauf');past.forEach(x=>add(old,'p',x));}
+  for(const [i,text] of past.entries()){add(chat,'strong',i%3===1?'Du':bank.person);add(chat,'p',text);}
   if(state.direct && s.previousFacts.length){const facts=add(chat,'details');add(facts,'summary','Bisher im Fall');s.previousFacts.forEach(text=>add(facts,'p',text));}
   add(chat,'strong',bank.person);add(chat,'blockquote',s.message[tier].join(' '));
+  const room=()=>Arbeitsplatz.setup(desk,work,chat,h,work.querySelector('#help'),b=>resource('Hilfe',box=>add(box,'p','Lies die Antwort. Tippe dann auf Weiter.')));
   if(state.sent){
     add(chat,'strong','Du');add(chat,'p',state.history.at(-2));
     add(chat,'strong',bank.person);add(chat,'p',state.reply);
     btn(work,state.index+1===bank.stages.length?'Zur Fallübersicht':'Weiter im Gespräch','next',()=>{
       if(state.index+1===bank.stages.length){sessions.delete(tier);port.postMessage({type:'home'});return;}
       const next=fresh(state.index+1,state.history);next.previous=state.choice;save(next);draw();
-    }).className='primary';return;
+    }).className='primary';room();return;
   }
   if(hasChoice && !state.choice){
     add(work,'h2','Welchen Vorschlag machst du?');
@@ -136,6 +137,8 @@ function draw(){
     for(const [q,a] of qs)btn(body,q,'q'+body.childElementCount,()=>{state.asked=q+' '+a;dialog.close();draw();});
   }));
   if(state.asked && !state.valid)add(chat,'p',state.asked);
+  if(state.result||conflict())work.querySelector('#feedback').className=state.valid?'fachlich-passend':conflict()||/^[abc]$/i.test(state.code.trim())||lower()?'fachlich-falsch':'';
+  room();
   port?.postMessage({type:'status',person:bank.person,tier,abschnitt:state.index+1,view:'room'});
 }
 function leaveReading(){
@@ -155,7 +158,7 @@ addEventListener('message',e=>{
     if(data.type!=='open'||data.person!==bank.person||!Object.hasOwn(bank.levels,data.tier))return;
     tier=data.tier;
     const previous=sessions.get(tier);
-    const returning=data.abschnitt===undefined && previous;
+    const returning=previous && (data.abschnitt===undefined || !window.confirm('Diesen Abschnitt neu beginnen? Dein bisheriges Gespräch in diesem Zusatzfall wird ersetzt.'));
     if(dialog.open && (!returning || state!==previous))dialog.close();
     save(returning?previous:fresh((data.abschnitt||1)-1));
     if(data.abschnitt!==undefined)state.direct=true;

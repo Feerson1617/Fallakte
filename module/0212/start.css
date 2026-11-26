@@ -45,3 +45,4 @@ body:has(#reserve-platz:not([hidden])) main{max-width:none;padding:0}
 @media(max-width:34rem){.wortmarke{display:none}.hauptfall{grid-template-columns:4.8rem 1fr;align-items:start}.hauptfall img{grid-row:span 2}.startwege{margin-top:.45rem}.reserven img{width:2.5rem;height:2.5rem}}
 
 #reserve-platz iframe[hidden]{display:none}
+body:has(#reserve-platz:not([hidden])) #reserve-platz iframe{height:100dvh;min-height:0}

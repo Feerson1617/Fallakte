@@ -175,12 +175,15 @@ def measure_route(browser,engine,tier,view,stages,directory,files):
             observations.append(sample(page,stage,'antwort'))
             expect(page.locator(f'.chat-entry[data-stage="{stage}"][data-kind=send]')).to_have_count(1)
             expect(page.locator(f'.chat-entry[data-stage="{stage}"][data-kind=reaction]')).to_have_count(1)
-            history=page.locator('#fruehere-nachrichten')
-            if history.is_visible() and idx==len(stages)-1:
-                history.tap()
-                expect(history).to_have_attribute('aria-expanded','true')
-                expect(page.locator('.chat-entry[data-stage=L01][data-kind=opening]')).to_be_visible()
-                history.tap()
+            if idx==len(stages)-1:
+                switch=page.locator('.gespraech-wechsel:visible')
+                if switch.count():switch.tap()
+                log=page.locator('#beratung-verlauf')
+                assert log.locator('[data-kind=send]').count()==len(stages)
+                assert log.evaluate('e=>e.scrollTop+e.clientHeight>=e.scrollHeight-2')
+                log.evaluate('e=>e.scrollTop=0')
+                expect(log.locator('[data-stage=L01][data-kind=opening]')).to_be_in_viewport()
+                if switch.count():switch.tap()
             entries.append({'abschnitt':stage,'strategie':strategy,'zustaende':observations})
             if idx+1<len(stages):
                 page.locator('#beratung-weiter').tap()

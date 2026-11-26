@@ -18,6 +18,8 @@ def enter(p,person,tier,index):
         p.goto((OUT/'Fallakte.html').as_uri())
         day=p;day.locator('#abschnitt-wahl').click()
     day.locator('#wieder-level-'+tier).click()
+    assert not day.locator('#wiederfall').get_by_role('button',name=person,exact=True).count()
+    day.locator('#papierstand').click()
     day.locator('#wiederfall').get_by_role('button',name=person,exact=True).click()
     day.locator('#abschnitte button').nth(index).click()
     return day.frame_locator('#rahmen-reserve-'+person)

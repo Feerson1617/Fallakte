@@ -19,6 +19,8 @@ OLD = '5d27cc3d61db386468d3f851347690b33b5d86fe'
 DAY02 = '6f969460d00005fefd27fed985b6c95b7f1203bee0a9e4d72fcaaf9aea605cb2'
 SHELL = '6a7be7f9a7aa9510c096fddec167ad1152d1f4e1fab6fe563ce462ac5d3bd430'
 PRACTICE = '911ec450aad893068bbc8af040f09ff7704faa270253f1b7ff84d421ae76ed6f'
+from arbeitsplatz import einbetten
+
 def sha(data):
     return hashlib.sha256(data).hexdigest()
 def git(*args, cwd=ROOT):
@@ -77,7 +79,7 @@ def module_document():
     page=(SRC/'index.html').read_text().replace('STYLES',css).replace('MATERIAL',content.replace('<','\\u003c')).replace('PORTRAITS',json.dumps(imgs)).replace('PROGRAM',(SRC/'app.js').read_text())
     licenses='\n'.join(p.read_text() for p in sorted((ROOT/'assets').glob('*-OFL.txt')))
     page=page.replace('</html>','<script type="text/plain" id="font-licenses">'+licenses+'</script></html>')
-    return bank,page
+    return bank,einbetten(page)
 
 def build():
     REF.parent.mkdir(exist_ok=True)

@@ -16,3 +16,10 @@ h1,h2,h3,p,blockquote{margin:0 0 .65rem}h1,h2{font-family:SerifDM,Georgia,serif;
  .msg {position:sticky;top:.5rem;max-height:calc(100dvh - 1rem);overflow:auto}
  dialog {margin-inline:auto max(2vw,calc((100vw - 73rem)/2));width:min(53vw,39rem)}
 }
+.msg .bubble[data-own=true]{margin-inline-start:1.25rem;background:#e5edf2}
+.card .feedback.falsch, .card [data-urteil=falsch]{background:#fbebe9;border-color:#a93b30;color:#67291f}
+.card [data-urteil=passend]{background:#e6f1e6;border-color:#4b7952;opacity:1}
+button.primary{background:#29485f}
+.feedback.falsch::before{content:'Prüfe deine Auswahl. ';font-weight:bold}
+
+.card .feedback.persoenlich{background:#edf0f2;border-color:#7b858c;color:#24353d}

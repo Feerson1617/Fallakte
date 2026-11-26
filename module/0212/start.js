@@ -5,6 +5,7 @@
   if (!bank) {
     $('start').hidden=true;
     $('lokale-navigation').hidden=true;
+    Arbeitsplatz.refresh();
     $('praesentation').hidden=true;
     $('quellhinweis').hidden=false;
     if (parent!==window) location.replace($('quellhinweis').querySelector('a').href);
@@ -12,9 +13,9 @@
   }
   const tierNames=bank.levels;
   const sections=['start','einstieg','beratung','reserve-platz'];
-  let view='start',level='',pickerTier='',pickerPerson='Laura',origin='start',reserveStatus;
+  let view='start',level='',pickerTier='',pickerPerson='Laura',origin='start',originLevel='',reserveStatus;
   let port;
-  const available=new Set();
+  const available=new Set(),paperRecovery=new Set();
   function grant(person,tier){available.add(tier+'/'+person);}
   window.addEventListener('beratung:abgeschlossen',e=>{
     grant('Tom',e.detail);
@@ -66,13 +67,17 @@
     $('weiterarbeiten').hidden=!saved;
     $('neu').disabled=!level;
     $('neu').classList.toggle('hauptaktion',!saved);
-    for (const b of document.querySelectorAll('[data-optional]')) b.disabled=!available.has(level+'/'+b.dataset.optional);
+    const unlocked=available.has(level+'/Tom');
+    for(const node of document.querySelectorAll('.vertiefungen,.vertiefungen+p,.reserven'))node.hidden=!unlocked;
+    for(const b of document.querySelectorAll('[data-optional]'))b.disabled=!unlocked;
+    Arbeitsplatz.setup($('start'),$('start'),null,$('start-titel'),null,b=>window.Material.orient('Wähle dein Niveau auf dem Laufzettel. Öffne dann Lauras Fall.',b));
   }
   function home() {
     show('start');drawHome();$('start-titel').focus({preventScroll:true});
   }
   function start(stageId,resume=false) {
     if (!level)return;
+    if(!resume && window.Beratung.has(level) && !window.confirm('Diesen Abschnitt neu beginnen? Dein bisheriges Gespräch auf diesem Niveau wird ersetzt.'))return;
     show('beratung');
     if (resume) window.Beratung.resume(level);
     else window.Beratung.begin(level,stageId);
@@ -80,15 +85,24 @@
   }
   function reserve(person,index) {
     if (!level)return;
-    if(index!==undefined)grant(person,level);
-    if(!available.has(level+'/'+person))return;
+
+    if(!available.has(level+'/'+person) && !paperRecovery.has(level))return;
     reserveStatus=null;
     show('reserve-platz');
     window.Reserve0212.open(person,level,index);
   }
   function drawPicker() {
     levelGroup($('wiederniveau'),pickerTier,id=>{pickerTier=id;drawPicker();});
-    $('wiederfall').replaceChildren(...['Laura','Tom','Celina'].map(person=>{
+    let claim=$('papierstand');
+    if(!claim){
+      claim=control('Mein Pflichtfall ist auf Papier abgeschlossen',()=>{paperRecovery.add(pickerTier);drawPicker();});
+      claim.id='papierstand';$('wiederfall').parentElement.before(claim);
+    }
+    claim.hidden=!pickerTier||available.has(pickerTier+'/Tom')||paperRecovery.has(pickerTier);
+    const people=['Laura',...['Tom','Celina'].filter(name=>available.has(pickerTier+'/'+name)||paperRecovery.has(pickerTier))];
+    if(!people.includes(pickerPerson))pickerPerson='Laura';
+    $('wiederfall').parentElement.hidden=people.length===1;
+    $('wiederfall').replaceChildren(...people.map(person=>{
       const b=control(person,()=>{pickerPerson=person;drawPicker();$('wiederfall').querySelector('[aria-pressed=true]').focus();});
       b.setAttribute('aria-pressed',String(pickerPerson===person));return b;
     }));
@@ -102,10 +116,11 @@
       });
       b.dataset.stage=id;b.disabled=!pickerTier;return b;
     }));
+    Arbeitsplatz.setup($('einstieg'),$('einstieg'),null,$('einstieg-titel'),null,b=>window.Material.orient('Dein Laufzettel zeigt deinen Abschnitt. Wähle Niveau und Abschnitt.',b));
   }
   function recovery() {
     if (view==='einstieg')return;
-    origin=view;pickerTier=level;pickerPerson=view==='reserve-platz' && reserveStatus ? reserveStatus.person :'Laura';
+    origin=view;originLevel=level;pickerTier=level;pickerPerson=view==='reserve-platz' && reserveStatus ? reserveStatus.person :'Laura';
     show('einstieg');drawPicker();$('einstieg-titel').focus({preventScroll:true});
   }
   function navigate(action,trigger) {
@@ -124,6 +139,7 @@
   $('weiterarbeiten').onclick=()=>start(undefined,true);
   $('abschnitt-wahl').onclick=recovery;
   $('abbrechen').onclick=()=>{
+    level=originLevel;
     if (origin==='beratung')start(undefined,true);
     else if (origin==='reserve-platz' && reserveStatus)reserve(reserveStatus.person);
     else home();
@@ -135,13 +151,15 @@
   window.addEventListener('reserve0212:status',e=>{reserveStatus=e.detail;communicate();});
   window.addEventListener('message',e=>{
     if (parent===window || e.source!==parent || e.data!=='fallakte:navigation' || !e.ports[0])return;
-    port?.close();port=e.ports[0];port.onmessage=({data})=>navigate(data);
+    port?.close();port=e.ports[0];port.onmessage=({data})=>{if(data==='lehrkraft')$('praesentation').hidden=false;else navigate(data);};
     $('lokale-navigation').hidden=true;
+    Arbeitsplatz.refresh();
     port.postMessage({type:'ready',actions:[
       {id:'home',label:'Fallakten',icon:'folder'},{id:'resources',label:'Infokarten',icon:'book'},
       {id:'recovery',label:'Abschnitt auswählen',icon:'restart'}
     ]});
     communicate();
   });
+  $('praesentation').hidden=!new URLSearchParams(location.search).has('lehrkraft');
   drawHome();
 })();

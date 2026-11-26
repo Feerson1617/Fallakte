@@ -150,7 +150,7 @@ def case(page,f,person,team,probe,trace,shots=False):
             tap(f,'cards')
             expect(f.locator('#dialog-body')).to_contain_text(c['card'])
             if person=='Mutter' and task['id']=='Ergänzung':
-                card=f.locator('#dialog-body > details').first
+                card=f.locator('#dialog-body .blatt-inhalt > details').first
                 if card.get_attribute('open') is None:card.locator('summary').first.tap()
                 if card.locator('details').count():card.locator('details summary').tap()
                 expect(card.get_by_text('Schwangerschaftsgewebe',exact=False).last).to_be_visible()
@@ -278,6 +278,9 @@ def check_freeze(browser,engine,reference=None):
 
 def recover(page,f,shell,team,person,step):
     shell.locator('[data-action=recovery]').tap();set_team(f,team)
+    if person in NAMES[2:] and f.locator('#papierstand').count():
+        assert person not in f.locator('#person option').all_text_contents()
+        tap(f,'papierstand')
     f.locator('#person').select_option(person);f.locator('#entry').select_option(str(step))
     tap(f,'open-entry')
 
@@ -338,7 +341,7 @@ def engine_run(engine,url,reference=None,routes=None):
                 if route==7:
                     recover(page,f,shell,team,'Lauras Frage',2)
                     tap(f,'weight-0');tap(f,'concern-1');tap(f,'fact-1');tap(f,'other')
-                    tap(f,'edit-weight');expect(f.locator('#weight-2')).to_be_visible()
+                    page.once('dialog',lambda d:d.accept());tap(f,'edit-weight');expect(f.locator('#weight-2')).to_be_visible()
                     tap(f,'weight-2')
                     for member,concern in enumerate([1,0]):
                         tap(f,'concern-'+str(concern));tap(f,'fact-'+str(concern))

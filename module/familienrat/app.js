@@ -69,6 +69,8 @@ function popup(title,content,from){
   document.getElementById('dialog-title').textContent=title;
   body.replaceChildren();content(body);dialog.scrollTop=0;
   if(!dialog.open)dialog.showModal();
+  dialog.dataset.hilfe=String(title==='Hilfe' || title.startsWith(ui.helpTitle+' '));
+  Arbeitsplatz.prepareDialog(dialog,body);
 }
 document.getElementById('dismiss').textContent=ui.close;
 document.getElementById('dismiss').onclick=()=>dialog.close();
@@ -105,15 +107,18 @@ const sentences=text=>text.match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map(line=>line.trim
 function remember(id,speaker,text) {
   saved.history.set(id,{speaker,text});
 }
-function earlier(panel,currentId,hiddenTask) {
-  const entries=[...saved.history].filter(([id])=>id!==currentId &&
-    (!hiddenTask || (id!==hiddenTask && id!==hiddenTask+'/entwurf')));
-  if(!entries.length)return;
-  const past=el(panel,'details',undefined,'chat-history');
-  el(past,'summary','Frühere Nachrichten');
-  for(const [,entry] of entries){
-    const item=el(past,'div',undefined,'bubble');
+function transcript(panel,hiddenTask){
+  const log=el(panel,'div',undefined,'chat-history');
+  log.setAttribute('role','log');log.setAttribute('aria-label','Gesprächsverlauf');
+  for(const [id,entry] of saved.history){
+    if(hiddenTask && (id===hiddenTask || id===hiddenTask+'/entwurf'))continue;
+    const item=el(log,'div',undefined,'bubble');
+    item.dataset.own=String(id.includes('/'));
     el(item,'strong',entry.speaker);paragraph(item,entry.text);
+    if(bank.cases[id]){
+      const original=el(item,'details');el(original,'summary','Originalnachricht lesen');
+      paragraph(original,bank.cases[id].original);
+    }
   }
 }
 function message(box,name,text){
@@ -159,7 +164,11 @@ function showHome(){
   btn(box,ui.switch,'jump',()=>go('laura',{at:0}));
   if(saved.completedReview)reserves(box);
 }
+function additionalCases(){
+  return saved.completedReview && names.slice(0,2).every(name=>saved.complete[name]);
+}
 function reserves(box){
+  if(!additionalCases())return;
   el(box,'h2',ui.reserve,'section');
   for(const n of names.slice(2))btn(box,n,'open-'+n,()=>go('case',{person:n,at:0}));
 }
@@ -217,7 +226,7 @@ function draft(box,task,r,c){
   const feedback=paragraph(d,'','small');feedback.setAttribute('role','status');
   sentences(c.original).forEach((line,i)=>{
     btn(d,line,'source-'+i,()=>{
-      if(task.evidenceSentences.includes(i)){r.source=i;draw();root.querySelector('textarea').focus();}
+      if(task.evidenceSentences.includes(i)){r.source=i;draw();const field=root.querySelector('textarea');Arbeitsplatz.zeigen(field);field.focus({preventScroll:true});}
       else{r.wrong=true;feedback.textContent=ui.sourceRetry;}
     });
   });
@@ -248,13 +257,15 @@ function options(box,task,r,onDone,application=false){
       if(application){r.finished=o.ok;r.skipped=false;}
       draw();
       const target=application && o.ok?root.querySelector('[data-handoff]'):document.getElementById('response');
+      Arbeitsplatz.zeigen(target);
       target.tabIndex=-1;
-      target.focus({preventScroll:true});target.scrollIntoView({block:'nearest'});
+      target.focus({preventScroll:true});
     });
     if(target===extra && r.selected===index)extra.open=true;
+    if(r.selected===index)b.dataset.urteil=o.ok?'passend':'falsch';
     b.disabled=r.valid||r.finished===true;b.setAttribute('aria-pressed',String(r.selected===index));
   }
-  if(r.feedback){const fb=paragraph(box,r.feedback,r.valid?'feedback':'feedback retry');fb.id='response';fb.tabIndex=-1;fb.setAttribute('role','status');}
+  if(r.feedback){const fb=paragraph(box,r.feedback,r.valid?'feedback':'feedback falsch');fb.id='response';fb.tabIndex=-1;fb.setAttribute('role','status');}
   if(r.valid && !application){
     paragraph(box,task.id==='Reichweite'?ui.limitChecked+' '+status(r):status(r),'tag');
     if(r.compared && r.text)paragraph(box,ui.freeNote,'small');
@@ -263,11 +274,9 @@ function options(box,task,r,onDone,application=false){
 }
 function originalPanel(layout,person,c,hideAddition){
   const panel=el(layout,'aside',undefined,'msg');
-  remember(person,person,c.original);
-  earlier(panel,person,hideAddition?person+'/Ergänzung':null);
-  message(panel,person,c.lesefassung);
-  const source=el(panel,'details');el(source,'summary','Originalnachricht lesen');
-  paragraph(source,c.original);
+  remember(person,person,c.lesefassung);
+  profile(panel,person);
+  transcript(panel,hideAddition?person+'/Ergänzung':null);
   const r=saved.records[person+'/Ergänzung'];
   if(r?.valid && !hideAddition){el(panel,'h2',ui.addition);paragraph(panel,c.addition);paragraph(panel,c.connection,'small');}
   return panel;
@@ -323,7 +332,7 @@ function caseView(){
     el(box,'h2',ui.paper);
     const step=paperOrder(box,key,{button:true,support:solutionUsed(person)});
     btn(box,step.buttonText,'next',()=>{
-      if(saved.records[person+'/Ergänzung']?.valid)saved.complete[person]=true;
+      if(c.tasks.every(task=>saved.records[person+'/'+task.id]?.valid))saved.complete[person]=true;
       openSection(step.nextId);
     },'primary').dataset.return=step.nextId;
     const matrix=el(box,'details');matrix.dataset.digital='matrix';
@@ -359,6 +368,7 @@ function comparison(box){
   };
   if(p.choice){
     btn(box,ui.editWeight,'edit-weight',()=>{
+      if(!window.confirm('Gewichtung ändern? Die bisherige Prüfung dieser Gewichtung beginnt neu.'))return;
       p.step='choice';p.choice='';p.part=0;p.notes={};p.reason='';p.alternate=false;p.other=false;p.feedback='';
       // Recheck the selection while keeping any support this person already received.
       for(const [key,r] of Object.entries(saved.records)){
@@ -390,6 +400,7 @@ function comparison(box){
       values.forEach((v,i)=>btn(box,v,'fact-'+i,()=>{
         p.alternate=false;
         if(i!==p.concern)record('Bewertung/'+person+'/'+p.concern).wrong=true;
+        p.urteil=i>=2?'falsch':i===p.concern?'persoenlich':'impuls';
         if(i>=2)p.feedback=reviewText(i===2?6:7);
         else if(i!==p.concern)p.feedback=reviewText(p.concern===0?4:5);
         else if(i!==num){p.feedback=bank.crossReference[i];p.alternate=true;}
@@ -422,15 +433,14 @@ function comparison(box){
       });
       tools(box,{...task,personalTier:level},r,target);return;
     }
-    if(p.feedback){const msg=paragraph(box,p.feedback,'feedback retry');msg.setAttribute('role','status');}
+    if(p.feedback){const msg=paragraph(box,p.feedback,'feedback retry '+p.urteil);msg.setAttribute('role','status');}
   }
   evaluationHelp(box,p);
 }
 function lauraView(){
   const at=current.at;heading(root,bank.evaluationSteps[at]).dataset.section=bank.evaluationRecovery[at].id;
   const layout=el(root,'div',undefined,'split'),panel=el(layout,'aside',undefined,'msg');
-  remember('frage','Laura',bank.second);earlier(panel,'frage');
-  message(panel,'Laura',bank.second);
+  remember('frage','Laura',bank.second);profile(panel,'Laura');transcript(panel);
   const box=el(layout,'section',undefined,'card');
   if(at===2)facts(box);else facts(panel);
   if(at===0){
@@ -471,7 +481,11 @@ function lauraView(){
 function pickerView(){
   heading(root,ui.where);chooseLevel(root);if(!level)return;
   if(saved.last)paragraph(root,ui.soloSession,'small');
-  select(root,ui.home,'person',[...names,ui.theme].map(k=>[k,k]),picker.person,v=>{picker={person:v,step:'0'};draw();});
+  if(!additionalCases() && !saved.paperRecovery)
+    btn(root,'Mein Pflichtteil ist auf Papier abgeschlossen','papierstand',()=>{saved.paperRecovery=true;draw();});
+  const available=additionalCases()||saved.paperRecovery?names:names.slice(0,2);
+  if(![...available,ui.theme].includes(picker.person))picker={person:'Mutter',step:'0'};
+  select(root,ui.home,'person',[...available,ui.theme].map(k=>[k,k]),picker.person,v=>{picker={person:v,step:'0'};draw();});
   const n=picker.person,c=bank.cases[n];
   const steps=c?c.recovery.map((r,i)=>[i,c.recovery.filter(s=>s.section===r.section).length>1?r.section+' · '+r.part:r.section]):bank.evaluationSteps.map((v,i)=>[i,v]);
   if(c){
@@ -489,8 +503,14 @@ function pickerView(){
   },'primary');
 }
 function draw(focus=false){
-  root.replaceChildren();
+  root.replaceChildren();root.classList.remove('gespraech-offen');
   if(screen==='home')showHome();else if(screen==='picker')pickerView();else if(current.type==='case')caseView();else lauraView();
+  const work=root.querySelector('.split>.card')||root;
+  const title=root.querySelector(':scope>h1')||work.querySelector('h1');
+  const hint=screen==='picker'?'Suche den Abschnitt auf deinem Laufzettel und wähle ihn aus.':
+    screen==='home'?'Wähle dein Niveau auf dem Laufzettel. Öffne dann die erste Nachricht.':
+    'Lies die aktuelle Nachricht. Der Arbeitsauftrag nennt den nächsten Schritt.';
+  Arbeitsplatz.setup(root,work,root.querySelector('.split>.msg'),title,root.querySelector('#help'),b=>popup('Hilfe',box=>paragraph(box,hint),b));
   notify();
   if(focus){window.scrollTo(0,0);root.querySelector('h1')?.focus({preventScroll:true});}
 }
