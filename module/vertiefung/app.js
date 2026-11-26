@@ -127,8 +127,8 @@ function draw(){
       if(!lower() && !state.compared){
         const field=add(add(work,'label','Deine Erklärung'),'textarea');field.id='erklaerung';field.value=state.reason;
         const compare=btn(work,'Mit den Aussagen vergleichen','vergleichen',()=>{const issue=Entwurf.fehler(state.reason);state.compared=!issue;state.result=issue?.info||'';draw();});
-        compare.disabled=!field.value.trim();
-        field.oninput=()=>{state.reason=field.value;state.result='';work.querySelector('#feedback').textContent='';compare.disabled=!state.reason.trim();};
+        compare.disabled=!field.value.trim();compare.hidden=!!state.result;
+        field.oninput=()=>{state.reason=field.value;state.result='';compare.hidden=false;work.querySelector('#entwurf-bearbeiten')?.remove();work.querySelector('#feedback').textContent='';compare.disabled=!state.reason.trim();};
       }else{
         if(!lower()){
           const own=add(work,'details');add(own,'summary','Eigener Grund');
@@ -141,6 +141,9 @@ function draw(){
       }
     }
     add(work,'p',conflict()?.[lower()?'short':'full'] || state.result).id='feedback';document.querySelector('#feedback').setAttribute('role','status');
+    if(!lower() && !state.compared && state.result && !conflict()){
+      btn(work,'Grund bearbeiten','entwurf-bearbeiten',()=>{state.result='';draw();Entwurf.bearbeiten(desk.querySelector('textarea'));});
+    }
     if(state.valid && !lower()){
       add(work,'p','Vergleiche deinen Grund mit dieser Aussage: '+check.answers['ABC'.indexOf(check.code)]);
       const own=add(work,'details');add(own,'summary','Eigenen Grund ansehen');add(own,'p',state.reason);
@@ -179,6 +182,7 @@ function draw(){
   if(state.asked && !state.valid)add(chat,'p',state.asked);
   if(state.result||conflict())work.querySelector('#feedback').className=state.valid?'fachlich-passend':'fachlich-falsch';
   room();
+  if(!state.compared && !lower() && state.result)Arbeitsplatz.zeigen(work.querySelector('#feedback'));
   port?.postMessage({type:'status',person:bank.person,tier,abschnitt:state.index+1,view:'room'});
 }
 function leaveReading(){

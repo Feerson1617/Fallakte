@@ -10,11 +10,12 @@
    level=tier;const c=bank.cases[name];
    for(const [i,task] of c.tasks.entries()){
      resetPath();go('case',{person:name,at:i+1});
-     for(const [satz,korrektur] of [[myth,'nicht vor HIV'],['Ein Abbruch macht immer unfruchtbar.',bank.cards[1].short]]){
+     for(const [satz,korrektur] of [[myth,'nicht vor HIV'],['Ein Abbruch macht immer unfruchtbar.','bleibt eine spätere Schwangerschaft möglich']]){
        type(satz);tap('#compare');
        if(!$('#draft-error')?.innerText.includes(korrektur)||$('textarea').value!==satz||$('[id^="answer-"]'))throw Error(name+' / '+task.id);
        tap('#help');tap('#hint-last');if(!$('#dialog-body').innerText.includes(korrektur))throw Error('Hilfe 5');tap('#dismiss');
      }
+     tap('#entwurf-bearbeiten');if($('textarea').value!=='Ein Abbruch macht immer unfruchtbar.')throw Error('Entwurf verloren');
      type(original);tap('#compare');tap('#answer-'+task.answers.findIndex(o=>o.ok));
      const own=saved.history.get(name+'/'+task.id+'/entwurf');
      if(own.text!==original||!own.speaker.includes('ungeprüft')||!$('#next'))throw Error('Eigenes Urteil im Familienrat');
@@ -32,6 +33,7 @@
        if(!$('#feedback').innerText.includes('nicht vor HIV')||$('#erklaerung').value!==myth||$('#send'))throw Error('Fehler im Zusatzfall');
        tap('#help');while($('#mehr-hilfe'))tap('#mehr-hilfe');
        if(!$('#reading').innerText.includes('nicht vor HIV'))throw Error('Zusatzhilfe');tap('#back');
+       tap('#entwurf-bearbeiten');if($('#erklaerung').value!==myth)throw Error('Entwurf verloren');
        type(original);tap('#vergleichen');tap('#answer-'+currentCheck().code);tap('#send');
        if(!state.sent || state.history.at(-2).includes(original)||!$('.gespraech').innerText.includes('ungeprüft'))throw Error('Ungeprüfte Begründung');
        rows.push([name,tier,i,m]);

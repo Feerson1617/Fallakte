@@ -281,8 +281,9 @@ window.Beratung = (() => {
       d.compared=!error;
       render(error?'fachmeldung':'begruendungen');
     },'senden');
-    next.disabled=!field.value.trim();
+    next.disabled=!field.value.trim();next.hidden=!!active.draft.feedback;
     field.oninput=()=>{active.draft.reason=field.value;active.draft.feedback=null;
+      next.hidden=false;document.getElementById('entwurf-bearbeiten')?.remove();
       const msg=document.getElementById('fachmeldung');if(msg){msg.textContent='';msg.dataset.type='';}
       next.disabled=!field.value.trim();};
     box.append(label,field,next);return box;
@@ -429,6 +430,11 @@ window.Beratung = (() => {
     feedback.setAttribute('role','status');
     const retry=area.querySelector('.erneute-wahl');
     if(retry)area.insertBefore(feedback,retry);else area.append(feedback);
+    if(step==='grund' && advanced() && !active.draft.compared && report?.type==='A'){
+      area.append(control('entwurf-bearbeiten','Grund bearbeiten',()=>{
+        active.draft.feedback=null;render('erklaerung');Entwurf.bearbeiten(document.getElementById('erklaerung'));
+      },'senden'));
+    }
     if (step==='korrektur') {
       const correction=info().correction;
       if (correction.target && !advanced()) {

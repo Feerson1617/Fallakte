@@ -27,5 +27,8 @@ const Entwurf = (() => {
     const detail=parts.find(line=>!line.includes('?'))?.trim() || fakt;
     return ['Lies: '+quelle+'.',frage,'Prüfe diesen Satz: '+detail,fakt,'Vergleiche deinen Grund mit der Korrektur: '+fakt];
   }
-  return {fehler,hilfen};
+  function bearbeiten(field){
+    Arbeitsplatz.zeigen(field);field.focus({preventScroll:true});
+  }
+  return {fehler,hilfen,bearbeiten};
 })();

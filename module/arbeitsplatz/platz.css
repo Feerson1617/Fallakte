@@ -136,3 +136,4 @@ dialog[open]{max-height:var(--sichtbare-hoehe,100dvh)!important;height:calc(var(
  .lernraum .blatt-inhalt:has(>.quellenstelle[open])>:is(label:has(textarea),#compare-hint,#compare){display:none!important}
  .lernraum .blatt-inhalt:has(>.quellenstelle[open])>.small{display:none}
 }
+.card .feedback.entwurfsfehler::before{content:''}

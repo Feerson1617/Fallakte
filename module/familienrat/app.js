@@ -94,9 +94,9 @@ function cards(index){
 }
 // Ausschließlich explizite medizinische Behauptungen abgleichen. Lauras Entscheidung bleibt offen.
 const medizinischeAussagen=[
-  {satz:/^(?:nach einem (?:unkomplizierten )?(?:abbruch|schwangerschaftsabbruch) kann (?:man|eine frau) nie (?:mehr |wieder )?schwanger werden|ein (?:schwangerschafts)?abbruch macht (?:immer )?unfruchtbar)$/,quelle:'Später schwanger werden',frage:'Was ist nach einem Abbruch ohne Komplikationen möglich?',info:bank.cards[1].short},
-  {satz:/^(?:nach einem (?:unkomplizierten )?(?:abbruch|schwangerschaftsabbruch) wird (?:man|eine frau) (?:garantiert|immer|sicher) (?:wieder )?schwanger)$/,quelle:'Später schwanger werden',frage:'Kann jemand eine spätere Schwangerschaft versprechen?',info:bank.cards[1].short},
-  {satz:/^(?:nach einem abbruch mit medikamenten ist eine spaetere schwangerschaft nie mehr moeglich|eine spaetere schwangerschaft ist (?:immer |sicher )?garantiert)$/,quelle:'Später schwanger werden',frage:'Was kann man über eine spätere Schwangerschaft sagen?',info:bank.cards[1].short},
+  {satz:/^(?:nach einem (?:unkomplizierten )?(?:abbruch|schwangerschaftsabbruch) kann (?:man|eine frau) nie (?:mehr |wieder )?schwanger werden|ein (?:schwangerschafts)?abbruch macht (?:immer )?unfruchtbar)$/,quelle:'Später schwanger werden',frage:'Was ist nach einem Abbruch ohne Komplikationen möglich?',info:'Nach einem Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich. Eine Garantie gibt es nicht.'},
+  {satz:/^(?:nach einem (?:unkomplizierten )?(?:abbruch|schwangerschaftsabbruch) wird (?:man|eine frau) (?:garantiert|immer|sicher) (?:wieder )?schwanger)$/,quelle:'Später schwanger werden',frage:'Kann jemand eine spätere Schwangerschaft versprechen?',info:'Nach einem Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich. Eine Garantie gibt es nicht.'},
+  {satz:/^(?:nach einem abbruch mit medikamenten ist eine spaetere schwangerschaft nie mehr moeglich|eine spaetere schwangerschaft ist (?:immer |sicher )?garantiert)$/,quelle:'Später schwanger werden',frage:'Was kann man über eine spätere Schwangerschaft sagen?',info:'Nach einem Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich. Eine Garantie gibt es nicht.'},
   {satz:/^weil medikamente eingesetzt werden, koennen keine schmerzen auftreten$/,quelle:'Blutungen und Schmerzen',frage:'Was kann passieren, wenn sich die Gebärmutter zusammenzieht?',info:bank.cards[0].short},
   {satz:/^(?:ein medikamentoeser (?:schwangerschafts)?abbruch (?:ist immer schmerzfrei|verursacht nie (?:schmerzen|blutungen)))$/,quelle:'Blutungen und Schmerzen',frage:'Was kann im Bauch passieren?',info:bank.cards[0].short}
 ];
@@ -249,10 +249,14 @@ function draft(box,task,r,c){
     return;
   }
   if(r.source!==undefined)paragraph(box,ui.sourceYes+' '+sentences(c.original)[r.source],'small');
-  if(r.draftError)paragraph(box,r.draftError,'feedback falsch').id='draft-error';
-  thought(box,ui.free,r.text,text=>{r.text=text;r.draftError='';box.querySelector('#draft-error')?.remove();},'compare',ui.compare,()=>{
-    const issue=medizin(r.text);r.draftError=issue?.info || '';r.compared=!issue;if(r.compared)r.sourceError='';draw(true);
+  if(r.draftError){
+    paragraph(box,r.draftError,'feedback falsch entwurfsfehler').id='draft-error';
+    btn(box,'Grund bearbeiten','entwurf-bearbeiten',()=>{r.draftError='';draw();Entwurf.bearbeiten(root.querySelector('textarea'));});
+  }
+  thought(box,ui.free,r.text,text=>{r.text=text;r.draftError='';box.querySelector('#draft-error')?.remove();box.querySelector('#entwurf-bearbeiten')?.remove();box.querySelector('#compare').hidden=false;},'compare',ui.compare,()=>{
+    const issue=medizin(r.text);r.draftError=issue?.info || '';r.compared=!issue;if(r.compared)r.sourceError='';draw(true);if(issue)Arbeitsplatz.zeigen(root.querySelector('#draft-error'));
   });
+  box.querySelector('#compare').hidden=!!r.draftError;
   if(!task.evidenceSentences)return;
   const d=aufklappen(box,ui.sourceInstead);d.className='quellenstelle';
   const feedback=paragraph(d,'','small');feedback.setAttribute('role','status');
