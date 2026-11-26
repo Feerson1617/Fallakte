@@ -190,7 +190,9 @@ const Lernfeedback = (() => {
   gram.pille.b.push(nichtsFrei+herkunft+' (?:freikommt|freiwird|freigesetzt wird|abgegeben wird|austritt|springt)',
     '(?:kommt|tritt) '+noCell+' (?:aus dem eierstock )?(?:frei|aus)',
     '(?:aus dem eierstock )?wird '+noCell+' (?:aus dem eierstock )?(?:freigesetzt|abgegeben)',
-    'der eierstock (?:gibt '+noCell+' (?:mehr )?frei|setzt '+noCell+' (?:mehr )?frei)');
+    'der eierstock (?:gibt '+noCell+' (?:mehr )?frei|setzt '+noCell+' (?:mehr )?frei|'+noCell+' (?:freigibt|freisetzt))',
+    '(?:es )?(?:kommt|tritt) '+noCell+' aus dem eierstock (?:frei|aus|heraus)',
+    '(?:es )?wird '+noCell+' mehr aus dem eierstock freigesetzt');
   const ergebnisOhneZelle=new RegExp('^(?:'+['(?:die |eine )?befruchtung (?:ist (?:dann )?nicht moeglich|findet nicht statt|bleibt aus)',
     '(?:(?:es )?kommt (?:es )?nicht (?:zu einer|zur) befruchtung)', '(?:die )?eizelle kann nicht befruchtet werden'].join('|')+')$');
   const durchtritt='(?:den durchtritt|die passage|den durchgang|das durchkommen) (?:der |von )?'+swimmers;
@@ -201,7 +203,7 @@ const Lernfeedback = (() => {
   const beruehrung='(?:durch beruehrung|bei beruehrung|durch direkten hautkontakt|bei hautkontakt|durch hautkontakt)';
   gram.haut.ab.push(flaeche+' (?:koennen|werden) '+germs+' (?:'+beruehrung+' )?(?:uebertragen|weitergegeben)(?: werden)?',
     germs+' koennen '+flaeche+' (?:'+beruehrung+' )?(?:uebertragen|weitergegeben) werden',
-    flaeche+' kann man sich (?:'+beruehrung+' )?(?:anstecken|infizieren)');
+    flaeche+' kann man sich (?:'+beruehrung+' )?(?:anstecken|infizieren)',flaeche+' ist (?:eine )?ansteckung '+beruehrung+' moeglich');
   gram.haut.a.push('(?:unbedeckte|freie) hautstellen bleiben (?:frei|unbedeckt)');
   const beeintraechtigt='stoert|stoeren|beeintraechtigt|beeintraechtigen|hemmt|hemmen|mindert|mindern|verringert|verringern';
   const mobil='(?:beweglichkeit|bewegung|bewegungsfaehigkeit)',fruchtbar='befruchtungsfaehigkeit';
@@ -220,7 +222,7 @@ const Lernfeedback = (() => {
       if(id==='kupfer')return c.replace(paar,'$1 $2 $3$5 und $1 $2 $4$5');
       if(id==='schleim')return c.replace(schleimpaar,'$1 $2 und $1 $3 $4');
       return c;
-    }).join(' ');
+    }).join(' ').trim();
   }
   for(const [id,g] of Object.entries(gram)){
     for(const tag of ['a','b','ab','extra'])bound[id][tag]=[...(bound[id][tag]||[]),...g[tag]];
@@ -331,14 +333,12 @@ const Lernfeedback = (() => {
     const vorsicht=/[?]|\b(?:vielleicht|angeblich|weiss nicht|oder|nicht sicher|wenn|falls|glaube nicht|behauptet|falsch ist|es stimmt nicht|es waere falsch|es ist falsch)\b/;
     if(vorsicht.test(s)){
       // In einem unklaren Satz keine Diagnose raten. Gesondert behauptete Risiken bleiben sichtbar.
-      const satz=s.match(/[^.!?;]+[?]?/g)||[];
-      for(const teil of satz){
-        if(vorsicht.test(teil))continue;
-        const befund=gesund.lesen(teil.trim(),id);
-        if(befund?.falsch){beleg=befund;return result('fehlvorstellung');}
-      }
-      return result('unsicher');
+      const saetze=s.match(/[^.!?;]+[?]?/g)||[];
+      s=saetze.map(teil=>vorsicht.test(teil)?'ungeklaerte aussage':teil.trim()).join('. ');
     }
+    // Bei einer gemeinsam angewendeten Kombination lässt sich der STI-Schutz keinem
+    // der beiden genannten Mittel allein zuschreiben.
+    s=s.replace(/(?:^|(?<=[.!;]))\s*(?:(?:ein |das |die )?kondome? (?:und|mit|plus) (?:der |die |einer )?(?:pille|spirale)|(?:die )?(?:pille|spirale) (?:und|mit|plus) (?:ein |das |einem )?kondom)\b[^.!;]*/g,' ungeklaerte kombination');
     s=koordinieren(s,id);
     for(const [from,to] of repairs[id])s=s.replace(from,to);
     // Eine vollständig erklärte Gegenwirkung bleibt erhalten, auch bei geteilter Subjektgruppe.
@@ -368,7 +368,6 @@ const Lernfeedback = (() => {
       if(id==='kupfer' && last==='b' && /\b(spermien|samenzellen)\b/.test(chunks[i-2]||'')){
         c=c.replace(/\bihre (beweglichkeit|bewegung|bewegungsfaehigkeit)\b/,'die $1 der spermien');
       }
-      if(c==='korrigierter zusatz'){unknown=true;continue;}
       if(id==='pille' && ergebnisOhneZelle.test(c)){ergebnis=true;continue;}
       const medizin=gesund.lesen(c,id);
       if(medizin){
