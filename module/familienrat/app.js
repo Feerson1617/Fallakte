@@ -176,7 +176,7 @@ function chooseLevel(box){
     if(!saved.last){change();return;}
     field.value=level;
     popup('Niveau wechseln?',content=>{
-      paragraph(content,'Beim Wechsel beginnst du neu. Deine Antworten am iPad werden gelöscht.');
+      paragraph(content,'Beim Wechsel beginnst du das Gespräch auf dem anderen Niveau.');
       btn(content,'Niveau wechseln','confirm-level',()=>{dialog.close();change();});
     },field);
   });
@@ -514,7 +514,7 @@ function personal(phase,done){
     AHR:'Wäge beide Anliegen ab. Was erklären die Fakten? Was muss Laura selbst entscheiden?'
   };
   const messages=names.slice(0,2).map(n=>[n,bank.cases[n].original]);
-  Lernspur.open({tier:level,firstTitle:'Deine erste Einschätzung',finalTitle:'Deine Einschätzung am Ende',
+  Lernspur.open({status:text=>port?.postMessage({type:'view',active:'',status:text+' · '+level}),tier:level,firstTitle:'Deine erste Einschätzung',finalTitle:'Deine Einschätzung am Ende',
     firstQuestion:'Welche Nachricht hilft Laura zuerst?',finalQuestion:'Welche Nachricht hilft Laura jetzt?',
     firstChoices:choices,finalChoices:choices,suggestion:saved.personal.choice,reason:reasons[level],
     startMessages:[['Laura',bank.opening],...messages],

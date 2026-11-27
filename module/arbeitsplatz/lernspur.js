@@ -26,6 +26,7 @@ const Lernspur = (() => {
     const cfg=current,s=state(cfg.tier),first=cfg.phase==='erst';
     const comparison=!first && !!s.schluss && !cfg.editing;
     const title=comparison?'Dein Vergleich':first?cfg.firstTitle:cfg.finalTitle;
+    cfg.status(title);
     let room=document.getElementById('lernspur');
     if(!room){room=node(document.body,'main');room.id='lernspur';}
     room.replaceChildren();room.className='';document.body.classList.add('spur-offen');
@@ -58,14 +59,16 @@ const Lernspur = (() => {
       const key=cfg.phase;
       const draft=s.entwuerfe[key]||={choice:!first?cfg.suggestion||'':'',reason:!first?cfg.reasonDraft||'':''};
       const prompt=first?cfg.firstQuestion:cfg.finalQuestion;
-      const label=node(work,'label',prompt);label.htmlFor='spur-wahl';
-      const select=node(work,'select');select.id='spur-wahl';
+      const choiceBox=node(work,'div',undefined,'spur-eingabe');
+      const label=node(choiceBox,'label',prompt);label.htmlFor='spur-wahl';
+      const select=node(choiceBox,'select');select.id='spur-wahl';
       for(const text of ['',...(first?cfg.firstChoices:cfg.finalChoices)]){
         const option=node(select,'option',text||'Bitte wählen');option.value=text;
       }
       select.value=draft.choice;
-      const reason=node(work,'label',first?'Warum denkst du das?':cfg.reason);reason.htmlFor='spur-grund';
-      const input=node(work,'textarea');input.id='spur-grund';input.rows=2;input.value=draft.reason;
+      const reasonBox=node(work,'div',undefined,'spur-eingabe');
+      const reason=node(reasonBox,'label',first?'Warum denkst du das?':cfg.reason);reason.htmlFor='spur-grund';
+      const input=node(reasonBox,'textarea');input.id='spur-grund';input.rows=2;input.value=draft.reason;
       if(first && ['ESA','Foerder','Förder'].includes(cfg.tier))input.placeholder='Stichworte reichen.';
       const feedback=node(work,'p','','spur-korrektur');feedback.hidden=true;feedback.setAttribute('role','status');
       const submit=button(work,first?'Erste Antwort festhalten':'Antworten vergleichen','spur-speichern',()=>{

@@ -8,8 +8,8 @@ import re
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from playwright.sync_api import sync_playwright
-from lernspur_test import schluss
 from pruefen import LEVELS, OUT, QA, sha
+from lernspur_test import schluss
 
 PLAY="""({tier,path})=>{
   const get=s=>{const n=document.querySelector(s);if(!n||n.disabled)throw Error(s);return n;};

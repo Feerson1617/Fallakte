@@ -13,6 +13,7 @@ STEPS={
 
 def klar(text):
     paare=(
+       ('Anwendung und individuelle Verträglichkeit sind getrennte Fragen.', 'Kann Laura die Pille nach Plan nehmen? Wie ihr Körper darauf reagiert, ist eine andere Frage.'),
        ('Auch hormonfrei ist Verhütung möglich. Ein geeignetes synthetisches Kondom besteht nicht aus Latex.',
         'Eine Möglichkeit ohne Hormone ist ein Kondom aus Kunststoff ohne Latex.'),
        ('Naturmembranprodukte sind zur STI-Risikominderung nicht gleichwertig. Prüfe, ob das synthetische latexfreie Kondom dafür geeignet ist.',
@@ -95,6 +96,7 @@ def familie(bank):
     app=(ROOT/'module/familienrat/app.js').read_text()
     import re
     ui={k:bank['ui'][k] for k in sorted(set(re.findall(r'\bui\.(\w+)',app)))}
+    ui['soloReplace']='Das Gespräch beginnt neu. Deine erste und deine abschließende Antwort bleiben auf diesem Gerät, bis du die Seite schließt.'
     keys=('levels','opening','second','cards','cases','limits','evaluationHints','review','levelPrompts','caseReflection','evaluationHelpByLevel','crossReference','designFiles','commit')
     selected={k:bank[k] for k in keys}
     selected.update(ui=ui,definitions={'Fakt':'Welche Aussage kann man prüfen?','Wert':'Was ist jemandem wichtig?','Norm':'Was sollte man tun?','Folgerung':'Welcher Rat folgt daraus?'},known='Lies die Nachricht.')

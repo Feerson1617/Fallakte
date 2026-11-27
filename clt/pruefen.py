@@ -86,6 +86,7 @@ def run(engine,day,tier,profil='quer'):
                 def picker(s,f,person,step):
                     s.locator('[data-action=recovery]').click()
                     if f.locator('#level-0').input_value()!=tier:f.locator('#level-0').select_option(tier)
+                    f.locator('#open-entry').wait_for()
                     if person in NAMES[2:] and not f.locator('#person option').filter(has_text=person).count():
                         s.locator('[data-action=abschluss]').click();schluss(f)
                         s.locator('[data-action=recovery]').click()

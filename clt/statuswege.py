@@ -4,8 +4,8 @@ import os
 from tempfile import TemporaryDirectory
 from pathlib import Path
 from playwright.sync_api import sync_playwright,expect
-from lernspur_test import schluss
 from pruefen import OUT,QA,HOST,host,room,sha,LEVELS
+from lernspur_test import schluss
 from zipfile import ZipFile
 import argparse
 

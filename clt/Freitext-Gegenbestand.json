@@ -1,27 +1,144 @@
 [
-  ["Der Rat mit Hormonen passt für mich.", []],
-  ["Die Pillle schützt vor HIV.", ["HIV"]],
-  ["Die Pille schützt vor HIV und die Kupferspirale enthält Hormone.", ["HIV", "ohne Hormone"]],
-  ["Die Pille schützt nicht vor HIV und die Kupferspirale enthält keine Hormone.", []],
-  ["Die Pille schützt vor HIV. Nein, die Pille schützt nicht vor HIV. Die Kupferspirale enthält Hormone.", ["ohne Hormone"]],
-  ["Manche behaupten: „Die Pille schützt vor HIV.“ Das stimmt nicht.", []],
-  ["Meine Mutter fragt, ob die Pille vor HIV schützt.", []],
-  ["Schützt die Hormonspirale vor HIV?", []],
-  ["Mich überzeugen beide Nachrichten aus verschiedenen Gründen.", []],
-  ["Ich finde die Gesundheit wichtiger als die Ausbildung.", []],
-  ["Die Kupferspirale gibt Hormone ab. Die Hormonspirale ist hormonfrei.", ["ohne Hormone","ein Hormon"]],
-  ["Die Kupferspirale enthält Hormone. Das ist falsch. Die Pille schützt vor HIV.", ["HIV"]],
-  ["Ein Abbruch macht immer unfruchtbar. Die Pille schützt vor HIV.", ["spätere Schwangerschaft", "HIV"]],
-  ["Nach einem Abbruch kann man keine Kinder mehr bekommen.", ["spätere Schwangerschaft"]],
-  ["Nach einem Abbruch ohne Komplikationen kann man später wieder schwanger werden.", []],
-  ["Ein Abbruch macht immer unfruchtbar. Das stimmt nicht.", []],
-  ["Ein medikamentöser Abbruch ist immer schmerzfrei.", ["Schmerzen"]],
-  ["Es ist falsch, dass ein Abbruch immer schmerzfrei ist.", []],
-  ["Ein Abbruch kann Schmerzen auslösen, aber es trifft nicht alle gleich.", []],
-  ["Ich habe Angst vor Schmerzen.", []],
-  ["Ein Abbruch macht immer unfruchtbar. Nein, eine spätere Schwangerschaft bleibt möglich.", []],
-  ["Die Pille ist meine Wahl, weil sie vor HIV schützt.", ["HIV"]],
-  ["Ich nehme nicht an, dass die Pille vor HIV schützt.", []],
-  ["Er sagt: Die Pille schützt vor HIV und die Spirale schützt vor HIV.", []],
-  ["Ich würde mich erst beraten lassen.", []]
+  [
+    "Der Rat mit Hormonen passt für mich.",
+    []
+  ],
+  [
+    "Die Pillle schützt vor HIV.",
+    [
+      "HIV"
+    ]
+  ],
+  [
+    "Die Pille schützt vor HIV und die Kupferspirale enthält Hormone.",
+    [
+      "HIV",
+      "ohne Hormone"
+    ]
+  ],
+  [
+    "Die Pille schützt nicht vor HIV und die Kupferspirale enthält keine Hormone.",
+    []
+  ],
+  [
+    "Die Pille schützt vor HIV. Nein, die Pille schützt nicht vor HIV. Die Kupferspirale enthält Hormone.",
+    [
+      "ohne Hormone"
+    ]
+  ],
+  [
+    "Manche behaupten: „Die Pille schützt vor HIV.“ Das stimmt nicht.",
+    []
+  ],
+  [
+    "Meine Mutter fragt, ob die Pille vor HIV schützt.",
+    []
+  ],
+  [
+    "Schützt die Hormonspirale vor HIV?",
+    []
+  ],
+  [
+    "Mich überzeugen beide Nachrichten aus verschiedenen Gründen.",
+    []
+  ],
+  [
+    "Ich finde die Gesundheit wichtiger als die Ausbildung.",
+    []
+  ],
+  [
+    "Die Kupferspirale gibt Hormone ab. Die Hormonspirale ist hormonfrei.",
+    [
+      "ohne Hormone",
+      "ein Hormon"
+    ]
+  ],
+  [
+    "Die Kupferspirale enthält Hormone. Das ist falsch. Die Pille schützt vor HIV.",
+    [
+      "HIV"
+    ]
+  ],
+  [
+    "Ein Abbruch macht immer unfruchtbar. Die Pille schützt vor HIV.",
+    [
+      "spätere Schwangerschaft",
+      "HIV"
+    ]
+  ],
+  [
+    "Nach einem Abbruch kann man keine Kinder mehr bekommen.",
+    [
+      "spätere Schwangerschaft"
+    ]
+  ],
+  [
+    "Nach einem Abbruch ohne Komplikationen kann man später wieder schwanger werden.",
+    []
+  ],
+  [
+    "Ein Abbruch macht immer unfruchtbar. Das stimmt nicht.",
+    []
+  ],
+  [
+    "Ein medikamentöser Abbruch ist immer schmerzfrei.",
+    [
+      "Schmerzen"
+    ]
+  ],
+  [
+    "Es ist falsch, dass ein Abbruch immer schmerzfrei ist.",
+    []
+  ],
+  [
+    "Ein Abbruch kann Schmerzen auslösen, aber es trifft nicht alle gleich.",
+    []
+  ],
+  [
+    "Ich habe Angst vor Schmerzen.",
+    []
+  ],
+  [
+    "Ein Abbruch macht immer unfruchtbar. Nein, eine spätere Schwangerschaft bleibt möglich.",
+    []
+  ],
+  [
+    "Die Pille ist meine Wahl, weil sie vor HIV schützt.",
+    [
+      "HIV"
+    ]
+  ],
+  [
+    "Ich nehme nicht an, dass die Pille vor HIV schützt.",
+    []
+  ],
+  [
+    "Er sagt: Die Pille schützt vor HIV und die Spirale schützt vor HIV.",
+    []
+  ],
+  [
+    "Ich würde mich erst beraten lassen.",
+    []
+  ],
+  [
+    "Die Pille schützt vor HIV und die Kupferspirale enthält Hormone. Nein, die Pille schützt nicht vor HIV.",
+    [
+      "ohne Hormone"
+    ]
+  ],
+  [
+    "Die Kupferspirale enthält keine Hormone, aber die Pille schützt vor HIV.",
+    [
+      "HIV",
+      "richtig erkannt"
+    ]
+  ],
+  [
+    "Ich weiß nicht, wie es mit der Pille ist und die Kupferspirale enthält Hormone.",
+    []
+  ],
+  [
+    "Die Pille schützt vor HIV? Die Kupferspirale enthält keine Hormone.",
+    []
+  ]
 ]

@@ -84,7 +84,7 @@
       MSA:'Wie passt die Wirkung zu Lauras Wunsch? Wann wäre ein anderer Rat möglich?',
       AHR:'Wäge zwei Anliegen ab. Begründe mit der Wirkung der Methode. Wann passt eine Alternative?'
     };
-    Lernspur.open({tier:level,firstTitle:'Dein erster Rat',finalTitle:'Dein Schlussrat',
+    Lernspur.open({status:text=>port?.postMessage({type:'view',active:'',status:text+' · '+tierNames[level]}),tier:level,firstTitle:'Dein erster Rat',finalTitle:'Dein Schlussrat',
       firstQuestion:'Was rätst du Laura zuerst?',finalQuestion:'Was rätst du Laura jetzt?',
       suggestion:Beratung.letzterRat(level)?.choice,reasonDraft:Beratung.letzterRat(level)?.reason,
       firstChoices:['Kondom',...titles.slice(1,4)],finalChoices:titles,reason:reasons[level],helpSteps:[
@@ -98,6 +98,7 @@
       completed:()=>{grant('Tom',level);grant('Celina',level);},done},phase);
   }
   function final(){
+    if(view==='einstieg' && pickerTier)level=pickerTier;
     if(!level){home();afterLevel=final;return;}
     Material.close(false);Lernspur.state(level).begonnen=true;personal('schluss',home);
   }

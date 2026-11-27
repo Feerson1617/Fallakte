@@ -1,7 +1,7 @@
 """Schülereingaben über die wirklichen Eingabefelder. Kein Sitzungsstand wird künstlich gesetzt."""
 from pathlib import Path
 import sys
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'gesamt'))
+sys.path.append(str(Path(__file__).resolve().parents[1]/'gesamt'))
 from ergonomie import reach,touch
 
 def antwort(frame,grund='Ich möchte Lauras Wünsche berücksichtigen.',choice=1):

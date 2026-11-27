@@ -154,3 +154,11 @@ dialog[open]{max-height:var(--sichtbare-hoehe,100dvh)!important;height:calc(var(
 .lernraum .gespraech .bubble[data-own=true],#beratung .chat-entry:is([data-speaker=Du],[data-kind=entwurf]){margin-inline-start:auto;background:#e4edf3;border-radius:.75rem .12rem .75rem .75rem}
 .gespraech summary{min-height:44px;align-content:center}
 .spur-chat .bubble img{width:2rem;height:2rem;object-fit:cover;object-position:center 30%;border-radius:50%;vertical-align:middle;margin-right:.45rem}
+
+.spur-eingabe{break-inside:avoid-column}
+@media(max-height:400px) and (min-width:600px){
+  .spur-arbeit .blatt-inhalt:not(.geteilt):has(.spur-eingabe){display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-content:start;gap:.25em .65em}
+  .spur-arbeit .spur-eingabe label{margin:0 0 .12em;font-size:1em}
+  .spur-arbeit .spur-weiter{margin:.15em 0}
+  .spur-arbeit .spur-korrektur{grid-column:1/-1}
+}

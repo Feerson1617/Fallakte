@@ -165,6 +165,15 @@ def release():
         screens[img.name]=img.read_bytes();logs['Langtextpruefung.json']=evidence
         logs['Seitenumfang.json.gz']=gzip.compress(dump(seiten).encode(),mtime=0)
         c=vertrag(day,b);c['revision']=revision
+        if day=='02':
+            source=(ROOT/'material/lehrkraft/empfehlungsrad.html').read_text()
+            source=source.replace('<script src="../../data/dialogdaten.js"></script>','')
+            source=source.replace("['K','P','Cu','H'].map(id => [FALLAKTE.methods[id][0]])",
+                                  "[['Kondom'],['Kombinationspille'],['Kupferspirale'],['Hormonspirale']]")
+            for font in ('dmsans','dmseriftext'):
+                source=source.replace('../../assets/'+font+'.ttf','data:font/ttf;base64,'+base64.b64encode((ROOT/'assets'/(font+'.ttf')).read_bytes()).decode())
+            archive(target/'Empfehlungsraeder.zip',{name+'.html':source.replace("new URLSearchParams(location.search).get('rad') === '2'",value)
+                    for name,value in [('Erstes-Empfehlungsrad','false'),('Zweites-Empfehlungsrad','true')]})
         (target/'Unterrichtssteuerung.md').write_text('\n\n'.join(['# Unterrichtssteuerung',c['erarbeitung'],c['unterbrechung'],c['sicherung'],'## Zeitplanung für 45 Minuten']+[f'{n} Minuten · {a}' for a,n in c['phasen']]))
         archive(target/'CLT-Abnahmematrix.zip',{'Matrix.csv':matrix(rows.values(),day),'Fachdidaktische-Durchsicht.md':(HERE/('Beratung.md' if day=='02' else 'Familiennachrichten.md')).read_bytes(),'Grundlagen.md':(HERE/'Grundlagen.md').read_bytes(),'Perspektiven.md':(HERE/'planung.md').read_bytes(),'Zeitplanung.json':dump(c['phasen'])})
         archive(target/'Pruefprotokolle.zip',logs)
@@ -179,7 +188,7 @@ Gegenprüfung gegenüber ac86cb8: Auf 46 sendbaren Wegen musste der HIV-Irrtum v
 
 Die erste Antwort wird vor Fachkarten und inhaltlichen Hilfen mit dem eigenen Grund im Arbeitsspeicher festgehalten. Beim Signal „Stundenabschluss“ stehen alle entscheidungsrelevanten Informationen bereit. Erst nach dem eigenen abschließenden Grund erscheint der Vergleich. Nach einem Neustart zeigt er eine fehlende erste Antwort ausdrücklich an. Persönliche Entscheidungen bespricht die Klasse. Die freiwilligen Zusatzfälle öffnen nach einer tatsächlich ausgefüllten persönlichen Abschlussaufgabe.
 
-Pro Browser und Niveau wurden alle {28 if day=='02' else 16} geordneten Paare aus erster und abschließender Auswahl eingegeben. Die neue Textgegenprobe umfasst 25 vorgegebene Äußerungen, davon im ersten Besuch die verhütungsbezogenen und neutralen Aussagen. Der zusätzliche Altbestand umfasst 1.058 unabhängige Freitexte je Browser und Niveau. Die Protokolle trennen eine erkannte konkrete Fehlvorstellung von einem unbewerteten Entwurf. Der Vergleich zweier persönlicher Entscheidungen vergibt weder Punkte noch ein Lernzuwachsurteil.
+Pro Browser und Niveau wurden alle {28 if day=='02' else 16} geordneten Paare aus erster und abschließender Auswahl eingegeben. Die neue Textgegenprobe umfasst {len(json.loads((HERE/'Freitext-Gegenbestand.json').read_text()))} vorgegebene Äußerungen, davon im ersten Besuch die verhütungsbezogenen und neutralen Aussagen. Der zusätzliche Altbestand umfasst 1.058 unabhängige Freitexte je Browser und Niveau. Die Protokolle trennen eine erkannte konkrete Fehlvorstellung von einem unbewerteten Entwurf. Der Vergleich zweier persönlicher Entscheidungen vergibt weder Punkte noch ein Lernzuwachsurteil.
 
 {len(counts)} Browser-, Niveau- und Fensterdurchläufe. Die Matrix umfasst {len(rows)} unterschiedliche protokollierte Kombinationen von Niveau, Kontext, Wortlaut und Bedienelementen. {ngeo} Geometrieprüfungen erfassten aktive Steuerelemente. {failnote} Im Protokoll Seitenumfang.json.gz steht die gemessene Anzahl der Teilansichten pro Arbeitszustand. Weitere 40 Tast- und Navigationstests mit Chromium und WebKit prüften physische Treffer bis zum äußeren Fenster. Die Bildschirmtastatur wurde durch eine verkleinerte Höhe simuliert.
 

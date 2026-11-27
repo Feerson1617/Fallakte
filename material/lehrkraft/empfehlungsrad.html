@@ -26,7 +26,7 @@ text { font: bold 7.2px "DM Sans", sans-serif; text-anchor: middle; fill: #20352
 <h1></h1>
 <p id="question"></p>
 <p id="paper"></p>
-<p>Markiere einen freien Kreis bei deiner Empfehlung.</p>
+<p>Nutze einen freien Kreis bei deiner Empfehlung.</p>
 </section>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-132 -132 264 264" role="img" aria-label="Empfehlungsrad"></svg>
 </main>
@@ -36,10 +36,10 @@ const finalVote = new URLSearchParams(location.search).get('rad') === '2';
 document.querySelector('h1').textContent = finalVote ? 'Mein letzter Rat' : 'Mein erster Rat';
 document.querySelector('#question').textContent = finalVote
   ? 'Was rätst du Laura jetzt?'
-  : 'Laura möchte sich beim Sex vor Infektionen schützen. Was rätst du ihr?';
+  : 'Laura möchte eine Schwangerschaft vermeiden. Sie verträgt kein Latex und ist bei Hormonen unsicher. Was rätst du ihr?';
 document.querySelector('#paper').textContent = finalVote
-  ? 'Wählst du „Kondom + weitere Methode“? Schreibe beide Namen auf deinen Laufzettel.'
-  : 'Schreibe deinen ersten Rat und deinen Grund auf den Laufzettel.';
+  ? 'Wählst du „Kondom + weitere Methode“? Halte beide Methoden in deinem digitalen Schlussrat fest.'
+  : 'Markiere deinen ersten digitalen Rat.';
 const labels = ['K','P','Cu','H'].map(id => [FALLAKTE.methods[id][0]]);
 if (finalVote) labels.push(['Kondom +', 'weitere Methode']);
 

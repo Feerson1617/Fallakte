@@ -12,11 +12,20 @@ const Entwurf = (() => {
     const clauses=Fachwissen.berichtigungen(normal,'').replace(/\bpillle\b/gu,'pille')
       .replace(/([^.!?;]+)\?/gu,' ').split(/[.!;]+(?=\s|$)/u);
     const issues=[];
+    const verstanden=new Map();
+    const kennung=m=>[m.code,m.name,m.ziel||''].join('/');
+    const positive={
+      sti:'Du hast den fehlenden Schutz vor Ansteckung richtig erklärt.',
+      kupferhormone:'Du hast richtig erkannt, dass Kupfer ohne Hormone wirkt.',
+      hormonabgabe:'Du hast die Hormonabgabe richtig erklärt.',
+      einnahme:'Dein Hinweis zum Einnahmeplan stimmt.'
+    };
     function collect(s){
       const match=Fachwissen.lesen(s,'');
+      if(match && !match.falsch && positive[match.code])verstanden.set(kennung(match),positive[match.code]);
       if(match?.falsch){
         const fact=Fachwissen.katalog[match.code];
-        return {ref:{method:methods[match.karte],section:sections[match.karte][match.abschnitt]},frage:fact.frage,info:fact.info};
+        return {kennung:kennung(match),ref:{method:methods[match.karte],section:sections[match.karte][match.abschnitt]},frage:fact.frage,info:fact.info};
       }
       return weitere.find(rule=>rule.satz.test(s));
     }
@@ -31,16 +40,29 @@ const Entwurf = (() => {
       }
       // Getrennte Behauptungen nur bei zwei ausdrücklich genannten Subjekten.
       if(s.includes('dass ')||s.includes('ob ')||s.startsWith('es stimmt nicht'))continue;
-      const parts=s.split(/ und (?=(?:die |eine |ein |das )(?:pille|kupferspirale|hormonspirale|kondom)\b)/u);
+      const correction=s.match(/^(?:nein,|ich korrigiere mich,) (.+)$/u);
+      if(correction){
+        const fact=Fachwissen.lesen(correction[1],'');
+        if(fact && !fact.falsch){
+          const i=issues.findLastIndex(x=>x.issue.kennung===kennung(fact));
+          if(i>=0)issues.splice(i,1);
+        }
+        continue;
+      }
+      const parts=s.split(/(?: und |, aber )(?=(?:die |eine |ein |das )(?:pille|kupferspirale|hormonspirale|kondom)\b)/u);
+      if(parts.length>1 && !Fachwissen.lesen(parts[0],'') && !weitere.some(v=>v.satz.test(parts[0])))continue;
       for(const part of parts){
-        let claim=part.replace(/^die pille ist meine wahl, weil sie (vor hiv) schuetzt$/u,'die pille schuetzt $1');
+        const claim=part.replace(/^die pille ist meine wahl, weil sie (vor hiv) schuetzt$/u,'die pille schuetzt $1');
         const issue=collect(claim);
         if(issue)issues.push({issue,index});
       }
     }
     if(!issues.length)return null;
     const found=issues.map(row=>row.issue);
-    return {...found[0],info:[...new Set(found.map(v=>v.info))].join(' ')};
+    for(const issue of found)verstanden.delete(issue.kennung);
+    const correction=[...new Set(found.map(v=>v.info))].join(' ');
+    const known=verstanden.values().next().value;
+    return {...found[0],info:known?correction+' '+known:correction};
   }
   function hilfen(quelle,frage,fakt){
     const parts=fakt.match(/[^.!?]+[.!?]+|[^.!?]+$/gu) || [fakt];
