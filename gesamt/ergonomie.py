@@ -69,7 +69,9 @@ def parcour(page,shell,tier,zoom,folder,tag):
     f=room(shell,'erster')
     f.evaluate('z=>{document.documentElement.style.fontSize=z+"%";Arbeitsplatz.refresh()}',zoom)
     touch(f,'#level-'+tier.replace('Förder','Foerder'))
-    touch(f,'#neu')
+    sys.path.insert(0,str(ROOT/'clt'))
+    from lernspur_test import antwort
+    touch(f,'#neu');antwort(f)
     assert not f.locator('#praesentation').is_visible()
     check_help(f,'#hilfe','#material-zurueck',['#hilfe-weiter']*4)
     touch(f,'[data-strategy=K]')
@@ -90,7 +92,7 @@ def parcour(page,shell,tier,zoom,folder,tag):
     f=room(shell,'zweiter')
     f.evaluate('z=>{document.documentElement.style.fontSize=z+"%";Arbeitsplatz.refresh()}',zoom)
     level=f.locator('#level-0');reach(f,level);level.select_option(tier)
-    touch(f,'#start');touch(f,'#next')
+    touch(f,'#start');antwort(f);touch(f,'#next')
     if tier in ('MSA','AHR'):
         field=f.locator('textarea');reach(f,field);field.fill('Der Mutter ist Lauras Gesundheit wichtig.')
         initial=page.viewport_size

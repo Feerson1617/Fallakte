@@ -137,6 +137,14 @@
       entry.append(heading,element('p',passage.levels?.[view.levelId] || (short && passage.shortText ? passage.shortText : passage.text)));
       if (id === section) {
         entry.dataset.target = 'true';
+        const image=window.LAURA.kartenbilder[method]?.[id];
+        if(image){
+          const figure=element('figure');
+          figure.className='kartenbild';
+          const graphic=new DOMParser().parseFromString(image.svg.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" '),'image/svg+xml').documentElement;
+          figure.append(document.importNode(graphic,true),element('figcaption',image.caption));
+          entry.append(figure);
+        }
         heading.tabIndex = -1;
         target = heading;
       }
@@ -254,13 +262,11 @@
     delete dialog.dataset.method;
     delete dialog.dataset.section;
     body.replaceChildren();
-    const drawView = {abschluss:v=>{
-      title.textContent='Lauras Anliegen';
-      const known=window.Beratung.known(v.levelId);
-      const list=element('ul');for(const text of known)list.append(element('li',text));
-      if(known.length)body.append(list);
-      body.append(element('p','Deine Lehrkraft gibt die Abschlusskarte aus. Welchen Rat gibst du Laura jetzt? Begründe deinen Rat.'));
-    },orientation:v=>{title.textContent='Hilfe';body.append(element('p',v.text));},cards:cardsView,card:cardView,help:helpView,questions:questionsView,summary:summaryView};
+    const drawView = {orientation:v=>{
+      title.textContent=v.steps?'Hilfe '+(v.depth+1)+' von '+v.steps.length:'Hilfe';
+      body.append(element('p',v.steps?v.steps[v.depth]:v.text));
+      if(v.steps && v.depth<v.steps.length-1)body.append(button('Nächste Hilfe',()=>{v.depth++;draw();},'spur-mehr'));
+    },cards:cardsView,card:cardView,help:helpView,questions:questionsView,summary:summaryView};
     if (view.context?.strategy) {
       const task = window.LAURA.stages[view.context.stageId].levels[view.context.levelId];
       const chosen = task.choiceLabels?.[view.context.strategy] || window.LAURA.strategies[view.context.strategy].label;
@@ -278,7 +284,7 @@
   }
 
   window.Material = Object.freeze({
-    abschluss:(levelId,trigger)=>begin({type:'abschluss',levelId},trigger),
+    impuls:(text,steps)=>begin({type:'orientation',text,steps,depth:0},document.getElementById('spur-hilfe')),
     orient:(text,trigger)=>begin({type:'orientation',text},trigger),
     cardLabel,
     finalAdvice,

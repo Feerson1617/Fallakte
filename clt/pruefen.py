@@ -9,6 +9,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path[:0]=[str(ROOT/'gesamt'),str(ROOT/'tests')]
 from auslieferung import OUT,sha
 from tagesauswahl import HOST,host
+from lernspur_test import antwort,schluss
 from ergonomie import room
 HERE=Path(__file__).parent
 QA=ROOT/'build/CLT'
@@ -58,16 +59,15 @@ def run(engine,day,tier,profil='quer'):
                             counts['Fachantworten']+=f.evaluate('x=>cltTest.advice(x)',dict(stage=stage,tier=t,method=method,mode=mode))
                             counts['Empfehlungswege']+=1;harvest(f)
                             if stage=='L04' and method=='K' and mode=='beispiel':p.screenshot(path=folder/'Laura.jpg',quality=62)
-                    s.locator('[data-action=abschluss]').click();expect(f.locator('#material-titel')).to_have_text('Lauras Anliegen')
-                    f.locator('#material-zurueck').click()
+                    s.locator('[data-action=abschluss]').click();expect(f.locator('#lernspur h1')).to_have_text('Dein Schlussrat')
                 # Regulärer Verlauf einschließlich des Übergangs zum ausdrücklich persönlichen Schlussrat.
-                s,f=open_module(False);f.locator('#level-'+t).click();f.locator('#neu').click()
+                s,f=open_module(False);f.locator('#level-'+t).click();f.locator('#neu').click();antwort(f)
                 for i in range(1,6):
                     f.evaluate('x=>cltTest.advice(x)',dict(tier=t,stage=f'L0{i}',method='K',mode='eigen'))
                     assert f.locator('#chat-meldungen [data-kind=send]').count()==i
                     if i<5:f.locator('#beratung-weiter').click()
                 s.locator('[data-action=home]').click();assert not f.locator('[data-optional=Tom]').is_visible()
-                f.locator('#weiterarbeiten').click();f.locator('#beratung-fertig').click()
+                f.locator('#weiterarbeiten').click();f.locator('#beratung-fertig').click();schluss(f)
                 assert f.locator('[data-optional=Tom]').is_enabled()
                 for person,stages in [('Tom',3),('Celina',5)]:
                     for at in range(stages):
@@ -86,7 +86,9 @@ def run(engine,day,tier,profil='quer'):
                 def picker(s,f,person,step):
                     s.locator('[data-action=recovery]').click()
                     if f.locator('#level-0').input_value()!=tier:f.locator('#level-0').select_option(tier)
-                    if person in NAMES[2:] and f.locator('#papierstand').count():f.locator('#papierstand').click()
+                    if person in NAMES[2:] and not f.locator('#person option').filter(has_text=person).count():
+                        s.locator('[data-action=abschluss]').click();schluss(f)
+                        s.locator('[data-action=recovery]').click()
                     f.locator('#person').select_option(person);f.locator('#entry').select_option(str(step));f.locator('#open-entry').click()
                 for mode in ('eigen','fehler','hilfe','beispiel'):
                     s,f=open_module(mode in ('fehler','beispiel'))
@@ -101,16 +103,16 @@ def run(engine,day,tier,profil='quer'):
                     for concerns in combos:
                         s,f=open_module(bool(sum(concerns)%2));picker(s,f,'Lauras Frage',2)
                         f.evaluate('x=>cltTest.evaluateWeight(x)',dict(weight=weight,concerns=concerns,errors=True));counts['Gewichtungen']+=1;harvest(f)
-                s,f=open_module(False);f.locator('#level-0').select_option(tier);f.locator('#start').click()
+                s,f=open_module(False);f.locator('#level-0').select_option(tier);f.locator('#start').click();antwort(f)
                 for name in NAMES[:2]:
                     f.evaluate('x=>cltTest.family(x)',dict(person=name,tier=tier,mode='eigen'))
                 f.locator('#next').click()
                 f.evaluate('x=>cltTest.evaluateWeight(x)',dict(weight=3,concerns=[1,0],errors=True))
-                expect(f.locator('#open-Großmutter')).to_be_enabled();harvest(f)
+                schluss(f);expect(f.locator('#open-Großmutter')).to_be_enabled();harvest(f)
                 s,f=open_module(True);picker(s,f,'Freundin',3)
                 expect(f.locator('#app .arbeitskopf')).to_contain_text('Freundin')
                 s.locator('[data-action=abschluss]').click()
-                expect(f.locator('#dialog-body')).to_contain_text('keine Nachricht geprüft')
+                schluss(f);assert not f.locator('#lernspur').count()
                 assert not errors,errors
             # Die ausgelieferte SCORM-Hülle darf nur die Sitzung öffnen und beenden.
             s,f=open_module(True)

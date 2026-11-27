@@ -87,7 +87,7 @@
      if(errors){help(8,5);for(const [i,a] of q.answers.entries())if(!a.ok)click('#answer-'+i);}
      click('#answer-'+q.answers.findIndex(a=>a.ok));click('#next');
    }
-   observe('Abschluss');assert(el('#abschlusskarte'),'Abschlusskarte fehlt');click('#abschlusskarte');
+   assert(el('#spur-grund') && !el('#spur-fertig'),'Individueller Abschluss fehlt');
  }
  function advice({tier,stage,method,mode}){
    const data=window.LAURA.stages[stage],t=data.levels[tier],way=t.strategies[method];caseName='Laura '+stage;task='Empfehlung '+method;

@@ -12,11 +12,11 @@ KARTEN={
 'MSA':('Welche Nachricht hilft Laura zunächst? Nenne deinen ersten Grund.','Welche ergänzte Nachricht hilft Laura jetzt besonders?','Verbinde ein Anliegen mit einem geprüften Fakt. Was bleibt für Laura offen?'),
 'AHR':('Wie schätzt du die beiden Ratschläge zunächst ein? Begründe kurz.','Wie bewertest du die ergänzten Ratschläge jetzt?','Wäge die Anliegen und die Reichweite der biologischen Informationen ab. Begründe auch eine mögliche Unsicherheit.')}
 }
-ZEIT={'02':[('Einstieg und erste Karte',5),('Erste Abstimmung am Empfehlungsrad',3),('Digitales Beratungsgespräch',20),('Individueller Schlussrat auf der zweiten Karte',5),('Zweites Empfehlungsrad und Vergleich der Gründe',9),('Reflexion',3)],
-'08':[('Einstieg mit Laura und den beiden Ratschlägen, erste Karte',7),('Digitale Analyse und Abwägung',22),('Individuelle Abschlusskarte',5),('Vergleich von Einschätzung und geprüftem Fakt',8),('Reflexion',3)]}
+ZEIT={'02':[('Ersten Rat mit eigenem Grund eingeben',5),('Erste Abstimmung am Empfehlungsrad',3),('Digitales Beratungsgespräch',20),('Schlussrat und Grund eingeben',5),('Zweites Empfehlungsrad und Vergleich der Gründe',9),('Reflexion',3)],
+'08':[('Zwei Ratschläge lesen und erste Einschätzung begründen',7),('Digitale Analyse und Abwägung',22),('Abschließende Einschätzung begründen',5),('Vergleich von Einschätzung und geprüftem Fakt',8),('Reflexion',3)]}
 
 def vertrag(day,bank):
-    result=dict(tag=day+'12',format='Je Niveau zwei kleine Einzelkarten; getrennte Stapel. Die Lehrkraft gibt zuerst nur die Einstiegskarte, nach der Erarbeitung die Abschlusskarte aus.',niveaus={},phasen=ZEIT[day])
+    result=dict(tag=day+'12',format='Erste und letzte Antwort mit eigenem Grund stehen auf dem Gerät. Beide bleiben für den Vergleich in der geöffneten Sitzung erhalten.',niveaus={},phasen=ZEIT[day])
     for tier,(start,end,stem) in KARTEN[day].items():
         result['niveaus'][tier]={'einstieg':{'titel':'Mein erster Rat' if day=='02' else 'Meine erste Einschätzung','auftrag':start,'funktion':'Individuellen Ausgangspunkt vor der digitalen Arbeit festhalten.'},'abschluss':{'titel':'Mein Schlussrat' if day=='02' else 'Meine begründete Einschätzung','auftrag':end,'hilfe':stem,'funktion':'Eigenen abschließenden Grund einmal individuell formulieren.'}}
     if day=='02':
@@ -25,6 +25,6 @@ def vertrag(day,bank):
     else:
         result['einstiegstext']={k:bank['cases'][k]['lesefassung'] for k in ('Mutter','Freundin')}
         result['sicherung']='Erste und abschließende Einschätzung vergleichen. Neben jeden Originalrat die erarbeitete biologische Ergänzung legen. In einem Grund den Bezug zwischen Anliegen und Fakt zeigen. Mutter, Freundin, beide und begründete Unsicherheit sind möglich. Laura entscheidet selbst.'
-    result['erarbeitung']='Ausschließlich digital.'+(' Die vier vorbereiteten Infokarten bleiben als Nachschlagewerk auf dem Tisch.' if day=='02' else '')
-    result['unterbrechung']='Die Lehrkraft gibt das Zeichen und die zweite Karte aus. Über „Stundenabschluss“ bleiben die bis dahin erarbeiteten Informationen zugänglich. Offene Arbeit wird nicht als bestanden gewertet.'
+    result['erarbeitung']='Ausschließlich digital.'+(' Die vorbereiteten Infokarten können freiwillig genutzt werden. Alle benötigten Abschnitte stehen im Programm.' if day=='02' else '')
+    result['unterbrechung']='Beim Zeichen „Stundenabschluss“ öffnen alle die persönliche Abschlussaufgabe. Die Fallinformationen sind auch bei frühem Stopp zugänglich. Offene Arbeit wird nicht als bestanden gewertet.'
     return result

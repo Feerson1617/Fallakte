@@ -9,18 +9,38 @@ const Entwurf = (() => {
     const own=text.replace(/„[^“]*“|»[^«]*«|«[^»]*»|"[^"]*"/gu,' ');
     const normal=own.toLocaleLowerCase('de').normalize('NFC').replaceAll('ä','ae').replaceAll('ö','oe').replaceAll('ü','ue').replaceAll('ß','ss');
     // Zitate, berichtete Rede, Fragen und ausdrückliche Rücknahmen sind kein eindeutiges Eigenurteil.
-    const clauses=Fachwissen.berichtigungen(normal,'').split(/[.!;]+(?:\s|$)/u);
-    for(const clause of clauses){
-      const s=clause.trim().replace(/\s+/gu,' ');
+    const clauses=Fachwissen.berichtigungen(normal,'').replace(/\bpillle\b/gu,'pille')
+      .replace(/([^.!?;]+)\?/gu,' ').split(/[.!;]+(?=\s|$)/u);
+    const issues=[];
+    function collect(s){
       const match=Fachwissen.lesen(s,'');
       if(match?.falsch){
         const fact=Fachwissen.katalog[match.code];
         return {ref:{method:methods[match.karte],section:sections[match.karte][match.abschnitt]},frage:fact.frage,info:fact.info};
       }
-      const other=weitere.find(rule=>rule.satz.test(s));
-      if(other)return other;
+      return weitere.find(rule=>rule.satz.test(s));
     }
-    return null;
+    for(const [index,clause] of clauses.entries()){
+      const s=clause.trim().replace(/\s+/gu,' ');
+      if(!s || /[:„“]|\b(?:behauptet|behaupten|fragt|meint|sagt|angeblich|vielleicht|ob)\b/u.test(s))continue;
+      if(/^(?:das (?:stimmt nicht|ist falsch|war falsch)|nein, eine spaetere schwangerschaft bleibt moeglich)$/u.test(s)){
+        const previous=issues.at(-1);
+        if(previous && previous.index===index-1 &&
+          (!s.startsWith('nein') || previous.issue.quelle==='Später schwanger werden'))issues.pop();
+        continue;
+      }
+      // Getrennte Behauptungen nur bei zwei ausdrücklich genannten Subjekten.
+      if(s.includes('dass ')||s.includes('ob ')||s.startsWith('es stimmt nicht'))continue;
+      const parts=s.split(/ und (?=(?:die |eine |ein |das )(?:pille|kupferspirale|hormonspirale|kondom)\b)/u);
+      for(const part of parts){
+        let claim=part.replace(/^die pille ist meine wahl, weil sie (vor hiv) schuetzt$/u,'die pille schuetzt $1');
+        const issue=collect(claim);
+        if(issue)issues.push({issue,index});
+      }
+    }
+    if(!issues.length)return null;
+    const found=issues.map(row=>row.issue);
+    return {...found[0],info:[...new Set(found.map(v=>v.info))].join(' ')};
   }
   function hilfen(quelle,frage,fakt){
     const parts=fakt.match(/[^.!?]+[.!?]+|[^.!?]+$/gu) || [fakt];

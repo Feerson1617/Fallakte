@@ -15,7 +15,8 @@
   const sections=['start','einstieg','beratung','reserve-platz'];
   let view='start',level='',pickerTier='',pickerPerson='Laura',origin='start',originLevel='',reserveStatus;
   let port;
-  const available=new Set(),paperRecovery=new Set();
+  const available=new Set();
+  let afterLevel=null;
   function grant(person,tier){available.add(tier+'/'+person);}
   window.addEventListener('beratung:abgeschlossen',e=>{
     grant('Tom',e.detail);
@@ -62,7 +63,7 @@
     communicate();
   }
   function drawHome() {
-    levelGroup($('niveauplatz'),level,id=>{level=id;drawHome();});
+    levelGroup($('niveauplatz'),level,id=>{level=id;if(afterLevel){const act=afterLevel;afterLevel=null;act();}else drawHome();});
     const saved=Boolean(level && window.Beratung.has(level));
     $('weiterarbeiten').hidden=!saved;
     $('neu').disabled=!level;
@@ -73,11 +74,41 @@
     Arbeitsplatz.setup($('start'),$('start'),null,$('start-titel'),null,b=>window.Material.orient('Wähle dein Niveau. Tippe auf „Neu beginnen“.',b));
   }
   function home() {
-    show('start');drawHome();$('start-titel').focus({preventScroll:true});
+    Lernspur.close();show('start');drawHome();$('start-titel').focus({preventScroll:true});
   }
-  function start(stageId,resume=false) {
+  function personal(phase,done){
+    const titles=Object.values(bank.strategies).map(m=>m.label);
+    const reasons={
+      Foerder:'Was ist Laura wichtig? Wie hilft dein Rat? Stichworte reichen.',
+      ESA:'Wie hilft die Methode Laura? Nenne auch eine Grenze.',
+      MSA:'Wie passt die Wirkung zu Lauras Wunsch? Wann wäre ein anderer Rat möglich?',
+      AHR:'Wäge zwei Anliegen ab. Begründe mit der Wirkung der Methode. Wann passt eine Alternative?'
+    };
+    Lernspur.open({tier:level,firstTitle:'Dein erster Rat',finalTitle:'Dein Schlussrat',
+      firstQuestion:'Was rätst du Laura zuerst?',finalQuestion:'Was rätst du Laura jetzt?',
+      suggestion:Beratung.letzterRat(level)?.choice,reasonDraft:Beratung.letzterRat(level)?.reason,
+      firstChoices:['Kondom',...titles.slice(1,4)],finalChoices:titles,reason:reasons[level],helpSteps:[
+        'Lies Lauras Nachrichten neben deinem Rat.', 'Welcher Wunsch ist dir für Laura wichtig?',
+        'Wie hilft deine Methode bei diesem Wunsch?', 'Beginne mit „Ich rate zu …, weil …“.',reasons[level]],
+      startMessages:[['Laura',bank.opening]],endMessages:[
+        ['Laura','Ich will mich vor einer Schwangerschaft und vor Infektionen schützen. Ich vertrage kein Latex.'],
+        ['Laura','Mein Alltag wechselt. Manchmal vergesse ich etwas. Bei Hormonen bin ich unsicher. Meine Freundin hatte Probleme mit der Pille.'],
+        ['Laura','Ich habe starke Regelschmerzen. Woher sie kommen, weiß ich noch nicht. Das Einsetzen einer Spirale macht mir Sorgen. Ich möchte selbst entscheiden.']],
+      portrait:()=>document.querySelector('.hauptfall img').src,help:(text,more)=>Material.impuls(text,more),diagnosis:Entwurf.fehler,
+      completed:()=>{grant('Tom',level);grant('Celina',level);},done},phase);
+  }
+  function final(){
+    if(!level){home();afterLevel=final;return;}
+    Material.close(false);Lernspur.state(level).begonnen=true;personal('schluss',home);
+  }
+  function start(stageId,resume=false,direct=false) {
     if (!level)return;
     if(!resume && window.Beratung.has(level) && !window.confirm('Diesen Abschnitt neu beginnen? Dein bisheriges Gespräch auf diesem Niveau wird ersetzt.'))return;
+    const state=Lernspur.state(level);
+    if(!resume && !direct && !state.begonnen){
+      personal('erst',()=>start(stageId,false,true));return;
+    }
+    state.begonnen=true;Lernspur.close();
     show('beratung');
     if (resume) window.Beratung.resume(level);
     else window.Beratung.begin(level,stageId);
@@ -86,20 +117,14 @@
   function reserve(person,index) {
     if (!level)return;
 
-    if(!available.has(level+'/'+person) && !paperRecovery.has(level))return;
+    if(!available.has(level+'/'+person))return;
     reserveStatus=null;
     show('reserve-platz');
     window.Reserve0212.open(person,level,index);
   }
   function drawPicker() {
     levelGroup($('wiederniveau'),pickerTier,id=>{pickerTier=id;drawPicker();});
-    let claim=$('papierstand');
-    if(!claim){
-      claim=control('Mein persönlicher Schlussrat steht auf der Abschlusskarte',()=>{paperRecovery.add(pickerTier);drawPicker();});
-      claim.id='papierstand';$('wiederfall').parentElement.before(claim);
-    }
-    claim.hidden=!pickerTier||available.has(pickerTier+'/Tom')||paperRecovery.has(pickerTier);
-    const people=['Laura',...['Tom','Celina'].filter(name=>available.has(pickerTier+'/'+name)||paperRecovery.has(pickerTier))];
+    const people=['Laura',...['Tom','Celina'].filter(name=>available.has(pickerTier+'/'+name))];
     if(!people.includes(pickerPerson))pickerPerson='Laura';
     $('wiederfall').parentElement.hidden=people.length===1;
     $('wiederfall').replaceChildren(...people.map(person=>{
@@ -111,7 +136,7 @@
     $('abschnitte').replaceChildren(...steps.map(([id,title],i)=>{
       const b=control(title,()=>{
         level=pickerTier;
-        if (pickerPerson==='Laura') start(id);
+        if (pickerPerson==='Laura') start(id,false,true);
         else reserve(pickerPerson,i+1);
       });
       b.dataset.stage=id;b.disabled=!pickerTier;return b;
@@ -124,7 +149,11 @@
     show('einstieg');drawPicker();$('einstieg-titel').focus({preventScroll:true});
   }
   function navigate(action,trigger) {
-    if(action==='abschluss')window.Material.abschluss(level,trigger);
+    if(action==='abschluss'){final();return;}
+    if(action==='resources' && !Lernspur.state(level).begonnen){
+      window.Material.orient('Halte zuerst deinen eigenen Rat fest.',trigger);return;
+    }
+    if(action==='home'||action==='recovery'){afterLevel=null;Lernspur.close();}
     if (action==='home')home();
     if (action==='recovery')recovery();
     if (action==='resources') {
@@ -147,7 +176,7 @@
   };
   for (const b of document.querySelectorAll('[data-optional]')) b.onclick=()=>reserve(b.dataset.optional);
   for (const b of document.querySelectorAll('[data-nav]')) b.onclick=()=>navigate(b.dataset.nav,b);
-  window.Runde1={home};
+  window.Runde1={home,final};
   window.addEventListener('beratung:view',communicate);
   window.addEventListener('reserve0212:status',e=>{reserveStatus=e.detail;communicate();});
   window.addEventListener('message',e=>{

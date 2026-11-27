@@ -41,9 +41,10 @@ jobs:
           ENGINE: ${{ matrix.browser }}
           NIVEAU: ${{ matrix.niveau }}
         run: |
+          python clt/lernspuren.py "$ENGINE" "$TAG" "$NIVEAU"
           for profil in quer hoch kurs schmal tastatur; do python clt/pruefen.py "$ENGINE" "$TAG" "$NIVEAU" --profil "$profil"; done
           if [ "$TAG" = 02 ]; then python clt/folgen.py "$ENGINE" "$NIVEAU"; fi
-          if [ "$TAG" = 08 ]; then python clt/statuswege.py "$ENGINE" "$NIVEAU" && python gesamt/ergonomie.py --browser "$ENGINE" --niveau "$NIVEAU"; fi
+          if [ "$TAG" = 08 ]; then python clt/familienfolgen.py "$ENGINE" "$NIVEAU" && python clt/statuswege.py "$ENGINE" "$NIVEAU" && python gesamt/ergonomie.py --browser "$ENGINE" --niveau "$NIVEAU"; fi
           if [ "$TAG-$NIVEAU" = "02-AHR" ]; then python clt/gegenprobe.py "$ENGINE"; fi
           if [ "$TAG-$NIVEAU" = "08-ESA" ]; then python clt/sitzung.py "$ENGINE"; fi
           if [ "$TAG-$ENGINE-$NIVEAU" = "08-webkit-ESA" ]; then python clt/langtext.py; fi

@@ -85,7 +85,7 @@ window.Arbeitsplatz = (() => {
       bar=make('header','arbeitskopf');
       if(heading)bar.append(heading);
       if(chat){
-        const latest=chat.querySelector('.chat-entry:last-child p,.chat-history .bubble:last-child > p') ||
+        const latest=chat.querySelector('.chat-entry:last-child > p,.chat-history .bubble:last-child > p,:scope > .bubble:last-child > p') ||
           chat.lastElementChild;
         const excerpt=latest?.textContent.trim();
         const preview=()=>{

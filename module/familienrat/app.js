@@ -5,6 +5,7 @@ const ui = bank.ui, names = Object.keys(bank.cases);
 const root = document.getElementById('app'), dialog = document.getElementById('dialog');
 const body = document.getElementById('dialog-body');
 let port, screen = 'home', level = '', current, saved, opener;
+let endAfterLevel=false;
 let picker = {person:'Mutter', step:'0'};
 
 const el = (parent, tag, text, cls) => {
@@ -38,7 +39,15 @@ function aufklappen(parent,title){
   const d=el(parent,'details');el(d,'summary',title);return d;
 }
 function go(type, fields={}) {
-  if(!saved.history.size)remember('start','Laura',bank.opening);
+  if(level)Lernspur.state(level).begonnen=true;
+  if(!saved.history.size){
+    remember('start','Laura',bank.opening);
+    const first=Lernspur.state(level).erst;
+    if(first){
+      remember('erst/antwort','Du','Meine erste Einschätzung: '+first.choice);
+      remember('erst/entwurf','Dein erster Grund · fachlich ungeprüft',first.reason);
+    }
+  }
   current={type,...fields};screen='work';saved.last=current;draw(true);
 }
 function record(key){
@@ -94,6 +103,7 @@ function cards(index){
 }
 // Ausschließlich explizite medizinische Behauptungen abgleichen. Lauras Entscheidung bleibt offen.
 const medizinischeAussagen=[
+  {satz:/^nach einem abbruch kann man keine kinder mehr bekommen$/,quelle:'Später schwanger werden',frage:'Was bleibt nach einem Abbruch ohne Komplikationen möglich?',info:'Eine spätere Schwangerschaft bleibt möglich.'},
   {satz:/^(?:nach einem (?:unkomplizierten )?(?:abbruch|schwangerschaftsabbruch) kann (?:man|eine frau) nie (?:mehr |wieder )?schwanger werden|ein (?:schwangerschafts)?abbruch macht (?:immer )?unfruchtbar)$/,quelle:'Später schwanger werden',frage:'Was ist nach einem Abbruch ohne Komplikationen möglich?',info:'Nach einem Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich. Eine Garantie gibt es nicht.'},
   {satz:/^(?:nach einem (?:unkomplizierten )?(?:abbruch|schwangerschaftsabbruch) wird (?:man|eine frau) (?:garantiert|immer|sicher) (?:wieder )?schwanger)$/,quelle:'Später schwanger werden',frage:'Kann jemand eine spätere Schwangerschaft versprechen?',info:'Nach einem Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich. Eine Garantie gibt es nicht.'},
   {satz:/^(?:nach einem abbruch mit medikamenten ist eine spaetere schwangerschaft nie mehr moeglich|eine spaetere schwangerschaft ist (?:immer |sicher )?garantiert)$/,quelle:'Später schwanger werden',frage:'Was kann man über eine spätere Schwangerschaft sagen?',info:'Nach einem Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich. Eine Garantie gibt es nicht.'},
@@ -149,11 +159,10 @@ function transcript(panel,hiddenTask){
     if(hiddenTask && (id===hiddenTask || id===hiddenTask+'/entwurf'))continue;
     const item=el(log,'div',undefined,'bubble');
     item.dataset.own=String(id.includes('/'));
-    el(item,'strong',entry.speaker);paragraph(item,entry.text);
-    if(bank.cases[id]){
-      const original=el(item,'details');el(original,'summary','Originalnachricht lesen');
-      paragraph(original,bank.cases[id].original);
-    }
+    if(id.endsWith('/entwurf')){
+      const own=aufklappen(item,'Dein Grund');el(own,'strong',entry.speaker);paragraph(own,entry.text);
+    }else{el(item,'strong',entry.speaker);paragraph(item,entry.text);}
+
   }
 }
 function message(box,name,text){
@@ -163,7 +172,7 @@ function message(box,name,text){
 function chooseLevel(box){
   const field=select(box,'Dein Niveau','level-0',[['',ui.choose],...bank.levels.map(t=>[t,t])],level,value=>{
     if(!value || value===level){field.value=level;return;}
-    const change=()=>{level=value;resetPath();draw();};
+    const change=()=>{level=value;resetPath();draw();if(endAfterLevel){endAfterLevel=false;final();}};
     if(!saved.last){change();return;}
     field.value=level;
     popup('Niveau wechseln?',content=>{
@@ -196,21 +205,25 @@ function showHome(){
   heading(box,ui.openingTitle);chooseLevel(box);
   if(!level)return;
   if(saved.last)btn(box,ui.resume,'resume',()=>{current=saved.last;screen='work';draw(true);},'primary');
-  btn(box,saved.last?ui.fresh:ui.start,'start',()=>{
-    if(!saved.last){go('case',{person:'Mutter',at:0});return;}
+  const begin=()=>{
+    if(Lernspur.state(level).begonnen)go('case',{person:'Mutter',at:0});
+    else personal('erst',()=>go('case',{person:'Mutter',at:0}));
+  };
+  btn(box,saved.last?ui.fresh:'Erste Einschätzung','start',()=>{
+    if(!saved.last){begin();return;}
     popup(ui.fresh,content=>{
       paragraph(content,ui.soloReplace);
       btn(content,ui.fresh,'confirm-start',()=>{
-        dialog.close();resetPath();go('case',{person:'Mutter',at:0});
+        dialog.close();resetPath();begin();
       });
     });
   },saved.last?'':'primary');
   if(saved.complete.Mutter)btn(box,bank.cases.Freundin.titles[0],'friend',()=>go('case',{person:'Freundin',at:0}));
 
-  if(saved.completedReview)reserves(box);
+  reserves(box);
 }
 function additionalCases(){
-  return saved.finalCard && saved.completedReview && names.slice(0,2).every(name=>saved.complete[name]);
+  return !!Lernspur.state(level).schluss;
 }
 function reserves(box){
   if(!additionalCases())return;
@@ -342,7 +355,7 @@ function caseView(){
     const task=c.tasks[at-1],r=record(person+'/'+task.id);
     const adding=task.id==='Ergänzung';
     const concept=adding?c.missing:task.id;
-    if(bank.definitions[concept])paragraph(box,concept,'small');
+    if(bank.definitions[concept])paragraph(box,concept+' · '+bank.definitions[concept],'small');
     el(box,'h2',task.prompt);
     if(advanced(level) && !r.valid){
 
@@ -397,7 +410,7 @@ function comparison(box){
   const p=saved.personal;
   if(!kurz())el(box,'h2',level);
   const end=()=>{
-    p.step='done';saved.completedReview=true;go('laura',{at:3});
+    p.step='done';saved.completedReview=true;go('laura',{at:3});final();
   };
   if(p.choice){
     const last=kurz()?aufklappen(box,'Meine Einschätzung'):box;
@@ -486,20 +499,49 @@ function lauraView(){
     btn(box,'Nachrichten abwägen','next',()=>go('laura',{at:2}),'primary');
   }else if(at===1 || at===2)comparison(box);
   else{
-    if(saved.personal.choice)paragraph(box,'Deine Einschätzung · '+saved.personal.choice);
-    paragraph(box,'Deine Lehrkraft gibt die Abschlusskarte aus. Begründe dort deine eigene Einschätzung.');
-    if(saved.completedReview && !saved.finalCard)btn(box,'Meine Begründung steht auf der Abschlusskarte','abschlusskarte',()=>{saved.finalCard=true;draw();});
-    if(saved.finalCard)reserves(box);
-    if(!saved.completedReview)btn(box,'Zur Abwägung','open-review',()=>go('laura',{at:2}));
+    btn(box,Lernspur.state(level).schluss?'Dein Vergleich':'Einschätzung begründen','abschluss-oeffnen',final,'primary');
+    reserves(box);
+
   }
+}
+
+function personal(phase,done){
+  const choices=['Mutter','Freundin',ui.both,'Ich bin noch unsicher'];
+  const reasons={
+    Förder:'Was ist Laura wichtig? Welcher Fakt hilft ihr? Stichworte reichen.',
+    ESA:'Was ist Laura wichtig? Was erklärt der Fakt dazu?',
+    MSA:'Verbinde Lauras Anliegen mit einem Fakt. Was bleibt für sie offen?',
+    AHR:'Wäge beide Anliegen ab. Was erklären die Fakten? Was muss Laura selbst entscheiden?'
+  };
+  const messages=names.slice(0,2).map(n=>[n,bank.cases[n].original]);
+  Lernspur.open({tier:level,firstTitle:'Deine erste Einschätzung',finalTitle:'Deine Einschätzung am Ende',
+    firstQuestion:'Welche Nachricht hilft Laura zuerst?',finalQuestion:'Welche Nachricht hilft Laura jetzt?',
+    firstChoices:choices,finalChoices:choices,suggestion:saved.personal.choice,reason:reasons[level],
+    startMessages:[['Laura',bank.opening],...messages],
+    endMessages:[messages[0],
+      ['Fachinformation · Beschwerden',bank.cards[0].short],
+      messages[1],
+      ['Fachinformation · Spätere Schwangerschaft',bank.cards[1].short],['Laura',bank.second]],
+    helpSteps:['Lies, was Laura wissen möchte.','Welche Sorge von Laura ist dir wichtig?',
+      'Welche Information hilft bei dieser Sorge?', 'Beginne mit „Ich finde … hilfreich, weil …“.',reasons[level]],
+    portrait:name=>portraits[name],help:(text,steps)=>{
+      function show(i){popup(steps?'Hilfe '+(i+1)+' von '+steps.length:'Hilfe',box=>{
+        paragraph(box,steps?steps[i]:text);
+        if(steps && i<steps.length-1)btn(box,'Nächste Hilfe','spur-mehr',()=>show(i+1));
+      });dialog.dataset.hilfe='true';}
+      show(0);
+    },diagnosis:medizin,completed:()=>{},done},phase);
+}
+function final(){
+  if(!level){screen='home';endAfterLevel=true;draw();return;}
+  Lernspur.state(level).begonnen=true;
+  personal('schluss',()=>{screen='home';draw(true);});
 }
 
 function pickerView(){
   heading(root,ui.where);chooseLevel(root);if(!level)return;
   if(saved.last)paragraph(root,ui.soloSession,'small');
-  if(!additionalCases() && !saved.paperRecovery)
-    btn(root,'Meine Begründung steht auf der Abschlusskarte','papierstand',()=>{saved.paperRecovery=true;draw();});
-  const available=additionalCases()||saved.paperRecovery?names:names.slice(0,2);
+  const available=additionalCases()?names:names.slice(0,2);
   if(![...available,ui.theme].includes(picker.person))picker={person:'Mutter',step:'0'};
   select(root,ui.home,'person',[...available,ui.theme].map(k=>[k,k]),picker.person,v=>{picker={person:v,step:'0'};draw();});
   const n=picker.person,c=bank.cases[n];
@@ -534,10 +576,13 @@ window.addEventListener('message',e=>{
   port?.close();port=e.ports[0];
   port.onmessage=({data})=>{
     if(dialog.open)dialog.close();
-    if(data==='abschluss'){popup('Stundenabschluss',box=>{
-      facts(box);paragraph(box,'Deine Lehrkraft gibt dir die Abschlusskarte. Begründe darauf, welche Nachricht dir bei Lauras Frage hilft. Auch Unsicherheit kannst du begründen.');
-    });return;}
-    if(data==='resources'){cards();return;}
+    if(data==='abschluss'){final();return;}
+    if(data==='resources'){
+      if(!Lernspur.state(level).begonnen)popup('Hilfe',box=>paragraph(box,'Halte zuerst deine eigene Einschätzung fest.'));
+      else cards();
+      return;
+    }
+    Lernspur.close();endAfterLevel=false;
     if(data==='home'||data==='recovery'){screen=data==='home'?'home':'picker';draw(true);}
   };
   port.postMessage({type:'ready',actions:[{id:'home',label:ui.home,icon:'folder'},{id:'resources',label:ui.cards,icon:'book'},{id:'recovery',label:'Wiedereinstieg',icon:'restart'},{id:'abschluss',label:'Stundenabschluss'}]});notify();

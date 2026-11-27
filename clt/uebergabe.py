@@ -12,7 +12,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 from lxml import etree, html
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"scripts"))
-from clt_inhalte import klar
+from clt_inhalte import klar, QUELLEN
 from material import LEVELS,vertrag
 from matrix import matrix
 
@@ -49,9 +49,21 @@ def verify_source(day,b):
     if day=='08':
         ref=json.loads(git('module/familienrat/material.json'))
         for n,person in b['cases'].items():
-            for key in ['original','lesefassung','tasks','transfer','addition','connection','missing']:assert person[key]==ref['cases'][n][key]
+            orig=ref['cases'][n]
+            for key in ['transfer','addition','connection','missing']:assert person[key]==orig[key]
+            visible=orig['lesefassung'].replace('deine Ausbildung beenden. Vielleicht möchtest du später Kinder.',
+                              'deine Ausbildung beenden und vielleicht später Kinder bekommen.')
+            assert person['original']==person['lesefassung']==visible
+            lines=[t.strip() for t in re.findall(r'[^.!?]+[.!?]+|[^.!?]+$',visible)]
+            assert len(person['tasks'])==len(orig['tasks'])
+            for task,previous in zip(person['tasks'],orig['tasks']):
+                clean=lambda x:json.loads(json.dumps(x,ensure_ascii=False).replace('Öffne „Fakt · Wert · Norm · Folgerung“. Lies die vier Fragen.','Tippe auf „Begriff erklären“. Wähle ein Wort.'))
+                for key in previous:
+                    if key=='evidenceSentences':
+                        assert [lines[i] for i in task[key]]==QUELLEN[n][task['id']]
+                    else:assert task[key]==clean(previous[key]),(n,task['id'],key)
         for k in ('cards','limits','opening','second'):assert b[k]==ref[k]
-        return 'Vier Originalnachrichten, Lesefassungen, Fachkarten, Aufgaben, Rückmeldungen, Anwendungsfragen, Grenzen und Lauras Falltexte wurden feldweise gegen c4814a9 verglichen.'
+        return 'Die vier sichtbaren Nachrichten und Quellenaufgaben verwenden dieselbe Lesefassung. Alle fachlich passenden Quellenstellen wurden am vollständigen Satzwortlaut verankert. Die unterstützende Bedienanweisung nennt den tatsächlichen Begriffszugang. Fachliche Antworten, Rückmeldungen, Anwendungsfragen, Karten, Grenzen und Lauras Anliegen wurden feldweise gegen c4814a9 geprüft.'
     old=json.loads(git('data/laura-0212.json'));cards=json.loads((HERE/'Infokarten.json').read_text())
     for k in ('opening','facts','goalRules','strategies'):assert b[k]==old[k],k
     for k,s in b['stages'].items():
@@ -103,6 +115,20 @@ def release():
                     status=json.loads((base/'Statuswege.json').read_text())
                     assert status['html_sha256']==sha(raw) and len(status['pruefungen'])==48*18
                     logs[f'{e}/{t}/Statuswege.json']=(base/'Statuswege.json').read_bytes()
+                personal=QA/'Lernspuren'/f'{day}-{t}-{e}'
+                lr=json.loads((personal/'Lernspuren.json').read_text())
+                assert lr['revision_html']==sha(raw) and len(lr['antwortpaare'])==(28 if day=='02' else 16) and not lr['fehler']
+                assert lr['altbestand']==1058 and len(lr['ansichten'])==20
+                for name in ('Lernspuren.json','Altbestand.json.gz'):logs[f'Lernspuren/{e}/{t}/'+name]=(personal/name).read_bytes()
+                for pic in personal.glob('*.jpg'):screens[f'Lernspuren/{e}/{t}/'+pic.name]=pic.read_bytes()
+                if (personal/'Lernweg.webm').is_file():screens['Demonstration.webm']=(personal/'Lernweg.webm').read_bytes()
+                for row in lr['ansichten']:
+                    z=dict(text=row['text'],task=row['schritt'],caseName='Persönlicher Vergleich',event=row['schritt'],ids=row['tasten'],question=row['titel'])
+                    rows[t,dump(z)]=(t,z)
+                if day=='08':
+                    more=json.loads((base/'Familienfolgen.json').read_text())
+                    assert more['html_sha256']==sha(raw) and not more['errors'] and sum(v['pass'] for v in more['counts'].values())==1414
+                    logs[f'{e}/{t}/Familienfolgen.json']=(base/'Familienfolgen.json').read_bytes()
                 for profile in PROFILES:
                     d=base/profile;prefix=f'{e}/{t}/{profile}/'
                     row=json.loads((d/'Pruefung.json').read_text());assert row['html_sha256']==sha(raw);counts.append(row)
@@ -139,7 +165,7 @@ def release():
         screens[img.name]=img.read_bytes();logs['Langtextpruefung.json']=evidence
         logs['Seitenumfang.json.gz']=gzip.compress(dump(seiten).encode(),mtime=0)
         c=vertrag(day,b);c['revision']=revision
-        archive(target/'Materialvertrag-Work.zip',{'Materialvertrag.json':dump(c),'Auftraege.md':md_contract(c)})
+        (target/'Unterrichtssteuerung.md').write_text('\n\n'.join(['# Unterrichtssteuerung',c['erarbeitung'],c['unterbrechung'],c['sicherung'],'## Zeitplanung für 45 Minuten']+[f'{n} Minuten · {a}' for a,n in c['phasen']]))
         archive(target/'CLT-Abnahmematrix.zip',{'Matrix.csv':matrix(rows.values(),day),'Fachdidaktische-Durchsicht.md':(HERE/('Beratung.md' if day=='02' else 'Familiennachrichten.md')).read_bytes(),'Grundlagen.md':(HERE/'Grundlagen.md').read_bytes(),'Perspektiven.md':(HERE/'planung.md').read_bytes(),'Zeitplanung.json':dump(c['phasen'])})
         archive(target/'Pruefprotokolle.zip',logs)
         failnote=f'Bei {len(geoerrors)} Beobachtungen ließ sich die vollständige Erreichbarkeit einer angebotenen Taste nicht nachweisen. Die betreffenden Beschriftungen, Positionen, Browser und Fenster stehen im Geometrieprotokoll.' if geoerrors else 'Alle in den Geometrieprotokollen erfassten aktiven Steuerungen waren über ihren aktuellen Ansichtsabschnitt erreichbar.'
@@ -151,7 +177,9 @@ Commit `{revision}`. SHA-256 der Offline-Datei `{sha(raw)}`.
 
 Gegenprüfung gegenüber ac86cb8: Auf 46 sendbaren Wegen musste der HIV-Irrtum vor der Kontrollauswahl berichtigt werden. Alle 46 Empfehlungen blieben nach der Überarbeitung sendbar. Weitere 68 Freitextwege betrafen Familiennachrichten, Tom und Celina. Zusätzlich wurden auf 464 unterschiedlichen Quellen-, Auswahl- und Konfliktwegen der Familiennachrichten und Zusatzfälle jeweils alle fünf Hilfetexte geprüft. Die Zahlen beziehen sich jeweils auf einen Browser. Die Protokolle enthalten die tatsächlich angezeigten Hilfen.
 
-Die Lehrkraft gibt zwei Karten getrennt aus. Die Arbeit dazwischen läuft digital. Das Menü „Stundenabschluss“ ist auch bei frühem Stopp erreichbar. Wer bereits einen anderen Rat gesendet hat, kann ihn im Gespräch nachlesen. Persönliche Gründe werden im Unterricht besprochen.
+Die erste Antwort wird vor Fachkarten und inhaltlichen Hilfen mit dem eigenen Grund im Arbeitsspeicher festgehalten. Beim Signal „Stundenabschluss“ stehen alle entscheidungsrelevanten Informationen bereit. Erst nach dem eigenen abschließenden Grund erscheint der Vergleich. Nach einem Neustart zeigt er eine fehlende erste Antwort ausdrücklich an. Persönliche Entscheidungen bespricht die Klasse. Die freiwilligen Zusatzfälle öffnen nach einer tatsächlich ausgefüllten persönlichen Abschlussaufgabe.
+
+Pro Browser und Niveau wurden alle {28 if day=='02' else 16} geordneten Paare aus erster und abschließender Auswahl eingegeben. Die neue Textgegenprobe umfasst 25 vorgegebene Äußerungen, davon im ersten Besuch die verhütungsbezogenen und neutralen Aussagen. Der zusätzliche Altbestand umfasst 1.058 unabhängige Freitexte je Browser und Niveau. Die Protokolle trennen eine erkannte konkrete Fehlvorstellung von einem unbewerteten Entwurf. Der Vergleich zweier persönlicher Entscheidungen vergibt weder Punkte noch ein Lernzuwachsurteil.
 
 {len(counts)} Browser-, Niveau- und Fensterdurchläufe. Die Matrix umfasst {len(rows)} unterschiedliche protokollierte Kombinationen von Niveau, Kontext, Wortlaut und Bedienelementen. {ngeo} Geometrieprüfungen erfassten aktive Steuerelemente. {failnote} Im Protokoll Seitenumfang.json.gz steht die gemessene Anzahl der Teilansichten pro Arbeitszustand. Weitere 40 Tast- und Navigationstests mit Chromium und WebKit prüften physische Treffer bis zum äußeren Fenster. Die Bildschirmtastatur wurde durch eine verkleinerte Höhe simuliert.
 
@@ -163,12 +191,15 @@ Das Offline-HTML und index.html im SCO stimmen byteweise überein. Das SCORM-1.2
 
 Prüfprotokolle enthalten die tatsächlich beobachteten Ausgaben. Wiederholungen führen bei einzelnen Aufgaben auf denselben Fehlertext zurück. Die Quelle der Familienantworten, Lösungsoffenlegung, verspätete Hilfe, vorheriger Vorschlag und fachlicher Stand bleiben unterscheidbar. Unendlich viele Freitexte und Unterbrechungsfolgen lassen sich nicht vollständig prüfen. Bei freien Begründungen prüft die Software ausdrücklich formulierte medizinische Behauptungen mit eng begrenzten Regeln. Alle anderen eigenen Texte bleiben fachlich ungeprüft. Persönliche Gewichtungen werden im Unterricht besprochen. Native Tastatur, produktives itslearning, Hilfsmittel wie Screenreader, fremde Schriftmetriken, tatsächliches Leseverständnis und reale Minuten mit 28 Lernenden sind offen. Die Matrix begründet Gestaltungsentscheidungen. Eine empirische Entlastung ist nicht nachgewiesen.
 
+Zusätzlich wurden im Familienmodul pro Browser 5.656 Wege mit geordneten Folgen falscher Antworten, später aufgerufenen Hilfen sowie unterschiedlichen Anliegen, Fakten und Grenzen geprüft.
+
 Die beiden Browser prüfen angebotene Antworten und fachlich unterschiedliche Übergänge. Beliebige Mischfolgen aller Hilfetiefen, Kartenaufrufe und Fachfehler mit frei gewählten Wiederholungen sind nicht einzeln nachgespielt. Bei langen Arbeitsansichten gelangen Lernende über Blättertasten zum nächsten Teil. Freiwilliges Scrollen bleibt im Gespräch möglich.
 """
         (target/'Pruefbericht.md').write_text(report)
         screens['Pruefbericht.md']=report;screens['Zaehlungen.json']=dump(counts);screens['Geometriebefunde.json']=dump(geoerrors)
         archive(target/'Sichtpruefung.zip',screens)
         files={p.name:p.read_bytes() for p in HERE.iterdir() if p.suffix in {'.py','.js','.md','.json'}}
+        files['Gegenpruefung-CLT.json.gz']=(HERE/'Gegenpruefung-CLT.json.gz').read_bytes()
         files['Ausfuehren.md']='Im Repository den dokumentierten Commit auschecken. Die vollständigen Befehle und exakten Paketversionen stehen in Ablauf.yml. Die Tests laufen an den ausgelieferten HTML- und ZIP-Dateien.'
         files['Ablauf.yml']=(ROOT/'.github/workflows/clt.yml').read_bytes()
         archive(target/'Reproduzierbare-Tests.zip',files)

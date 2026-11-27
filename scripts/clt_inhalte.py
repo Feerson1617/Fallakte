@@ -59,6 +59,7 @@ def karten(bank):
 
 def laura(bank):
     karten(bank)
+    bank["kartenbilder"]=json.loads((ROOT/"clt/Kartenbilder.json").read_text())
     # Die Schlussübersicht enthält Lauras Anliegen. Methodeneigenschaften stehen auf den Infokarten.
     bank['concernsShort']={
         'ausgang':'Laura ist 19. Sie möchte sicheren Schutz vor einer Schwangerschaft.',
@@ -96,10 +97,45 @@ def familie(bank):
     ui={k:bank['ui'][k] for k in sorted(set(re.findall(r'\bui\.(\w+)',app)))}
     keys=('levels','opening','second','cards','cases','limits','evaluationHints','review','levelPrompts','caseReflection','evaluationHelpByLevel','crossReference','designFiles','commit')
     selected={k:bank[k] for k in keys}
-    selected.update(ui=ui,definitions={'Fakt':'Was kann man prüfen?','Wert':'Was ist jemandem wichtig?','Norm':'Was sollte man tun?','Folgerung':'Welcher Rat folgt daraus?'},known='Lies die Nachricht.')
+    selected.update(ui=ui,definitions={'Fakt':'Welche Aussage kann man prüfen?','Wert':'Was ist jemandem wichtig?','Norm':'Was sollte man tun?','Folgerung':'Welcher Rat folgt daraus?'},known='Lies die Nachricht.')
     selected['crossReference']=['Die Information über Beschwerden steht bei der Mutter. Wie hilft sie dir beim Rat der Freundin?', 'Die Information über spätere Schwangerschaften steht bei der Freundin. Wie hilft sie dir beim Rat der Mutter?']
     selected['evaluationSteps']=['Lauras Frage','Anliegen vergleichen','Nachrichten abwägen','Stundenabschluss']
     selected['evaluationRecovery']=[dict(id='LA-0'+str(i+1),section=t) for i,t in enumerate(selected['evaluationSteps'])]
     for name,c in selected['cases'].items():
+        # Eine einzige Quelle für Chat, Quellenwahl und die erste Einschätzung.
+        text=c['lesefassung']
+        if name=='Freundin':
+            text=text.replace('deine Ausbildung beenden. Vielleicht möchtest du später Kinder.',
+                              'deine Ausbildung beenden und vielleicht später Kinder bekommen.')
+        c['original']=c['lesefassung']=text
         c.pop('field',None);c['recovery'][-1].update(section=name+' · Weiter',part='Weiter')
+    # Gegen die sichtbaren Satztexte auflösen, nicht gegen Indizes der früheren Originalnachricht.
+    import re
+    for name,parts in QUELLEN.items():
+        c=selected['cases'][name]
+        lines=[line.strip() for line in re.findall(r'[^.!?]+[.!?]+|[^.!?]+$',c['original'])]
+        for t in c['tasks']:
+            if 'evidenceSentences' in t:t['evidenceSentences']=[lines.index(line) for line in parts[t['id']]]
+    def hinweis(text):
+        return text.replace('Öffne „Fakt · Wert · Norm · Folgerung“. Lies die vier Fragen.',
+                            'Tippe auf „Begriff erklären“. Wähle ein Wort.')
+    for c in selected['cases'].values():
+        for t in c['tasks']:
+            t['hints']=list(map(hinweis,t['hints']))
+            for k,h in t.get('helpByLevel',{}).items():t['helpByLevel'][k]=list(map(hinweis,h))
     return selected
+
+
+QUELLEN={
+    'Mutter':{'Wert':['Laura, deine Gesundheit ist mir wichtig.'],
+              'Norm':['Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen.'],
+              'Folgerung':['Deshalb rate ich dir, die Schwangerschaft fortzusetzen.']},
+    'Freundin':{'Wert':['Laura, du willst erst deine Ausbildung beenden und vielleicht später Kinder bekommen.',
+                        'Mir ist wichtig, dass du deine Zukunft selbst planst.'],
+                'Norm':['Man sollte überlegen, wann Kinder zu den eigenen Plänen passen.'],
+                'Folgerung':['Deshalb rate ich dir zu einem Abbruch mit Medikamenten.']},
+    'Großmutter':{'Norm':['Ich finde, man sollte ungeborenes menschliches Leben schützen.'],
+                  'Folgerung':['Deshalb rate ich dir, die Schwangerschaft fortzusetzen.']},
+    'Vater':{'Wert':['Laura, mir ist wichtig, dass du gut informiert selbst entscheidest.'],
+             'Folgerung':['Deshalb rate ich dir, in der Arztpraxis nach deinen Möglichkeiten zu fragen.']}
+}

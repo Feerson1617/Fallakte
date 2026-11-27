@@ -71,6 +71,11 @@ window.Beratung = (() => {
     pause();
     active={tier,revision:0,asked:new Map(),reasons:new Map(),messages:[],previous:'',focusId:'',pageScroll:0,chatScroll:null};
     sessions.set(tier,active);
+    const first=Lernspur.state(tier).erst;
+    if(first){
+      active.messages.push({kind:'erster-rat',speaker:'Du',text:'Mein erster Rat: '+first.choice,stageId:'Einstieg'},
+        {kind:'entwurf',speaker:'Dein erster Grund · fachlich ungeprüft',text:first.reason,stageId:'Einstieg'});
+    }
     enter(id,true);
     render('beratung-stage',true);
     return true;
@@ -210,7 +215,9 @@ window.Beratung = (() => {
           }
         }
       }
-      entry.append(element('strong','',sender),element('p','',message.text));
+      if(message.kind==='entwurf'){
+        const own=element('details');own.append(element('summary','','Dein Grund'),element('strong','',sender),element('p','',message.text));entry.append(own);
+      }else entry.append(element('strong','',sender),element('p','',message.text));
       if (message.kind==='reaction' && message.stageId===active.stageId) {
         entry.id='beratung-reaktion';
         entry.tabIndex=-1;
@@ -397,10 +404,7 @@ window.Beratung = (() => {
       if(end){
         const facts=element('details','fallwissen');facts.append(element('summary','','Was ist Laura wichtig?'));
         const list=element('ul');for(const text of knownConcerns(active.tier))list.append(element('li','',text));facts.append(list);area.append(facts);
-        area.append(element('p','','Deine Lehrkraft gibt dir die Abschlusskarte. Begründe dort deinen persönlichen Schlussrat.'));
-        area.append(control('beratung-fertig','Mein Schlussrat steht auf der Abschlusskarte',()=>{
-          window.dispatchEvent(new CustomEvent('beratung:abgeschlossen',{detail:active.tier}));window.Runde1.home();
-        },'senden'));
+        area.append(control('beratung-fertig','Schlussrat festhalten',()=>window.Runde1.final(),'senden'));
       }else area.append(control('beratung-weiter',following.title.split(' – ')[0]+' öffnen',next,'senden'));
       return area;
     }
@@ -499,6 +503,12 @@ window.Beratung = (() => {
   }
   return Object.freeze({
     known:knownConcerns,
+    letzterRat:tier=>{
+      const session=sessions.get(tier);
+      if(!session?.previous)return null;
+      const text=session.messages.findLast(m=>m.kind==='entwurf' && m.stageId==='L05' && m.strategy===session.previous)?.text;
+      return {choice:bank().strategies[session.previous].label,reason:text||''};
+    },
     begin,has:tier=>sessions.has(tier),resume,pause,
     status:()=>active ? {tier:active.tier,stageId:active.stageId,phase:active.phase} : null
   });

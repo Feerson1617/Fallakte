@@ -4,6 +4,7 @@ import os
 from tempfile import TemporaryDirectory
 from pathlib import Path
 from playwright.sync_api import sync_playwright,expect
+from lernspur_test import schluss
 from pruefen import OUT,QA,HOST,host,room,sha,LEVELS
 from zipfile import ZipFile
 import argparse
@@ -23,7 +24,8 @@ def run(engine,tier):
                     for i,name in enumerate(('Mutter','Freundin','Großmutter','Vater')):
                         s.locator('[data-action=recovery]').click()
                         f.locator('#level-0').select_option(tier)
-                        if i==2:f.locator('#papierstand').click()
+                        if i==2:
+                            s.locator('[data-action=abschluss]').click();schluss(f);s.locator('[data-action=recovery]').click()
                         f.locator('#person').select_option(name);f.locator('#open-entry').click()
                         observed=f.evaluate((Path(__file__).parent/'statuswege.js').read_text(),dict(name=name,depth=depth,mask=mask))
                         result.extend(observed)

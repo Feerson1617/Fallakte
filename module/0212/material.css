@@ -36,3 +36,6 @@
 @media(min-width:650px){
  #material-dialog {margin-inline:auto max(2vw,calc((100vw - 70rem)/2));width:min(53vw,39rem)}
 }
+.kartenbild{margin:.5rem 0;text-align:center;break-inside:avoid}
+.kartenbild svg{height:clamp(55px,14vh,125px);max-width:100%}
+.kartenbild figcaption{font-size:1em}

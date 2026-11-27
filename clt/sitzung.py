@@ -7,6 +7,7 @@ from zipfile import ZipFile
 from playwright.sync_api import sync_playwright,expect
 ROOT=Path(__file__).resolve().parents[1]
 sys.path[:0]=[str(ROOT/'gesamt'),str(ROOT/'tests')]
+from lernspur_test import antwort,schluss
 from ergonomie import room,touch
 from tagesauswahl import host,HOST
 OUT=ROOT/'build/CLT/Sitzung';OUT.mkdir(exist_ok=True,parents=True)
@@ -32,10 +33,10 @@ with TemporaryDirectory() as tmp,sync_playwright() as pw:
                         p.goto(source)
                         if not sco:return p.main_frame
                         p.frame_locator('[name=sco]').locator('#erster-tag').wait_for();return p.frame(name='sco')
-                    s=open_page();a=room(s,'erster');a.locator('#level-'+ti).click();a.locator('#neu').click();touch(a,'[data-strategy=K]')
+                    s=open_page();a=room(s,'erster');a.locator('#level-'+ti).click();a.locator('#neu').click();antwort(a);touch(a,'[data-strategy=K]')
                     if i>=2:a.locator('#erklaerung').fill(sample)
                     touch(a,'#hilfe');touch(a,'#hilfe-weiter');touch(a,'#hilfe-weiter')
-                    s.locator('#zurueck').click();f=room(s,'zweiter');f.locator('#level-0').select_option(tier);f.locator('#start').click();f.locator('#next').click()
+                    s.locator('#zurueck').click();f=room(s,'zweiter');f.locator('#level-0').select_option(tier);f.locator('#start').click();antwort(f);f.locator('#next').click()
                     if i>=2:f.locator('textarea').fill('Der Mutter ist Lauras Gesundheit wichtig.')
                     s.locator('#zurueck').click();a=room(s,'erster')
                     expect(a.locator('#material-titel')).to_contain_text('Hilfe 3')
@@ -43,18 +44,18 @@ with TemporaryDirectory() as tmp,sync_playwright() as pw:
                     if i>=2:assert a.locator('#erklaerung').input_value()==sample
                     s.locator('[data-action=recovery]').click();a.locator('#abbrechen').click()
                     if i>=2:assert a.locator('#erklaerung').input_value()==sample
-                    s.locator('[data-action=abschluss]').click();expect(a.locator('#material-titel')).to_have_text('Lauras Anliegen')
-                    early=a.locator('.material-inhalt').inner_text()
-                    assert 'Regelschmerzen' not in early and 'Kondom' not in early and 'Latex' in early
+                    s.locator('[data-action=abschluss]').click();expect(a.locator('#lernspur h1')).to_have_text('Dein Schlussrat')
+                    early=a.locator('.spur-chat').inner_text()
+                    assert 'Regelschmerzen' in early and 'Latex' in early
                     if i==0:p.screenshot(path=OUT/(e+'-02-frueher-Stopp.jpg'),quality=63)
-                    touch(a,'#material-zurueck');s.locator('#zurueck').click();f=room(s,'zweiter')
+                    schluss(a);s.locator('#zurueck').click();f=room(s,'zweiter')
                     if i>=2:assert f.locator('textarea').input_value()=='Der Mutter ist Lauras Gesundheit wichtig.'
-                    s.locator('[data-action=abschluss]').click();expect(f.locator('#dialog-title')).to_have_text('Stundenabschluss')
+                    s.locator('[data-action=abschluss]').click();expect(f.locator('#lernspur h1')).to_have_text('Deine Einschätzung am Ende')
                     if i==0:p.screenshot(path=OUT/(e+'-08-frueher-Stopp.jpg'),quality=63)
-                    touch(f,'#dismiss');s=open_page();f=room(s,'zweiter');s.locator('[data-action=recovery]').click()
+                    schluss(f);s=open_page();f=room(s,'zweiter');s.locator('[data-action=recovery]').click()
                     f.locator('#level-0').select_option(tier);f.locator('#person').select_option('Freundin');f.locator('#entry').select_option('3');f.locator('#open-entry').click()
                     if i>=2:assert not f.locator('textarea').input_value()
-                    s.locator('[data-action=abschluss]').click();expect(f.locator('#dialog-body')).to_contain_text('noch keine Nachricht geprüft')
+                    s.locator('[data-action=abschluss]').click();antwort(f);expect(f.locator('#lernspur')).to_contain_text('keine erste Antwort')
                     assert not external and not errors and not p.context.storage_state()['origins']
                     rows.append(dict(browser=e,niveau=tier,scorm=sco,hilfe_erhalten=3,externe_anfragen=external,skriptfehler=errors))
                     p.close()

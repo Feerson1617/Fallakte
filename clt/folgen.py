@@ -8,6 +8,7 @@ import re
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from playwright.sync_api import sync_playwright
+from lernspur_test import schluss
 from pruefen import LEVELS, OUT, QA, sha
 
 PLAY="""({tier,path})=>{
@@ -17,6 +18,11 @@ PLAY="""({tier,path})=>{
     n.click();
   }
   click('[data-nav=home]');click('#level-'+tier);click('#neu');
+  if(document.querySelector('#spur-wahl')){
+    const choice=document.querySelector('#spur-wahl');choice.selectedIndex=1;
+    const f=document.querySelector('#spur-grund');f.value='Ich denke an Lauras Wunsch.';f.dispatchEvent(new Event('input'));
+    click('#spur-speichern');
+  }
   path.forEach((method,i)=>{
     const stage='L0'+(i+1),s=LAURA.stages[stage];
     if(i>0 && !document.querySelector('.bisher')?.textContent.includes(LAURA.strategies[path[i-1]].label))
@@ -39,7 +45,7 @@ def run(engine,level,limit=None):
         m=re.search(rb'<script id="modul-02" type="application/octet-stream">([^<]+)',raw)
         source=Path(d)/'modul.html';source.write_bytes(base64.b64decode(m[1]))
         with getattr(pw,engine).launch(executable_path=os.getenv(engine.upper()+'_EXECUTABLE')) as b:
-            p=b.new_page(viewport={'width':1180,'height':820});p.on('dialog',lambda dlg:dlg.accept());p.goto(source.as_uri())
+            p=b.new_page(viewport={'width':1180,'height':820},has_touch=True);p.on('dialog',lambda dlg:dlg.accept());p.goto(source.as_uri())
             tier=level.replace('Förder','Foerder')
             methods=p.evaluate("""t=>Object.values(LAURA.stages).map(s=>Object.keys(s.levels[t].strategies).filter(k=>s.levels[t].strategies[k].status==='C'))""",tier)
             paths=[]
@@ -47,7 +53,7 @@ def run(engine,level,limit=None):
                 assert p.evaluate(PLAY,dict(tier=tier,path=path))
                 paths.append(' / '.join(path))
             print(engine,level,len(paths),flush=True)
-            p.locator('#beratung-fertig').click()
+            p.locator('#beratung-fertig').click();schluss(p)
             extra={}
             for name in ('Tom','Celina'):
                 extra[name]=[]

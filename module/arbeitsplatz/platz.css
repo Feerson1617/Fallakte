@@ -137,3 +137,20 @@ dialog[open]{max-height:var(--sichtbare-hoehe,100dvh)!important;height:calc(var(
  .lernraum .blatt-inhalt:has(>.quellenstelle[open])>.small{display:none}
 }
 .card .feedback.entwurfsfehler::before{content:''}
+
+.spur-offen>main:not(#lernspur),.spur-offen>footer{display:none!important}
+#lernspur{color:#213d36;font:1rem/1.4 DM,"DM Sans",system-ui,sans-serif}
+.spur-chat,.spur-arbeit{border:1px solid #c3cec7;border-radius:.8rem}
+.spur-arbeit{background:#fffdf7;padding:clamp(.55rem,2vw,1.15rem)}
+.spur-arbeit :is(label,h2){display:block;font-size:1.12rem;font-weight:650;margin:.5rem 0 .25rem}
+.spur-arbeit :is(select,textarea,button){display:block;box-sizing:border-box;font:inherit;min-height:44px;max-width:100%;border:1px solid #82968a;border-radius:.5rem;padding:.35em .6em}
+.spur-arbeit select,.spur-arbeit textarea{width:100%;color:#18362d;background:white}
+.spur-arbeit .spur-weiter{background:#29485f;color:white;margin-top:.55em}
+.spur-arbeit button:disabled{opacity:.55}
+.spur-zitat{white-space:pre-wrap;overflow-wrap:anywhere}
+.spur-korrektur{padding:.4em;border-left:3px solid #9a352c;background:#fbebe9}
+.spur-chat .bubble,.lernraum .gespraech .bubble,#beratung .chat-entry{width:fit-content;max-width:94%;margin:.38rem 0;padding:.48rem .7rem;background:#fffef9;border-radius:.12rem .75rem .75rem;box-shadow:0 1px 2px #1a38211a}
+.spur-chat p,.gespraech .bubble p{margin:.15em 0 0}
+.lernraum .gespraech .bubble[data-own=true],#beratung .chat-entry:is([data-speaker=Du],[data-kind=entwurf]){margin-inline-start:auto;background:#e4edf3;border-radius:.75rem .12rem .75rem .75rem}
+.gespraech summary{min-height:44px;align-content:center}
+.spur-chat .bubble img{width:2rem;height:2rem;object-fit:cover;object-position:center 30%;border-radius:50%;vertical-align:middle;margin-right:.45rem}

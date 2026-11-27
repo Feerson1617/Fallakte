@@ -6,6 +6,7 @@ from tempfile import TemporaryDirectory
 from zipfile import ZipFile
 from playwright.sync_api import sync_playwright
 ROOT=Path(__file__).resolve().parents[1];sys.path[:0]=[str(ROOT/'gesamt'),str(ROOT/'tests')]
+from lernspur_test import antwort
 from ergonomie import room,reach,touch,HIT
 from tagesauswahl import HOST,host
 out=ROOT/'build/CLT/Langtext';out.mkdir(exist_ok=True,parents=True);rows=[]
@@ -20,7 +21,7 @@ with TemporaryDirectory() as tmp,sync_playwright() as pw:
             f=room(s,'erster' if day=='02' else 'zweiter')
             f.evaluate("document.documentElement.style.fontSize='150%';Arbeitsplatz.refresh()")
             if day=='02':
-                touch(f,'#level-ESA');touch(f,'#neu');touch(f,'[data-strategy="K+H"]')
+                touch(f,'#level-ESA');touch(f,'#neu');antwort(f);touch(f,'[data-strategy="K+H"]')
                 target=f.locator('[data-option="L01.ESA.K+H.3"]')
             else:
                 s.locator('[data-action=recovery]').click();f.locator('#level-0').select_option('AHR')
