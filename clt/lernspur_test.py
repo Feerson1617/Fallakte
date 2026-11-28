@@ -5,6 +5,7 @@ sys.path.append(str(Path(__file__).resolve().parents[1]/'gesamt'))
 from ergonomie import reach,touch
 
 def antwort(frame,grund='Ich möchte Lauras Wünsche berücksichtigen.',choice=1):
+    if frame.locator('#spur-lesen').count():touch(frame,'#spur-lesen')
     frame.locator('#spur-wahl').wait_for()
     select=frame.locator('#spur-wahl')
     reach(frame,select)
@@ -13,6 +14,7 @@ def antwort(frame,grund='Ich möchte Lauras Wünsche berücksichtigen.',choice=1
     reach(frame,field)
     field.fill(grund)
     touch(frame,'#spur-speichern')
+    if frame.locator('#spur-chat').count():touch(frame,'#spur-chat')
 
 def schluss(frame):
     antwort(frame)

@@ -31,7 +31,7 @@ const Entwurf = (() => {
     }
     for(const [index,clause] of clauses.entries()){
       const s=clause.trim().replace(/\s+/gu,' ');
-      if(!s || /[:„“]|\b(?:behauptet|behaupten|fragt|meint|sagt|angeblich|vielleicht|ob)\b/u.test(s))continue;
+      if(!s || /(?:weiss|wissen|glaube|glauben) nicht[, ]|sicher bin ich nicht/u.test(s) || /[:„“]|\b(?:behauptet|behaupten|fragt|meint|sagt|angeblich|vielleicht|ob)\b/u.test(s))continue;
       if(/^(?:das (?:stimmt nicht|ist falsch|war falsch)|nein, eine spaetere schwangerschaft bleibt moeglich)$/u.test(s)){
         const previous=issues.at(-1);
         if(previous && previous.index===index-1 &&
@@ -39,7 +39,7 @@ const Entwurf = (() => {
         continue;
       }
       // Getrennte Behauptungen nur bei zwei ausdrücklich genannten Subjekten.
-      if(s.includes('dass ')||s.includes('ob ')||s.startsWith('es stimmt nicht'))continue;
+      if(/(?:stimmt nicht|ist falsch|bezweifle|glaube nicht|nicht so),? dass |^es stimmt nicht/u.test(s))continue;
       const correction=s.match(/^(?:nein,|ich korrigiere mich,) (.+)$/u);
       if(correction){
         const fact=Fachwissen.lesen(correction[1],'');
@@ -50,9 +50,9 @@ const Entwurf = (() => {
         continue;
       }
       const parts=s.split(/(?: und |, aber )(?=(?:die |eine |ein |das )(?:pille|kupferspirale|hormonspirale|kondom)\b)/u);
-      if(parts.length>1 && !Fachwissen.lesen(parts[0],'') && !weitere.some(v=>v.satz.test(parts[0])))continue;
+
       for(const part of parts){
-        const claim=part.replace(/^die pille ist meine wahl, weil sie (vor hiv) schuetzt$/u,'die pille schuetzt $1');
+        const claim=part.replace(/^ich (?:empfehle|wähle|waehle|nehme) (die (?:pille|kupferspirale|hormonspirale)),? weil sie (?:auch )?vor hiv schuetzt$/u,'$1 schuetzt vor hiv').replace(/^ich (?:denke|glaube|finde),? (?:dass )?(die (?:pille|kupferspirale|hormonspirale)) (?:auch )?vor hiv schuetzt$/u,'$1 schuetzt vor hiv').replace(/^die pille ist meine wahl, weil sie (vor hiv) schuetzt$/u,'die pille schuetzt $1');
         const issue=collect(claim);
         if(issue)issues.push({issue,index});
       }
@@ -67,7 +67,7 @@ const Entwurf = (() => {
   function hilfen(quelle,frage,fakt){
     const parts=fakt.match(/[^.!?]+[.!?]+|[^.!?]+$/gu) || [fakt];
     const detail=parts.find(line=>!line.includes('?'))?.trim() || fakt;
-    return ['Lies: '+quelle+'.',frage,'Prüfe diesen Satz: '+detail,fakt,'Vergleiche deinen Grund mit der Korrektur: '+fakt];
+    return [frage+' ('+quelle+')','Achte auf den Unterschied: '+detail,'Prüfe diesen Satz: '+detail,fakt,'Vergleiche deinen Grund mit der Korrektur: '+fakt];
   }
   function bearbeiten(field){
     Arbeitsplatz.zeigen(field);field.focus({preventScroll:true});

@@ -12,7 +12,7 @@ from zipfile import ZipFile, ZIP_DEFLATED
 from lxml import etree, html
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"scripts"))
-from clt_inhalte import klar, QUELLEN
+from clt_inhalte import klar, QUELLEN, NACHRICHTEN
 from material import LEVELS,vertrag
 from matrix import matrix
 
@@ -53,6 +53,7 @@ def verify_source(day,b):
             for key in ['transfer','addition','connection','missing']:assert person[key]==orig[key]
             visible=orig['lesefassung'].replace('deine Ausbildung beenden. Vielleicht möchtest du später Kinder.',
                               'deine Ausbildung beenden und vielleicht später Kinder bekommen.')
+            if n in NACHRICHTEN:visible=' '.join(NACHRICHTEN[n])
             assert person['original']==person['lesefassung']==visible
             lines=[t.strip() for t in re.findall(r'[^.!?]+[.!?]+|[^.!?]+$',visible)]
             assert len(person['tasks'])==len(orig['tasks'])
@@ -61,6 +62,11 @@ def verify_source(day,b):
                 for key in previous:
                     if key=='evidenceSentences':
                         assert [lines[i] for i in task[key]]==QUELLEN[n][task['id']]
+                    elif n in NACHRICHTEN and task['id'] in (*QUELLEN[n],'Leerstelle') and key in ('prompt','hints','helpByLevel'):
+                        assert task[key] and (key!='hints' or len(task[key])==5)
+                    elif n in NACHRICHTEN and task['id']=='Leerstelle' and key=='answers':
+                        for now,old in zip(task[key],previous[key],strict=True):
+                            assert now==dict(old,feedback='Ja. Für diesen Rat fehlt noch eine biologische Information.') if old['ok'] else now==old
                     else:assert task[key]==clean(previous[key]),(n,task['id'],key)
         for k in ('cards','limits','opening','second'):assert b[k]==ref[k]
         return 'Die vier sichtbaren Nachrichten und Quellenaufgaben verwenden dieselbe Lesefassung. Alle fachlich passenden Quellenstellen wurden am vollständigen Satzwortlaut verankert. Die unterstützende Bedienanweisung nennt den tatsächlichen Begriffszugang. Fachliche Antworten, Rückmeldungen, Anwendungsfragen, Karten, Grenzen und Lauras Anliegen wurden feldweise gegen c4814a9 geprüft.'
@@ -152,7 +158,7 @@ def release():
             drafts=(QA/'Gegenpruefung'/f'Entwuerfe-{e}.json').read_bytes()
             audit=json.loads(drafts)
             assert audit['html_sha256' if day=='02' else 'familien_html_sha256']==sha(raw)
-            assert len(audit['wege'])==70 and len(audit['fehlerhilfen'])==464 and len(audit['zusaetzliche_wege'])==68
+            assert len(audit['wege'])==70 and len(audit['fehlerhilfen'])==500 and len(audit['zusaetzliche_wege'])==68
             logs['Entwuerfe-und-Fehlerhilfen/'+e+'.json']=drafts
             evidence=(QA/'Sitzung'/('Sitzungspruefung-'+e+'.json')).read_bytes()
             assert json.loads(evidence)['html_sha256']==sha((OUT/'Fallakte-08-12.html').read_bytes())
@@ -176,6 +182,18 @@ def release():
                     for name,value in [('Erstes-Empfehlungsrad','false'),('Zweites-Empfehlungsrad','true')]})
         (target/'Unterrichtssteuerung.md').write_text('\n\n'.join(['# Unterrichtssteuerung',c['erarbeitung'],c['unterbrechung'],c['sicherung'],'## Zeitplanung für 45 Minuten']+[f'{n} Minuten · {a}' for a,n in c['phasen']]))
         archive(target/'CLT-Abnahmematrix.zip',{'Matrix.csv':matrix(rows.values(),day),'Fachdidaktische-Durchsicht.md':(HERE/('Beratung.md' if day=='02' else 'Familiennachrichten.md')).read_bytes(),'Grundlagen.md':(HERE/'Grundlagen.md').read_bytes(),'Perspektiven.md':(HERE/'planung.md').read_bytes(),'Zeitplanung.json':dump(c['phasen'])})
+        for engine in ('chromium','webkit'):
+            for name in ('Einstieg','Sprache'):
+                key=f'{name}-{engine}.json';payload=(QA/'Freigabestufen'/key).read_bytes()
+                parsed=json.loads(payload)
+                if name=='Sprache':
+                    assert parsed['html_sha256']==sha((OUT/'Fallakte-08-12.html').read_bytes()) and parsed['ub1_sha256']==sha((OUT/'Fallakte-02-12.html').read_bytes())
+                else:assert all(row['html_sha256']==sha((OUT/f"Fallakte-{row['tag']}-12.html").read_bytes()) for row in parsed)
+                logs['Freigabestufen/'+key]=payload
+        for name in ('Antwortmodelle.json',):
+            shutil.copyfile(QA/'Freigabestufen'/name,target/name)
+        for name in ('Sprachreserve.tsv','Sprachreserve-blind.tsv','Arbeitsplatz-und-Diagnose.md'):
+            shutil.copyfile(HERE/name,target/name)
         archive(target/'Pruefprotokolle.zip',logs)
         failnote=f'Bei {len(geoerrors)} Beobachtungen ließ sich die vollständige Erreichbarkeit einer angebotenen Taste nicht nachweisen. Die betreffenden Beschriftungen, Positionen, Browser und Fenster stehen im Geometrieprotokoll.' if geoerrors else 'Alle in den Geometrieprotokollen erfassten aktiven Steuerungen waren über ihren aktuellen Ansichtsabschnitt erreichbar.'
         report=f"""# Prüfung am {day}.12.2026
@@ -184,7 +202,7 @@ Commit `{revision}`. SHA-256 der Offline-Datei `{sha(raw)}`.
 
 {protection}
 
-Gegenprüfung gegenüber ac86cb8: Auf 46 sendbaren Wegen musste der HIV-Irrtum vor der Kontrollauswahl berichtigt werden. Alle 46 Empfehlungen blieben nach der Überarbeitung sendbar. Weitere 68 Freitextwege betrafen Familiennachrichten, Tom und Celina. Zusätzlich wurden auf 464 unterschiedlichen Quellen-, Auswahl- und Konfliktwegen der Familiennachrichten und Zusatzfälle jeweils alle fünf Hilfetexte geprüft. Die Zahlen beziehen sich jeweils auf einen Browser. Die Protokolle enthalten die tatsächlich angezeigten Hilfen.
+Gegenprüfung gegenüber ac86cb8: Auf 46 sendbaren Wegen musste der HIV-Irrtum vor der Kontrollauswahl berichtigt werden. Alle 46 Empfehlungen blieben nach der Überarbeitung sendbar. Weitere 68 Freitextwege betrafen Familiennachrichten, Tom und Celina. Zusätzlich wurden auf 500 unterschiedlichen Quellen-, Auswahl- und Konfliktwegen der Familiennachrichten und Zusatzfälle jeweils alle fünf Hilfetexte geprüft. Die Zahlen beziehen sich jeweils auf einen Browser. Die Protokolle enthalten die tatsächlich angezeigten Hilfen.
 
 Die erste Antwort wird vor Fachkarten und inhaltlichen Hilfen mit dem eigenen Grund im Arbeitsspeicher festgehalten. Beim Signal „Stundenabschluss“ stehen alle entscheidungsrelevanten Informationen bereit. Erst nach dem eigenen abschließenden Grund erscheint der Vergleich. Nach einem Neustart zeigt er eine fehlende erste Antwort ausdrücklich an. Persönliche Entscheidungen bespricht die Klasse. Die freiwilligen Zusatzfälle öffnen nach einer tatsächlich ausgefüllten persönlichen Abschlussaufgabe.
 
@@ -198,7 +216,7 @@ Das Offline-HTML und index.html im SCO stimmen byteweise überein. Das SCORM-1.2
 
 ## Grenzen und Geltungsbereich
 
-Prüfprotokolle enthalten die tatsächlich beobachteten Ausgaben. Wiederholungen führen bei einzelnen Aufgaben auf denselben Fehlertext zurück. Die Quelle der Familienantworten, Lösungsoffenlegung, verspätete Hilfe, vorheriger Vorschlag und fachlicher Stand bleiben unterscheidbar. Unendlich viele Freitexte und Unterbrechungsfolgen lassen sich nicht vollständig prüfen. Bei freien Begründungen prüft die Software ausdrücklich formulierte medizinische Behauptungen mit eng begrenzten Regeln. Alle anderen eigenen Texte bleiben fachlich ungeprüft. Persönliche Gewichtungen werden im Unterricht besprochen. Native Tastatur, produktives itslearning, Hilfsmittel wie Screenreader, fremde Schriftmetriken, tatsächliches Leseverständnis und reale Minuten mit 28 Lernenden sind offen. Die Matrix begründet Gestaltungsentscheidungen. Eine empirische Entlastung ist nicht nachgewiesen.
+Prüfprotokolle enthalten die tatsächlich beobachteten Ausgaben. Wiederholungen führen bei einzelnen Aufgaben auf denselben Fehlertext zurück. Die Quelle der Familienantworten, Lösungsoffenlegung, verspätete Hilfe, vorheriger Vorschlag und fachlicher Stand bleiben unterscheidbar. Unendlich viele Freitexte und Unterbrechungsfolgen lassen sich nicht vollständig prüfen. Bei freien Begründungen prüft die Software ausdrücklich formulierte medizinische Behauptungen mit eng begrenzten Regeln. Die Antwortmodelle prüfen weitere eng beschriebene Gedanken. Bei offenem Wortlaut bleibt der Selbstvergleich verfügbar. Die gemessenen Treffer und Abweichungen stehen in Freigabestufen/Sprache; nicht erkannte richtige Antworten werden als Abweichung gezählt. Persönliche Gewichtungen werden im Unterricht besprochen. Native Tastatur, produktives itslearning, Hilfsmittel wie Screenreader, fremde Schriftmetriken, tatsächliches Leseverständnis und reale Minuten mit 28 Lernenden sind offen. Die Matrix begründet Gestaltungsentscheidungen. Eine empirische Entlastung ist nicht nachgewiesen.
 
 Zusätzlich wurden im Familienmodul pro Browser 5.656 Wege mit geordneten Folgen falscher Antworten, später aufgerufenen Hilfen sowie unterschiedlichen Anliegen, Fakten und Grenzen geprüft.
 
@@ -207,7 +225,7 @@ Die beiden Browser prüfen angebotene Antworten und fachlich unterschiedliche Ü
         (target/'Pruefbericht.md').write_text(report)
         screens['Pruefbericht.md']=report;screens['Zaehlungen.json']=dump(counts);screens['Geometriebefunde.json']=dump(geoerrors)
         archive(target/'Sichtpruefung.zip',screens)
-        files={p.name:p.read_bytes() for p in HERE.iterdir() if p.suffix in {'.py','.js','.md','.json'}}
+        files={p.name:p.read_bytes() for p in HERE.iterdir() if p.suffix in {'.py','.js','.md','.json','.tsv'}}
         files['Gegenpruefung-CLT.json.gz']=(HERE/'Gegenpruefung-CLT.json.gz').read_bytes()
         files['Ausfuehren.md']='Im Repository den dokumentierten Commit auschecken. Die vollständigen Befehle und exakten Paketversionen stehen in Ablauf.yml. Die Tests laufen an den ausgelieferten HTML- und ZIP-Dateien.'
         files['Ablauf.yml']=(ROOT/'.github/workflows/clt.yml').read_bytes()

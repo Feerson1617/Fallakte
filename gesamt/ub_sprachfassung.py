@@ -54,6 +54,8 @@ def bauen(joint):
       try{if(parent!==window)parent.visualViewport?.addEventListener('resize',fit);}catch{}
       fit();
     </script></body>""")
+    shell=single_replace(shell,'entry.active = data.active;', 'entry.abschluss = data.abschluss; entry.active = data.active;')
+    shell=single_replace(shell,'if (button.dataset.action === entry.active)', "if(button.dataset.action==='abschluss')button.disabled=!entry.abschluss; if (button.dataset.action === entry.active)")
     days={'02':laura().read_bytes(),'08':module_document()[1].encode()}
     OUT.mkdir(parents=True,exist_ok=True)
     for version,allowed in [('02-12',['02']),('08-12',['02','08'])]:

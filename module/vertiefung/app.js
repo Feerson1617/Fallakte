@@ -97,7 +97,10 @@ function draw(){
   for(const [i,text] of past.entries()){note(i);add(chat,'strong',i%3===1?'Du':bank.person);add(chat,'p',text);}
   if(state.direct && s.previousFacts.length){const facts=add(chat,'details');add(facts,'summary','Bisher im Fall');s.previousFacts.forEach(text=>add(facts,'p',text));}
   add(chat,'strong',bank.person);add(chat,'blockquote',s.message[tier].join(' '));
+  work.dataset.auftrag=state.sent?'Lies die Antwort im Chat.':!hasChoice||state.choice?s.task[tier]:'Welchen Vorschlag machst du?';
   const room=()=>Arbeitsplatz.setup(desk,work,chat,h,work.querySelector('#help'),b=>resource('Hilfe',box=>add(box,'p','Lies die Antwort. Tippe dann auf Weiter.')));
+  const analyse=()=>Diagnose.analyse(state.reason,Diagnose.modell(bank.person+'/'+state.index+'/'+state.choice,
+    s.task[tier],check.answers?.['ABC'.indexOf(check.code)],{persoenlich:true,pille:state.choice.split('+').includes('P')}));
   if(state.sent){
     note(state.history.length-2);add(chat,'strong','Du');add(chat,'p',state.history.at(-2));
     add(chat,'strong',bank.person);add(chat,'p',state.reply);
@@ -131,6 +134,7 @@ function draw(){
         field.oninput=()=>{state.reason=field.value;state.result='';compare.hidden=false;work.querySelector('#entwurf-bearbeiten')?.remove();work.querySelector('#feedback').textContent='';compare.disabled=!state.reason.trim();};
       }else{
         if(!lower()){
+          const analysis=analyse();add(work,'p',analysis.feedback).dataset.diagnose=analysis.status;
           const own=add(work,'details');add(own,'summary','Eigener Grund');
           add(own,'p','Fachlich ungeprüft: '+state.reason);
           btn(own,'Grund bearbeiten','grund-aendern',()=>{state.compared=false;state.result='';draw();});
@@ -167,7 +171,7 @@ function draw(){
     const where=card?card.title+' · '+card.sections[ref.section].title:hasChoice?'Nachricht von '+bank.person:'Artikel und Studien';
     const answer=check.answers?.['ABC'.indexOf(check.code)];
     const hints=reason?Entwurf.hilfen(where,issue?.frage || (conflict()?'Welcher Wunsch bleibt offen?':s.task[tier]),reason):
-      [prior[0],s.task[tier],prior[1],prior[2] || (card?card.sections[ref.section].levels[tier]:prior.at(-1)),
+      state.reason.trim()&&!state.valid?analyse().hints:[s.task[tier]+' '+prior[0],s.task[tier],prior[1],prior[2] || (card?card.sections[ref.section].levels[tier]:prior.at(-1)),
         prior[3] || answer || prior.at(-1)];
     resource('Hilfe '+(index+1)+' von '+hints.length,body=>{
       add(body,'p',hints[index]);

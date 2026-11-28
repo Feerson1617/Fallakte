@@ -18,12 +18,14 @@ PLAY="""({tier,path})=>{
     n.click();
   }
   click('[data-nav=home]');click('#level-'+tier);click('#neu');
+  if(document.querySelector('#spur-lesen'))click('#spur-lesen');
   if(document.querySelector('#spur-wahl')){
-    const choice=document.querySelector('#spur-wahl');choice.selectedIndex=1;
+    const choice=document.querySelector('#spur-wahl');choice.selectedIndex=1;choice.dispatchEvent(new Event('change'));
     const f=document.querySelector('#spur-grund');f.value='Ich denke an Lauras Wunsch.';f.dispatchEvent(new Event('input'));
-    click('#spur-speichern');
+    click('#spur-speichern');if(document.querySelector('#spur-chat'))click('#spur-chat');
   }
   path.forEach((method,i)=>{
+    if(document.querySelector('#beratung-lesen'))click('#beratung-lesen');
     const stage='L0'+(i+1),s=LAURA.stages[stage];
     if(i>0 && !document.querySelector('.bisher')?.textContent.includes(LAURA.strategies[path[i-1]].label))
       throw Error('Bisheriger Rat '+path);

@@ -78,7 +78,7 @@ window.Arbeitsplatz = (() => {
     }
     if(chat && current.newMessage){chat.scrollTop=chat.scrollHeight;current.newMessage=false;}
   }
-  function setup(room,work,chat,heading,hint,orientation){
+  function setup(room,work,chat,heading,hint,orientation,auftrag){
     const split=chat?.parentElement;
     let bar=room.querySelector(':scope > .arbeitskopf');
     if(!bar){
@@ -112,6 +112,13 @@ window.Arbeitsplatz = (() => {
       help.className='hilfezugang';help.textContent='Ich brauche Hilfe';
       if(!help.id)help.id='orientierungshilfe-'+room.id;
       bar.append(help);room.prepend(bar);room.classList.add('lernraum');
+      const cue=make('section','aufgabenkasten');
+      const tag=make('span','aufgabenmarke');tag.textContent='Aufgabe';cue.append(tag);
+      const source=work.querySelector('[data-auftrag],.fachcheck label,#begruendungsfrage,legend,h2,h3');
+      const wording=auftrag || work.dataset.auftrag || source?.childNodes[0]?.textContent || 'Wähle den nächsten Schritt.';
+      const line=make('p','');line.textContent=wording;cue.append(line);
+      if(source && source.textContent.trim()===wording.trim() && !source.querySelector('input,textarea,select'))source.classList.add('nur-vorlesen');
+      work.prepend(cue);
       sheet(work);
     }
     current={room,chat,newMessage:!!chat};

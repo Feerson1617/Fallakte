@@ -87,9 +87,10 @@
      if(errors){help(8,5);for(const [i,a] of q.answers.entries())if(!a.ok)click('#answer-'+i);}
      click('#answer-'+q.answers.findIndex(a=>a.ok));click('#next');
    }
-   assert(el('#spur-grund') && !el('#spur-fertig'),'Individueller Abschluss fehlt');
+   assert(el('#spur-wahl') && !el('#spur-fertig'),'Individueller Abschluss fehlt');
  }
  function advice({tier,stage,method,mode}){
+   if(el('#beratung-lesen'))click('#beratung-lesen');
    const data=window.LAURA.stages[stage],t=data.levels[tier],way=t.strategies[method];caseName='Laura '+stage;task='Empfehlung '+method;
    observe('Wahl');if(mode==='beispiel' && method==='K')help(2,5);
    click('[data-strategy="'+method+'"]');

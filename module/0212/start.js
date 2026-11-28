@@ -45,7 +45,8 @@
     const s=view==='beratung' ? window.Beratung.status() : null;
     const status=s ? 'Laura '+Number(s.stageId.slice(1))+' · '+tierNames[s.tier] :
       view==='reserve-platz' && reserveStatus ? reserveStatus.person+' '+reserveStatus.abschnitt+' · '+tierNames[reserveStatus.tier] : '';
-    port?.postMessage({type:'view',active:view==='start'?'home':view==='einstieg'?'recovery':'',status});
+    document.querySelector('[data-nav=abschluss]').disabled=!Lernspur.erlaubt(level);
+    port?.postMessage({type:'view',abschluss:Lernspur.erlaubt(level),active:view==='start'?'home':view==='einstieg'?'recovery':'',status});
   }
   function show(next) {
     if (view==='beratung' && next!=='beratung') window.Beratung.pause();
@@ -84,9 +85,9 @@
       MSA:'Wie passt die Wirkung zu Lauras Wunsch? Wann wäre ein anderer Rat möglich?',
       AHR:'Wäge zwei Anliegen ab. Begründe mit der Wirkung der Methode. Wann passt eine Alternative?'
     };
-    Lernspur.open({status:text=>port?.postMessage({type:'view',active:'',status:text+' · '+tierNames[level]}),tier:level,firstTitle:'Dein erster Rat',finalTitle:'Dein Schlussrat',
+    Lernspur.open({status:text=>{const ok=Lernspur.erlaubt(level);document.querySelector('[data-nav=abschluss]').disabled=!ok;port?.postMessage({type:'view',abschluss:ok,active:'',status:text+' · '+tierNames[level]});},tier:level,firstTitle:'Dein erster Rat',finalTitle:'Dein Schlussrat',
       firstQuestion:'Was rätst du Laura zuerst?',finalQuestion:'Was rätst du Laura jetzt?',
-      suggestion:Beratung.letzterRat(level)?.choice,reasonDraft:Beratung.letzterRat(level)?.reason,
+      warten:true,
       firstChoices:['Kondom',...titles.slice(1,4)],finalChoices:titles,reason:reasons[level],helpSteps:[
         'Lies Lauras Nachrichten neben deinem Rat.', 'Welcher Wunsch ist dir für Laura wichtig?',
         'Wie hilft deine Methode bei diesem Wunsch?', 'Beginne mit „Ich rate zu …, weil …“.',reasons[level]],
@@ -99,20 +100,21 @@
   }
   function final(){
     if(view==='einstieg' && pickerTier)level=pickerTier;
-    if(!level){home();afterLevel=final;return;}
+    if(!Lernspur.erlaubt(level))return;
     Material.close(false);Lernspur.state(level).begonnen=true;personal('schluss',home);
   }
   function start(stageId,resume=false,direct=false) {
     if (!level)return;
     if(!resume && window.Beratung.has(level) && !window.confirm('Diesen Abschnitt neu beginnen? Dein bisheriges Gespräch auf diesem Niveau wird ersetzt.'))return;
     const state=Lernspur.state(level);
-    if(!resume && !direct && !state.begonnen){
-      personal('erst',()=>start(stageId,false,true));return;
+    if(!resume && !direct && (!state.begonnen || state.entwuerfe.erst?.step==='warten')){
+      personal('erst',()=>{state.entwuerfe.erst.step='fertig';start(stageId,false,true);});return;
     }
     state.begonnen=true;Lernspur.close();
     show('beratung');
     if (resume) window.Beratung.resume(level);
     else window.Beratung.begin(level,stageId);
+    if(direct && !state.erst)state.wieder=true;
     communicate();
   }
   function reserve(person,index) {

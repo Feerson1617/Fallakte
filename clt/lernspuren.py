@@ -50,11 +50,19 @@ def run(engine,day,tier):
                         p.screenshot(path=folder/(step+'.jpg'),quality=72)
                     if demo:p.wait_for_timeout(550)
                 capture('Einstieg')
+                assert s.locator('[data-action=abschluss]').is_disabled()
+                assert not f.locator('#spur-grund,#spur-wahl').count()
+                if day=='08':assert f.locator('.weitergeleitet').count()==2
+                touch(f,'#spur-lesen')
                 pick=f.locator('#spur-wahl');reach(f,pick);pick.select_option(index=1)
                 field=f.locator('#spur-grund');reach(f,field);field.fill(INITIAL)
                 touch(f,'#spur-hilfe');touch(f,'#material-zurueck' if day=='02' else '#dismiss')
                 assert field.input_value()==INITIAL
                 capture('Erster-Grund');touch(f,'#spur-speichern')
+                if day=='02':
+                    expect(f.locator('#lernspur')).to_contain_text('Warte auf das Zeichen deiner Lehrkraft.')
+                    if profile=='quer':p.screenshot(path=folder/'Empfehlungsrad.jpg',quality=72)
+                    touch(f,'#spur-chat')
                 s.locator('[data-action=abschluss]').tap()
                 capture('Abschluss')
                 pick=f.locator('#spur-wahl');reach(f,pick);pick.select_option(index=1)

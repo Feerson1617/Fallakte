@@ -1,0 +1,44 @@
+Aufgabe	Soll	Art	Antwort
+Mutter/Wert	vollständig	normal	Dass die Laura gesund bleibt.
+Mutter/Wert	vollständig	normal	Sie will nicht, dass Laura krank wird.
+Mutter/Wert	vollständig	normal	Die körperliche Gesundheit von Laura.
+Mutter/Wert	vollständig	schreibfehler	Ihre Gesuntheit
+Mutter/Wert	vollständig	schreibfehler	das Laura gesund bleibt
+Mutter/Wert	verwechslung	teilfehler	Ihr Baby behalten.
+Mutter/Wert	verwechslung	teilfehler	Man sollte gut auf den Körper achten.
+Mutter/Wert	unsicher	grenze	Sie glaubt, eine Schwangerschaft mache Laura auf jeden Fall gesund.
+Mutter/Wert	unsicher	grenze	Gesund bleiben sollen nur Leute, die sich so entscheiden wie Mama.
+Mutter/Norm	vollständig	normal	Mögliche Beschwerden ernst nehmen.
+Mutter/Norm	vollständig	normal	Auf seinen Körper sollte man achten.
+Mutter/Folgerung	vollständig	normal	Das Baby behalten.
+Mutter/Folgerung	vollständig	normal	Sie soll das Kind bekommen.
+Mutter/Ergänzung	vollständig	normal	Es kommt zu Blutungen. Schmerzen und Krämpfe können auftreten.
+Mutter/Ergänzung	teil	teilfehler	Es blutet.
+Mutter/Ergänzung	fehlvorstellung	teilfehler	Ich finde es wichtig. Nach einem Abbruch mit Medikamenten gibt es keine Blutungen.
+Mutter/Ergänzung	unsicher	grenze	Niemand hat gesagt: „Ein Abbruch mit Medikamenten verursacht keine Blutungen.“
+Mutter/Leerstelle	vollständig	normal	Ein biologischer Fakt.
+Freundin/Wert	vollständig	normal	Ihre Zukunft selbst planen und erst die Ausbildung machen.
+Freundin/Wert	teil	teilfehler	Ihre Ausbildung.
+Freundin/Wert	unsicher	grenze	Die Ausbildung zählt deshalb hier überhaupt nicht.
+Freundin/Norm	vollständig	normal	Man sollte erst Kinder bekommen, wenn man dafür bereit ist.
+Freundin/Folgerung	vollständig	normal	Die Schwangerschaft mit Medikamenten abbrechen.
+Freundin/Leerstelle	vollständig	normal	Ein biologischer Fakt fehlt.
+Freundin/Ergänzung	vollständig	normal	Später ist eine Schwangerschaft weiterhin möglich.
+Freundin/Ergänzung	fehlvorstellung	teilfehler	Laura wird nach dem Abbruch sicher wieder schwanger. Das beruhigt mich.
+Großmutter/Norm	vollständig	normal	Ungeborenes Leben sollte geschützt werden.
+Großmutter/Folgerung	vollständig	normal	Schwangerschaft fortsetzen.
+Großmutter/Ergänzung	vollständig	normal	Das ungeborene menschliche Leben.
+Großmutter/Leerstelle	vollständig	normal	Es fehlt ein Wert.
+Vater/Wert	vollständig	normal	Lauras informierte Selbstbestimmung.
+Vater/Ergänzung	unsicher	grenze	Es muss immer der Vater bestimmen.
+Vater/Folgerung	vollständig	normal	Sich in der Arztpraxis beraten lassen.
+Vater/Ergänzung	vollständig	normal	Man sollte sich vor einer wichtigen medizinischen Entscheidung gut informieren.
+Vater/Leerstelle	vollständig	normal	Die allgemeine Regel fehlt.
+Laura/Pille	fehlvorstellung	teilfehler	Ich habe mich jetzt entschieden. Ich empfehle die Pille, weil sie vor HIV schützt.
+Laura/Pille	teil	teilfehler	Weil keine Eizelle frei wird.
+Laura/Pille	ansatz	teilfehler	Die Eizelle.
+Laura/Pille	unsicher	grenze	Ob die Pille vor HIV schützt, will ich noch mal nachlesen.
+Laura/Pille	unsicher	grenze	Die Pille verhindert keine HIV-Infektion.
+Laura/Pille	unsicher	grenze	Wer sagt „Kondome verhindern jede Ansteckung beim Sex“, liegt falsch.
+Laura/Pille	fehlvorstellung	teilfehler	Ich will beides. Kondome verhindern jede Ansteckung beim Sex.
+Laura/Pille	widerspruch	teilfehler	Die Pille schützt nicht vor HIV. Die Pille schützt vor HIV. Ich bin verwirrt.

@@ -177,7 +177,7 @@
     const targeted=issue || ['A','B'].includes(feedback?.type);
     const hints=targeted?Entwurf.hilfen(cardLabel(focusCard),issue?.frage ||
       (feedback.type==='B'?'Welches Anliegen bleibt bei deinem Rat offen?':'Welche Aussage auf der Karte passt zu deiner Wahl?'),
-      issue?.info||feedback.text):data.hints;
+      issue?.info||feedback.text):context.diagnose?.hints||data.hints;
     const hint = element('p',hints[depth]);
     hint.id = 'hilfe-text';
     hint.dataset.depth = String(depth+1);

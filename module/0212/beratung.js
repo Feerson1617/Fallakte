@@ -53,6 +53,7 @@ window.Beratung = (() => {
   }
   function enter(id,direct) {
     active.stageId=id;
+    active.reading=!direct;
     active.revision++;
     active.phase='choose';
     active.editingChoice=false;
@@ -128,6 +129,13 @@ window.Beratung = (() => {
     const option=info().options.find(o=>!o.correct && canonical(o.text)===canonical(draft.reason) &&
         !(active.stageId==='L04' && o.text.includes('Lauras Sorge')));
     return option?{frage:task().task,info:option.feedback,ref:option.card}:null;
+  }
+  function entwurfsdiagnose(){
+    const way=info();
+    const sample=way.options.find(o=>o.correct).text;
+    const model=Diagnose.modell(active.stageId+'/'+active.draft.strategy,task().task,sample,
+      {persoenlich:true,pille:bank().strategies[active.draft.strategy].methods.includes('P')});
+    return Diagnose.analyse(active.draft.reason,model);
   }
   function matchesEvidence() {
     const draft=active.draft;
@@ -303,6 +311,9 @@ window.Beratung = (() => {
     const question=element('h2','',advanced()?'Welche Aussage stimmt?':compact()?kurzfrage[active.stageId]:task().task);
     question.id='begruendungsfrage';field.setAttribute('aria-labelledby',question.id);field.append(question);
     if(advanced()){
+      const analysis=entwurfsdiagnose();
+      const msg=element('p','denkhinweis',analysis.feedback+(analysis.status==='unsicher'?'':' '+analysis.focus));
+      msg.dataset.diagnose=analysis.status;field.append(msg);
       const draft=element('details','eigener-text');draft.append(element('summary','','Eigener Grund'),
           element('p','','Fachlich ungeprüft: '+active.draft.reason),control('erklaerung-aendern','Erklärung ändern',()=>{active.draft.compared=false;editReason();}));
       field.append(draft);
@@ -345,7 +356,7 @@ window.Beratung = (() => {
     const context={stageId:active.stageId,levelId:active.tier,strategy:active.draft.strategy,
       asked:new Set(asked),feedback:active.draft.feedback};
     if (active.draft.strategy || active.stageId==='L01') tools.append(cardLinks());
-    tools.append(control('hilfe','Hilfe',b=>window.Material.help({...context,feedback:active.draft.feedback,error:draftIssue()},b)));
+    tools.append(control('hilfe','Hilfe',b=>window.Material.help({...context,feedback:active.draft.feedback,error:draftIssue(),diagnose:advanced() && active.draft.strategy && active.draft.reason.trim()?entwurfsdiagnose():null},b)));
     const questions=active.draft.strategy ? info().questions : (task().before?.questions || []);
     if (questions.some(q=>!asked.has(q.id))) {
       const sourceSession=active, sourceDraft=active.draft;
@@ -397,6 +408,11 @@ window.Beratung = (() => {
     area.id='beratung-arbeit';
     area.dataset.step=step;
     area.setAttribute('aria-label','Dein aktueller Arbeitsschritt');
+    if(active.reading){
+      area.dataset.auftrag='Lies Lauras neue Nachricht. →';
+      area.append(control('beratung-lesen','Weiter',()=>{active.reading=false;render('beratung-stage');},'senden'));
+      return area;
+    }
     if (active.phase==='sent') {
       const following=followingStage();
       const end=!following?.playable;
@@ -473,6 +489,7 @@ window.Beratung = (() => {
   function render(focusId,showLatest=false,restore=false) {
     renderNumber++;
     const target=root();
+    target.classList.toggle("lesephase",active.reading);
     const lastHistory=target.querySelector('#beratung-verlauf');
     if (!showLatest && !restore && !target.hidden && lastHistory && lastHistory.dataset.level===active.tier) {
       active.chatScroll=lastHistory.scrollTop;

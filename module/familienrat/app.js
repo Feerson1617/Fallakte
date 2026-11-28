@@ -74,7 +74,7 @@ function applicationStatus(person){
 }
 
 function notify(){
-  port?.postMessage({type:'view',active:screen==='home'?'home':screen==='picker'?'recovery':'',
+  port?.postMessage({type:'view',abschluss:Lernspur.erlaubt(level),active:screen==='home'?'home':screen==='picker'?'recovery':'',
     status:screen==='work'? (current.person||ui.theme)+' · '+level:''});
 }
 function popup(title,content,from){
@@ -103,6 +103,8 @@ function cards(index){
 }
 // Ausschließlich explizite medizinische Behauptungen abgleichen. Lauras Entscheidung bleibt offen.
 const medizinischeAussagen=[
+  {satz:/^(?:nach einem (?:abbruch mit medikamenten|medikamentoesen abbruch) kann (?:laura|man|eine frau) nie (?:wieder|mehr) schwanger werden|ein (?:abbruch mit medikamenten|medikamentoeser abbruch) macht jede frau unfruchtbar|laura wird nach dem (?:medikamentoesen )?abbruch sicher wieder schwanger)$/,quelle:'Später schwanger werden',frage:'Was bleibt möglich? Was kann niemand versprechen?',info:'Nach einem Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich. Eine Garantie gibt es nicht.'},
+  {satz:/^nach einem (?:medikamentoesen abbruch|abbruch mit medikamenten) gibt es keine blutungen$/,quelle:'Blutungen und Schmerzen',frage:'Was geschieht, wenn die Gebärmutter sich zusammenzieht?',info:bank.cards[0].short},
   {satz:/^nach einem abbruch kann man keine kinder mehr bekommen$/,quelle:'Später schwanger werden',frage:'Was bleibt nach einem Abbruch ohne Komplikationen möglich?',info:'Eine spätere Schwangerschaft bleibt möglich.'},
   {satz:/^(?:nach einem (?:unkomplizierten )?(?:abbruch|schwangerschaftsabbruch) kann (?:man|eine frau) nie (?:mehr |wieder )?schwanger werden|ein (?:schwangerschafts)?abbruch macht (?:immer )?unfruchtbar)$/,quelle:'Später schwanger werden',frage:'Was ist nach einem Abbruch ohne Komplikationen möglich?',info:'Nach einem Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich. Eine Garantie gibt es nicht.'},
   {satz:/^(?:nach einem (?:unkomplizierten )?(?:abbruch|schwangerschaftsabbruch) wird (?:man|eine frau) (?:garantiert|immer|sicher) (?:wieder )?schwanger)$/,quelle:'Später schwanger werden',frage:'Kann jemand eine spätere Schwangerschaft versprechen?',info:'Nach einem Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich. Eine Garantie gibt es nicht.'},
@@ -111,6 +113,11 @@ const medizinischeAussagen=[
   {satz:/^(?:ein medikamentoeser (?:schwangerschafts)?abbruch (?:ist immer schmerzfrei|verursacht nie (?:schmerzen|blutungen)))$/,quelle:'Blutungen und Schmerzen',frage:'Was kann im Bauch passieren?',info:bank.cards[0].short}
 ];
 const medizin=text=>Entwurf.fehler(text||'',medizinischeAussagen);
+function familienModell(task){
+  const answers=task.answers||[];
+  return Diagnose.modell(current?.person+'/'+task.id,task.prompt,
+    answers.find(a=>a.ok)?.text||'',{alternativen:answers});
+}
 function help(task,r){
   const tier=task.personalTier || level;
   function show(depth){
@@ -124,17 +131,18 @@ function help(task,r){
         bank.cards[names.indexOf(current?.person)]?.title || 'Fachinformation zum Anliegen');
       const hints=issue || wrong?Entwurf.hilfen(where,issue?.frage||
           (r.sourceError?'Welche Textstelle beantwortet die Frage?':task.prompt || 'Welche Fachinformation passt zum Anliegen?'),issue?.info||wrong):
-          (task.helpByLevel?.[tier] || task.hints);
+          (r.text?.trim() && !r.valid && task.answers ? Diagnose.analyse(r.text,familienModell(task),medizin).hints :
+           task.helpByLevel?.[tier] || task.hints);
       if(!issue && r.sourceError && task.evidenceSentences){
         const original=sentences(bank.cases[current.person].original);
         const ref=task.evidenceSentences[0];
-        hints[0]='Lies die Nachricht von '+current.person+'.';
+        hints[0]=task.prompt+' Suche das in der Nachricht von '+current.person+'.';
         hints[1]=task.prompt;
         hints[2]='Suche den '+(ref+1)+'. Satz.';
         hints[3]=original[ref];
         hints[4]='Vergleiche die Textstellen. Zur Frage passt: „'+original[ref]+'“';
       }
-      if(issue?.ref)hints[0]='Prüfe die Aussage zur Verhütung in deinem eigenen Text.';
+      if(issue?.ref)hints[0]=issue.frage+' Prüfe die Aussage zur Verhütung in deinem Text.';
       paragraph(box,hints[depth-1]);
       const row=el(box,'div',undefined,'row');
       if(depth<5)btn(row,ui.more,'hint-next',()=>show(depth+1));
@@ -152,11 +160,11 @@ const sentences=text=>text.match(/[^.!?]+[.!?]+|[^.!?]+$/g)?.map(line=>line.trim
 function remember(id,speaker,text) {
   saved.history.set(id,{speaker,text});
 }
-function transcript(panel,hiddenTask){
+function transcript(panel,hiddenTask,source){
   const log=el(panel,'div',undefined,'chat-history');
   log.setAttribute('role','log');log.setAttribute('aria-label','Gesprächsverlauf');
   for(const [id,entry] of saved.history){
-    if(hiddenTask && (id===hiddenTask || id===hiddenTask+'/entwurf'))continue;
+    if(id===source || hiddenTask && (id===hiddenTask || id===hiddenTask+'/entwurf'))continue;
     const item=el(log,'div',undefined,'bubble');
     item.dataset.own=String(id.includes('/'));
     if(id.endsWith('/entwurf')){
@@ -203,6 +211,7 @@ function showHome(){
   message(aside,'Laura',bank.opening);
   const box=el(layout,'section',undefined,'card');
   heading(box,ui.openingTitle);chooseLevel(box);
+  box.dataset.auftrag=level?'Öffne die erste Einschätzung oder arbeite weiter.':'Wähle dein Niveau.';
   if(!level)return;
   if(saved.last)btn(box,ui.resume,'resume',()=>{current=saved.last;screen='work';draw(true);},'primary');
   const begin=()=>{
@@ -256,6 +265,9 @@ function thought(box,label,text,save,id,buttonText,submit){
 function draft(box,task,r,c){
   if(r.valid)return;
   if(r.compared){
+    const observed=Diagnose.analyse(r.text,familienModell(task),medizin);
+    const msg=paragraph(box,observed.feedback+(observed.status==='vollständig'?'':' '+observed.focus),'denkhinweis');
+    msg.dataset.diagnose=observed.status;
     const own=el(box,'details');el(own,'summary','Eigener Grund');
     paragraph(own,'Fachlich ungeprüft: '+r.text);
     btn(own,'Erklärung bearbeiten','edit-draft',()=>{r.compared=false;r.feedback='';r.selected=undefined;draw();});
@@ -334,7 +346,9 @@ function originalPanel(layout,person,c,hideAddition){
   const panel=el(layout,'aside',undefined,'msg');
   remember(person,person,c.lesefassung);
   profile(panel,person);
-  transcript(panel,hideAddition?person+'/Ergänzung':null);
+  transcript(panel,hideAddition?person+'/Ergänzung':null,person);
+  const source=el(panel,'div',undefined,'bubble quelle-zur-aufgabe');
+  el(source,'strong',person);paragraph(source,c.original);
   const r=saved.records[person+'/Ergänzung'];
   if(r?.valid && !hideAddition){el(panel,'h2',ui.addition);paragraph(panel,c.addition);paragraph(panel,c.connection,'small');}
   return panel;
@@ -349,17 +363,19 @@ function caseView(){
   const box=el(layout,'section',undefined,'card');
   const advance=()=>go('case',{person,at:at+1});
   if(at===0){
-    paragraph(box,bank.known);
+    root.classList.add('lesephase');
+    box.dataset.auftrag=person==='Mutter'?'Finde Fakt, Wert und Norm. Was fehlt in den Nachrichten?':'Lies die Nachricht im Chat. →';
     btn(box,ui.read,'next',advance,'primary');
   }else if(!paper){
     const task=c.tasks[at-1],r=record(person+'/'+task.id);
+    box.dataset.auftrag=r.valid?'Lies die Rückmeldung. Gehe dann weiter.':r.compared?'Vergleiche deinen Text. Welche Aussage passt?':task.prompt;
     const adding=task.id==='Ergänzung';
     const concept=adding?c.missing:task.id;
     if(bank.definitions[concept])paragraph(box,concept+' · '+bank.definitions[concept],'small');
     el(box,'h2',task.prompt);
     if(advanced(level) && !r.valid){
 
-      if(adding && !r.compared)paragraph(box,bank.caseReflection[person]);
+      if(adding && !r.compared && !kurz())paragraph(box,bank.caseReflection[person]);
       draft(box,task,r,c);
     }
     if(!advanced(level)||r.compared)options(box,task,r,advance);
@@ -408,7 +424,9 @@ function evaluationHelp(box,r){
 const reviewText=i=>bank.review[i][1].split('“')[0];
 function comparison(box){
   const p=saved.personal;
-  if(!kurz())el(box,'h2',level);
+  const action={choice:'Welche Nachricht hilft Laura besonders?',concern:ui.priority,fact:ui.evidence,
+    reason:ui.openReason,limit:bank.limits[p.concern||0].prompt,done:'Halte deine Einschätzung fest.'};
+  box.dataset.auftrag=action[p.step];
   const end=()=>{
     p.step='done';saved.completedReview=true;go('laura',{at:3});final();
   };
@@ -495,10 +513,11 @@ function lauraView(){
   const box=el(layout,'section',undefined,'card');
   facts(kurz()?panel:box);
   if(at===0){
-    paragraph(box,'Welche Frage ist Laura wichtig?');
+    box.dataset.auftrag='Lies Lauras neue Fragen. →';root.classList.add('lesephase');
     btn(box,'Nachrichten abwägen','next',()=>go('laura',{at:2}),'primary');
   }else if(at===1 || at===2)comparison(box);
   else{
+    box.dataset.auftrag='Öffne deinen Stundenabschluss.';
     btn(box,Lernspur.state(level).schluss?'Dein Vergleich':'Einschätzung begründen','abschluss-oeffnen',final,'primary');
     reserves(box);
 
@@ -514,10 +533,11 @@ function personal(phase,done){
     AHR:'Wäge beide Anliegen ab. Was erklären die Fakten? Was muss Laura selbst entscheiden?'
   };
   const messages=names.slice(0,2).map(n=>[n,bank.cases[n].original]);
-  Lernspur.open({status:text=>port?.postMessage({type:'view',active:'',status:text+' · '+level}),tier:level,firstTitle:'Deine erste Einschätzung',finalTitle:'Deine Einschätzung am Ende',
+  Lernspur.open({status:text=>port?.postMessage({type:'view',abschluss:Lernspur.erlaubt(level),active:'',status:text+' · '+level}),tier:level,firstTitle:'Deine erste Einschätzung',finalTitle:'Deine Einschätzung am Ende',
     firstQuestion:'Welche Nachricht hilft Laura zuerst?',finalQuestion:'Welche Nachricht hilft Laura jetzt?',
     firstChoices:choices,finalChoices:choices,suggestion:saved.personal.choice,reason:reasons[level],
-    startMessages:[['Laura',bank.opening],...messages],
+    startMessages:[['Laura','Schau mal, welche Nachrichten ich bekommen habe:'],...messages,['Laura','Beide wollen mir helfen. Aber wer hat denn jetzt Recht?']],
+    facts:['Beim Abbruch mit Medikamenten kommt es zu Blutungen. Schmerzen sind möglich.', 'Ohne Komplikationen ist eine spätere Schwangerschaft weiterhin möglich.'],
     endMessages:[messages[0],
       ['Fachinformation · Beschwerden',bank.cards[0].short],
       messages[1],
@@ -533,7 +553,7 @@ function personal(phase,done){
     },diagnosis:medizin,completed:()=>{},done},phase);
 }
 function final(){
-  if(!level){screen='home';endAfterLevel=true;draw();return;}
+  if(!Lernspur.erlaubt(level))return;
   Lernspur.state(level).begonnen=true;
   personal('schluss',()=>{screen='home';draw(true);});
 }
@@ -551,6 +571,7 @@ function pickerView(){
   }
   select(root,ui.selectSection,'entry',steps,picker.step,v=>{picker.step=v;draw();});
   btn(root,ui.resumeHere,'open-entry',()=>{
+    if(!Lernspur.state(level).erst)Lernspur.state(level).wieder=true;
     if(c && picker.step==='transfer'){
       record(n+'/Transfer').resumed=true;
       go('case',{person:n,at:c.tasks.length+1});return;
@@ -560,7 +581,7 @@ function pickerView(){
   },'primary');
 }
 function draw(focus=false){
-  root.replaceChildren();root.classList.remove('gespraech-offen');
+  root.replaceChildren();root.classList.remove('gespraech-offen','lesephase');
   if(screen==='home')showHome();else if(screen==='picker')pickerView();else if(current.type==='case')caseView();else lauraView();
   const work=root.querySelector('.split>.card')||root;
   const title=root.querySelector(':scope>h1')||work.querySelector('h1');

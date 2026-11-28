@@ -1,0 +1,15 @@
+# Die beiden Unterrichtsbesuche
+
+Oben links benennt der rote Kasten die aktuelle Aufgabe. Rechts steht das Gespräch. Im Leseschritt sind die Antworten ausgeblendet. Im kleinen Fenster lässt sich der Chat zur Lektüre öffnen und wieder schließen. Die gelbe Hilfe ist an der Oberkante erreichbar. Der aktuelle Entwurf bleibt beim Öffnen erhalten.
+
+Am 02.12. hält jedes Kind zuerst seinen Rat und Grund fest. Die Warteansicht lässt Zeit für das erste Empfehlungsrad. „Chat starten“ beginnt die Beratung. Jede neue Gesprächsstufe hat einen Leseschritt. Beim Zeichen der Lehrkraft führt „Stundenabschluss“ zur eigenen Schlussantwort. Bei gleicher Methodenwahl können die beiden Gründe unterschiedlich sein. Das zweite Rad schließt an. Am 08.12. kommen die Nachrichten von Mutter und Freundin vor Lauras medizinischen Fragen. Der Schluss zeigt beide biologischen Informationen zusammen.
+
+## Freie Sprache
+
+Jedes Modell hat eine Aufgabe, einen fachlichen Bezug und ein Vergleichsbeispiel. Bei den persönlichen Empfehlungen bleibt die Gewichtung offen. In den Nachrichtenaufgaben unterscheidet die Software den erwarteten Gedanken von einer zutreffenden Aussage, die eine andere Kategorie beschreibt. Eine als Norm erkannte Körperregel führt zurück zum Wert. Eine als Rat erkannte Folgerung lenkt den Blick auf das Motiv. Bei der Pille kann das Freiwerden der Eizelle bereits verstanden sein. Der nächste Impuls fragt dann nach dem Eisprung.
+
+Eindeutige medizinische Behauptungen werden zusammen mit ihrer Korrektur behandelt. Nach einer Textänderung erfolgt eine neue Prüfung. Auch mehrere eindeutige Behauptungen können in der Rückmeldung stehen. Wörtliche Zitate und ausdrückliche Rücknahmen werden konservativ behandelt. Ein mehrdeutiges Pronomen, ein unbekannter Zusatz oder ein komplexer Satz kann die Erkennung verhindern. Der eigene Text bleibt beim Selbstvergleich verfügbar. Eine richtige Kontrollauswahl bestätigt ausschließlich die gewählte Aussage.
+
+## Reichweite der Prüfung
+
+Sprachreserve.tsv war die erste Gegenprüfung. Ihre Ergebnisse haben zur Nachschärfung beigetragen. Erst anschließend wurde Sprachreserve-blind.tsv mit neuen Formulierungen festgeschrieben. Die ausgewiesenen Quoten betreffen nur diese zweite Liste. Beide Listen bleiben mit ihren ursprünglichen Sollwerten erhalten. Der ältere externe Gegenbestand und die konkreten Nutzerbeispiele ergänzen diese Prüfung. Der neu verfasste Bestand ist keine zweite externe Begutachtung. Für die Erkennungsquote zählen ausschließlich tatsächlich übereinstimmende Zustände. Die Prüfläufe geben Wortlaut, Soll, Ist, Folgeimpuls und Hilfen aus. Für die meisten Aufgaben liegt die Zahl extern bewerteter Schülerformulierungen unter 100. Die Ergebnisse dürfen nicht auf die reale Klasse hochgerechnet werden. Die technische Prüfung simuliert hoch- und querformatige Browserfenster und eine kleinere Tastaturhöhe. Reales iPad, produktives itslearning und die Verständlichkeit in dieser Lerngruppe sind im Unterricht zu prüfen.

@@ -1,0 +1,63 @@
+Aufgabe	Soll	Art	Antwort
+Mutter/Wert	vollständig	normal	Sie macht sich Sorgen um Lauras körperliches Wohl.
+Mutter/Wert	vollständig	normal	Der Mutter liegt die Gesundheit ihrer Tochter am Herzen.
+Mutter/Wert	vollständig	normal	Ihre Tochter soll gesund bleiben.
+Mutter/Wert	vollständig	normal	Laura soll gesund bleiben.
+Mutter/Wert	vollständig	normal	Gesund bleiben ist der Mama am wichtigsten.
+Mutter/Wert	vollständig	normal	dass Laura gesund bleibt
+Mutter/Wert	vollständig	schreibfehler	Lauras Gesuntheit
+Mutter/Wert	vollständig	schreibfehler	Das Laura gesund bleibt
+Mutter/Wert	verwechslung	teilfehler	Das Kind behalten.
+Mutter/Wert	verwechslung	teilfehler	Man sollte auf seinen Körper achten.
+Mutter/Wert	unsicher	grenze	Nur die Gesundheit der Mutter zählt, Laura ist ihr egal.
+Mutter/Wert	unsicher	grenze	Mama schreibt über Gesundheit, aber sie ist ihr egal.
+Mutter/Wert	unsicher	grenze	Die Mutter will selber nicht krank werden.
+Mutter/Wert	unsicher	grenze	Gesundheit. Und die Pille heilt jede Krankheit.
+Mutter/Wert	leer	grenze	
+Mutter/Norm	vollständig	normal	Man soll gut auf seinen Körper aufpassen.
+Mutter/Norm	vollständig	normal	Beschwerden sollte man ernst nehmen.
+Mutter/Norm	verwechslung	teilfehler	Gesundheit
+Mutter/Folgerung	vollständig	normal	Ihr Rat ist, dass Laura das Baby bekommt.
+Mutter/Folgerung	vollständig	normal	Laura soll das Kind bekommen.
+Mutter/Folgerung	verwechslung	teilfehler	Man muss auf den Körper achten.
+Mutter/Ergänzung	teil	teilfehler	Blutungen
+Mutter/Ergänzung	vollständig	normal	Es blutet und der Bauch kann weh tun.
+Mutter/Ergänzung	vollständig	normal	Es kommt zu Blutungen und Schmerzen sind möglich.
+Mutter/Leerstelle	vollständig	normal	Ein biologischer Fakt als Grund für ihren Rat.
+Mutter/Leerstelle	unsicher	grenze	Kein Satz der Mutter ist überprüfbar.
+Freundin/Wert	vollständig	normal	Dass Laura ihre Zukunft selbst planen kann.
+Freundin/Wert	teil	teilfehler	Die Ausbildung
+Freundin/Wert	vollständig	normal	Laura möchte erst die Ausbildung abschließen und ihre Zukunft selbst planen.
+Freundin/Norm	vollständig	normal	Kinder kriegen, wenn es ins Leben passt.
+Freundin/Norm	vollständig	normal	Man sollte Kinder bekommen, wenn man selbst bereit dazu ist.
+Freundin/Folgerung	vollständig	normal	Sie rät zum Abbruch mit Medikamenten.
+Freundin/Folgerung	unsicher	grenze	Die Freundin sagt, Laura muss auf jeden Fall abbrechen.
+Freundin/Leerstelle	vollständig	normal	Es fehlt eine biologische Begründung für den Rat.
+Freundin/Ergänzung	vollständig	normal	Danach kann Laura wieder schwanger werden.
+Freundin/Ergänzung	vollständig	normal	Wenn es keine Komplikationen gibt, ist das später noch möglich.
+Freundin/Ergänzung	fehlvorstellung	teilfehler	Nach einem Abbruch mit Medikamenten kann Laura nie wieder schwanger werden.
+Freundin/Ergänzung	fehlvorstellung	teilfehler	Ein Abbruch mit Medikamenten macht jede Frau unfruchtbar.
+Freundin/Ergänzung	fehlvorstellung	teilfehler	Ich denke an ihre Ausbildung. Laura wird nach dem Abbruch sicher wieder schwanger.
+Großmutter/Norm	vollständig	normal	Man sollte ungeborenes menschliches Leben schützen.
+Großmutter/Folgerung	vollständig	normal	Die Schwangerschaft fortsetzen.
+Großmutter/Ergänzung	vollständig	normal	Das ungeborene Leben.
+Großmutter/Leerstelle	vollständig	normal	Der Wert fehlt.
+Vater/Wert	vollständig	normal	Dass Laura gut informiert selbst entscheiden kann.
+Vater/Folgerung	vollständig	normal	In der Arztpraxis nach den Möglichkeiten fragen.
+Vater/Ergänzung	vollständig	normal	Vor einer medizinischen Entscheidung verlässliche Informationen einholen.
+Vater/Leerstelle	vollständig	normal	Eine allgemeine Regel fehlt.
+Laura/Pille	teil	teilfehler	Weil keine Eizelle freikommt.
+Laura/Pille	teil	teilfehler	Die Pille hemmt den Eisprung.
+Laura/Pille	fehlvorstellung	teilfehler	Die Pille tötet Spermien.
+Laura/Pille	fehlvorstellung	teilfehler	Die Pille verhindert eine HIV-Infektion.
+Laura/Pille	fehlvorstellung	teilfehler	Ich empfehle die Pille, weil sie vor HIV schützt.
+Laura/Pille	fehlvorstellung	teilfehler	Ich denke auch an die Spirale. Die Kupferspirale schützt Laura auch vor HIV.
+Laura/Pille	fehlvorstellung	teilfehler	Kondome verhindern jede Ansteckung beim Sex.
+Laura/Pille	widerspruch	teilfehler	Die Pille schützt nicht vor HIV. Die Pille schützt vor HIV.
+Laura/Pille	ansatz	teilfehler	Eisprung
+Laura/Pille	zusammenhang	teilfehler	Eisprung und Eizelle
+Laura/Pille	unsicher	grenze	Ich glaube nicht, dass die Pille vor HIV schützt.
+Laura/Pille	unsicher	grenze	„Die Pille schützt vor HIV“ ist falsch.
+Laura/Pille	unsicher	grenze	Die Pille schützt vor HIV. Nein, die Pille schützt nicht vor HIV.
+Mutter/Ergänzung	fehlvorstellung	teilfehler	Nach einem medikamentösen Abbruch gibt es keine Blutungen.
+Freundin/Ergänzung	unsicher	grenze	„Ein Abbruch mit Medikamenten macht jede Frau unfruchtbar“ – nein, das stimmt nicht.

@@ -81,7 +81,7 @@ def laura(bank):
             for ctx in [task['before'],*task['strategies'].values()]:
                 card=bank['cards'][ctx['card']['method']]
                 title=card['sections'][ctx['card']['section']]['title']
-                ctx['hints'][0]='Lies auf deiner Infokarte „'+card['title']+'“ unter „'+title+'“.'
+                ctx['hints'][0]=STEPS[stage['id']]+' ('+card['title']+' · '+title+')'
                 ctx['hints']=[line.split(' Laufzettel')[0] for line in ctx['hints']]
             if advanced:
                 for way in task['strategies'].values():
@@ -106,9 +106,7 @@ def familie(bank):
     for name,c in selected['cases'].items():
         # Eine einzige Quelle für Chat, Quellenwahl und die erste Einschätzung.
         text=c['lesefassung']
-        if name=='Freundin':
-            text=text.replace('deine Ausbildung beenden. Vielleicht möchtest du später Kinder.',
-                              'deine Ausbildung beenden und vielleicht später Kinder bekommen.')
+        if name in NACHRICHTEN:text=' '.join(NACHRICHTEN[name])
         c['original']=c['lesefassung']=text
         c.pop('field',None);c['recovery'][-1].update(section=name+' · Weiter',part='Weiter')
     # Gegen die sichtbaren Satztexte auflösen, nicht gegen Indizes der früheren Originalnachricht.
@@ -125,19 +123,42 @@ def familie(bank):
         for t in c['tasks']:
             t['hints']=list(map(hinweis,t['hints']))
             for k,h in t.get('helpByLevel',{}).items():t['helpByLevel'][k]=list(map(hinweis,h))
+    for name in NACHRICHTEN:
+        c=selected['cases'][name]
+        who='Mama' if name=='Mutter' else 'deiner Freundin'
+        for task in c['tasks']:
+            key=task['id']
+            if key=='Leerstelle':
+                task['prompt']='Welche biologische Information fehlt als Grund für diesen Rat?'
+                for a in task['answers']:
+                    if a['ok']:a['feedback']='Ja. Für diesen Rat fehlt noch eine biologische Information.'
+            if key in QUELLEN[name]:
+                source=QUELLEN[name][key][-1]
+                prompts={'Wert':'Was ist '+who+' wichtig?', 'Norm':'Welche Regel nennt '+('Mama' if name=='Mutter' else 'deine Freundin')+'?',
+                         'Folgerung':'Was rät '+('Mama' if name=='Mutter' else 'deine Freundin')+' Laura?'}
+                task['prompt']=prompts[key]
+                hints={'Wert':['Welches Anliegen hörst du heraus?', 'Worüber macht sich Mama Sorgen?' if name=='Mutter' else 'Was hat Laura für später vor?', 'Achte auf „Gesundheit“.' if name=='Mutter' else 'Achte auf „Zukunft“.'],
+                       'Norm':['Suche eine Regel, die auch für andere gilt.', 'Was sollte man aus Sicht der Person tun?', 'Achte auf „man sollte“.'],
+                       'Folgerung':['Suche den persönlichen Rat.', 'Wozu rät sie Laura?', 'Achte auf „ich würde dir raten“.' if name=='Mutter' else 'Achte auf „raten“.']}[key]
+                task['hints']=[*hints, 'Lies diesen Satz: „'+source+'“', 'Vergleiche: '+next(a['text'] for a in task['answers'] if a['ok'])]
+                task['helpByLevel']={t:list(task['hints']) for t in bank['levels']}
     return selected
 
 
 QUELLEN={
-    'Mutter':{'Wert':['Laura, deine Gesundheit ist mir wichtig.'],
-              'Norm':['Bei so einer Entscheidung sollte man mögliche Beschwerden ernst nehmen.'],
-              'Folgerung':['Deshalb rate ich dir, die Schwangerschaft fortzusetzen.']},
-    'Freundin':{'Wert':['Laura, du willst erst deine Ausbildung beenden und vielleicht später Kinder bekommen.',
-                        'Mir ist wichtig, dass du deine Zukunft selbst planst.'],
-                'Norm':['Man sollte überlegen, wann Kinder zu den eigenen Plänen passen.'],
-                'Folgerung':['Deshalb rate ich dir zu einem Abbruch mit Medikamenten.']},
+    'Mutter':{'Wert':['Ich mache mir Sorgen um deine Gesundheit.'],
+              'Norm':['Ich finde, man sollte gut auf seinen Körper achten und Beschwerden ernst nehmen.'],
+              'Folgerung':['Ganz ehrlich, ich würde dir raten, das Kind zu bekommen.']},
+    'Freundin':{'Wert':['Du wolltest doch erst deine Ausbildung fertig machen.', 'Mir ist wichtig, dass du deine Zukunft selbst planen kannst.'],
+                'Norm':['Ich finde, man sollte Kinder bekommen, wenn man selbst bereit dafür ist.'],
+                'Folgerung':['Ganz ehrlich, ich würde dir zu einem Abbruch mit Medikamenten raten.']},
     'Großmutter':{'Norm':['Ich finde, man sollte ungeborenes menschliches Leben schützen.'],
                   'Folgerung':['Deshalb rate ich dir, die Schwangerschaft fortzusetzen.']},
     'Vater':{'Wert':['Laura, mir ist wichtig, dass du gut informiert selbst entscheidest.'],
              'Folgerung':['Deshalb rate ich dir, in der Arztpraxis nach deinen Möglichkeiten zu fragen.']}
+}
+
+NACHRICHTEN={
+    'Mutter':['Hey mein Schatz ❤️!', *QUELLEN['Mutter']['Wert'], *QUELLEN['Mutter']['Norm'], *QUELLEN['Mutter']['Folgerung'], 'Ich bin für dich da.'],
+    'Freundin':['Hey du ❤️!', QUELLEN['Freundin']['Wert'][0], 'Vielleicht möchtest du später Kinder.', QUELLEN['Freundin']['Wert'][1], *QUELLEN['Freundin']['Norm'], *QUELLEN['Freundin']['Folgerung'], 'Frag doch mal in der Arztpraxis nach.', 'Wenn du magst, komme ich mit.']
 }

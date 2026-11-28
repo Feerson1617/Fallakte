@@ -5,7 +5,7 @@ from io import StringIO
 
 def matrix(rows,day):
     table=StringIO();w=csv.writer(table)
-    w.writerow(['Nachweis','Niveau','Fall','Aufgabe','sichtbarer Wortlaut','Intrinsic','Extraneous','lernbezogene Verarbeitung','Element Interactivity','Split Attention','Redundanz','Kohärenz','Signalisierung','Segmentierung','Vorwissen','Transient Information','Worked Examples','Guidance Fading','Expertise Reversal','Verbleibende Anforderung'])
+    w.writerow(['Nachweis','Niveau','Fall','Aufgabe','sichtbarer Wortlaut','Intrinsic','Extraneous','lernbezogene Verarbeitung','Element Interactivity','Split Attention','Redundanz','Kohärenz','Signalisierung','Räumliche Kontiguität','Segmentierung','Vorwissen','Transient Information','Worked Examples','Guidance Fading','Expertise Reversal','Verbleibende Anforderung'])
     for tier,r in rows:
         text=r['text'];task=r['task'];name=r['caseName'];ev=r['event'];ids=r['ids'];q=r['question']
         if day=='02':
@@ -26,5 +26,5 @@ def matrix(rows,day):
         micro=('Hilfestufe lesen und auf die eigene Antwort beziehen.' if hint else 'Die eigene Erklärung mit der Aussage vergleichen.' if free else 'Den Anlass für die Rückmeldung prüfen.' if wrong else 'Einen eigenen Standpunkt mit einem fachlichen Grund abwägen.' if personal else doing)
         example=('Der aktuell geöffnete Impuls oder das Beispiel stehen im protokollierten Wortlaut.' if hint else 'Ein Beispiel ist freiwillig über Hilfe erreichbar.' if not personal else 'Der Sachbezug ist prüfbar. Ein persönliches Urteil bleibt offen.')
         key=hashlib.sha256((tier+str(r)).encode()).hexdigest()[:14]
-        w.writerow([key,tier,name,task,text,relation,'Eine Aufgabe im Arbeitsbereich. Lange Ansichten haben Blättertasten.',micro,relation,split,'Keine parallele Niederschrift während der Erarbeitung.','Wortlaut und angebotene Steuerungen sind im Browserprotokoll nachprüfbar.',q or task,'Nur der aktuelle Schritt bzw. die geöffnete Hilfe.',relation,memory,example,'Hilfen schließen und den eigenen Weg fortsetzen.','Ohne Hilfe weiterarbeiten ist möglich.','Lesefähigkeit und Qualität der eigenen Begründung im Unterricht beurteilen.' if not hint else 'Verstehen des Beispiels und selbstständige Anwendung persönlich überprüfen.'])
+        w.writerow([key,tier,name,task,text,relation,'Eine Aufgabe im Arbeitsbereich. Lange Ansichten haben Blättertasten.',micro,relation,split,'Keine parallele Niederschrift während der Erarbeitung.','Wortlaut und angebotene Steuerungen sind im Browserprotokoll nachprüfbar.',q or task,'Auftrag und Eingabe stehen zusammen. Die zugehörige Nachricht steht im rechten Gesprächsfeld oder in der schmalen Chatansicht.','Nur der aktuelle Schritt bzw. die geöffnete Hilfe.',relation,memory,example,'Hilfen schließen und den eigenen Weg fortsetzen.','Ohne Hilfe weiterarbeiten ist möglich.','Lesefähigkeit und Qualität der eigenen Begründung im Unterricht beurteilen.' if not hint else 'Verstehen des Beispiels und selbstständige Anwendung persönlich überprüfen.'])
     return table.getvalue()

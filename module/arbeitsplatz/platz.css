@@ -162,3 +162,38 @@ dialog[open]{max-height:var(--sichtbare-hoehe,100dvh)!important;height:calc(var(
   .spur-arbeit .spur-weiter{margin:.15em 0}
   .spur-arbeit .spur-korrektur{grid-column:1/-1}
 }
+
+/* Derselbe Arbeitsplatz für Beratung, Familienanalyse und persönliche Lernspur. */
+.lernraum .arbeitsfelder,#beratung.lernraum .arbeitsfelder{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}
+.arbeitsfelder>.blatt{grid-area:1/1}
+.arbeitsfelder>.gespraech{grid-area:1/2}
+.aufgabenkasten,#beratung .aufgabenkasten{border:0;border-inline-start:.35rem solid #a02e3c;background:#fff1ee;color:#38282a;border-radius:.3rem;padding:.46em .72em;margin:0 0 .5em;break-inside:avoid}
+.aufgabenmarke{display:block;font:700 .91em/1.2 system-ui;color:#8b2431}
+.aufgabenkasten p,#beratung .aufgabenkasten p{margin:.15em 0 0;font:650 1.13em/1.24 system-ui}
+.nur-vorlesen{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip-path:inset(50%);min-height:0!important}
+.spur-chat .weitergeleitet{border-inline-start:3px solid #728e86;white-space:pre-line}
+.spur-chat .weitergeleitet small{display:block;color:#47675c}
+.faktenpaar{display:grid;gap:.32em;margin:.4em 0}
+.faktenpaar p{margin:0;border-inline-start:.2rem solid #53756f;padding-left:.5em}
+body:has(.aufgabenkasten) :is(.feedback.falsch,.spur-korrektur,#fachmeldung[data-type=A],#feedback.fachlich-falsch){border:2px dashed #785730;background:#fff8e8;color:#4e3416}
+@media(min-width:651px) and (min-height:341px){
+ body:has(dialog[open]) .lernraum .gespraech{visibility:visible}
+ #material-dialog[open],#dialog[open],body>dialog[open]{inset:0 auto 2px max(.45rem,calc((100vw - 81rem)/2))!important;width:min(58%,47rem)}
+ dialog[open]>.dialoghilfe,#material-dialog[open]>.dialoghilfe{position:fixed!important;right:max(.45rem,calc((100vw - 81rem)/2 + .45rem));top:2px}
+}
+@media(max-width:650px),(max-height:340px){
+ .lernraum .arbeitsfelder,#beratung.lernraum .arbeitsfelder{grid-template-columns:minmax(0,1fr)}
+ .arbeitsfelder>.gespraech,.arbeitsfelder>.blatt{grid-area:1/1}
+ .lernraum.lesephase .arbeitsfelder{display:flex!important;flex-direction:column;gap:.2em}
+ .lernraum.lesephase .arbeitsfelder>.gespraech{display:block;order:2;flex:1}
+ .lernraum.lesephase .arbeitsfelder>.blatt{order:1;flex:0 0 auto;min-height:0}
+ .lernraum.lesephase .blatt-inhalt{display:flex;align-items:center;gap:.4em}
+ .lernraum.lesephase .aufgabenkasten{flex:1;margin:0}
+ .lernraum.lesephase .gespraech-wechsel{visibility:hidden}
+}
+@media(max-height:400px),(max-width:475px){
+ .aufgabenkasten,#beratung .aufgabenkasten{padding:.13em .36em;margin:0 0 .15em}
+ .aufgabenkasten p,#beratung .aufgabenkasten p{font-size:1em;line-height:1.14}
+}
+
+.denkhinweis{border-inline-start:.2em solid #687f78;padding-inline-start:.5em;margin:.28em 0;color:#314a42}
