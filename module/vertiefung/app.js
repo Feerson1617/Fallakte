@@ -101,7 +101,7 @@ function draw(){
     state.valid?'Vergleiche deinen Grund. Sende deinen Rat.':state.compared?'Welche Aussage passt zu deinem Grund?':s.task[tier];
   const room=()=>Arbeitsplatz.setup(desk,work,chat,h,work.querySelector('#help'),b=>resource('Hilfe',box=>add(box,'p','Lies die Antwort. Tippe dann auf Weiter.')));
   const analyse=()=>Diagnose.analyse(state.reason,Diagnose.modell(bank.person+'/'+state.index+'/'+state.choice,
-    s.task[tier],check.answers?.['ABC'.indexOf(check.code)],{persoenlich:true,pille:state.choice.split('+').includes('P')}));
+    s.task[tier],check.answers?.['ABC'.indexOf(check.code)],{persoenlich:true,pille:state.choice.split('+').includes('P'),bezug:s.task[tier],quelle:check.answers?.['ABC'.indexOf(check.code)],hilfen:s.hints?.[state.choice]||s.helpBefore}));
   if(state.sent){
     note(state.history.length-2);add(chat,'strong','Du');add(chat,'p',state.history.at(-2));
     add(chat,'strong',bank.person);add(chat,'p',state.reply);
@@ -171,11 +171,13 @@ function draw(){
     const card=ref && bank.cards[ref.method];
     const where=card?card.title+' · '+card.sections[ref.section].title:hasChoice?'Nachricht von '+bank.person:'Artikel und Studien';
     const answer=check.answers?.['ABC'.indexOf(check.code)];
-    const hints=reason?Entwurf.hilfen(where,issue?.frage || (conflict()?'Welcher Wunsch bleibt offen?':s.task[tier]),reason):
+    const hints=reason?Entwurf.hilfen(where,issue?.frage || (conflict()?'Welcher Wunsch bleibt offen?':s.task[tier]),reason,issue):
       state.reason.trim()&&!state.valid?analyse().hints:[s.task[tier]+' '+prior[0],s.task[tier],prior[1],prior[2] || (card?card.sections[ref.section].levels[tier]:prior.at(-1)),
         prior[3] || answer || prior.at(-1)];
     resource('Hilfe '+(index+1)+' von '+hints.length,body=>{
       add(body,'p',hints[index]);
+      const excerpt=issue?.info||card?.sections[ref.section]?.levels[tier]||answer;
+      if(excerpt && !hints[index].includes(excerpt))add(body,'p',excerpt).className='hilfsquelle';
       if(index+1<hints.length)btn(body,'Mehr Hilfe','mehr-hilfe',()=>hint(index+1));
     });
   }

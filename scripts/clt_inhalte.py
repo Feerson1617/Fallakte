@@ -121,6 +121,8 @@ def familie(bank):
                             'Tippe auf „Begriff erklären“. Wähle ein Wort.')
     for c in selected['cases'].values():
         for t in c['tasks']:
+            if t['id']=='Leerstelle':
+                t['prompt']='Welche Art von Aussage wird in der Nachricht nicht ausdrücklich genannt?'
             t['hints']=list(map(hinweis,t['hints']))
             for k,h in t.get('helpByLevel',{}).items():t['helpByLevel'][k]=list(map(hinweis,h))
     for name in NACHRICHTEN:
@@ -129,7 +131,7 @@ def familie(bank):
         for task in c['tasks']:
             key=task['id']
             if key=='Leerstelle':
-                task['prompt']='Welche biologische Information fehlt als Grund für diesen Rat?'
+                task['prompt']='Welche Art von Aussage fehlt als Begründung für diesen Rat?'
                 source=QUELLEN[name]
                 for a in task['answers']:
                     a['feedback']=('Ja. Für diesen Rat fehlt noch eine biologische Information.' if a['ok'] else

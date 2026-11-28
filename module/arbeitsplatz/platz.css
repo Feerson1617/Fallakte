@@ -223,3 +223,15 @@ body:has(.aufgabenkasten) :is(.feedback.falsch,.spur-korrektur,#fachmeldung[data
 @media(max-width:475px){
  .lernraum .blatt-inhalt.geteilt button,#beratung .blatt-inhalt.geteilt button{line-height:1.18;padding:.12em .35em}
 }
+
+.lernraum .aufgabenkasten,#beratung .aufgabenkasten{border:1px solid #ab3847;border-inline-start:.4rem solid #902534;background:#fff0ec}
+.aufgabenmarke{color:#802030}
+.lernraum .hilfsquelle,dialog .hilfsquelle{margin:.4em 0;padding:.35em .55em;border-inline-start:3px solid #768a7d;background:#f2f5ef;color:#213c33}
+.spur-chat .bubble.weitergeleitet{background:#f9fffb;border:1px solid #b5c9be;border-inline-start:.28rem solid #52786a;border-radius:.7rem;box-shadow:0 1px 3px #25453824}
+.spur-chat .weitergeleitet small{font-style:italic;font-weight:500}
+#lernspur.lesephase .nachrichten-einstieg{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.nachrichten-einstieg .nachrichten-liste{min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+.nachrichten-einstieg>.bubble:last-child{flex:none;background:#e8f3ee;border-inline-start:3px solid #417464}
+@media(min-width:821px) and (min-height:501px){
+ #lernspur.lesephase:has(.nachrichten-einstieg) .arbeitsfelder{grid-template-columns:minmax(0,.68fr) minmax(0,1.32fr)}
+}

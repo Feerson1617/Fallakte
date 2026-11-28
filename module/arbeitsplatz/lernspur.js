@@ -21,7 +21,8 @@ const Lernspur = (() => {
   }
   function open(config,phase){
     const session=state(config.tier);
-    const draft=session.entwuerfe[phase]||={choice:'',reason:'',step:phase==='erst'?'lesen':'wahl'};
+    const prior=phase==='schluss' && config.suggestion;
+    const draft=session.entwuerfe[phase]||={choice:prior?.choice||'',reason:prior?.reason||'',step:phase==='erst'?'lesen':prior?'grund':'wahl'};
     current={...config,phase,draft};draw();
   }
   function draw(){
@@ -41,8 +42,11 @@ const Lernspur = (() => {
     const waiting=first && draft.step==='warten';
     room.classList.toggle('lesephase',reading);
     const messages=first?cfg.startMessages:cfg.endMessages;
-    for(const [who,text] of messages){
-      const bubble=node(chat,'div',undefined,'bubble');
+    const forwarded=reading && messages.some(([who])=>who==='Mutter');
+    if(forwarded)chat.classList.add('nachrichten-einstieg');
+    const inbox=forwarded?node(chat,'div',undefined,'nachrichten-liste'):chat;
+    for(const [i,[who,text]] of messages.entries()){
+      const bubble=node(forwarded && i===messages.length-1?chat:inbox,'div',undefined,'bubble');
       if(first && ['Mutter','Freundin'].includes(who)){bubble.classList.add('weitergeleitet');node(bubble,'small','Weitergeleitet');}
       const portrait=cfg.portrait(who);
       if(portrait){const img=node(bubble,'img');img.src=portrait;img.alt='';}
@@ -57,7 +61,7 @@ const Lernspur = (() => {
     }
     let hint,auftrag;
     if(reading){
-      auftrag='Lies die Nachrichten im Chat. →';hint='Lies zuerst, was dir die Personen schreiben.';
+      auftrag='Lies die Nachrichten im Chat.';hint='Lies zuerst, was dir die Personen schreiben.';
       button(work,'Weiter','spur-lesen',()=>{draft.step='wahl';draw();}).className='spur-weiter';
     }else if(waiting){
       auftrag='Warte auf das Zeichen deiner Lehrkraft.';hint='Nach der gemeinsamen Abstimmung kannst du den Chat starten.';
@@ -72,6 +76,12 @@ const Lernspur = (() => {
         else node(work,'p','In dieser Sitzung gibt es keine erste Antwort.');
       }
 
+      const reference=cfg.reference?.(s.schluss.choice);
+      if(reference){
+        const detail=node(work,'details',undefined,'selbstvergleich');
+        node(detail,'summary','Meinen Grund fachlich vergleichen');
+        node(detail,'p',reference);
+      }
       button(work,'Schlussantwort bearbeiten','spur-aendern',()=>{cfg.editing=true;draft.step='grund';draw();});
       button(work,'Zur Übersicht','spur-fertig',finish).className='spur-weiter';
     }else{
@@ -91,7 +101,11 @@ const Lernspur = (() => {
         select.onchange=()=>{if(select.value){draft.choice=select.value;draft.step='grund';draw();}};
         hint='Öffne die Auswahl. Tippe auf deine Antwort.';
       }else{
-      button(work,draft.choice+' · ändern','spur-wahl-aendern',()=>{draft.step='wahl';draw();});
+      if(!first && cfg.suggestion){
+        const select=node(work,'select');select.id='spur-wahl';select.setAttribute('aria-label',cfg.finalQuestion);
+        for(const label of cfg.finalChoices)node(select,'option',label).value=label;
+        select.value=draft.choice;select.onchange=()=>{draft.choice=select.value;edit();};
+      }else button(work,draft.choice+' · ändern','spur-wahl-aendern',()=>{draft.step='wahl';draw();});
       const reasonBox=node(work,'div',undefined,'spur-eingabe');
       const reason=node(reasonBox,'label',first?'Warum denkst du das?':cfg.reason);reason.htmlFor='spur-grund';reason.className='nur-vorlesen';
       const input=node(reasonBox,'textarea');input.id='spur-grund';input.rows=2;input.value=draft.reason;
@@ -117,8 +131,10 @@ const Lernspur = (() => {
     }
     const help=button(work,'Ich brauche Hilfe','spur-hilfe',()=>{
       const error=!first && !comparison && cfg.diagnosis(s.entwuerfe.schluss.reason);
-      const steps=first||comparison?null:error?Entwurf.hilfen('Fachinformation',error.frage,error.info):cfg.helpSteps;
-      cfg.help(hint,steps);
+      const steps=first||comparison?null:error?Entwurf.hilfen('Fachinformation',error.frage,error.info,error):cfg.helpSteps;
+      const reference=!first && cfg.reference?.(draft.choice);
+      if(steps && !error && reference)cfg.help(hint,[steps[0],reference,steps[2],steps[3],reference+' '+cfg.reason]);
+      else cfg.help(hint,steps);
     });
     Arbeitsplatz.setup(room,work,chat,heading,help,null,auftrag);
     heading.tabIndex=-1;heading.focus({preventScroll:true});

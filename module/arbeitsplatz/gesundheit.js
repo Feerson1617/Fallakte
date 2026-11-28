@@ -7,7 +7,7 @@ const Fachwissen = (() => {
   const hormon='(?:(?:die |eine )?hormonspirale[n]?)';
   const erreger='(?:hiv(?: (?:oder|und|beziehungsweise) (?:anderen )?sti[s]?)?|sti[s]?|geschlechtskrankheiten|sexuell uebertragbaren (?:krankheiten|infektionen)|chlamydien|anderen sti[s]?)';
   const vor='(?:vor|gegen) (?:eine[r]? (?:ansteckung|infektion) mit )?(?:allen |saemtlichen |vielen )?'+erreger;
-  const alle='vor (?:allen|saemtlichen|jeder art von) (?:sti[s]?|geschlechtskrankheiten|sexuell uebertragbaren infektionen)';
+  const alle='vor (?:allen|saemtlichen|jeder art von) (?:sti[s]?|geschlechtskrankheiten|infektionen|sexuell uebertragbaren infektionen)';
   const aktiv='(?:schuetzt|schuetzen)';
   const schutz='(?:auch |ausserdem |immer |zuverlaessig |sicher |vollstaendig )*';
   const mittel='(?:(?:eine |die )?hormonfreie methode|hormonfreie methoden|hormonfrei)';
@@ -22,7 +22,7 @@ const Fachwissen = (() => {
   const methoden=einzelne+'(?: (?:oder|und) '+einzelne+')?';
   const katalog={
     sti:eintrag(1,1,'Pille und Spiralen schützen nicht vor HIV. Auch andere Erreger können beim Sex übertragen werden.','Hält diese Methode Krankheitserreger zurück?',
-      [methoden+' '+aktiv+' '+schutz+vor,vor+' '+aktiv+' '+methoden,methoden+' (?:bietet|bieten) (?:auch )?schutz '+vor,
+      ['mit (?:der |einer )?(?:(?:hormon|kupfer)?spirale|(?:kombinations)?pille) kann (?:laura sich|sie sich|man sich|sich laura) nicht mit hiv anstecken',methoden+' '+aktiv+' '+schutz+vor,vor+' '+aktiv+' '+methoden,methoden+' (?:bietet|bieten) (?:auch )?schutz '+vor,
        'mit (?:der |einer )?(?:(?:hormon|kupfer)?spirale|(?:kombinations)?pille) kann man kein hiv bekommen',
        methoden+' (?:verhindert|verhindern) (?:eine ansteckung mit |eine )?(?:hiv(?:-infektion)?|sti[s]?)',methoden+' '+aktiv+' (?:laura|mich|uns) '+schutz+vor],
       [methoden+' '+aktiv+' (?:auch )?nicht '+vor,methoden+' '+aktiv+' '+vor+' nicht',methoden+' '+aktiv+' nicht gegen '+erreger,methoden+' (?:bietet|bieten) keinen (?:sti-schutz|schutz '+vor+')']),
@@ -31,10 +31,10 @@ const Fachwissen = (() => {
        kondom+' (?:verhindert|verhindern) jede ansteckung beim sex',kondom+' '+aktiv+' zu (?:hundert|100) prozent vor jeder infektion beim sex'],
       [kondom+' '+aktiv+' nicht (?:sicher |vollstaendig )?'+alle,kondom+' '+aktiv+' '+alle+' nicht sicher',kondom+' (?:senkt|senken) das (?:risiko vieler sti|sti-risiko)']),
     kupferhormone:eintrag(2,0,'Die Kupferspirale wirkt ohne Hormone.','Was gibt die Kupferspirale ab?',
-      [kupfer+' (?:enthaelt|enthalten) '+hormonwort,kupfer+' (?:gibt|geben) '+hormonwort+' ab',kupfer+' (?:ist|sind) hormonhaltig'],
+      [kupfer+' (?:hat|haben) hormone',kupfer+' (?:enthaelt|enthalten) '+hormonwort,kupfer+' (?:gibt|geben) '+hormonwort+' ab',kupfer+' (?:ist|sind) hormonhaltig'],
       [kupfer+' (?:enthaelt|enthalten) keine hormone',kupfer+' (?:ist|sind|wirkt|wirken) (?:hormonfrei|ohne hormone)',kupfer+' (?:gibt|geben) keine hormone ab']),
     hormonabgabe:eintrag(3,0,'Die Hormonspirale gibt ein Hormon ab. Es macht den Schleim am Gebärmutterhals zäher.','Welches Mittel verändert den Schleim?',
-      [hormon+' (?:gibt|geben) (?:keine hormone|kein hormon|kein gestagen) ab',hormon+' (?:ist|sind|wirkt|wirken) (?:hormonfrei|ohne hormone)',hormon+' (?:enthaelt|enthalten) keine hormone'],
+      [hormon+' (?:hat|haben) (?:gar )?keine hormone',hormon+' (?:gibt|geben) (?:keine hormone|kein hormon|kein gestagen) ab',hormon+' (?:ist|sind|wirkt|wirken) (?:hormonfrei|ohne hormone)',hormon+' (?:enthaelt|enthalten) keine hormone'],
       [hormon+' (?:gibt|geben) (?:ein hormon|gestagen|hormone) ab',hormon+' (?:ist|sind) nicht hormonfrei']),
     spermien:eintrag(1,0,'Die Pille hemmt meist den Eisprung. Sie tötet keine Spermien.','Was geschieht bei der Pille mit dem Eisprung?',
       [pille+' (?:toetet|vernichtet) (?:die |alle )?(?:spermien|samenzellen)(?: ab)?',pille+' toetet (?:die )?(?:spermien|samenzellen) ab'],

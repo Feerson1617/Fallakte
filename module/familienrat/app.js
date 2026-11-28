@@ -103,6 +103,8 @@ function cards(index){
 }
 // Ausschließlich explizite medizinische Behauptungen abgleichen. Lauras Entscheidung bleibt offen.
 const medizinischeAussagen=[
+  {satz:/^(?:ein (?:schwangerschafts)?abbruch mit (?:tabletten|medikamenten) tut (?:auf keinen fall|nie) weh|mit (?:tabletten|den abbruchtabletten) bekommt laura keine schmerzen|es gibt keine blutungen bei einem (?:medikamentoesen abbruch|abbruch mit medikamenten))$/u,quelle:'Blutungen und Schmerzen',frage:'Was kann Laura beim Abbruch im Bauch spüren?',info:bank.cards[0].short},
+  {satz:/^(?:nach der abtreibung kann (?:sie|laura) niemals kinder bekommen|ein schwangerschaftsabbruch fuehrt immer zur unfruchtbarkeit|nach dem abbruch ist es garantiert,? dass laura spaeter kinder (?:kriegt|bekommt)|weil sie spaeter auf jeden fall kinder (?:kriegen|bekommen) kann,? ist ein abbruch sicher richtig)$/u,quelle:'Später schwanger werden',frage:'Was ist möglich? Was lässt sich für Laura nicht vorhersagen?',info:'Nach einem Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich. Eine Garantie gibt es nicht.'},
   {satz:/^(?:nach einem (?:abbruch mit medikamenten|medikamentoesen abbruch) kann (?:laura|man|eine frau) nie (?:wieder|mehr) schwanger werden|ein (?:abbruch mit medikamenten|medikamentoeser abbruch) macht jede frau unfruchtbar|laura wird nach dem (?:medikamentoesen )?abbruch sicher wieder schwanger)$/,quelle:'Später schwanger werden',frage:'Was bleibt möglich? Was kann niemand versprechen?',info:'Nach einem Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich. Eine Garantie gibt es nicht.'},
   {satz:/^nach einem (?:medikamentoesen abbruch|abbruch mit medikamenten) gibt es keine blutungen$/,quelle:'Blutungen und Schmerzen',frage:'Was geschieht, wenn die Gebärmutter sich zusammenzieht?',info:bank.cards[0].short},
   {satz:/^nach einem abbruch kann man keine kinder mehr bekommen$/,quelle:'Später schwanger werden',frage:'Was bleibt nach einem Abbruch ohne Komplikationen möglich?',info:'Eine spätere Schwangerschaft bleibt möglich.'},
@@ -115,8 +117,12 @@ const medizinischeAussagen=[
 const medizin=text=>Entwurf.fehler(text||'',medizinischeAussagen);
 function familienModell(task){
   const answers=task.answers||[];
-  return Diagnose.modell(current?.person+'/'+task.id,task.prompt,
-    answers.find(a=>a.ok)?.text||'',{alternativen:answers});
+  const person=current?.person,c=bank.cases[person];
+  const lines=c?sentences(c.original):[];
+  const source=task.evidenceSentences?.map(i=>lines[i]).join(' ') ||
+    (task.id==='Ergänzung'?c?.addition:lines.at(-1));
+  return Diagnose.modell(person+'/'+task.id,task.prompt,
+    answers.find(a=>a.ok)?.text||'',{alternativen:answers,quelle:source,hilfen:task.helpByLevel?.[level]||task.hints});
 }
 function help(task,r){
   const tier=task.personalTier || level;
@@ -132,7 +138,7 @@ function help(task,r){
         r.sourceError?'Originalnachricht':task.id && bank.definitions[task.id]?'Originalnachricht · '+task.id:
         bank.cards[names.indexOf(current?.person)]?.title || 'Fachinformation zum Anliegen');
       const hints=issue || wrong?Entwurf.hilfen(where,issue?.frage||
-          (r.sourceError?'Welche Textstelle beantwortet die Frage?':task.prompt || 'Welche Fachinformation passt zum Anliegen?'),issue?.info||wrong):
+          (r.sourceError?'Welche Textstelle beantwortet die Frage?':task.prompt || 'Welche Fachinformation passt zum Anliegen?'),issue?.info||wrong,issue):
           (r.text?.trim() && !r.valid && task.answers ? Diagnose.analyse(r.text,familienModell(task),medizin).hints :
            ownTask && r.reason?.trim()?Diagnose.analyse(r.reason,ownTask,medizin).hints:task.helpByLevel?.[tier] || task.hints);
       if(!issue && r.sourceError && task.evidenceSentences){
@@ -146,6 +152,8 @@ function help(task,r){
       }
       if(issue?.ref)hints[0]=issue.frage+' Prüfe die Aussage zur Verhütung in deinem Text.';
       paragraph(box,hints[depth-1]);
+      const source=issue?.info || (task.answers && familienModell(task).quelle) || (ownTask && ownTask.beispiel);
+      if(source && !hints[depth-1].includes(source))paragraph(box,source,'hilfsquelle');
       const row=el(box,'div',undefined,'row');
       if(depth<5)btn(row,ui.more,'hint-next',()=>show(depth+1));
       if(depth<4)btn(row,ui.solution,'hint-last',()=>show(5));
@@ -543,7 +551,8 @@ function personal(phase,done){
   const messages=names.slice(0,2).map(n=>[n,bank.cases[n].original]);
   Lernspur.open({status:text=>port?.postMessage({type:'view',abschluss:Lernspur.erlaubt(level),active:'',status:text+' · '+level}),tier:level,firstTitle:'Deine erste Einschätzung',finalTitle:'Deine Einschätzung am Ende',
     firstQuestion:'Welche Nachricht hilft Laura zuerst?',finalQuestion:'Welche Nachricht hilft Laura jetzt?',
-    firstChoices:choices,finalChoices:choices,suggestion:saved.personal.choice,reason:reasons[level],
+    firstChoices:choices,finalChoices:choices,reference:()=>bank.cards[0].short+' '+bank.cards[1].short,
+    suggestion:saved.personal.choice?{choice:saved.personal.choice}:null,reason:reasons[level],
     startMessages:[['Laura','Schau mal, welche Nachrichten ich bekommen habe:'],...messages,['Laura','Beide wollen mir helfen. Aber wer hat denn jetzt Recht?']],
     facts:['Beim Abbruch mit Medikamenten kommt es zu Blutungen. Schmerzen sind möglich.', 'Ohne Komplikationen ist eine spätere Schwangerschaft weiterhin möglich.'],
     endMessages:[messages[0],

@@ -38,7 +38,7 @@ const Diagnose=(()=>{
     'Freundin/Ergänzung':[/^wenn es keine komplikationen gibt,? (?:ist (?:eine schwangerschaft|das) später (?:noch |wieder )?möglich|kann (?:sie|laura) später wieder schwanger werden)$/u]
   };
   function trifft(text,key,beispiel){
-    if(text===norm(beispiel)||muster[key]?.test(text)||sinngleich[key]?.some(re=>re.test(text)))return true;
+    if(text===norm(beispiel)||Argumente.passt(key,text)||muster[key]?.test(text)||sinngleich[key]?.some(re=>re.test(text)))return true;
     if(!key.endsWith('/Leerstelle'))return false;
     const category=norm(beispiel);
     if(category==='fakt')return /^(?:(?:es fehlt |es fehlt noch )?(?:ein biologischer fakt|eine biologische (?:information|begründung))(?: (?:als grund )?für (?:den|ihren) rat)?|(?:der|ein) (?:biologische[r]? )?fakt fehlt)$/u.test(text);
@@ -51,11 +51,35 @@ const Diagnose=(()=>{
     const {key='',frage,beispiel='',persoenlich=false,alternativen=[],fachlich=[]}=model;
     const imp='Vergleiche deinen Gedanken: '+(frage||'Welche Information passt zu deinem Grund?');
     function result(status,feedback,focus=imp,sample=beispiel){
-      const next=status==='vollständig'?'Lies deinen Text noch einmal. Du kannst jetzt weitergehen.':
-        status==='teil'?'Diesen Teil hast du schon erklärt. '+focus:status==='verwechslung'?'Prüfe, welche Art von Aussage die Frage sucht.':
-        status==='unsicher'?'Dein Gedanke bleibt erhalten. Lege ihn neben das Beispiel.':frage||focus;
-      return {status,feedback,focus,hints:[focus,feedback,next,
-        sample?'Ein Beispiel: '+sample:focus,'Vergleiche deinen Text: '+(sample||focus)]};
+      const [person,category]=key.split('/');
+      const lens={Wert:'Was möchte die Person bewahren?',Norm:'Für wen soll die Regel gelten?',Folgerung:'Was soll Laura konkret tun?',
+        Leerstelle:'Welche Art von Aussage bleibt unausgesprochen?',Ergänzung:'Welche Information ergänzt die Nachricht?'};
+      const start={Wert:'Der Person ist … wichtig.',Norm:'Man sollte …',Folgerung:'Sie rät Laura, …',Leerstelle:'Der Text nennt … nicht ausdrücklich.',
+        Ergänzung:'Aus der Information folgt für Laura …'};
+      const base=model.hilfen||[];
+      let hints;
+      if(status==='teil' || status==='ansatz' || status==='zusammenhang'){
+        hints=[focus,model.quelle||sample||focus,model.bezug||lens[category]||frage,
+          start[category]?'Ergänze deinen Gedanken: „'+start[category]+'“':base[3]||'Verbinde die beiden Aussagen mit „deshalb“.',sample||model.quelle||focus];
+      }else if(status==='vollständig'){
+        hints=[feedback,model.quelle||sample,lens[category]||frage,start[category]||base[3]||focus,'Vergleiche mit dem Fachgedanken: '+sample];
+      }else{
+        hints=[status==='verwechslung'?feedback+' '+focus:focus,model.quelle||base[1]||sample,
+          model.bezug||lens[category]||base[2]||frage,start[category]?'Versuche: „'+start[category]+'“':base[3]||'Beginne mit „Für Laura bedeutet das …“.',sample||focus];
+      }
+      // Der Folgeimpuls setzt beim bereits verstandenen Teil an.
+      if(status==='teil' && key==='Mutter/Ergänzung' && focus.includes('Bauch')){
+        hints=[focus,'Die Gebärmutter ist ein Muskel. Sie zieht sich zusammen.',
+          'Wie kann sich dieses Zusammenziehen anfühlen?', '„Neben den Blutungen kann Laura … spüren.“',sample];
+      }else if(status==='teil' && key==='Freundin/Wert'){
+        hints=[focus,'Die Freundin schreibt von Lauras Plänen nach der Ausbildung.',
+          'Wer soll den Zeitpunkt für ein Kind bestimmen?', '„Laura möchte ihre Ausbildung beenden und selbst …“',sample];
+      }else if(status==='teil' && focus.includes('Eizelle')){
+        hints=[focus,'Beim Eisprung wird eine Eizelle frei.','Die Pille hemmt meist den Eisprung.',
+          '„Bleibt der Eisprung aus, dann …“','Ohne Eisprung wird keine Eizelle frei.'];
+      }
+      return {status,feedback,focus,hints};
+
     }
     if(!raw)return result('leer','Hier ist Platz für deinen Gedanken.',frage);
     const error=medizin(text);
@@ -63,13 +87,23 @@ const Diagnose=(()=>{
       const contradict=/(?:^|[.!;] )die pille schützt (?:auch )?nicht vor hiv\b/u.test(raw)&&/(?:^|[.!;] )die pille schützt vor hiv\b/u.test(raw);
       return {...result(contradict?'widerspruch':'fehlvorstellung',error.info,error.frage,error.info),error};
     }
+    const fact=Aussagen.treffer(text,model);
+    if(fact){
+      const focus=model.gewicht||model.frage;
+      const feedback='Fachlich richtig: '+fact;
+      return {status:'teil',feedback,focus,hints:[focus,model.bezug,model.quelle||beispiel,
+        'Beginne zum Beispiel so: „'+(model.anfang||'Für diesen Fall bedeutet das …')+'“',
+        'Vergleiche: '+beispiel+' Was davon stützt deinen eigenen Rat?']};
+    }
     if(!persoenlich){
+      if(key==='Mutter/Wert' && /^sie hat angst um ihre tochter$/u.test(raw))return result('teil','Du hast Mamas Sorge erkannt.','Worum sorgt sich Mama bei Laura?');
+      if(key==='Großmutter/Leerstelle' && raw==='es fehlt ihre wertvorstellung')return result('teil','Du hast die Kategorie Wert erkannt.','Steht ihr Wert ausdrücklich da oder lässt er sich aus ihrem Rat erschließen?');
       const value=fachlich.find(x=>norm(x)===raw);
       if(value||trifft(raw,key,beispiel))return result('vollständig',
-        key==='Mutter/Wert'?'Genau! Mama ist Lauras Gesundheit wichtig.':'Deine Erklärung trifft diesen Fachgedanken.',frage);
+        key==='Mutter/Wert'?'Genau! Mama ist Lauras Gesundheit wichtig.':(key.endsWith('/Leerstelle')?'Diese Kategorie wird im Text nicht ausdrücklich genannt.':'Das passt: '+beispiel),frage);
       const person=key.split('/')[0];
       for(const cat of ['Norm','Folgerung','Wert']){
-        if(!key.startsWith(person+'/')||key===person+'/'+cat||!muster[person+'/'+cat]?.test(raw))continue;
+        if(!key.startsWith(person+'/')||key===person+'/'+cat||!(muster[person+'/'+cat]?.test(raw)||Argumente.passt(person+'/'+cat,raw)))continue;
         const fb=cat==='Norm'?'Du hast eine Regel gefunden. Das ist eine Norm.':cat==='Folgerung'?'Das ist der Rat.':'Du hast einen Wert gefunden.';
         return result('verwechslung',person==='Mutter'&&cat==='Folgerung'?'Das ist Mamas Rat.':fb,
           key==='Mutter/Wert'&&cat==='Folgerung'?'Warum gibt Mama Laura diesen Rat?':frage);

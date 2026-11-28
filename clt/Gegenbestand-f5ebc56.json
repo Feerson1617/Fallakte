@@ -1,0 +1,2063 @@
+{
+  "archiv_sha256": "1722a84feb9eaae1c3399ac11dd015af09642a59e39689bdb28a24ea0b37c461",
+  "02": {
+    "antworten": [
+      {
+        "tier": "MSA",
+        "stage": "L01",
+        "key": "K",
+        "text": "Latexfreie Kondome aus Kunststoff halten Spermien zurück.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L01",
+        "key": "K",
+        "text": "Auch ohne Latex kann ein Kondom Sperma zurückhalten.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L01",
+        "key": "P",
+        "text": "Latexfreie Kondome aus Kunststoff halten Spermien zurück.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L01",
+        "key": "P",
+        "text": "Auch ohne Latex kann ein Kondom Sperma zurückhalten.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L01",
+        "key": "Cu",
+        "text": "Latexfreie Kondome aus Kunststoff halten Spermien zurück.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L01",
+        "key": "Cu",
+        "text": "Auch ohne Latex kann ein Kondom Sperma zurückhalten.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L01",
+        "key": "H",
+        "text": "Latexfreie Kondome aus Kunststoff halten Spermien zurück.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L01",
+        "key": "H",
+        "text": "Auch ohne Latex kann ein Kondom Sperma zurückhalten.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L01",
+        "key": "K+P",
+        "text": "Latexfreie Kondome aus Kunststoff halten Spermien zurück.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L01",
+        "key": "K+P",
+        "text": "Auch ohne Latex kann ein Kondom Sperma zurückhalten.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L01",
+        "key": "K+Cu",
+        "text": "Latexfreie Kondome aus Kunststoff halten Spermien zurück.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L01",
+        "key": "K+Cu",
+        "text": "Auch ohne Latex kann ein Kondom Sperma zurückhalten.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L01",
+        "key": "K+H",
+        "text": "Latexfreie Kondome aus Kunststoff halten Spermien zurück.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L01",
+        "key": "K+H",
+        "text": "Auch ohne Latex kann ein Kondom Sperma zurückhalten.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L02",
+        "key": "K",
+        "text": "Geeignete Kondome können das STI-Risiko vermindern; Pille und Spiralen bieten diesen Schutz nicht.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L02",
+        "key": "K",
+        "text": "Kondome senken die Gefahr von Ansteckungen. Die anderen Methoden schützen davor nicht.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L02",
+        "key": "P",
+        "text": "Geeignete Kondome können das STI-Risiko vermindern; Pille und Spiralen bieten diesen Schutz nicht.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L02",
+        "key": "P",
+        "text": "Kondome senken die Gefahr von Ansteckungen. Die anderen Methoden schützen davor nicht.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L02",
+        "key": "Cu",
+        "text": "Geeignete Kondome können das STI-Risiko vermindern; Pille und Spiralen bieten diesen Schutz nicht.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L02",
+        "key": "Cu",
+        "text": "Kondome senken die Gefahr von Ansteckungen. Die anderen Methoden schützen davor nicht.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L02",
+        "key": "H",
+        "text": "Geeignete Kondome können das STI-Risiko vermindern; Pille und Spiralen bieten diesen Schutz nicht.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L02",
+        "key": "H",
+        "text": "Kondome senken die Gefahr von Ansteckungen. Die anderen Methoden schützen davor nicht.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L02",
+        "key": "K+P",
+        "text": "Geeignete Kondome können das STI-Risiko vermindern; Pille und Spiralen bieten diesen Schutz nicht.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L02",
+        "key": "K+P",
+        "text": "Kondome senken die Gefahr von Ansteckungen. Die anderen Methoden schützen davor nicht.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L02",
+        "key": "K+Cu",
+        "text": "Geeignete Kondome können das STI-Risiko vermindern; Pille und Spiralen bieten diesen Schutz nicht.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L02",
+        "key": "K+Cu",
+        "text": "Kondome senken die Gefahr von Ansteckungen. Die anderen Methoden schützen davor nicht.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L02",
+        "key": "K+H",
+        "text": "Geeignete Kondome können das STI-Risiko vermindern; Pille und Spiralen bieten diesen Schutz nicht.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L02",
+        "key": "K+H",
+        "text": "Kondome senken die Gefahr von Ansteckungen. Die anderen Methoden schützen davor nicht.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L03",
+        "key": "K",
+        "text": "Vergessene Pillen können den Schwangerschaftsschutz mindern. Eine Spirale erfordert keine tägliche Einnahme. Die Erfahrung der Freundin sagt Lauras Verträglichkeit nicht sicher voraus.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L03",
+        "key": "K",
+        "text": "Wenn Laura die Pille vergisst, kann sie schwanger werden. Eine Spirale muss man nicht jeden Tag nehmen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L03",
+        "key": "P",
+        "text": "Vergessene Pillen können den Schwangerschaftsschutz mindern. Eine Spirale erfordert keine tägliche Einnahme. Die Erfahrung der Freundin sagt Lauras Verträglichkeit nicht sicher voraus.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L03",
+        "key": "P",
+        "text": "Wenn Laura die Pille vergisst, kann sie schwanger werden. Eine Spirale muss man nicht jeden Tag nehmen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L03",
+        "key": "Cu",
+        "text": "Vergessene Pillen können den Schwangerschaftsschutz mindern. Eine Spirale erfordert keine tägliche Einnahme. Die Erfahrung der Freundin sagt Lauras Verträglichkeit nicht sicher voraus.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L03",
+        "key": "Cu",
+        "text": "Wenn Laura die Pille vergisst, kann sie schwanger werden. Eine Spirale muss man nicht jeden Tag nehmen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L03",
+        "key": "H",
+        "text": "Vergessene Pillen können den Schwangerschaftsschutz mindern. Eine Spirale erfordert keine tägliche Einnahme. Die Erfahrung der Freundin sagt Lauras Verträglichkeit nicht sicher voraus.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L03",
+        "key": "H",
+        "text": "Wenn Laura die Pille vergisst, kann sie schwanger werden. Eine Spirale muss man nicht jeden Tag nehmen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L03",
+        "key": "K+P",
+        "text": "Vergessene Pillen können den Schwangerschaftsschutz mindern. Eine Spirale erfordert keine tägliche Einnahme. Die Erfahrung der Freundin sagt Lauras Verträglichkeit nicht sicher voraus.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L03",
+        "key": "K+P",
+        "text": "Wenn Laura die Pille vergisst, kann sie schwanger werden. Eine Spirale muss man nicht jeden Tag nehmen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L03",
+        "key": "K+Cu",
+        "text": "Vergessene Pillen können den Schwangerschaftsschutz mindern. Eine Spirale erfordert keine tägliche Einnahme. Die Erfahrung der Freundin sagt Lauras Verträglichkeit nicht sicher voraus.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L03",
+        "key": "K+Cu",
+        "text": "Wenn Laura die Pille vergisst, kann sie schwanger werden. Eine Spirale muss man nicht jeden Tag nehmen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L03",
+        "key": "K+H",
+        "text": "Vergessene Pillen können den Schwangerschaftsschutz mindern. Eine Spirale erfordert keine tägliche Einnahme. Die Erfahrung der Freundin sagt Lauras Verträglichkeit nicht sicher voraus.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L03",
+        "key": "K+H",
+        "text": "Wenn Laura die Pille vergisst, kann sie schwanger werden. Eine Spirale muss man nicht jeden Tag nehmen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L04",
+        "key": "K",
+        "text": "Die Kupferspirale kann Regelschmerzen verstärken, eine Hormonspirale kann sie lindern. Lauras starke Schmerzen sollten abgeklärt werden. Über die Einlage entscheidet Laura selbst.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L04",
+        "key": "K",
+        "text": "Mit Kupfer können die Schmerzen stärker werden. Die Hormonspirale kann Schmerzen lindern. Die Ärztin soll vorher schauen, woher die Schmerzen kommen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L04",
+        "key": "P",
+        "text": "Die Kupferspirale kann Regelschmerzen verstärken, eine Hormonspirale kann sie lindern. Lauras starke Schmerzen sollten abgeklärt werden. Über die Einlage entscheidet Laura selbst.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L04",
+        "key": "P",
+        "text": "Mit Kupfer können die Schmerzen stärker werden. Die Hormonspirale kann Schmerzen lindern. Die Ärztin soll vorher schauen, woher die Schmerzen kommen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L04",
+        "key": "Cu",
+        "text": "Die Kupferspirale kann Regelschmerzen verstärken, eine Hormonspirale kann sie lindern. Lauras starke Schmerzen sollten abgeklärt werden. Über die Einlage entscheidet Laura selbst.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L04",
+        "key": "Cu",
+        "text": "Mit Kupfer können die Schmerzen stärker werden. Die Hormonspirale kann Schmerzen lindern. Die Ärztin soll vorher schauen, woher die Schmerzen kommen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L04",
+        "key": "H",
+        "text": "Die Kupferspirale kann Regelschmerzen verstärken, eine Hormonspirale kann sie lindern. Lauras starke Schmerzen sollten abgeklärt werden. Über die Einlage entscheidet Laura selbst.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L04",
+        "key": "H",
+        "text": "Mit Kupfer können die Schmerzen stärker werden. Die Hormonspirale kann Schmerzen lindern. Die Ärztin soll vorher schauen, woher die Schmerzen kommen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L04",
+        "key": "K+P",
+        "text": "Die Kupferspirale kann Regelschmerzen verstärken, eine Hormonspirale kann sie lindern. Lauras starke Schmerzen sollten abgeklärt werden. Über die Einlage entscheidet Laura selbst.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L04",
+        "key": "K+P",
+        "text": "Mit Kupfer können die Schmerzen stärker werden. Die Hormonspirale kann Schmerzen lindern. Die Ärztin soll vorher schauen, woher die Schmerzen kommen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L04",
+        "key": "K+Cu",
+        "text": "Die Kupferspirale kann Regelschmerzen verstärken, eine Hormonspirale kann sie lindern. Lauras starke Schmerzen sollten abgeklärt werden. Über die Einlage entscheidet Laura selbst.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L04",
+        "key": "K+Cu",
+        "text": "Mit Kupfer können die Schmerzen stärker werden. Die Hormonspirale kann Schmerzen lindern. Die Ärztin soll vorher schauen, woher die Schmerzen kommen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L04",
+        "key": "K+H",
+        "text": "Die Kupferspirale kann Regelschmerzen verstärken, eine Hormonspirale kann sie lindern. Lauras starke Schmerzen sollten abgeklärt werden. Über die Einlage entscheidet Laura selbst.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L04",
+        "key": "K+H",
+        "text": "Mit Kupfer können die Schmerzen stärker werden. Die Hormonspirale kann Schmerzen lindern. Die Ärztin soll vorher schauen, woher die Schmerzen kommen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L05",
+        "key": "K",
+        "text": "Ein geeignetes Kondom hält Sperma zurück und senkt das Risiko vieler STI. Eine Spirale kann zusätzlich vor Schwangerschaft schützen. Sie bildet keine weitere STI-Barriere.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L05",
+        "key": "K",
+        "text": "Kondome halten Spermien zurück und schützen auch vor vielen Infektionen. Laura entscheidet selbst.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L05",
+        "key": "P",
+        "text": "Ein geeignetes Kondom hält Sperma zurück und senkt das Risiko vieler STI. Eine Spirale kann zusätzlich vor Schwangerschaft schützen. Sie bildet keine weitere STI-Barriere.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L05",
+        "key": "P",
+        "text": "Kondome halten Spermien zurück und schützen auch vor vielen Infektionen. Laura entscheidet selbst.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L05",
+        "key": "Cu",
+        "text": "Ein geeignetes Kondom hält Sperma zurück und senkt das Risiko vieler STI. Eine Spirale kann zusätzlich vor Schwangerschaft schützen. Sie bildet keine weitere STI-Barriere.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L05",
+        "key": "Cu",
+        "text": "Kondome halten Spermien zurück und schützen auch vor vielen Infektionen. Laura entscheidet selbst.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L05",
+        "key": "H",
+        "text": "Ein geeignetes Kondom hält Sperma zurück und senkt das Risiko vieler STI. Eine Spirale kann zusätzlich vor Schwangerschaft schützen. Sie bildet keine weitere STI-Barriere.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L05",
+        "key": "H",
+        "text": "Kondome halten Spermien zurück und schützen auch vor vielen Infektionen. Laura entscheidet selbst.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L05",
+        "key": "K+P",
+        "text": "Ein geeignetes Kondom hält Sperma zurück und senkt das Risiko vieler STI. Eine Spirale kann zusätzlich vor Schwangerschaft schützen. Sie bildet keine weitere STI-Barriere.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L05",
+        "key": "K+P",
+        "text": "Kondome halten Spermien zurück und schützen auch vor vielen Infektionen. Laura entscheidet selbst.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L05",
+        "key": "K+Cu",
+        "text": "Ein geeignetes Kondom hält Sperma zurück und senkt das Risiko vieler STI. Eine Spirale kann zusätzlich vor Schwangerschaft schützen. Sie bildet keine weitere STI-Barriere.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L05",
+        "key": "K+Cu",
+        "text": "Kondome halten Spermien zurück und schützen auch vor vielen Infektionen. Laura entscheidet selbst.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L05",
+        "key": "K+H",
+        "text": "Ein geeignetes Kondom hält Sperma zurück und senkt das Risiko vieler STI. Eine Spirale kann zusätzlich vor Schwangerschaft schützen. Sie bildet keine weitere STI-Barriere.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "MSA",
+        "stage": "L05",
+        "key": "K+H",
+        "text": "Kondome halten Spermien zurück und schützen auch vor vielen Infektionen. Laura entscheidet selbst.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L01",
+        "key": "K",
+        "text": "Latexfreie Kondome aus Kunststoff halten Spermien zurück.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L01",
+        "key": "K",
+        "text": "Auch ohne Latex kann ein Kondom Sperma zurückhalten.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L01",
+        "key": "P",
+        "text": "Latexfreie Kondome aus Kunststoff halten Spermien zurück.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L01",
+        "key": "P",
+        "text": "Auch ohne Latex kann ein Kondom Sperma zurückhalten.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L01",
+        "key": "Cu",
+        "text": "Latexfreie Kondome aus Kunststoff halten Spermien zurück.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L01",
+        "key": "Cu",
+        "text": "Auch ohne Latex kann ein Kondom Sperma zurückhalten.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L01",
+        "key": "H",
+        "text": "Latexfreie Kondome aus Kunststoff halten Spermien zurück.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L01",
+        "key": "H",
+        "text": "Auch ohne Latex kann ein Kondom Sperma zurückhalten.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L01",
+        "key": "K+P",
+        "text": "Latexfreie Kondome aus Kunststoff halten Spermien zurück.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L01",
+        "key": "K+P",
+        "text": "Auch ohne Latex kann ein Kondom Sperma zurückhalten.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L01",
+        "key": "K+Cu",
+        "text": "Latexfreie Kondome aus Kunststoff halten Spermien zurück.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L01",
+        "key": "K+Cu",
+        "text": "Auch ohne Latex kann ein Kondom Sperma zurückhalten.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L01",
+        "key": "K+H",
+        "text": "Latexfreie Kondome aus Kunststoff halten Spermien zurück.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L01",
+        "key": "K+H",
+        "text": "Auch ohne Latex kann ein Kondom Sperma zurückhalten.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L02",
+        "key": "K",
+        "text": "Geeignete Kondome können das STI-Risiko vermindern; Pille und Spiralen bieten diesen Schutz nicht.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L02",
+        "key": "K",
+        "text": "Kondome senken die Gefahr von Ansteckungen. Die anderen Methoden schützen davor nicht.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L02",
+        "key": "P",
+        "text": "Geeignete Kondome können das STI-Risiko vermindern; Pille und Spiralen bieten diesen Schutz nicht.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L02",
+        "key": "P",
+        "text": "Kondome senken die Gefahr von Ansteckungen. Die anderen Methoden schützen davor nicht.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L02",
+        "key": "Cu",
+        "text": "Geeignete Kondome können das STI-Risiko vermindern; Pille und Spiralen bieten diesen Schutz nicht.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L02",
+        "key": "Cu",
+        "text": "Kondome senken die Gefahr von Ansteckungen. Die anderen Methoden schützen davor nicht.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L02",
+        "key": "H",
+        "text": "Geeignete Kondome können das STI-Risiko vermindern; Pille und Spiralen bieten diesen Schutz nicht.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L02",
+        "key": "H",
+        "text": "Kondome senken die Gefahr von Ansteckungen. Die anderen Methoden schützen davor nicht.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L02",
+        "key": "K+P",
+        "text": "Geeignete Kondome können das STI-Risiko vermindern; Pille und Spiralen bieten diesen Schutz nicht.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L02",
+        "key": "K+P",
+        "text": "Kondome senken die Gefahr von Ansteckungen. Die anderen Methoden schützen davor nicht.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L02",
+        "key": "K+Cu",
+        "text": "Geeignete Kondome können das STI-Risiko vermindern; Pille und Spiralen bieten diesen Schutz nicht.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L02",
+        "key": "K+Cu",
+        "text": "Kondome senken die Gefahr von Ansteckungen. Die anderen Methoden schützen davor nicht.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L02",
+        "key": "K+H",
+        "text": "Geeignete Kondome können das STI-Risiko vermindern; Pille und Spiralen bieten diesen Schutz nicht.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L02",
+        "key": "K+H",
+        "text": "Kondome senken die Gefahr von Ansteckungen. Die anderen Methoden schützen davor nicht.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L03",
+        "key": "K",
+        "text": "Vergessene Pillen können den Schwangerschaftsschutz mindern. Eine Spirale erfordert keine tägliche Einnahme. Die Erfahrung der Freundin sagt Lauras Verträglichkeit nicht sicher voraus.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L03",
+        "key": "K",
+        "text": "Wenn Laura die Pille vergisst, kann sie schwanger werden. Eine Spirale muss man nicht jeden Tag nehmen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L03",
+        "key": "P",
+        "text": "Vergessene Pillen können den Schwangerschaftsschutz mindern. Eine Spirale erfordert keine tägliche Einnahme. Die Erfahrung der Freundin sagt Lauras Verträglichkeit nicht sicher voraus.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L03",
+        "key": "P",
+        "text": "Wenn Laura die Pille vergisst, kann sie schwanger werden. Eine Spirale muss man nicht jeden Tag nehmen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L03",
+        "key": "Cu",
+        "text": "Vergessene Pillen können den Schwangerschaftsschutz mindern. Eine Spirale erfordert keine tägliche Einnahme. Die Erfahrung der Freundin sagt Lauras Verträglichkeit nicht sicher voraus.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L03",
+        "key": "Cu",
+        "text": "Wenn Laura die Pille vergisst, kann sie schwanger werden. Eine Spirale muss man nicht jeden Tag nehmen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L03",
+        "key": "H",
+        "text": "Vergessene Pillen können den Schwangerschaftsschutz mindern. Eine Spirale erfordert keine tägliche Einnahme. Die Erfahrung der Freundin sagt Lauras Verträglichkeit nicht sicher voraus.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L03",
+        "key": "H",
+        "text": "Wenn Laura die Pille vergisst, kann sie schwanger werden. Eine Spirale muss man nicht jeden Tag nehmen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L03",
+        "key": "K+P",
+        "text": "Vergessene Pillen können den Schwangerschaftsschutz mindern. Eine Spirale erfordert keine tägliche Einnahme. Die Erfahrung der Freundin sagt Lauras Verträglichkeit nicht sicher voraus.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L03",
+        "key": "K+P",
+        "text": "Wenn Laura die Pille vergisst, kann sie schwanger werden. Eine Spirale muss man nicht jeden Tag nehmen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L03",
+        "key": "K+Cu",
+        "text": "Vergessene Pillen können den Schwangerschaftsschutz mindern. Eine Spirale erfordert keine tägliche Einnahme. Die Erfahrung der Freundin sagt Lauras Verträglichkeit nicht sicher voraus.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L03",
+        "key": "K+Cu",
+        "text": "Wenn Laura die Pille vergisst, kann sie schwanger werden. Eine Spirale muss man nicht jeden Tag nehmen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L03",
+        "key": "K+H",
+        "text": "Vergessene Pillen können den Schwangerschaftsschutz mindern. Eine Spirale erfordert keine tägliche Einnahme. Die Erfahrung der Freundin sagt Lauras Verträglichkeit nicht sicher voraus.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L03",
+        "key": "K+H",
+        "text": "Wenn Laura die Pille vergisst, kann sie schwanger werden. Eine Spirale muss man nicht jeden Tag nehmen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L04",
+        "key": "K",
+        "text": "Die Kupferspirale kann Regelschmerzen verstärken, eine Hormonspirale kann sie lindern. Lauras starke Schmerzen sollten abgeklärt werden. Über die Einlage entscheidet Laura selbst.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L04",
+        "key": "K",
+        "text": "Mit Kupfer können die Schmerzen stärker werden. Die Hormonspirale kann Schmerzen lindern. Die Ärztin soll vorher schauen, woher die Schmerzen kommen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L04",
+        "key": "P",
+        "text": "Die Kupferspirale kann Regelschmerzen verstärken, eine Hormonspirale kann sie lindern. Lauras starke Schmerzen sollten abgeklärt werden. Über die Einlage entscheidet Laura selbst.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L04",
+        "key": "P",
+        "text": "Mit Kupfer können die Schmerzen stärker werden. Die Hormonspirale kann Schmerzen lindern. Die Ärztin soll vorher schauen, woher die Schmerzen kommen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L04",
+        "key": "Cu",
+        "text": "Die Kupferspirale kann Regelschmerzen verstärken, eine Hormonspirale kann sie lindern. Lauras starke Schmerzen sollten abgeklärt werden. Über die Einlage entscheidet Laura selbst.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L04",
+        "key": "Cu",
+        "text": "Mit Kupfer können die Schmerzen stärker werden. Die Hormonspirale kann Schmerzen lindern. Die Ärztin soll vorher schauen, woher die Schmerzen kommen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L04",
+        "key": "H",
+        "text": "Die Kupferspirale kann Regelschmerzen verstärken, eine Hormonspirale kann sie lindern. Lauras starke Schmerzen sollten abgeklärt werden. Über die Einlage entscheidet Laura selbst.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L04",
+        "key": "H",
+        "text": "Mit Kupfer können die Schmerzen stärker werden. Die Hormonspirale kann Schmerzen lindern. Die Ärztin soll vorher schauen, woher die Schmerzen kommen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L04",
+        "key": "K+P",
+        "text": "Die Kupferspirale kann Regelschmerzen verstärken, eine Hormonspirale kann sie lindern. Lauras starke Schmerzen sollten abgeklärt werden. Über die Einlage entscheidet Laura selbst.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L04",
+        "key": "K+P",
+        "text": "Mit Kupfer können die Schmerzen stärker werden. Die Hormonspirale kann Schmerzen lindern. Die Ärztin soll vorher schauen, woher die Schmerzen kommen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L04",
+        "key": "K+Cu",
+        "text": "Die Kupferspirale kann Regelschmerzen verstärken, eine Hormonspirale kann sie lindern. Lauras starke Schmerzen sollten abgeklärt werden. Über die Einlage entscheidet Laura selbst.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L04",
+        "key": "K+Cu",
+        "text": "Mit Kupfer können die Schmerzen stärker werden. Die Hormonspirale kann Schmerzen lindern. Die Ärztin soll vorher schauen, woher die Schmerzen kommen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L04",
+        "key": "K+H",
+        "text": "Die Kupferspirale kann Regelschmerzen verstärken, eine Hormonspirale kann sie lindern. Lauras starke Schmerzen sollten abgeklärt werden. Über die Einlage entscheidet Laura selbst.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L04",
+        "key": "K+H",
+        "text": "Mit Kupfer können die Schmerzen stärker werden. Die Hormonspirale kann Schmerzen lindern. Die Ärztin soll vorher schauen, woher die Schmerzen kommen.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L05",
+        "key": "K",
+        "text": "Ein geeignetes Kondom hält Sperma zurück und senkt das Risiko vieler STI. Eine Spirale kann zusätzlich vor Schwangerschaft schützen. Sie bildet keine weitere STI-Barriere.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L05",
+        "key": "K",
+        "text": "Kondome halten Spermien zurück und schützen auch vor vielen Infektionen. Laura entscheidet selbst.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L05",
+        "key": "P",
+        "text": "Ein geeignetes Kondom hält Sperma zurück und senkt das Risiko vieler STI. Eine Spirale kann zusätzlich vor Schwangerschaft schützen. Sie bildet keine weitere STI-Barriere.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L05",
+        "key": "P",
+        "text": "Kondome halten Spermien zurück und schützen auch vor vielen Infektionen. Laura entscheidet selbst.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L05",
+        "key": "Cu",
+        "text": "Ein geeignetes Kondom hält Sperma zurück und senkt das Risiko vieler STI. Eine Spirale kann zusätzlich vor Schwangerschaft schützen. Sie bildet keine weitere STI-Barriere.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L05",
+        "key": "Cu",
+        "text": "Kondome halten Spermien zurück und schützen auch vor vielen Infektionen. Laura entscheidet selbst.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L05",
+        "key": "H",
+        "text": "Ein geeignetes Kondom hält Sperma zurück und senkt das Risiko vieler STI. Eine Spirale kann zusätzlich vor Schwangerschaft schützen. Sie bildet keine weitere STI-Barriere.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L05",
+        "key": "H",
+        "text": "Kondome halten Spermien zurück und schützen auch vor vielen Infektionen. Laura entscheidet selbst.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L05",
+        "key": "K+P",
+        "text": "Ein geeignetes Kondom hält Sperma zurück und senkt das Risiko vieler STI. Eine Spirale kann zusätzlich vor Schwangerschaft schützen. Sie bildet keine weitere STI-Barriere.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L05",
+        "key": "K+P",
+        "text": "Kondome halten Spermien zurück und schützen auch vor vielen Infektionen. Laura entscheidet selbst.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L05",
+        "key": "K+Cu",
+        "text": "Ein geeignetes Kondom hält Sperma zurück und senkt das Risiko vieler STI. Eine Spirale kann zusätzlich vor Schwangerschaft schützen. Sie bildet keine weitere STI-Barriere.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L05",
+        "key": "K+Cu",
+        "text": "Kondome halten Spermien zurück und schützen auch vor vielen Infektionen. Laura entscheidet selbst.",
+        "kind": "eigene Variante"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L05",
+        "key": "K+H",
+        "text": "Ein geeignetes Kondom hält Sperma zurück und senkt das Risiko vieler STI. Eine Spirale kann zusätzlich vor Schwangerschaft schützen. Sie bildet keine weitere STI-Barriere.",
+        "kind": "Kontrollsatz"
+      },
+      {
+        "tier": "AHR",
+        "stage": "L05",
+        "key": "K+H",
+        "text": "Kondome halten Spermien zurück und schützen auch vor vielen Infektionen. Laura entscheidet selbst.",
+        "kind": "eigene Variante"
+      }
+    ],
+    "medizin": [
+      {
+        "text": "Pille und Spiralen schützen nicht vor HIV.",
+        "expected": "neutral"
+      },
+      {
+        "text": "Die Kupferspirale schützt Laura auch vor HIV.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Ich empfehle die Pille, weil sie vor HIV schützt.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Mit der Pille kann Laura sich nicht mit HIV anstecken.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Die Pille verhindert HIV.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Die Pille schützt nicht vor HIV.",
+        "expected": "neutral"
+      },
+      {
+        "text": "Das Kondom schützt vor allen Infektionen.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Die Pille hemmt den Eisprung.",
+        "expected": "neutral"
+      },
+      {
+        "text": "Kupfer wirkt ohne Hormone.",
+        "expected": "neutral"
+      },
+      {
+        "text": "Die Pille schützt vor HIV, aber ich würde zusätzlich ein Kondom empfehlen.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Pille schützt vor hiv",
+        "expected": "falsch"
+      },
+      {
+        "text": "Die Pille schützt zwar vor HIV, aber nicht vor Schwangerschaft.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Die Pille verhindert keine HIV-Infektion.",
+        "expected": "neutral"
+      },
+      {
+        "text": "Die Kupferspirale hat Hormone.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Die Pille schützt vor HIV und die Kupferspirale enthält Hormone.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Die Aussage \"Die Pille schützt vor HIV\" stimmt nicht.",
+        "expected": "neutral"
+      },
+      {
+        "text": "Die Pille schützt vor HIV. Nein, die Pille schützt nicht vor HIV.",
+        "expected": "neutral"
+      },
+      {
+        "text": "Die Pille schützt nicht vor HIV. Die Pille schützt vor HIV.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Die Hormonspirale hat gar keine Hormone.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Kondome bieten keinen vollständigen Schutz vor Infektionen.",
+        "expected": "neutral"
+      }
+    ]
+  },
+  "08": {
+    "antworten": [
+      {
+        "tier": "MSA",
+        "key": "Mutter/Wert",
+        "text": "Dass Mama sich um die Gesundheit ihrer Tochter sorgt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Wert",
+        "text": "Ihr ist wichtig, dass Laura gesund bleibt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Wert",
+        "text": "Sie möchte, dass es ihrer Tochter körperlich gut geht.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Wert",
+        "text": "Gesuntheit von Laura",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Wert",
+        "text": "Sie hat Angst um ihre Tochter.",
+        "expected": "teil"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Wert",
+        "text": "Man sollte auf seinen Körper achten.",
+        "expected": "verwechslung"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Wert",
+        "text": "Laura soll das Kind bekommen.",
+        "expected": "verwechslung"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Norm",
+        "text": "Man muss auf seine Gesundheit aufpassen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Norm",
+        "text": "Man sollte die Signale des Körpers beachten.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Norm",
+        "text": "Beschwerden sollte man nicht ignorieren.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Norm",
+        "text": "Man soll auf seinen Körper aufpassen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Folgerung",
+        "text": "Sie rät ihr dazu, schwanger zu bleiben.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Folgerung",
+        "text": "Dass Laura das Kind zur Welt bringt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Folgerung",
+        "text": "Nicht abtreiben.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Folgerung",
+        "text": "Sie soll die Schwangerschaft austragen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Leerstelle",
+        "text": "Der medizinische Grund fehlt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Leerstelle",
+        "text": "Welche Folgen ein Abbruch für den Körper hat.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Leerstelle",
+        "text": "Ein Beleg über die körperlichen Folgen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Leerstelle",
+        "text": "Es fehlt eine überprüfbare biologische Aussage.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Ergänzung",
+        "text": "Man blutet und der Bauch kann wehtun.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Ergänzung",
+        "text": "Es kann zu Krämpfen kommen und man bekommt Blutungen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Ergänzung",
+        "text": "Blutungen und mögliche Schmerzen",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Ergänzung",
+        "text": "Blutung und Bauchkrämpfe können auftreten.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Mutter/Ergänzung",
+        "text": "Es kommt zu Blutungen.",
+        "expected": "teil"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Wert",
+        "text": "Die Freundin möchte, dass Laura ihre eigenen Pläne umsetzen kann.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Wert",
+        "text": "Ihr ist Lauras berufliche Zukunft wichtig.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Wert",
+        "text": "Dass Laura ihre Ausbildung fertig machen und selbst planen kann.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Wert",
+        "text": "Selbst über die Zukunft entscheiden",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Wert",
+        "text": "Ausbildung",
+        "expected": "teil"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Norm",
+        "text": "Kinder erst dann, wenn man selbst bereit dafür ist.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Norm",
+        "text": "Man sollte erst ein Kind kriegen, wenn man sich bereit fühlt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Norm",
+        "text": "Man soll selbst entscheiden, wann ein Kind ins eigene Leben passt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Norm",
+        "text": "Man sollte erst Kinder bekommen, wenn man sich dazu bereit fühlt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Folgerung",
+        "text": "Sie rät ihr, die Schwangerschaft zu beenden.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Folgerung",
+        "text": "Abtreibung mit Tabletten",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Folgerung",
+        "text": "Laura soll die Schwangerschaft abbrechen lassen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Folgerung",
+        "text": "Sie soll einen medikamentösen Schwangerschaftsabbruch machen lassen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Leerstelle",
+        "text": "Ob Laura später noch Kinder kriegen kann.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Leerstelle",
+        "text": "Ein biologischer Beleg zum späteren Kinderwunsch.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Leerstelle",
+        "text": "Es fehlt eine medizinische Information.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Leerstelle",
+        "text": "Eine überprüfbare Aussage zum Körper fehlt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Ergänzung",
+        "text": "Wenn alles ohne Komplikationen verläuft, kann Laura später noch Kinder bekommen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Ergänzung",
+        "text": "Ein komplikationsloser Abbruch bedeutet nicht, dass man unfruchtbar wird.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Ergänzung",
+        "text": "Später Kinder kriegen ist danach weiterhin möglich.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Freundin/Ergänzung",
+        "text": "Ja, wenn es keine Komplikationen gibt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Großmutter/Norm",
+        "text": "Man soll das Leben eines Embryos schützen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Großmutter/Norm",
+        "text": "Das ungeborene Leben sollte man schützen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Großmutter/Norm",
+        "text": "Man sollte das Leben vor der Geburt schützen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Großmutter/Norm",
+        "text": "Ungeborene Kinder sollte man schützen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Großmutter/Folgerung",
+        "text": "Sie soll die Schwangerschaft nicht abbrechen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Großmutter/Folgerung",
+        "text": "Laura soll das Kind zur Welt bringen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Großmutter/Folgerung",
+        "text": "Sie empfiehlt Laura, schwanger zu bleiben.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Großmutter/Folgerung",
+        "text": "Kind bekommen",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Großmutter/Leerstelle",
+        "text": "Was ihr persönlich wichtig ist.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Großmutter/Leerstelle",
+        "text": "Es fehlt ihre Wertvorstellung.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Großmutter/Leerstelle",
+        "text": "Der persönliche Wert ist nicht ausdrücklich genannt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Großmutter/Leerstelle",
+        "text": "Sie sagt nicht direkt, was ihr wichtig ist.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Großmutter/Ergänzung",
+        "text": "Ihr ist das Leben vor der Geburt wichtig.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Großmutter/Ergänzung",
+        "text": "Dass ungeborenes Leben geschützt wird.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Großmutter/Ergänzung",
+        "text": "Das Leben des Embryos",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Großmutter/Ergänzung",
+        "text": "Ihr liegt das ungeborene Leben am Herzen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Vater/Wert",
+        "text": "Dass Laura nach guten Informationen ihre eigene Entscheidung trifft.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Vater/Wert",
+        "text": "Die Entscheidung soll Laura selbst treffen und sich vorher informieren.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Vater/Wert",
+        "text": "Ihm ist ihre Selbstbestimmung wichtig.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Vater/Wert",
+        "text": "Lauras Selbstbestimmung und gute Informationen",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Vater/Folgerung",
+        "text": "Laura soll sich beim Arzt über ihre Möglichkeiten informieren.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Vater/Folgerung",
+        "text": "Sie soll in der Praxis fragen, was möglich ist.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Vater/Folgerung",
+        "text": "Er rät ihr, sich ärztlich beraten zu lassen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Vater/Folgerung",
+        "text": "Zum Arzt gehen und nachfragen",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Vater/Leerstelle",
+        "text": "Es fehlt eine allgemeine Regel.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Vater/Leerstelle",
+        "text": "Er nennt keine allgemeine Handlungsregel.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Vater/Leerstelle",
+        "text": "Eine Regel für solche Entscheidungen fehlt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Vater/Leerstelle",
+        "text": "Die Norm ist nicht ausdrücklich genannt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Vater/Ergänzung",
+        "text": "Vor einer medizinischen Entscheidung sollte man sich gut beraten lassen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Vater/Ergänzung",
+        "text": "Man sollte vorher verlässliche Informationen sammeln.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Vater/Ergänzung",
+        "text": "Man muss sich vor wichtigen Entscheidungen gut informieren.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "MSA",
+        "key": "Vater/Ergänzung",
+        "text": "Erst informieren, dann selbst entscheiden.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Wert",
+        "text": "Dass Mama sich um die Gesundheit ihrer Tochter sorgt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Wert",
+        "text": "Ihr ist wichtig, dass Laura gesund bleibt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Wert",
+        "text": "Sie möchte, dass es ihrer Tochter körperlich gut geht.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Wert",
+        "text": "Gesuntheit von Laura",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Wert",
+        "text": "Sie hat Angst um ihre Tochter.",
+        "expected": "teil"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Wert",
+        "text": "Man sollte auf seinen Körper achten.",
+        "expected": "verwechslung"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Wert",
+        "text": "Laura soll das Kind bekommen.",
+        "expected": "verwechslung"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Norm",
+        "text": "Man muss auf seine Gesundheit aufpassen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Norm",
+        "text": "Man sollte die Signale des Körpers beachten.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Norm",
+        "text": "Beschwerden sollte man nicht ignorieren.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Norm",
+        "text": "Man soll auf seinen Körper aufpassen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Folgerung",
+        "text": "Sie rät ihr dazu, schwanger zu bleiben.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Folgerung",
+        "text": "Dass Laura das Kind zur Welt bringt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Folgerung",
+        "text": "Nicht abtreiben.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Folgerung",
+        "text": "Sie soll die Schwangerschaft austragen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Leerstelle",
+        "text": "Der medizinische Grund fehlt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Leerstelle",
+        "text": "Welche Folgen ein Abbruch für den Körper hat.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Leerstelle",
+        "text": "Ein Beleg über die körperlichen Folgen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Leerstelle",
+        "text": "Es fehlt eine überprüfbare biologische Aussage.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Ergänzung",
+        "text": "Man blutet und der Bauch kann wehtun.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Ergänzung",
+        "text": "Es kann zu Krämpfen kommen und man bekommt Blutungen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Ergänzung",
+        "text": "Blutungen und mögliche Schmerzen",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Ergänzung",
+        "text": "Blutung und Bauchkrämpfe können auftreten.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Mutter/Ergänzung",
+        "text": "Es kommt zu Blutungen.",
+        "expected": "teil"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Wert",
+        "text": "Die Freundin möchte, dass Laura ihre eigenen Pläne umsetzen kann.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Wert",
+        "text": "Ihr ist Lauras berufliche Zukunft wichtig.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Wert",
+        "text": "Dass Laura ihre Ausbildung fertig machen und selbst planen kann.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Wert",
+        "text": "Selbst über die Zukunft entscheiden",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Wert",
+        "text": "Ausbildung",
+        "expected": "teil"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Norm",
+        "text": "Kinder erst dann, wenn man selbst bereit dafür ist.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Norm",
+        "text": "Man sollte erst ein Kind kriegen, wenn man sich bereit fühlt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Norm",
+        "text": "Man soll selbst entscheiden, wann ein Kind ins eigene Leben passt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Norm",
+        "text": "Man sollte erst Kinder bekommen, wenn man sich dazu bereit fühlt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Folgerung",
+        "text": "Sie rät ihr, die Schwangerschaft zu beenden.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Folgerung",
+        "text": "Abtreibung mit Tabletten",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Folgerung",
+        "text": "Laura soll die Schwangerschaft abbrechen lassen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Folgerung",
+        "text": "Sie soll einen medikamentösen Schwangerschaftsabbruch machen lassen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Leerstelle",
+        "text": "Ob Laura später noch Kinder kriegen kann.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Leerstelle",
+        "text": "Ein biologischer Beleg zum späteren Kinderwunsch.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Leerstelle",
+        "text": "Es fehlt eine medizinische Information.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Leerstelle",
+        "text": "Eine überprüfbare Aussage zum Körper fehlt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Ergänzung",
+        "text": "Wenn alles ohne Komplikationen verläuft, kann Laura später noch Kinder bekommen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Ergänzung",
+        "text": "Ein komplikationsloser Abbruch bedeutet nicht, dass man unfruchtbar wird.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Ergänzung",
+        "text": "Später Kinder kriegen ist danach weiterhin möglich.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Freundin/Ergänzung",
+        "text": "Ja, wenn es keine Komplikationen gibt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Großmutter/Norm",
+        "text": "Man soll das Leben eines Embryos schützen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Großmutter/Norm",
+        "text": "Das ungeborene Leben sollte man schützen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Großmutter/Norm",
+        "text": "Man sollte das Leben vor der Geburt schützen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Großmutter/Norm",
+        "text": "Ungeborene Kinder sollte man schützen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Großmutter/Folgerung",
+        "text": "Sie soll die Schwangerschaft nicht abbrechen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Großmutter/Folgerung",
+        "text": "Laura soll das Kind zur Welt bringen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Großmutter/Folgerung",
+        "text": "Sie empfiehlt Laura, schwanger zu bleiben.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Großmutter/Folgerung",
+        "text": "Kind bekommen",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Großmutter/Leerstelle",
+        "text": "Was ihr persönlich wichtig ist.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Großmutter/Leerstelle",
+        "text": "Es fehlt ihre Wertvorstellung.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Großmutter/Leerstelle",
+        "text": "Der persönliche Wert ist nicht ausdrücklich genannt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Großmutter/Leerstelle",
+        "text": "Sie sagt nicht direkt, was ihr wichtig ist.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Großmutter/Ergänzung",
+        "text": "Ihr ist das Leben vor der Geburt wichtig.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Großmutter/Ergänzung",
+        "text": "Dass ungeborenes Leben geschützt wird.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Großmutter/Ergänzung",
+        "text": "Das Leben des Embryos",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Großmutter/Ergänzung",
+        "text": "Ihr liegt das ungeborene Leben am Herzen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Vater/Wert",
+        "text": "Dass Laura nach guten Informationen ihre eigene Entscheidung trifft.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Vater/Wert",
+        "text": "Die Entscheidung soll Laura selbst treffen und sich vorher informieren.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Vater/Wert",
+        "text": "Ihm ist ihre Selbstbestimmung wichtig.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Vater/Wert",
+        "text": "Lauras Selbstbestimmung und gute Informationen",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Vater/Folgerung",
+        "text": "Laura soll sich beim Arzt über ihre Möglichkeiten informieren.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Vater/Folgerung",
+        "text": "Sie soll in der Praxis fragen, was möglich ist.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Vater/Folgerung",
+        "text": "Er rät ihr, sich ärztlich beraten zu lassen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Vater/Folgerung",
+        "text": "Zum Arzt gehen und nachfragen",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Vater/Leerstelle",
+        "text": "Es fehlt eine allgemeine Regel.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Vater/Leerstelle",
+        "text": "Er nennt keine allgemeine Handlungsregel.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Vater/Leerstelle",
+        "text": "Eine Regel für solche Entscheidungen fehlt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Vater/Leerstelle",
+        "text": "Die Norm ist nicht ausdrücklich genannt.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Vater/Ergänzung",
+        "text": "Vor einer medizinischen Entscheidung sollte man sich gut beraten lassen.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Vater/Ergänzung",
+        "text": "Man sollte vorher verlässliche Informationen sammeln.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Vater/Ergänzung",
+        "text": "Man muss sich vor wichtigen Entscheidungen gut informieren.",
+        "expected": "vollständig"
+      },
+      {
+        "tier": "AHR",
+        "key": "Vater/Ergänzung",
+        "text": "Erst informieren, dann selbst entscheiden.",
+        "expected": "vollständig"
+      }
+    ],
+    "medizin": [
+      {
+        "text": "Nach einem Abbruch mit Medikamenten kann Laura nie wieder schwanger werden.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Ein Abbruch mit Medikamenten macht jede Frau unfruchtbar.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Nach einem medikamentösen Abbruch gibt es keine Blutungen.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Laura wird nach dem Abbruch sicher wieder schwanger.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Nach der Abtreibung kann sie niemals Kinder bekommen.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Ein Abbruch mit Tabletten tut auf keinen Fall weh.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Nach einem Abbruch kann es Blutungen geben.",
+        "expected": "neutral"
+      },
+      {
+        "text": "Mit Tabletten bekommt Laura keine Schmerzen.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Eine spätere Schwangerschaft ist möglich, aber nicht garantiert.",
+        "expected": "neutral"
+      },
+      {
+        "text": "Ein Abbruch mit Medikamenten ist nicht immer schmerzfrei.",
+        "expected": "neutral"
+      },
+      {
+        "text": "Ein Schwangerschaftsabbruch führt immer zur Unfruchtbarkeit.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Weil sie später auf jeden Fall Kinder kriegen kann, ist ein Abbruch sicher richtig.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Nach einem unkomplizierten Abbruch bleibt eine Schwangerschaft möglich.",
+        "expected": "neutral"
+      },
+      {
+        "text": "Nach dem Abbruch ist es garantiert, dass Laura später Kinder kriegt.",
+        "expected": "falsch"
+      },
+      {
+        "text": "Sie sagt: Nach einem Abbruch kann man keine Kinder mehr bekommen. Das stimmt nicht.",
+        "expected": "neutral"
+      },
+      {
+        "text": "Es gibt keine Blutungen bei einem Abbruch mit Medikamenten.",
+        "expected": "falsch"
+      }
+    ]
+  }
+}

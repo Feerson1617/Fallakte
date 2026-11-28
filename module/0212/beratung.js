@@ -131,10 +131,7 @@ window.Beratung = (() => {
     return option?{frage:task().task,info:option.feedback,ref:option.card}:null;
   }
   function entwurfsdiagnose(){
-    const way=info();
-    const sample=way.options.find(o=>o.correct).text;
-    const model=Diagnose.modell(active.stageId+'/'+active.draft.strategy,task().task,sample,
-      {persoenlich:true,pille:bank().strategies[active.draft.strategy].methods.includes('P')});
+    const model=Aussagen.beratung(active.stageId,bank().strategies[active.draft.strategy].methods,info(),task().task);
     return Diagnose.analyse(active.draft.reason,model);
   }
   function matchesEvidence() {
@@ -531,7 +528,7 @@ window.Beratung = (() => {
     known:knownConcerns,
     letzterRat:tier=>{
       const session=sessions.get(tier);
-      if(!session?.previous)return null;
+      if(session?.stageId!=='L05' || session.phase!=='sent')return null;
       const text=session.messages.findLast(m=>m.kind==='entwurf' && m.stageId==='L05' && m.strategy===session.previous)?.text;
       return {choice:bank().strategies[session.previous].label,reason:text||''};
     },

@@ -177,13 +177,18 @@
     const targeted=issue || ['A','B'].includes(feedback?.type);
     const hints=targeted?Entwurf.hilfen(cardLabel(focusCard),issue?.frage ||
       (feedback.type==='B'?'Welches Anliegen bleibt bei deinem Rat offen?':'Welche Aussage auf der Karte passt zu deiner Wahl?'),
-      issue?.info||feedback.text):context.diagnose?.hints||data.hints;
+      issue?.info||feedback.text,issue):context.diagnose?.hints||data.hints;
     const hint = element('p',hints[depth]);
     hint.id = 'hilfe-text';
     hint.dataset.depth = String(depth+1);
     hint.setAttribute('aria-describedby','material-titel');
     hint.tabIndex = -1;
     body.append(hint);
+    const passage=window.LAURA.cards[focusCard?.method]?.sections[focusCard?.section];
+    const source=issue?.info||passage?.levels?.[context.levelId]||passage?.shortText||passage?.text;
+    if(source && !hint.textContent.includes(source)){
+      const excerpt=element('p',source);excerpt.className='hilfsquelle';body.append(excerpt);
+    }
     const controls = element('div');
     controls.className = 'material-schritte';
     function step(delta) {

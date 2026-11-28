@@ -62,6 +62,8 @@ def verify_source(day,b):
                 for key in previous:
                     if key=='evidenceSentences':
                         assert [lines[i] for i in task[key]]==QUELLEN[n][task['id']]
+                    elif n not in NACHRICHTEN and task['id']=='Leerstelle' and key=='prompt':
+                        assert task[key]=='Welche Art von Aussage wird in der Nachricht nicht ausdrücklich genannt?'
                     elif n in NACHRICHTEN and task['id'] in (*QUELLEN[n],'Leerstelle') and key in ('prompt','hints','helpByLevel'):
                         assert task[key] and (key!='hints' or len(task[key])==5)
                     elif n in NACHRICHTEN and task['id']=='Leerstelle' and key=='answers':
@@ -191,6 +193,13 @@ def release():
         (target/'Unterrichtssteuerung.md').write_text('\n\n'.join(['# Unterrichtssteuerung',c['erarbeitung'],c['unterbrechung'],c['sicherung'],'## Zeitplanung für 45 Minuten']+[f'{n} Minuten · {a}' for a,n in c['phasen']]))
         archive(target/'CLT-Abnahmematrix.zip',{'Matrix.csv':matrix(rows.values(),day),'Fachdidaktische-Durchsicht.md':(HERE/('Beratung.md' if day=='02' else 'Familiennachrichten.md')).read_bytes(),'Grundlagen.md':(HERE/'Grundlagen.md').read_bytes(),'Perspektiven.md':(HERE/'planung.md').read_bytes(),'Zeitplanung.json':dump(c['phasen'])})
         for engine in ('chromium','webkit'):
+            key=f'Gegenbestand-{engine}.json'
+            addition=(QA/'Freigabestufen'/key).read_bytes()
+            assert json.loads(addition)[day]['html_sha256']==sha(raw)
+            logs['Freigabestufen/'+key]=addition
+            if day=='08':
+                img=QA/'Freigabestufen'/f'Nachrichten-1024-{engine}.jpg'
+                screens[img.name]=img.read_bytes()
             for name in ('Einstieg','Sprache'):
                 key=f'{name}-{engine}.json';payload=(QA/'Freigabestufen'/key).read_bytes()
                 parsed=json.loads(payload)
@@ -209,6 +218,8 @@ def release():
 Commit `{revision}`. SHA-256 der Offline-Datei `{sha(raw)}`.
 
 {protection}
+
+Die zusätzliche Gegenprüfung spielt die 140 Erklärungstexte der Laura-Beratung und 154 Familienantworten an den gepackten Anwendungen durch. Sie prüft jede Rückmeldung, die folgenden fünf Hilfen und 36 ausdrücklich eingeordnete medizinische Aussagen. „Es fehlt ihre Wertvorstellung“ erhält bewusst eine Teilrückmeldung. Der Wert ist aus der Nachricht erschließbar. Die externe Sollwertung bleibt im Prüfbestand dokumentiert.
 
 Gegenprüfung gegenüber ac86cb8: Auf 46 sendbaren Wegen musste der HIV-Irrtum vor der Kontrollauswahl berichtigt werden. Alle 46 Empfehlungen blieben nach der Überarbeitung sendbar. Weitere 68 Freitextwege betrafen Familiennachrichten, Tom und Celina. Zusätzlich wurden auf 500 unterschiedlichen Quellen-, Auswahl- und Konfliktwegen der Familiennachrichten und Zusatzfälle jeweils alle fünf Hilfetexte geprüft. Die Zahlen beziehen sich jeweils auf einen Browser. Die Protokolle enthalten die tatsächlich angezeigten Hilfen.
 

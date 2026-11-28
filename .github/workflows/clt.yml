@@ -41,7 +41,7 @@ jobs:
           ENGINE: ${{ matrix.browser }}
           NIVEAU: ${{ matrix.niveau }}
         run: |
-          if [ "$TAG-$NIVEAU" = "08-MSA" ]; then python clt/einstieg.py "$ENGINE" && python clt/sprachdiagnose.py "$ENGINE"; fi
+          if [ "$TAG-$NIVEAU" = "08-MSA" ]; then python clt/einstieg.py "$ENGINE" && python clt/sprachdiagnose.py "$ENGINE" && python clt/qualitaetskorrektur.py "$ENGINE"; fi
           python clt/lernspuren.py "$ENGINE" "$TAG" "$NIVEAU"
           for profil in quer hoch kurs schmal tastatur; do python clt/pruefen.py "$ENGINE" "$TAG" "$NIVEAU" --profil "$profil"; done
           if [ "$TAG" = 02 ]; then python clt/folgen.py "$ENGINE" "$NIVEAU"; fi

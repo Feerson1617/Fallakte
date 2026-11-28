@@ -87,7 +87,11 @@
     };
     Lernspur.open({status:text=>{const ok=Lernspur.erlaubt(level);document.querySelector('[data-nav=abschluss]').disabled=!ok;port?.postMessage({type:'view',abschluss:ok,active:'',status:text+' · '+tierNames[level]});},tier:level,firstTitle:'Dein erster Rat',finalTitle:'Dein Schlussrat',
       firstQuestion:'Was rätst du Laura zuerst?',finalQuestion:'Was rätst du Laura jetzt?',
-      warten:true,
+      warten:true,suggestion:Beratung.letzterRat(level),
+      reference:label=>{
+        const method=Object.keys(bank.strategies).find(k=>bank.strategies[k].label===label);
+        return method && bank.stages.L05.levels[level].strategies[method].condition;
+      },
       firstChoices:['Kondom',...titles.slice(1,4)],finalChoices:titles,reason:reasons[level],helpSteps:[
         'Lies Lauras Nachrichten neben deinem Rat.', 'Welcher Wunsch ist dir für Laura wichtig?',
         'Wie hilft deine Methode bei diesem Wunsch?', 'Beginne mit „Ich rate zu …, weil …“.',reasons[level]],

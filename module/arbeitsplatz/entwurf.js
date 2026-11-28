@@ -52,7 +52,8 @@ const Entwurf = (() => {
       const parts=s.split(/(?: und |, aber )(?=(?:die |eine |ein |das )(?:pille|kupferspirale|hormonspirale|kondom)\b)/u);
 
       for(const part of parts){
-        const claim=part.replace(/^ich (?:empfehle|wähle|waehle|nehme) (die (?:pille|kupferspirale|hormonspirale)),? weil sie (?:auch )?vor hiv schuetzt$/u,'$1 schuetzt vor hiv').replace(/^ich (?:denke|glaube|finde),? (?:dass )?(die (?:pille|kupferspirale|hormonspirale)) (?:auch )?vor hiv schuetzt$/u,'$1 schuetzt vor hiv').replace(/^die pille ist meine wahl, weil sie (vor hiv) schuetzt$/u,'die pille schuetzt $1');
+        const mainClaim=part.split(/, aber (?:ich würde|ich wuerde|nicht vor schwangerschaft)\b/u)[0].replace(/ schuetzt zwar vor /u,' schuetzt vor ');
+        const claim=mainClaim.replace(/^ich (?:empfehle|wähle|waehle|nehme) (die (?:pille|kupferspirale|hormonspirale)),? weil sie (?:auch )?vor hiv schuetzt$/u,'$1 schuetzt vor hiv').replace(/^ich (?:denke|glaube|finde),? (?:dass )?(die (?:pille|kupferspirale|hormonspirale)) (?:auch )?vor hiv schuetzt$/u,'$1 schuetzt vor hiv').replace(/^die pille ist meine wahl, weil sie (vor hiv) schuetzt$/u,'die pille schuetzt $1');
         const issue=collect(claim);
         if(issue)issues.push({issue,index});
       }
@@ -64,10 +65,27 @@ const Entwurf = (() => {
     const known=verstanden.values().next().value;
     return {...found[0],info:known?correction+' '+known:correction};
   }
-  function hilfen(quelle,frage,fakt){
+  const korrekturhilfe={
+    sti:['Die Pille verändert Vorgänge im Körper. Eine Spirale wirkt in der Gebärmutter.',
+      'Weder Pille noch Spirale hält beim Sex Krankheitserreger zurück.','„Die Methode schützt vor Schwangerschaft. Für den Schutz vor HIV …“'],
+    kondomschutz:['Überlege, welche Haut das Kondom bedeckt.','Manche Erreger können auch über die freie Haut übertragen werden.','„Ein Kondom senkt das Risiko. Ein Rest bleibt, weil …“'],
+    kupferhormone:['Die Kupferspirale gibt Kupferionen ab.','Die Ionen hemmen Spermien. Dafür braucht es keine Hormone.','„Kupfer wirkt, indem …“'],
+    hormonabgabe:['Die Hormonspirale gibt ein Hormon ab.','Der Schleim am Gebärmutterhals wird dadurch zäher.','„Für Spermien wird der Weg schwieriger, weil …“'],
+    einnahme:['Was passiert mit dem Schutz, wenn eine Pille vergessen wird?','Die Tabletten müssen nach dem Einnahmeplan genommen werden.','„Wenn Laura die Pille vergisst, kann …“'],
+    spermien:['Suche die Wirkung beim Eisprung.','Bleibt der Eisprung aus, wird keine Eizelle frei.','„Die Pille hemmt …“'],
+    beschwerden:['Hormonfrei beschreibt den Wirkstoff.','Die Blutung kann mit der Kupferspirale stärker werden.','„Auch ohne Hormone kann …“'],
+    'Blutungen und Schmerzen':['Die Gebärmutter zieht sich zusammen.','Dabei kommt es zu Blutungen. Das Zusammenziehen kann wehtun.',
+      '„Blutungen treten auf. Schmerzen sind …“'],
+    'Später schwanger werden':['Denke an einen Abbruch ohne Komplikationen.','Eine spätere Schwangerschaft bleibt möglich. Ob sie eintritt, kann niemand versprechen.',
+      '„Möglich bedeutet hier …“']
+  };
+  function hilfen(quelle,frage,fakt,issue){
+    const steps=korrekturhilfe[issue?.kennung?.split('/')[0]||issue?.quelle];
+    if(steps)return [frage+' ('+quelle+')',...steps,'Vergleiche deinen Grund mit der Korrektur: '+fakt];
     const parts=fakt.match(/[^.!?]+[.!?]+|[^.!?]+$/gu) || [fakt];
     const detail=parts.find(line=>!line.includes('?'))?.trim() || fakt;
-    return [frage+' ('+quelle+')','Achte auf den Unterschied: '+detail,'Prüfe diesen Satz: '+detail,fakt,'Vergleiche deinen Grund mit der Korrektur: '+fakt];
+    return [frage+' ('+quelle+')',detail,parts.length>1?parts.slice(1).join('').trim():'Welche Wörter in deinem Satz passen zu dieser Information?',
+      'Formuliere den betreffenden Satz neu: „Für Laura bedeutet das …“','Vergleiche deinen Grund mit der Korrektur: '+fakt];
   }
   function bearbeiten(field){
     Arbeitsplatz.zeigen(field);field.focus({preventScroll:true});
