@@ -100,6 +100,21 @@ def run(engine):
         assert frame.locator('.nachrichten-liste').evaluate('e=>e.scrollHeight<=e.clientHeight+1')
         page.screenshot(path=dest/f'Nachrichten-1024-{engine}.jpg',quality=80)
         results['sichtbare_Frage']=rect
+        page.set_viewport_size({'width':740,'height':340})
+        frame.wait_for_function("innerWidth===740 && innerHeight<=340")
+        frame.evaluate("async()=>{document.documentElement.style.fontSize='150%';await document.fonts.ready;await new Promise(requestAnimationFrame);Arbeitsplatz.refresh();await new Promise(requestAnimationFrame)}")
+        reach=frame.evaluate('''()=>{
+          const chat=document.querySelector('.nachrichten-einstieg'),inbox=chat.querySelector('.nachrichten-liste');
+          const question=chat.lastElementChild, end=inbox.lastElementChild.lastElementChild;
+          const bounds=e=>e.getBoundingClientRect();
+          chat.scrollTop=0;
+          const questionVisible=bounds(question).top>=bounds(chat).top && bounds(question).bottom<=bounds(chat).bottom;
+          chat.scrollTop=chat.scrollHeight;
+          const endVisible=bounds(end).bottom<=bounds(chat).bottom+1 && bounds(end).bottom>bounds(chat).top;
+          return {questionVisible,endVisible,readingHeight:inbox.clientHeight};
+        }''')
+        assert reach['questionVisible'] and reach['endVisible'] and reach['readingHeight']>0,reach
+        results['Leseflaeche_740_340_150']=reach
     (dest/f'Gegenbestand-{engine}.json').write_text(json.dumps(results,ensure_ascii=False,indent=2))
     print(engine,len(results['02']['texte']),len(results['08']['texte']), 'Freitexte und fünf Hilfen je Antwort')
 if __name__=='__main__':run(sys.argv[1])

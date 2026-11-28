@@ -235,3 +235,11 @@ body:has(.aufgabenkasten) :is(.feedback.falsch,.spur-korrektur,#fachmeldung[data
 @media(min-width:821px) and (min-height:501px){
  #lernspur.lesephase:has(.nachrichten-einstieg) .arbeitsfelder{grid-template-columns:minmax(0,.68fr) minmax(0,1.32fr)}
 }
+/* Bei sehr geringer Höhe teilen Frage und Originalnachrichten eine Lesefläche. */
+@media(max-height:400px){
+ #lernspur.lesephase .nachrichten-einstieg{overflow:auto}
+ .nachrichten-einstieg>.bubble:last-child{order:-1;margin:0 0 .25em}
+ .nachrichten-einstieg>.bubble:last-child img{display:none}
+ .nachrichten-einstieg>.bubble:last-child :is(strong,p){display:inline;margin-right:.25em}
+ .nachrichten-einstieg .nachrichten-liste{flex:none;overflow:visible}
+}
