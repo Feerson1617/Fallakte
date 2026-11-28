@@ -13,6 +13,7 @@ from lxml import etree, html
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"scripts"))
 from clt_inhalte import klar, QUELLEN, NACHRICHTEN
+from beratungssprache import RUECKFRAGEN
 from familiensprache import TRANSFER, RUECKMELDUNGEN
 from material import LEVELS,vertrag
 from matrix import matrix
@@ -105,7 +106,8 @@ def verify_source(day,b):
                     assert begriff not in wortlaut,(k,t,begriff)
             for m,w in l['strategies'].items():
                 original=ref['levels'][t]['strategies'][m]
-                for field in ('status','reply','feedback','condition','questions'):assert w[field]==(klar(original[field]) if field in ('condition','feedback') else original[field])
+                assert w['questions']==[dict(q,text=RUECKFRAGEN.get(q['text'],q['text'])) for q in original['questions']]
+                for field in ('status','reply','feedback','condition'):assert w[field]==(klar(original[field]) if field in ('condition','feedback') else original[field])
                 if t in ('ESA','Foerder'):assert w['options']==[dict(o,text=klar(o['text']),feedback=klar(o['feedback'])) for o in original['options']]
                 else:
                     assert [s['text'] for s in w['options']]==list(map(klar,ref['anchors'].values()))
@@ -113,7 +115,7 @@ def verify_source(day,b):
     for i,m in enumerate(('K','P','Cu','H')):
         for sec in b['cards'][m]['sections'].values():
             for t,cs in cards.items():assert sec['levels'][t]==next(r['volltext'] for r in cs[i]['texte'] if r['titel']==sec['title'])
-    return 'Fallinformationen, bekannte Anliegen je Abschnitt, Lernziele, Empfehlungen, Bedingungen, Rückfragen und Reaktionen entsprechen c4814a9. Die früher per Buchstabe geprüften Aussagen stehen auf MSA/AHR als vollständiger Wortlaut zur Auswahl. Alle 80 niveauabhängigen Kartenabschnitte stimmen mit den aktuellen Work-Texten der Vorbereitung überein.'
+    return 'Fallinformationen, bekannte Anliegen je Abschnitt, Lernziele, Empfehlungswege, Antworten auf Rückfragen und Reaktionen entsprechen c4814a9. Der Vergleich berücksichtigt die dokumentierten sprachlichen Fassungen der Bedingungen und der an Laura gerichteten Fragen. Die früher per Buchstabe geprüften Aussagen stehen auf MSA/AHR als vollständiger Wortlaut zur Auswahl. Alle 80 niveauabhängigen Kartenabschnitte stimmen mit den aktuellen Work-Texten der Vorbereitung überein.'
 def release():
     revision=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     both={}

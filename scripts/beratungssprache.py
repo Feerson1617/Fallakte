@@ -75,6 +75,20 @@ def empfehlung(stufe,key):
             'L03':f'Was muss Laura beim Kondom jedes Mal tun? Wie lange wirkt {mittel}?',
             'L04':f'Wie kann {mittel} die Regelschmerzen verändern? Wofür braucht Laura das Kondom?',
             'L05':f'Warum rätst du Laura zum Kondom und zusätzlich zur {mittel.removeprefix("die ")}?'}[stufe]
+# Optionale Fragen werden als Nachricht an Laura gesendet. Ihre Antworten bleiben wörtlich erhalten.
+RUECKFRAGEN={
+    'Was interessiert dich an einer Möglichkeit ohne Hormone?':'Was möchtest du über die Kupferspirale ohne Hormone wissen?',
+    'Was würdest du vergleichen, bevor du Kondom und Pille zusammen erwägst?':'Was möchtest du über das Kondom allein und das Kondom mit Pille wissen?',
+    'Was würdest du über Kondom und Kupferspirale als gemeinsamen Rat wissen wollen?':'Was möchtest du über die Kupferspirale zusätzlich zum Kondom wissen?',
+    'Welchen Schutz möchtest du mit dem bisherigen Rat vergleichen?':'Du möchtest eine Schwangerschaft vermeiden. Wovor möchtest du dich beim Sex noch schützen?',
+    'Was möchtest du beim Rat mit Kondom und Pille auseinanderhalten?':'Was möchtest du über den Schutz durch Kondom und Pille wissen?',
+    'Was willst du bei Kondom und Hormonspirale genauer vergleichen?':'Was möchtest du über das Kondom zusätzlich zur Hormonspirale wissen?',
+    'Was ist bei diesem Rat für dich persönlich noch offen?':'Welche Fragen hast du zur Pille bei deinen Regelschmerzen?',
+    'Was soll der Schlussrat für dich offenlassen?':'Was möchtest du nach unserem Gespräch selbst entscheiden?',
+    'Was soll der Rat neben Schwangerschaftsverhütung berücksichtigen?':'Außer dem Schutz vor Schwangerschaft: Was ist dir bei der Pille noch wichtig?',
+    'Was würdest du beim zusätzlichen Vorschlag der Pille für dich prüfen?':'Was möchtest du klären, bevor du zusätzlich die Pille nimmst?',
+    'Was möchtest du bei diesem vorläufigen Rat selbst entscheiden?':'Was möchtest du selbst über die Kupferspirale entscheiden?',
+    'Welche Entscheidung willst du erst nach einer Beratung treffen?':'Was möchtest du vor der Entscheidung über die Hormonspirale besprechen?'}
 def beschriften(bank):
     for stufe,stage in bank['stages'].items():
         for tier,task in stage['levels'].items():
@@ -84,6 +98,8 @@ def beschriften(bank):
                 card=bank['cards'][way['card']['method']]
                 section=card['sections'][way['card']['section']]
                 frage=AUSWAHL[stufe] if key=='vorher' else empfehlung(stufe,key)
+                for q in way['questions']:
+                    q['text']=RUECKFRAGEN.get(q['text'],q['text'])
                 way['question']=frage
                 # Beim Schreiben bleibt der jeweilige biologische Denkanspruch erhalten.
                 way['writeQuestion']=frage

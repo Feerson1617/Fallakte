@@ -15,7 +15,6 @@ STEPS={
 
 def klar(text):
     paare=(
-       ('Was soll der Rat neben Schwangerschaftsverhütung berücksichtigen?', 'Was senkt beim Sex das Risiko für HIV?'),
        ('Welches bekannte Anliegen ist damit noch offen?', 'Was schützt Laura vor einer Ansteckung beim Sex?'),
        ('Welche biologische Schutzwirkung braucht der Schlussrat außerdem?', 'Was schützt Laura vor einer Ansteckung beim Sex?'),
        ('Wie kannst du auch Lauras Wunsch nach Infektionsschutz berücksichtigen?', 'Was kann Laura vor HIV schützen?'),
