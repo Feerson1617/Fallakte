@@ -197,3 +197,24 @@ body:has(.aufgabenkasten) :is(.feedback.falsch,.spur-korrektur,#fachmeldung[data
 }
 
 .denkhinweis{border-inline-start:.2em solid #687f78;padding-inline-start:.5em;margin:.28em 0;color:#314a42}
+
+/* Der Auftrag bleibt auch dann an seinem Ort, wenn die Antworten aufgeteilt werden. */
+.mit-auftrag>.aufgabenkasten{flex:none}
+@media(max-height:400px) and (min-width:550px){
+ .lernraum .mit-auftrag,#beratung .mit-auftrag{display:grid!important;grid-template-columns:minmax(0,.47fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;gap:0 .45em}
+ .mit-auftrag>.aufgabenkasten{grid-area:1/1/3/2;align-self:start}
+ .mit-auftrag>.blatt-inhalt{grid-area:1/2;align-self:stretch}
+ .mit-auftrag>.blatt-wechsel{grid-area:2/2}
+}
+@media(max-width:650px),(max-height:340px){
+ .lernraum.lesephase .mit-auftrag{display:flex!important;flex-direction:row;align-items:center;gap:.4em}
+ .lernraum.lesephase .mit-auftrag>.blatt-inhalt{flex:0 0 auto}
+}
+@media(max-width:475px){
+ .lernraum .arbeitskopf>.gespraech-wechsel,#beratung .arbeitskopf>.gespraech-wechsel{display:flex;align-items:center;justify-content:center;min-height:44px;white-space:nowrap;padding:.12em .4em}
+ .gespraech-wechsel .chat-lang,.lernraum .gespraech-wechsel .vorschau{display:none}
+ .gespraech-wechsel .chat-kurz{display:inline}
+}
+@media(max-width:650px),(max-height:340px){
+ .lernraum.lesephase .arbeitskopf>.gespraech-wechsel,#beratung.lesephase .arbeitskopf>.gespraech-wechsel{display:none}
+}

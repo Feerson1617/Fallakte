@@ -76,7 +76,7 @@ window.Arbeitsplatz = (() => {
       if(!box.isConnected){pages.delete(box);continue;}
       if(box.getClientRects().length)update();
     }
-    if(chat && current.newMessage){chat.scrollTop=chat.scrollHeight;current.newMessage=false;}
+    if(chat && current.newMessage){chat.scrollTop=room.matches('#lernspur.lesephase')?0:chat.scrollHeight;current.newMessage=false;}
   }
   function setup(room,work,chat,heading,hint,orientation,auftrag){
     const split=chat?.parentElement;
@@ -118,8 +118,8 @@ window.Arbeitsplatz = (() => {
       const wording=auftrag || work.dataset.auftrag || source?.childNodes[0]?.textContent || 'Wähle den nächsten Schritt.';
       const line=make('p','');line.textContent=wording;cue.append(line);
       if(source && source.textContent.trim()===wording.trim() && !source.querySelector('input,textarea,select'))source.classList.add('nur-vorlesen');
-      work.prepend(cue);
       sheet(work);
+      work.classList.add('mit-auftrag');work.prepend(cue);
     }
     current={room,chat,newMessage:!!chat};
     refresh();

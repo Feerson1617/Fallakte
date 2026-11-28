@@ -51,7 +51,10 @@ const Diagnose=(()=>{
     const {key='',frage,beispiel='',persoenlich=false,alternativen=[],fachlich=[]}=model;
     const imp='Vergleiche deinen Gedanken: '+(frage||'Welche Information passt zu deinem Grund?');
     function result(status,feedback,focus=imp,sample=beispiel){
-      return {status,feedback,focus,hints:[focus,feedback,frage||focus,
+      const next=status==='vollständig'?'Lies deinen Text noch einmal. Du kannst jetzt weitergehen.':
+        status==='teil'?'Diesen Teil hast du schon erklärt. '+focus:status==='verwechslung'?'Prüfe, welche Art von Aussage die Frage sucht.':
+        status==='unsicher'?'Dein Gedanke bleibt erhalten. Lege ihn neben das Beispiel.':frage||focus;
+      return {status,feedback,focus,hints:[focus,feedback,next,
         sample?'Ein Beispiel: '+sample:focus,'Vergleiche deinen Text: '+(sample||focus)]};
     }
     if(!raw)return result('leer','Hier ist Platz für deinen Gedanken.',frage);

@@ -407,6 +407,9 @@ window.Beratung = (() => {
     const step=currentStep();
     area.id='beratung-arbeit';
     area.dataset.step=step;
+    area.dataset.auftrag={wahl:'Was rätst du Laura?',grund:advanced() && active.draft.compared?'Vergleiche deinen Grund. Welche Aussage stimmt?':
+      compact() && !advanced()?kurzfrage[active.stageId]:task().task,senden:'Vergleiche deinen Grund. Sende dann deinen Rat.',korrektur:'Ändere deinen Rat für Laura.',
+      antwort:'Lies Lauras Antwort im Chat.'}[step];
     area.setAttribute('aria-label','Dein aktueller Arbeitsschritt');
     if(active.reading){
       area.dataset.auftrag='Lies Lauras neue Nachricht. →';

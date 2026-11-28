@@ -1,0 +1,23 @@
+{
+  "vorsatz": ["Das ist mein Gedanke.", "Ich habe noch einmal nachgelesen.", "Ich bin mir bei meinem Rat unsicher.", "Dazu habe ich eine Frage.", "Ich möchte Laura helfen.", "Die Entscheidung trifft Laura selbst."],
+  "teilsaetze": [
+    ["Die Pille schützt vor HIV.", "HIV"],
+    ["Die Kupferspirale schützt Laura auch vor HIV.", "HIV"],
+    ["Ich empfehle die Pille, weil sie vor HIV schützt.", "HIV"],
+    ["Kondome verhindern jede Ansteckung beim Sex.", "freie Haut"],
+    ["Die Pille tötet Spermien.", "Eisprung"],
+    ["Die Kupferspirale enthält Hormone.", "ohne Hormone"],
+    ["Die Hormonspirale gibt kein Hormon ab.", "Schleim"],
+    ["Die Pille verhindert eine HIV-Infektion.", "HIV"],
+    ["Die Pille schützt nicht vor HIV.", null],
+    ["Kondome schützen nicht vor allen STI.", null],
+    ["Die Kupferspirale enthält keine Hormone.", null],
+    ["Die Hormonspirale gibt ein Hormon ab.", null],
+    ["Die Pille tötet keine Spermien.", null],
+    ["Die Pille schützt vor HIV. Das ist falsch.", null],
+    ["Ob die Pille vor HIV schützt, fragt meine Freundin.", null],
+    ["Manche sagen: „Kondome verhindern jede Ansteckung beim Sex.“", null],
+    ["Sie fragt, ob Laura nach dem Abbruch nie mehr schwanger werden kann.", null],
+    ["Mir ist wichtig, dass Laura sich Zeit nehmen kann.", null]
+  ]
+}

@@ -130,18 +130,31 @@ def familie(bank):
             key=task['id']
             if key=='Leerstelle':
                 task['prompt']='Welche biologische Information fehlt als Grund für diesen Rat?'
+                source=QUELLEN[name]
                 for a in task['answers']:
-                    if a['ok']:a['feedback']='Ja. Für diesen Rat fehlt noch eine biologische Information.'
+                    a['feedback']=('Ja. Für diesen Rat fehlt noch eine biologische Information.' if a['ok'] else
+                        'Diese Stelle zeigt '+{'Wert':'den Wert','Norm':'die Regel','Folgerung':'den Rat'}[a['text']]+
+                        ': „'+source[a['text']][-1]+'“')
+                task['hints']=['Welche Aussage könntest du biologisch prüfen?', 'Was ist der Person wichtig? Welchen Rat gibt sie?',
+                    'Du findest einen Wunsch, eine Regel und einen Rat.', 'Welcher biologische Grund würde den Rat erklären?',
+                    'Ein biologischer Fakt fehlt als Grund für den Rat.']
+                task['helpByLevel']={t:list(task['hints']) for t in bank['levels']}
+            if name=='Freundin' and key=='Folgerung':
+                task['answers'][2]['feedback']='Die Arztpraxis ist ein nächster Schritt. Was rät die Freundin Laura zur Schwangerschaft?'
             if key in QUELLEN[name]:
                 source=QUELLEN[name][key][-1]
                 prompts={'Wert':'Was ist '+who+' wichtig?', 'Norm':'Welche Regel nennt '+('Mama' if name=='Mutter' else 'deine Freundin')+'?',
                          'Folgerung':'Was rät '+('Mama' if name=='Mutter' else 'deine Freundin')+' Laura?'}
-                task['prompt']=prompts[key]
+                task['prompt']='Was rät die Freundin Laura zur Schwangerschaft?' if key=='Folgerung' and name=='Freundin' else prompts[key]
                 hints={'Wert':['Welches Anliegen hörst du heraus?', 'Worüber macht sich Mama Sorgen?' if name=='Mutter' else 'Was hat Laura für später vor?', 'Achte auf „Gesundheit“.' if name=='Mutter' else 'Achte auf „Zukunft“.'],
                        'Norm':['Suche eine Regel, die auch für andere gilt.', 'Was sollte man aus Sicht der Person tun?', 'Achte auf „man sollte“.'],
                        'Folgerung':['Suche den persönlichen Rat.', 'Wozu rät sie Laura?', 'Achte auf „ich würde dir raten“.' if name=='Mutter' else 'Achte auf „raten“.']}[key]
                 task['hints']=[*hints, 'Lies diesen Satz: „'+source+'“', 'Vergleiche: '+next(a['text'] for a in task['answers'] if a['ok'])]
                 task['helpByLevel']={t:list(task['hints']) for t in bank['levels']}
+                for t in ('MSA','AHR'):
+                    task['helpByLevel'][t][1]={'Wert':'Unterscheide: Was ist ihr wichtig? Was rät sie Laura?',
+                        'Norm':'Gilt der Satz für Laura allein oder auch für andere Menschen?',
+                        'Folgerung':'Welcher Rat folgt für die Person aus ihrem Anliegen?'}[key]
     return selected
 
 

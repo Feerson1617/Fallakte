@@ -66,7 +66,15 @@ def verify_source(day,b):
                         assert task[key] and (key!='hints' or len(task[key])==5)
                     elif n in NACHRICHTEN and task['id']=='Leerstelle' and key=='answers':
                         for now,old in zip(task[key],previous[key],strict=True):
-                            assert now==dict(old,feedback='Ja. Für diesen Rat fehlt noch eine biologische Information.') if old['ok'] else now==old
+                            if old['ok']:feedback='Ja. Für diesen Rat fehlt noch eine biologische Information.'
+                            else:
+                                line=QUELLEN[n][old['text']][-1]
+                                assert line in now['feedback'] and line in visible
+                                feedback=now['feedback']
+                            assert now==dict(old,feedback=feedback)
+                    elif n=='Freundin' and task['id']=='Folgerung' and key=='answers':
+                        for i,(a,old) in enumerate(zip(task[key],previous[key],strict=True)):
+                            assert a==(dict(old,feedback='Die Arztpraxis ist ein nächster Schritt. Was rät die Freundin Laura zur Schwangerschaft?') if i==2 else old)
                     else:assert task[key]==clean(previous[key]),(n,task['id'],key)
         for k in ('cards','limits','opening','second'):assert b[k]==ref[k]
         return 'Die vier sichtbaren Nachrichten und Quellenaufgaben verwenden dieselbe Lesefassung. Alle fachlich passenden Quellenstellen wurden am vollständigen Satzwortlaut verankert. Die unterstützende Bedienanweisung nennt den tatsächlichen Begriffszugang. Fachliche Antworten, Rückmeldungen, Anwendungsfragen, Karten, Grenzen und Lauras Anliegen wurden feldweise gegen c4814a9 geprüft.'

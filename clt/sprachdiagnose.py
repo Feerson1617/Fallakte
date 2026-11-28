@@ -11,7 +11,7 @@ from playwright.sync_api import sync_playwright
 from pruefen import QA,OUT,HERE,sha
 
 def run(engine):
-    results=[]; developments=[];models={}
+    results=[]; developments=[];models={};stress={}
     html=(OUT/'Fallakte-08-12.html').read_bytes()
     family=base64.b64decode(re.search(rb'<script id="modul-08"[^>]*>([^<]+)',html)[1]).decode()
     raw=(OUT/'Fallakte-02-12.html').read_bytes()
@@ -56,9 +56,30 @@ def run(engine):
             p.set_content(module);data=p.evaluate("JSON.parse(document.getElementById('bank').textContent)")
             models['zusatz'][person]=[{k:s[k] for k in ('task','checks','conflicts') if k in s} for s in data['stages']]
         models['persoenlich']='Erste und letzte Einschätzung, Gewichtung und alternative Begründungen sind persönlich. Offene Texte erhalten keine Gesamtnote. Beim Abschluss werden eindeutige medizinische Aussagen geprüft. Erstposition und Schlussposition werden getrennt gespeichert.'
+        pool=json.loads((HERE/'Belastung.json').read_text())
+        texts=[[a+' '+b,c] for a in pool['vorsatz'] for b,c in pool['teilsaetze']]
+        assert len({r[0] for r in texts})==len(texts)>=100
+        def stress_test(frame,group,items):
+            observed=frame.evaluate('''([items,texts])=>items.map(model=>{
+              const counts={};for(const [text,correction] of texts){
+                const a=Diagnose.analyse(text,model);
+                if(correction ? !a.error?.info.includes(correction) : !!a.error || a.status==='vollständig')throw Error(model.key+' / '+text+' / '+a.status);
+                counts[a.status]=(counts[a.status]||0)+1;
+              }return {aufgabe:model.key,zaehlung:counts};})''',[items,texts])
+            stress[group]=observed
+        stress_test(p,'Familiennachrichten',list(models['familie'].values()))
+        stress_test(p,'Beratung',[dict(v,key=k) for k,v in models['beratung'].items()])
+        others=[]
+        for person,stages in models['zusatz'].items():
+            for i,s in enumerate(stages,1):
+                for m,c in s.get('checks',{}).items():
+                    for t in ('MSA','AHR'):
+                        others.append(dict(key=f'{person}/{i}/{m}/{t}',frage=s['task'][t],persoenlich=True))
+        stress_test(p,'Zusatzfälle',others)
+        stress_test(p,'Eigene Lernspuren',[dict(key=f'{day}/{tier}/{stage}',persoenlich=True) for day in ('02','08') for tier in ('Förder','ESA','MSA','AHR') for stage in ('Erster Grund','Schlussgrund')]+[dict(key='Gewichtung/'+str(i),persoenlich=True) for i in (0,1)])
     folder=QA/'Freigabestufen';folder.mkdir(parents=True,exist_ok=True)
     rates={k:dict(Counter('erkannt' if r['Ist']==r['Soll'] else 'abweichend' for r in results if r['Art']==k and r['Bestand']=='Sprachreserve-blind')) for k in sorted({r['Art'] for r in results})}
-    (folder/f'Sprache-{engine}.json').write_text(json.dumps(dict(html_sha256=sha(html),ub1_sha256=sha(raw),reserve=results,entwicklung=developments,sichtbar=visible,quoten=rates),ensure_ascii=False,indent=2))
+    (folder/f'Sprache-{engine}.json').write_text(json.dumps(dict(html_sha256=sha(html),ub1_sha256=sha(raw),reserve=results,entwicklung=developments,sichtbar=visible,quoten=rates,systematische_Zusatztests=stress,zusatztexte=texts),ensure_ascii=False,indent=2))
     (folder/'Antwortmodelle.json').write_text(json.dumps(models,ensure_ascii=False,indent=2))
     print(engine,rates)
 if __name__=='__main__':run(sys.argv[1])

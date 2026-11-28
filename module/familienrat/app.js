@@ -120,6 +120,8 @@ function familienModell(task){
 }
 function help(task,r){
   const tier=task.personalTier || level;
+  const ownTask=r.step==='reason'?Diagnose.modell('Gewichtung/'+r.concern,bank.crossReference[r.concern],
+    bank.cases[names[r.concern]].addition,{persoenlich:true}):null;
   function show(depth){
     if(!r.valid && r.step!=='done')r.depth=Math.max(r.depth,depth);
     else r.laterDepth=Math.max(r.laterDepth||0,depth);
@@ -132,7 +134,7 @@ function help(task,r){
       const hints=issue || wrong?Entwurf.hilfen(where,issue?.frage||
           (r.sourceError?'Welche Textstelle beantwortet die Frage?':task.prompt || 'Welche Fachinformation passt zum Anliegen?'),issue?.info||wrong):
           (r.text?.trim() && !r.valid && task.answers ? Diagnose.analyse(r.text,familienModell(task),medizin).hints :
-           task.helpByLevel?.[tier] || task.hints);
+           ownTask && r.reason?.trim()?Diagnose.analyse(r.reason,ownTask,medizin).hints:task.helpByLevel?.[tier] || task.hints);
       if(!issue && r.sourceError && task.evidenceSentences){
         const original=sentences(bank.cases[current.person].original);
         const ref=task.evidenceSentences[0];
@@ -251,11 +253,7 @@ function openSection(id){
 function thought(box,label,text,save,id,buttonText,submit){
   const input=el(el(box,'label',label),'textarea');input.value=text;
   // This is a form check, never a judgement about a pupil's argument or spelling.
-  const usable=()=>{
-    const letters=input.value.normalize('NFKC').toLowerCase().match(/\p{L}/gu)||[];
-    const word=letters.join('');
-    return new Set(letters).size>=2 && !/^(?:test|testtext|platzhalter|asdf|qwertz|qwerty|xyz|abc|bla|blabla|loremipsum)$/.test(word);
-  };
+  const usable=()=>Boolean(input.value.trim());
   const note=paragraph(box,ui.thoughtHint,'small');note.id=id+'-hint';
   input.setAttribute('aria-describedby',note.id);
   const confirm=btn(box,buttonText,id,()=>{if(usable())submit();});
@@ -268,7 +266,7 @@ function draft(box,task,r,c){
     const observed=Diagnose.analyse(r.text,familienModell(task),medizin);
     const msg=paragraph(box,observed.feedback+(observed.status==='vollständig'?'':' '+observed.focus),'denkhinweis');
     msg.dataset.diagnose=observed.status;
-    const own=el(box,'details');el(own,'summary','Eigener Grund');
+    const own=el(box,'details',undefined,'eigener-vergleich');el(own,'summary','Eigener Grund');
     paragraph(own,'Fachlich ungeprüft: '+r.text);
     btn(own,'Erklärung bearbeiten','edit-draft',()=>{r.compared=false;r.feedback='';r.selected=undefined;draw();});
     return;
@@ -348,7 +346,13 @@ function originalPanel(layout,person,c,hideAddition){
   profile(panel,person);
   transcript(panel,hideAddition?person+'/Ergänzung':null,person);
   const source=el(panel,'div',undefined,'bubble quelle-zur-aufgabe');
-  el(source,'strong',person);paragraph(source,c.original);
+  el(source,'strong',person);
+  const sourceText=paragraph(source,'');
+  const task=c.tasks[current.at-1],pick=saved.records[person+'/'+task?.id]?.source;
+  sentences(c.original).forEach((line,i)=>{
+    if(i)sourceText.append(' ');
+    if(i===pick){el(sourceText,'mark',line);}else sourceText.append(line);
+  });
   const r=saved.records[person+'/Ergänzung'];
   if(r?.valid && !hideAddition){el(panel,'h2',ui.addition);paragraph(panel,c.addition);paragraph(panel,c.connection,'small');}
   return panel;
@@ -368,17 +372,21 @@ function caseView(){
     btn(box,ui.read,'next',advance,'primary');
   }else if(!paper){
     const task=c.tasks[at-1],r=record(person+'/'+task.id);
-    box.dataset.auftrag=r.valid?'Lies die Rückmeldung. Gehe dann weiter.':r.compared?'Vergleiche deinen Text. Welche Aussage passt?':task.prompt;
+    box.dataset.auftrag=r.valid?'Lies die Rückmeldung. Gehe dann weiter.':r.compared?'Welche Aussage passt?':task.prompt;
     const adding=task.id==='Ergänzung';
     const concept=adding?c.missing:task.id;
-    if(bank.definitions[concept])paragraph(box,concept+' · '+bank.definitions[concept],'small');
-    el(box,'h2',task.prompt);
+    if(!r.compared && !r.valid && bank.definitions[concept] && !kurz())paragraph(box,concept+' · '+bank.definitions[concept],'small');
+    if(!r.compared && !r.valid)el(box,'h2',task.prompt);
     if(advanced(level) && !r.valid){
 
       if(adding && !r.compared && !kurz())paragraph(box,bank.caseReflection[person]);
       draft(box,task,r,c);
     }
     if(!advanced(level)||r.compared)options(box,task,r,advance);
+    if(r.compared && !r.valid && kurz()){
+      const own=box.querySelector('.eigener-vergleich');
+      if(own)box.append(own);
+    }
     tools(box,task,r,idx);
   }else{
     if(transfer){
