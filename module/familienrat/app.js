@@ -119,8 +119,11 @@ function familienModell(task){
   const answers=task.answers||[];
   const person=current?.person,c=bank.cases[person];
   const lines=c?sentences(c.original):[];
-  const source=task.evidenceSentences?.map(i=>lines[i]).join(' ') ||
-    (task.id==='Ergänzung'?c?.addition:lines.at(-1));
+  const implicit=person==='Großmutter'?'Norm':'Folgerung';
+  const rationale=c?.tasks.find(t=>t.id===implicit);
+  const textualGap=task.id==='Leerstelle' || (task.id==='Ergänzung' && c?.missing!=='Fakt');
+  const indices=task.evidenceSentences || (textualGap && rationale?.evidenceSentences);
+  const source=indices?indices.map(i=>lines[i]).join(' '):c?.addition;
   return Diagnose.modell(person+'/'+task.id,task.prompt,
     answers.find(a=>a.ok)?.text||'',{alternativen:answers,quelle:source,hilfen:task.helpByLevel?.[level]||task.hints});
 }

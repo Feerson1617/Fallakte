@@ -6,7 +6,7 @@ const Diagnose=(()=>{
     'Mutter/Wert':/^(?:(?:ihr|mama|der mutter) ist (?:die )?(?:gesundheit (?:von|ihrer tochter) laura|lauras (?:körperliche )?gesundheit|gesundheit) wichtig|(?:lauras |ihre |die )?(?:körperliche )?gesun(?:d|t)heit(?: von laura)?|(?:sie will,? |sie möchte,? |mama will,? )?(?:dass )?laura gesund (?:bleibt|ist)|(?:sie|mama) (?:möchte|will) nicht,? dass laura krank wird|(?:dass )?es laura (?:körperlich )?gut geht|laura soll gesund bleiben)$/u,
     'Mutter/Norm':/^(?:man (?:soll|sollte|muss) (?:gut )?auf (?:seinen|den|seinen eigenen) körper (?:achten|aufpassen)|(?:man sollte )?(?:mögliche )?beschwerden ernst nehmen)$/u,
     'Mutter/Folgerung':/^(?:(?:laura|sie) soll (?:das kind|ihr baby) (?:bekommen|behalten)|(?:das kind|ihr baby|das baby) (?:bekommen|behalten)|(?:die )?schwangerschaft (?:fortsetzen|austragen))$/u,
-    'Freundin/Wert':/^(?:lauras (?:eigene )?zukunftsplanung|(?:erst )?(?:die |ihre )?ausbildung (?:abschließen|beenden|fertig machen)(?: und (?:die |ihre )?zukunft (?:selbst )?planen)?|(?:dass )?laura (?:ihre |die )?zukunft selbst (?:plant|planen kann))$/u,
+    'Freundin/Wert':/^(?:lauras (?:eigene )?zukunftsplanung|(?:erst )?(?:die |ihre )?ausbildung (?:abschliessen|beenden|fertig machen)(?: und (?:die |ihre )?zukunft (?:selbst )?planen)?|(?:dass )?laura (?:ihre |die )?zukunft selbst (?:plant|planen kann))$/u,
     'Freundin/Norm':/^(?:man sollte (?:erst )?kinder (?:bekommen|kriegen),? wenn man (?:selbst |dafür )?bereit (?:dafür )?ist|kinder (?:bekommen|kriegen),? wenn es (?:zu den eigenen plänen|ins leben) passt)$/u,
     'Freundin/Folgerung':/^(?:(?:die )?schwangerschaft (?:mit medikamenten |medikamentös )?abbrechen|(?:ein(?:en)? )?(?:medikamentöser?|medikamentösen) abbruch|laura soll (?:die schwangerschaft )?(?:mit medikamenten )?abbrechen)$/u,
     'Großmutter/Norm':/^(?:man (?:sollte|soll|muss) ungeborenes (?:menschliches )?leben schützen|ungeborenes leben (?:soll|sollte) geschützt werden)$/u,
@@ -31,7 +31,7 @@ const Diagnose=(()=>{
     'Mutter/Norm':[/^(?:beschwerden|schmerzen) (?:sollte|muss|soll) man ernst nehmen$/u,
       /^man (?:sollte|muss|soll) auf (?:den|seinen) körper achten$/u],
     'Mutter/Folgerung':[/^(?:ihr rat ist,? dass|die mutter will,? dass|sie rät,? dass) laura (?:das kind|das baby) (?:bekommt|behält)$/u],
-    'Freundin/Wert':[/^laura (?:soll|will|möchte) (?:erst |zuerst )?(?:ihre |die )?ausbildung (?:abschließen|beenden)(?: und ihre zukunft selbst planen)?$/u],
+    'Freundin/Wert':[/^laura (?:soll|will|möchte) (?:erst |zuerst )?(?:ihre |die )?ausbildung (?:abschliessen|beenden)(?: und ihre zukunft selbst planen)?$/u],
     'Freundin/Norm':[/^man sollte (?:erst )?kinder bekommen,? wenn man (?:selbst )?bereit dazu ist$/u],
     'Freundin/Folgerung':[/^(?:sie|die freundin) rät (?:laura )?(?:zu einem|zum) abbruch mit medikamenten$/u],
     'Mutter/Ergänzung':[/^es blutet und (?:es kann im bauch (?:wehtun|weh tun)|der bauch kann (?:wehtun|weh tun))$/u],
@@ -54,7 +54,7 @@ const Diagnose=(()=>{
       const [person,category]=key.split('/');
       const lens={Wert:'Was möchte die Person bewahren?',Norm:'Für wen soll die Regel gelten?',Folgerung:'Was soll Laura konkret tun?',
         Leerstelle:'Welche Art von Aussage bleibt unausgesprochen?',Ergänzung:'Welche Information ergänzt die Nachricht?'};
-      const start={Wert:'Der Person ist … wichtig.',Norm:'Man sollte …',Folgerung:'Sie rät Laura, …',Leerstelle:'Der Text nennt … nicht ausdrücklich.',
+      const start={Wert:'Der Person ist … wichtig.',Norm:'Man sollte …',Folgerung:person==='Vater'?'Er rät Laura, …':'Sie rät Laura, …',Leerstelle:'Der Text nennt … nicht ausdrücklich.',
         Ergänzung:'Aus der Information folgt für Laura …'};
       const base=model.hilfen||[];
       let hints;

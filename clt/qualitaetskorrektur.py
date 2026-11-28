@@ -59,6 +59,13 @@ def run(engine):
                 assert all(row['hints']) and len(set(row['hints']))>=4,row
                 if day=='02':
                     assert 'Fachlich richtig:' in row['feedback'] and any(row['references']),row
+                if row['key'].endswith('/Leerstelle'):
+                    person=row['key'].split('/')[0]
+                    quote={'Mutter':'ich würde dir raten, das Kind zu bekommen',
+                           'Freundin':'ich würde dir zu einem Abbruch mit Medikamenten raten',
+                           'Großmutter':'man sollte ungeborenes menschliches Leben schützen',
+                           'Vater':'in der Arztpraxis nach deinen Möglichkeiten zu fragen'}[person]
+                    assert all(quote in hint+source for hint,source in zip(row['hints'],row['references'])),row
                 if row['text']=='Es kommt zu Blutungen.':
                     assert 'Blutungen hast du erkannt' in row['feedback'] and 'Bauch' in row['hints'][0],row
             function='Entwurf.fehler' if day=='02' else 'medizin'
@@ -76,6 +83,10 @@ def run(engine):
                   const pick=document.querySelector('#spur-wahl');pick.selectedIndex=1;pick.dispatchEvent(new Event('change'));
                   const fill=(id,text)=>{const f=document.getElementById(id);f.value=text;f.dispatchEvent(new Event('input'))};
                   fill('spur-grund','Mein erster Gedanke.');c('spur-speichern');c('spur-chat');
+                  Beratung.begin('MSA','L01');c('strategie-K');
+                  fill('erklaerung','Auch ohne Latex kann ein Kondom Sperma zurückhalten. Die Pille schützt vor HIV.');c('vergleichen');
+                  const correction=document.querySelector('#fachmeldung').textContent;
+                  if(!correction.includes('Sperma zurück')||!correction.includes('nicht vor HIV')||!document.querySelector('#nachricht-senden').disabled)throw Error(correction);
                   Beratung.begin('MSA','L05');c('strategie-K');fill('erklaerung',reason);c('vergleichen');
                   const way=LAURA.stages.L05.levels.MSA.strategies.K;
                   c('grund-'+way.options.find(o=>o.correct).id);c('nachricht-senden');Runde1.final();

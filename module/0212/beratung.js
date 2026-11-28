@@ -123,16 +123,22 @@ window.Beratung = (() => {
   function draftIssue(){
     const draft=active.draft;
     const medical=Entwurf.fehler(draft.reason);
-    if(medical || !advanced() || !draft.strategy)return medical;
+    if(!advanced() || !draft.strategy)return medical;
+    if(medical){
+      const known=Aussagen.treffer(draft.reason,beratungsmodell());
+      return known?{...medical,info:'Fachlich richtig: '+known+' '+medical.info}:medical;
+    }
     // Nur überprüfbare Kontrollaussagen dieser konkreten Aufgabe. Die Gewichtung von Lauras Sorgen ist persönlich.
     const canonical=s=>s.trim().toLocaleLowerCase('de').replace(/[.!]+$/u,'').replace(/\s+/gu,' ');
     const option=info().options.find(o=>!o.correct && canonical(o.text)===canonical(draft.reason) &&
         !(active.stageId==='L04' && o.text.includes('Lauras Sorge')));
     return option?{frage:task().task,info:option.feedback,ref:option.card}:null;
   }
+  function beratungsmodell(){
+    return Aussagen.beratung(active.stageId,bank().strategies[active.draft.strategy].methods,info(),task().task);
+  }
   function entwurfsdiagnose(){
-    const model=Aussagen.beratung(active.stageId,bank().strategies[active.draft.strategy].methods,info(),task().task);
-    return Diagnose.analyse(active.draft.reason,model);
+    return Diagnose.analyse(active.draft.reason,beratungsmodell());
   }
   function matchesEvidence() {
     const draft=active.draft;

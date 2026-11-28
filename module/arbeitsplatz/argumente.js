@@ -20,6 +20,10 @@ const Argumente=(()=>{
  'Vater/Leerstelle':[/^(?:es fehlt eine allgemeine regel|er nennt keine allgemeine handlungsregel|eine regel für solche entscheidungen fehlt|die norm ist nicht ausdrücklich genannt)$/u],
  'Vater/Ergänzung':[/^(?:vor einer medizinischen entscheidung sollte man sich gut beraten lassen|man sollte vorher verlässliche informationen sammeln|man muss sich vor wichtigen entscheidungen gut informieren|erst informieren,? dann selbst entscheiden)$/u]
  };
+ // Vorangestellte Satzglieder und beide Reihenfolgen der verbundenen Anliegen.
+ rolle['Mutter/Norm'].push(/^auf (?:seinen|den eigenen) körper (?:soll|sollte|muss) man (?:achten|aufpassen)$/u);
+ rolle['Mutter/Wert'].push(/^dass (?:die )?laura (?:gesund bleibt|körperlich gesund bleibt)$/u);
+ rolle['Freundin/Wert'].push(/^(?:die |ihre )?zukunft selbst (?:planen|gestalten) und (?:erst |zuerst )?(?:die |ihre )?ausbildung (?:machen|abschliessen|beenden)$/u);
  rolle['Großmutter/Folgerung']=rolle['Mutter/Folgerung'];
  return {passt:(key,text)=>rolle[key]?.some(re=>re.test(text))};
 })();
