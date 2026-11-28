@@ -148,8 +148,12 @@ function help(task,r){
         const original=sentences(bank.cases[current.person].original);
         const ref=task.evidenceSentences[0];
         hints[0]='Nachricht · '+current.person+': '+task.prompt;
-        hints[1]='„'+original[ref]+'“';
-        hints[2]='Suche den '+(ref+1)+'. Satz.';
+        const category=task.id;
+        hints[1]={Wert:'Was möchte '+({Mutter:'Mama',Freundin:'die Freundin',Vater:'der Vater',Großmutter:'die Großmutter'}[current.person])+' für Laura?',
+          Norm:'Welche Regel würde auch für jemand anderen gelten?',
+          Folgerung:'Was soll Laura nach dem Rat tun?'}[category]||task.prompt;
+        hints[2]='Im Satz von '+current.person+' steht „'+original[ref].split(/\s+/).slice(0,4).join(' ')+' …“.';
+
         hints[3]=original[ref];
         hints[4]='Passender Satz: „'+original[ref]+'“';
       }
@@ -224,7 +228,7 @@ function showHome(){
   message(aside,'Laura',bank.opening);
   const box=el(layout,'section',undefined,'card');
   heading(box,ui.openingTitle);chooseLevel(box);
-  box.dataset.auftrag=level?(saved.last?'Dein Gespräch mit Laura':'Deine erste Einschätzung'):'Wähle dein Niveau.';
+  box.dataset.auftrag=level?'':'Wähle dein Niveau.';
   if(!level)return;
   if(saved.last)btn(box,ui.resume,'resume',()=>{current=saved.last;screen='work';draw(true);},'primary');
   const begin=()=>{
@@ -601,9 +605,9 @@ function draw(focus=false){
   const work=root.querySelector('.split>.card')||root;
   const title=root.querySelector(':scope>h1')||work.querySelector('h1');
   const hint=screen==='picker'?'Wähle die Person und den Abschnitt, bei dem du weiterarbeiten willst.':
-    screen==='home'?'Wähle dein Niveau. Öffne dann die erste Nachricht.':
+    screen==='home'?(!level?'Tippe auf „'+ui.choose+'“.':saved.last?'Mit „'+ui.resume+'“ kommst du in dein Gespräch zurück.':'Tippe auf „Erste Einschätzung“.'):
     work.dataset.auftrag||work.querySelector('h2,h3')?.textContent||'Tippe auf „Weiter“.';
-  Arbeitsplatz.setup(root,work,root.querySelector('.split>.msg'),title,root.querySelector('#help'),b=>popup('Hilfe',box=>paragraph(box,hint),b));
+  Arbeitsplatz.setup(root,work,root.querySelector('.split>.msg'),title,root.querySelector('#help'),b=>popup('Hilfe',box=>paragraph(box,hint),b),screen==='picker'?'':undefined);
   notify();
   if(focus){window.scrollTo(0,0);root.querySelector('h1')?.focus({preventScroll:true});}
 }

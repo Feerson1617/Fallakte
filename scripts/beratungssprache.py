@@ -50,6 +50,24 @@ SATZSTART={
     'L03':'„Wenn Laura die Pille vergisst, … Ein Kondom braucht sie …“',
     'L04':'„Bei starken Regelschmerzen … Vor dem Einsetzen …“',
     'L05':'„Ich rate Laura zu …, weil ihr … wichtig ist. Wenn …, würde ich …“'}
+# Jeweils ein kurzer Vergleichssatz. Die ganze Originalkarte ist über Hilfe erreichbar.
+KURZBEZUG={
+    'L01':{'K':'Ein geeignetes Kondom aus Kunststoff ohne Latex hält Sperma zurück.',
+           'P':'Die Pille hemmt meist den Eisprung. Ohne Eisprung wird keine Eizelle frei.',
+           'Cu':'Kupfer bremst Spermien. Sie erreichen die Eizelle schwerer.',
+           'H':'Die Hormonspirale macht den Schleim am Gebärmutterhals zäher. Spermien kommen schwerer hindurch.'},
+    'L02':{'K':'Ein geeignetes Kondom ohne Latex hält Sperma zurück und senkt das Risiko für HIV. Über unbedeckte Haut können andere Erreger übertragen werden.',
+           'P':'Die Pille schützt vor Schwangerschaft. Sie schützt nicht vor HIV.',
+           'Cu':'Die Kupferspirale schützt vor Schwangerschaft. Sie schützt nicht vor HIV.',
+           'H':'Die Hormonspirale schützt vor Schwangerschaft. Sie schützt nicht vor HIV.'},
+    'L03':{'K':'Bei jedem Sex braucht Laura von Anfang an ein neues Kondom.',
+           'P':'Vergisst Laura die Pille, kann der Schutz sinken. Ihr Körper kann anders reagieren als der ihrer Freundin.',
+           'Cu':'Die Kupferspirale wirkt über längere Zeit. Laura muss nicht täglich an eine Tablette denken.',
+           'H':'Die Hormonspirale wirkt über längere Zeit. Laura muss nicht täglich an eine Tablette denken.'},
+    'L04':{'K':'Das Kondom ändert Lauras Regelschmerzen nicht. Die Ursache kann sie in der Arztpraxis klären lassen.',
+           'P':'Mit der Pille können Regelschmerzen schwächer werden. Die Ursache der Schmerzen sollte Laura ärztlich klären lassen.',
+           'Cu':'Die Kupferspirale kann Regelschmerzen verstärken. Nach der Beratung entscheidet Laura über das Einsetzen.',
+           'H':'Die Hormonspirale kann Regelschmerzen lindern. Nach der Beratung entscheidet Laura über das Einsetzen.'}}
 def empfehlung(stufe,key):
     if key in FRAGEN[stufe]:return FRAGEN[stufe][key]
     mittel=METHODEN[key.split('+')[1]]
@@ -77,19 +95,25 @@ def beschriften(bank):
                 source=f'Lies auf der Karte „{card["title"]}“ den Abschnitt „{section["title"]}“.'
                 # Das Beispiel beantwortet die aktuelle biologische Frage. Bedingungen
                 # für die spätere Entscheidung können eine ganz andere Frage betreffen.
-                entry=section['levels'][tier]
-                example=entry
                 stem=SATZSTART[stufe]
-                if '+' in key:
-                    if stufe=='L02':
-                        zusatz=METHODEN[key.split('+')[1]].removeprefix('die ')
-                        example=f'Ein geeignetes Kondom ohne Latex senkt das Risiko für HIV. Die {zusatz} schützt zusätzlich vor Schwangerschaft.'
-                    elif stufe=='L01':
-                        example='Ein passendes Kondom ohne Latex hält Spermien zurück. '+entry
+                method=key.split('+')[-1]
+                if key=='vorher':
+                    example=section['levels'][tier]
+                elif stufe=='L05':
+                    example=way['condition']
+                else:
+                    example=KURZBEZUG[stufe][method]
+                    if '+' in key:
+                        if stufe=='L02':
+                            zusatz=METHODEN[method].removeprefix('die ')
+                            example=f'Das geeignete Kondom ohne Latex senkt das Risiko für HIV. Die {zusatz} schützt zusätzlich vor Schwangerschaft.'
+                        elif stufe in ('L01','L03'):
+                            example=KURZBEZUG[stufe]['K']+' '+example
+                        else:
+                            example+=' Das Kondom senkt das Risiko für HIV.'
                 if key!='vorher' and stufe=='L03':
                     stem=('„Mit der Spirale muss Laura nicht jeden Tag …“' if 'Cu' in key or 'H' in key
                           else '„Bei jedem Sex braucht Laura …“' if key=='K' else '„Wenn Laura die Pille vergisst, …“')
-                if stufe=='L05' and key!='vorher':example=way['condition']
                 way['fact']=example
                 way['hints']=[source,frage,VERTIEFUNG[stufe],stem,example]
                 way['evidence']=frage

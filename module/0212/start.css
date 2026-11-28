@@ -46,3 +46,7 @@ body:has(#reserve-platz:not([hidden])) main{max-width:none;padding:0}
 
 #reserve-platz iframe[hidden]{display:none}
 body:has(#reserve-platz:not([hidden])) #reserve-platz iframe{height:100dvh;min-height:0}
+
+/* WebKit soll beim Blättern jede Abschnittstaste vollständig in eine Spalte setzen. */
+#einstieg .blatt-inhalt.geteilt #abschnitte{display:block}
+#einstieg .blatt-inhalt.geteilt #abschnitte button{width:100%;box-sizing:border-box}

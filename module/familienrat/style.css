@@ -23,3 +23,6 @@ button.primary{background:#29485f}
 .feedback.falsch::before{content:'Prüfe deine Auswahl. ';font-weight:bold}
 
 .card .feedback.persoenlich{background:#edf0f2;border-color:#7b858c;color:#24353d}
+
+#app label:has(select){min-width:0;max-width:100%}
+#app select{box-sizing:border-box;min-width:0;max-width:100%}

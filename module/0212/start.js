@@ -29,7 +29,7 @@
   }
   function levelGroup(parent,selected,choose) {
     const field=document.createElement('fieldset'),legend=document.createElement('legend'),buttons=document.createElement('div');
-    legend.textContent='Wähle dein Niveau';buttons.className='niveaus';
+    legend.textContent=selected?'Dein Niveau':'Wähle dein Niveau';buttons.className='niveaus';
     for (const [id,label] of Object.entries(tierNames)) {
       const b=control(label,()=>{
         choose(id);
@@ -72,7 +72,7 @@
     const unlocked=available.has(level+'/Tom');
     for(const node of document.querySelectorAll('.vertiefungen,.vertiefungen+p,.reserven'))node.hidden=!unlocked;
     for(const b of document.querySelectorAll('[data-optional]'))b.disabled=!unlocked;
-    Arbeitsplatz.setup($('start'),$('start'),null,$('start-titel'),null,b=>window.Material.orient('Wähle dein Niveau. Tippe auf „Neu beginnen“.',b));
+    Arbeitsplatz.setup($('start'),$('start'),null,$('start-titel'),null,b=>window.Material.orient(!level?'Tippe auf dein Niveau.':window.Beratung.has(level)?'Mit „Weiterarbeiten“ kommst du in dein Gespräch zurück.':'Tippe auf „Neu beginnen“.',b),'');
   }
   function home() {
     Lernspur.close();show('start');drawHome();$('start-titel').focus({preventScroll:true});
@@ -152,7 +152,7 @@
       });
       b.dataset.stage=id;b.disabled=!pickerTier;return b;
     }));
-    Arbeitsplatz.setup($('einstieg'),$('einstieg'),null,$('einstieg-titel'),null,b=>window.Material.orient('Wähle dein Niveau und die Nachricht, bei der du weiterarbeiten möchtest.',b));
+    Arbeitsplatz.setup($('einstieg'),$('einstieg'),null,$('einstieg-titel'),null,b=>window.Material.orient('Tippe auf dein Niveau und dann auf den Namen deines Abschnitts.',b),'');
   }
   function recovery() {
     if (view==='einstieg')return;

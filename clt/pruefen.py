@@ -123,6 +123,10 @@ def run(engine,day,tier,profil='quer'):
             p.wait_for_function("calls.length>=2");assert p.evaluate('calls')==[['LMSInitialize',''],['LMSFinish','']]
             assert not p.context.cookies() and not p.context.storage_state()['origins']
             assert not errors,errors
+    # Auch die langen Auswahltexte des Wiedereinstiegs müssen ganz auf eine Teilansicht passen.
+    picker_errors=[issue for g in layout for issue in g['issues']
+                   if issue['id']=='entry' or issue['text'].startswith(tuple('Laura '+str(i)+' – ' for i in range(1,6)))]
+    assert not picker_errors,picker_errors[:2]
     (folder/'Geometrie.json').write_text(json.dumps(layout,ensure_ascii=False))
     with gzip.open(folder/'Zustaende.json.gz','wt',encoding='utf8') as z:json.dump(list(observed.values()),z,ensure_ascii=False)
     (folder/'Pruefung.json').write_text(json.dumps(dict(html_sha256=sha(path.read_bytes()),modul=day,niveau=tier,browser=engine,zaehlungen=counts,zustaende=len(observed)),ensure_ascii=False,indent=2))
