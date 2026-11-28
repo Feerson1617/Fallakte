@@ -81,12 +81,12 @@
     const titles=Object.values(bank.strategies).map(m=>m.label);
     const reasons={
       Foerder:'Was ist Laura wichtig? Wie hilft dein Rat? Stichworte reichen.',
-      ESA:'Wie hilft die Methode Laura? Nenne auch eine Grenze.',
+      ESA:'Wie schützt dein Rat Laura? Welches Risiko bleibt?',
       MSA:'Wie passt die Wirkung zu Lauras Wunsch? Wann wäre ein anderer Rat möglich?',
-      AHR:'Wäge zwei Anliegen ab. Begründe mit der Wirkung der Methode. Wann passt eine Alternative?'
+      AHR:'Infektionen, Schwangerschaft, Schmerzen: Was zählt für deinen Rat am meisten? Wann würdest du Laura anders raten?'
     };
     Lernspur.open({status:text=>{const ok=Lernspur.erlaubt(level);document.querySelector('[data-nav=abschluss]').disabled=!ok;port?.postMessage({type:'view',abschluss:ok,active:'',status:text+' · '+tierNames[level]});},tier:level,firstTitle:'Dein erster Rat',finalTitle:'Dein Schlussrat',
-      firstQuestion:'Was rätst du Laura zuerst?',finalQuestion:'Was rätst du Laura jetzt?',
+      firstReason:choice=>'Dein erster Rat ist „'+choice+'“. Warum passt er für Laura?',firstQuestion:'Was rätst du Laura zuerst?',finalQuestion:'Was rätst du Laura jetzt?',
       warten:true,suggestion:Beratung.letzterRat(level),
       reference:label=>{
         const method=Object.keys(bank.strategies).find(k=>bank.strategies[k].label===label);

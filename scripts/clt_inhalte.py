@@ -1,6 +1,8 @@
 """Digitale Aufgaben aus den bestehenden fachlichen Entscheidungen und Karten ableiten."""
 from pathlib import Path
 import json
+from beratungssprache import beschriften
+from familiensprache import familie_beschriften
 
 ROOT=Path(__file__).resolve().parents[1]
 METHODS=('K','P','Cu','H')
@@ -13,6 +15,20 @@ STEPS={
 
 def klar(text):
     paare=(
+       ('Was soll der Rat neben Schwangerschaftsverhütung berücksichtigen?', 'Was senkt beim Sex das Risiko für HIV?'),
+       ('Welches bekannte Anliegen ist damit noch offen?', 'Was schützt Laura vor einer Ansteckung beim Sex?'),
+       ('Welche biologische Schutzwirkung braucht der Schlussrat außerdem?', 'Was schützt Laura vor einer Ansteckung beim Sex?'),
+       ('Wie kannst du auch Lauras Wunsch nach Infektionsschutz berücksichtigen?', 'Was kann Laura vor HIV schützen?'),
+       ('Wie könntest du zusätzlich Lauras Wunsch nach Infektionsschutz berücksichtigen?', 'Was kann Laura vor HIV schützen?'),
+       ('Wähle neu und berücksichtige beide Wünsche.', 'Was schützt vor Schwangerschaft und vor Ansteckung beim Sex?'),
+       ('Auch das STI-Anliegen bleibt bestehen.', 'Laura möchte sich auch vor Ansteckung beim Sex schützen.'),
+       ('Die Eisprunghemmung beantwortet einen Teil von Lauras Anliegen.', 'Ohne Eisprung wird keine Eizelle frei.'),
+       ('Die Wirkung der Hormonspirale auf den Weg der Spermien beantwortet einen Teil von Lauras Anliegen.', 'Die Hormonspirale macht den Schleim am Gebärmutterhals zäher. Spermien kommen schwerer hindurch.'),
+       ('Die Wirkung von Kupfer auf Spermien beantwortet einen Teil von Lauras Anliegen.', 'Kupfer hemmt Spermien. Sie erreichen die Eizelle schwerer.'),
+       ('Die Hormonspirale berücksichtigt den Schwangerschaftsschutz.', 'Die Hormonspirale schützt vor Schwangerschaft.'),
+       ('Die Kupferspirale berücksichtigt den Schwangerschaftsschutz.', 'Die Kupferspirale schützt vor Schwangerschaft.'),
+       ('Die Pille berücksichtigt Schwangerschaftsschutz und Alltag.', 'Die Pille schützt vor Schwangerschaft, wenn Laura sie nach Plan einnimmt.'),
+       ('Du hast die Aussage zur Anwendung geprüft. ', ''),
        ('Anwendung und individuelle Verträglichkeit sind getrennte Fragen.', 'Kann Laura die Pille nach Plan nehmen? Wie ihr Körper darauf reagiert, ist eine andere Frage.'),
        ('Auch hormonfrei ist Verhütung möglich. Ein geeignetes synthetisches Kondom besteht nicht aus Latex.',
         'Eine Möglichkeit ohne Hormone ist ein Kondom aus Kunststoff ohne Latex.'),
@@ -89,7 +105,7 @@ def laura(bank):
             for ctx in [task['before'],*task['strategies'].values()]:einfache_sprache(ctx)
         for k in ('anchors','code','anchorFeedback'):stage.pop(k)
     for k in ('normalization','paperFallbackInstruction'):bank.pop(k,None)
-    return bank
+    return beschriften(bank)
 
 def familie(bank):
     # Nur Schlüssel mit einem Schüler-Einstieg gelangen ins digitale Modul.
@@ -99,8 +115,13 @@ def familie(bank):
     ui['soloReplace']='Das Gespräch beginnt neu. Deine erste und deine abschließende Antwort bleiben auf diesem Gerät, bis du die Seite schließt.'
     keys=('levels','opening','second','cards','cases','limits','evaluationHints','review','levelPrompts','caseReflection','evaluationHelpByLevel','crossReference','designFiles','commit')
     selected={k:bank[k] for k in keys}
-    selected.update(ui=ui,definitions={'Fakt':'Welche Aussage kann man prüfen?','Wert':'Was ist jemandem wichtig?','Norm':'Was sollte man tun?','Folgerung':'Welcher Rat folgt daraus?'},known='Lies die Nachricht.')
+    selected.update(ui=ui,definitions={'Fakt':'Eine Aussage, die man prüfen kann.','Wert':'Was einem Menschen wichtig ist.','Norm':'Eine Regel, wie man handeln sollte.','Folgerung':'Der Schluss, den jemand zieht, zum Beispiel ein Rat.'},known='Lies die Nachricht.')
+    ui.update(compare='Zu den Aussagen',questionA='Welche Beschwerden sind beim Abbruch mit Medikamenten möglich?',priority='Welche Frage von Laura ist dir wichtiger?')
     selected['crossReference']=['Die Information über Beschwerden steht bei der Mutter. Wie hilft sie dir beim Rat der Freundin?', 'Die Information über spätere Schwangerschaften steht bei der Freundin. Wie hilft sie dir beim Rat der Mutter?']
+    selected['caseReflection']={'Mutter':'Beweisen mögliche Schmerzen, was Laura tun sollte?',
+        'Freundin':'Kann jemand Laura ein späteres Kind versprechen?',
+        'Großmutter':'Welche Wörter in ihrer Nachricht zeigen, was sie schützen möchte?',
+        'Vater':'Warum soll Laura vor der Entscheidung in der Arztpraxis fragen?'}
     selected['evaluationSteps']=['Lauras Frage','Anliegen vergleichen','Nachrichten abwägen','Stundenabschluss']
     selected['evaluationRecovery']=[dict(id='LA-0'+str(i+1),section=t) for i,t in enumerate(selected['evaluationSteps'])]
     for name,c in selected['cases'].items():
@@ -127,7 +148,7 @@ def familie(bank):
             for k,h in t.get('helpByLevel',{}).items():t['helpByLevel'][k]=list(map(hinweis,h))
     for name in NACHRICHTEN:
         c=selected['cases'][name]
-        who='Mama' if name=='Mutter' else 'deiner Freundin'
+        who='Mama' if name=='Mutter' else 'Lauras Freundin'
         for task in c['tasks']:
             key=task['id']
             if key=='Leerstelle':
@@ -145,8 +166,8 @@ def familie(bank):
                 task['answers'][2]['feedback']='Die Arztpraxis ist ein nächster Schritt. Was rät die Freundin Laura zur Schwangerschaft?'
             if key in QUELLEN[name]:
                 source=QUELLEN[name][key][-1]
-                prompts={'Wert':'Was ist '+who+' wichtig?', 'Norm':'Welche Regel nennt '+('Mama' if name=='Mutter' else 'deine Freundin')+'?',
-                         'Folgerung':'Was rät '+('Mama' if name=='Mutter' else 'deine Freundin')+' Laura?'}
+                prompts={'Wert':'Was ist '+who+' wichtig?', 'Norm':'Welche Regel nennt '+('Mama' if name=='Mutter' else 'Lauras Freundin')+'?',
+                         'Folgerung':'Was rät '+('Mama' if name=='Mutter' else 'Lauras Freundin')+' Laura?'}
                 task['prompt']='Was rät die Freundin Laura zur Schwangerschaft?' if key=='Folgerung' and name=='Freundin' else prompts[key]
                 hints={'Wert':['Welches Anliegen hörst du heraus?', 'Worüber macht sich Mama Sorgen?' if name=='Mutter' else 'Was hat Laura für später vor?', 'Achte auf „Gesundheit“.' if name=='Mutter' else 'Achte auf „Zukunft“.'],
                        'Norm':['Suche eine Regel, die auch für andere gilt.', 'Was sollte man aus Sicht der Person tun?', 'Achte auf „man sollte“.'],
@@ -157,7 +178,7 @@ def familie(bank):
                     task['helpByLevel'][t][1]={'Wert':'Unterscheide: Was ist ihr wichtig? Was rät sie Laura?',
                         'Norm':'Gilt der Satz für Laura allein oder auch für andere Menschen?',
                         'Folgerung':'Welcher Rat folgt für die Person aus ihrem Anliegen?'}[key]
-    return selected
+    return familie_beschriften(selected,QUELLEN)
 
 
 QUELLEN={

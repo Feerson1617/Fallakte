@@ -147,13 +147,13 @@ function help(task,r){
       if(!issue && r.sourceError && task.evidenceSentences){
         const original=sentences(bank.cases[current.person].original);
         const ref=task.evidenceSentences[0];
-        hints[0]=task.prompt+' Suche das in der Nachricht von '+current.person+'.';
-        hints[1]=task.prompt;
+        hints[0]='Nachricht · '+current.person+': '+task.prompt;
+        hints[1]='„'+original[ref]+'“';
         hints[2]='Suche den '+(ref+1)+'. Satz.';
         hints[3]=original[ref];
-        hints[4]='Vergleiche die Textstellen. Zur Frage passt: „'+original[ref]+'“';
+        hints[4]='Passender Satz: „'+original[ref]+'“';
       }
-      if(issue?.ref)hints[0]=issue.frage+' Prüfe die Aussage zur Verhütung in deinem Text.';
+      if(issue?.ref)hints[0]=issue.frage;
       paragraph(box,hints[depth-1]);
       const source=issue?.info || (task.answers && familienModell(task).quelle) || (ownTask && ownTask.beispiel);
       if(source && !hints[depth-1].includes(source))paragraph(box,source,'hilfsquelle');
@@ -224,7 +224,7 @@ function showHome(){
   message(aside,'Laura',bank.opening);
   const box=el(layout,'section',undefined,'card');
   heading(box,ui.openingTitle);chooseLevel(box);
-  box.dataset.auftrag=level?'Öffne die erste Einschätzung oder arbeite weiter.':'Wähle dein Niveau.';
+  box.dataset.auftrag=level?(saved.last?'Dein Gespräch mit Laura':'Deine erste Einschätzung'):'Wähle dein Niveau.';
   if(!level)return;
   if(saved.last)btn(box,ui.resume,'resume',()=>{current=saved.last;screen='work';draw(true);},'primary');
   const begin=()=>{
@@ -265,9 +265,7 @@ function thought(box,label,text,save,id,buttonText,submit){
   const input=el(el(box,'label',label),'textarea');input.value=text;
   // This is a form check, never a judgement about a pupil's argument or spelling.
   const usable=()=>Boolean(input.value.trim());
-  if(!kurz()){
-    const note=paragraph(box,ui.thoughtHint,'small');note.id=id+'-hint';input.setAttribute('aria-describedby',note.id);
-  }
+
   const confirm=btn(box,buttonText,id,()=>{if(usable())submit();});
   confirm.disabled=!usable();
   input.oninput=()=>{save(input.value);confirm.disabled=!usable();};
@@ -276,17 +274,17 @@ function draft(box,task,r,c){
   if(r.valid)return;
   if(r.compared){
     const observed=Diagnose.analyse(r.text,familienModell(task),medizin);
-    const msg=paragraph(box,observed.feedback+(observed.status==='vollständig'?'':' '+observed.focus),'denkhinweis');
+    const msg=paragraph(box,observed.feedback+(['teil','verwechslung','ansatz','zusammenhang'].includes(observed.status)?' '+observed.focus:''),'denkhinweis');
     msg.dataset.diagnose=observed.status;
     const own=el(box,'details',undefined,'eigener-vergleich');el(own,'summary','Eigener Grund');
     paragraph(own,'Fachlich ungeprüft: '+r.text);
     btn(own,'Erklärung bearbeiten','edit-draft',()=>{r.compared=false;r.feedback='';r.selected=undefined;draw();});
     return;
   }
-  if(r.source!==undefined)paragraph(box,ui.sourceYes+' '+sentences(c.original)[r.source],'small');
+  if(r.source!==undefined)paragraph(box,'Deine Textstelle: „'+sentences(c.original)[r.source]+'“','small');
   if(r.draftError){
     paragraph(box,r.draftError,'feedback falsch entwurfsfehler').id='draft-error';
-    btn(box,'Grund bearbeiten','entwurf-bearbeiten',()=>{r.draftError='';draw();Entwurf.bearbeiten(root.querySelector('textarea'));});
+    btn(box,'Meinen Satz ändern','entwurf-bearbeiten',()=>{r.draftError='';draw();Entwurf.bearbeiten(root.querySelector('textarea'));});
   }
   thought(box,ui.free,r.text,text=>{r.text=text;r.draftError='';box.querySelector('#draft-error')?.remove();box.querySelector('#entwurf-bearbeiten')?.remove();box.querySelector('#compare').hidden=false;},'compare',ui.compare,()=>{
     const issue=medizin(r.text);r.draftError=issue?.info || '';r.compared=!issue;if(r.compared)r.sourceError='';draw(true);if(issue)Arbeitsplatz.zeigen(root.querySelector('#draft-error'));
@@ -380,18 +378,18 @@ function caseView(){
   const advance=()=>go('case',{person,at:at+1});
   if(at===0){
     root.classList.add('lesephase');
-    box.dataset.auftrag=person==='Mutter'?'Finde Fakt, Wert und Norm. Was fehlt in den Nachrichten?':'Lies die Nachricht im Chat. →';
+    box.dataset.auftrag='Lies die Nachricht '+({Mutter:'von Mama',Freundin:'der Freundin',Großmutter:'der Großmutter',Vater:'des Vaters'}[person])+' im Chat.';
     btn(box,ui.read,'next',advance,'primary');
   }else if(!paper){
     const task=c.tasks[at-1],r=record(person+'/'+task.id);
-    box.dataset.auftrag=r.valid?'Lies die Rückmeldung. Gehe dann weiter.':r.compared?'Welche Aussage passt?':task.prompt;
+    box.dataset.auftrag=r.valid?'':task.prompt;
     const adding=task.id==='Ergänzung';
     const concept=adding?c.missing:task.id;
     if(!r.compared && !r.valid && bank.definitions[concept] && !kurz())paragraph(box,concept+' · '+bank.definitions[concept],'small');
-    if(!r.compared && !r.valid)el(box,'h2',task.prompt);
+
     if(advanced(level) && !r.valid){
 
-      if(adding && !r.compared && !kurz())paragraph(box,bank.caseReflection[person]);
+      if(adding && !r.compared && !kurz())box.dataset.auftrag=task.prompt+' '+bank.caseReflection[person];
       draft(box,task,r,c);
     }
     if(!advanced(level)||r.compared)options(box,task,r,advance);
@@ -417,9 +415,9 @@ function caseView(){
     }
     if(c.tasks.every(task=>saved.records[person+'/'+task.id]?.valid))saved.complete[person]=true;
     const next=idx===0?'Nachricht der Freundin':idx===1?'Zu Lauras Frage':'Zur Übersicht';
-    el(box,'h2','Zur Nachricht');
+    box.dataset.auftrag=c.recovery[at].section;
     const result=saved.records[person+'/Ergänzung'];
-    if(result?.valid)paragraph(box,c.addition);else paragraph(box,'Hier kannst du die Fachinformation noch prüfen.');
+    if(result?.valid)paragraph(box,c.addition);
     btn(box,next,'next',()=>{if(idx===0)go('case',{person:names[1],at:0});else if(idx===1)go('laura',{at:0});else{screen='home';draw();}},'primary');
   }
 }
@@ -444,8 +442,8 @@ function evaluationHelp(box,r){
 const reviewText=i=>bank.review[i][1].split('“')[0];
 function comparison(box){
   const p=saved.personal;
-  const action={choice:'Welche Nachricht hilft Laura besonders?',concern:ui.priority,fact:ui.evidence,
-    reason:(p.concern===0?'Wie hilft der Hinweis auf Beschwerden bei diesem Rat?':'Wie hilft der Hinweis auf eine spätere Schwangerschaft bei diesem Rat?'),limit:bank.limits[p.concern||0].prompt,done:'Halte deine Einschätzung fest.'};
+  const action={choice:'Welche Nachricht hilft Laura besonders?',concern:ui.priority,fact:p.concern?'Kann Laura nach einem Abbruch später schwanger werden?':'Was passiert bei einem Abbruch mit Medikamenten im Bauch?',
+    reason:(p.concern===0?'Warum sind mögliche Schmerzen beim Rat der Freundin für dich wichtig?':'Warum sind spätere Kinder beim Rat der Mutter für dich wichtig?'),limit:bank.limits[p.concern||0].prompt,done:'Halte deine Einschätzung fest.'};
   box.dataset.auftrag=action[p.step];
   const end=()=>{
     p.step='done';saved.completedReview=true;go('laura',{at:3});final();
@@ -467,21 +465,19 @@ function comparison(box){
     paragraph(box,ui.personal);btn(box,ui.next,'next',end,'primary');return;
   }
   if(p.step==='choice'){
-    paragraph(box,'Welche Nachricht hilft Laura besonders?');
+
     for(const [i,name] of [...names.slice(0,2),ui.both,'Ich bin noch unsicher'].entries())
       btn(box,name,'weight-'+i,()=>{p.choice=name;p.part=0;p.step='concern';p.feedback='';draw(true);});
   }else{
     const person=(p.choice===ui.both || p.choice==='Ich bin noch unsicher')?names[p.part]:p.choice,num=names.indexOf(person);
     if(!kurz()||p.step==='concern')el(box,'strong',person);
-    if(p.step==='reason')box.dataset.auftrag+=' ('+person+')';
     if(p.step==='concern'){
-      paragraph(box,ui.priority);
+
       [ui.questionA,ui.questionB].forEach((v,i)=>btn(box,v,'concern-'+i,()=>{
         p.concern=i;p.reason='';p.alternate=false;p.other=false;p.step='fact';p.feedback='';draw(true);
       }));
     }else if(p.step==='fact'){
-      if(kurz())el(box,'h2',p.concern?'Welcher Fakt hilft bei der Frage nach einer späteren Schwangerschaft?':'Welcher Fakt hilft bei der Frage nach Blutungen und Schmerzen?');
-      else{paragraph(box,p.concern?ui.questionB:ui.questionA);paragraph(box,ui.evidence);}
+
       const values=[bank.cases.Mutter.addition,bank.cases.Freundin.addition,ui.guarantee,ui.forced];
       const compactValues=['Die Gebärmutter zieht sich zusammen. Blutungen und Schmerzen sind möglich.','Nach einem Abbruch ohne Komplikationen bleibt eine spätere Schwangerschaft möglich.',ui.guarantee,ui.forced];
       const answers=p.feedback&&kurz()?aufklappen(box,'Fachinformation ändern'):box;
@@ -506,14 +502,13 @@ function comparison(box){
     }else{
       const target=p.concern;
       const r=record('Bewertung/'+person+'/'+target),task=bank.limits[target];
-      if(!kurz())paragraph(box,p.other?ui.checkLimit:ui.evidenceOK);
+
       if(p.other){
         const own=kurz()?aufklappen(box,'Eigener Grund · ungeprüft'):box;
         paragraph(own,p.reason);
         btn(own,ui.editReason,'edit-reason',()=>{p.step='reason';draw(true);});
       }
-      if(!kurz())paragraph(box,p.concern?ui.reasonB:ui.reasonA);
-      if(!r.valid||!kurz())el(box,'h3',task.prompt);
+
       options(box,task,r,()=>{
         p.notes[person]={concern:target,reason:p.other?p.reason:'',outcome:status(r)};
         if((p.choice===ui.both || p.choice==='Ich bin noch unsicher')&&p.part===0){p.part++;p.step='concern';p.other=false;p.alternate=false;draw(true);}
@@ -532,11 +527,11 @@ function lauraView(){
   const box=el(layout,'section',undefined,'card');
   facts(kurz()?panel:box);
   if(at===0){
-    box.dataset.auftrag='Lies Lauras neue Fragen. →';root.classList.add('lesephase');
+    box.dataset.auftrag='Lies Lauras Fragen im Chat.';root.classList.add('lesephase');
     btn(box,'Nachrichten abwägen','next',()=>go('laura',{at:2}),'primary');
   }else if(at===1 || at===2)comparison(box);
   else{
-    box.dataset.auftrag='Öffne deinen Stundenabschluss.';
+    box.dataset.auftrag='Deine Antwort an Laura';
     btn(box,Lernspur.state(level).schluss?'Dein Vergleich':'Einschätzung begründen','abschluss-oeffnen',final,'primary');
     reserves(box);
 
@@ -547,13 +542,13 @@ function personal(phase,done){
   const choices=['Mutter','Freundin',ui.both,'Ich bin noch unsicher'];
   const reasons={
     Förder:'Was ist Laura wichtig? Welcher Fakt hilft ihr? Stichworte reichen.',
-    ESA:'Was ist Laura wichtig? Was erklärt der Fakt dazu?',
-    MSA:'Verbinde Lauras Anliegen mit einem Fakt. Was bleibt für sie offen?',
-    AHR:'Wäge beide Anliegen ab. Was erklären die Fakten? Was muss Laura selbst entscheiden?'
+    ESA:'Was hilft Laura mehr: etwas über Schmerzen zu wissen oder über spätere Kinder? Warum?',
+    MSA:'Was erklären die Fakten über Schmerzen oder spätere Kinder? Was muss Laura selbst entscheiden?',
+    AHR:'Schmerzen oder später Kinder bekommen: Was zählt für dich stärker? Was bleibt Lauras eigene Entscheidung?'
   };
   const messages=names.slice(0,2).map(n=>[n,bank.cases[n].original]);
   Lernspur.open({status:text=>port?.postMessage({type:'view',abschluss:Lernspur.erlaubt(level),active:'',status:text+' · '+level}),tier:level,firstTitle:'Deine erste Einschätzung',finalTitle:'Deine Einschätzung am Ende',
-    firstQuestion:'Welche Nachricht hilft Laura zuerst?',finalQuestion:'Welche Nachricht hilft Laura jetzt?',
+    firstReason:choice=>choice==='Ich bin noch unsicher'?'Was macht die Wahl zwischen Mama und Freundin für dich schwer?':choice===ui.both?'Warum helfen Laura beide Nachrichten?':'Was hilft Laura an der Nachricht von '+(choice==='Mutter'?'Mama':'ihrer Freundin')+'?',firstQuestion:'Welche Nachricht hilft Laura zuerst?',finalQuestion:'Welche Nachricht hilft Laura jetzt?',
     firstChoices:choices,finalChoices:choices,reference:()=>bank.cards[0].short+' '+bank.cards[1].short,
     suggestion:saved.personal.choice?{choice:saved.personal.choice}:null,reason:reasons[level],
     startMessages:[['Laura','Schau mal, welche Nachrichten ich bekommen habe:'],...messages,['Laura','Beide wollen mir helfen. Aber wer hat denn jetzt Recht?']],
@@ -607,7 +602,7 @@ function draw(focus=false){
   const title=root.querySelector(':scope>h1')||work.querySelector('h1');
   const hint=screen==='picker'?'Wähle die Person und den Abschnitt, bei dem du weiterarbeiten willst.':
     screen==='home'?'Wähle dein Niveau. Öffne dann die erste Nachricht.':
-    'Lies die aktuelle Nachricht. Der Arbeitsauftrag nennt den nächsten Schritt.';
+    work.dataset.auftrag||work.querySelector('h2,h3')?.textContent||'Tippe auf „Weiter“.';
   Arbeitsplatz.setup(root,work,root.querySelector('.split>.msg'),title,root.querySelector('#help'),b=>popup('Hilfe',box=>paragraph(box,hint),b));
   notify();
   if(focus){window.scrollTo(0,0);root.querySelector('h1')?.focus({preventScroll:true});}

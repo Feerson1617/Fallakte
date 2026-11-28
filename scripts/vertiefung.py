@@ -47,26 +47,29 @@ def make_bank(person):
                     full=short+' Welcher Vorschlag passt zu seiner Frage?'
                 elif method=='Cu':
                     short='Kupfer schützt vor Schwangerschaft. Der Schutz vor Infektionen fehlt.'
-                    full=short+' Wie kannst du beide Anliegen berücksichtigen?'
+                    full=short+' Was schützt Celina auch vor Ansteckung beim Sex?'
                 else:
                     label={'P':'Die Kombinationspille','H':'Die Hormonspirale'}[method]
                     short=label+' enthält Hormone. Celina möchte keine zusätzlichen Hormone.'
-                    full=short+' Prüfe deinen gesamten Vorschlag an ihrer Entscheidung.'
+                    full=short+' Was kann Celina ohne Hormone benutzen?'
                 record['conflicts'][key]={'short':short,'full':full}
-        if person=='Celina':
-            focus=['ihrem Wunsch nach einer Methode ohne Hormone','ihrem Wunsch nach längerem Schutz','ihrer Sorge vor dem Einsetzen','ihrem Wunsch nach Schutz vor Infektionen','ihren Wünschen und Grenzen'][len(records)]
-            record['task']['Foerder']='Welche Aussage erklärt, ob dein Vorschlag zu '+focus+' passt?'
-            if len(records) in (0,1,4):
-                record['task']['AHR']={0:'Welche Methoden kommen ohne zusätzliche Hormone infrage? Begründe, welche du Celina zunächst empfiehlst.',
-                    1:'Was unterscheidet langen Schutz von einem dauerhaften Eingriff? Erkläre, was für deinen Rat an Celina wichtiger ist.',
-                    4:'Was würde deinen Rat ändern, wenn Celina einen anderen Wunsch wichtiger findet oder eine Einlage ablehnt?'}[len(records)]
-            record['task']['ESA']='Lies Celinas Nachricht. Welche Aussage erklärt, ob die Methode zu ihrem Wunsch oder ihrer Sorge passt?'
-        elif not records:
+        if person=='Tom' and not records:
             record['questions'][1][0]='Wenn du mit deiner Partnerin über Verhütung sprichst: Wer entscheidet über den eigenen Körper?'
-            record['task']['Foerder']='Welche Verhütung kann Tom selbst benutzen? Wähle die Aussage, die erklärt, warum.'
-            record['task']['AHR']='Erkläre, an wessen Körper die Methode angewendet wird und wer darüber entscheidet.'
-        elif len(records)==1:
-            record['task']['Foerder']='Lies den Artikel. Erkläre mündlich, warum die Forschung Zeit braucht.'
+        if person=='Celina':
+            einfacher=['Was kann Celina ohne Hormone benutzen?', 'Welche Methode schützt Celina lange?',
+                       'Wer entscheidet, ob Celina sich eine Spirale einsetzen lässt?',
+                       'Was schützt Celina auch vor Ansteckung beim Sex?', 'Was rätst du Celina am Ende?']
+            tiefer=['Wie wirkt die Methode ohne Hormone?', 'Wann braucht Celina wieder ein Kondom oder eine neue Spirale?',
+                    'Was kann die Ärztin erklären? Wer entscheidet danach?', 'Was schützt vor Schwangerschaft und was vor HIV?',
+                    'Welcher Wunsch von Celina zählt für dich am meisten? Wann würdest du ihr anders raten?']
+        else:
+            einfacher=['Welche Methode kann Tom selbst benutzen?', 'Was bedeutet eine kleinere Zahl von Spermien für die Befruchtung?',
+                       'Was wurde in Studie B bei den Männern gemessen?']
+            tiefer=['Was kann Tom selbst benutzen? Wer entscheidet über den Körper seiner Partnerin?',
+                    'Weniger Spermien: Wie könnte das vor Schwangerschaft schützen? Was müsste man noch messen?',
+                    'Welche Studie zählt Schwangerschaften? Was weiß man über Schutz bei längerer Anwendung?']
+        for level in record['task']:
+            record['task'][level]=(einfacher if level in ('Foerder','ESA') else tiefer)[len(records)]
         records.append(record)
     bank={'version':person.lower()+('-1.2' if person=='Tom' else '-1.1'),'buildCommit':commit(),'person':person,'levels':laura['levels'],
           'stages':records,'cards':laura['cards']}

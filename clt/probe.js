@@ -2,15 +2,24 @@
 () => {
  const el=s=>document.querySelector(s), seen=new Map();
  let task='',caseName='';
- const root=()=>el('dialog[open]')||el('.lernraum:not([hidden])');
+ const root=()=>el('dialog[open]')||el('#lernspur')||el('.lernraum:not([hidden])');
  function observe(event){
    const node=root();if(!node)return;
    const area=node.querySelector('.blatt')||node;
    const question=node.querySelector('.arbeitskopf h1')?.textContent||node.querySelector('h2')?.textContent||'';
+   const cue=node.querySelector('.aufgabenkasten p')?.innerText||'';
    const text=area.innerText;
+   const buttons=[...node.querySelectorAll('button,textarea,select,summary')].filter(n=>n.checkVisibility() &&
+     ![...n.parentElement.closest('details:not([open])')?.children||[]].some(child=>child.tagName!=='SUMMARY' && child.contains(n)))
+     .map(n=>({id:n.id,wort:n.getAttribute('aria-label')||n.labels?.[0]?.innerText||n.innerText||n.placeholder||'',gesperrt:!!n.disabled}));
+   const chat=node.querySelector('.gespraech');
+   const message=(chat?.querySelector('.quelle-zur-aufgabe')||chat?.querySelector('.chat-entry:last-child,.chat-history .bubble:last-child')||chat?.querySelector('blockquote'))?.innerText||'';
+   const feedback=node.querySelector('[data-diagnose],#response,#fachmeldung,#feedback')?.innerText||'';
+   const title=node.querySelector('h1,h2')?.innerText||'';
+
    const ids=[...area.querySelectorAll('button,textarea,summary')].filter(e=>e.getClientRects().length).map(e=>(e.id||e.textContent)+(e.disabled?' · gesperrt':''));
    if(/Laufzettel|Lernbogen|Prüfcode|Code prüfen|Zusatzbogen|Kreise .* ein|Seite [123]\b/i.test(text))throw Error('Alter Papierauftrag: '+text);
-   const key=JSON.stringify([task,caseName,question,text,ids]);window.geometrie?.(key,node);if(!seen.has(key))seen.set(key,{task,caseName,question,text,ids,event});
+   const key=JSON.stringify([task,caseName,question,text,ids]);window.geometrie?.(key,node);const variant=JSON.stringify([key,cue,message,buttons]);if(!seen.has(variant))seen.set(variant,{task,caseName,question,text,ids,event,cue,buttons,message,feedback,title});
  }
  function get(selector){const node=typeof selector==='string'?el(selector):selector;if(!node)throw Error('Fehlt '+selector+' · '+root()?.innerText);return node;}
  function click(selector){

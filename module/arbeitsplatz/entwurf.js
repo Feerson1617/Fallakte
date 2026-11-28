@@ -81,11 +81,11 @@ const Entwurf = (() => {
   };
   function hilfen(quelle,frage,fakt,issue){
     const steps=korrekturhilfe[issue?.kennung?.split('/')[0]||issue?.quelle];
-    if(steps)return [frage+' ('+quelle+')',...steps,'Vergleiche deinen Grund mit der Korrektur: '+fakt];
+    if(steps)return [frage+' ('+quelle+')',...steps,fakt];
     const parts=fakt.match(/[^.!?]+[.!?]+|[^.!?]+$/gu) || [fakt];
     const detail=parts.find(line=>!line.includes('?'))?.trim() || fakt;
-    return [frage+' ('+quelle+')',detail,parts.length>1?parts.slice(1).join('').trim():'Welche Wörter in deinem Satz passen zu dieser Information?',
-      'Formuliere den betreffenden Satz neu: „Für Laura bedeutet das …“','Vergleiche deinen Grund mit der Korrektur: '+fakt];
+    return [frage+' ('+quelle+')',detail,parts.length>1?parts.slice(1).join('').trim():frage,
+      'Satzanfang: „Für Laura bedeutet das …“',fakt];
   }
   function bearbeiten(field){
     Arbeitsplatz.zeigen(field);field.focus({preventScroll:true});

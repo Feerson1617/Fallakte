@@ -132,10 +132,10 @@ window.Beratung = (() => {
     const canonical=s=>s.trim().toLocaleLowerCase('de').replace(/[.!]+$/u,'').replace(/\s+/gu,' ');
     const option=info().options.find(o=>!o.correct && canonical(o.text)===canonical(draft.reason) &&
         !(active.stageId==='L04' && o.text.includes('Lauras Sorge')));
-    return option?{frage:task().task,info:option.feedback,ref:option.card}:null;
+    return option?{frage:info().question,info:option.feedback,ref:option.card}:null;
   }
   function beratungsmodell(){
-    return Aussagen.beratung(active.stageId,bank().strategies[active.draft.strategy].methods,info(),task().task);
+    return Aussagen.beratung(active.stageId,bank().strategies[active.draft.strategy].methods,info(),info().writeQuestion);
   }
   function entwurfsdiagnose(){
     return Diagnose.analyse(active.draft.reason,beratungsmodell());
@@ -249,7 +249,7 @@ window.Beratung = (() => {
   }
   function choices() {
     const field=element('fieldset','beratung-wahl');
-    field.append(element('legend','','Was rätst du Laura?'));
+    field.append(element('legend','',task().choiceQuestion));
     if (active.previous) {
       field.append(element('p','bisher','Dein bisheriger Rat: '+bank().strategies[active.previous].label+'.'));
     }
@@ -291,9 +291,9 @@ window.Beratung = (() => {
   }
   function explanation(){
     const box=element('section','fachcheck');
-    const label=element('label','',task().task);label.htmlFor='erklaerung';
+    const label=element('label','nur-vorlesen',info().writeQuestion);label.htmlFor='erklaerung';
     const field=element('textarea');field.id='erklaerung';field.rows=2;field.value=active.draft.reason;
-    const next=control('vergleichen','Mit den Aussagen vergleichen',()=>{
+    const next=control('vergleichen','Zu den Aussagen',()=>{
       const d=active.draft, error=draftIssue();
       d.feedback=error?{type:'A',text:error.info,card:error.ref}:null;
       d.compared=!error;
@@ -307,15 +307,14 @@ window.Beratung = (() => {
     box.append(label,field,next);return box;
   }
   const compact=()=>matchMedia('(max-height:400px),(max-width:475px)').matches;
-  const kurzfrage={L01:'Was bedeutet die Latexallergie für deinen Rat?',L02:'Wie schützt dein Rat vor Schwangerschaft und Infektionen?',L03:'Passt dein Rat zu Lauras wechselndem Alltag?',L04:'Wie passt dein Rat zu ihren Schmerzen und Sorgen?',L05:'Was spricht für deinen Schlussrat?'};
   function closedCheck() {
     const field=element('section','fachcheck');
     field.id='begruendungen';
-    const question=element('h2','',advanced()?'Welche Aussage stimmt?':compact()?kurzfrage[active.stageId]:task().task);
+    const question=element('h2','',advanced()?task().controlQuestion:info().question);
     question.id='begruendungsfrage';field.setAttribute('aria-labelledby',question.id);field.append(question);
     if(advanced()){
       const analysis=entwurfsdiagnose();
-      const msg=element('p','denkhinweis',analysis.feedback+(analysis.status==='unsicher'?'':' '+analysis.focus));
+      const msg=element('p','denkhinweis',analysis.feedback+(analysis.status==='teil'?' '+analysis.focus:''));
       msg.dataset.diagnose=analysis.status;field.append(msg);
       const draft=element('details','eigener-text');draft.append(element('summary','','Eigener Grund'),
           element('p','','Fachlich ungeprüft: '+active.draft.reason),control('erklaerung-aendern','Erklärung ändern',()=>{active.draft.compared=false;editReason();}));
@@ -379,7 +378,6 @@ window.Beratung = (() => {
     }
     if(matchMedia('(max-width:650px),(max-height:400px)').matches){
       const more=element('details','quellenwahl');more.append(element('summary','','Karte und Rückfragen'));
-      if(active.draft.strategy && !advanced())more.append(element('p','',task().task));
       for(const item of [...tools.children])if(item.id!=='hilfe')more.append(item);
       tools.append(more);
     }
@@ -413,19 +411,20 @@ window.Beratung = (() => {
     const step=currentStep();
     area.id='beratung-arbeit';
     area.dataset.step=step;
-    area.dataset.auftrag={wahl:'Was rätst du Laura?',grund:advanced() && active.draft.compared?'Vergleiche deinen Grund. Welche Aussage stimmt?':
-      compact() && !advanced()?kurzfrage[active.stageId]:task().task,senden:'Vergleiche deinen Grund. Sende dann deinen Rat.',korrektur:'Ändere deinen Rat für Laura.',
-      antwort:'Lies Lauras Antwort im Chat.'}[step];
+    const fachfrage=advanced() && active.draft.compared?task().controlQuestion:
+      active.draft.strategy?info().writeQuestion:task().choiceQuestion;
+    area.dataset.auftrag={wahl:task().choiceQuestion,grund:fachfrage,senden:'Deine Nachricht an Laura',
+      korrektur:task().choiceQuestion,antwort:'Lauras Antwort im Chat'}[step];
     area.setAttribute('aria-label','Dein aktueller Arbeitsschritt');
     if(active.reading){
-      area.dataset.auftrag='Lies Lauras neue Nachricht. →';
+      area.dataset.auftrag='Lies Lauras neue Nachricht im Chat.';
       area.append(control('beratung-lesen','Weiter',()=>{active.reading=false;render('beratung-stage');},'senden'));
       return area;
     }
     if (active.phase==='sent') {
       const following=followingStage();
       const end=!following?.playable;
-      area.append(element('h2','',end?'Dein persönlicher Schlussrat':'Lies Lauras Antwort.'));
+
       if(end){
         const facts=element('details','fallwissen');facts.append(element('summary','','Was ist Laura wichtig?'));
         const list=element('ul');for(const text of knownConcerns(active.tier))list.append(element('li','',text));facts.append(list);area.append(facts);
@@ -434,11 +433,8 @@ window.Beratung = (() => {
       return area;
     }
     if (step==='wahl' || step==='grund') {
-      const evidence=element('p','abschnittshinweis',step==='grund' ? info().evidence : task().evidence || stage().evidence);
-      evidence.dataset.stage=active.stageId;
-      evidence.dataset.aboutStrategy=step==='grund' ? active.draft.strategy : '';
       if (step==='wahl') {
-        area.append(evidence,choices());
+        area.append(choices());
       } else {
         area.append(chosenStrategy(true));
         if(advanced() && !active.draft.compared)area.append(explanation());
@@ -461,10 +457,10 @@ window.Beratung = (() => {
       choices.append(element('summary','','Aussage ändern'));
       retry.replaceWith(choices);choices.append(retry);
       area.insertBefore(feedback,choices);
-      area.dataset.auftrag='Lies den Hinweis. Ändere deine Aussage.';
+      area.dataset.auftrag=fachfrage;
     }else area.append(feedback);
     if(step==='grund' && advanced() && !active.draft.compared && report?.type==='A'){
-      area.append(control('entwurf-bearbeiten','Grund bearbeiten',()=>{
+      area.append(control('entwurf-bearbeiten','Meinen Satz ändern',()=>{
         active.draft.feedback=null;render('erklaerung');Entwurf.bearbeiten(document.getElementById('erklaerung'));
       },'senden'));
     }
@@ -478,7 +474,7 @@ window.Beratung = (() => {
     }
     if(advanced() && step==='senden'){
       const statement=info().options.find(o=>o.id===active.draft.optionId);
-      area.append(element('p','','Vergleiche deinen Grund mit der geprüften Aussage: '+statement.text));
+      area.append(element('p','',statement.text));
       const own=element('details','entwurfsvergleich');own.append(element('summary','','Eigenen Grund ansehen'),element('p','',active.draft.reason));area.append(own);
     }
     const submit=control('nachricht-senden','Nachricht senden',send,'senden');
@@ -521,7 +517,7 @@ window.Beratung = (() => {
     layout.append(history,work());
     target.replaceChildren(header,layout);
     Arbeitsplatz.setup(target,layout.lastElementChild,history,header,layout.querySelector('#hilfe'),
-      b=>window.Material.orient('Lies Lauras Antwort. Die Taste in der Aufgabe führt weiter.',b));
+      b=>window.Material.orient(active.reading?'Lies die Nachricht von Laura. Tippe auf „Weiter“.':followingStage()?.playable?'Tippe auf „'+followingStage().title.split(' – ')[0]+' öffnen“.':'Tippe auf „Schlussrat festhalten“.',b));
     const transcript=history;
     transcript.scrollTop=showLatest || active.chatScroll===null ? transcript.scrollHeight : active.chatScroll;
     const focus=document.getElementById(focusId);

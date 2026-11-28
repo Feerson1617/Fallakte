@@ -27,7 +27,7 @@
  }
  tap('[data-option="'+way.options.find(o=>o.correct).id+'"]');
  if(way.status==='C'){
-   if(!$('#beratung-arbeit').innerText.includes('Vergleiche deinen Grund'))throw Error('Vergleich fehlt');
+   if(!$('#beratung-arbeit').innerText.includes(way.options.find(o=>o.correct).text) || $('.entwurfsvergleich p')?.textContent!==own)throw Error('Vergleich fehlt');
    tap('#nachricht-senden');
    if($('[data-kind=send]').textContent.includes(own)||$('[data-kind=entwurf] p')?.textContent!==own ||
       !$('[data-kind=entwurf] strong').textContent.includes('ungeprüft'))throw Error('Eigener Grund falsch gekennzeichnet');

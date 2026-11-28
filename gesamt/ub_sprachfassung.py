@@ -30,7 +30,7 @@ def bauen(joint):
       #tageshinweis button{min-height:44px;font:inherit}
     </style></head>""")
     shell=single_replace(shell,'<header>',"""<button type="button" id="tageshilfe" aria-controls="tageshinweis">Ich brauche Hilfe</button>
-      <div id="tageshinweis" hidden><p>Suche das Datum deiner Stunde. Tippe auf das Bild mit diesem Datum.</p><button type="button" id="auswahl-zurueck">Zurück zur Auswahl</button></div><header>""")
+      <div id="tageshinweis" hidden><p>Tippe auf „Zurück zur Auswahl“. Dort stehen die Bilder mit den Unterrichtstagen 02.12. und 08.12.</p><button type="button" id="auswahl-zurueck">Zurück zur Auswahl</button></div><header>""")
     shell=single_replace(shell,'</body>',"""<script>
       const dayHelp=document.querySelector('#tageshilfe'), instruction=document.querySelector('#tageshinweis');
       function orientation(open){

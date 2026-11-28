@@ -49,20 +49,20 @@ const Diagnose=(()=>{
   function analyse(text,model,medizin=Entwurf.fehler){
     const raw=norm(text).replace(/^das (laura gesund bleibt)$/u,'dass $1');
     const {key='',frage,beispiel='',persoenlich=false,alternativen=[],fachlich=[]}=model;
-    const imp='Vergleiche deinen Gedanken: '+(frage||'Welche Information passt zu deinem Grund?');
+    const imp=frage||model.quelle||beispiel;
     function result(status,feedback,focus=imp,sample=beispiel){
       const [person,category]=key.split('/');
-      const lens={Wert:'Was möchte die Person bewahren?',Norm:'Für wen soll die Regel gelten?',Folgerung:'Was soll Laura konkret tun?',
+      const lens={Wert:'Was ist '+(person==='Mutter'?'Mama':person==='Vater'?'dem Vater':'der '+person)+' wichtig?',Norm:'Für wen soll die Regel gelten?',Folgerung:'Was soll Laura konkret tun?',
         Leerstelle:'Welche Art von Aussage bleibt unausgesprochen?',Ergänzung:'Welche Information ergänzt die Nachricht?'};
-      const start={Wert:'Der Person ist … wichtig.',Norm:'Man sollte …',Folgerung:person==='Vater'?'Er rät Laura, …':'Sie rät Laura, …',Leerstelle:'Der Text nennt … nicht ausdrücklich.',
+      const start={Wert:(person==='Mutter'?'Mama':person==='Vater'?'Dem Vater':'Der '+person)+' ist … wichtig.',Norm:'Man sollte …',Folgerung:person==='Vater'?'Er rät Laura, …':'Sie rät Laura, …',Leerstelle:'Der Text nennt … nicht ausdrücklich.',
         Ergänzung:'Aus der Information folgt für Laura …'};
       const base=model.hilfen||[];
       let hints;
       if(status==='teil' || status==='ansatz' || status==='zusammenhang'){
         hints=[focus,model.quelle||sample||focus,model.bezug||lens[category]||frage,
-          start[category]?'Ergänze deinen Gedanken: „'+start[category]+'“':base[3]||'Verbinde die beiden Aussagen mit „deshalb“.',sample||model.quelle||focus];
+          start[category]?'Satzanfang: „'+start[category]+'“':base[3]||'Verbinde die beiden Aussagen mit „deshalb“.',sample||model.quelle||focus];
       }else if(status==='vollständig'){
-        hints=[feedback,model.quelle||sample,lens[category]||frage,start[category]||base[3]||focus,'Vergleiche mit dem Fachgedanken: '+sample];
+        hints=[feedback,model.quelle||sample,lens[category]||frage,start[category]||base[3]||focus,'Beispiel: '+sample];
       }else{
         hints=[status==='verwechslung'?feedback+' '+focus:focus,model.quelle||base[1]||sample,
           model.bezug||lens[category]||base[2]||frage,start[category]?'Versuche: „'+start[category]+'“':base[3]||'Beginne mit „Für Laura bedeutet das …“.',sample||focus];
@@ -93,7 +93,7 @@ const Diagnose=(()=>{
       const feedback='Fachlich richtig: '+fact;
       return {status:'teil',feedback,focus,hints:[focus,model.bezug,model.quelle||beispiel,
         'Beginne zum Beispiel so: „'+(model.anfang||'Für diesen Fall bedeutet das …')+'“',
-        'Vergleiche: '+beispiel+' Was davon stützt deinen eigenen Rat?']};
+        'Beispiel: '+beispiel]};
     }
     if(!persoenlich){
       if(key==='Mutter/Wert' && /^sie hat angst um ihre tochter$/u.test(raw))return result('teil','Du hast Mamas Sorge erkannt.','Worum sorgt sich Mama bei Laura?');
@@ -118,7 +118,7 @@ const Diagnose=(()=>{
       if(/^(?:eisprung|(?:die )?eizelle)$/u.test(raw))return result('ansatz','Du nennst einen Teil des Vorgangs.','Was passiert bei der Einnahme der Pille mit dem Eisprung?');
       if(/^(?:(?:die )?pille[, ]+)?eisprung (?:und |[,;] ?)(?:die )?eizelle$/u.test(raw))return result('zusammenhang','Eisprung und Eizelle gehören zusammen.','Wie hängt der Eisprung mit dem Freiwerden der Eizelle zusammen?');
     }
-    return result('unsicher',persoenlich?'Das ist dein eigener Grund. Vergleiche ihn mit der Fachinformation.':'Dein Wortlaut bleibt stehen. Vergleiche deinen Gedanken mit dem Beispiel.',frage);
+    return result('unsicher',model.quelle?'Zum Nachlesen: „'+model.quelle+'“':'Beispiel: '+beispiel,frage);
   }
   function modell(key,frage,beispiel,options={}){
     return {key,frage,beispiel,...options};

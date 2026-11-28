@@ -115,11 +115,11 @@ window.Arbeitsplatz = (() => {
       const cue=make('section','aufgabenkasten');
       const tag=make('span','aufgabenmarke');tag.textContent='Aufgabe';cue.append(tag);
       const source=work.querySelector('[data-auftrag],.fachcheck label,#begruendungsfrage,legend,h2,h3');
-      const wording=auftrag || work.dataset.auftrag || source?.childNodes[0]?.textContent || 'Wähle den nächsten Schritt.';
+      const wording=auftrag ?? work.dataset.auftrag ?? source?.childNodes[0]?.textContent ?? work.querySelector('button:not([disabled])')?.textContent ?? '';
       const line=make('p','');line.textContent=wording;cue.append(line);
       if(source && source.textContent.trim()===wording.trim() && !source.querySelector('input,textarea,select'))source.classList.add('nur-vorlesen');
       sheet(work);
-      work.classList.add('mit-auftrag');work.prepend(cue);
+      if(wording){work.classList.add('mit-auftrag');work.prepend(cue);}
     }
     current={room,chat,newMessage:!!chat};
     refresh();

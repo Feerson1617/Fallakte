@@ -61,15 +61,14 @@ const Lernspur = (() => {
     }
     let hint,auftrag;
     if(reading){
-      auftrag='Lies die Nachrichten im Chat.';hint='Lies zuerst, was dir die Personen schreiben.';
+      auftrag=forwarded?'Lies die Nachrichten von Mama und der Freundin.':'Lies Lauras Nachricht im Chat.';hint=forwarded?'Im Chat stehen die beiden Nachrichten unter „Weitergeleitet“.':'Im Chat steht Lauras erste Frage unter ihrem Namen.';
       button(work,'Weiter','spur-lesen',()=>{draft.step='wahl';draw();}).className='spur-weiter';
     }else if(waiting){
       auftrag='Warte auf das Zeichen deiner Lehrkraft.';hint='Nach der gemeinsamen Abstimmung kannst du den Chat starten.';
-      node(work,'p','Dein erster Rat ist gespeichert.');
       button(work,'Chat starten','spur-chat',finish).className='spur-weiter';
     }else if(comparison){
-      auftrag='Vergleiche deine beiden Gründe.';
-      hint='Lies deine beiden Gründe. Was kannst du jetzt genauer erklären?';
+      auftrag=s.erst?'Was hat sich zwischen „Am Anfang“ und „Am Ende“ für dich geändert?':'Deine Antwort am Ende';
+      hint=s.erst?'Unter „Am Anfang“ und „Am Ende“ stehen deine eigenen Worte.':'Unter „Am Ende“ steht dein eigener Satz.';
       for(const [label,answer] of [['Am Anfang',s.erst],['Am Ende',s.schluss]]){
         node(work,'h2',label);
         if(answer){node(work,'strong',answer.choice);node(work,'p',answer.reason,'spur-zitat');}
@@ -87,7 +86,7 @@ const Lernspur = (() => {
     }else{
       const key=cfg.phase;
       const choosing=draft.step==='wahl';
-      auftrag=choosing?(first?cfg.firstQuestion:cfg.finalQuestion):(first?'Warum denkst du das?':cfg.reason);
+      auftrag=choosing?(first?cfg.firstQuestion:cfg.finalQuestion):(first?cfg.firstReason(draft.choice):cfg.reason);
       if(!first && cfg.facts){
         const facts=node(work,'div',undefined,'faktenpaar');
         for(const fact of cfg.facts)node(facts,'p',fact);
@@ -99,15 +98,15 @@ const Lernspur = (() => {
         }
         select.value='';
         select.onchange=()=>{if(select.value){draft.choice=select.value;draft.step='grund';draw();}};
-        hint='Öffne die Auswahl. Tippe auf deine Antwort.';
+        hint='Tippe auf „Bitte wählen“.';
       }else{
       if(!first && cfg.suggestion){
         const select=node(work,'select');select.id='spur-wahl';select.setAttribute('aria-label',cfg.finalQuestion);
         for(const label of cfg.finalChoices)node(select,'option',label).value=label;
-        select.value=draft.choice;select.onchange=()=>{draft.choice=select.value;edit();};
+        select.value=draft.choice;select.onchange=()=>{draft.choice=select.value;draw();};
       }else button(work,draft.choice+' · ändern','spur-wahl-aendern',()=>{draft.step='wahl';draw();});
       const reasonBox=node(work,'div',undefined,'spur-eingabe');
-      const reason=node(reasonBox,'label',first?'Warum denkst du das?':cfg.reason);reason.htmlFor='spur-grund';reason.className='nur-vorlesen';
+      const reason=node(reasonBox,'label',auftrag);reason.htmlFor='spur-grund';reason.className='nur-vorlesen';
       const input=node(reasonBox,'textarea');input.id='spur-grund';input.rows=2;input.value=draft.reason;
       if(first && ['ESA','Foerder','Förder'].includes(cfg.tier))input.placeholder='Stichworte reichen.';
       const feedback=node(work,'p','','spur-korrektur');feedback.hidden=true;feedback.setAttribute('role','status');
@@ -125,8 +124,7 @@ const Lernspur = (() => {
         submit.disabled=!draft.choice||!draft.reason.trim();
       }
       input.oninput=edit;edit();
-      hint=first?'Warum hast du das gewählt? Schreibe deinen Gedanken auf.':
-        'Wähle deine Antwort. Nutze für deinen Grund eine Information aus den Nachrichten.';
+      hint=auftrag+' Schreibe in das weiße Feld.';
     }
     }
     const help=button(work,'Ich brauche Hilfe','spur-hilfe',()=>{

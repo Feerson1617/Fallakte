@@ -13,8 +13,10 @@ from lxml import etree, html
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/"scripts"))
 from clt_inhalte import klar, QUELLEN, NACHRICHTEN
+from familiensprache import TRANSFER, RUECKMELDUNGEN
 from material import LEVELS,vertrag
 from matrix import matrix
+from sprachaudit import audit as sprachaudit
 
 HERE=Path(__file__).resolve().parent
 ROOT=HERE.parent
@@ -50,7 +52,10 @@ def verify_source(day,b):
         ref=json.loads(git('module/familienrat/material.json'))
         for n,person in b['cases'].items():
             orig=ref['cases'][n]
-            for key in ['transfer','addition','connection','missing']:assert person[key]==orig[key]
+            for key in ['addition','connection','missing']:assert person[key]==orig[key]
+            expected=dict(orig['transfer'])
+            if n in TRANSFER:expected['advancedPrompt']=TRANSFER[n]
+            assert person['transfer']==expected
             visible=orig['lesefassung'].replace('deine Ausbildung beenden. Vielleicht möchtest du später Kinder.',
                               'deine Ausbildung beenden und vielleicht später Kinder bekommen.')
             if n in NACHRICHTEN:visible=' '.join(NACHRICHTEN[n])
@@ -60,7 +65,14 @@ def verify_source(day,b):
             for task,previous in zip(person['tasks'],orig['tasks']):
                 clean=lambda x:json.loads(json.dumps(x,ensure_ascii=False).replace('Öffne „Fakt · Wert · Norm · Folgerung“. Lies die vier Fragen.','Tippe auf „Begriff erklären“. Wähle ein Wort.'))
                 for key in previous:
-                    if key=='evidenceSentences':
+                    if key in ('hints','helpByLevel'):
+                        lists=[task[key]] if key=='hints' else [task[key][level] for level in LEVELS]
+                        assert all(len(x)==5 and len(set(x))>=4 and all(x) for x in lists)
+                        if task['id'] in QUELLEN[n]:assert all(QUELLEN[n][task['id']][-1] in x[0] for x in lists)
+                    elif key=='answers' and (n,task['id']) in RUECKMELDUNGEN:
+                        for now,old in zip(task[key],previous[key],strict=True):
+                            assert now==(old if old['ok'] else dict(old,feedback=RUECKMELDUNGEN[n,task['id']]))
+                    elif key=='evidenceSentences':
                         assert [lines[i] for i in task[key]]==QUELLEN[n][task['id']]
                     elif n not in NACHRICHTEN and task['id']=='Leerstelle' and key=='prompt':
                         assert task[key]=='Welche Art von Aussage wird in der Nachricht nicht ausdrücklich genannt?'
@@ -211,6 +223,17 @@ def release():
             shutil.copyfile(QA/'Freigabestufen'/name,target/name)
         for name in ('Sprachreserve.tsv','Sprachreserve-blind.tsv','Arbeitsplatz-und-Diagnose.md'):
             shutil.copyfile(HERE/name,target/name)
+        visual={};sample=[]
+        for e in ('chromium','webkit'):
+            folder=QA/'Sprachbilder'/e
+            shots=[r for r in json.loads((folder/'Wortlaut.json').read_text()) if r['tag']==day]
+            assert {r['niveau'] for r in shots}==set(LEVELS) and all(r['sha256']==sha(raw) for r in shots)
+            sample.extend(shots)
+            for r in shots:
+                if r.get('bild'):visual[e+'/'+r['bild']]=(folder/r['bild']).read_bytes()
+        visual['Wortlaut.json']=dump(sample)
+        archive(target/'Sprach-Sichtpruefung.zip',visual)
+        archive(target/'Sprachaudit.zip',sprachaudit(rows.values(),day,revision,sha(raw),logs,sample))
         archive(target/'Pruefprotokolle.zip',logs)
         failnote=f'Bei {len(geoerrors)} Beobachtungen ließ sich die vollständige Erreichbarkeit einer angebotenen Taste nicht nachweisen. Die betreffenden Beschriftungen, Positionen, Browser und Fenster stehen im Geometrieprotokoll.' if geoerrors else 'Alle in den Geometrieprotokollen erfassten aktiven Steuerungen waren über ihren aktuellen Ansichtsabschnitt erreichbar.'
         report=f"""# Prüfung am {day}.12.2026

@@ -97,11 +97,20 @@ function draw(){
   for(const [i,text] of past.entries()){note(i);add(chat,'strong',i%3===1?'Du':bank.person);add(chat,'p',text);}
   if(state.direct && s.previousFacts.length){const facts=add(chat,'details');add(facts,'summary','Bisher im Fall');s.previousFacts.forEach(text=>add(facts,'p',text));}
   add(chat,'strong',bank.person);add(chat,'blockquote',s.message[tier].join(' '));
-  work.dataset.auftrag=state.sent?'Lies die Antwort im Chat.':!state.choice && hasChoice?'Welchen Vorschlag machst du?':
-    state.valid?'Vergleiche deinen Grund. Sende deinen Rat.':state.compared?'Welche Aussage passt zu deinem Grund?':s.task[tier];
-  const room=()=>Arbeitsplatz.setup(desk,work,chat,h,work.querySelector('#help'),b=>resource('Hilfe',box=>add(box,'p','Lies die Antwort. Tippe dann auf Weiter.')));
+  const methods=state.choice.split('+').filter(Boolean).map(m=>bank.cards[m].title).join(' und ');
+  const questions=[
+    'Celina möchte keine Hormone. Wie passt dein Rat dazu?',
+    'Wie oft muss Celina an die Verhütung denken?',
+    'Wer entscheidet über das Einsetzen einer Spirale?',
+    'Was senkt beim Sex auch das Risiko für HIV?',
+    'Welcher Wunsch von Celina zählt für dich am meisten?'];
+  const question=bank.person==='Celina' && state.choice?
+    methods+' · '+questions[state.index]+(!lower() && state.index===4?' Wann würdest du ihr anders raten?':''):s.task[tier];
+  work.dataset.auftrag=state.sent?'Lies die Antwort von '+bank.person+' im Chat.':state.valid?'Deine Nachricht an '+bank.person:
+    hasChoice && !state.choice?'Was rätst du '+bank.person+'?':question;
+  const room=()=>Arbeitsplatz.setup(desk,work,chat,h,work.querySelector('#help'),b=>resource('Hilfe',box=>add(box,'p',work.dataset.auftrag)));
   const analyse=()=>Diagnose.analyse(state.reason,Diagnose.modell(bank.person+'/'+state.index+'/'+state.choice,
-    s.task[tier],check.answers?.['ABC'.indexOf(check.code)],{persoenlich:true,pille:state.choice.split('+').includes('P'),bezug:s.task[tier],quelle:check.answers?.['ABC'.indexOf(check.code)],hilfen:s.hints?.[state.choice]||s.helpBefore}));
+    question,check.answers?.['ABC'.indexOf(check.code)],{persoenlich:true,pille:state.choice.split('+').includes('P'),bezug:question,quelle:check.answers?.['ABC'.indexOf(check.code)],hilfen:s.hints?.[state.choice]||s.helpBefore}));
   if(state.sent){
     note(state.history.length-2);add(chat,'strong','Du');add(chat,'p',state.history.at(-2));
     add(chat,'strong',bank.person);add(chat,'p',state.reply);
@@ -111,7 +120,7 @@ function draw(){
     }).className='primary';room();return;
   }
   if(hasChoice && !state.choice){
-    add(work,'h2','Welchen Vorschlag machst du?');
+
     choices(s,work);
   }else{
     if(hasChoice){
@@ -130,15 +139,15 @@ function draw(){
 
       if(!lower() && !state.compared){
         const field=add(add(work,'label','Deine Erklärung'),'textarea');field.id='erklaerung';field.value=state.reason;
-        const compare=btn(work,'Mit den Aussagen vergleichen','vergleichen',()=>{const issue=Entwurf.fehler(state.reason);state.compared=!issue;state.result=issue?.info||'';draw();});
+        const compare=btn(work,'Zu den Aussagen','vergleichen',()=>{const issue=Entwurf.fehler(state.reason);state.compared=!issue;state.result=issue?.info||'';draw();});
         compare.disabled=!field.value.trim();compare.hidden=!!state.result;
         field.oninput=()=>{state.reason=field.value;state.result='';compare.hidden=false;work.querySelector('#entwurf-bearbeiten')?.remove();work.querySelector('#feedback').textContent='';compare.disabled=!state.reason.trim();};
       }else{
         if(!lower()){
-          const analysis=analyse();if(analysis.status!=='unsicher')add(work,'p',analysis.feedback).dataset.diagnose=analysis.status;
+          const analysis=analyse();add(work,'p',analysis.feedback).dataset.diagnose=analysis.status;
           const own=add(work,'details');add(own,'summary','Eigener Grund · ungeprüft');
           add(own,'p','Fachlich ungeprüft: '+state.reason);
-          btn(own,'Grund bearbeiten','grund-aendern',()=>{state.compared=false;state.result='';draw();});
+          btn(own,'Meinen Satz ändern','grund-aendern',()=>{state.compared=false;state.result='';draw();});
         }
         const answers=compact() && state.result?add(work,'details'):work;
         if(answers!==work)add(answers,'summary','Andere Aussage wählen');
@@ -147,12 +156,12 @@ function draw(){
     }
     add(work,'p',conflict()?.[lower()?'short':'full'] || state.result).id='feedback';document.querySelector('#feedback').setAttribute('role','status');
     if(!lower() && !state.compared && state.result && !conflict()){
-      btn(work,'Grund bearbeiten','entwurf-bearbeiten',()=>{state.result='';draw();Entwurf.bearbeiten(desk.querySelector('textarea'));});
+      btn(work,'Meinen Satz ändern','entwurf-bearbeiten',()=>{state.result='';draw();Entwurf.bearbeiten(desk.querySelector('textarea'));});
     }
     if(state.valid && !lower()){
-      add(work,'p','Vergleiche deinen Grund mit dieser Aussage: '+check.answers['ABC'.indexOf(check.code)]);
+      add(work,'p',check.answers['ABC'.indexOf(check.code)]);
       const own=add(work,'details');add(own,'summary','Eigenen Grund ansehen');add(own,'p',state.reason);
-      btn(own,'Grund bearbeiten','grund-aendern',()=>{state.compared=false;state.valid=false;state.result='';draw();});
+      btn(own,'Meinen Satz ändern','grund-aendern',()=>{state.compared=false;state.valid=false;state.result='';draw();});
     }
     if(state.valid)btn(work,'Nachricht senden','send',()=>{
       if(!state.valid || state.sent || conflict() || needsSource() || Entwurf.fehler(state.reason))return;state.sent=true;
@@ -171,8 +180,8 @@ function draw(){
     const card=ref && bank.cards[ref.method];
     const where=card?card.title+' · '+card.sections[ref.section].title:hasChoice?'Nachricht von '+bank.person:'Artikel und Studien';
     const answer=check.answers?.['ABC'.indexOf(check.code)];
-    const hints=reason?Entwurf.hilfen(where,issue?.frage || (conflict()?'Welcher Wunsch bleibt offen?':s.task[tier]),reason,issue):
-      state.reason.trim()&&!state.valid?analyse().hints:[s.task[tier]+' '+prior[0],s.task[tier],prior[1],prior[2] || (card?card.sections[ref.section].levels[tier]:prior.at(-1)),
+    const hints=reason?Entwurf.hilfen(where,issue?.frage || question,reason,issue):
+      state.reason.trim()&&!state.valid?analyse().hints:[prior[0],question,prior[1],prior[2] || (card?card.sections[ref.section].levels[tier]:prior.at(-1)),
         prior[3] || answer || prior.at(-1)];
     resource('Hilfe '+(index+1)+' von '+hints.length,body=>{
       add(body,'p',hints[index]);

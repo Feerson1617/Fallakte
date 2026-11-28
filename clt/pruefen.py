@@ -42,6 +42,7 @@ def run(engine,day,tier,profil='quer'):
                 s=p.frame(name='sco') if sco else p.main_frame
                 f=room(s,'erster' if day=='02' else 'zweiter')
                 f.locator('.arbeitskopf:visible').wait_for();instrument(f)
+                f.evaluate("cltTest.observe('Fallübersicht')");harvest(f)
                 return s,f
             def harvest(f):
                 for r in f.evaluate('cltTest.records()'):
@@ -55,7 +56,7 @@ def run(engine,day,tier,profil='quer'):
                     for stage,methods in f.evaluate('t=>Object.fromEntries(Object.entries(LAURA.stages).map(([k,v])=>[k,Object.keys(v.levels[t].strategies)]))',t).items():
                         for method in methods:
                             s.locator('[data-action=recovery]').click()
-                            f.locator('#wieder-level-'+t).click();f.locator('[data-stage="'+stage+'"][type=button]').click()
+                            f.locator('#wieder-level-'+t).click();f.evaluate("cltTest.observe('Abschnitt auswählen')");f.locator('[data-stage="'+stage+'"][type=button]').click()
                             counts['Fachantworten']+=f.evaluate('x=>cltTest.advice(x)',dict(stage=stage,tier=t,method=method,mode=mode))
                             counts['Empfehlungswege']+=1;harvest(f)
                             if stage=='L04' and method=='K' and mode=='beispiel':p.screenshot(path=folder/'Laura.jpg',quality=62)
@@ -90,7 +91,7 @@ def run(engine,day,tier,profil='quer'):
                     if person in NAMES[2:] and not f.locator('#person option').filter(has_text=person).count():
                         s.locator('[data-action=abschluss]').click();schluss(f)
                         s.locator('[data-action=recovery]').click()
-                    f.locator('#person').select_option(person);f.locator('#entry').select_option(str(step));f.locator('#open-entry').click()
+                    f.locator('#person').select_option(person);f.locator('#entry').select_option(str(step));f.evaluate("cltTest.observe('Wiedereinstieg')");f.locator('#open-entry').click()
                 for mode in ('eigen','fehler','hilfe','beispiel'):
                     s,f=open_module(mode in ('fehler','beispiel'))
                     for name in NAMES:
