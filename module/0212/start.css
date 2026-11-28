@@ -50,3 +50,9 @@ body:has(#reserve-platz:not([hidden])) #reserve-platz iframe{height:100dvh;min-h
 /* WebKit soll beim Blättern jede Abschnittstaste vollständig in eine Spalte setzen. */
 #einstieg .blatt-inhalt.geteilt #abschnitte{display:block}
 #einstieg .blatt-inhalt.geteilt #abschnitte button{width:100%;box-sizing:border-box}
+
+/* Ein Grid wird in WebKits mehrspaltiger Ansicht über Spaltengrenzen fragmentiert. */
+#start .blatt-inhalt.geteilt .hauptfall,
+#start .blatt-inhalt.geteilt .reserven{display:block}
+#start .blatt-inhalt.geteilt .hauptfall img{width:4.5rem}
+#start .blatt-inhalt.geteilt .startwege button{max-width:100%;width:100%}

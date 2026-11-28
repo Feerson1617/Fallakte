@@ -62,7 +62,7 @@ def run(engine,day,tier,profil='quer'):
                             if stage=='L04' and method=='K' and mode=='beispiel':p.screenshot(path=folder/'Laura.jpg',quality=62)
                     s.locator('[data-action=abschluss]').click();expect(f.locator('#lernspur h1')).to_have_text('Dein Schlussrat')
                 # Regulärer Verlauf einschließlich des Übergangs zum ausdrücklich persönlichen Schlussrat.
-                s,f=open_module(False);f.locator('#level-'+t).click();f.locator('#neu').click();antwort(f)
+                s,f=open_module(False);f.locator('#level-'+t).click();f.evaluate("cltTest.observe('Start mit gewähltem Niveau')");f.locator('#neu').click();antwort(f)
                 for i in range(1,6):
                     f.evaluate('x=>cltTest.advice(x)',dict(tier=t,stage=f'L0{i}',method='K',mode='eigen'))
                     assert f.locator('#chat-meldungen [data-kind=send]').count()==i
@@ -125,7 +125,7 @@ def run(engine,day,tier,profil='quer'):
             assert not errors,errors
     # Auch die langen Auswahltexte des Wiedereinstiegs müssen ganz auf eine Teilansicht passen.
     picker_errors=[issue for g in layout for issue in g['issues']
-                   if issue['id']=='entry' or issue['text'].startswith(tuple('Laura '+str(i)+' – ' for i in range(1,6)))]
+                   if issue['id'] in ('entry','neu') or issue['text'].startswith(tuple('Laura '+str(i)+' – ' for i in range(1,6)))]
     assert not picker_errors,picker_errors[:2]
     (folder/'Geometrie.json').write_text(json.dumps(layout,ensure_ascii=False))
     with gzip.open(folder/'Zustaende.json.gz','wt',encoding='utf8') as z:json.dump(list(observed.values()),z,ensure_ascii=False)
