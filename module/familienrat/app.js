@@ -254,8 +254,9 @@ function thought(box,label,text,save,id,buttonText,submit){
   const input=el(el(box,'label',label),'textarea');input.value=text;
   // This is a form check, never a judgement about a pupil's argument or spelling.
   const usable=()=>Boolean(input.value.trim());
-  const note=paragraph(box,ui.thoughtHint,'small');note.id=id+'-hint';
-  input.setAttribute('aria-describedby',note.id);
+  if(!kurz()){
+    const note=paragraph(box,ui.thoughtHint,'small');note.id=id+'-hint';input.setAttribute('aria-describedby',note.id);
+  }
   const confirm=btn(box,buttonText,id,()=>{if(usable())submit();});
   confirm.disabled=!usable();
   input.oninput=()=>{save(input.value);confirm.disabled=!usable();};
@@ -433,12 +434,12 @@ const reviewText=i=>bank.review[i][1].split('“')[0];
 function comparison(box){
   const p=saved.personal;
   const action={choice:'Welche Nachricht hilft Laura besonders?',concern:ui.priority,fact:ui.evidence,
-    reason:ui.openReason,limit:bank.limits[p.concern||0].prompt,done:'Halte deine Einschätzung fest.'};
+    reason:(p.concern===0?'Wie hilft der Hinweis auf Beschwerden bei diesem Rat?':'Wie hilft der Hinweis auf eine spätere Schwangerschaft bei diesem Rat?'),limit:bank.limits[p.concern||0].prompt,done:'Halte deine Einschätzung fest.'};
   box.dataset.auftrag=action[p.step];
   const end=()=>{
     p.step='done';saved.completedReview=true;go('laura',{at:3});final();
   };
-  if(p.choice){
+  if(p.choice && p.step!=='reason'){
     const last=kurz()?aufklappen(box,'Meine Einschätzung'):box;
     paragraph(last,'Deine Einschätzung · '+p.choice);
     btn(last,ui.editWeight,'edit-weight',()=>{
@@ -461,6 +462,7 @@ function comparison(box){
   }else{
     const person=(p.choice===ui.both || p.choice==='Ich bin noch unsicher')?names[p.part]:p.choice,num=names.indexOf(person);
     if(!kurz()||p.step==='concern')el(box,'strong',person);
+    if(p.step==='reason')box.dataset.auftrag+=' ('+person+')';
     if(p.step==='concern'){
       paragraph(box,ui.priority);
       [ui.questionA,ui.questionB].forEach((v,i)=>btn(box,v,'concern-'+i,()=>{
@@ -485,9 +487,7 @@ function comparison(box){
       if(p.alternate)btn(box,ui.other,'other',()=>{p.other=true;p.step='reason';p.feedback='';draw(true);});
       btn(box,ui.again,'rechoose',()=>{p.step='concern';p.feedback='';p.alternate=false;draw();});
     }else if(p.step==='reason'){
-      paragraph(box,ui.otherNote);
-      paragraph(box,bank.crossReference[p.concern]);
-      thought(box,ui.openReason,p.reason||'',text=>{p.reason=text;p.feedback='';box.querySelector('.retry')?.remove();},'check-reason',ui.continueReason,()=>{
+      thought(box,'Dein Grund',p.reason||'',text=>{p.reason=text;p.feedback='';box.querySelector('.retry')?.remove();},'check-reason',ui.continueReason,()=>{
         const issue=medizin(p.reason);if(issue){p.feedback=issue.info;p.urteil='falsch';draw(true);return;}
         p.feedback='';p.step='limit';draw(true);
       });

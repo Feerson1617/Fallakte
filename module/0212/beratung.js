@@ -395,7 +395,10 @@ window.Beratung = (() => {
     rat.dataset.aboutStrategy=active.draft.strategy;
     const label=task().choiceLabels?.[active.draft.strategy] || bank().strategies[active.draft.strategy].label;
     if(compact() && canEdit){
-      rat.append(control('strategie-bearbeiten','Rat ändern · '+label,editChoice,'textaktion'));
+      const short={K:'Kondom ohne Latex',P:'Pille',Cu:'Kupferspirale',H:'Hormonspirale'};
+      const caption=bank().strategies[active.draft.strategy].methods.map(id=>short[id]).join(' + ');
+      const edit=control('strategie-bearbeiten','Rat ändern · '+caption,editChoice,'textaktion');
+      edit.setAttribute('aria-label','Rat ändern · '+label);rat.append(edit);
     }else{
       rat.append(element('p','','Dein Rat · '+label));
       if(canEdit)rat.append(control('strategie-bearbeiten','Auswahl ändern',editChoice,'textaktion'));
@@ -451,8 +454,11 @@ window.Beratung = (() => {
     feedback.setAttribute('role','status');
     const retry=compact() && report?.type==='A' && area.querySelector('#begruendungen');
     if(retry){
-      area.insertBefore(feedback,retry);
-      retry.querySelector('h2').textContent='Welche Aussage passt jetzt?';
+      const choices=element('details','neuer-grund');
+      choices.append(element('summary','','Aussage ändern'));
+      retry.replaceWith(choices);choices.append(retry);
+      area.insertBefore(feedback,choices);
+      area.dataset.auftrag='Lies den Hinweis. Ändere deine Aussage.';
     }else area.append(feedback);
     if(step==='grund' && advanced() && !active.draft.compared && report?.type==='A'){
       area.append(control('entwurf-bearbeiten','Grund bearbeiten',()=>{

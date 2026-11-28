@@ -218,3 +218,8 @@ body:has(.aufgabenkasten) :is(.feedback.falsch,.spur-korrektur,#fachmeldung[data
 @media(max-width:650px),(max-height:340px){
  .lernraum.lesephase .arbeitskopf>.gespraech-wechsel,#beratung.lesephase .arbeitskopf>.gespraech-wechsel{display:none}
 }
+
+.blatt-inhalt.geteilt{orphans:1;widows:1}
+@media(max-width:475px){
+ .lernraum .blatt-inhalt.geteilt button,#beratung .blatt-inhalt.geteilt button{line-height:1.18;padding:.12em .35em}
+}
