@@ -97,11 +97,16 @@ def parcour(page,shell,tier,zoom,folder,tag):
         field=f.locator('textarea');reach(f,field);field.fill('Der Mutter ist Lauras Gesundheit wichtig.')
         initial=page.viewport_size
         if initial['width']==740:
+            original_frame=f.evaluate('()=>[innerWidth,innerHeight]')
             page.set_viewport_size(dict(width=740,height=294))
             f.wait_for_function("innerHeight<260")
             reach(f,field)
         check_help(f,'#help','#dismiss',['#hint-next']*4)
-        page.set_viewport_size(initial)
+        if initial['width']==740:
+            page.set_viewport_size(initial)
+            # Das äußere Fenster ist bereits groß, während das SCO noch die kleine Tastaturhöhe haben kann.
+            f.wait_for_function('([w,h])=>innerWidth===w && innerHeight===h',arg=original_frame)
+            f.evaluate('()=>new Promise(done=>requestAnimationFrame(()=>requestAnimationFrame(done)))')
         assert field.input_value()=='Der Mutter ist Lauras Gesundheit wichtig.'
         touch(f,'#compare')
     touch(f,'#answer-2')
