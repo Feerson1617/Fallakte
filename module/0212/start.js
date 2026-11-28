@@ -92,6 +92,10 @@
         const method=Object.keys(bank.strategies).find(k=>bank.strategies[k].label===label);
         return method && bank.stages.L05.levels[level].strategies[method].condition;
       },
+      finalReason:label=>{
+        const key=Object.keys(bank.strategies).find(k=>bank.strategies[k].label===label);
+        return bank.stages.L05.levels[level].strategies[key]?.writeQuestion;
+      },
       firstChoices:['Kondom',...titles.slice(1,4)],finalChoices:titles,reason:reasons[level],helpSteps:[
         'Lies Lauras Nachrichten neben deinem Rat.', 'Welcher Wunsch ist dir für Laura wichtig?',
         'Wie hilft deine Methode bei diesem Wunsch?', 'Beginne mit „Ich rate zu …, weil …“.',reasons[level]],

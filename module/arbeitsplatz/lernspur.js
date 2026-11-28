@@ -86,7 +86,7 @@ const Lernspur = (() => {
     }else{
       const key=cfg.phase;
       const choosing=draft.step==='wahl';
-      auftrag=choosing?(first?cfg.firstQuestion:cfg.finalQuestion):(first?cfg.firstReason(draft.choice):cfg.reason);
+      auftrag=choosing?(first?cfg.firstQuestion:cfg.finalQuestion):(first?cfg.firstReason(draft.choice):cfg.finalReason?.(draft.choice)||cfg.reason);
       if(!first && cfg.facts){
         const facts=node(work,'div',undefined,'faktenpaar');
         for(const fact of cfg.facts)node(facts,'p',fact);

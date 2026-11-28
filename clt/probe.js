@@ -9,8 +9,13 @@
    const question=node.querySelector('.arbeitskopf h1')?.textContent||node.querySelector('h2')?.textContent||'';
    const cue=node.querySelector('.aufgabenkasten p')?.innerText||'';
    const text=area.innerText;
-   const buttons=[...node.querySelectorAll('button,textarea,select,summary')].filter(n=>n.checkVisibility() &&
-     ![...n.parentElement.closest('details:not([open])')?.children||[]].some(child=>child.tagName!=='SUMMARY' && child.contains(n)))
+   const buttons=[...node.querySelectorAll('button,textarea,select,summary')].filter(n=>{
+     if(!n.checkVisibility())return false;
+     for(let d=n.parentElement;d;d=d.parentElement){
+       if(d.matches('details:not([open])') && !d.querySelector(':scope > summary')?.contains(n))return false;
+     }
+     return true;
+   })
      .map(n=>({id:n.id,wort:n.getAttribute('aria-label')||n.labels?.[0]?.innerText||n.innerText||n.placeholder||'',gesperrt:!!n.disabled}));
    const chat=node.querySelector('.gespraech');
    const message=(chat?.querySelector('.quelle-zur-aufgabe')||chat?.querySelector('.chat-entry:last-child,.chat-history .bubble:last-child')||chat?.querySelector('blockquote'))?.innerText||'';

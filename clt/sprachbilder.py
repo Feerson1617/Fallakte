@@ -58,7 +58,8 @@ def pruefen(engine):
                             capture('HIV-Korrektur',frame)
                             touch(frame,'#entwurf-bearbeiten');field.fill('Ich habe noch einen anderen Vorschlag.')
                             touch(frame,'#vergleichen');assert frame.locator('[data-diagnose=unsicher]').is_visible()
-                            assert 'Pille' in frame.locator('[data-diagnose]').inner_text()
+                            fact=frame.locator('[data-diagnose]').inner_text()
+                            assert 'Pille' in fact and ('Ansteckung' in fact or 'HIV' in fact),fact
                             assert frame.locator('[data-option]').count() and frame.locator('.eigener-text p').text_content().endswith('anderen Vorschlag.')
                         capture('Pille-Infektionsschutz',frame)
                         touch(frame,'#hilfe');capture('Hilfe-zur-Pille',frame)

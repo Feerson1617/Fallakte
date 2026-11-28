@@ -12,6 +12,22 @@ def tabelle(kopf):
     writer.writerow(kopf)
     return out,writer
 
+def wortregister(banken):
+    """Referenz auch für aufklappbare Quellen und selten kombinierte Wortlaute."""
+    out,writer=tabelle(['Modul','Feld im ausgelieferten Dokument','Wortlaut'])
+    skip={'designFiles','commit','baseCommit','buildCommit','version','kartenbilder','paper','return','learningGoal',
+          'status','id','taskId','code','correctionCode','sectionId','correct','levelsMap','goalRules','consolidation'}
+    def visit(modul,path,value):
+        if isinstance(value,dict):
+            for key,child in value.items():
+                if key not in skip:visit(modul,path+[key],child)
+        elif isinstance(value,list):
+            for i,child in enumerate(value):visit(modul,path+[str(i+1)],child)
+        elif isinstance(value,str) and len(value)>2 and not value.startswith(('data:','<svg')):
+            writer.writerow([modul,' / '.join(path),value])
+    for modul,bank in banken.items():visit(modul,[],bank)
+    return out.getvalue()
+
 def audit(rows,tag,revision,sha,logs,bilder):
     screen,sw=tabelle(['Ansicht','Niveau','Fall','Schritt','Auslöser','Aufgabenfeld','Arbeitsfläche','Aktueller Chatbezug','Rückmeldung'])
     elements,ew=tabelle(['Ansicht','Steuerung','Sichtbare Beschriftung oder zugänglicher Name','Gesperrt'])
@@ -69,7 +85,7 @@ ANLEITUNG="""# Sprachaudit der Schüleransichten
 
 Ansichten.csv ordnet den tatsächlich aus dem Browser gelesenen Wortlaut dem Niveau, Gespräch, Abschnitt und auslösenden Bedienweg zu. Die Ansichtskennung verbindet ihn mit den Steuerungen und den sechs Prüffragen. Beschriftungen können bei geschlossenen Klappelementen und geteilter Arbeitsfläche je nach Fenster variieren. Die Tabellen enthalten auch zu Testzwecken eingegebene eigene Sätze.
 
-Die sechs Spalten dokumentieren den gemeinten Schritt, den im Bildschirm nachlesbaren Bezug, die verfügbare Gedächtnisstütze, die konkrete Bedienung, den maßgeblichen Wortlaut und die Funktion des Auftrags. Gleichartige Bedienhandlungen teilen eine Begründung. Die Zuordnung wird aus den Browserbeobachtungen erzeugt. Sie misst kein individuelles Leseverständnis. Unter Wortlautnachweise stehen die einzelnen fachlichen Rückmeldungen, Hinweise und Quellen der gesonderten Freitext- und Fehlerversuche. Die Prüfprotokolle der Auslieferung enthalten außerdem die vollständigen Browser- und Geometrieprotokolle.
+Die sechs Spalten dokumentieren den gemeinten Schritt, den im Bildschirm nachlesbaren Bezug, die verfügbare Gedächtnisstütze, die konkrete Bedienung, den maßgeblichen Wortlaut und die Funktion des Auftrags. Gleichartige Bedienhandlungen teilen eine Begründung. Die Zuordnung wird aus den Browserbeobachtungen erzeugt. Sie misst kein individuelles Leseverständnis. Das zusätzliche Wortregister erschließt auch aufklappbare Fachkarten, Forschungsartikel und seltene Textvarianten im ausgelieferten Dokument. Ein Registereintrag allein belegt keinen Aufruf. Unter Wortlautnachweise stehen die einzelnen fachlichen Rückmeldungen, Hinweise und Quellen der gesonderten Freitext- und Fehlerversuche. Die Prüfprotokolle der Auslieferung enthalten außerdem die vollständigen Browser- und Geometrieprotokolle.
 
 Die gedankliche Begründung bleibt bei den Lernenden. Ob ein konkretes Kind sie ohne Begleitung versteht, lässt sich erst im Unterricht feststellen. Eigene freie Formulierungen, beliebig häufige Wiederholungen und beliebige Reihenfolgen der freiwilligen Bedienhandlungen bilden keinen endlichen Prüfbestand.
 """

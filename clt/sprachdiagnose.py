@@ -49,7 +49,7 @@ def run(engine):
             assert obs['initial'] and obs['weiter']==2 and len(obs['hints'])==5,obs
             visible.append(obs)
         p.set_content(ub1)
-        models['beratung']=p.evaluate("""()=>Object.fromEntries(Object.values(LAURA.stages).flatMap(s=>Object.entries(s.levels).filter(([t])=>['MSA','AHR'].includes(t)).flatMap(([t,l])=>Object.entries(l.strategies).map(([m,a])=>[s.id+'/'+m+'/'+t,{...Aussagen.beratung(s.id,LAURA.strategies[m].methods,a,l.task),ziele:s.knownFacts,fehler:a.options.filter(o=>!o.correct)}]))))""")
+        models['beratung']=p.evaluate("""()=>Object.fromEntries(Object.values(LAURA.stages).flatMap(s=>Object.entries(s.levels).filter(([t])=>['MSA','AHR'].includes(t)).flatMap(([t,l])=>Object.entries(l.strategies).map(([m,a])=>[s.id+'/'+m+'/'+t,{...Aussagen.beratung(s.id,LAURA.strategies[m].methods,a,a.writeQuestion),ziele:s.knownFacts,fehler:a.options.filter(o=>!o.correct)}]))))""")
         models['zusatz']={}
         for person in ('Tom','Celina'):
             module=base64.b64decode(re.search('<script id="reserve-'+person+'"[^>]*>([^<]+)',ub1)[1]).decode()

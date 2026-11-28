@@ -167,7 +167,7 @@ window.Beratung = (() => {
       } else if (info().status==='C') {
         draft.grant=contextKey();
         active.phase='checked';
-        draft.feedback={type:'C',text:info().condition+' '+info().feedback,card:info().card};
+        draft.feedback={type:'C',text:[info().condition,info().feedback].filter(Boolean).join(' '),card:info().card};
       }
     }
     render('fachmeldung');
@@ -314,7 +314,7 @@ window.Beratung = (() => {
     question.id='begruendungsfrage';field.setAttribute('aria-labelledby',question.id);field.append(question);
     if(advanced()){
       const analysis=entwurfsdiagnose();
-      const msg=element('p','denkhinweis',analysis.feedback+(analysis.status==='teil'?' '+analysis.focus:''));
+      const msg=element('p','denkhinweis',analysis.feedback);
       msg.dataset.diagnose=analysis.status;field.append(msg);
       const draft=element('details','eigener-text');draft.append(element('summary','','Eigener Grund'),
           element('p','','Fachlich ungeprüft: '+active.draft.reason),control('erklaerung-aendern','Erklärung ändern',()=>{active.draft.compared=false;editReason();}));

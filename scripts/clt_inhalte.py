@@ -28,7 +28,7 @@ def klar(text):
        ('Die Hormonspirale berücksichtigt den Schwangerschaftsschutz.', 'Die Hormonspirale schützt vor Schwangerschaft.'),
        ('Die Kupferspirale berücksichtigt den Schwangerschaftsschutz.', 'Die Kupferspirale schützt vor Schwangerschaft.'),
        ('Die Pille berücksichtigt Schwangerschaftsschutz und Alltag.', 'Die Pille schützt vor Schwangerschaft, wenn Laura sie nach Plan einnimmt.'),
-       ('Du hast die Aussage zur Anwendung geprüft. ', ''),
+       ('Du hast die Aussage zur Anwendung geprüft.', ''),
        ('Anwendung und individuelle Verträglichkeit sind getrennte Fragen.', 'Kann Laura die Pille nach Plan nehmen? Wie ihr Körper darauf reagiert, ist eine andere Frage.'),
        ('Auch hormonfrei ist Verhütung möglich. Ein geeignetes synthetisches Kondom besteht nicht aus Latex.',
         'Eine Möglichkeit ohne Hormone ist ein Kondom aus Kunststoff ohne Latex.'),
@@ -57,7 +57,7 @@ def klar(text):
        ('Geeignete synthetische latexfreie Kondome bilden eine Barriere für Spermien.', 'Latexfreie Kondome aus Kunststoff halten Spermien zurück.'),
        ('geeignete synthetische Kondome','Kondome aus Kunststoff'))
     for alt,neu in paare:text=text.replace(alt,neu)
-    return text
+    return text.strip()
 
 def einfache_sprache(ctx):
     for k in ('feedback','condition','evidence'):

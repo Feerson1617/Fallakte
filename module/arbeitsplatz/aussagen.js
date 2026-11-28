@@ -32,19 +32,12 @@ const Aussagen=(()=>{
   vergleich.ohneBarriere=ohneBarriere;
   const anlass={L01:['latex'],L02:['infektionen','doppelschutz'],L03:['vergessen','langzeit'],L04:['kupferschmerz','hormonschmerz','abklaeren'],L05:['doppelschutz','infektionen','langzeit','abklaeren']};
   const methode={K:'barriere',P:'eisprung',Cu:'kupfer',H:'schleim'};
-  const gewicht={
-    L01:'Was ändert die Latexallergie an der Anwendung deiner gewählten Methode?',
-    L02:'Welche der beiden Schutzwirkungen hat deine gewählte Methode? Wo bleibt ein Risiko?',
-    L03:'Wann muss Laura im Alltag an deine Methode denken?',
-    L04:'Was möchte Laura vor einer Entscheidung wegen ihrer Schmerzen klären?',
-    L05:'Welches Anliegen wiegt für dich stärker? Welche Grenze bleibt?'
-  };
   const satzstart={L01:'Wegen der Latexallergie …',L02:'Beim Schutz vor Ansteckung … Beim Schutz vor Schwangerschaft …',
     L03:'In Lauras Alltag …',L04:'Wegen der Regelschmerzen … Über eine Einlage …',L05:'Für Laura wiegt … schwerer, weil …'};
   function beratung(stage,methods,way,frage){
     return {frage,key:stage+'/'+methods.join('+'),persoenlich:true,pille:methods.includes('P'),
-      beispiel:way.options.find(o=>o.correct).text,quelle:way.condition,bezug:way.evidence,
-      gewicht:gewicht[stage],anfang:satzstart[stage],hilfen:way.hints,merkmale:[...anlass[stage],...methods.map(m=>methode[m]),...(stage!=='L01' && methods.some(m=>m!=='K')?['ohneBarriere']:[])]};
+      beispiel:way.options.find(o=>o.correct).text,quelle:way.fact,bezug:way.question,
+      gewicht:way.hints[2],anfang:satzstart[stage],hilfen:way.hints,merkmale:[...anlass[stage],...methods.map(m=>methode[m]),...(stage!=='L01' && methods.some(m=>m!=='K')?['ohneBarriere']:[])]};
   }
   function treffer(text,m){
     if(!m.bezug)return '';

@@ -14,7 +14,8 @@ from lernspur_test import antwort, touch, reach
 HERE=Path(__file__).parent
 INITIAL='Für mich zählt, was Laura möchte.'
 FINAL='Ich berücksichtige jetzt auch, welche Frage Laura zum Körper hat.'
-SNAP="""()=>{const n=document.querySelector('#lernspur');return {titel:n.querySelector('h1').textContent,
+SNAP="""()=>{const n=document.querySelector('#lernspur');return {titel:n.querySelector('h1').textContent,cue:n.querySelector('.aufgabenkasten p')?.innerText||'',
+  buttons:[...n.querySelectorAll('button,summary,select,textarea')].filter(x=>x.checkVisibility()).map(x=>({id:x.id,wort:x.getAttribute('aria-label')||x.innerText||x.labels?.[0]?.innerText||'',gesperrt:!!x.disabled})),
   text:n.innerText,teile:n.querySelector('.blatt-wechsel:not([hidden]) span')?.textContent||'1 / 1',
   tasten:[...n.querySelectorAll('button')].filter(x=>x.offsetWidth && !x.disabled).map(x=>x.textContent)};}"""
 def run(engine,day,tier):

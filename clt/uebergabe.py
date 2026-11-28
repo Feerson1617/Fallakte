@@ -16,7 +16,7 @@ from clt_inhalte import klar, QUELLEN, NACHRICHTEN
 from familiensprache import TRANSFER, RUECKMELDUNGEN
 from material import LEVELS,vertrag
 from matrix import matrix
-from sprachaudit import audit as sprachaudit
+from sprachaudit import audit as sprachaudit, wortregister
 
 HERE=Path(__file__).resolve().parent
 ROOT=HERE.parent
@@ -91,7 +91,7 @@ def verify_source(day,b):
                             assert a==(dict(old,feedback='Die Arztpraxis ist ein nächster Schritt. Was rät die Freundin Laura zur Schwangerschaft?') if i==2 else old)
                     else:assert task[key]==clean(previous[key]),(n,task['id'],key)
         for k in ('cards','limits','opening','second'):assert b[k]==ref[k]
-        return 'Die vier sichtbaren Nachrichten und Quellenaufgaben verwenden dieselbe Lesefassung. Alle fachlich passenden Quellenstellen wurden am vollständigen Satzwortlaut verankert. Die unterstützende Bedienanweisung nennt den tatsächlichen Begriffszugang. Fachliche Antworten, Rückmeldungen, Anwendungsfragen, Karten, Grenzen und Lauras Anliegen wurden feldweise gegen c4814a9 geprüft.'
+        return 'Die vier sichtbaren Nachrichten und Quellenaufgaben verwenden dieselbe Lesefassung. Alle fachlich passenden Quellenstellen wurden am vollständigen Satzwortlaut verankert. Der Feldvergleich mit c4814a9 prüft Antwortalternativen, Zuordnungen und Anwendungsaufgaben. Überarbeitete Hilfen, Quellenzitate, Rückmeldungen und zwei neu formulierte Transferfragen werden gezielt überprüft. Karten, Grenzen und Lauras Anliegen stimmen mit der Referenz überein.'
     old=json.loads(git('data/laura-0212.json'));cards=json.loads((HERE/'Infokarten.json').read_text())
     for k in ('opening','facts','goalRules','strategies'):assert b[k]==old[k],k
     for k,s in b['stages'].items():
@@ -151,7 +151,7 @@ def release():
                 for pic in personal.glob('*.jpg'):screens[f'Lernspuren/{e}/{t}/'+pic.name]=pic.read_bytes()
                 if (personal/'Lernweg.webm').is_file():screens['Demonstration.webm']=(personal/'Lernweg.webm').read_bytes()
                 for row in lr['ansichten']:
-                    z=dict(text=row['text'],task=row['schritt'],caseName='Persönlicher Vergleich',event=row['schritt'],ids=row['tasten'],question=row['titel'])
+                    z=dict(text=row['text'],task=row['schritt'],cue=row['cue'],buttons=row['buttons'],caseName='Persönlicher Vergleich',event=row['schritt'],ids=row['tasten'],question=row['titel'])
                     rows[t,dump(z)]=(t,z)
                 if day=='08':
                     more=json.loads((base/'Familienfolgen.json').read_text())
@@ -233,7 +233,15 @@ def release():
                 if r.get('bild'):visual[e+'/'+r['bild']]=(folder/r['bild']).read_bytes()
         visual['Wortlaut.json']=dump(sample)
         archive(target/'Sprach-Sichtpruefung.zip',visual)
-        archive(target/'Sprachaudit.zip',sprachaudit(rows.values(),day,revision,sha(raw),logs,sample))
+        register={day:b}
+        if day=='02':
+            doc=html.fromstring(mods[day].decode())
+            for name in ('Tom','Celina'):
+                register[name]=bank(base64.b64decode(doc.get_element_by_id('reserve-'+name).text),'bank')
+        entries=sprachaudit(rows.values(),day,revision,sha(raw),logs,sample)
+        entries['Wortregister-der-Inhaltsbanken.csv']=wortregister(register)
+        entries['Durchsicht-der-Schuelerwege.md']=(HERE/'Sprachdurchsicht.md').read_bytes()
+        archive(target/'Sprachaudit.zip',entries)
         archive(target/'Pruefprotokolle.zip',logs)
         failnote=f'Bei {len(geoerrors)} Beobachtungen ließ sich die vollständige Erreichbarkeit einer angebotenen Taste nicht nachweisen. Die betreffenden Beschriftungen, Positionen, Browser und Fenster stehen im Geometrieprotokoll.' if geoerrors else 'Alle in den Geometrieprotokollen erfassten aktiven Steuerungen waren über ihren aktuellen Ansichtsabschnitt erreichbar.'
         report=f"""# Prüfung am {day}.12.2026
@@ -241,6 +249,8 @@ def release():
 Commit `{revision}`. SHA-256 der Offline-Datei `{sha(raw)}`.
 
 {protection}
+
+Der vollständige Sprachaudit verbindet jede beobachtete Ansicht mit ihren Bedienelementen und den sechs Fragen zur Sprachführung. Das getrennte Sprach-Sichtprüfungspaket enthält Browserfotos und die dazugehörigen Wortlaute.
 
 Die zusätzliche Gegenprüfung spielt die 140 Erklärungstexte der Laura-Beratung und 154 Familienantworten an den gepackten Anwendungen durch. Sie prüft jede Rückmeldung, die folgenden fünf Hilfen und 36 ausdrücklich eingeordnete medizinische Aussagen. „Es fehlt ihre Wertvorstellung“ erhält bewusst eine Teilrückmeldung. Der Wert ist aus der Nachricht erschließbar. Die externe Sollwertung bleibt im Prüfbestand dokumentiert.
 

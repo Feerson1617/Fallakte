@@ -2,7 +2,7 @@
 METHODEN={'K':'das Kondom','P':'die Pille','Cu':'die Kupferspirale','H':'die Hormonspirale'}
 AUSWAHL={
     'L01':'Laura verträgt kein Latex. Was rätst du ihr?',
-    'L02':'Laura möchte sich auch vor Infektionen beim Sex schützen. Was rätst du ihr?',
+    'L02':'Laura möchte sich auch vor Infektionen beim Sex (STI) schützen. Was rätst du ihr?',
     'L03':'Laura vergisst manchmal, was sie täglich tun muss. Was rätst du ihr?',
     'L04':'Laura hat starke Regelschmerzen. Was rätst du ihr?',
     'L05':'Was empfiehlst du Laura am Ende des Gesprächs?'}
@@ -56,7 +56,7 @@ def empfehlung(stufe,key):
     return {'L02':f'Wie schützen das Kondom und {mittel} vor Schwangerschaft und HIV?',
             'L03':f'Was muss Laura beim Kondom jedes Mal tun? Wie lange wirkt {mittel}?',
             'L04':f'Wie kann {mittel} die Regelschmerzen verändern? Wofür braucht Laura das Kondom?',
-            'L05':f'Warum rätst du Laura zum Kondom und zusätzlich zur {mittel[4:].capitalize()}?'}[stufe]
+            'L05':f'Warum rätst du Laura zum Kondom und zusätzlich zur {mittel.removeprefix("die ")}?'}[stufe]
 def beschriften(bank):
     for stufe,stage in bank['stages'].items():
         for tier,task in stage['levels'].items():
@@ -69,14 +69,28 @@ def beschriften(bank):
                 way['question']=frage
                 # Beim Schreiben bleibt der jeweilige biologische Denkanspruch erhalten.
                 way['writeQuestion']=frage
-                if tier in ('MSA','AHR'):
+                if key!='vorher' and tier in ('MSA','AHR'):
                     if stufe=='L01' and key in ('P','Cu','H'):way['writeQuestion']+=' Welche Rolle spielt Latex dabei?'
                     elif stufe=='L03':way['writeQuestion']+=' Was sagen die Erfahrungen der Freundin über Laura aus?'
                     elif stufe=='L04':way['writeQuestion']+=' Wer klärt die Schmerzen ab?'+(' Wer entscheidet über das Einsetzen?' if 'H' in key or 'Cu' in key else '')
                     elif stufe=='L05':way['writeQuestion']+=' Wann würdest du ihr anders raten?'
-                if key=='vorher':way['writeQuestion']=frage
                 source=f'Lies auf der Karte „{card["title"]}“ den Abschnitt „{section["title"]}“.'
-                example=(way['condition'] if key!='vorher' else section['levels'][tier])
-                way['hints']=[source,frage,VERTIEFUNG[stufe],SATZSTART[stufe],example]
+                # Das Beispiel beantwortet die aktuelle biologische Frage. Bedingungen
+                # für die spätere Entscheidung können eine ganz andere Frage betreffen.
+                entry=section['levels'][tier]
+                example=entry
+                stem=SATZSTART[stufe]
+                if '+' in key:
+                    if stufe=='L02':
+                        zusatz=METHODEN[key.split('+')[1]].removeprefix('die ')
+                        example=f'Ein geeignetes Kondom ohne Latex senkt das Risiko für HIV. Die {zusatz} schützt zusätzlich vor Schwangerschaft.'
+                    elif stufe=='L01':
+                        example='Ein passendes Kondom ohne Latex hält Spermien zurück. '+entry
+                if key!='vorher' and stufe=='L03':
+                    stem=('„Mit der Spirale muss Laura nicht jeden Tag …“' if 'Cu' in key or 'H' in key
+                          else '„Bei jedem Sex braucht Laura …“' if key=='K' else '„Wenn Laura die Pille vergisst, …“')
+                if stufe=='L05' and key!='vorher':example=way['condition']
+                way['fact']=example
+                way['hints']=[source,frage,VERTIEFUNG[stufe],stem,example]
                 way['evidence']=frage
     return bank
